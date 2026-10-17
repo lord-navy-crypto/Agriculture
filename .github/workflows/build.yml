@@ -22,6 +22,13 @@ jobs:
           gradle-version: '9.2.1'
       - name: Source and asset integrity checks
         run: python3 -m unittest discover -s qa -p 'test_*.py' -v
+      - name: Java 21 observer state-machine executable acceptance
+        run: |
+          mkdir -p build/observer-brain-smoke
+          javac -d build/observer-brain-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            qa/java/ObserverBrainSmoke.java
+          java -cp build/observer-brain-smoke ObserverBrainSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
