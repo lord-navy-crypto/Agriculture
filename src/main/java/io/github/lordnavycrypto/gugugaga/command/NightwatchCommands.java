@@ -34,11 +34,34 @@ public final class NightwatchCommands {
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
                         .then(Commands.literal("on").executes(ctx->toggle(ctx.getSource(),true)))
                         .then(Commands.literal("off").executes(ctx->toggle(ctx.getSource(),false))))
+                .then(Commands.literal("director")
+                        .requires(src->src.hasPermission(2))
+                        .then(Commands.literal("status").executes(ctx->directorStatus(ctx.getSource())))
+                        .then(Commands.literal("gentle").executes(ctx->directorMode(ctx.getSource(),0)))
+                        .then(Commands.literal("balanced").executes(ctx->directorMode(ctx.getSource(),1)))
+                        .then(Commands.literal("eerie").executes(ctx->directorMode(ctx.getSource(),2))))
                 .then(Commands.literal("atmosphere")
                         .requires(src->src.hasPermission(2))
                         .then(Commands.literal("status").executes(ctx->atmosphereStatus(ctx.getSource())))
                         .then(Commands.literal("on").executes(ctx->atmosphere(ctx.getSource(),true)))
                         .then(Commands.literal("off").executes(ctx->atmosphere(ctx.getSource(),false)))));
+    }
+
+    private static int directorStatus(CommandSourceStack src) {
+        src.sendSuccess(()->Component.literal("Nightwatch director: variety="
+                + NightwatchConfig.VARIED_EVENTS_ENABLED.get()
+                + ", intensity="+NightwatchConfig.DIRECTOR_INTENSITY.get()
+                + ", auto encounters="+NightwatchConfig.ENCOUNTERS_ENABLED.get()
+                + ". Cooldown never below 8 minutes."),false);
+        return 1;
+    }
+
+    private static int directorMode(CommandSourceStack src,int mode) {
+        NightwatchConfig.DIRECTOR_INTENSITY.set(mode);
+        src.sendSuccess(()->Component.literal("Nightwatch director set to "
+                + (mode==0?"GENTLE":mode==1?"BALANCED":"EERIE")
+                + ". Does not bypass encounter cooldown or safety caps."),true);
+        return 1;
     }
 
     private static int atmosphereStatus(CommandSourceStack src) {
