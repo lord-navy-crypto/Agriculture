@@ -13,11 +13,15 @@ public final class YellowSmilerRenderer extends MobRenderer<YellowSmilerEntity,Y
     private static final ResourceLocation TEXTURE=ResourceLocation.fromNamespaceAndPath(
             GuguGagaMod.MOD_ID,"textures/entity/yellow_smiler.png");
 
+    private static final ResourceLocation EXPOSED =
+            ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
+                    "textures/entity/yellow_smiler_true.png");
+
     public YellowSmilerRenderer(EntityRendererProvider.Context context) {
         super(context,new YellowSmilerModel(context.bakeLayer(LAYER)),0.45f);
     }
 
     @Override public ResourceLocation getTextureLocation(YellowSmilerEntity entity) {
-        return TEXTURE;
+        return entity.revealed()?EXPOSED:TEXTURE;
     }
 }
