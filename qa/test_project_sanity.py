@@ -118,6 +118,10 @@ class ProjectSanity(unittest.TestCase):
         for locale in ("en_us", "zh_cn"):
             data = json.loads((ROOT / f"src/main/resources/assets/gugugaga/lang/{locale}.json").read_text())
             self.assertIn("entity.gugugaga.observer", data)
+            for key in ("header","gaze","footsteps","retreat","hidden",
+                        "ending","status","enabled","disabled","hint",
+                        "on","off","clear"):
+                self.assertIn("message.gugugaga.journal."+key,data)
         self.assertTrue((ROOT / "docs/ASSET_PROVENANCE.md").exists())
 
 if __name__ == "__main__":
