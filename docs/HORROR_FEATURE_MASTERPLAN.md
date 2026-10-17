@@ -1,3 +1,5 @@
+> Current authoritative continuation is [the Canon & Long-Term Archive](GUGUGAGA_CANON_AND_LONG_TERM_ARCHIVE.md) and [v0.8 Behavior/Asset Spec](V08_THREE_ENTITY_BEHAVIOR_AND_ASSET_SPEC.md). This document is an earlier v0.5 planning snapshot; do not treat proposed features as shipped.
+
 # Gugu-Gaga Horror — master feature plan (A-shape canonical, 2026-10-17)
 
 This is a long-term **scope register**, not a list of shipped code.
