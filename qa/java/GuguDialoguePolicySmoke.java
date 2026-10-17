@@ -11,16 +11,16 @@ public final class GuguDialoguePolicySmoke {
                 "AI output bounded");
         yes(!GuguDialoguePolicy.safeAnswer("\u00a7c!!\nhello").contains("\u00a7"),
                 "No injected formatting/control characters");
-        yes(GuguDialoguePolicy.reply("你好",0,true,4).contains("snow"),
+        yes(GuguDialoguePolicy.reply("你好",0,true,4).contains("雪"),
                 "Gugu speaks appropriately in cold worlds");
         yes(GuguDialoguePolicy.reply("hi",0,false,4).contains("snow"),
                 "Gugu contrasts hot and cold worlds");
         yes(GuguDialoguePolicy.reply("Who are you?",0,true,5)
                 .contains("Gugu-Gaga"),"Original fictional identity");
         yes(GuguDialoguePolicy.reply("我的线索",3,true,5)
-                .contains("three"),"Journal evidence-aware reply");
+                .contains("三"),"Journal evidence-aware reply");
         yes(GuguDialoguePolicy.reply("沙漠",0,false,5)
-                .contains("warm"),"Desert penguin dialogue");
+                .contains("热"),"Desert penguin dialogue");
         yes(GuguDialoguePolicy.reply("anything else?",0,false,7).equals(
                 GuguDialoguePolicy.reply("anything else?",0,false,7)),
                 "Deterministic offline dialogue replay");
