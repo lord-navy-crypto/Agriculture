@@ -19,6 +19,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue DIALOGUE_LOCAL_AI_ENABLED;
     public static final ModConfigSpec.BooleanValue HOSTILITY_ENABLED;
     public static final ModConfigSpec.BooleanValue CORRUPTION_VISUALS_ENABLED;
+    public static final ModConfigSpec.BooleanValue REDACTOR_HOSTILITY_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -79,6 +80,12 @@ public final class NightwatchConfig {
         CORRUPTION_VISUALS_ENABLED = BUILDER.comment(
                 "Subtle non-flashing asymmetry in an angry/corrupted observer's animation.")
                 .define("visuals_enabled",true);
+        BUILDER.pop();
+        BUILDER.push("redactor_mimic");
+        REDACTOR_HOSTILITY_ENABLED = BUILDER.comment(
+                "Revealed Redactor/Lapis may give one small telegraphed hit only after "
+                + "explicit opt-in. OFF by default and independent of Gugu anger.")
+                .define("redactor_hostility",false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
