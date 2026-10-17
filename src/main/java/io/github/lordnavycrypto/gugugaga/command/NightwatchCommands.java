@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.command;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.lordnavycrypto.gugugaga.ai.EncounterPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
+import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -23,6 +24,11 @@ public final class NightwatchCommands {
                         .then(Commands.literal("on").executes(ctx->quiet(ctx.getSource(),true)))
                         .then(Commands.literal("off").executes(ctx->quiet(ctx.getSource(),false)))
                         .then(Commands.literal("status").executes(ctx->quietStatus(ctx.getSource()))))
+                .then(Commands.literal("journal")
+                        .executes(ctx->journal(ctx.getSource()))
+                        .then(Commands.literal("on").executes(ctx->journalToggle(ctx.getSource(),true)))
+                        .then(Commands.literal("off").executes(ctx->journalToggle(ctx.getSource(),false)))
+                        .then(Commands.literal("clear").executes(ctx->journalClear(ctx.getSource()))))
                 .then(Commands.literal("encounters")
                         .requires(src->src.hasPermission(2))
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
@@ -51,6 +57,30 @@ public final class NightwatchCommands {
                 ? "Subtle Nightwatch sounds/particles enabled (no flash or loud effects)."
                 : "Nightwatch atmospheric sounds/particles disabled; core AI unaffected."),
                 true);
+        return 1;
+    }
+
+    private static int journal(CommandSourceStack src)
+            throws CommandSyntaxException {
+        WitnessJournal.show(src.getPlayerOrException());
+        return 1;
+    }
+
+    private static int journalToggle(CommandSourceStack src,boolean enabled)
+            throws CommandSyntaxException {
+        var player=src.getPlayerOrException();
+        WitnessJournal.setEnabled(player,enabled);
+        src.sendSuccess(()->Component.literal(enabled
+                ? "Nightwatch journal recording resumed."
+                : "Nightwatch journal recording paused. Old clues remain private."),false);
+        return 1;
+    }
+
+    private static int journalClear(CommandSourceStack src)
+            throws CommandSyntaxException {
+        WitnessJournal.clear(src.getPlayerOrException());
+        src.sendSuccess(()->Component.literal(
+                "Your Nightwatch clues have been cleared. Your preference remains."),false);
         return 1;
     }
 
