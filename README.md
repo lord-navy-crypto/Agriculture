@@ -43,3 +43,11 @@ Operators may enable automatic, nonviolent nighttime encounters. Only survival p
 - Repeated pathfinding is throttled (at most once per 30 ticks when pursuing/retreating), reducing server overhead.
 - Nightwatch still performs **no attacks, block editing, chunk forcing or global camera effects**. The opt-in director remains OFF by default. Ollama remains optional and shadow-only.
 - This is **not yet released**: dedicated-server gameplay acceptance remains necessary even after a green CI build.
+
+### Live atmosphere controls (operators)
+```text
+/gugugaga atmosphere status
+/gugugaga atmosphere on
+/gugugaga atmosphere off
+```
+These controls mute/unmute custom sound and particles without restarting. Players can always adjust the existing Minecraft Ambient sound slider. `/gugugaga quiet on` stops targeting that player, including observers that already exist.
