@@ -20,7 +20,8 @@ public final class GuguDialoguePolicy {
         StringBuilder b=new StringBuilder(Math.min(MAX_INPUT,text.length()));
         for(int i=0;i<text.length() && b.length()<MAX_INPUT;i++) {
             char c=text.charAt(i);
-            if(Character.isISOControl(c)||c=='\u00a7')continue;
+            if(c=='\u00a7') { if(i+1<text.length())i++; continue; }
+            if(Character.isISOControl(c))continue;
             b.append(c);
         }
         return b.toString().trim();
@@ -39,7 +40,8 @@ public final class GuguDialoguePolicy {
         StringBuilder b=new StringBuilder(Math.min(text.length(),limit));
         for(int i=0;i<text.length() && b.length()<limit;i++){
             char c=text.charAt(i);
-            if(Character.isISOControl(c)||c=='\u00a7')continue;
+            if(c=='\u00a7') { if(i+1<text.length())i++; continue; }
+            if(Character.isISOControl(c))continue;
             b.append(c);
         }
         return b.toString().trim();
