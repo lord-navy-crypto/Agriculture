@@ -117,6 +117,14 @@ public class GugugagaEntity extends PathfinderMob {
         return applied;
     }
 
+    /** Operator-only alpha test shortcut for the final visible arc stage. */
+    public void testBlackenedCorruption() {
+        setTemperament(Mood.CORRUPTED);
+        moodTicks=CorruptionArcPolicy.BLACKEN_TICKS;
+        getEntityData().set(CORRUPTION_STAGE,
+                CorruptionArcPolicy.Stage.BLACKENED.ordinal());
+    }
+
     public Phase phase() {
         int value=getEntityData().get(PHASE);
         return value>=0 && value<Phase.values().length
