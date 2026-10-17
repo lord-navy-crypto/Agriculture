@@ -25,7 +25,7 @@ public final class HauntingCuePolicy {
         if(!enabled || !targetEligible || phase==ObserverBrain.Phase.DORMANT
                 || distanceSquared>32.0*32.0 || distanceSquared<1.0)
             return Cue.NONE;
-        int stagger=(int)Math.floorMod(entitySeed,80L);
+        int stagger=(int)Math.floorMod(entitySeed,8L)*10;
         if(phase==ObserverBrain.Phase.OBSERVE && watched
                 && phaseTicks>=40 && distanceSquared>=64.0
                 && (ticks+stagger)%CHIME_PERIOD_TICKS==0)
