@@ -12,6 +12,9 @@ An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focuse
 - Player control: adjustable encounter frequency, opt-out, audio and visual accessibility settings.
 - Single-player first, then dedicated-server and multiplayer QA.
 
+## Optional local Ollama AI (SWARM-MOBS inspired)
+The deterministic observer runs fully offline. The optional server-side local Ollama shadow adviser is **disabled by default** and only makes requests after explicit commands. Use `/gugugaga ai detect` to list local models and `/gugugaga ai shadow` for a one-off pacing recommendation. It never controls per-tick AI or sends coordinates. See [docs/OLLAMA_OPTIONAL.md](docs/OLLAMA_OPTIONAL.md).
+
 ## Build
 Java 21, Minecraft 1.21.1, NeoForge 21.1.x. See `docs/SETUP.md` after the first source commit.
 

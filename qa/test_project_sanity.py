@@ -36,6 +36,23 @@ class ProjectSanity(unittest.TestCase):
         self.assertNotIn("teleportTo(", mob)
         self.assertNotIn("getChunk(", mob)
 
+    def test_local_ai_is_optional_and_non_authoritative(self):
+        config = (SRC / "config/NightwatchConfig.java").read_text()
+        client = (SRC / "ai/ollama/OllamaClient.java").read_text()
+        endpoint = (SRC / "ai/ollama/OllamaEndpointPolicy.java").read_text()
+        commands = (SRC / "command/OllamaCommands.java").read_text()
+        self.assertIn('.define("enabled", false)', config)
+        self.assertIn('"/api/tags"', client)
+        self.assertIn('"/api/chat"', client)
+        self.assertIn("sendAsync", client)
+        self.assertIn("Redirect.NEVER", client)
+        self.assertIn('"127.0.0.1"', endpoint)
+        self.assertIn('"/api/chat"', endpoint)
+        self.assertIn("src.hasPermission(2)", commands)
+        self.assertIn("not applied", commands)
+        self.assertNotIn("getNavigation()", commands)
+        self.assertNotIn("teleportTo(", commands)
+
     def test_locale_and_art_provenance(self):
         for locale in ("en_us", "zh_cn"):
             data = json.loads((ROOT / f"src/main/resources/assets/gugugaga/lang/{locale}.json").read_text())

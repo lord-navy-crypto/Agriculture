@@ -29,6 +29,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
             qa/java/ObserverBrainSmoke.java
           java -cp build/observer-brain-smoke ObserverBrainSmoke
+      - name: Enforce localhost-only Ollama policy (pure Java21)
+        run: |
+          mkdir -p build/ollama-policy-smoke
+          javac -d build/ollama-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ollama/OllamaEndpointPolicy.java \
+            qa/java/OllamaEndpointPolicySmoke.java
+          java -cp build/ollama-policy-smoke OllamaEndpointPolicySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
