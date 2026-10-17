@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.lordnavycrypto.gugugaga.ai.GuguDialoguePolicy;
+import io.github.lordnavycrypto.gugugaga.ai.StoryLedger;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournalPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ollama.OllamaClient;
@@ -90,7 +91,16 @@ public final class GuguTalkCommands {
                 .value().getBaseTemperature()<=0.3f;
         int clues=WitnessJournalPolicy.discovered(WitnessJournal.evidenceBits(player));
         long seed=player.getUUID().getLeastSignificantBits();
-        String offline=GuguDialoguePolicy.reply(question,clues,cold,seed);
+        String canonical=GuguDialoguePolicy.storyReply(
+                question,StoryLedger.read(player),clues);
+        String offline=canonical.isBlank()
+                ? GuguDialoguePolicy.reply(question,clues,cold,seed) : canonical;
+        // Core mysteries must have a stable answer; local models may supply
+        // only optional small talk, not overwrite the game story canon.
+        if(!canonical.isBlank()) {
+            player.sendSystemMessage(Component.literal("[Gugu-Gaga] "+canonical));
+            return 1;
+        }
         String model=NightwatchConfig.OLLAMA_MODEL.get();
         if(!NightwatchConfig.DIALOGUE_LOCAL_AI_ENABLED.get()
                 || !NightwatchConfig.OLLAMA_ENABLED.get()
