@@ -70,9 +70,20 @@ jobs:
         run: |
           mkdir -p build/gugu-dialogue-smoke
           javac -d build/gugu-dialogue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/GuguDialoguePolicy.java \
             qa/java/GuguDialoguePolicySmoke.java
           java -cp build/gugu-dialogue-smoke GuguDialoguePolicySmoke
+      - name: Verify v0.7 reversible moods, safety rules, and Redactor factions
+        run: |
+          mkdir -p build/gugu-dual-nature-smoke
+          javac -d build/gugu-dual-nature-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreatPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
+            qa/java/ThreatPolicySmoke.java \
+            qa/java/FactionPolicySmoke.java
+          java -cp build/gugu-dual-nature-smoke ThreatPolicySmoke
+          java -cp build/gugu-dual-nature-smoke FactionPolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke

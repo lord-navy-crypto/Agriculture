@@ -4,6 +4,9 @@ import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
+import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy.Mood;
+import net.minecraft.world.damagesource.DamageSource;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,6 +39,11 @@ public class GugugagaEntity extends PathfinderMob {
     private static final EntityDataAccessor<Integer> PHASE =
             SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
     private static final int AUTO_LIFETIME_TICKS = 20 * 90;
+    private static final EntityDataAccessor<Integer> MOOD =
+            SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
+    private int moodTicks;
+    private int strikeWindupTicks;
+    private int ticksSinceStrike=ThreatPolicy.ATTACK_COOLDOWN_TICKS;
     private int phaseTicks;
     private boolean ambientEncounter;
     private int ambientLifetimeTicks;
@@ -58,6 +66,7 @@ public class GugugagaEntity extends PathfinderMob {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(PHASE, Phase.DORMANT.ordinal());
+        builder.define(MOOD, Mood.CALM.ordinal());
     }
 
     @Override
@@ -72,6 +81,31 @@ public class GugugagaEntity extends PathfinderMob {
         ambientEncounter = true;
         ambientLifetimeTicks = 0;
         setPersistenceRequired();
+    }
+
+    public Mood mood() {
+        return ThreatPolicy.fromOrdinal(getEntityData().get(MOOD));
+    }
+
+    public void setTemperament(Mood requested) {
+        Mood selected=requested==null ? Mood.CALM : requested;
+        getEntityData().set(MOOD,selected.ordinal());
+        moodTicks=0;
+        strikeWindupTicks=0;
+        ticksSinceStrike=ThreatPolicy.ATTACK_COOLDOWN_TICKS;
+        getNavigation().stop();
+    }
+
+    @Override
+    public boolean hurt(DamageSource source,float damage) {
+        boolean applied=super.hurt(source,damage);
+        // The bird becomes upset when disturbed; by default it still will
+        // not attack. Only the server owner's explicit hostility toggle
+        // permits chase/strike actions.
+        if(applied && !level().isClientSide && source.getEntity() instanceof ServerPlayer
+                && mood()==Mood.CALM)
+            setTemperament(Mood.ANGRY);
+        return applied;
     }
 
     public Phase phase() {
@@ -102,6 +136,10 @@ public class GugugagaEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if(level().isClientSide)return;
+        moodTicks=Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,moodTicks+1);
+        ticksSinceStrike=Math.min(ThreatPolicy.ATTACK_COOLDOWN_TICKS,ticksSinceStrike+1);
+        if(ThreatPolicy.afterTime(mood(),moodTicks)!=mood())
+            setTemperament(Mood.CALM);
         if(ambientEncounter && ++ambientLifetimeTicks>=AUTO_LIFETIME_TICKS) {
             // Automatically spawned sightings dissipate after 90 seconds,
             // preventing permanent accumulation. Manually summoned mobs stay.
@@ -122,6 +160,7 @@ public class GugugagaEntity extends PathfinderMob {
 
         boolean watched=player.hasLineOfSight(this)&&isLookingAt(player);
         double distance=distanceToSqr(player);
+        if(handleTemperament(world,player,distance))return;
         Phase prior=phase();
         Phase next=ObserverBrain.next(prior,watched,distance,phaseTicks);
         if(next!=prior) {
@@ -160,6 +199,47 @@ public class GugugagaEntity extends PathfinderMob {
             }
         }
         playSparseCue(world,watched,distance);
+    }
+
+    /**
+     * Reversible warning, pursuit and brief melee behavior. Only enabled by
+     * the server owner. One modest strike after an observable 30-tick windup,
+     * at most once per 75 ticks, then another long waiting period.
+     */
+    private boolean handleTemperament(ServerLevel world,ServerPlayer player,
+            double distanceSquared) {
+        if(mood()==Mood.CALM || !NightwatchConfig.HOSTILITY_ENABLED.get()) {
+            strikeWindupTicks=0;
+            return false;
+        }
+        if(!ThreatPolicy.canChase(mood(),true,true,false,distanceSquared)) {
+            strikeWindupTicks=0;
+            getNavigation().stop();
+            return true;
+        }
+        getLookControl().setLookAt(player,15f,15f);
+        if(tickCount%30==0)
+            getNavigation().moveTo(player,mood()==Mood.CORRUPTED?0.80:0.73);
+        // The player gets an audible and visible warning at close range.
+        // No global camera effect, no flashes and no forced player inputs.
+        if(distanceSquared<=8.0*8.0 && player.hasLineOfSight(this)) {
+            if(strikeWindupTicks==0 && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
+                world.playSound(null,getX(),getY()+0.7,getZ(),
+                        SoundEvents.AMETHYST_BLOCK_CHIME,SoundSource.HOSTILE,
+                        0.23f,mood()==Mood.CORRUPTED?0.55f:0.72f);
+            strikeWindupTicks=Math.min(ThreatPolicy.ATTACK_TELEGRAPH_TICKS,
+                    strikeWindupTicks+10);
+        } else strikeWindupTicks=0;
+        if(ThreatPolicy.canStrike(mood(),true,true,false,
+                player.hasLineOfSight(this),distanceSquared,
+                strikeWindupTicks,ticksSinceStrike)) {
+            player.hurt(world.damageSources().mobAttack(this),
+                    ThreatPolicy.damage(mood()));
+            ticksSinceStrike=0;
+            strikeWindupTicks=0;
+            getNavigation().stop();
+        }
+        return true;
     }
 
     private void playSparseCue(ServerLevel world,boolean watched,double distance) {
@@ -206,6 +286,9 @@ public class GugugagaEntity extends PathfinderMob {
         super.addAdditionalSaveData(tag);
         tag.putInt("ObserverPhase",phase().ordinal());
         tag.putInt("ObserverPhaseTicks",phaseTicks);
+        tag.putInt("ObserverMood",mood().ordinal());
+        tag.putInt("ObserverMoodTicks",moodTicks);
+        tag.putInt("ObserverStrikeWait",ticksSinceStrike);
         tag.putBoolean("NightwatchAmbient",ambientEncounter);
         tag.putInt("NightwatchLifetime",ambientLifetimeTicks);
     }
@@ -217,6 +300,14 @@ public class GugugagaEntity extends PathfinderMob {
         getEntityData().set(PHASE,(saved<0||saved>=Phase.values().length)
                 ? Phase.DORMANT.ordinal() : saved);
         phaseTicks=Math.max(0,Math.min(1200,tag.getInt("ObserverPhaseTicks")));
+        getEntityData().set(MOOD,ThreatPolicy.fromOrdinal(
+                tag.getInt("ObserverMood")).ordinal());
+        moodTicks=Math.max(0,Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,
+                tag.getInt("ObserverMoodTicks")));
+        // Use a full cooldown when loaded from disk; never surprise-hit a
+        // player immediately after a world reload.
+        ticksSinceStrike=0;
+        strikeWindupTicks=0;
         ambientEncounter=tag.getBoolean("NightwatchAmbient");
         ambientLifetimeTicks=Math.max(0,Math.min(AUTO_LIFETIME_TICKS,
                 tag.getInt("NightwatchLifetime")));

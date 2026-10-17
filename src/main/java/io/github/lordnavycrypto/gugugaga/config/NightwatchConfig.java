@@ -17,6 +17,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.IntValue DIRECTOR_INTENSITY;
     public static final ModConfigSpec.BooleanValue DIALOGUE_ENABLED;
     public static final ModConfigSpec.BooleanValue DIALOGUE_LOCAL_AI_ENABLED;
+    public static final ModConfigSpec.BooleanValue HOSTILITY_ENABLED;
+    public static final ModConfigSpec.BooleanValue CORRUPTION_VISUALS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -67,6 +69,16 @@ public final class NightwatchConfig {
                 + "Must also enable local_ollama.enabled and select a local model. "
                 + "Only an explicitly entered question is sent to local server AI.")
                 .define("local_ollama_dialogue",false);
+        BUILDER.pop();
+        BUILDER.push("dual_nature");
+        HOSTILITY_ENABLED = BUILDER.comment(
+                "Allow anger/corruption to chase and give small, telegraphed "
+                + "Minecraft combat damage. OFF by default. In either state the creature "
+                + "cannot break blocks, chase quiet-mode players, or teleport.")
+                .define("hostility_enabled",false);
+        CORRUPTION_VISUALS_ENABLED = BUILDER.comment(
+                "Subtle non-flashing asymmetry in an angry/corrupted observer's animation.")
+                .define("visuals_enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

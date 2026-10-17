@@ -104,6 +104,32 @@ public final class GuguDialoguePolicy {
         };
     }
 
+    /**
+     * Fixed canonical story facts. Local AI never overrides the identity
+     * of the antagonist: it can improvise harmless small-talk only.
+     */
+    public static String storyReply(String question,FactionPolicy.Side side,int clues) {
+        String q=cleanInput(question).toLowerCase(Locale.ROOT);
+        if(!contains(q,"redactor","villain","evil","corrupt","反派",
+                "邪恶","污染","校对者","操控","幕后","真正的敌人"))
+            return "";
+        boolean chinese=hasChinese(q);
+        if(chinese) {
+            if(clues<3) return "我不确定应该告诉你多少。先去观察，再查看你的目击档案。";
+            return switch(side) {
+                case GUARDIAN -> "我并没有修改你的档案。真正擦除线索的是遗忘校对者。";
+                case REDACTOR -> "它说我是怪物。可你为什么还能读到那份被删改的档案？";
+                case UNDECIDED -> "你第一次听到的声音，不一定来自你第一次看到的企鹅。";
+            };
+        }
+        if(clues<3)return "Ask the witness journal first. Not all of it was written by me.";
+        return switch(side) {
+            case GUARDIAN -> "I did not erase the evidence. The Redactor did.";
+            case REDACTOR -> "The Redactor called me the monster. Who edited that statement?";
+            case UNDECIDED -> "The first voice you heard may not belong to the first bird you saw.";
+        };
+    }
+
     private static boolean hasChinese(String input) {
         for(int i=0;i<input.length();i++) {
             char c=input.charAt(i);
