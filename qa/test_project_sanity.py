@@ -62,6 +62,15 @@ class ProjectSanity(unittest.TestCase):
                           "setBlock(", "explode(", "hurt("):
             self.assertNotIn(forbidden,mob)
 
+    def test_live_atmosphere_controls_remain_operator_only(self):
+        commands=(SRC / "command/NightwatchCommands.java").read_text()
+        self.assertIn('Commands.literal("atmosphere")',commands)
+        self.assertIn('Commands.literal("on")',commands)
+        self.assertIn('Commands.literal("off")',commands)
+        self.assertIn('requires(src->src.hasPermission(2))',commands)
+        self.assertIn("HAUNTING_AUDIO_ENABLED.set(enabled)",commands)
+        self.assertIn("HAUNTING_PARTICLES_ENABLED.set(enabled)",commands)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()
