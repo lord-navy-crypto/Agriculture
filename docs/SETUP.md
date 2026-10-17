@@ -32,3 +32,6 @@ Use a disposable survival Overworld test world (do not overwrite an important sa
 
 ## v0.3 atmospheric testing
 For controlled testing, use `/summon gugugaga:observer ~ ~ ~` in a disposable world, set survival mode, then observe it from 8–25 blocks. Look directly at it, then look away. It should turn toward you, pause, quietly approach, and eventually retreat; its head and wing pose should differ. With a Nightwatch encounter enabled, a naturally placed observer will expire after 90 seconds; a manually summoned one persists. Use `/gugugaga quiet on` to stop it from selecting you as a target. Muting sounds or particles is possible in the server config (`encounters.haunting_audio`, `encounters.haunting_particles`). Original/Ollama-free AI remains functional.
+
+### Immediate atmosphere toggle
+`/gugugaga atmosphere status` reports the current audio/particle states. Operators can turn both OFF with `/gugugaga atmosphere off`, or back ON with `/gugugaga atmosphere on`. The vanilla Ambient sound slider remains available to players. This does not affect normal observer AI.
