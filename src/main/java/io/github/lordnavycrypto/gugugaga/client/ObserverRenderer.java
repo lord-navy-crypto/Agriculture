@@ -13,12 +13,16 @@ public final class ObserverRenderer extends MobRenderer<GugugagaEntity, Observer
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, "textures/entity/observer.png");
 
+    private static final ResourceLocation BLACKENED =
+            ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
+                    "textures/entity/observer_blackened.png");
+
     public ObserverRenderer(EntityRendererProvider.Context context) {
         super(context, new ObserverModel<>(context.bakeLayer(LAYER)), 0.5f);
     }
 
     @Override
     public ResourceLocation getTextureLocation(GugugagaEntity entity) {
-        return TEXTURE;
+        return entity.corruptionStage()>=3?BLACKENED:TEXTURE;
     }
 }
