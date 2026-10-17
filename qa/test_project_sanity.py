@@ -123,6 +123,29 @@ class ProjectSanity(unittest.TestCase):
             self.assertNotIn(bad,director)
             self.assertNotIn(bad,policy)
 
+    def test_v06_penguin_climate_and_private_dialogue(self):
+        bird=(SRC / "ai/ColdBiomePolicy.java").read_text()
+        dialogue=(SRC / "ai/GuguDialoguePolicy.java").read_text()
+        talk=(SRC / "command/GuguTalkCommands.java").read_text()
+        director=(SRC / "ai/NightwatchDirector.java").read_text()
+        settings=(SRC / "config/NightwatchConfig.java").read_text()
+        client=(SRC / "ai/ollama/OllamaClient.java").read_text()
+        self.assertIn("sightingPermille",bird)
+        self.assertIn("getBaseTemperature()",director)
+        self.assertIn("ColdBiomePolicy.allow(",director)
+        self.assertIn('Commands.literal("talk")',talk)
+        self.assertIn("getPlayerOrException()",talk)
+        self.assertIn("GuguDialoguePolicy.reply(",talk)
+        self.assertIn("COOLDOWN_TICKS",talk)
+        self.assertIn("OllamaEndpointPolicy.DEFAULT_ENDPOINT",client)
+        self.assertIn("DIALOGUE_LOCAL_AI_ENABLED",settings)
+        self.assertIn("DIALOGUE_LOCAL_AI_ENABLED.get()",talk)
+        self.assertIn("DIALOGUE_ENABLED.get()",talk)
+        self.assertIn("safeAnswer",dialogue)
+        for forbidden in ("ChatEvent", "setBlock(", "forceChunk(", "getChunk("):
+            self.assertNotIn(forbidden,talk)
+        self.assertNotIn("getPlayerList().broadcast",talk)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()

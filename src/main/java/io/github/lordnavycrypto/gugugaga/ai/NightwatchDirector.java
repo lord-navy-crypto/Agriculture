@@ -110,6 +110,16 @@ public final class NightwatchDirector {
                     ? HauntDirectorPolicy.choose(seed,state.ticks,attempt,tension,
                         NightwatchConfig.DIRECTOR_INTENSITY.get(),previous)
                     : HauntDirectorPolicy.Event.SIGHTING;
+            // Penguin-inspired ecology: snow/frozen biomes make sightings
+            // far more likely than warm or desert biomes. Sample ONLY the
+            // player's already-loaded biome; never generate new chunks.
+            // The roll changes whether this attempt has an entity, not how
+            // often the encounter scheduler wakes or any monster quotas.
+            if(chosen==HauntDirectorPolicy.Event.SIGHTING
+                    && !ColdBiomePolicy.allow(
+                        level.getBiome(player.blockPosition()).value()
+                                .getBaseTemperature(),seed,state.ticks))
+                chosen=HauntDirectorPolicy.Event.SILENCE;
             HauntDirectorPolicy.Event delivered=perform(level,player,
                     state.ticks,seed,chosen,global);
             state.pastAttempts.put(id,Math.min(1_000_000,attempt+1));

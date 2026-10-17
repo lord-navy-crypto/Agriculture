@@ -59,6 +59,20 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntDirectorPolicy.java \
             qa/java/HauntDirectorPolicySmoke.java
           java -cp build/haunt-director-smoke HauntDirectorPolicySmoke
+      - name: Verify v0.6 cold-biome relative sighting frequency (120k trials)
+        run: |
+          mkdir -p build/gugu-cold-smoke
+          javac -d build/gugu-cold-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ColdBiomePolicy.java \
+            qa/java/ColdBiomePolicySmoke.java
+          java -cp build/gugu-cold-smoke ColdBiomePolicySmoke
+      - name: Verify v0.6 offline chat, Unicode handling and response limits
+        run: |
+          mkdir -p build/gugu-dialogue-smoke
+          javac -d build/gugu-dialogue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/GuguDialoguePolicy.java \
+            qa/java/GuguDialoguePolicySmoke.java
+          java -cp build/gugu-dialogue-smoke GuguDialoguePolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke

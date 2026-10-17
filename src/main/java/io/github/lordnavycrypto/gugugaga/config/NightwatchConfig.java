@@ -15,6 +15,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue JOURNAL_HINTS_ENABLED;
     public static final ModConfigSpec.BooleanValue VARIED_EVENTS_ENABLED;
     public static final ModConfigSpec.IntValue DIRECTOR_INTENSITY;
+    public static final ModConfigSpec.BooleanValue DIALOGUE_ENABLED;
+    public static final ModConfigSpec.BooleanValue DIALOGUE_LOCAL_AI_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -54,6 +56,17 @@ public final class NightwatchConfig {
         JOURNAL_HINTS_ENABLED = BUILDER.comment(
                 "One quiet chat hint per new clue. OFF means journal-only discovery.")
                 .define("hint_messages", true);
+        BUILDER.pop();
+        BUILDER.push("dialogue");
+        DIALOGUE_ENABLED=BUILDER.comment(
+                "Allow players to talk to the fictional penguin with /gugugaga talk. "
+                + "Uses deterministic OFFLINE replies unless local AI is explicitly opted in.")
+                .define("enabled",true);
+        DIALOGUE_LOCAL_AI_ENABLED=BUILDER.comment(
+                "Optional localhost Ollama for /gugugaga talk. OFF by default. "
+                + "Must also enable local_ollama.enabled and select a local model. "
+                + "Only an explicitly entered question is sent to local server AI.")
+                .define("local_ollama_dialogue",false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
