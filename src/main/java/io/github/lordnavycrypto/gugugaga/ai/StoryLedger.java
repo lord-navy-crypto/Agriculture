@@ -29,8 +29,9 @@ public final class StoryLedger {
         int clues=WitnessJournalPolicy.discovered(WitnessJournal.evidenceBits(player));
         player.sendSystemMessage(Component.literal(
                 "[NIGHTWATCH] "+FactionPolicy.name(side)));
-        player.sendSystemMessage(Component.literal(
-                "Gugu-Gaga is a lost watcher. The Redactor is the author of corrupted accounts."));
+        player.sendSystemMessage(Component.literal(clues>=3
+                ? "The Lost Watcher was not alone. A Redactor rewrote the accounts."
+                : "Someone may have altered the meaning of these sightings."));
         player.sendSystemMessage(Component.literal(FactionPolicy.reveal(side,clues)));
         player.sendSystemMessage(Component.literal(
                 "Choose freely: /gugugaga trust guardian|redactor|neutral"));
