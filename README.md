@@ -3,7 +3,7 @@
 An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
 
 ## Status
-**v0.4 pre-alpha / witness journal under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
+**v0.5 pre-alpha / adaptive suspense director under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
 
 ## Gameplay direction
 - The entity initially **observes** instead of attacking.
@@ -63,3 +63,20 @@ The observer now leaves **memories rather than altered terrain**. In a survival 
 ```
 
 Recording and optional gentle one-time clue notifications can be disabled server-side in `witness_journal.enabled` / `witness_journal.hint_messages`. Each player can opt out or clear their journal without operator permissions. `/gugugaga quiet on` continues to stop observers targeting that player. Automatic night encounters remain OFF by default, and Ollama remains optional. This is **v0.4 alpha, not a production release**; verify actual client, dedicated server and player NBT save behavior before treating it as stable.
+
+## v0.5 The Gugu-Gaga Haunting Director (experimental)
+The mod now has **two layers of AI**, inspired by the general design principle of dramatic horror directors: the global director decides WHEN and WHAT KIND of encounter to offer, while individual Gugu-Gaga observers handle watching, hiding, approaching and retreating. **Six** bounded outcomes are available: deliberate silence, distant chime, false footsteps, fading echo, two-particle afterimage, or an actual loaded-chunk observer sighting. The director remembers only the last type, a bounded number of tries and a tension stage for the player's current online session; it never records location history.
+
+Night encounters remain **OFF by default**, never closer together than the existing 8-minute safety floor and usually at least 10 minutes. They are still Overworld-night-only, survival-only, opt-out respecting, with at most one observer near each player and eight globally. The new non-mob events don't load chunks, modify blocks, deal damage or use HTTP. Ollama remains optional and advice-only.
+
+Operator controls after explicitly enabling encounters:
+```text
+/gugugaga encounters on
+/gugugaga director status
+/gugugaga director gentle
+/gugugaga director balanced
+/gugugaga director eerie
+/gugugaga encounters off
+```
+
+These three intensity choices adjust the **mix** of events, not event cooldown, mob caps or volume. `encounters.varied_events=false` reverts to the original observer-only encounter choice, without removing v0.4 journal. Any player can use `/gugugaga quiet on`; operators can mute all added ambience with `/gugugaga atmosphere off`. Test in a disposable game world: compiling does not establish every mechanic works in multiplayer.
