@@ -49,6 +49,20 @@ var generateModMetadata = tasks.register('generateModMetadata', ProcessResources
 }
 
 sourceSets.main.resources.srcDir generateModMetadata
+
+// Reproducible ORIGINAL character PNG assets. Never commit a borrowed skin.
+// GitHub Actions runner includes Python 3; no external Python libraries.
+var generateOriginalCharacterSprites = tasks.register('generateOriginalCharacterSprites', Exec) {
+    inputs.file('qa/generate_character_sprites.py')
+    outputs.dir(layout.buildDirectory.dir('generated/guguCharacterSprites'))
+    commandLine 'python3', 'qa/generate_character_sprites.py',
+            layout.buildDirectory.dir('generated/guguCharacterSprites').get().asFile.absolutePath
+}
+tasks.named('processResources').configure {
+    dependsOn generateOriginalCharacterSprites
+    from(layout.buildDirectory.dir('generated/guguCharacterSprites'))
+}
+
 neoForge.ideSyncTask generateModMetadata
 
 tasks.withType(JavaCompile).configureEach {
