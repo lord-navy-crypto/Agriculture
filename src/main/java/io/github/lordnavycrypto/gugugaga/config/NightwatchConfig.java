@@ -9,6 +9,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.ConfigValue<String> OLLAMA_MODEL;
     public static final ModConfigSpec.BooleanValue ENCOUNTERS_ENABLED;
     public static final ModConfigSpec.IntValue ENCOUNTER_COOLDOWN_TICKS;
+    public static final ModConfigSpec.BooleanValue HAUNTING_AUDIO_ENABLED;
+    public static final ModConfigSpec.BooleanValue HAUNTING_PARTICLES_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -26,6 +28,12 @@ public final class NightwatchConfig {
         ENCOUNTER_COOLDOWN_TICKS = BUILDER.comment(
                 "Minimum cooldown per player, ticks. Never below 8 minutes; default 10 minutes.")
                 .defineInRange("cooldown_ticks", 12000, 9600, 72000);
+        HAUNTING_AUDIO_ENABLED = BUILDER.comment(
+                "Use subtle, volume-capped vanilla directional cues. OFF disables all custom observer cue sounds.")
+                .define("haunting_audio", true);
+        HAUNTING_PARTICLES_ENABLED = BUILDER.comment(
+                "Allow a few subtle soul particles during retreat; OFF disables horror particles.")
+                .define("haunting_particles", true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
