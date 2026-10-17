@@ -41,6 +41,9 @@ public class GugugagaEntity extends PathfinderMob {
 
     public GugugagaEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
+        // Manual /summon encounters are intentionally persistent. Automatic
+        // sightings still expire after their separate 90-second lifetime.
+        setPersistenceRequired();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
