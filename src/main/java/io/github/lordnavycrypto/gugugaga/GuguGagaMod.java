@@ -2,6 +2,8 @@ package io.github.lordnavycrypto.gugugaga;
 
 import io.github.lordnavycrypto.gugugaga.entity.GugugagaEntity;
 import io.github.lordnavycrypto.gugugaga.command.OllamaCommands;
+import io.github.lordnavycrypto.gugugaga.command.NightwatchCommands;
+import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +35,8 @@ public final class GuguGagaMod {
         modBus.addListener(GuguGagaMod::onAttributes);
         container.registerConfig(ModConfig.Type.SERVER, NightwatchConfig.SPEC);
         NeoForge.EVENT_BUS.addListener(OllamaCommands::register);
+        NeoForge.EVENT_BUS.addListener(NightwatchCommands::register);
+        NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
     }
 
     private static void onAttributes(EntityAttributeCreationEvent event) {
