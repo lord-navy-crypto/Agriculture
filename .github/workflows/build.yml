@@ -1,0 +1,31 @@
+name: NeoForge 1.21.1 build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Source and asset integrity checks
+        run: python3 -m unittest discover -s qa -p 'test_*.py' -v
+      - name: Compile and package NeoForge mod
+        run: gradle --no-daemon --stacktrace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-nightwatch-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
