@@ -97,6 +97,32 @@ class ProjectSanity(unittest.TestCase):
         self.assertNotIn("player.position()",journal)
         self.assertNotIn("net.minecraft.client",journal)
 
+    def test_v05_director_is_loaded_only_and_nonintrusive(self):
+        director=(SRC / "ai/NightwatchDirector.java").read_text()
+        policy=(SRC / "ai/HauntDirectorPolicy.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        commands=(SRC / "command/NightwatchCommands.java").read_text()
+        self.assertIn("class HauntDirectorPolicy",policy)
+        self.assertIn("FALSE_FOOTSTEPS",policy)
+        self.assertIn("AFTERIMAGE",policy)
+        self.assertIn("SILENCE",policy)
+        self.assertIn("SIGHTING",policy)
+        self.assertIn("Math.floorMod",policy)
+        self.assertIn("HauntDirectorPolicy.choose",director)
+        self.assertIn("HauntDirectorPolicy.nextTension",director)
+        self.assertIn("HauntDirectorPolicy.volume(chosen)",director)
+        self.assertIn("lastAttempt.put(id,state.ticks)",director)
+        self.assertIn("getChunkSource().hasChunk(cx,cz)",director)
+        self.assertIn("player.getPersistentData()", (SRC / "ai/WitnessJournal.java").read_text())
+        self.assertIn('define("varied_events", true)',config)
+        self.assertIn('defineInRange("director_intensity", 1, 0, 2)',config)
+        self.assertIn('Commands.literal("director")',commands)
+        self.assertIn('requires(src->src.hasPermission(2))',commands)
+        for bad in ("getChunk(", "forceChunk(", "setBlock(", "explode(",
+                    "teleportTo(", "HttpClient", "Runtime.getRuntime()"):
+            self.assertNotIn(bad,director)
+            self.assertNotIn(bad,policy)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()
