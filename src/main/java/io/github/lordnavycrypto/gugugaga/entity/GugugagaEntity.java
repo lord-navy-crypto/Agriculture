@@ -151,6 +151,26 @@ public class GugugagaEntity extends PathfinderMob {
             return;
         }
         if(tickCount%10!=0 || !(level() instanceof ServerLevel world))return;
+        // The Lost Watcher notices the Redactor before ordinary player
+        // curiosity. It does NOT know the Yellow Smiler's true purpose and
+        // will not detect him through walls or across unloaded dimensions.
+        if(tickCount%20==0 && mood()!=Mood.CORRUPTED) {
+            var redactors=world.getEntitiesOfClass(RedactorEntity.class,
+                    getBoundingBox().inflate(22.0),
+                    net.minecraft.world.entity.Entity::isAlive);
+            RedactorEntity nearest=redactors.stream().min(
+                    java.util.Comparator.comparingDouble(this::distanceToSqr))
+                    .orElse(null);
+            if(nearest!=null
+                    && io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy.gugu(
+                            distanceToSqr(nearest))
+                    ==io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy.GuguReaction.NOTICE_REDACTOR) {
+                getNavigation().stop();
+                getLookControl().setLookAt(nearest,9f,9f);
+                if(phase()!=Phase.OBSERVE)changePhase(Phase.OBSERVE);
+                return;
+            }
+        }
         ServerPlayer player=eligibleNearestPlayer(world);
         if(player==null) {
             if(phase()!=Phase.DORMANT)changePhase(Phase.DORMANT);

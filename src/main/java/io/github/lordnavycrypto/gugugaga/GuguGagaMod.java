@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga;
 
 import io.github.lordnavycrypto.gugugaga.entity.GugugagaEntity;
+import io.github.lordnavycrypto.gugugaga.entity.RedactorEntity;
+import io.github.lordnavycrypto.gugugaga.entity.YellowSmilerEntity;
 import io.github.lordnavycrypto.gugugaga.command.OllamaCommands;
 import io.github.lordnavycrypto.gugugaga.command.NightwatchCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguTalkCommands;
@@ -32,6 +34,18 @@ public final class GuguGagaMod {
                     .sized(0.95f, 1.50f).clientTrackingRange(8)
                     .updateInterval(3).build("gugugaga:observer"));
 
+    public static final DeferredHolder<EntityType<?>,EntityType<RedactorEntity>> REDACTOR =
+            ENTITIES.register("redactor", () -> EntityType.Builder
+                    .of(RedactorEntity::new,MobCategory.CREATURE)
+                    .sized(0.9f,2.5f).clientTrackingRange(8)
+                    .updateInterval(3).build("gugugaga:redactor"));
+
+    public static final DeferredHolder<EntityType<?>,EntityType<YellowSmilerEntity>> YELLOW_SMILER =
+            ENTITIES.register("yellow_smiler", () -> EntityType.Builder
+                    .of(YellowSmilerEntity::new,MobCategory.CREATURE)
+                    .sized(0.8f,1.95f).clientTrackingRange(8)
+                    .updateInterval(3).build("gugugaga:yellow_smiler"));
+
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
         ENTITIES.register(modBus);
         modBus.addListener(GuguGagaMod::onAttributes);
@@ -45,5 +59,7 @@ public final class GuguGagaMod {
 
     private static void onAttributes(EntityAttributeCreationEvent event) {
         event.put(OBSERVER.get(), GugugagaEntity.createAttributes().build());
+        event.put(REDACTOR.get(),RedactorEntity.createAttributes().build());
+        event.put(YELLOW_SMILER.get(),YellowSmilerEntity.createAttributes().build());
     }
 }

@@ -180,6 +180,43 @@ class ProjectSanity(unittest.TestCase):
             self.assertNotIn(bad,bird)
             self.assertNotIn(bad,commands)
 
+    def test_v08_three_entity_registration_and_relationships(self):
+        main=(SRC / "GuguGagaMod.java").read_text()
+        client=(SRC / "client/ClientEvents.java").read_text()
+        redactor=(SRC / "entity/RedactorEntity.java").read_text()
+        yellow=(SRC / "entity/YellowSmilerEntity.java").read_text()
+        guardian=(SRC / "entity/GugugagaEntity.java").read_text()
+        policy=(SRC / "ai/ThreeEntityReactionPolicy.java").read_text()
+        build=(ROOT / "build.gradle").read_text()
+        for entity in ('"observer"','"redactor"','"yellow_smiler"'):
+            self.assertIn("ENTITIES.register("+entity,main)
+        self.assertIn("RedactorRenderer::new",client)
+        self.assertIn("YellowSmilerRenderer::new",client)
+        self.assertIn("RedactorModel::createBodyLayer",client)
+        self.assertIn("YellowSmilerModel::createBodyLayer",client)
+        self.assertIn("REVEALED",redactor)
+        self.assertIn("RedactorAction.FLEE_SMILER",policy)
+        self.assertIn("RedactorAction.REVEAL_AND_APPROACH",policy)
+        self.assertIn("ThreeEntityReactionPolicy.mayCorrupt",redactor)
+        self.assertIn("bird.setTemperament(Mood.CORRUPTED)",redactor)
+        self.assertIn("ThreeEntityReactionPolicy.smiler(",yellow)
+        self.assertIn("getLookControl().setLookAt(nearest",yellow)
+        self.assertIn("ThreeEntityReactionPolicy.gugu(",guardian)
+        self.assertIn("generateOriginalCharacterSprites",build)
+        for sprite in ("lapis_mask.png","redactor_true.png","yellow_smiler.png"):
+            self.assertIn(sprite,(ROOT / "qa/generate_character_sprites.py").read_text())
+        for cls in ("RedactorEntity.java","YellowSmilerEntity.java"):
+            body=(SRC / "entity" / cls).read_text()
+            self.assertNotIn("getChunk(",body)
+            self.assertNotIn("forceChunk(",body)
+            self.assertNotIn("setBlock(",body)
+            self.assertNotIn("teleportTo(",body)
+            self.assertNotIn("net.minecraft.client",body)
+        archive=(ROOT / "docs/GUGUGAGA_CANON_AND_LONG_TERM_ARCHIVE.md").read_text()
+        for important in ("Beyond the Creator","True Lapis","Yellow Smiler",
+                          "Lapis","Redactor","five endings"):
+            self.assertIn(important,archive)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()
