@@ -26,3 +26,6 @@ For a wrapper on your machine, run `gradle wrapper --gradle-version 9.2.1` and c
 6. Repeat on a dedicated server before enabling ambient encounters.
 
 No CurseForge package is considered release-ready until the `build` workflow passes and provenance is reviewed.
+
+## v0.2 operator/player trial commands
+Use a disposable survival Overworld test world (do not overwrite an important save). Auto encounters are OFF by default. The operator can try `/gugugaga encounters on`, wait through the cooldown at night, or use the original manual command `/summon gugugaga:observer ~ ~ ~`. Any player can opt out with `/gugugaga quiet on`; this quiet flag lasts for their current session. An operator can turn the system back off with `/gugugaga encounters off`. The mod works with no Ollama installed. Build green is not the same as actual client/dedicated server gameplay acceptance.
