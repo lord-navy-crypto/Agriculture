@@ -46,3 +46,12 @@ Influences: Minecraft environmental horror, stealth creature AI, restrained unca
   neither the director nor the observer makes HTTP calls per server tick.
 - Until client and dedicated-server acceptance pass, this is an
   **experimental prototype**, not a production release.
+
+## v0.3 sensory pacing and stealth (new experimental implementation)
+- Head, eyes and beak pivot as one while watching (original placeholder low-poly art), with subtle phase-based wing motions.
+- Three bounded location-based cues: a distant chime while being watched, a faint step while following unseen, and a soft pulse after retreat. Every cue is volume-capped to <=0.26 and rate-limited at 8–15 seconds.
+- Existing observers ignore survival players in quiet mode; creative and spectator are still excluded. No world/network content is transmitted.
+- Path updates once per 30 ticks rather than every 10 ticks, while the 10-tick state machine remains deterministic.
+- Auto-generated sightings last 90 active seconds to avoid filling explored terrain with immortal entities; manually spawned observers are unaffected. State/lifetime are saved to NBT.
+- Atmosphere uses existing vanilla game sound registry, no third-party unlicensed audio. A complete original recorded soundtrack remains a separate future milestone.
+- Server config sound and particles can be disabled independently; no mandatory flashing or sudden volume spikes.
