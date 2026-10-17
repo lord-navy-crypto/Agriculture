@@ -160,7 +160,7 @@ public class GugugagaEntity extends PathfinderMob {
         SoundEvent sound=switch(cue) {
             case DISTANT_CHIME -> SoundEvents.AMETHYST_BLOCK_CHIME;
             case SOFT_STEP -> SoundEvents.AMETHYST_BLOCK_STEP;
-            case FAINT_PULSE -> SoundEvents.SCULK_SENSOR_CLICKING;
+            case FAINT_PULSE -> SoundEvents.AMETHYST_BLOCK_CHIME;
             case NONE -> SoundEvents.AMETHYST_BLOCK_CHIME;
         };
         float pitch=switch(cue) {
