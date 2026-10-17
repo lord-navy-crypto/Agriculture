@@ -84,12 +84,45 @@ def yellow():
     dot(p,12,16,(45,38,19));dot(p,18,16,(45,38,19))
     return p
 
+def blackened_penguin():
+    """Original dark penguin variant; keeps the UV layout of ObserverModel."""
+    p=new((18,24,29))
+    for y in range(DIM):
+        for x in range(DIM):
+            jitter=(x*13+y*23+(x*y)%7)%9
+            p[y][x]=[16+jitter,20+jitter,28+jitter]
+    # Keep the belly recognizable instead of transforming the bird to a
+    # different character. Cold, muted off-white accents.
+    rect(p,40,0,57,8,(141,157,161))
+    rect(p,40,9,54,22,(73,79,87))
+    rect(p,0,33,35,42,(17,22,29))
+    rect(p,40,0,47,4,(220,232,237))
+    rect(p,40,16,52,24,(65,94,111))
+    return p
+
+def exposed_smiler():
+    """Same mask UV layout but faded sickly yellow with unnatural ink eyes."""
+    p=yellow()
+    for y in range(DIM):
+        for x in range(DIM):
+            red,green,blue=p[y][x]
+            p[y][x]=[max(0,red-62),max(0,green-71),max(0,blue-25)]
+    rect(p,10,10,20,20,(174,154,57))
+    rect(p,12,12,14,17,(19,22,24))
+    rect(p,17,12,19,17,(19,22,24))
+    line(p,12,18,18,18,(22,22,23))
+    dot(p,13,17,(22,22,23))
+    dot(p,17,17,(22,22,23))
+    return p
+
 def main():
     if len(sys.argv)!=2:raise SystemExit("Usage: generate_character_sprites.py <resource root>")
     target=pathlib.Path(sys.argv[1])/"assets/gugugaga/textures/entity"
     for name,fn in (("lapis_mask.png",lapis),
                     ("redactor_true.png",revealed),
-                    ("yellow_smiler.png",yellow)):
+                    ("yellow_smiler.png",yellow),
+                    ("yellow_smiler_true.png",exposed_smiler),
+                    ("observer_blackened.png",blackened_penguin)):
         file=png(target/name,fn())
         assert file.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
         print("ORIGINAL_SPRITE",file,len(file.read_bytes()))
