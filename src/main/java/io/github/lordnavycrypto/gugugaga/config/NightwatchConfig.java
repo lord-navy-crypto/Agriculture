@@ -13,6 +13,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue HAUNTING_PARTICLES_ENABLED;
     public static final ModConfigSpec.BooleanValue JOURNAL_ENABLED;
     public static final ModConfigSpec.BooleanValue JOURNAL_HINTS_ENABLED;
+    public static final ModConfigSpec.BooleanValue VARIED_EVENTS_ENABLED;
+    public static final ModConfigSpec.IntValue DIRECTOR_INTENSITY;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -36,6 +38,14 @@ public final class NightwatchConfig {
         HAUNTING_PARTICLES_ENABLED = BUILDER.comment(
                 "Allow a few subtle soul particles during retreat; OFF disables horror particles.")
                 .define("haunting_particles", true);
+        VARIED_EVENTS_ENABLED = BUILDER.comment(
+                "When encounters are opt-in enabled, vary them with calm intervals, distant clues and rare sightings. " +
+                "OFF makes director use the original sighting-only algorithm.")
+                .define("varied_events", true);
+        DIRECTOR_INTENSITY = BUILDER.comment(
+                "How often a generated encounter can be a visible observer: 0 gentle, 1 balanced, 2 eerie. " +
+                "Does NOT reduce cooldown or increase sound volume, damage or monster count.")
+                .defineInRange("director_intensity", 1, 0, 2);
         BUILDER.pop();
         BUILDER.push("witness_journal");
         JOURNAL_ENABLED = BUILDER.comment(
