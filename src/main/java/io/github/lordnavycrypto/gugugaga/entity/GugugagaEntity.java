@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
+import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
@@ -121,13 +122,20 @@ public class GugugagaEntity extends PathfinderMob {
 
         boolean watched=player.hasLineOfSight(this)&&isLookingAt(player);
         double distance=distanceToSqr(player);
-        Phase next=ObserverBrain.next(phase(),watched,distance,phaseTicks);
-        if(next!=phase()) {
+        Phase prior=phase();
+        Phase next=ObserverBrain.next(prior,watched,distance,phaseTicks);
+        if(next!=prior) {
             changePhase(next);
             if(next==Phase.RETREAT && NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get())
                 world.sendParticles(ParticleTypes.SOUL,getX(),getY()+1.0,getZ(),
                         2,0.15,0.18,0.15,0.01);
         } else phaseTicks+=10;
+
+        // A three-bit witness journal grows only when a player experiences
+        // a new aspect of the observer. It never stores player coordinates,
+        // scans chunks, or changes the underlying AI behavior.
+        WitnessJournal.record(player,phase(),watched,distance,
+                prior!=Phase.RETREAT && phase()==Phase.RETREAT);
 
         switch(phase()) {
             case DORMANT -> getNavigation().stop();

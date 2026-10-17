@@ -35,3 +35,10 @@ For controlled testing, use `/summon gugugaga:observer ~ ~ ~` in a disposable wo
 
 ### Immediate atmosphere toggle
 `/gugugaga atmosphere status` reports the current audio/particle states. Operators can turn both OFF with `/gugugaga atmosphere off`, or back ON with `/gugugaga atmosphere on`. The vanilla Ambient sound slider remains available to players. This does not affect normal observer AI.
+
+## v0.4 Witness Journal in-game test
+1. In a NEW survival world, summon exactly one observer using `/summon gugugaga:observer ~ ~ ~`. Stand 8–24 blocks away. Look at its face for a few seconds, look away as it approaches, then stay close enough to witness it retreat.
+2. Type `/gugugaga journal`. Up to three unique notes should unlock; repeats must not spam chat.
+3. Test `/gugugaga journal off` and re-encounter: no new evidence may be stored. Turn back on with `journal on`. Test `journal clear` and verify all three notes are erased but opt-out preference is retained.
+4. Rejoin the world and restart Minecraft to check player NBT persistence, then repeat on a dedicated multiplayer server. These interactive persistence checks are **not** replaced by compiling the mod.
+5. The previous `quiet on`, `atmosphere off`, default-OFF night director and optional Ollama behavior must remain unchanged.

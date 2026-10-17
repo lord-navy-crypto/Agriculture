@@ -55,3 +55,10 @@ Influences: Minecraft environmental horror, stealth creature AI, restrained unca
 - Auto-generated sightings last 90 active seconds to avoid filling explored terrain with immortal entities; manually spawned observers are unaffected. State/lifetime are saved to NBT.
 - Atmosphere uses existing vanilla game sound registry, no third-party unlicensed audio. A complete original recorded soundtrack remains a separate future milestone.
 - Server config sound and particles can be disabled independently; no mandatory flashing or sudden volume spikes.
+
+## v0.4 The Witness Journal — investigation chapter
+- As you meet its gaze, hear its approach without seeing it, and finally watch it retreat, three subtle story fragments become available through an optional in-game personal journal.
+- The player journal stores a bounded evidence bitmask and optional opt-out in their own NeoForge persistent NBT. No world terrain, structure, mobs, personal identifying information or inventory is changed or tracked.
+- Evidence is awarded at most once each and an optional single chat hint appears on first discovery only. `/gugugaga journal off` stops new recording; `clear` erases old clues and preserves the opt-out preference.
+- A final story line unlocks only after all three bits are collected; exploration remains voluntary.
+- Tests cover pure deterministic decisions, negative/NaN distance, bounded masks and no duplicates. Actual save/relog and multiplayer observation still require in-game acceptance.

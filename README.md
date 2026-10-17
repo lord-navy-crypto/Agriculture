@@ -3,7 +3,7 @@
 An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
 
 ## Status
-**v0.3 pre-alpha / haunted observer prototype under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
+**v0.4 pre-alpha / witness journal under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
 
 ## Gameplay direction
 - The entity initially **observes** instead of attacking.
@@ -51,3 +51,15 @@ Operators may enable automatic, nonviolent nighttime encounters. Only survival p
 /gugugaga atmosphere off
 ```
 These controls mute/unmute custom sound and particles without restarting. Players can always adjust the existing Minecraft Ambient sound slider. `/gugugaga quiet on` stops targeting that player, including observers that already exist.
+
+## v0.4 The Witness Journal (experimental)
+The observer now leaves **memories rather than altered terrain**. In a survival test world, earn three independent clues by meeting its gaze, noticing its quiet approach, and witnessing its withdrawal. Your own private in-game journal keeps a tiny 3-bit progress record and unlocks a final line when all evidence is found. No player locations, inventories, chat or real-world data are recorded.
+
+```text
+/gugugaga journal
+/gugugaga journal on
+/gugugaga journal off
+/gugugaga journal clear
+```
+
+Recording and optional gentle one-time clue notifications can be disabled server-side in `witness_journal.enabled` / `witness_journal.hint_messages`. Each player can opt out or clear their journal without operator permissions. `/gugugaga quiet on` continues to stop observers targeting that player. Automatic night encounters remain OFF by default, and Ollama remains optional. This is **v0.4 alpha, not a production release**; verify actual client, dedicated server and player NBT save behavior before treating it as stable.

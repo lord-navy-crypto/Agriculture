@@ -1,3 +1,16 @@
 {
-  "entity.gugugaga.observer": "Gugu Gaga Observer"
+  "entity.gugugaga.observer": "Gugu Gaga Observer",
+  "message.gugugaga.journal.header": "--- NIGHTWATCH WITNESS JOURNAL (%s/3) ---",
+  "message.gugugaga.journal.gaze": "I · THE GAZE — It faced you before you knew where to look.",
+  "message.gugugaga.journal.footsteps": "II · THE FOOTSTEPS — The soft steps stopped when you turned.",
+  "message.gugugaga.journal.retreat": "III · THE RETREAT — It withdrew. There were no footprints.",
+  "message.gugugaga.journal.hidden": "? · Entry not yet witnessed.",
+  "message.gugugaga.journal.ending": "Final note: The footsteps began before you turned around.",
+  "message.gugugaga.journal.status": "Recording: %s · /gugugaga journal on|off|clear",
+  "message.gugugaga.journal.enabled": "ON",
+  "message.gugugaga.journal.disabled": "OFF",
+  "message.gugugaga.journal.hint": "[Nightwatch] You noticed something. Try /gugugaga journal.",
+  "message.gugugaga.journal.on": "Witness journal recording resumed.",
+  "message.gugugaga.journal.off": "Witness journal paused. Your existing clues remain private.",
+  "message.gugugaga.journal.clear": "Your witness journal was cleared. Recording preference kept."
 }

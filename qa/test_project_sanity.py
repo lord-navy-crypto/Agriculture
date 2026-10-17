@@ -71,6 +71,32 @@ class ProjectSanity(unittest.TestCase):
         self.assertIn("HAUNTING_AUDIO_ENABLED.set(enabled)",commands)
         self.assertIn("HAUNTING_PARTICLES_ENABLED.set(enabled)",commands)
 
+    def test_v04_private_witness_journal_is_bounded_and_opt_out_friendly(self):
+        mob=(SRC / "entity/GugugagaEntity.java").read_text()
+        journal=(SRC / "ai/WitnessJournal.java").read_text()
+        policy=(SRC / "ai/WitnessJournalPolicy.java").read_text()
+        commands=(SRC / "command/NightwatchCommands.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        self.assertIn("WitnessJournal.record(player,phase(),watched,distance",mob)
+        self.assertIn('Commands.literal("journal")',commands)
+        for op in ("on","off","clear"):
+            self.assertIn(f'Commands.literal("{op}")',commands)
+        self.assertIn("getPlayerOrException()",commands)
+        self.assertIn('define("hint_messages", true)',config)
+        self.assertIn('define("enabled", true)',config)
+        self.assertIn("player.getPersistentData()",journal)
+        self.assertIn("JournalDisabled",journal)
+        self.assertIn("EvidenceBits",journal)
+        self.assertIn("getInt(EVIDENCE)",journal)
+        self.assertIn("state.remove(EVIDENCE)",journal)
+        self.assertIn("ALL_BITS=7",policy)
+        self.assertIn("Double.isNaN",policy)
+        self.assertNotIn("HttpClient",journal)
+        self.assertNotIn("getChunk(",journal)
+        self.assertNotIn("getBlockState(",journal)
+        self.assertNotIn("player.position()",journal)
+        self.assertNotIn("net.minecraft.client",journal)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()
@@ -92,6 +118,10 @@ class ProjectSanity(unittest.TestCase):
         for locale in ("en_us", "zh_cn"):
             data = json.loads((ROOT / f"src/main/resources/assets/gugugaga/lang/{locale}.json").read_text())
             self.assertIn("entity.gugugaga.observer", data)
+            for key in ("header","gaze","footsteps","retreat","hidden",
+                        "ending","status","enabled","disabled","hint",
+                        "on","off","clear"):
+                self.assertIn("message.gugugaga.journal."+key,data)
         self.assertTrue((ROOT / "docs/ASSET_PROVENANCE.md").exists())
 
 if __name__ == "__main__":
