@@ -51,10 +51,12 @@ public final class WitnessJournal {
 
     public static void record(ServerPlayer player,ObserverBrain.Phase phase,
             boolean watched,double distanceSquared,boolean justRetreated) {
-        if(!NightwatchConfig.JOURNAL_ENABLED.get() || !enabled(player))return;
+        if(!NightwatchConfig.JOURNAL_ENABLED.get())return;
+        // Most AI evaluations cannot unlock a clue. Avoid NBT lookup until
+        // the pure predicate confirms a potential, eligible story event.
         Evidence clue=WitnessJournalPolicy.observe(
                 phase,watched,distanceSquared,justRetreated);
-        if(clue==Evidence.NONE)return;
+        if(clue==Evidence.NONE || !enabled(player))return;
         CompoundTag state=data(player);
         int before=state.getInt(EVIDENCE)&WitnessJournalPolicy.ALL_BITS;
         if(!WitnessJournalPolicy.isNew(before,clue))return;
@@ -81,6 +83,9 @@ public final class WitnessJournal {
             else
                 player.sendSystemMessage(Component.literal("* ??? (not yet witnessed)"));
         }
+        if(bits==WitnessJournalPolicy.ALL_BITS)
+            player.sendSystemMessage(Component.literal(
+                    "A final note: the footsteps began before you turned around."));
         player.sendSystemMessage(Component.literal(
                 "Journal recording: "+(enabled(player)?"ON":"OFF")+
                 ". Commands: /gugugaga journal on|off|clear"));
