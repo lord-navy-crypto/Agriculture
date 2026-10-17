@@ -11,6 +11,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.IntValue ENCOUNTER_COOLDOWN_TICKS;
     public static final ModConfigSpec.BooleanValue HAUNTING_AUDIO_ENABLED;
     public static final ModConfigSpec.BooleanValue HAUNTING_PARTICLES_ENABLED;
+    public static final ModConfigSpec.BooleanValue JOURNAL_ENABLED;
+    public static final ModConfigSpec.BooleanValue JOURNAL_HINTS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -34,6 +36,14 @@ public final class NightwatchConfig {
         HAUNTING_PARTICLES_ENABLED = BUILDER.comment(
                 "Allow a few subtle soul particles during retreat; OFF disables horror particles.")
                 .define("haunting_particles", true);
+        BUILDER.pop();
+        BUILDER.push("witness_journal");
+        JOURNAL_ENABLED = BUILDER.comment(
+                "Keep a three-clue in-game witness notebook in the player's own save data.")
+                .define("enabled", true);
+        JOURNAL_HINTS_ENABLED = BUILDER.comment(
+                "One quiet chat hint per new clue. OFF means journal-only discovery.")
+                .define("hint_messages", true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
