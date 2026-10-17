@@ -24,7 +24,7 @@ class ProjectSanity(unittest.TestCase):
         self.assertIn("Dist.CLIENT", client)
         self.assertIn("registerEntityRenderer", client)
 
-    def test_observer_is_nonviolent_and_bounded(self):
+    def test_observer_is_player_opt_in_and_bounded(self):
         brain = (SRC / "ai/ObserverBrain.java").read_text()
         mob = (SRC / "entity/GugugagaEntity.java").read_text()
         for key in ("DORMANT", "OBSERVE", "APPROACH", "RETREAT"):
@@ -36,7 +36,10 @@ class ProjectSanity(unittest.TestCase):
         self.assertIn("markAmbientEncounter", mob)
         self.assertIn("tickCount%30==0", mob)
         self.assertIn("getNavigation().stop()", mob)
-        self.assertNotIn("hurt(", mob)
+        self.assertIn("NightwatchConfig.HOSTILITY_ENABLED.get()",mob)
+        self.assertIn("ThreatPolicy.canStrike(",mob)
+        self.assertIn("ATTACK_TELEGRAPH_TICKS", (SRC / "ai/ThreatPolicy.java").read_text())
+        self.assertIn("player.hurt(world.damageSources().mobAttack(this)",mob)
         self.assertNotIn("teleportTo(", mob)
         self.assertNotIn("getChunk(", mob)
 
@@ -59,7 +62,7 @@ class ProjectSanity(unittest.TestCase):
         self.assertIn('head.addOrReplaceChild("left_eye"',model)
         self.assertIn("NightwatchDirector.isQuiet",mob)
         for forbidden in ("forceChunk(", "getChunk(", "teleportTo(",
-                          "setBlock(", "explode(", "hurt("):
+                          "setBlock(", "explode("):
             self.assertNotIn(forbidden,mob)
 
     def test_live_atmosphere_controls_remain_operator_only(self):
@@ -145,6 +148,37 @@ class ProjectSanity(unittest.TestCase):
         for forbidden in ("ChatEvent", "setBlock(", "forceChunk(", "getChunk("):
             self.assertNotIn(forbidden,talk)
         self.assertNotIn("getPlayerList().broadcast",talk)
+
+    def test_v07_villain_and_aggression_are_opt_in_and_reversible(self):
+        threat=(SRC / "ai/ThreatPolicy.java").read_text()
+        bird=(SRC / "entity/GugugagaEntity.java").read_text()
+        story=(SRC / "ai/StoryLedger.java").read_text()
+        commands=(SRC / "command/GuguStoryCommands.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        model=(SRC / "client/ObserverModel.java").read_text()
+        dialogue=(SRC / "ai/GuguDialoguePolicy.java").read_text()
+        self.assertIn("enum Mood { CALM, ANGRY, CORRUPTED }",threat)
+        self.assertIn("ATTACK_TELEGRAPH_TICKS = 30",threat)
+        self.assertIn("ATTACK_COOLDOWN_TICKS = 75",threat)
+        self.assertIn("!optedOut",threat)
+        self.assertIn("hasSight",threat)
+        self.assertIn("ThreatPolicy.afterTime",bird)
+        self.assertIn("getEntityData().set(MOOD",bird)
+        self.assertIn("NightwatchDirector.isQuiet",bird)
+        self.assertIn('define("hostility_enabled",false)',config)
+        for literal in ("temper","angry","corrupted","calm","reassure",
+                        "hostility","trust","redactor","guardian"):
+            self.assertIn(f'Commands.literal("{literal}")',commands)
+        self.assertIn('requires(src->src.hasPermission(2))',commands)
+        self.assertIn("getPersistentData()",story)
+        self.assertIn("FactionPolicy.Side",story)
+        self.assertIn("storyReply(",dialogue)
+        self.assertIn("observer.mood()",model)
+        self.assertIn("head.zRot",model)
+        self.assertNotIn("net.minecraft.client",bird)
+        for bad in ("forceChunk(", "setBlock(", "explode(", "teleportTo("):
+            self.assertNotIn(bad,bird)
+            self.assertNotIn(bad,commands)
 
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
