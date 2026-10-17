@@ -11,6 +11,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.Entity;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
+import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
 import io.github.lordnavycrypto.gugugaga.entity.GugugagaEntity;
 import net.minecraft.util.Mth;
 
@@ -82,6 +83,18 @@ public final class ObserverModel<T extends Entity> extends HierarchicalModel<T> 
         head.xRot=Mth.clamp(headPitch*0.008f,-0.20f,0.25f);
         if(entity instanceof GugugagaEntity observer) {
             ObserverBrain.Phase phase=observer.phase();
+            ThreatPolicy.Mood mood=observer.mood();
+            // Preserve the goofy, recognizable beak and silhouette. Horror
+            // comes from a face that is almost still and subtly asymmetric.
+            // No giant eyes, sudden scale jumps, flashing or render effects.
+            if(mood==ThreatPolicy.Mood.ANGRY) {
+                head.zRot=0.085f;
+                head.yRot=Mth.clamp(head.yRot*0.55f,-0.21f,0.21f);
+            } else if(mood==ThreatPolicy.Mood.CORRUPTED) {
+                head.zRot=-0.16f;
+                head.yRot=Mth.clamp(head.yRot*0.35f,-0.13f,0.13f);
+                head.xRot-=0.13f;
+            }
             float lift=switch(phase) {
                 case APPROACH -> 0.34f;
                 case RETREAT -> 0.55f;
@@ -90,6 +103,15 @@ public final class ObserverModel<T extends Entity> extends HierarchicalModel<T> 
             };
             leftWing.zRot=sway+lift;
             rightWing.zRot=-sway-lift;
+            if(mood==ThreatPolicy.Mood.ANGRY) {
+                leftWing.zRot+=0.18f;
+                rightWing.zRot-=0.10f;
+            } else if(mood==ThreatPolicy.Mood.CORRUPTED) {
+                // Uneven, very slow wing posture reads as "wrong" even on
+                // bright/cartoon source textures without a jumpscare.
+                leftWing.zRot+=0.41f;
+                rightWing.zRot-=0.06f;
+            }
             if(phase==ObserverBrain.Phase.OBSERVE) {
                 // It is never perfectly still, but its tiny movement makes
                 // the player question whether it just looked at them.
