@@ -3,7 +3,7 @@
 An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
 
 ## Status
-**v0.5 pre-alpha / adaptive suspense director under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
+**v0.7 pre-alpha / the Lost Watcher and the Redactor under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
 
 ## Gameplay direction
 - The entity initially **observes** instead of attacking.
@@ -80,3 +80,29 @@ Operator controls after explicitly enabling encounters:
 ```
 
 These three intensity choices adjust the **mix** of events, not event cooldown, mob caps or volume. `encounters.varied_events=false` reverts to the original observer-only encounter choice, without removing v0.4 journal. Any player can use `/gugugaga quiet on`; operators can mute all added ambience with `/gugugaga atmosphere off`. Test in a disposable game world: compiling does not establish every mechanic works in multiplayer.
+
+## v0.7 — The Lost Watcher vs The Redactor
+The odd-looking penguin is NOT automatically the villain. It has three reversible moods: CALM, ANGRY, and CORRUPTED. The real story villain is a still-unseen narrator called **the Redactor**, who rewrites the meaning of the clues. The Redactor's in-world mob/boss is **not implemented**.
+
+Optional server-hostile test mode (OFF by default):
+```text
+/gugugaga hostility on
+/gugugaga temper angry
+/gugugaga temper corrupted
+/gugugaga temper calm
+/gugugaga hostility off
+```
+
+Only server operators can toggle hostility or change nearby entity mood. In an angry/corrupted state with hostility enabled, the bird slowly pursues eligible survival players, gives at least a 30-tick warning before one modest close-range hit, and waits at least 75 ticks between attempts. It never attacks opted-out `/gugugaga quiet on` players, breaks blocks, forces chunks or teleports. Anger and corruption always time out into CALM.
+
+Voluntary investigation for all players:
+```text
+/gugugaga story
+/gugugaga trust guardian
+/gugugaga trust redactor
+/gugugaga trust neutral
+/gugugaga journal
+/gugugaga reassure
+```
+
+Three genuine witness clues unlock the ability to reassure a nearby angry/corrupted bird, and canonical `/gugugaga talk` replies react to a player's current investigation position. Choices may be changed freely. The original odd penguin material is retained; slow gaze and uneven wing/head postures convey the uncanny without copied, flashing, or excessively loud effects. See `docs/V07_DUAL_NATURE_STORY_AND_VISUALS.md` for the four-chapter plan, shipped/unshipped boundary and visual design rules.
