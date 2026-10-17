@@ -7,6 +7,8 @@ public final class NightwatchConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec.BooleanValue OLLAMA_ENABLED;
     public static final ModConfigSpec.ConfigValue<String> OLLAMA_MODEL;
+    public static final ModConfigSpec.BooleanValue ENCOUNTERS_ENABLED;
+    public static final ModConfigSpec.IntValue ENCOUNTER_COOLDOWN_TICKS;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -16,6 +18,14 @@ public final class NightwatchConfig {
                 .define("enabled", false);
         OLLAMA_MODEL = BUILDER.comment("Exact name from local Ollama /api/tags")
                 .define("model", "");
+        BUILDER.pop();
+        BUILDER.push("encounters");
+        ENCOUNTERS_ENABLED = BUILDER.comment(
+                "Allow rare nonviolent observer encounters. OFF by default. No chunk forcing.")
+                .define("enabled", false);
+        ENCOUNTER_COOLDOWN_TICKS = BUILDER.comment(
+                "Minimum cooldown per player, ticks. Never below 8 minutes; default 10 minutes.")
+                .defineInRange("cooldown_ticks", 12000, 9600, 72000);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
