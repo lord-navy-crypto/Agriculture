@@ -65,29 +65,35 @@ public final class WitnessJournal {
         // One optional mild message per discovery over the player's lifetime;
         // never used as an actionbar flicker or a surprise UI takeover.
         if(NightwatchConfig.JOURNAL_HINTS_ENABLED.get())
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] You noticed something. /gugugaga journal"));
+            player.sendSystemMessage(Component.translatable(
+                    "message.gugugaga.journal.hint"));
     }
 
     public static void show(ServerPlayer player) {
         int bits=evidenceBits(player);
-        player.sendSystemMessage(Component.literal(
-                "--- NIGHTWATCH WITNESS JOURNAL ("+
-                        WitnessJournalPolicy.discovered(bits)+"/3) ---"));
+        player.sendSystemMessage(Component.translatable(
+                "message.gugugaga.journal.header",
+                WitnessJournalPolicy.discovered(bits)));
         for(Evidence clue:new Evidence[]{
                 Evidence.THE_GAZE,Evidence.THE_FOOTSTEPS,Evidence.THE_RETREAT}) {
-            if((bits&clue.bit)!=0)
-                player.sendSystemMessage(Component.literal(
-                        "* "+WitnessJournalPolicy.name(clue)+": "+
-                        WitnessJournalPolicy.description(clue)));
-            else
-                player.sendSystemMessage(Component.literal("* ??? (not yet witnessed)"));
+            if((bits&clue.bit)!=0) {
+                String key=switch(clue) {
+                    case THE_GAZE -> "message.gugugaga.journal.gaze";
+                    case THE_FOOTSTEPS -> "message.gugugaga.journal.footsteps";
+                    case THE_RETREAT -> "message.gugugaga.journal.retreat";
+                    case NONE -> "message.gugugaga.journal.hidden";
+                };
+                player.sendSystemMessage(Component.translatable(key));
+            } else player.sendSystemMessage(Component.translatable(
+                    "message.gugugaga.journal.hidden"));
         }
         if(bits==WitnessJournalPolicy.ALL_BITS)
-            player.sendSystemMessage(Component.literal(
-                    "A final note: the footsteps began before you turned around."));
-        player.sendSystemMessage(Component.literal(
-                "Journal recording: "+(enabled(player)?"ON":"OFF")+
-                ". Commands: /gugugaga journal on|off|clear"));
+            player.sendSystemMessage(Component.translatable(
+                    "message.gugugaga.journal.ending"));
+        player.sendSystemMessage(Component.translatable(
+                "message.gugugaga.journal.status",
+                Component.translatable(enabled(player)
+                        ? "message.gugugaga.journal.enabled"
+                        : "message.gugugaga.journal.disabled")));
     }
 }
