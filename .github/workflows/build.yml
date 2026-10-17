@@ -44,6 +44,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntingCuePolicy.java \
             qa/java/HauntingCuePolicySmoke.java
           java -cp build/haunting-cue-smoke HauntingCuePolicySmoke
+      - name: Verify v0.4 witness journal narrative, deduplication and limits
+        run: |
+          mkdir -p build/witness-journal-smoke
+          javac -d build/witness-journal-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/WitnessJournalPolicy.java \
+            qa/java/WitnessJournalPolicySmoke.java
+          java -cp build/witness-journal-smoke WitnessJournalPolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke
