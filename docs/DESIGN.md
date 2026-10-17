@@ -62,3 +62,11 @@ Influences: Minecraft environmental horror, stealth creature AI, restrained unca
 - Evidence is awarded at most once each and an optional single chat hint appears on first discovery only. `/gugugaga journal off` stops new recording; `clear` erases old clues and preserves the opt-out preference.
 - A final story line unlocks only after all three bits are collected; exploration remains voluntary.
 - Tests cover pure deterministic decisions, negative/NaN distance, bounded masks and no duplicates. Actual save/relog and multiplayer observation still require in-game acceptance.
+
+## v0.5 Global suspense director (new experimental implementation)
+- Separate macro director from each observer's local state machine. A small online-session-only memory stores previous event type, bounded count and tension level (0–3), with no location timeline.
+- Six dramatic events: SILENCE (intentional respite), DISTANT_CHIME, FALSE_FOOTSTEPS, FADING_ECHO, AFTERIMAGE (2 soul particles, not an entity), and SIGHTING (same real observer as v0.4).
+- Weighted deterministic events vary across nights and players; consecutive identical non-silence types are rotated. Modes gentle/balanced/eerie alter mix only; never shorten the minimum 8-minute cooldown or raise sound volume.
+- The main encounter gate remains overworld night/survival/opted-in/unquiet, with a 48-block near-monster check and eight-monster global cap. Existing loaded-chunk-only spawn placement logic stays intact.
+- Online-only state is cleared on logout; journal bits remain player-owned in game NBT. No chunk loads, block edits, attacks, photosensitive effects, forced loud audio or remote communication. No new image asset from any third-party horror project is copied.
+- CI exercises more than 180,000 deterministic replay decisions, all six event types, bounded tension and audio ceilings, and previously existing journal/observer tests.
