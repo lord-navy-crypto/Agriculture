@@ -29,3 +29,6 @@ No CurseForge package is considered release-ready until the `build` workflow pas
 
 ## v0.2 operator/player trial commands
 Use a disposable survival Overworld test world (do not overwrite an important save). Auto encounters are OFF by default. The operator can try `/gugugaga encounters on`, wait through the cooldown at night, or use the original manual command `/summon gugugaga:observer ~ ~ ~`. Any player can opt out with `/gugugaga quiet on`; this quiet flag lasts for their current session. An operator can turn the system back off with `/gugugaga encounters off`. The mod works with no Ollama installed. Build green is not the same as actual client/dedicated server gameplay acceptance.
+
+## v0.3 atmospheric testing
+For controlled testing, use `/summon gugugaga:observer ~ ~ ~` in a disposable world, set survival mode, then observe it from 8–25 blocks. Look directly at it, then look away. It should turn toward you, pause, quietly approach, and eventually retreat; its head and wing pose should differ. With a Nightwatch encounter enabled, a naturally placed observer will expire after 90 seconds; a manually summoned one persists. Use `/gugugaga quiet on` to stop it from selecting you as a target. Muting sounds or particles is possible in the server config (`encounters.haunting_audio`, `encounters.haunting_particles`). Original/Ollama-free AI remains functional.
