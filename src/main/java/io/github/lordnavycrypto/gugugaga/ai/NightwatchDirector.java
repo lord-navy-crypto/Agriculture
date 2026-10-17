@@ -38,7 +38,7 @@ public final class NightwatchDirector {
     private static final Map<MinecraftServer,Session> SESSIONS=new WeakHashMap<>();
 
     private static Session session(MinecraftServer server) {
-        return SESS.computeIfAbsent(server,ignored->new Session());
+        return SESSIONS.computeIfAbsent(server,ignored->new Session());
     }
 
     public static boolean isQuiet(MinecraftServer server,UUID player) {
