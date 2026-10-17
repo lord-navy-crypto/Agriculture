@@ -29,12 +29,47 @@ class ProjectSanity(unittest.TestCase):
         mob = (SRC / "entity/GugugagaEntity.java").read_text()
         for key in ("DORMANT", "OBSERVE", "APPROACH", "RETREAT"):
             self.assertIn(key, brain)
-        self.assertIn("tickCount % 10", mob)
-        self.assertIn("getNearestPlayer(this, 32.0)", mob)
+        self.assertIn("tickCount%10", mob)
+        self.assertIn("eligibleNearestPlayer", mob)
+        self.assertIn("getEntitiesOfClass(ServerPlayer.class,bounds", mob)
+        self.assertIn("NightwatchDirector.isQuiet", mob)
+        self.assertIn("markAmbientEncounter", mob)
+        self.assertIn("tickCount%30==0", mob)
         self.assertIn("getNavigation().stop()", mob)
         self.assertNotIn("hurt(", mob)
         self.assertNotIn("teleportTo(", mob)
         self.assertNotIn("getChunk(", mob)
+
+    def test_v03_haunting_is_bounded_and_does_not_force_chunks(self):
+        sound=(SRC / "ai/HauntingCuePolicy.java").read_text()
+        director=(SRC / "ai/NightwatchDirector.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        mob=(SRC / "entity/GugugagaEntity.java").read_text()
+        model=(SRC / "client/ObserverModel.java").read_text()
+        for literal in ("CHIME_PERIOD_TICKS = 240", "STEP_PERIOD_TICKS = 160",
+                        "PULSE_PERIOD_TICKS = 300", "cappedVolume"):
+            self.assertIn(literal,sound)
+        self.assertIn('define("haunting_audio", true)',config)
+        self.assertIn('define("haunting_particles", true)',config)
+        self.assertIn("observer.markAmbientEncounter();",director)
+        self.assertIn("ambientLifetimeTicks>=AUTO_LIFETIME_TICKS",mob)
+        self.assertIn("getAmbientSound()",mob)
+        self.assertIn("return null;",mob)
+        self.assertIn('root.getChild("head")',model)
+        self.assertIn('head.addOrReplaceChild("left_eye"',model)
+        self.assertIn("NightwatchDirector.isQuiet",mob)
+        for forbidden in ("forceChunk(", "getChunk(", "teleportTo(",
+                          "setBlock(", "explode(", "hurt("):
+            self.assertNotIn(forbidden,mob)
+
+    def test_live_atmosphere_controls_remain_operator_only(self):
+        commands=(SRC / "command/NightwatchCommands.java").read_text()
+        self.assertIn('Commands.literal("atmosphere")',commands)
+        self.assertIn('Commands.literal("on")',commands)
+        self.assertIn('Commands.literal("off")',commands)
+        self.assertIn('requires(src->src.hasPermission(2))',commands)
+        self.assertIn("HAUNTING_AUDIO_ENABLED.set(enabled)",commands)
+        self.assertIn("HAUNTING_PARTICLES_ENABLED.set(enabled)",commands)
 
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()

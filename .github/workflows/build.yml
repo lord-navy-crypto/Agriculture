@@ -36,6 +36,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/EncounterPolicy.java \
             qa/java/EncounterPolicySmoke.java
           java -cp build/encounter-policy-smoke EncounterPolicySmoke
+      - name: Verify v0.3 atmospheric cue timing, opt-out and volume ceilings
+        run: |
+          mkdir -p build/haunting-cue-smoke
+          javac -d build/haunting-cue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntingCuePolicy.java \
+            qa/java/HauntingCuePolicySmoke.java
+          java -cp build/haunting-cue-smoke HauntingCuePolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke

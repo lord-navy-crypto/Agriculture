@@ -3,7 +3,7 @@
 An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
 
 ## Status
-**v0.2 pre-alpha / compiled prototype under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
+**v0.3 pre-alpha / haunted observer prototype under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
 
 ## Gameplay direction
 - The entity initially **observes** instead of attacking.
@@ -33,3 +33,21 @@ Unofficial fan project; not endorsed by Arknights: Endfield, Hypergryph, Gryphli
 /gugugaga quiet status
 ```
 Operators may enable automatic, nonviolent nighttime encounters. Only survival players in the Overworld are eligible, at most one observer may be near any player and eight may exist across all loaded dimensions. A failed placement attempt consumes cooldown, and an unloaded chunk is never requested. Use a disposable world while this is still pre-alpha. The previously implemented local Ollama adviser remains optional, OFF and advice-only.
+
+## v0.3 unsettling observer (experimental)
+- Its face and wings now animate with **observe / approach / retreat** state: restrained tracking, not flashing or screen hijacking.
+- Extremely sparse and quiet spatial audio, using standard Minecraft sounds (no copied meme recordings); it can be switched off via `encounters.haunting_audio=false`.
+- Retreats leave at most two ambient particles if enabled; can be switched off via `encounters.haunting_particles=false`.
+- Nightwatch director sightings last a maximum of 90 active seconds and disappear cleanly; entities summoned with `/summon` remain persistent.
+- The player `/gugugaga quiet on` opt-out now also prevents **existing observers from targeting that player**, not just new automatic encounters.
+- Repeated pathfinding is throttled (at most once per 30 ticks when pursuing/retreating), reducing server overhead.
+- Nightwatch still performs **no attacks, block editing, chunk forcing or global camera effects**. The opt-in director remains OFF by default. Ollama remains optional and shadow-only.
+- This is **not yet released**: dedicated-server gameplay acceptance remains necessary even after a green CI build.
+
+### Live atmosphere controls (operators)
+```text
+/gugugaga atmosphere status
+/gugugaga atmosphere on
+/gugugaga atmosphere off
+```
+These controls mute/unmute custom sound and particles without restarting. Players can always adjust the existing Minecraft Ambient sound slider. `/gugugaga quiet on` stops targeting that player, including observers that already exist.

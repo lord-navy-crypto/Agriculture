@@ -27,7 +27,31 @@ public final class NightwatchCommands {
                         .requires(src->src.hasPermission(2))
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
                         .then(Commands.literal("on").executes(ctx->toggle(ctx.getSource(),true)))
-                        .then(Commands.literal("off").executes(ctx->toggle(ctx.getSource(),false)))));
+                        .then(Commands.literal("off").executes(ctx->toggle(ctx.getSource(),false))))
+                .then(Commands.literal("atmosphere")
+                        .requires(src->src.hasPermission(2))
+                        .then(Commands.literal("status").executes(ctx->atmosphereStatus(ctx.getSource())))
+                        .then(Commands.literal("on").executes(ctx->atmosphere(ctx.getSource(),true)))
+                        .then(Commands.literal("off").executes(ctx->atmosphere(ctx.getSource(),false)))));
+    }
+
+    private static int atmosphereStatus(CommandSourceStack src) {
+        src.sendSuccess(()->Component.literal("Nightwatch atmosphere: audio="
+                + NightwatchConfig.HAUNTING_AUDIO_ENABLED.get()
+                + ", particles=" + NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get()
+                + ". Both can be configured independently in gugugaga-server.toml."),
+                false);
+        return 1;
+    }
+
+    private static int atmosphere(CommandSourceStack src,boolean enabled) {
+        NightwatchConfig.HAUNTING_AUDIO_ENABLED.set(enabled);
+        NightwatchConfig.HAUNTING_PARTICLES_ENABLED.set(enabled);
+        src.sendSuccess(()->Component.literal(enabled
+                ? "Subtle Nightwatch sounds/particles enabled (no flash or loud effects)."
+                : "Nightwatch atmospheric sounds/particles disabled; core AI unaffected."),
+                true);
+        return 1;
     }
 
     private static int quiet(CommandSourceStack src,boolean quiet)
