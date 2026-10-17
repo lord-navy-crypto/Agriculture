@@ -58,5 +58,14 @@ public final class YellowSmilerModel extends HierarchicalModel<YellowSmilerEntit
         head.yRot=Mth.clamp(netHeadYaw*0.006f,-0.22f,0.22f);
         leftArm.xRot=(float)Math.sin(ageInTicks*0.020f)*0.018f;
         rightArm.xRot=-leftArm.xRot;
+        if(entity.revealed()) {
+            // Unmasked: still recognizably Yellow, but the bilateral
+            // smile's symmetry is broken only through posture, not flash.
+            head.zRot=-0.19f;
+            head.xRot=-0.17f;
+            head.yRot=Mth.clamp(netHeadYaw*0.004f,-0.11f,0.11f);
+            leftArm.xRot=-0.27f;
+            rightArm.xRot=-0.08f;
+        }
     }
 }
