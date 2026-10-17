@@ -70,17 +70,17 @@ public final class NightwatchCommands {
             throws CommandSyntaxException {
         var player=src.getPlayerOrException();
         WitnessJournal.setEnabled(player,enabled);
-        src.sendSuccess(()->Component.literal(enabled
-                ? "Nightwatch journal recording resumed."
-                : "Nightwatch journal recording paused. Old clues remain private."),false);
+        src.sendSuccess(()->Component.translatable(enabled
+                ? "message.gugugaga.journal.on"
+                : "message.gugugaga.journal.off"),false);
         return 1;
     }
 
     private static int journalClear(CommandSourceStack src)
             throws CommandSyntaxException {
         WitnessJournal.clear(src.getPlayerOrException());
-        src.sendSuccess(()->Component.literal(
-                "Your Nightwatch clues have been cleared. Your preference remains."),false);
+        src.sendSuccess(()->Component.translatable(
+                "message.gugugaga.journal.clear"),false);
         return 1;
     }
 
