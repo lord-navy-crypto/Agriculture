@@ -25,3 +25,24 @@ A harmless-looking penguin entity becomes unsettling through intelligent observa
 
 ## Inspiration boundaries
 Influences: Minecraft environmental horror, stealth creature AI, restrained uncanny-space fiction, and analog-horror clue structure. Do not copy their proprietary assets, specific sound files, creature models or scripts.
+
+
+## v0.2 Nightwatch Director (implemented behind a default-OFF server option)
+- Real NeoForge server tick: scans only once per 200 ticks and only when server opted in.
+- Night-only, overworld-only, survival-only; never targets creative or spectator.
+- At least 8 minutes cooldown per player, 10 minutes by default; newly joined
+  players also wait before their first automatic encounter.
+- Maximum 1 observer near a player (48 blocks), maximum 8 observers across all
+  loaded dimensions; no additional natural hostile mobs.
+- Try four deterministic positions 16 blocks away, with solid floors and empty
+  headspace. Only inspect chunks that are already fully loaded.
+- No chunk tickets, no chunk generation requests, no block edits, no damage.
+  An unsafe/unloaded spawn attempt simply fails and consumes its cooldown.
+- Any player can use `/gugugaga quiet on` to opt out for the current session,
+  and `/gugugaga quiet off` to rejoin.
+- Operators explicitly enable with `/gugugaga encounters on`, or disable
+  with `/gugugaga encounters off`. Off does not delete hand-summoned entities.
+- Ollama remains optional, local-only, disabled by default and advice-only;
+  neither the director nor the observer makes HTTP calls per server tick.
+- Until client and dedicated-server acceptance pass, this is an
+  **experimental prototype**, not a production release.
