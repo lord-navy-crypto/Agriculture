@@ -17,7 +17,8 @@ class ProjectSanity(unittest.TestCase):
 
     def test_source_and_client_separation(self):
         source = (SRC / "GuguGagaMod.java").read_text()
-        self.assertIn("registerEntityType", source)
+        self.assertIn("DeferredRegister.create(Registries.ENTITY_TYPE", source)
+        self.assertIn("EntityType.Builder", source)
         self.assertNotIn("net.minecraft.client", source)
         client = (SRC / "client/ClientEvents.java").read_text()
         self.assertIn("Dist.CLIENT", client)

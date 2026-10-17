@@ -106,14 +106,14 @@ public class GugugagaEntity extends PathfinderMob {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("ObserverPhase", phase().ordinal());
         tag.putInt("ObserverPhaseTicks", phaseTicks);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         int saved = tag.getInt("ObserverPhase");
         getEntityData().set(PHASE, (saved < 0 || saved >= Phase.values().length)
