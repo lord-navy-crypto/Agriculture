@@ -97,12 +97,23 @@ jobs:
           python3 - <<'PY'
           import pathlib,struct
           base=pathlib.Path('build/test-original-sprites/assets/gugugaga/textures/entity')
-          for name in ['lapis_mask.png','redactor_true.png','yellow_smiler.png']:
+          for name in ['lapis_mask.png','redactor_true.png','yellow_smiler.png',
+                       'yellow_smiler_true.png','observer_blackened.png']:
               data=(base/name).read_bytes()
               assert data[:8]==b'\x89PNG\r\n\x1a\n',name
               assert struct.unpack('>II',data[16:24])==(64,64),name
               print('VALID_ORIGINAL_TEXTURE',name,len(data))
           PY
+      - name: Verify v0.9 corruption, deceptive mimic strikes and helping Smiler
+        run: |
+          mkdir -p build/gugu-advanced-modes
+          javac -d build/gugu-advanced-modes \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CorruptionArcPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/MimicAttackPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/SmilerGiftPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            qa/java/AdvancedCharacterPolicySmoke.java
+          java -cp build/gugu-advanced-modes AdvancedCharacterPolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke

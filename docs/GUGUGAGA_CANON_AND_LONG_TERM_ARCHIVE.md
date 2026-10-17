@@ -114,3 +114,9 @@ Opt-in, story-specific cinematic triggered by deliberately interacting with a **
 - Automated pure-Java interaction-priority unit tests and full NeoForge compile. Perform in-game visual/multiplayer testing before merge.
 
 **Status reminder:** This document archives intentional long-term canon. It does NOT claim every mentioned feature is implemented.
+
+## v0.9 Addendum — distinct three-character modes (experimental)
+- Gugu-Gaga keeps its unusual penguin identity while its corrupted mood progresses through four synchronized visual levels; the last one uses a blackened original texture. This remains reversible.
+- Lapis can reveal when approached and its true Redactor form has an independent operator-disabled-by-default, low-damage, telegraphed close attack; the Yellow Smiler always causes the Redactor to flee first.
+- Yellow offers a small voluntary torch gift with a global per-player cooldown, then has a visibly different sinister revealed form and stops offering gifts. True-final-boss abilities, betrayals and all endings remain long-term fiction, not v0.9 implementation.
+- Reference: [v0.9 Three Unique Modes](V09_THREE_UNIQUE_MODES_SPEC.md).

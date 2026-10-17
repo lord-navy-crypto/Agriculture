@@ -217,6 +217,40 @@ class ProjectSanity(unittest.TestCase):
                           "Lapis","Redactor","five endings"):
             self.assertIn(important,archive)
 
+    def test_v09_three_unique_advanced_modes_remain_bounded(self):
+        bird=(SRC / "entity/GugugagaEntity.java").read_text()
+        redactor=(SRC / "entity/RedactorEntity.java").read_text()
+        yellow=(SRC / "entity/YellowSmilerEntity.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        commands=(SRC / "command/GuguAdvancedCommands.java").read_text()
+        main=(SRC / "GuguGagaMod.java").read_text()
+        sprites=(ROOT / "qa/generate_character_sprites.py").read_text()
+        renderer=(SRC / "client/ObserverRenderer.java").read_text()
+        yrenderer=(SRC / "client/YellowSmilerRenderer.java").read_text()
+        for item in ("CORRUPTION_STAGE","testBlackenedCorruption",
+                     "CorruptionArcPolicy.stage(", "setTemperament(Mood.CORRUPTED)"):
+            self.assertIn(item,bird)
+        for item in ("MimicAttackPolicy.shouldRevealToPlayer",
+                     "MimicAttackPolicy.mayHit", "NightwatchDirector.isQuiet",
+                     "RedactorAction.FLEE_SMILER","getNavigation().stop()"):
+            self.assertIn(item,redactor)
+        self.assertIn("REDACTOR_HOSTILITY_ENABLED.get()",redactor)
+        self.assertIn('define("redactor_hostility",false)',config)
+        for item in ("mobInteract(", "SmilerGiftPolicy.mayHelp",
+                     "recipient.addItem(", "setRevealed(", "LAST_HELP"):
+            self.assertIn(item,yellow)
+        self.assertIn("GuguAdvancedCommands::register",main)
+        for cmd in ("mimic","smiler","blacken","reveal","hostility","mask","disguise"):
+            self.assertIn(f'Commands.literal("{cmd}")',commands)
+        self.assertIn("requires(src->src.hasPermission(2))",commands)
+        self.assertIn("observer_blackened.png",renderer)
+        self.assertIn("yellow_smiler_true.png",yrenderer)
+        for tex in ("observer_blackened.png","yellow_smiler_true.png"):
+            self.assertIn(tex,sprites)
+        for body in (bird,redactor,yellow):
+            for forbidden in ("forceChunk(", "teleportTo(", "setBlock(", "explode("):
+                self.assertNotIn(forbidden,body)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()

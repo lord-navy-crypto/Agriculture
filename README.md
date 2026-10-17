@@ -1,3 +1,30 @@
+## v0.9 — Distinct corruption, Lapis ambush and Yellow helping/true form
+
+New, EXPERIMENTAL (no story quests or ending triggers):
+- Gugu-Gaga's reversible corruption visibly progresses through fractured,
+  possessed and final dark/blackened appearance. Admin `/gugugaga blacken`
+  previews the final phase; default hostile attacks are still OFF.
+- Lapis is the Redactor's false-safe mask. It can reveal near a player or
+  Gugu-Gaga; a revealed Redactor can give tiny warning-based melee strikes
+  **only** after an admin explicitly sets `/gugugaga mimic hostility on`.
+  An encountered Yellow Smiler ALWAYS makes it flee first.
+- The masked Yellow Smiler now gives **two torches** on voluntary player
+  right-click with a **three-minute per-player cooldown**, but **stops
+  helping** when revealed. It unveils its distinct darker original texture
+  when hit by a player (or admin uses `/gugugaga smiler reveal`); it cannot
+  attack or steal anything in this alpha.
+- The new two original PNG files `observer_blackened.png` and
+  `yellow_smiler_true.png` are generated during CI/Gradle. No borrowed art.
+- Admin test controls: `/gugugaga mimic status|reveal|disguise`,
+  `/gugugaga mimic hostility on|off`,
+  `/gugugaga smiler reveal|mask`, `/gugugaga blacken`.
+- Details and manual acceptance: [v0.9 modes spec](docs/V09_THREE_UNIQUE_MODES_SPEC.md).
+
+v0.9 has not yet passed actual singleplayer, dedicated-server and modded-client
+visual QA; the five full endings are *long-term plans*, not implemented.
+
+---
+
 ## v0.8: Three Entities (Alpha)
 
 The canonical three-reversal story, Lapis/Redactor disguise, Yellow Smiler, five planned endings (including creator ending), and development decisions are permanently archived in [Canon & Long-Term Archive](docs/GUGUGAGA_CANON_AND_LONG_TERM_ARCHIVE.md).

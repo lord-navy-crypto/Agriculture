@@ -5,6 +5,7 @@ import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.CorruptionArcPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy.Mood;
 import net.minecraft.world.damagesource.DamageSource;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
@@ -41,6 +42,8 @@ public class GugugagaEntity extends PathfinderMob {
     private static final int AUTO_LIFETIME_TICKS = 20 * 90;
     private static final EntityDataAccessor<Integer> MOOD =
             SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CORRUPTION_STAGE =
+            SynchedEntityData.defineId(GugugagaEntity.class,EntityDataSerializers.INT);
     private int moodTicks;
     private int strikeWindupTicks;
     private int ticksSinceStrike=ThreatPolicy.ATTACK_COOLDOWN_TICKS;
@@ -67,6 +70,7 @@ public class GugugagaEntity extends PathfinderMob {
         super.defineSynchedData(builder);
         builder.define(PHASE, Phase.DORMANT.ordinal());
         builder.define(MOOD, Mood.CALM.ordinal());
+        builder.define(CORRUPTION_STAGE,0);
     }
 
     @Override
@@ -87,10 +91,15 @@ public class GugugagaEntity extends PathfinderMob {
         return ThreatPolicy.fromOrdinal(getEntityData().get(MOOD));
     }
 
+    public int corruptionStage() {
+        return CorruptionArcPolicy.clampStage(getEntityData().get(CORRUPTION_STAGE));
+    }
+
     public void setTemperament(Mood requested) {
         Mood selected=requested==null ? Mood.CALM : requested;
         getEntityData().set(MOOD,selected.ordinal());
         moodTicks=0;
+        getEntityData().set(CORRUPTION_STAGE,0);
         strikeWindupTicks=0;
         ticksSinceStrike=ThreatPolicy.ATTACK_COOLDOWN_TICKS;
         getNavigation().stop();
@@ -106,6 +115,14 @@ public class GugugagaEntity extends PathfinderMob {
                 && mood()==Mood.CALM)
             setTemperament(Mood.ANGRY);
         return applied;
+    }
+
+    /** Operator-only alpha test shortcut for the final visible arc stage. */
+    public void testBlackenedCorruption() {
+        setTemperament(Mood.CORRUPTED);
+        moodTicks=CorruptionArcPolicy.BLACKEN_TICKS;
+        getEntityData().set(CORRUPTION_STAGE,
+                CorruptionArcPolicy.Stage.BLACKENED.ordinal());
     }
 
     public Phase phase() {
@@ -137,6 +154,12 @@ public class GugugagaEntity extends PathfinderMob {
         super.tick();
         if(level().isClientSide)return;
         moodTicks=Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,moodTicks+1);
+        if(tickCount%10==0) {
+            int newStage=CorruptionArcPolicy.stage(
+                    mood()==Mood.CORRUPTED,moodTicks).ordinal();
+            if(getEntityData().get(CORRUPTION_STAGE)!=newStage)
+                getEntityData().set(CORRUPTION_STAGE,newStage);
+        }
         ticksSinceStrike=Math.min(ThreatPolicy.ATTACK_COOLDOWN_TICKS,ticksSinceStrike+1);
         if(ThreatPolicy.afterTime(mood(),moodTicks)!=mood())
             setTemperament(Mood.CALM);
@@ -324,6 +347,8 @@ public class GugugagaEntity extends PathfinderMob {
                 tag.getInt("ObserverMood")).ordinal());
         moodTicks=Math.max(0,Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,
                 tag.getInt("ObserverMoodTicks")));
+        getEntityData().set(CORRUPTION_STAGE,
+                CorruptionArcPolicy.stage(mood()==Mood.CORRUPTED,moodTicks).ordinal());
         // Use a full cooldown when loaded from disk; never surprise-hit a
         // player immediately after a world reload.
         ticksSinceStrike=0;

@@ -7,6 +7,7 @@ import io.github.lordnavycrypto.gugugaga.command.OllamaCommands;
 import io.github.lordnavycrypto.gugugaga.command.NightwatchCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguTalkCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguStoryCommands;
+import io.github.lordnavycrypto.gugugaga.command.GuguAdvancedCommands;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.registries.Registries;
@@ -54,6 +55,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(NightwatchCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguTalkCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguStoryCommands::register);
+        NeoForge.EVENT_BUS.addListener(GuguAdvancedCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
     }
 

@@ -112,6 +112,23 @@ public final class ObserverModel<T extends Entity> extends HierarchicalModel<T> 
                 leftWing.zRot+=0.41f;
                 rightWing.zRot-=0.06f;
             }
+            int arc=observer.corruptionStage();
+            if(arc>=1) {
+                // Slow, wrong asymmetry grows instead of a jump-cut scare.
+                head.zRot-=0.04f*arc;
+                leftWing.zRot+=0.09f*arc;
+                rightWing.zRot-=0.035f*arc;
+            }
+            if(arc>=2) {
+                head.xRot-=0.06f;
+                head.yRot*=0.25f;
+            }
+            if(arc>=3) {
+                // The blackened penguin retains its beak, head and silhouette.
+                head.zRot=-0.25f;
+                leftWing.xRot=0.13f;
+                rightWing.xRot=-0.10f;
+            }
             if(phase==ObserverBrain.Phase.OBSERVE) {
                 // It is never perfectly still, but its tiny movement makes
                 // the player question whether it just looked at them.
