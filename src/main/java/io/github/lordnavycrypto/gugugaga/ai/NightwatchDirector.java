@@ -126,6 +126,9 @@ public final class NightwatchDirector {
                 if(observer==null)return false;
                 observer.moveTo(x+.5,y,z+.5,level.random.nextFloat()*360f,0);
                 if(!level.noCollision(observer))continue;
+                // Ambient sightings expire automatically; player-summoned
+                // observers are never given this lifetime flag.
+                observer.markAmbientEncounter();
                 return level.addFreshEntity(observer);
             }
         }
