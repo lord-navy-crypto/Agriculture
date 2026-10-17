@@ -29,6 +29,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
             qa/java/ObserverBrainSmoke.java
           java -cp build/observer-brain-smoke ObserverBrainSmoke
+      - name: Test optional Nightwatch encounter fairness and budgets (pure Java21)
+        run: |
+          mkdir -p build/encounter-policy-smoke
+          javac -d build/encounter-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/EncounterPolicy.java \
+            qa/java/EncounterPolicySmoke.java
+          java -cp build/encounter-policy-smoke EncounterPolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke
