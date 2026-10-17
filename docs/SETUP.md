@@ -48,3 +48,8 @@ Start a new world in survival mode. The director remains OFF by default. The ope
 
 ## v0.7 hostility, lore and visual QA
 Use a disposable new single-player test world with NeoForge 21.1.259, Java 21. Summon `/summon gugugaga:observer ~ ~ ~`. Its normal state should remain non-hostile, even after a hit, until an operator explicitly executes `/gugugaga hostility on`. Test `/gugugaga temper angry` and `/gugugaga temper corrupted` at safe distance: the bird should visibly change its asymmetric pose, give a quiet warning, approach only a survival target with line of sight and use a modest close-range attack no more often than every 75 ticks. Then run `/gugugaga hostility off` and `/gugugaga quiet on` to confirm it immediately stops attacks. Verify automatic recovery after 65/110 seconds respectively. Record three journal clues before trying `/gugugaga reassure`, then check `/gugugaga story`, the three trust choices, and lore questions sent through `/gugugaga talk`. Test NeoForge dedicated server and relog. This is not a substitute for full player-facing QA.
+
+
+## v0.8 Three-Entity Manual Smoke
+
+Use a disposable NeoForge 1.21.1 Java21 world. Manually summon each of: /summon gugugaga:observer ~ ~ ~; /summon gugugaga:redactor ~ ~ ~; /summon gugugaga:yellow_smiler ~ ~ ~. Redactor initially displays the blue Lapis mask; it reveals close to Gugu, corrupts temporarily if very close, and MUST flee Yellow when within 24 blocks. Yellow quietly observes Gugu. There is no natural new-entity spawning or completed quest/ending system in this alpha. Check fresh world, relog, dedicated server and performance before release.
