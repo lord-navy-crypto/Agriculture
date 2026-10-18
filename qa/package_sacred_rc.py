@@ -13,7 +13,7 @@ import shutil
 import sys
 import zipfile
 
-VERSION="0.19.0-rc.1"
+VERSION="0.20.0-alpha.1"
 EXPECTED_JAR=f"gugugaga-{VERSION}.jar"
 PREFIX="io/github/lordnavycrypto/gugugaga/"
 ACTORS=["GugugagaEntity","RedactorEntity","YellowSmilerEntity"]
@@ -70,7 +70,7 @@ def check_and_bundle(build_libs,out):
     digest=hashlib.sha256(data).hexdigest()
     (out/"SHA256SUMS.txt").write_text(f"{digest}  {dest.name}\n")
     manifest={
-        "mod":"Gugu-Gaga Horror Sacred Nightwatch",
+        "mod":"Gugu-Gaga Horror Natural Interaction Playtest",
         "version":VERSION,
         "minecraft":"1.21.1",
         "neoforge":"21.1.259",
@@ -87,21 +87,24 @@ def check_and_bundle(build_libs,out):
         "dedicated_multiplayer_verified":False,
         "release_status":"PLAYTEST_CANDIDATE_NOT_STABLE"
     }
-    (out/"RC1_MANIFEST.json").write_text(json.dumps(manifest,indent=2)+"\n")
-    (out/"PLAYTEST_INSTRUCTIONS.txt").write_text(
-        "GUGU-GAGA SACRED NIGHTWATCH RC1 / MANUAL TEST PACKAGE\n"
+    (out/"NATURAL_PLAYTEST_MANIFEST.json").write_text(json.dumps(manifest,indent=2)+"\n")
+    (out/"NATURAL_PLAYTEST_INSTRUCTIONS.txt").write_text(
+        "GUGU-GAGA NATURAL INTERACTION v0.20 / PLAYTEST PACKAGE\n"
         "Experimental, NOT a stable release. Use backup/test world.\n"
         "Minecraft 1.21.1 | NeoForge 21.1.259 | Java 21\n"
         "REQUIRES GeckoLib 4.9.3 for NeoForge 1.21.1 on BOTH client and dedicated server.\n"
         "Install the ONE JAR above in mods; remove older gugugaga JAR versions.\n"
+        "The UI input/held-gaze interactions replace most gameplay slash commands.\n"
         "Do not put the zip of this artifact directly in mods.\n"
         "Creative testing: /time set night, then /gamemode survival\n"
         "OP: /gugugaga play server on\n"
         "Each tester: /gugugaga play join\n"
         "OP in survival and at night: /gugugaga play test triad\n"
         "OP can use: /gugugaga play test witness\n"
-        "Crouch, then: /gugugaga play listen\n"
-        "Find Gugu and /gugugaga investigate; locate Lapis/Yellow and investigate again.\n"
+        "Crouch and press V to listen (remappable in Controls > Gugu-Gaga).\n"
+        "Chat exactly: HELP Yellow Face (without slash) for actual rescue.\n"
+        "Focus your crosshair on real Gugu for 4 seconds; then Lapis/Yellow for 4 seconds.\n"
+        "Investigation advances automatically. /gugugaga investigate remains a fallback.\n"
         "To summon directly for geometry-only checks (admin):\n"
         "  /summon gugugaga:observer ~ ~ ~\n"
         "  /summon gugugaga:redactor ~ ~ ~\n"
@@ -112,7 +115,7 @@ def check_and_bundle(build_libs,out):
         "Each tester can opt out: /gugugaga play leave\n"
         "OP disables test globally: /gugugaga play server off\n"
         "Never claim passing CI proves actual client renders or user enjoyment.\n")
-    print("GUGUGAGA_SACRED_RC_PACKAGE_PASS",
+    print("GUGUGAGA_NATURAL_PLAYTEST_PACKAGE_PASS",
           dest.name,len(data),digest,len(required))
     return manifest
 
