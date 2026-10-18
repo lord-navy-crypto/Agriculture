@@ -3,13 +3,13 @@ import io.github.lordnavycrypto.gugugaga.ai.GazeInvestigationPolicy;
 public final class V020NaturalInteractionSmoke {
     private static void ok(boolean x,String m){if(!x)throw new AssertionError(m);}
     public static void main(String[] args) {
-        for(String s:new String[]{"HELP Yellow Face","help yellow face",
-                "  HeLp   YELLOW    FACE  ","HELP YellowFace","yellow face help"}) {
+        for(String s:new String[]{"HELP"," HELP ","  HELP  "}) {
             ok(YellowHelpChatPolicy.isHelpRequest(s),"expected: "+s);
         }
-        for(String s:new String[]{"HELP","HELP ME","HELP yellow smiling",
-                "Yellow Face","Help Yellow Face now","HELP yellow face!","/HELP Yellow Face",
-                "HELP Yellow Faces","hello!","HELP yellow face and tell the server"}) {
+        for(String s:new String[]{"help","Help","HeLp","HELP ME","HELP yellow face",
+                "HELP Yellow Face","Yellow Face","HELP!","/HELP",
+                "HELP Yellow Faces","hello!","HELP and tell the server",
+                "HELP NOW","HELP\\nOTHER"}) {
             ok(!YellowHelpChatPolicy.isHelpRequest(s),"should not capture: "+s);
         }
         ok(!YellowHelpChatPolicy.isHelpRequest(null),"null");

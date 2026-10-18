@@ -13,7 +13,7 @@ import shutil
 import sys
 import zipfile
 
-VERSION="0.20.0-alpha.1"
+VERSION="0.20.1-alpha.1"
 EXPECTED_JAR=f"gugugaga-{VERSION}.jar"
 PREFIX="io/github/lordnavycrypto/gugugaga/"
 ACTORS=["GugugagaEntity","RedactorEntity","YellowSmilerEntity"]
@@ -102,7 +102,7 @@ def check_and_bundle(build_libs,out):
         "OP in survival and at night: /gugugaga play test triad\n"
         "OP can use: /gugugaga play test witness\n"
         "Crouch and press V to listen (remappable in Controls > Gugu-Gaga).\n"
-        "Chat exactly: HELP Yellow Face (without slash) for actual rescue.\n"
+        "Chat exactly: HELP (UPPERCASE, without slash) for actual rescue.\n"
         "Focus your crosshair on real Gugu for 4 seconds; then Lapis/Yellow for 4 seconds.\n"
         "Investigation advances automatically. /gugugaga investigate remains a fallback.\n"
         "To summon directly for geometry-only checks (admin):\n"

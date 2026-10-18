@@ -12,8 +12,9 @@ class NaturalInteractions(unittest.TestCase):
                   "player.serverLevel().getServer().execute("):
             self.assertIn(k,s)
         policy=(SRC/"ai/YellowHelpChatPolicy.java").read_text()
-        self.assertIn("help yellow face",policy)
-        self.assertIn("message.length()>64",policy)
+        self.assertIn('message.trim().equals("HELP")',policy)
+        self.assertNotIn("help yellow face",policy)
+        self.assertNotIn("toLowerCase",policy)
         self.assertNotIn("contains(\"help\")",policy)
         runtime=(SRC/"ai/HauntGameplayRuntime.java").read_text()
         self.assertIn("SmilerTrustPolicy.canRequestAid(",runtime)
@@ -50,7 +51,7 @@ class NaturalInteractions(unittest.TestCase):
                       (SRC/"command/GuguPlayCommands.java").read_text())
     def test_rc_package_is_versioned_single_jar(self):
         p=(ROOT/"qa/package_sacred_rc.py").read_text()
-        self.assertIn('VERSION="0.20.0-alpha.1"',p)
+        self.assertIn('VERSION="0.20.1-alpha.1"',p)
         self.assertIn('NATURAL_PLAYTEST_MANIFEST.json',p)
         self.assertIn("all_three_actor_classes_verified",p)
         self.assertIn("all_6_texture_png_verified",p)
