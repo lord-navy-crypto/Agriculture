@@ -29,8 +29,13 @@ public final class NightwatchListenKey {
 
     @EventBusSubscriber(modid=GuguGagaMod.MOD_ID,value=Dist.CLIENT)
     public static final class Input {
+        private static boolean clientTickProven;
         @SubscribeEvent
         public static void tick(ClientTickEvent.Post event) {
+            if(!clientTickProven && Minecraft.getInstance().getWindow()!=null) {
+                clientTickProven=true;
+                System.out.println("GUGUGAGA_CLIENT_TICK_OK");
+            }
             while(LISTEN.consumeClick()) {
                 Minecraft mc=Minecraft.getInstance();
                 // Screens/chat should never unexpectedly initiate a listen.

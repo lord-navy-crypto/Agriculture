@@ -6,7 +6,7 @@ class Compat(unittest.TestCase):
         p=(ROOT/"gradle.properties").read_text()
         for x in ("neo_version=21.1.150","neo_min_version=21.1.150",
                   "geckolib_version=4.8.2","geckolib_min_version=4.8.2",
-                  "minecraft_version=1.21.1","mod_version=0.21.1-rc.1"):
+                  "minecraft_version=1.21.1","mod_version=0.21.2-rc.1"):
             self.assertIn(x,p)
     def test_metadata(self):
         g=(ROOT/"build.gradle").read_text()
