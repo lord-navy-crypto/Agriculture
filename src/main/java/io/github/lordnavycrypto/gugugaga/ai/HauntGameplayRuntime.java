@@ -63,34 +63,42 @@ public final class HauntGameplayRuntime {
         return SESSIONS.computeIfAbsent(server,x->new HashMap<>());
     }
     public static boolean isJoined(MinecraftServer server,UUID id) {
-        return entries(server).containsKey(id);
+        Entry entry=entries(server).get(id);
+        return entry!=null && !entry.paused;
     }
     public static void join(ServerPlayer player) {
-        entries(player.serverLevel().getServer()).put(player.getUUID(),new Entry());
+        Map<UUID,Entry> all=entries(player.serverLevel().getServer());
+        Entry existing=all.get(player.getUUID());
+        if(existing==null || existing.paused)all.put(player.getUUID(),new Entry());
         E2EGameplayProof.record("JOINED");
-        player.sendSystemMessage(Component.literal(
-                "[Nightwatch] Joined the five-act survival horror loop. "
-                +"Look directly at a real creature for 4 seconds to investigate. "
-                +"Sneak + V to listen. Type HELP Yellow Face to ask for rescue. "
-                +"Use /gugugaga play leave to stop."));
+        player.displayClientMessage(Component.literal(
+                "[Nightwatch] Your session is active. Events unfold naturally at night. "
+                +"Look at a creature or right-click it to inspect. Sneak + V listens; H opens the panel."),
+                true);
     }
     public static void leave(ServerPlayer player) {
-        entries(player.serverLevel().getServer()).remove(player.getUUID());
-        player.sendSystemMessage(Component.literal(
-                "[Nightwatch] Left the horror loop. No progress or player position saved."));
+        Entry entry=entries(player.serverLevel().getServer()).computeIfAbsent(
+                player.getUUID(),id->new Entry());
+        entry.paused=true;
+        entry.act=HauntGameplayPolicy.Act.STILLNESS;
+        entry.activeTicks=0;
+        entry.gazeFocusTicks=0;
+        player.displayClientMessage(Component.literal(
+                "[Nightwatch] Your personal horror session is paused. Press H to resume."),
+                true);
     }
     public static String status(ServerPlayer player) {
         Entry e=entries(player.serverLevel().getServer()).get(player.getUUID());
-        return "Server="+NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()+
-                ", joined="+(e!=null)+", act="+(e==null?"NONE":e.act)
-                +", chases="+NightwatchConfig.CHASES_ENABLED.get()
-                +", jumpScares="+(e!=null&&e.scaresAllowed)
-                +", smilerAid="+(e!=null&&e.smilerAidAllowed)
-                +", smilerFavors="+(e==null?0:e.smilerFavors)
-                +", tactics=/gugugaga play listen (crouch) or sprint to risk discovery"
-                +", next clue=/gugugaga investigate; "
-                +"original Nightwatch observers retain 8-minute minimum cooldown.";
+        boolean joined=e!=null&&!e.paused;
+        return "Nightwatch="+NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
+                +", session="+(joined?"ACTIVE":e!=null?"PAUSED":"WAITING FOR NIGHT")
+                +", act="+(joined?e.act:"NONE")
+                +", scares="+(joined&&e.scaresAllowed)
+                +", Yellow aid="+(joined&&e.smilerAidAllowed)
+                +", favors="+(joined?e.smilerFavors:0)
+                +". Press H for the in-game panel.";
     }
+
     /** v0.12 threats require real opt-in and valid game context. */
     public static boolean isActiveParticipant(ServerPlayer player) {
         return isJoined(player.serverLevel().getServer(),player.getUUID())
@@ -99,20 +107,20 @@ public final class HauntGameplayRuntime {
 
     public static boolean inChaseAct(ServerPlayer player) {
         Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
-        return entry!=null && isActiveParticipant(player)
+        return entry!=null && !entry.paused && isActiveParticipant(player)
                 && (entry.act==HauntGameplayPolicy.Act.WITNESS
                     || entry.act==HauntGameplayPolicy.Act.FALSE_SAFETY);
     }
 
     public static void setScaresAllowed(ServerPlayer player,boolean enabled) {
         Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
-        if(entry==null) {
-            player.sendSystemMessage(Component.literal("[Nightwatch] Join the game first."));
+        if(entry==null || entry.paused) {
+            player.displayClientMessage(Component.literal("[Nightwatch] Resume Nightwatch from the H panel first."),true);
             return;
         }
         entry.scaresAllowed=enabled;
-        player.sendSystemMessage(Component.literal(
-                "[Nightwatch] Personal surprise cues "+(enabled?"enabled":"disabled")+"."));
+        player.displayClientMessage(Component.literal(
+                "[Nightwatch] Surprise cues "+(enabled?"enabled":"disabled")+"."),true);
     }
 
     /** Gameplay help is opt-out per player, not a hidden AI/player-control hook. */
@@ -123,13 +131,13 @@ public final class HauntGameplayRuntime {
 
     public static void setSmilerAid(ServerPlayer player,boolean allowed) {
         Entry e=entries(player.serverLevel().getServer()).get(player.getUUID());
-        if(e==null) {
-            player.sendSystemMessage(Component.literal("[Nightwatch] Join the game first."));
+        if(e==null || e.paused) {
+            player.displayClientMessage(Component.literal("[Nightwatch] Resume Nightwatch from the H panel first."),true);
             return;
         }
         e.smilerAidAllowed=allowed;
-        player.sendSystemMessage(Component.literal(
-                "[Nightwatch] Smiler help and persuasion "+(allowed?"enabled":"disabled")+"."));
+        player.displayClientMessage(Component.literal(
+                "[Nightwatch] Yellow Smiler aid "+(allowed?"enabled":"disabled")+"."),true);
     }
 
     /** 0..5 optional fictional favors, stored only while the session is online. */
@@ -205,10 +213,10 @@ public final class HauntGameplayRuntime {
             return false;
         }
         long now=player.serverLevel().getGameTime();
-        if(!HorrorListeningPolicy.mayListen(true,player.isCrouching(),
+        if(!HorrorListeningPolicy.mayListen(true,true,
                 now,entry.lastListenTick)) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] Hold sneak and listen again after the 12-second cooldown."));
+            player.displayClientMessage(Component.literal(
+                    "[Nightwatch] Listen again after the 12-second cooldown."),true);
             return false;
         }
         entry.lastListenTick=now; // empty attempts also consume one cooldown
@@ -305,7 +313,15 @@ public final class HauntGameplayRuntime {
             UUID id=player.getUUID();
             online.add(id);
             Entry e=active.get(id);
-            if(e==null || !eligible(player,true))continue;
+            if(e==null && eligible(player,true)) {
+                e=new Entry();
+                active.put(id,e);
+                E2EGameplayProof.record("AUTO_JOINED");
+                player.displayClientMessage(Component.literal(
+                        "[Nightwatch] The night grows strange. Press H to open Nightwatch."),
+                        true);
+            }
+            if(e==null || e.paused || !eligible(player,true))continue;
             e.activeTicks=Math.min(Integer.MAX_VALUE-20,e.activeTicks+20);
             // Natural investigation: sustained direct gaze at REAL, nearby,
             // line-of-sight visible actor. No secret stage commands needed.
@@ -442,41 +458,49 @@ public final class HauntGameplayRuntime {
     }
     private static String stageMessage(HauntGameplayPolicy.Act act) {
         return switch(act) {
-            case STILLNESS -> "[Nightwatch] The forest is quiet again. It may not last.";
-            case WHISPERS -> "[Nightwatch] A faint sound answers another. Keep watching.";
-            case WITNESS -> "[Nightwatch] Something is out there. Find Gugu-Gaga, "
-                    +"then use /gugugaga investigate within 12 blocks.";
-            case FALSE_SAFETY -> "[Nightwatch] The bird noticed something blue. "
-                    +"Find Lapis or the smiling stranger and investigate.";
-            case RESPITE -> "[Nightwatch] Your investigation is complete for now. "
-                    +"The world is quiet... but the encounter may return.";
+            case STILLNESS -> "The forest falls quiet. Something is watching beyond the trees.";
+            case WHISPERS -> "A sound answers from the dark. Follow it carefully.";
+            case WITNESS -> "A figure has appeared. Keep it in sight, or approach and right-click to inspect.";
+            case FALSE_SAFETY -> "A blue figure and a smiling stranger are nearby. One is not what it seems.";
+            case RESPITE -> "The encounter recedes. The world grows quiet again.";
         };
     }
     public static boolean investigate(ServerPlayer player) {
+        return investigate(player,null);
+    }
+
+    /** Investigation can come from a four-second gaze or a real right-click on the actor. */
+    public static boolean investigate(ServerPlayer player,Entity target) {
         Map<UUID,Entry> all=entries(player.serverLevel().getServer());
         Entry e=all.get(player.getUUID());
-        if(e==null || !eligible(player,true)) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] Join via /gugugaga play join, then investigate "
-                    +"at night in survival when the server enabled the loop."));
+        if(e==null || e.paused || !eligible(player,true)) {
+            player.displayClientMessage(Component.literal(
+                    "[Nightwatch] Nightwatch is not active. Press H to join when the world is ready."),
+                    true);
             return false;
         }
         ServerLevel level=player.serverLevel();
         HauntGameplayPolicy.Evidence evidence=HauntGameplayPolicy.Evidence.NONE;
         if(e.act==HauntGameplayPolicy.Act.WITNESS) {
-            GugugagaEntity bird=visibleNearest(level,player,GugugagaEntity.class);
+            GugugagaEntity bird=target instanceof GugugagaEntity candidate
+                    ?visibleTarget(player,candidate)?candidate:null
+                    :target==null?visibleNearest(level,player,GugugagaEntity.class):null;
             if(bird!=null) {
                 evidence=HauntGameplayPolicy.Evidence.GUGU_GAGA;
                 reportEvidence(player,e,HorrorEvidencePolicy.bird(
                         bird.phase()==ObserverBrain.Phase.APPROACH));
             }
         } else if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
-            RedactorEntity redactor=visibleNearest(level,player,RedactorEntity.class);
+            RedactorEntity redactor=target instanceof RedactorEntity candidate
+                    ?visibleTarget(player,candidate)?candidate:null
+                    :target==null?visibleNearest(level,player,RedactorEntity.class):null;
             if(redactor!=null) {
                 evidence=HauntGameplayPolicy.Evidence.LAPIS_REDACTOR;
                 reportEvidence(player,e,HorrorEvidencePolicy.redactor(redactor.revealed()));
             } else {
-                YellowSmilerEntity yellow=visibleNearest(level,player,YellowSmilerEntity.class);
+                YellowSmilerEntity yellow=target instanceof YellowSmilerEntity candidate
+                        ?visibleTarget(player,candidate)?candidate:null
+                        :target==null?visibleNearest(level,player,YellowSmilerEntity.class):null;
                 if(yellow!=null) {
                     evidence=HauntGameplayPolicy.Evidence.YELLOW_SMILER;
                     reportEvidence(player,e,HorrorEvidencePolicy.smiler(yellow.revealed()));
@@ -486,16 +510,16 @@ public final class HauntGameplayRuntime {
         HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(e.act,
                 e.activeTicks,evidence,true);
         if(next==e.act) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] No new clue yet. Explore, watch and listen. "
-                    +"Stage="+e.act));
+            player.displayClientMessage(Component.literal(
+                    "No new clue yet. Keep watching, listen, or approach the creature."),
+                    true);
             return false;
         }
         e.act=next;
         e.activeTicks=0;
         e.gazeFocusTicks=0;
         E2EGameplayProof.record("STAGE_"+next);
-        player.sendSystemMessage(Component.literal(stageMessage(next)));
+        player.displayClientMessage(Component.literal(stageMessage(next)),true);
         if(next==HauntGameplayPolicy.Act.FALSE_SAFETY) {
             e.redactorSpawnAttempts=1;
             e.smilerSpawnAttempts=1;
@@ -508,6 +532,7 @@ public final class HauntGameplayRuntime {
             ensureNearby(level,player,GuguGagaMod.YELLOW_SMILER.get());
         return true;
     }
+
     private static void reportEvidence(ServerPlayer player,Entry entry,
             HorrorEvidencePolicy.Trace trace) {
         if(!NightwatchConfig.EVIDENCE_CLUES_ENABLED.get())return;
@@ -557,6 +582,65 @@ public final class HauntGameplayRuntime {
             }
         }
         return closest;
+    }
+
+    private static boolean visibleTarget(ServerPlayer player,Entity target) {
+        return target.isAlive() && HauntGameplayPolicy.nearEvidence(
+                player.distanceToSqr(target),player.hasLineOfSight(target));
+    }
+
+    public static boolean isInAct(ServerPlayer player,HauntGameplayPolicy.Act act) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        return entry!=null && !entry.paused && entry.act==act
+                && isActiveParticipant(player);
+    }
+
+    /** Contextual right-click interaction for the Guardian. */
+    public static void interactWithGugu(ServerPlayer player,GugugagaEntity bird) {
+        E2EGameplayProof.record("INTERACT_GUGU");
+        if(isInAct(player,HauntGameplayPolicy.Act.WITNESS)) {
+            if(investigate(player,bird))
+                E2EGameplayProof.record("INTERACT_GUGU_STAGE_PROGRESS");
+            return;
+        }
+        if(WitnessJournalPolicy.discovered(WitnessJournal.evidenceBits(player))>=3) {
+            bird.setTemperament(ThreatPolicy.Mood.CALM);
+            player.displayClientMessage(Component.literal(
+                    "The penguin settles. It recognises that you have learned its signs."),
+                    true);
+        } else if(bird.mood()==ThreatPolicy.Mood.CORRUPTED) {
+            player.displayClientMessage(Component.literal(
+                    "Its feathers twitch with a dark pulse. It watches your hands, not your face."),
+                    true);
+        } else if(bird.mood()==ThreatPolicy.Mood.ANGRY) {
+            player.displayClientMessage(Component.literal(
+                    "The penguin lowers its head. A warning chime sounds from its chest."),
+                    true);
+        } else if(isActiveParticipant(player)) {
+            player.displayClientMessage(Component.literal(
+                    "The penguin studies you, then glances toward the darker trees."),
+                    true);
+        } else {
+            player.displayClientMessage(Component.literal(
+                    "The penguin holds your gaze without moving."),true);
+        }
+    }
+
+    /** Lapis reveals itself through direct interaction, then records real evidence. */
+    public static void interactWithRedactor(ServerPlayer player,RedactorEntity redactor) {
+        E2EGameplayProof.record("INTERACT_LAPIS");
+        boolean alreadyRevealed=redactor.revealed();
+        redactor.setRevealed(true);
+        if(isInAct(player,HauntGameplayPolicy.Act.FALSE_SAFETY)) {
+            if(investigate(player,redactor)) {
+                E2EGameplayProof.record("INTERACT_LAPIS_STAGE_PROGRESS");
+                return;
+            }
+        }
+        player.displayClientMessage(Component.literal(alreadyRevealed
+                ?"Lapis turns toward you. The disguise is gone; it is measuring your next move."
+                :"The blue figure's smile falters. Its borrowed face begins to peel away."),
+                true);
     }
 
     private static <T extends Entity> T visibleNearest(

@@ -15,6 +15,8 @@ import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CorruptionArcPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy.Mood;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.particles.ParticleTypes;
@@ -39,11 +41,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Server-owned Nightwatch observer. World/AI evaluation every ten ticks,
- * path requests no faster than once per 30 ticks, with player opt-out,
- * bounded ambient lifetime and sparse original sound/particle storytelling.
- *
- * Never attacks, alters terrain, loads new chunks or requires Ollama.
+ * Server-owned Nightwatch Guardian. Observation, approach, retreat and
+ * opt-in night pursuit are integrated with the five-act game loop.
+ * Never alters terrain, loads new chunks or requires Ollama.
  */
 public class GugugagaEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
     private final software.bernie.geckolib.animatable.instance.AnimatableInstanceCache geoCache =
@@ -176,6 +176,15 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         strikeWindupTicks=0;
         ticksSinceStrike=ThreatPolicy.ATTACK_COOLDOWN_TICKS;
         getNavigation().stop();
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player,InteractionHand hand) {
+        if(level().isClientSide)return InteractionResult.SUCCESS;
+        if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        HauntGameplayRuntime.interactWithGugu(recipient,this);
+        return InteractionResult.SUCCESS;
     }
 
     private static Player playerAttacker(DamageSource source) {

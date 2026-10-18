@@ -90,6 +90,17 @@ with LOG.open("wb") as f:
         # Commands typed into REAL GUI, not injected from a fake Java player.
         say("/gamerule doDaylightCycle false")
         say("/time set night")
+        wait_marker("AUTO_JOINED",12,required=False)
+        # Open the real H-key panel and use its first button, rather than
+        # typing the join command. This verifies normal play is UI-driven.
+        key("h")
+        time.sleep(1.2)
+        wait_marker("MENU_OPENED",6,required=False)
+        snap("05b-nightwatch-ui")
+        click(541,295)  # first-row Join / Resume button at 1280x720
+        time.sleep(2)
+        wait_marker("JOINED",8,required=False)
+        snap("05c-ui-join")
         say("/weather clear")
         say("/fill ~-12 ~-1 ~-12 ~12 ~-1 ~12 minecraft:stone",2)
         say("/fill ~-12 ~ ~-12 ~12 ~8 ~12 minecraft:air",3)
@@ -165,6 +176,29 @@ with LOG.open("wb") as f:
         wait_marker("LISTEN_V_KEY",7,required=False)
         wait_marker("LISTEN_SUCCESS",7,required=False)
         snap("13-sneak-V-listen")
+        # Test real right-click interactions against the rendered entities.
+        say("/gugugaga play test witness",4)
+        say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~ ~ ~5")
+        say("/tp @s ~ ~ ~ 0 10")
+        command("xdotool","click","3",check=True)
+        wait_marker("INTERACT_GUGU",6,required=False)
+        wait_marker("INTERACT_GUGU_STAGE_PROGRESS",6,required=False)
+        say("/gugugaga play test triad",4)
+        say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ~ ~ ~5")
+        say("/tp @s ~ ~ ~ 0 10")
+        command("xdotool","click","3",check=True)
+        wait_marker("INTERACT_LAPIS",6,required=False)
+        wait_marker("INTERACT_LAPIS_STAGE_PROGRESS",6,required=False)
+        say("/gugugaga play test triad",4)
+        say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/tp @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] ~ ~ ~5")
+        say("/tp @s ~ ~ ~ 0 10")
+        command("xdotool","click","3",check=True)
+        wait_marker("INTERACT_YELLOW",6,required=False)
+        wait_marker("INTERACT_YELLOW_STAGE_PROGRESS",6,required=False)
+        snap("14-real-entity-interactions")
         # Apply actual Minecraft player_attack damage to each real actor.
         # The server must record an escape/recovery instead of an instant kill.
         say("/effect clear @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness")
@@ -186,7 +220,11 @@ with LOG.open("wb") as f:
                            "HELP_SUCCESS","LISTEN_V_KEY","LISTEN_SUCCESS",
                            "STAGE_FALSE_SAFETY","STAGE_RESPITE","LOOP_TO_STILLNESS",
                            "GUGU_WEAPON_SURVIVED","LAPIS_WEAPON_SURVIVED",
-                           "YELLOW_WEAPON_SURVIVED")
+                           "YELLOW_WEAPON_SURVIVED","AUTO_JOINED","MENU_OPENED",
+                           "INTERACT_GUGU","INTERACT_LAPIS","INTERACT_YELLOW",
+                           "INTERACT_GUGU_STAGE_PROGRESS",
+                           "INTERACT_LAPIS_STAGE_PROGRESS",
+                           "INTERACT_YELLOW_STAGE_PROGRESS")
                  if not results.get(x)]
         (OUT/"results.json").write_text(json.dumps({"markers":results,
                  "missing":missing,"elapsed_seconds":round(time.monotonic()-start,1)},indent=2))

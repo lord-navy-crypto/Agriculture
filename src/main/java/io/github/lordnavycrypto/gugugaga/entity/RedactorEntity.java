@@ -22,6 +22,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -38,9 +40,9 @@ import java.util.Comparator;
 /**
  * Lapis = Redactor's public, harmless-looking mask, NOT a separate NPC.
  *
- * Yellow Smiler flight always overrides: revealing, attacks, and corruption.
- * Revealed Redactor can give a small telegraphed strike only if the server
- * operator separately enables redactor_mimic.redactor_hostility.
+ * Yellow Smiler intervention overrides Lapis attacks. In the active night
+ * encounter, revealed Lapis can perform a short, telegraphed strike; outside
+ * that loop, hostility remains controlled by the server setting.
  * Does not load chunks, edit blocks, teleport or send network requests.
  */
 public final class RedactorEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
@@ -115,6 +117,15 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         quietTicks=0;
         getNavigation().stop();
     }
+    @Override
+    protected InteractionResult mobInteract(Player player,InteractionHand hand) {
+        if(level().isClientSide)return InteractionResult.SUCCESS;
+        if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        HauntGameplayRuntime.interactWithRedactor(recipient,this);
+        return InteractionResult.SUCCESS;
+    }
+
     private static Player playerAttacker(DamageSource source) {
         if(source.getEntity() instanceof Player player)return player;
         if(source.getDirectEntity() instanceof Projectile projectile
@@ -290,7 +301,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         // A disguised Lapis cannot attack; no attack if Yellow is near.
         if(revealed() && player!=null
                 && (NightwatchConfig.REDACTOR_HOSTILITY_ENABLED.get()
-                    || HauntGameplayRuntime.isActiveParticipant(player))
+                    || HauntGameplayRuntime.inChaseAct(player))
                 && canSeePlayer && playerSq<=6*6) {
             if(warningTicks==0 && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
                 world.playSound(null,getX(),getY()+0.8,getZ(),

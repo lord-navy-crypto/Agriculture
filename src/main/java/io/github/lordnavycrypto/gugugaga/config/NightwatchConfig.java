@@ -2,7 +2,7 @@ package io.github.lordnavycrypto.gugugaga.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-/** Server-owned opt-in; config is OFF by default and never auto-connects. */
+/** Automatic night loop by default; each player can pause privately from the in-game panel. */
 public final class NightwatchConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec.BooleanValue OLLAMA_ENABLED;
@@ -95,9 +95,10 @@ public final class NightwatchConfig {
         BUILDER.pop();
         BUILDER.push("survival_gameplay");
         PLAYABLE_LOOP_ENABLED=BUILDER.comment(
-                "Experimental five-act survival horror mode. OFF by default. "
-                +"Each player must explicitly join. No story endings or forced game modes.")
-                .define("playable_loop",false);
+                "Automatic five-act night survival-horror loop. ON by default. "
+                +"Players can pause their own session from the H-key Nightwatch panel. "
+                +"Set false only to disable Nightwatch on this server.")
+                .define("playable_loop_enabled",true);
         CHASES_ENABLED=BUILDER.comment(
                 "Short sight-driven pursuits for voluntarily participating players. " +
                 "OFF disables v0.12 pursuit. Damage remains gated by the existing hostility toggle.")

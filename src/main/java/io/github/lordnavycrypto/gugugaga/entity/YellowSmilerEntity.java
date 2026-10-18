@@ -133,9 +133,28 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         if(level().isClientSide)return InteractionResult.SUCCESS;
         if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
+        E2EGameplayProof.record("INTERACT_YELLOW");
+        if(recipient.isCrouching()) {
+            boolean helped=HauntGameplayRuntime.smilerAidEnabled(recipient)
+                    && respondToHelpCall(recipient);
+            if(helped) {
+                E2EGameplayProof.record("YELLOW_HELP_INTERACTION");
+                recipient.displayClientMessage(Component.literal(
+                        "[Smiler] I hear you. The bird, not you, is my priority."),true);
+            } else {
+                recipient.displayClientMessage(Component.literal(
+                        "[Smiler] I can only help when the bird is near. Stay close during an encounter."),
+                        true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if(HauntGameplayRuntime.isInAct(recipient,
+                HauntGameplayPolicy.Act.FALSE_SAFETY)
+                && HauntGameplayRuntime.investigate(recipient,this))
+            E2EGameplayProof.record("INTERACT_YELLOW_STAGE_PROGRESS");
         if(revealed()) {
-            recipient.sendSystemMessage(Component.literal(
-                    "[Smiler] I suppose the smile is no longer necessary."));
+            recipient.displayClientMessage(Component.literal(
+                    "[Smiler] I suppose the smile is no longer necessary."),true);
             return InteractionResult.SUCCESS;
         }
         long now=recipient.serverLevel().getServer().overworld().getGameTime();
