@@ -177,6 +177,17 @@ jobs:
         run: |
           python3 qa/generate_character_sprites.py build/v017-review-resources
           python3 qa/render_visual_review.py build/v017-review-resources build/visual-review
+      - name: Verify v0.18 hearing versus stealth, player listening and real cave pressure
+        run: |
+          mkdir -p build/v018-horror-smoke
+          javac -d build/v018-horror-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorHearingPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorListeningPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CaveThreatSoundPolicy.java \
+            qa/java/V018HorrorTacticsSmoke.java \
+            qa/java/V018CavePressureSmoke.java
+          java -cp build/v018-horror-smoke V018HorrorTacticsSmoke
+          java -cp build/v018-horror-smoke V018CavePressureSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

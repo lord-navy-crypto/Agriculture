@@ -52,6 +52,7 @@ public final class HauntGameplayRuntime {
         int witnessSpawnAttempts;
         long lastSmilerFavorTick=-1000000L;
         long lastSmilerCallTick=-1000000L;
+        long lastListenTick=-1000000L;
     }
     private static final Map<MinecraftServer,Map<UUID,Entry>> SESSIONS=
             new WeakHashMap<>();
@@ -81,6 +82,7 @@ public final class HauntGameplayRuntime {
                 +", jumpScares="+(e!=null&&e.scaresAllowed)
                 +", smilerAid="+(e!=null&&e.smilerAidAllowed)
                 +", smilerFavors="+(e==null?0:e.smilerFavors)
+                +", tactics=/gugugaga play listen (crouch) or sprint to risk discovery"
                 +", next clue=/gugugaga investigate; "
                 +"original Nightwatch observers retain 8-minute minimum cooldown.";
     }
@@ -184,6 +186,71 @@ public final class HauntGameplayRuntime {
         return true;
     }
 
+    /**
+     * Active crouched listening reveals only a COARSE relative sound and range,
+     * from real loaded nearby mobs. Players cannot use it as an all-seeing map.
+     * No sound is generated for entities that do not exist.
+     */
+    public static boolean listen(ServerPlayer player) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        if(entry==null || !isActiveParticipant(player)) {
+            player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] Join Nightwatch in night-time survival first."));
+            return false;
+        }
+        long now=player.serverLevel().getGameTime();
+        if(!HorrorListeningPolicy.mayListen(true,player.isCrouching(),
+                now,entry.lastListenTick)) {
+            player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] Hold sneak and listen again after the 12-second cooldown."));
+            return false;
+        }
+        entry.lastListenTick=now; // empty attempts also consume one cooldown
+        ServerLevel level=player.serverLevel();
+        AABB nearby=player.getBoundingBox().inflate(20);
+        Entity closest=null;
+        HorrorListeningPolicy.Source source=HorrorListeningPolicy.Source.NONE;
+        double nearest=HorrorListeningPolicy.MAX_DISTANCE_SQ+0.001;
+        for(GugugagaEntity bird:level.getEntitiesOfClass(
+                GugugagaEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(bird);
+            if(squared<nearest) {
+                nearest=squared;closest=bird;
+                source=HorrorListeningPolicy.Source.WATCHER;
+            }
+        }
+        for(RedactorEntity redactor:level.getEntitiesOfClass(
+                RedactorEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(redactor);
+            if(squared<nearest) {
+                nearest=squared;closest=redactor;
+                source=HorrorListeningPolicy.Source.BLUE;
+            }
+        }
+        for(YellowSmilerEntity yellow:level.getEntitiesOfClass(
+                YellowSmilerEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(yellow);
+            if(squared<nearest) {
+                nearest=squared;closest=yellow;
+                source=HorrorListeningPolicy.Source.SMILER;
+            }
+        }
+        String clue;
+        if(closest!=null && HorrorListeningPolicy.audible(nearest)) {
+            var facing=player.getLookAngle();
+            var relative=closest.position().subtract(player.position());
+            var direction=HorrorListeningPolicy.direction(
+                    facing.x,facing.z,relative.x,relative.z);
+            clue=HorrorListeningPolicy.hint(source,direction,nearest);
+        } else {
+            clue=HorrorListeningPolicy.hint(
+                    HorrorListeningPolicy.Source.NONE,
+                    HorrorListeningPolicy.Direction.AHEAD,0);
+        }
+        player.sendSystemMessage(Component.literal("[Nightwatch Listening] "+clue));
+        return true;
+    }
+
     /** Targeted, volume-capped cue, no flashes, camera seizure or forced input. */
     public static boolean tryScare(ServerPlayer player,Entity source) {
         Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
@@ -229,7 +296,7 @@ public final class HauntGameplayRuntime {
             online.add(id);
             Entry e=active.get(id);
             if(e==null || !eligible(player,true))continue;
-            e.activeTicks=Math.min(24000,e.activeTicks+20);
+            e.activeTicks=Math.min(Integer.MAX_VALUE-20,e.activeTicks+20);
             HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(
                     e.act,e.activeTicks,HauntGameplayPolicy.Evidence.NONE,false);
             if(next!=e.act) {
@@ -253,6 +320,35 @@ public final class HauntGameplayRuntime {
                     e.witnessSpawnAttempts++;
                     if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
                         e.witnessSpawnAttempts=3;
+                }
+                // Real threatened-cave proximity: a restrained sound that
+                // happens only if an actual Redactor/Gugu is inside 18 blocks.
+                // At most once per 12s to the enrolled player, not the room.
+                if((e.act==HauntGameplayPolicy.Act.WITNESS
+                        || e.act==HauntGameplayPolicy.Act.FALSE_SAFETY)
+                        && CaveThreatSoundPolicy.due(e.activeTicks)
+                        && NightwatchConfig.CAVE_THREAT_AUDIO_ENABLED.get()
+                        && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get()
+                        && !player.serverLevel().canSeeSky(player.blockPosition())) {
+                    var area=player.getBoundingBox().inflate(18);
+                    double closestSq=Double.POSITIVE_INFINITY;
+                    for(GugugagaEntity bird:player.serverLevel().getEntitiesOfClass(
+                            GugugagaEntity.class,area,Entity::isAlive))
+                        closestSq=Math.min(closestSq,player.distanceToSqr(bird));
+                    for(RedactorEntity redactor:player.serverLevel().getEntitiesOfClass(
+                            RedactorEntity.class,area,Entity::isAlive))
+                        closestSq=Math.min(closestSq,player.distanceToSqr(redactor));
+                    var pressure=CaveThreatSoundPolicy.classify(true,true,
+                            Double.isFinite(closestSq),closestSq);
+                    if(pressure!=CaveThreatSoundPolicy.Pressure.NONE) {
+                        player.playNotifySound(
+                                pressure==CaveThreatSoundPolicy.Pressure.DISTANT
+                                ?SoundEvents.AMETHYST_BLOCK_CHIME
+                                :SoundEvents.AMETHYST_BLOCK_STEP,
+                                SoundSource.AMBIENT,
+                                CaveThreatSoundPolicy.volume(pressure),
+                                CaveThreatSoundPolicy.pitch(pressure));
+                    }
                 }
                 // Individually addressed cinematic cues. They never broadcast
                 // to nearby unjoined players or force camera/screen effects.

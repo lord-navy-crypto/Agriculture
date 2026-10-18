@@ -22,6 +22,7 @@ public final class GuguPlayCommands {
                         .then(Commands.literal("leave").executes(ctx->leave(ctx.getSource())))
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
                         .then(Commands.literal("help").executes(ctx->help(ctx.getSource())))
+                        .then(Commands.literal("listen").executes(ctx->listen(ctx.getSource())))
                         .then(Commands.literal("aid")
                                 .then(Commands.literal("on").executes(ctx->aid(ctx.getSource(),true)))
                                 .then(Commands.literal("off").executes(ctx->aid(ctx.getSource(),false))))
@@ -48,6 +49,9 @@ public final class GuguPlayCommands {
     private static int leave(CommandSourceStack src) throws CommandSyntaxException {
         HauntGameplayRuntime.leave(src.getPlayerOrException());
         return 1;
+    }
+    private static int listen(CommandSourceStack src) throws CommandSyntaxException {
+        return HauntGameplayRuntime.listen(src.getPlayerOrException())?1:0;
     }
     private static int help(CommandSourceStack src) throws CommandSyntaxException {
         return HauntGameplayRuntime.requestSmilerHelp(src.getPlayerOrException())?1:0;

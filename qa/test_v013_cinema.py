@@ -19,7 +19,14 @@ class CinematicHorror(unittest.TestCase):
         self.assertIn("lastSeenChasePosition=player.position()",bird)
         self.assertIn("LastSeenSearchPolicy.beginSearch(",bird)
         self.assertIn("LastSeenSearchPolicy.useLastSeen(",bird)
-        self.assertIn("getNavigation().moveTo(last.x,last.y,last.z",bird)
+        # v0.18 adds fair sound memory; no hidden-player coordinates
+        # are used unless sprinting within audible distance.
+        self.assertIn("getNavigation().moveTo(heardOrSeen.x",bird)
+        self.assertIn("getNavigation().moveTo(",bird)
+        self.assertIn("lastHeardChasePosition=player.position()",bird)
+        self.assertIn("HorrorHearingPolicy.hearsRunner(",bird)
+        self.assertIn("!visible && NightwatchConfig.NOISE_HUNT_ENABLED.get()",bird)
+        self.assertIn("LastSeenSearchPolicy.beginSearch(",bird)
         self.assertIn("java.util.UUID chaseTargetId",bird)
         self.assertIn("chaseTargetId=null;",bird)
         self.assertIn("HauntGameplayRuntime.inChaseAct(player)",bird)

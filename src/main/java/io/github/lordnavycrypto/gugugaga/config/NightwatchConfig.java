@@ -24,6 +24,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue CHASES_ENABLED;
     public static final ModConfigSpec.BooleanValue JUMPSCARES_ENABLED;
     public static final ModConfigSpec.BooleanValue EVIDENCE_CLUES_ENABLED;
+    public static final ModConfigSpec.BooleanValue NOISE_HUNT_ENABLED;
+    public static final ModConfigSpec.BooleanValue CAVE_THREAT_AUDIO_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -108,6 +110,16 @@ public final class NightwatchConfig {
                 "Show creature-specific observations after actual player investigation. " +
                 "No global clues, hidden entity scans or forced reveals.")
                 .define("horror_evidence_clues",true);
+        NOISE_HUNT_ENABLED=BUILDER.comment(
+                "During opt-in chases, moving sprinting players can be heard behind"
+                +" cover within 18 blocks. Sneaking and standing still remain silent."
+                +" No player coordinates are sent to clients.")
+                .define("horror_noise_hunt",true);
+        CAVE_THREAT_AUDIO_ENABLED=BUILDER.comment(
+                "Send a quiet cave audio pulse only when an actual penguin"
+                +" or Redactor is nearby. At most every 12 seconds, no extra"
+                +" hostile spawns, respecting the master audio setting.")
+                .define("horror_cave_threat_audio",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
