@@ -4,6 +4,7 @@ import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.HorrorChasePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.LastSeenSearchPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
@@ -198,6 +199,13 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         if(away.lengthSqr()<0.01)away=new Vec3(1,0,0);
         Vec3 goal=position().add(away.normalize().scale(9));
         getNavigation().moveTo(goal.x,goal.y,goal.z,1.1);
+        if(level() instanceof ServerLevel world) {
+            int n=CinematicVfxPolicy.count(CinematicVfxPolicy.Event.BIRD_RETREAT,
+                    NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get(),true,
+                    hasLineOfSight(smiler));
+            if(n>0)world.sendParticles(ParticleTypes.SOUL,
+                    getX(),getY()+0.85,getZ(),n,0.12,0.14,0.12,0.004);
+        }
     }
 
     private ServerPlayer eligibleNearestPlayer(ServerLevel world) {

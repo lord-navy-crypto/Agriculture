@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.MimicAttackPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.MimicDeceptionPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
@@ -207,6 +208,11 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
                         canSeePlayer,watched,playerSq,tellCooldown)) {
                     triggerAnim("tell_gesture","tell");
                     tellCooldown=0;
+                    int n=CinematicVfxPolicy.count(CinematicVfxPolicy.Event.LAPIS_TELL,
+                            NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get(),true,
+                            canSeePlayer);
+                    if(n>0)world.sendParticles(ParticleTypes.ENCHANT,
+                            getX(),getY()+0.72,getZ(),n,0.12,0.10,0.12,0.006);
                     player.displayClientMessage(Component.literal(
                             "[Nightwatch] The blue figure looked away a moment too late."),true);
                     if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
