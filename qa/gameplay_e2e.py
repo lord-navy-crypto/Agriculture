@@ -109,6 +109,14 @@ with LOG.open("wb") as f:
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
         time.sleep(2)
         snap("08-real-three-entities")
+        # Exercise HELP immediately in the valid FALSE_SAFETY act while all
+        # three existing actors are deliberately placed nearby and visible.
+        # Do this before long gaze/loop tests can advance the stage or consume
+        # the rescue cooldown.
+        say("HELP",3.5)
+        wait_marker("CHAT_HELP_INTERCEPTED",6,required=False)
+        wait_marker("HELP_SUCCESS",6,required=False)
+        snap("08b-chat-help")
         # Yellow proactively drives away Gugu; keep guardian away during
         # the independent natural-looking investigation acceptance.
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~30 ~ ~30")
@@ -141,10 +149,9 @@ with LOG.open("wb") as f:
         say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
         say("/gugugaga play test triad",4)
-        say("HELP",3.5) # Normal chat, NOT /gugugaga play help
-        wait_marker("CHAT_HELP_INTERCEPTED",6,required=False)
-        wait_marker("HELP_SUCCESS",6,required=False)
-        snap("12-chat-help")
+        snap("12-rejoined-triad")
+        # HELP was already tested above during the active FALSE_SAFETY act;
+        # do not issue a second call that is correctly blocked by cooldown.
         # xdotool 'key' releases shift; send real held key separately.
         command("xdotool","keydown","Shift_L")
         time.sleep(1)
