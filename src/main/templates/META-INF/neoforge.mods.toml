@@ -19,7 +19,7 @@ This is an experimental test build, not a stable release.
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[${neo_version},)"
+versionRange="[${neo_min_version},)"
 ordering="NONE"
 side="BOTH"
 
@@ -33,6 +33,6 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="geckolib"
 type="required"
-versionRange="[4.9.3,5.0.0)"
+versionRange="[${geckolib_min_version},5.0.0)"
 ordering="AFTER"
 side="BOTH"

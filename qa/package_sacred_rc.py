@@ -13,7 +13,7 @@ import shutil
 import sys
 import zipfile
 
-VERSION="0.20.1-alpha.1"
+VERSION="0.21.0-rc.1"
 EXPECTED_JAR=f"gugugaga-{VERSION}.jar"
 PREFIX="io/github/lordnavycrypto/gugugaga/"
 ACTORS=["GugugagaEntity","RedactorEntity","YellowSmilerEntity"]
@@ -51,7 +51,9 @@ def check_and_bundle(build_libs,out):
         if missing:raise AssertionError(f"Missing shipped runtime assets: {sorted(missing)}")
         meta=z.read("META-INF/neoforge.mods.toml").decode("utf8")
         for line in (f'version="{VERSION}"','modId="gugugaga"',
-                     'modId="geckolib"','side="BOTH"'):
+                     'modId="geckolib"','side="BOTH"',
+                     'versionRange="[21.1.100,)"',
+                     'versionRange="[4.8.2,5.0.0)"'):
             if line not in meta:raise AssertionError(f"mod metadata lacks {line}")
         for name in TEXTURES:
             blob=z.read("assets/gugugaga/textures/entity/"+name+".png")
@@ -73,9 +75,9 @@ def check_and_bundle(build_libs,out):
         "mod":"Gugu-Gaga Horror Natural Interaction Playtest",
         "version":VERSION,
         "minecraft":"1.21.1",
-        "neoforge":"21.1.259",
+        "neoforge_minimum":"21.1.100",
         "java":"21",
-        "required_geckolib":"4.9.3 for Minecraft 1.21.1 NeoForge",
+        "required_geckolib":"4.8.2 or newer 4.x for Minecraft 1.21.1 NeoForge",
         "jar_file":dest.name,
         "jar_bytes":len(data),
         "jar_sha256":digest,
@@ -91,8 +93,8 @@ def check_and_bundle(build_libs,out):
     (out/"NATURAL_PLAYTEST_INSTRUCTIONS.txt").write_text(
         "GUGU-GAGA NATURAL INTERACTION v0.20 / PLAYTEST PACKAGE\n"
         "Experimental, NOT a stable release. Use backup/test world.\n"
-        "Minecraft 1.21.1 | NeoForge 21.1.259 | Java 21\n"
-        "REQUIRES GeckoLib 4.9.3 for NeoForge 1.21.1 on BOTH client and dedicated server.\n"
+        "Minecraft 1.21.1 | NeoForge 21.1.100+ | Java 21\n"
+        "REQUIRES GeckoLib 4.8.2+ (4.x) for NeoForge 1.21.1 on BOTH client and dedicated server.\n"
         "Install the ONE JAR above in mods; remove older gugugaga JAR versions.\n"
         "The UI input/held-gaze interactions replace most gameplay slash commands.\n"
         "Do not put the zip of this artifact directly in mods.\n"
