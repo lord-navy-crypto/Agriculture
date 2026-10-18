@@ -49,6 +49,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.watch");
     private static final software.bernie.geckolib.animation.RawAnimation WALK =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.walk");
+    private static final software.bernie.geckolib.animation.RawAnimation SEARCH =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.search");
     private static final software.bernie.geckolib.animation.RawAnimation RETREAT_ANIM =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.retreat");
     private static final software.bernie.geckolib.animation.RawAnimation ANGRY =
@@ -67,6 +69,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             if (corruptionStage() >= 3) return state.setAndContinue(BLACKENED);
             if (mood() == Mood.CORRUPTED) return state.setAndContinue(CORRUPTED);
             if (mood() == Mood.ANGRY) return state.setAndContinue(ANGRY);
+            // Only the SERVER knows the last-sighted target position. This
+            // tiny synced boolean communicates the visual state, not coords.
+            if (searching()) return state.setAndContinue(SEARCH);
             return state.setAndContinue(switch (phase()) {
                 case DORMANT -> IDLE;
                 case OBSERVE -> WATCH;
@@ -86,6 +91,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
 
     private static final EntityDataAccessor<Integer> PHASE =
             SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SEARCHING =
+            SynchedEntityData.defineId(GugugagaEntity.class,EntityDataSerializers.BOOLEAN);
     private static final int AUTO_LIFETIME_TICKS = 20 * 90;
     private static final EntityDataAccessor<Integer> MOOD =
             SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
@@ -124,6 +131,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(PHASE, Phase.DORMANT.ordinal());
+        builder.define(SEARCHING,false);
         builder.define(MOOD, Mood.CALM.ordinal());
         builder.define(CORRUPTION_STAGE,0);
     }
@@ -186,6 +194,15 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 ? Phase.values()[value] : Phase.DORMANT;
     }
 
+    /** Visual state only; do not sync or persist an obscured player's coords. */
+    public boolean searching() {
+        return getEntityData().get(SEARCHING);
+    }
+
+    private void setSearching(boolean active) {
+        if(searching()!=active)getEntityData().set(SEARCHING,active);
+    }
+
     /** Yellow Smiler can physically drive off the penguin, not teleport/despawn it. */
     public void retreatFromSmiler(YellowSmilerEntity smiler) {
         if(level().isClientSide)return;
@@ -193,6 +210,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         chaseTargetId=null;
         lastSeenChasePosition=null;
         searchTicks=0;
+        setSearching(false);
         repelledTicks=Math.max(repelledTicks,20*5);
         changePhase(Phase.RETREAT);
         Vec3 away=position().subtract(smiler.position());
@@ -240,6 +258,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         if(chaseRemainingTicks>0)chaseRemainingTicks--;
         if(repelledTicks>0)repelledTicks--;
         if(searchTicks>0)searchTicks--;
+        if(searchTicks==0 && searching())setSearching(false);
         moodTicks=Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,moodTicks+1);
         if(tickCount%10==0) {
             int newStage=CorruptionArcPolicy.stage(
@@ -301,6 +320,13 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         }
         ServerPlayer player=eligibleNearestPlayer(world);
         if(player==null) {
+            // The private target disappeared or opted out: discard memory
+            // and visual search state even before its last tick expires.
+            searchTicks=0;
+            chaseRemainingTicks=0;
+            chaseTargetId=null;
+            lastSeenChasePosition=null;
+            setSearching(false);
             if(phase()!=Phase.DORMANT)changePhase(Phase.DORMANT);
             getNavigation().stop();
             return;
@@ -362,6 +388,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                     || !chaseTargetId.equals(player.getUUID())) {
                 chaseRemainingTicks=0;
                 searchTicks=0;
+                setSearching(false);
                 chaseTargetId=null;
                 lastSeenChasePosition=null;
                 unseenChaseTicks=0;
@@ -379,6 +406,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                         unseenChaseTicks,lastSeenChasePosition!=null,allowed);
                 chaseRemainingTicks=0;
                 searchTicks=search?LastSeenSearchPolicy.SEARCH_TICKS:0;
+                setSearching(searchTicks>0);
                 unseenChaseTicks=0;
                 // Navigation goes ONLY to the remembered visible location;
                 // the AI has no access to the obscured player's new position.
@@ -412,6 +440,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         if(searchTicks>0) {
             if(!allowed || !player.getUUID().equals(chaseTargetId)) {
                 searchTicks=0;
+                setSearching(false);
                 getNavigation().stop();
                 chaseTargetId=null;
                 lastSeenChasePosition=null;
@@ -427,6 +456,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         // Previous round of searching finished. No stale player coordinate
         // is retained and no pursuit resumes during the cooldown.
         if(chaseTargetId!=null) {
+            setSearching(false);
             chaseTargetId=null;
             lastSeenChasePosition=null;
             getNavigation().stop();
@@ -434,6 +464,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         if(HorrorChasePolicy.canStart(allowed,NightwatchConfig.CHASES_ENABLED.get(),
                 hasLineOfSight(player),distanceSquared,chaseCooldownTicks)) {
             chaseRemainingTicks=HorrorChasePolicy.CHASE_TICKS;
+            setSearching(false);
             chaseCooldownTicks=HorrorChasePolicy.COOLDOWN_TICKS;
             unseenChaseTicks=0;
             chaseTargetId=player.getUUID();
@@ -570,6 +601,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         chaseTargetId=null;
         lastSeenChasePosition=null;
         searchTicks=0;
+        setSearching(false);
         chaseCooldownTicks=Math.max(0,Math.min(HorrorChasePolicy.COOLDOWN_TICKS,
                 tag.getInt("ObserverChaseCooldown")));
         repelledTicks=Math.max(0,Math.min(20*5,tag.getInt("ObserverRepelledTicks")));
