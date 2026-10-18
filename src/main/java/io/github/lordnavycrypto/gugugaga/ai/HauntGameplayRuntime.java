@@ -204,6 +204,10 @@ public final class HauntGameplayRuntime {
                 T spawned=kind.create(level);
                 if(spawned==null)return false;
                 spawned.moveTo(x+0.5,y,z+0.5,level.random.nextFloat()*360f,0);
+                if(spawned instanceof RedactorEntity redactor)
+                    redactor.markStageEncounter();
+                if(spawned instanceof YellowSmilerEntity yellow)
+                    yellow.markStageEncounter();
                 if(!level.noCollision(spawned))continue;
                 return level.addFreshEntity(spawned);
             }
