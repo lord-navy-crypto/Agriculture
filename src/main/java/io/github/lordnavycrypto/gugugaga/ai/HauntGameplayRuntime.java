@@ -50,6 +50,8 @@ public final class HauntGameplayRuntime {
         boolean smilerAidAllowed=true;
         int smilerFavors;
         int witnessSpawnAttempts;
+        int redactorSpawnAttempts;
+        int smilerSpawnAttempts;
         long lastSmilerFavorTick=-1000000L;
         long lastSmilerCallTick=-1000000L;
         long lastListenTick=-1000000L;
@@ -308,7 +310,7 @@ public final class HauntGameplayRuntime {
                 // unsolicited Nightwatch ambient encounter scheduler.
                 if(next==HauntGameplayPolicy.Act.WITNESS) {
                     e.witnessSpawnAttempts=1;
-                    if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
+                    if(ensureNearby(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
                         e.witnessSpawnAttempts=3;
                 }
             } else {
@@ -318,8 +320,26 @@ public final class HauntGameplayRuntime {
                         && e.activeTicks>0 && e.activeTicks%(20*20)==0
                         && e.witnessSpawnAttempts<3) {
                     e.witnessSpawnAttempts++;
-                    if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
+                    if(ensureNearby(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
                         e.witnessSpawnAttempts=3;
+                }
+                // FALSE_SAFETY requires an actor to investigate. Placement
+                // may fail near cliffs/structures, so retry a bounded number
+                // of times rather than leaving the encounter softlocked.
+                if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY
+                        && e.activeTicks>0 && e.activeTicks%(20*20)==0) {
+                    if(e.redactorSpawnAttempts<3) {
+                        e.redactorSpawnAttempts++;
+                        if(ensureNearby(player.serverLevel(),player,
+                                GuguGagaMod.REDACTOR.get()))
+                            e.redactorSpawnAttempts=3;
+                    }
+                    if(e.smilerSpawnAttempts<3) {
+                        e.smilerSpawnAttempts++;
+                        if(ensureNearby(player.serverLevel(),player,
+                                GuguGagaMod.YELLOW_SMILER.get()))
+                            e.smilerSpawnAttempts=3;
+                    }
                 }
                 // Real threatened-cave proximity: a restrained sound that
                 // happens only if an actual Redactor/Gugu is inside 18 blocks.
@@ -442,11 +462,15 @@ public final class HauntGameplayRuntime {
         e.activeTicks=0;
         player.sendSystemMessage(Component.literal(stageMessage(next)));
         if(next==HauntGameplayPolicy.Act.FALSE_SAFETY) {
-            summonOne(level,player,GuguGagaMod.REDACTOR.get());
-            summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
+            e.redactorSpawnAttempts=1;
+            e.smilerSpawnAttempts=1;
+            if(ensureNearby(level,player,GuguGagaMod.REDACTOR.get()))
+                e.redactorSpawnAttempts=3;
+            if(ensureNearby(level,player,GuguGagaMod.YELLOW_SMILER.get()))
+                e.smilerSpawnAttempts=3;
         }
         else if(next==HauntGameplayPolicy.Act.RESPITE)
-            summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
+            ensureNearby(level,player,GuguGagaMod.YELLOW_SMILER.get());
         return true;
     }
     private static void reportEvidence(ServerPlayer player,Entry entry,
@@ -475,6 +499,51 @@ public final class HauntGameplayRuntime {
         }
         return closest;
     }
+    /** Safe reusable first-cycle encounter: explicitly triggered by an OP
+     * and the joined survival player, never by another player's silent entry.
+     * Returns false if there is no legal loaded spawn site for any actor.
+     */
+    public static boolean startOperatorTestScene(ServerPlayer player,
+            boolean allThree) {
+        if(!isActiveParticipant(player)) {
+            player.sendSystemMessage(Component.literal(
+                    "[Nightwatch RC] Operator test requires world enabled, "
+                    +"joined, night-time, survival and no quiet mode."));
+            return false;
+        }
+        ServerLevel level=player.serverLevel();
+        Entry entry=entries(level.getServer()).get(player.getUUID());
+        entry.act=allThree?HauntGameplayPolicy.Act.FALSE_SAFETY
+                :HauntGameplayPolicy.Act.WITNESS;
+        entry.activeTicks=0;
+        boolean bird=ensureNearby(level,player,GuguGagaMod.OBSERVER.get());
+        entry.witnessSpawnAttempts=bird?3:1;
+        boolean redactor=false,smiler=false;
+        if(allThree) {
+            redactor=ensureNearby(level,player,GuguGagaMod.REDACTOR.get());
+            smiler=ensureNearby(level,player,GuguGagaMod.YELLOW_SMILER.get());
+            entry.redactorSpawnAttempts=redactor?3:1;
+            entry.smilerSpawnAttempts=smiler?3:1;
+        }
+        player.sendSystemMessage(Component.literal(
+                "[Nightwatch Sacred RC] Test scene="+entry.act
+                +", nearby actual Gugu="+bird
+                +", Lapis="+redactor+", Yellow="+smiler
+                +". Use /gugugaga play listen while crouched; "
+                +"check real entities in loaded ground near you. "
+                +"Missing actors retry twice during the stage."));
+        return bird && (!allThree || redactor || smiler);
+    }
+
+    /** Existing nearby actors count: do not spawn duplicates for retests. */
+    private static <T extends Entity> boolean ensureNearby(ServerLevel level,
+            ServerPlayer player,EntityType<T> kind) {
+        if(!level.getEntitiesOfClass(Entity.class,
+                player.getBoundingBox().inflate(48),
+                e->e.isAlive() && e.getType()==kind).isEmpty())return true;
+        return summonOne(level,player,kind);
+    }
+
     private static <T extends Entity> boolean summonOne(ServerLevel level,
             ServerPlayer player,EntityType<T> kind) {
         // Do not manufacture an army: only one nearby, six maximum per level.
@@ -487,11 +556,18 @@ public final class HauntGameplayRuntime {
         if(!level.getEntitiesOfClass(Entity.class,
                 player.getBoundingBox().inflate(48),
                 e->e.getType()==kind).isEmpty())return false;
-        long seed=player.getUUID().getLeastSignificantBits()^level.getGameTime();
-        for(int i=0;i<4;i++) {
+        // Separate spawn identities: simultaneous Redactor and Smiler
+        // arrivals must NOT occupy the same scripted spawn candidate.
+        long speciesSalt=kind==GuguGagaMod.REDACTOR.get()
+                ?0x65CE_12A5_9975L:kind==GuguGagaMod.YELLOW_SMILER.get()
+                ?0x13A9_C5EA_5521L:0x35B1_DCA8_1441L;
+        long seed=player.getUUID().getLeastSignificantBits()
+                ^level.getGameTime()^speciesSalt;
+        for(int i=0;i<8;i++) {
             double a=HauntDirectorPolicy.bearing(seed,i);
-            int x=(int)Math.floor(player.getX()+Math.cos(a)*(12+i));
-            int z=(int)Math.floor(player.getZ()+Math.sin(a)*(12+i));
+            int radius=10+i*2;
+            int x=(int)Math.floor(player.getX()+Math.cos(a)*radius);
+            int z=(int)Math.floor(player.getZ()+Math.sin(a)*radius);
             if(!level.getChunkSource().hasChunk(x>>4,z>>4))continue;
             // Require a full chunk margin for entity collision checks.
             if((x&15)<2||(x&15)>13||(z&15)<2||(z&15)>13)continue;
