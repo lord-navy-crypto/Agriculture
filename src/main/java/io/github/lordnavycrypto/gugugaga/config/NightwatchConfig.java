@@ -20,6 +20,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue HOSTILITY_ENABLED;
     public static final ModConfigSpec.BooleanValue CORRUPTION_VISUALS_ENABLED;
     public static final ModConfigSpec.BooleanValue REDACTOR_HOSTILITY_ENABLED;
+    public static final ModConfigSpec.BooleanValue PLAYABLE_LOOP_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -86,6 +87,12 @@ public final class NightwatchConfig {
                 "Revealed Redactor/Lapis may give one small telegraphed hit only after "
                 + "explicit opt-in. OFF by default and independent of Gugu anger.")
                 .define("redactor_hostility",false);
+        BUILDER.pop();
+        BUILDER.push("survival_gameplay");
+        PLAYABLE_LOOP_ENABLED=BUILDER.comment(
+                "Experimental five-act survival horror mode. OFF by default. "
+                +"Each player must explicitly join. No story endings or forced game modes.")
+                .define("playable_loop",false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
