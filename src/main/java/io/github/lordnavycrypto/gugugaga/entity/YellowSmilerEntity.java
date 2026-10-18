@@ -146,7 +146,6 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         }
         if(level().isClientSide || !(level() instanceof ServerLevel world)
                 || tickCount%20!=0)return;
-        getNavigation().stop();
         observationTicks=Math.min(10000,observationTicks+20);
         wardOffTicks=Math.min(20*8,wardOffTicks+20);
         // Yellow is not afraid of Redactor. The penguin is its first target;

@@ -200,7 +200,9 @@ class ProjectSanity(unittest.TestCase):
         self.assertIn("ThreeEntityReactionPolicy.mayCorrupt",redactor)
         self.assertIn("bird.setTemperament(Mood.CORRUPTED)",redactor)
         self.assertIn("ThreeEntityReactionPolicy.smiler(",yellow)
-        self.assertIn("getLookControl().setLookAt(nearest",yellow)
+        # v0.12: Yellow now targets Gugu and protects opted-in players, not a passive watcher.
+        self.assertIn("getLookControl().setLookAt(bird",yellow)
+        self.assertIn("bird.retreatFromSmiler(this)",yellow)
         self.assertIn("ThreeEntityReactionPolicy.gugu(",guardian)
         self.assertIn("generateOriginalCharacterSprites",build)
         for sprite in ("lapis_mask.png","redactor_true.png","yellow_smiler.png"):
