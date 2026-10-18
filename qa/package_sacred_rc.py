@@ -91,7 +91,7 @@ def check_and_bundle(build_libs,out):
     }
     (out/"NATURAL_PLAYTEST_MANIFEST.json").write_text(json.dumps(manifest,indent=2)+"\n")
     (out/"NATURAL_PLAYTEST_INSTRUCTIONS.txt").write_text(
-        "GUGU-GAGA CLIENT RENDERER FIX v0.21.2 / PLAYTEST PACKAGE\n"
+        "GUGU-GAGA HORROR COMBAT RESILIENCE v0.21.3 / PLAYTEST PACKAGE\n"
         "Experimental, NOT a stable release. Use backup/test world.\n"
         "Minecraft 1.21.1 | NeoForge 21.1.150+ | Java 21\n"
         "REQUIRES GeckoLib NeoForge for Minecraft 1.21.1: 4.8.2 or newer 4.x on BOTH client and dedicated server.\n"
