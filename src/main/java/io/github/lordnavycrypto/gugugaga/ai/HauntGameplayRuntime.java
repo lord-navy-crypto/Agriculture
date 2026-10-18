@@ -43,6 +43,7 @@ public final class HauntGameplayRuntime {
     private static final class Entry {
         HauntGameplayPolicy.Act act=HauntGameplayPolicy.Act.STILLNESS;
         int activeTicks;
+        int gazeFocusTicks;
         int loops;
         boolean scaresAllowed=true;
         long lastScareTick=-1000000L;
@@ -68,7 +69,8 @@ public final class HauntGameplayRuntime {
         entries(player.serverLevel().getServer()).put(player.getUUID(),new Entry());
         player.sendSystemMessage(Component.literal(
                 "[Nightwatch] Joined the five-act survival horror loop. "
-                +"Wait for a real witness, then /gugugaga investigate. "
+                +"Look directly at a real creature for 4 seconds to investigate. "
+                +"Sneak + V to listen. Type HELP Yellow Face to ask for rescue. "
                 +"Use /gugugaga play leave to stop."));
     }
     public static void leave(ServerPlayer player) {
@@ -249,6 +251,9 @@ public final class HauntGameplayRuntime {
                     HorrorListeningPolicy.Source.NONE,
                     HorrorListeningPolicy.Direction.AHEAD,0);
         }
+        // Action bar is the real player-facing UI. Keep a copy in chat
+        // history so that slower readers can review a clue when convenient.
+        player.displayClientMessage(Component.literal("[Nightwatch] "+clue),true);
         player.sendSystemMessage(Component.literal("[Nightwatch Listening] "+clue));
         return true;
     }
@@ -299,11 +304,33 @@ public final class HauntGameplayRuntime {
             Entry e=active.get(id);
             if(e==null || !eligible(player,true))continue;
             e.activeTicks=Math.min(Integer.MAX_VALUE-20,e.activeTicks+20);
+            // Natural investigation: sustained direct gaze at REAL, nearby,
+            // line-of-sight visible actor. No secret stage commands needed.
+            // This is evaluated only once a second, for eligible participants.
+            if(e.act==HauntGameplayPolicy.Act.WITNESS
+                    || e.act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
+                Entity focused=focusedEvidence(player.serverLevel(),player,e.act);
+                e.gazeFocusTicks=GazeInvestigationPolicy.nextTicks(
+                        e.gazeFocusTicks,focused!=null);
+                if(focused!=null && (e.gazeFocusTicks==20
+                        || e.gazeFocusTicks==60)) {
+                    player.displayClientMessage(Component.literal(
+                            "[Nightwatch] Observing... "
+                            +(e.gazeFocusTicks/20)+"/4"),true);
+                }
+                if(GazeInvestigationPolicy.complete(e.gazeFocusTicks)) {
+                    e.gazeFocusTicks=0;
+                    // Retain the SAME server-side evidence and state transition
+                    // that the old /investigate fallback uses.
+                    if(investigate(player))continue;
+                }
+            } else e.gazeFocusTicks=0;
             HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(
                     e.act,e.activeTicks,HauntGameplayPolicy.Evidence.NONE,false);
             if(next!=e.act) {
                 e.act=next;
                 e.activeTicks=0;
+                e.gazeFocusTicks=0;
                 if(next==HauntGameplayPolicy.Act.STILLNESS)e.loops++;
                 player.sendSystemMessage(Component.literal(stageMessage(next)));
                 // Act-specific scripted sighting is separate from the slow,
@@ -460,6 +487,7 @@ public final class HauntGameplayRuntime {
         }
         e.act=next;
         e.activeTicks=0;
+        e.gazeFocusTicks=0;
         player.sendSystemMessage(Component.literal(stageMessage(next)));
         if(next==HauntGameplayPolicy.Act.FALSE_SAFETY) {
             e.redactorSpawnAttempts=1;
@@ -484,6 +512,40 @@ public final class HauntGameplayRuntime {
     }
 
     /** Actual currently loaded and visible entities only, nearest first. */
+    /** The player must look AT the actor, not just stand near one.
+     * This does not track aim/history outside the user's current session.
+     */
+    private static Entity focusedEvidence(ServerLevel level,ServerPlayer player,
+            HauntGameplayPolicy.Act act) {
+        if(act==HauntGameplayPolicy.Act.WITNESS)
+            return focusedNearest(level,player,GugugagaEntity.class);
+        if(act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
+            Entity blue=focusedNearest(level,player,RedactorEntity.class);
+            if(blue!=null)return blue;
+            return focusedNearest(level,player,YellowSmilerEntity.class);
+        }
+        return null;
+    }
+
+    private static <T extends Entity> T focusedNearest(
+            ServerLevel level,ServerPlayer player,Class<T> clazz) {
+        var bounds=player.getBoundingBox().inflate(12);
+        T closest=null;
+        double nearest=HauntGameplayPolicy.EVIDENCE_RADIUS_SQ+0.001;
+        for(T entity:level.getEntitiesOfClass(clazz,bounds,Entity::isAlive)) {
+            double distance=player.distanceToSqr(entity);
+            if(distance>=nearest || !player.hasLineOfSight(entity))continue;
+            var toActor=entity.getEyePosition().subtract(player.getEyePosition());
+            if(toActor.lengthSqr()<0.0001)continue;
+            double dot=player.getLookAngle().dot(toActor.normalize());
+            if(GazeInvestigationPolicy.aimedAt(dot,distance,true,true)) {
+                closest=entity;
+                nearest=distance;
+            }
+        }
+        return closest;
+    }
+
     private static <T extends Entity> T visibleNearest(
             ServerLevel level,ServerPlayer player,Class<T> clazz) {
         AABB search=player.getBoundingBox().inflate(12);
@@ -516,6 +578,7 @@ public final class HauntGameplayRuntime {
         entry.act=allThree?HauntGameplayPolicy.Act.FALSE_SAFETY
                 :HauntGameplayPolicy.Act.WITNESS;
         entry.activeTicks=0;
+        entry.gazeFocusTicks=0;
         boolean bird=ensureNearby(level,player,GuguGagaMod.OBSERVER.get());
         entry.witnessSpawnAttempts=bird?3:1;
         boolean redactor=false,smiler=false;
