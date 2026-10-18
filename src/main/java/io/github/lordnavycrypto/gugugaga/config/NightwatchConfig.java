@@ -23,6 +23,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PLAYABLE_LOOP_ENABLED;
     public static final ModConfigSpec.BooleanValue CHASES_ENABLED;
     public static final ModConfigSpec.BooleanValue JUMPSCARES_ENABLED;
+    public static final ModConfigSpec.BooleanValue EVIDENCE_CLUES_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -103,6 +104,10 @@ public final class NightwatchConfig {
                 "Volume-capped, sight-gated scares with long cooldown. " +
                 "A player can separately use /gugugaga play scares off.")
                 .define("horror_jumpscares",true);
+        EVIDENCE_CLUES_ENABLED=BUILDER.comment(
+                "Show creature-specific observations after actual player investigation. " +
+                "No global clues, hidden entity scans or forced reveals.")
+                .define("horror_evidence_clues",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
