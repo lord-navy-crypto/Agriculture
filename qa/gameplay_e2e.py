@@ -97,7 +97,7 @@ with LOG.open("wb") as f:
         time.sleep(1.2)
         wait_marker("MENU_OPENED",6)
         snap("05b-nightwatch-ui")
-        click(492,263)  # first-row Join / Resume at GUI-scaled 854x480 coordinates
+        click(450,230)  # actual Join / Resume button at x252-629, y212-249
         time.sleep(2)
         wait_marker("JOINED",8)
         snap("05c-ui-join")
@@ -132,7 +132,7 @@ with LOG.open("wb") as f:
         time.sleep(1.0)
         wait_marker("MENU_OPENED",6)
         snap("08b-nightwatch-help-ui")
-        click(789,300)  # second row, right column: Call Yellow Smiler
+        click(830,280)  # actual Yellow Smiler button at x649-1026, y262-299
         wait_marker("HELP_SUCCESS",8)
         snap("08c-ui-yellow-help")
         # Yellow proactively drives away Gugu; keep guardian away during
@@ -183,7 +183,7 @@ with LOG.open("wb") as f:
         say("/gugugaga play test witness",4)
         say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 90 255 true")
         say("/tp @s ~ ~ ~ 0 0")
-        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,limit=1,sort=nearest] ^ ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,limit=1,sort=nearest] ^ ^ ^3.2")
         say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_GUGU",6,required=False)
@@ -191,7 +191,7 @@ with LOG.open("wb") as f:
         say("/gugugaga play test triad",4)
         say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 90 255 true")
         say("/tp @s ~ ~ ~ 0 0")
-        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ^ ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ^ ^ ^3.2")
         say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_LAPIS",6,required=False)
@@ -199,7 +199,7 @@ with LOG.open("wb") as f:
         say("/gugugaga play test triad",4)
         say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 90 255 true")
         say("/tp @s ~ ~ ~ 0 0")
-        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] ^ ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] ^ ^ ^3.2")
         say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_YELLOW",6,required=False)

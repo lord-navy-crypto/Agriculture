@@ -5,7 +5,7 @@ class Harness(unittest.TestCase):
  def test_real_game_flow_uses_physical_gui(self):
   s=(R/"qa/gameplay_e2e.py").read_text()
   for x in ("runClient","xdotool","WORLD_PLAYER_READY","/gugugaga play test triad",
-            'say("HELP"','"LISTEN_V_KEY"','"STAGE_FALSE_SAFETY"',
+            'click(830,280)','"LISTEN_V_KEY"','"STAGE_FALSE_SAFETY"',
             '"STAGE_RESPITE"','"LOOP_TO_STILLNESS"',
             "RuntimeError(\"ACTUAL GAMEPLAY TEST FAILED","results.json"):
    self.assertIn(x,s)
