@@ -36,6 +36,18 @@ neoForge {
     }
 }
 
+repositories {
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content { includeGroup('software.bernie.geckolib') }
+    }
+}
+
+dependencies {
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+}
+
 var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
     var vars = [
         mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,

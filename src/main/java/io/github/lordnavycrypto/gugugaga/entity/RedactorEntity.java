@@ -35,7 +35,25 @@ import java.util.Comparator;
  * operator separately enables redactor_mimic.redactor_hostility.
  * Does not load chunks, edit blocks, teleport or send network requests.
  */
-public final class RedactorEntity extends PathfinderMob {
+public final class RedactorEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
+    private final software.bernie.geckolib.animatable.instance.AnimatableInstanceCache geoCache =
+            software.bernie.geckolib.util.GeckoLibUtil.createInstanceCache(this);
+    private static final software.bernie.geckolib.animation.RawAnimation LAPIS =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.redactor.lapis_idle");
+    private static final software.bernie.geckolib.animation.RawAnimation TRUE_FORM =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.redactor.true_idle");
+
+    @Override
+    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "mask_state", 6,
+                state -> state.setAndContinue(revealed() ? TRUE_FORM : LAPIS)));
+    }
+
+    @Override
+    public software.bernie.geckolib.animatable.instance.AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
     private static final EntityDataAccessor<Boolean> REVEALED =
             SynchedEntityData.defineId(RedactorEntity.class,EntityDataSerializers.BOOLEAN);
     private boolean stageEncounter;

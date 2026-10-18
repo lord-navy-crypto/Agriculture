@@ -36,7 +36,44 @@ import net.minecraft.world.phys.Vec3;
  *
  * Never attacks, alters terrain, loads new chunks or requires Ollama.
  */
-public class GugugagaEntity extends PathfinderMob {
+public class GugugagaEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
+    private final software.bernie.geckolib.animatable.instance.AnimatableInstanceCache geoCache =
+            software.bernie.geckolib.util.GeckoLibUtil.createInstanceCache(this);
+    private static final software.bernie.geckolib.animation.RawAnimation IDLE =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.idle");
+    private static final software.bernie.geckolib.animation.RawAnimation WATCH =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.watch");
+    private static final software.bernie.geckolib.animation.RawAnimation WALK =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.walk");
+    private static final software.bernie.geckolib.animation.RawAnimation RETREAT =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.retreat");
+    private static final software.bernie.geckolib.animation.RawAnimation ANGRY =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.angry");
+    private static final software.bernie.geckolib.animation.RawAnimation CORRUPTED =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.corrupted");
+    private static final software.bernie.geckolib.animation.RawAnimation BLACKENED =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.blackened");
+
+    @Override
+    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "observer", 8, state -> {
+            if (corruptionStage() >= 3) return state.setAndContinue(BLACKENED);
+            if (mood() == Mood.CORRUPTED) return state.setAndContinue(CORRUPTED);
+            if (mood() == Mood.ANGRY) return state.setAndContinue(ANGRY);
+            return state.setAndContinue(switch (phase()) {
+                case DORMANT -> IDLE;
+                case OBSERVE -> WATCH;
+                case APPROACH -> WALK;
+                case RETREAT -> RETREAT;
+            });
+        }));
+    }
+
+    @Override
+    public software.bernie.geckolib.animatable.instance.AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
     private static final EntityDataAccessor<Integer> PHASE =
             SynchedEntityData.defineId(GugugagaEntity.class, EntityDataSerializers.INT);
     private static final int AUTO_LIFETIME_TICKS = 20 * 90;
