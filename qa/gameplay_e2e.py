@@ -112,14 +112,20 @@ with LOG.open("wb") as f:
         # Yellow proactively drives away Gugu; keep guardian away during
         # the independent natural-looking investigation acceptance.
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~30 ~ ~30")
+        say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 35 255 true")
         say("/gugugaga play test witness")
         say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 35 255 true")
-        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:observer,limit=1,sort=nearest] eyes")
+        # Place immobilized actual mob at known positive Z, then face SOUTH (yaw 0).
+        # Never aim by facing an actor which has walked within one block.
+        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~ ~ ~6")
+        say("/tp @s ~ ~ ~ 0 0")
         time.sleep(6)
         wait_marker("STAGE_FALSE_SAFETY",5,required=False)
         snap("09-witness-four-second-gaze")
+        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~20 ~ ~20")
         say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 35 255 true")
-        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:redactor,limit=1,sort=nearest] eyes")
+        say("/tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ~ ~ ~6")
+        say("/tp @s ~ ~ ~ 0 0")
         time.sleep(6)
         wait_marker("STAGE_RESPITE",5,required=False)
         snap("10-false-safety-four-second-gaze")
@@ -130,6 +136,8 @@ with LOG.open("wb") as f:
         snap("11-after-five-stage-cycle")
         # Restore the existing mobs near the player, then re-enter the live
         # false-safety act to test a real uppercase chat HELP dispatch.
+        say("/effect clear @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness")
+        say("/effect clear @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness")
         say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
         say("/gugugaga play test triad",4)
