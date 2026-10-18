@@ -52,6 +52,7 @@ public final class HauntGameplayRuntime {
         int witnessSpawnAttempts;
         long lastSmilerFavorTick=-1000000L;
         long lastSmilerCallTick=-1000000L;
+        long lastListenTick=-1000000L;
     }
     private static final Map<MinecraftServer,Map<UUID,Entry>> SESSIONS=
             new WeakHashMap<>();
@@ -81,6 +82,7 @@ public final class HauntGameplayRuntime {
                 +", jumpScares="+(e!=null&&e.scaresAllowed)
                 +", smilerAid="+(e!=null&&e.smilerAidAllowed)
                 +", smilerFavors="+(e==null?0:e.smilerFavors)
+                +", tactics=/gugugaga play listen (crouch) or sprint to risk discovery"
                 +", next clue=/gugugaga investigate; "
                 +"original Nightwatch observers retain 8-minute minimum cooldown.";
     }
@@ -181,6 +183,71 @@ public final class HauntGameplayRuntime {
         e.lastSmilerCallTick=now;
         player.sendSystemMessage(Component.literal(
                 "[Smiler] I hear you. The bird, not you, is my priority."));
+        return true;
+    }
+
+    /**
+     * Active crouched listening reveals only a COARSE relative sound and range,
+     * from real loaded nearby mobs. Players cannot use it as an all-seeing map.
+     * No sound is generated for entities that do not exist.
+     */
+    public static boolean listen(ServerPlayer player) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        if(entry==null || !isActiveParticipant(player)) {
+            player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] Join Nightwatch in night-time survival first."));
+            return false;
+        }
+        long now=player.serverLevel().getGameTime();
+        if(!HorrorListeningPolicy.mayListen(true,player.isCrouching(),
+                now,entry.lastListenTick)) {
+            player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] Hold sneak and listen again after the 12-second cooldown."));
+            return false;
+        }
+        entry.lastListenTick=now; // empty attempts also consume one cooldown
+        ServerLevel level=player.serverLevel();
+        AABB nearby=player.getBoundingBox().inflate(20);
+        Entity closest=null;
+        HorrorListeningPolicy.Source source=HorrorListeningPolicy.Source.NONE;
+        double nearest=HorrorListeningPolicy.MAX_DISTANCE_SQ+0.001;
+        for(GugugagaEntity bird:level.getEntitiesOfClass(
+                GugugagaEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(bird);
+            if(squared<nearest) {
+                nearest=squared;closest=bird;
+                source=HorrorListeningPolicy.Source.WATCHER;
+            }
+        }
+        for(RedactorEntity redactor:level.getEntitiesOfClass(
+                RedactorEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(redactor);
+            if(squared<nearest) {
+                nearest=squared;closest=redactor;
+                source=HorrorListeningPolicy.Source.BLUE;
+            }
+        }
+        for(YellowSmilerEntity yellow:level.getEntitiesOfClass(
+                YellowSmilerEntity.class,nearby,Entity::isAlive)) {
+            double squared=player.distanceToSqr(yellow);
+            if(squared<nearest) {
+                nearest=squared;closest=yellow;
+                source=HorrorListeningPolicy.Source.SMILER;
+            }
+        }
+        String clue;
+        if(closest!=null && HorrorListeningPolicy.audible(nearest)) {
+            var facing=player.getLookAngle();
+            var relative=closest.position().subtract(player.position());
+            var direction=HorrorListeningPolicy.direction(
+                    facing.x,facing.z,relative.x,relative.z);
+            clue=HorrorListeningPolicy.hint(source,direction,nearest);
+        } else {
+            clue=HorrorListeningPolicy.hint(
+                    HorrorListeningPolicy.Source.NONE,
+                    HorrorListeningPolicy.Direction.AHEAD,0);
+        }
+        player.sendSystemMessage(Component.literal("[Nightwatch Listening] "+clue));
         return true;
     }
 

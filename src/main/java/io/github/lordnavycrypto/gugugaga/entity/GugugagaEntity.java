@@ -449,8 +449,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 else {
                     Vec3 heardOrSeen=lastHeardChasePosition!=null
                             ?lastHeardChasePosition:lastSeenChasePosition;
-                    if(LastSeenSearchPolicy.useLastSeen(false,
-                            heardOrSeen!=null,unseenChaseTicks,true)) {
+                    if(noisy && lastHeardChasePosition!=null
+                            || LastSeenSearchPolicy.useLastSeen(false,
+                                    heardOrSeen!=null,unseenChaseTicks,true)) {
                         getNavigation().moveTo(heardOrSeen.x,
                                 heardOrSeen.y,heardOrSeen.z,0.88);
                     }
