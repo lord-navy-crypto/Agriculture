@@ -51,7 +51,7 @@ class NaturalInteractions(unittest.TestCase):
                       (SRC/"command/GuguPlayCommands.java").read_text())
     def test_rc_package_is_versioned_single_jar(self):
         p=(ROOT/"qa/package_sacred_rc.py").read_text()
-        self.assertIn('VERSION="0.21.1-rc.1"',p)
+        self.assertIn('VERSION="0.21.2-rc.1"',p)
         self.assertIn('NATURAL_PLAYTEST_MANIFEST.json',p)
         self.assertIn("all_three_actor_classes_verified",p)
         self.assertIn("all_6_texture_png_verified",p)
