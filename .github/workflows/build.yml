@@ -328,3 +328,37 @@ jobs:
             runs/client/crash-reports/*.txt
             run/logs/latest.log
           if-no-files-found: warn
+
+  production-jar-consumer:
+    name: Install packaged Gugu-Gaga JAR into CLEAN NeoForge server mods directory
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Build actual distributable JAR (not development classpath)
+        run: gradle --no-daemon --console=plain build
+      - name: Install official NeoForge server and GeckoLib then load JAR from mods
+        env:
+          GUGU_CONSUMER_NEO: "21.1.259"
+          GUGU_CONSUMER_GECKO: "4.9.3"
+          GUGU_CONSUMER_TIMEOUT: "350"
+        run: python3 qa/production_jar_server_smoke.py
+      - name: Archive consumer/installer logs, mod list and loaded release JAR
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-production-jar-consumer
+          path: |
+            build/consumer-jar-smoke/*console.log
+            build/consumer-jar-smoke/logs/latest.log
+            build/consumer-jar-smoke/crash-reports/*.txt
+          if-no-files-found: warn
