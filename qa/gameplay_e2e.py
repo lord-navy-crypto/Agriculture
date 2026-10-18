@@ -109,6 +109,10 @@ with LOG.open("wb") as f:
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
         time.sleep(2)
         snap("08-real-three-entities")
+        # Teleports take several seconds through the real GUI. Re-arm the
+        # explicit operator test scene AFTER positioning the actors so its
+        # FALSE_SAFETY window is fresh when the real chat HELP is typed.
+        say("/gugugaga play test triad",1.0)
         # Exercise HELP immediately in the valid FALSE_SAFETY act while all
         # three existing actors are deliberately placed nearby and visible.
         # Do this before long gaze/loop tests can advance the stage or consume
