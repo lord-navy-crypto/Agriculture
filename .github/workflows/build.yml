@@ -173,8 +173,17 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/CinematicVfxPolicy.java \
             qa/java/V016VisualFXPolicySmoke.java
           java -cp build/v016-visual-smoke V016VisualFXPolicySmoke
+      - name: Generate offline original-art review (not a gameplay screenshot)
+        run: |
+          python3 qa/generate_character_sprites.py build/v017-review-resources
+          python3 qa/render_visual_review.py build/v017-review-resources build/visual-review
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-v017-visual-review
+          path: build/visual-review/*
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: gugugaga-nightwatch-jar

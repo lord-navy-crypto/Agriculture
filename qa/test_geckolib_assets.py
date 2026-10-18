@@ -10,8 +10,8 @@ JAVA = ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga"
 CASES = {
     "observer": {
         "models": ["observer"],
-        "bones": {"body", "head", "left_wing", "right_wing"},
-        "animations": {"idle", "watch", "walk", "retreat", "angry", "corrupted", "blackened", "lunge"},
+        "bones": {"body", "head", "left_eye", "right_eye", "beak", "left_wing", "right_wing"},
+        "animations": {"idle", "watch", "walk", "retreat", "angry", "corrupted", "blackened", "lunge", "search"},
         "entity": "GugugagaEntity",
         "renderer": "ObserverRenderer",
     },
@@ -64,7 +64,9 @@ class GeckoLibAssetTests(unittest.TestCase):
                     self.assertGreater(clip["animation_length"], 0)
                     self.assertTrue(set(clip["bones"]) <= all_bones, name)
                     for anim_bone in clip["bones"].values():
-                        self.assertIn("rotation", anim_bone)
+                        self.assertTrue(
+                            "rotation" in anim_bone or "position" in anim_bone,
+                            "GeckoLib allows either keyed rotation or translation")
 
     def test_entity_geo_renderers_and_synced_gameplay_states(self):
         for spec in CASES.values():
