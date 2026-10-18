@@ -296,7 +296,7 @@ public final class HauntGameplayRuntime {
             online.add(id);
             Entry e=active.get(id);
             if(e==null || !eligible(player,true))continue;
-            e.activeTicks=Math.min(24000,e.activeTicks+20);
+            e.activeTicks=Math.min(Integer.MAX_VALUE-20,e.activeTicks+20);
             HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(
                     e.act,e.activeTicks,HauntGameplayPolicy.Evidence.NONE,false);
             if(next!=e.act) {
@@ -320,6 +320,35 @@ public final class HauntGameplayRuntime {
                     e.witnessSpawnAttempts++;
                     if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
                         e.witnessSpawnAttempts=3;
+                }
+                // Real threatened-cave proximity: a restrained sound that
+                // happens only if an actual Redactor/Gugu is inside 18 blocks.
+                // At most once per 12s to the enrolled player, not the room.
+                if((e.act==HauntGameplayPolicy.Act.WITNESS
+                        || e.act==HauntGameplayPolicy.Act.FALSE_SAFETY)
+                        && CaveThreatSoundPolicy.due(e.activeTicks)
+                        && NightwatchConfig.CAVE_THREAT_AUDIO_ENABLED.get()
+                        && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get()
+                        && !player.serverLevel().canSeeSky(player.blockPosition())) {
+                    var area=player.getBoundingBox().inflate(18);
+                    double closestSq=Double.POSITIVE_INFINITY;
+                    for(GugugagaEntity bird:player.serverLevel().getEntitiesOfClass(
+                            GugugagaEntity.class,area,Entity::isAlive))
+                        closestSq=Math.min(closestSq,player.distanceToSqr(bird));
+                    for(RedactorEntity redactor:player.serverLevel().getEntitiesOfClass(
+                            RedactorEntity.class,area,Entity::isAlive))
+                        closestSq=Math.min(closestSq,player.distanceToSqr(redactor));
+                    var pressure=CaveThreatSoundPolicy.classify(true,true,
+                            Double.isFinite(closestSq),closestSq);
+                    if(pressure!=CaveThreatSoundPolicy.Pressure.NONE) {
+                        player.playNotifySound(
+                                pressure==CaveThreatSoundPolicy.Pressure.DISTANT
+                                ?SoundEvents.AMETHYST_BLOCK_CHIME
+                                :SoundEvents.AMETHYST_BLOCK_STEP,
+                                SoundSource.AMBIENT,
+                                CaveThreatSoundPolicy.volume(pressure),
+                                CaveThreatSoundPolicy.pitch(pressure));
+                    }
                 }
                 // Individually addressed cinematic cues. They never broadcast
                 // to nearby unjoined players or force camera/screen effects.

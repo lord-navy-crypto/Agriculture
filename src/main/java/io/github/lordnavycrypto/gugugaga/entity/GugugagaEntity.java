@@ -404,7 +404,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             boolean visible=hasLineOfSight(player);
             // The only way to update the memory THROUGH cover is for the
             // actual chased player to sprint while moving within earshot.
-            boolean noisy=!visible && HorrorHearingPolicy.hearsRunner(
+            boolean noisy=!visible && NightwatchConfig.NOISE_HUNT_ENABLED.get()
+                    && HorrorHearingPolicy.hearsRunner(
                     allowed,true,player.isSprinting(),player.isCrouching(),
                     player.getDeltaMovement().horizontalDistanceSqr(),
                     distanceSquared,player.getY()-getY());
