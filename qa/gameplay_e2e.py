@@ -90,16 +90,16 @@ with LOG.open("wb") as f:
         # Commands typed into REAL GUI, not injected from a fake Java player.
         say("/gamerule doDaylightCycle false")
         say("/time set night")
-        wait_marker("AUTO_JOINED",12,required=False)
+        wait_marker("AUTO_JOINED",12)
         # Open the real H-key panel and use its first button, rather than
         # typing the join command. This verifies normal play is UI-driven.
         key("h")
         time.sleep(1.2)
-        wait_marker("MENU_OPENED",6,required=False)
+        wait_marker("MENU_OPENED",6)
         snap("05b-nightwatch-ui")
-        click(541,295)  # first-row Join / Resume button at 1280x720
+        click(492,263)  # first-row Join / Resume at GUI-scaled 854x480 coordinates
         time.sleep(2)
-        wait_marker("JOINED",8,required=False)
+        wait_marker("JOINED",8)
         snap("05c-ui-join")
         say("/weather clear")
         say("/fill ~-12 ~-1 ~-12 ~12 ~-1 ~12 minecraft:stone",2)
@@ -114,41 +114,44 @@ with LOG.open("wb") as f:
         for m in ("SPAWN_GUGU","SPAWN_LAPIS","SPAWN_YELLOW","TRIAD_REAL_ENTITIES"):
             if not wait_marker(m,8,required=False):
                 print("DIAGNOSTIC missing spawn",m,flush=True)
-        # Move EXISTING real mobs into visible/loaded test arena.
-        say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
-        say("/tp @e[type=gugugaga:redactor,sort=nearest,limit=1] ~3 ~ ~5")
-        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
+        # Move existing real mobs relative to the player's position/rotation.
+        # "tp <entity> ~ ~ ~5" is entity-relative and does NOT place it by the player.
+        say("/tp @s ~ ~ ~ 0 0")
+        say("/effect give @e[type=gugugaga:observer,sort=nearest,limit=1] minecraft:slowness 90 255 true")
+        say("/effect give @e[type=gugugaga:redactor,sort=nearest,limit=1] minecraft:slowness 90 255 true")
+        say("/effect give @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] minecraft:slowness 90 255 true")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,sort=nearest,limit=1] ^ ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,sort=nearest,limit=1] ^3 ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ^-3 ^ ^5")
         time.sleep(2)
         snap("08-real-three-entities")
-        # Teleports take several seconds through the real GUI. Re-arm the
-        # explicit operator test scene AFTER positioning the actors so its
-        # FALSE_SAFETY window is fresh when the real chat HELP is typed.
+        # Re-arm FALSE_SAFETY, then call Yellow through the real H-key UI.
+        # No typed HELP chat or command is used for this player-facing action.
         say("/gugugaga play test triad",1.0)
-        # Exercise HELP immediately in the valid FALSE_SAFETY act while all
-        # three existing actors are deliberately placed nearby and visible.
-        # Do this before long gaze/loop tests can advance the stage or consume
-        # the rescue cooldown.
-        say("HELP",3.5)
-        wait_marker("CHAT_HELP_INTERCEPTED",6,required=False)
-        wait_marker("HELP_SUCCESS",6,required=False)
-        snap("08b-chat-help")
+        key("h")
+        time.sleep(1.0)
+        wait_marker("MENU_OPENED",6)
+        snap("08b-nightwatch-help-ui")
+        click(789,300)  # second row, right column: Call Yellow Smiler
+        wait_marker("HELP_SUCCESS",8)
+        snap("08c-ui-yellow-help")
         # Yellow proactively drives away Gugu; keep guardian away during
         # the independent natural-looking investigation acceptance.
-        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~30 ~ ~30")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ^30 ^ ^30")
         say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 35 255 true")
         say("/gugugaga play test witness")
         say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 35 255 true")
         # Place immobilized actual mob at known positive Z, then face SOUTH (yaw 0).
         # Never aim by facing an actor which has walked within one block.
-        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~ ~ ~6")
         say("/tp @s ~ ~ ~ 0 0")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,limit=1,sort=nearest] ^ ^ ^6")
         time.sleep(6)
         wait_marker("STAGE_FALSE_SAFETY",5,required=False)
         snap("09-witness-four-second-gaze")
-        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~20 ~ ~20")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,limit=1,sort=nearest] ^20 ^ ^20")
         say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 35 255 true")
-        say("/tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ~ ~ ~6")
         say("/tp @s ~ ~ ~ 0 0")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ^ ^ ^6")
         time.sleep(6)
         wait_marker("STAGE_RESPITE",5,required=False)
         snap("10-false-safety-four-second-gaze")
@@ -179,34 +182,38 @@ with LOG.open("wb") as f:
         # Test real right-click interactions against the rendered entities.
         say("/gugugaga play test witness",4)
         say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 90 255 true")
-        say("/tp @e[type=gugugaga:observer,limit=1,sort=nearest] ~ ~ ~5")
-        say("/tp @s ~ ~ ~ 0 10")
+        say("/tp @s ~ ~ ~ 0 0")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,limit=1,sort=nearest] ^ ^ ^5")
+        say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_GUGU",6,required=False)
         wait_marker("INTERACT_GUGU_STAGE_PROGRESS",6,required=False)
         say("/gugugaga play test triad",4)
         say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 90 255 true")
-        say("/tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ~ ~ ~5")
-        say("/tp @s ~ ~ ~ 0 10")
+        say("/tp @s ~ ~ ~ 0 0")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,limit=1,sort=nearest] ^ ^ ^5")
+        say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_LAPIS",6,required=False)
         wait_marker("INTERACT_LAPIS_STAGE_PROGRESS",6,required=False)
         say("/gugugaga play test triad",4)
         say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 90 255 true")
-        say("/tp @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] ~ ~ ~5")
-        say("/tp @s ~ ~ ~ 0 10")
+        say("/tp @s ~ ~ ~ 0 0")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] ^ ^ ^5")
+        say("/tp @s ~ ~ ~ 0 5")
         command("xdotool","click","3",check=True)
         wait_marker("INTERACT_YELLOW",6,required=False)
         wait_marker("INTERACT_YELLOW_STAGE_PROGRESS",6,required=False)
         snap("14-real-entity-interactions")
         # Apply actual Minecraft player_attack damage to each real actor.
         # The server must record an escape/recovery instead of an instant kill.
-        say("/effect clear @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness")
-        say("/effect clear @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness")
-        say("/effect clear @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness")
-        say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
-        say("/tp @e[type=gugugaga:redactor,sort=nearest,limit=1] ~3 ~ ~5")
-        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
+        say("/tp @s ~ ~ ~ 0 0")
+        say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/effect give @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness 90 255 true")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:observer,sort=nearest,limit=1] ^ ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:redactor,sort=nearest,limit=1] ^3 ^ ^5")
+        say("/execute at @s rotated 0 0 run tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ^-3 ^ ^5")
         say("/damage @e[type=gugugaga:observer,sort=nearest,limit=1] 100 minecraft:player_attack by @s",3)
         wait_marker("GUGU_WEAPON_SURVIVED",5,required=False)
         say("/damage @e[type=gugugaga:redactor,sort=nearest,limit=1] 100 minecraft:player_attack by @s",3)
@@ -216,8 +223,7 @@ with LOG.open("wb") as f:
         snap("14-weapon-resilience")
         missing=[x for x in ("WORLD_PLAYER_READY","SERVER_ENABLED","JOINED",
                            "SPAWN_GUGU","SPAWN_LAPIS","SPAWN_YELLOW",
-                           "TRIAD_REAL_ENTITIES","CHAT_HELP_INTERCEPTED",
-                           "HELP_SUCCESS","LISTEN_V_KEY","LISTEN_SUCCESS",
+                           "TRIAD_REAL_ENTITIES","HELP_SUCCESS","LISTEN_V_KEY","LISTEN_SUCCESS",
                            "STAGE_FALSE_SAFETY","STAGE_RESPITE","LOOP_TO_STILLNESS",
                            "GUGU_WEAPON_SURVIVED","LAPIS_WEAPON_SURVIVED",
                            "YELLOW_WEAPON_SURVIVED","AUTO_JOINED","MENU_OPENED",
