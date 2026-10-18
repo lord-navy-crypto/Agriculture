@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.MimicAttackPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy.RedactorAction;
@@ -105,10 +106,11 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
     }
     private ServerPlayer eligibleNearestPlayer(ServerLevel world) {
         return world.getEntitiesOfClass(ServerPlayer.class,
-                getBoundingBox().inflate(10.0),
+                getBoundingBox().inflate(22.0),
                 p->p.isAlive()&&!p.isCreative()&&!p.isSpectator()
-                    && !NightwatchDirector.isQuiet(
-                            world.getServer(),p.getUUID())).stream()
+                    && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID())
+                    && (!NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
+                        || HauntGameplayRuntime.isActiveParticipant(p))).stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
     }
     @Override
@@ -130,7 +132,11 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         GugugagaEntity bird=closest(this,GugugagaEntity.class,24);
         double smilerSq=smiler==null?Double.POSITIVE_INFINITY:distanceToSqr(smiler);
         double guguSq=bird==null?Double.POSITIVE_INFINITY:distanceToSqr(bird);
-        action=ThreeEntityReactionPolicy.redactor(smilerSq,guguSq);
+        ServerPlayer player=eligibleNearestPlayer(world);
+        boolean canSeePlayer=player!=null && hasLineOfSight(player);
+        double playerSq=player==null?Double.POSITIVE_INFINITY:distanceToSqr(player);
+        action=ThreeEntityReactionPolicy.redactor(
+                smilerSq,guguSq,playerSq,smiler!=null&&smiler.revealed());
         if(action==RedactorAction.FLEE_SMILER) {
             warningTicks=0;
             quietTicks=0;
@@ -144,13 +150,20 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
             }
             return;
         }
-        ServerPlayer player=eligibleNearestPlayer(world);
-        boolean canSeePlayer=player!=null && hasLineOfSight(player);
-        double playerSq=player==null?Double.POSITIVE_INFINITY:distanceToSqr(player);
         switch(action) {
             case REVEAL_AND_APPROACH -> {
                 if(!revealed())reveal(world);
-                if(bird!=null) {
+                if(player!=null && playerSq<=guguSq) {
+                    getLookControl().setLookAt(player,13f,13f);
+                    // In v0.12 the player is as interesting as Gugu; chase is
+                    // always opt-in, sight-gated, short-range and pathfinding-only.
+                    if(NightwatchConfig.CHASES_ENABLED.get()
+                            && HauntGameplayRuntime.inChaseAct(player)
+                            && canSeePlayer && playerSq<=14*14 && tickCount%40==0)
+                        getNavigation().moveTo(player,0.96);
+                    if(canSeePlayer && playerSq<=5*5)
+                        HauntGameplayRuntime.tryScare(player,this);
+                } else if(bird!=null) {
                     getLookControl().setLookAt(bird,12f,12f);
                     if(guguSq>ThreeEntityReactionPolicy.CORRUPT_RADIUS_SQ
                             && tickCount%40==0)getNavigation().moveTo(bird,0.68);
@@ -162,6 +175,10 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
                         corruptionCooldown=0;
                     }
                 }
+            }
+            case WATCH_PLAYER -> {
+                getNavigation().stop();
+                if(player!=null)getLookControl().setLookAt(player,11f,11f);
             }
             case WATCH_GUGU -> {
                 getNavigation().stop();

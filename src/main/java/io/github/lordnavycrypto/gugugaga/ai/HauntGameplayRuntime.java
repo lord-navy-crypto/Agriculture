@@ -44,6 +44,8 @@ public final class HauntGameplayRuntime {
         HauntGameplayPolicy.Act act=HauntGameplayPolicy.Act.STILLNESS;
         int activeTicks;
         int loops;
+        boolean scaresAllowed=true;
+        long lastScareTick=-1000000L;
     }
     private static final Map<MinecraftServer,Map<UUID,Entry>> SESSIONS=
             new WeakHashMap<>();
@@ -69,9 +71,52 @@ public final class HauntGameplayRuntime {
         Entry e=entries(player.serverLevel().getServer()).get(player.getUUID());
         return "Server="+NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()+
                 ", joined="+(e!=null)+", act="+(e==null?"NONE":e.act)
+                +", chases="+NightwatchConfig.CHASES_ENABLED.get()
+                +", jumpScares="+(e!=null&&e.scaresAllowed)
                 +", next clue=/gugugaga investigate; "
                 +"original Nightwatch observers retain 8-minute minimum cooldown.";
     }
+    /** v0.12 threats require real opt-in and valid game context. */
+    public static boolean isActiveParticipant(ServerPlayer player) {
+        return isJoined(player.serverLevel().getServer(),player.getUUID())
+                && eligible(player,true);
+    }
+
+    public static boolean inChaseAct(ServerPlayer player) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        return entry!=null && isActiveParticipant(player)
+                && (entry.act==HauntGameplayPolicy.Act.WITNESS
+                    || entry.act==HauntGameplayPolicy.Act.FALSE_SAFETY);
+    }
+
+    public static void setScaresAllowed(ServerPlayer player,boolean enabled) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        if(entry==null) {
+            player.sendSystemMessage(Component.literal("[Nightwatch] Join the game first."));
+            return;
+        }
+        entry.scaresAllowed=enabled;
+        player.sendSystemMessage(Component.literal(
+                "[Nightwatch] Personal surprise cues "+(enabled?"enabled":"disabled")+"."));
+    }
+
+    /** Targeted, volume-capped cue, no flashes, camera seizure or forced input. */
+    public static boolean tryScare(ServerPlayer player,Entity source) {
+        Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
+        if(entry==null || !entry.scaresAllowed
+                || !NightwatchConfig.JUMPSCARES_ENABLED.get() || !inChaseAct(player))
+            return false;
+        long now=player.serverLevel().getGameTime();
+        int since=(int)Math.min(Integer.MAX_VALUE,Math.max(0L,now-entry.lastScareTick));
+        if(!HorrorChasePolicy.canSurprise(true,true,
+                player.hasLineOfSight(source),player.distanceToSqr(source),since))
+            return false;
+        entry.lastScareTick=now;
+        player.playNotifySound(SoundEvents.ENDERMAN_STARE,SoundSource.HOSTILE,0.48f,0.80f);
+        player.displayClientMessage(Component.literal("[Nightwatch] IT SAW YOU."),true);
+        return true;
+    }
+
     private static boolean eligible(ServerPlayer player,boolean joined) {
         ServerLevel level=player.serverLevel();
         long day=Math.floorMod(level.getDayTime(),24000L);

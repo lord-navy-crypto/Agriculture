@@ -11,7 +11,7 @@ CASES = {
     "observer": {
         "models": ["observer"],
         "bones": {"body", "head", "left_wing", "right_wing"},
-        "animations": {"idle", "watch", "walk", "retreat", "angry", "corrupted", "blackened"},
+        "animations": {"idle", "watch", "walk", "retreat", "angry", "corrupted", "blackened", "lunge"},
         "entity": "GugugagaEntity",
         "renderer": "ObserverRenderer",
     },

@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
+import io.github.lordnavycrypto.gugugaga.ai.HorrorChasePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
@@ -54,6 +56,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     private static final software.bernie.geckolib.animation.RawAnimation BLACKENED =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.blackened");
 
+    private static final software.bernie.geckolib.animation.RawAnimation LUNGE =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenPlay("animation.gugugaga.lunge");
+
     @Override
     public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "observer", 8, state -> {
@@ -67,6 +72,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 case RETREAT -> RETREAT_ANIM;
             });
         }));
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this,"shock",0,
+                state->software.bernie.geckolib.animation.PlayState.STOP)
+                .triggerableAnim("lunge",LUNGE));
     }
 
     @Override
@@ -87,6 +95,10 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     private int phaseTicks;
     private boolean ambientEncounter;
     private int ambientLifetimeTicks;
+    private int chaseRemainingTicks;
+    private int chaseCooldownTicks;
+    private int unseenChaseTicks;
+    private int repelledTicks;
 
     public GugugagaEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -168,6 +180,18 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 ? Phase.values()[value] : Phase.DORMANT;
     }
 
+    /** Yellow Smiler can physically drive off the penguin, not teleport/despawn it. */
+    public void retreatFromSmiler(YellowSmilerEntity smiler) {
+        if(level().isClientSide)return;
+        chaseRemainingTicks=0;
+        repelledTicks=Math.max(repelledTicks,20*5);
+        changePhase(Phase.RETREAT);
+        Vec3 away=position().subtract(smiler.position());
+        if(away.lengthSqr()<0.01)away=new Vec3(1,0,0);
+        Vec3 goal=position().add(away.normalize().scale(9));
+        getNavigation().moveTo(goal.x,goal.y,goal.z,1.1);
+    }
+
     private ServerPlayer eligibleNearestPlayer(ServerLevel world) {
         AABB bounds=getBoundingBox().inflate(32.0);
         ServerPlayer closest=null;
@@ -176,7 +200,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         // chunks or a server-wide player/world scan.
         for(ServerPlayer candidate:world.getEntitiesOfClass(ServerPlayer.class,bounds,
                 p->p.isAlive()&&!p.isSpectator()&&!p.isCreative()
-                    && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID()))) {
+                    && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID())
+                    && (!NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
+                        || HauntGameplayRuntime.isActiveParticipant(p)))) {
             double distance=distanceToSqr(candidate);
             if(distance<=closestDistance) {
                 closestDistance=distance;
@@ -190,6 +216,9 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     public void tick() {
         super.tick();
         if(level().isClientSide)return;
+        if(chaseCooldownTicks>0)chaseCooldownTicks--;
+        if(chaseRemainingTicks>0)chaseRemainingTicks--;
+        if(repelledTicks>0)repelledTicks--;
         moodTicks=Math.min(ThreatPolicy.CORRUPTION_LIFETIME_TICKS,moodTicks+1);
         if(tickCount%10==0) {
             int newStage=CorruptionArcPolicy.stage(
@@ -211,10 +240,28 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             return;
         }
         if(tickCount%10!=0 || !(level() instanceof ServerLevel world))return;
+        // A Smiler intervention forces a navigable, temporary retreat.
+        if(repelledTicks>0) {
+            if(tickCount%20==0) {
+                var smilers=world.getEntitiesOfClass(YellowSmilerEntity.class,
+                        getBoundingBox().inflate(16),net.minecraft.world.entity.Entity::isAlive);
+                var nearest=smilers.stream().min(
+                        java.util.Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+                if(nearest!=null) {
+                    Vec3 away=position().subtract(nearest.position());
+                    if(away.lengthSqr()>0.01) {
+                        Vec3 goal=position().add(away.normalize().scale(8));
+                        getNavigation().moveTo(goal.x,goal.y,goal.z,1.05);
+                    }
+                }
+            }
+            return;
+        }
         // The Lost Watcher notices the Redactor before ordinary player
         // curiosity. It does NOT know the Yellow Smiler's true purpose and
         // will not detect him through walls or across unloaded dimensions.
-        if(tickCount%20==0 && mood()!=Mood.CORRUPTED) {
+        if(tickCount%20==0 && mood()!=Mood.CORRUPTED
+                && eligibleNearestPlayer(world)==null) {
             var redactors=world.getEntitiesOfClass(RedactorEntity.class,
                     getBoundingBox().inflate(22.0),
                     net.minecraft.world.entity.Entity::isAlive);
@@ -241,6 +288,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         boolean watched=player.hasLineOfSight(this)&&isLookingAt(player);
         double distance=distanceToSqr(player);
         if(handleTemperament(world,player,distance))return;
+        if(handleHorrorPursuit(world,player,distance))return;
         Phase prior=phase();
         Phase next=ObserverBrain.next(prior,watched,distance,phaseTicks);
         if(next!=prior) {
@@ -279,6 +327,50 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             }
         }
         playSparseCue(world,watched,distance);
+    }
+
+    /** Traditional chase with actual LOS, bounded duration, no teleport, and a clear escape. */
+    private boolean handleHorrorPursuit(ServerLevel world,ServerPlayer player,
+            double distanceSquared) {
+        boolean allowed=NightwatchConfig.CHASES_ENABLED.get()
+                && HauntGameplayRuntime.inChaseAct(player);
+        if(chaseRemainingTicks>0) {
+            if(!hasLineOfSight(player))unseenChaseTicks+=10;
+            else unseenChaseTicks=0;
+            if(!HorrorChasePolicy.canContinue(allowed,true,distanceSquared,
+                    chaseRemainingTicks,unseenChaseTicks)) {
+                chaseRemainingTicks=0;
+                unseenChaseTicks=0;
+                getNavigation().stop();
+                if(allowed)player.displayClientMessage(
+                        net.minecraft.network.chat.Component.literal(
+                        "[Nightwatch] You lost the penguin."),true);
+                return false;
+            }
+            changePhaseIfNeeded(Phase.APPROACH);
+            getLookControl().setLookAt(player,18f,18f);
+            if(tickCount%20==0)getNavigation().moveTo(player,1.12);
+            if(HauntGameplayRuntime.tryScare(player,this))triggerAnim("shock","lunge");
+            return true;
+        }
+        if(HorrorChasePolicy.canStart(allowed,NightwatchConfig.CHASES_ENABLED.get(),
+                hasLineOfSight(player),distanceSquared,chaseCooldownTicks)) {
+            chaseRemainingTicks=HorrorChasePolicy.CHASE_TICKS;
+            chaseCooldownTicks=HorrorChasePolicy.COOLDOWN_TICKS;
+            unseenChaseTicks=0;
+            changePhaseIfNeeded(Phase.APPROACH);
+            player.displayClientMessage(net.minecraft.network.chat.Component.literal(
+                    "[Nightwatch] The penguin is hunting you. Break line of sight!"),true);
+            player.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,
+                    SoundSource.HOSTILE,0.36f,0.56f);
+            getNavigation().moveTo(player,1.12);
+            return true;
+        }
+        return false;
+    }
+
+    private void changePhaseIfNeeded(Phase phase) {
+        if(phase()!=phase)changePhase(phase);
     }
 
     /**
@@ -369,6 +461,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         tag.putInt("ObserverMood",mood().ordinal());
         tag.putInt("ObserverMoodTicks",moodTicks);
         tag.putInt("ObserverStrikeWait",ticksSinceStrike);
+        tag.putInt("ObserverChaseCooldown",chaseCooldownTicks);
+        tag.putInt("ObserverRepelledTicks",repelledTicks);
         tag.putBoolean("NightwatchAmbient",ambientEncounter);
         tag.putInt("NightwatchLifetime",ambientLifetimeTicks);
     }
@@ -390,6 +484,11 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         // player immediately after a world reload.
         ticksSinceStrike=0;
         strikeWindupTicks=0;
+        chaseRemainingTicks=0;
+        unseenChaseTicks=0;
+        chaseCooldownTicks=Math.max(0,Math.min(HorrorChasePolicy.COOLDOWN_TICKS,
+                tag.getInt("ObserverChaseCooldown")));
+        repelledTicks=Math.max(0,Math.min(20*5,tag.getInt("ObserverRepelledTicks")));
         ambientEncounter=tag.getBoolean("NightwatchAmbient");
         ambientLifetimeTicks=Math.max(0,Math.min(AUTO_LIFETIME_TICKS,
                 tag.getInt("NightwatchLifetime")));
