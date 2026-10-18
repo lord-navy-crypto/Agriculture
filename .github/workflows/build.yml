@@ -148,6 +148,16 @@ jobs:
             qa/java/LastSeenSearchPolicySmoke.java
           java -cp build/v013-horror-smoke CinematicSuspensePolicySmoke
           java -cp build/v013-horror-smoke LastSeenSearchPolicySmoke
+      - name: Verify v0.14 500k real-observation and enclosed-sound policy checks
+        run: |
+          mkdir -p build/v014-evidence-smoke
+          javac -d build/v014-evidence-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CinematicSuspensePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/DepthSuspensePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorEvidencePolicy.java \
+            qa/java/V014HorrorEvidenceSmoke.java
+          java -cp build/v014-evidence-smoke V014HorrorEvidenceSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

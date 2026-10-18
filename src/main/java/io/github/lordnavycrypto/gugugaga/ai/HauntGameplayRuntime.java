@@ -46,6 +46,7 @@ public final class HauntGameplayRuntime {
         int loops;
         boolean scaresAllowed=true;
         long lastScareTick=-1000000L;
+        long lastEvidenceTick=-1000000L;
     }
     private static final Map<MinecraftServer,Map<UUID,Entry>> SESSIONS=
             new WeakHashMap<>();
@@ -156,8 +157,11 @@ public final class HauntGameplayRuntime {
             } else {
                 // Individually addressed cinematic cues. They never broadcast
                 // to nearby unjoined players or force camera/screen effects.
-                CinematicSuspensePolicy.Cue cue=CinematicSuspensePolicy.choose(
-                        e.act,e.activeTicks,e.loops,id.getLeastSignificantBits());
+                CinematicSuspensePolicy.Cue cue=DepthSuspensePolicy.adapt(
+                        CinematicSuspensePolicy.choose(
+                                e.act,e.activeTicks,e.loops,id.getLeastSignificantBits()),
+                        !player.serverLevel().canSeeSky(player.blockPosition()),
+                        id.getMostSignificantBits() ^ e.activeTicks);
                 if(cue!=CinematicSuspensePolicy.Cue.NONE) {
                     if(cue==CinematicSuspensePolicy.Cue.SILENCE) {
                         player.displayClientMessage(Component.literal(
@@ -212,13 +216,24 @@ public final class HauntGameplayRuntime {
         ServerLevel level=player.serverLevel();
         HauntGameplayPolicy.Evidence evidence=HauntGameplayPolicy.Evidence.NONE;
         if(e.act==HauntGameplayPolicy.Act.WITNESS) {
-            if(visible(level,player,GugugagaEntity.class))
+            GugugagaEntity bird=visibleNearest(level,player,GugugagaEntity.class);
+            if(bird!=null) {
                 evidence=HauntGameplayPolicy.Evidence.GUGU_GAGA;
+                reportEvidence(player,e,HorrorEvidencePolicy.bird(
+                        bird.phase()==ObserverBrain.Phase.APPROACH));
+            }
         } else if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
-            if(visible(level,player,RedactorEntity.class))
+            RedactorEntity redactor=visibleNearest(level,player,RedactorEntity.class);
+            if(redactor!=null) {
                 evidence=HauntGameplayPolicy.Evidence.LAPIS_REDACTOR;
-            else if(visible(level,player,YellowSmilerEntity.class))
-                evidence=HauntGameplayPolicy.Evidence.YELLOW_SMILER;
+                reportEvidence(player,e,HorrorEvidencePolicy.redactor(redactor.revealed()));
+            } else {
+                YellowSmilerEntity yellow=visibleNearest(level,player,YellowSmilerEntity.class);
+                if(yellow!=null) {
+                    evidence=HauntGameplayPolicy.Evidence.YELLOW_SMILER;
+                    reportEvidence(player,e,HorrorEvidencePolicy.smiler(yellow.revealed()));
+                }
+            }
         }
         HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(e.act,
                 e.activeTicks,evidence,true);
@@ -237,14 +252,31 @@ public final class HauntGameplayRuntime {
             summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
         return true;
     }
-    private static <T extends Entity> boolean visible(
+    private static void reportEvidence(ServerPlayer player,Entry entry,
+            HorrorEvidencePolicy.Trace trace) {
+        if(!NightwatchConfig.EVIDENCE_CLUES_ENABLED.get())return;
+        long now=player.serverLevel().getGameTime();
+        if(now-entry.lastEvidenceTick<20*3)return;
+        entry.lastEvidenceTick=now;
+        player.sendSystemMessage(Component.literal("[Nightwatch Observation] "
+                +HorrorEvidencePolicy.description(trace)));
+    }
+
+    /** Actual currently loaded and visible entities only, nearest first. */
+    private static <T extends Entity> T visibleNearest(
             ServerLevel level,ServerPlayer player,Class<T> clazz) {
         AABB search=player.getBoundingBox().inflate(12);
+        T closest=null;
+        double best=HauntGameplayPolicy.EVIDENCE_RADIUS_SQ+0.001;
         for(T other:level.getEntitiesOfClass(clazz,search,Entity::isAlive)) {
-            if(HauntGameplayPolicy.nearEvidence(player.distanceToSqr(other),
-                    player.hasLineOfSight(other)))return true;
+            double squared=player.distanceToSqr(other);
+            if(squared<best && HauntGameplayPolicy.nearEvidence(squared,
+                    player.hasLineOfSight(other))) {
+                best=squared;
+                closest=other;
+            }
         }
-        return false;
+        return closest;
     }
     private static <T extends Entity> boolean summonOne(ServerLevel level,
             ServerPlayer player,EntityType<T> kind) {
