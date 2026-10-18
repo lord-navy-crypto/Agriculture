@@ -32,7 +32,7 @@ with LOG.open("wb") as fd:
         shell("xdotool","mousemove","640","568","click","1")
         time.sleep(7)
         shot("b-real-main-menu")
-        shell("xdotool","mousemove","640","290","click","1")
+        shell("xdotool","mousemove","640","324","click","1")
         time.sleep(4)
         shot("c-singleplayer-selection")
         shell("xdotool","mousemove","640","519","click","1")
