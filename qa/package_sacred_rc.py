@@ -13,7 +13,7 @@ import shutil
 import sys
 import zipfile
 
-VERSION="0.21.2-rc.1"
+VERSION="0.21.3-rc.1"
 EXPECTED_JAR=f"gugugaga-{VERSION}.jar"
 PREFIX="io/github/lordnavycrypto/gugugaga/"
 ACTORS=["GugugagaEntity","RedactorEntity","YellowSmilerEntity"]

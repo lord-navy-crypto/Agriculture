@@ -12,7 +12,7 @@ class RuntimeFloor(unittest.TestCase):
         pack=(ROOT/"qa/package_sacred_rc.py").read_text()
         self.assertIn('versionRange="[21.1.150,)"',pack)
         self.assertIn("NeoForge 21.1.150+",pack)
-        self.assertIn('VERSION="0.21.2-rc.1"',pack)
+        self.assertIn('VERSION="0.21.3-rc.1"',pack)
     def test_reliably_runs_minecraft_not_just_compiles_java(self):
         workflow=(ROOT/".github/workflows/build.yml").read_text()
         self.assertIn("runtime-startup:",workflow)
