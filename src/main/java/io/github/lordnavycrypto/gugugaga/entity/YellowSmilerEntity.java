@@ -74,6 +74,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
     private int observationTicks;
     private int wardOffTicks=20*8;
     private int callResponseTicks;
+    private java.util.UUID helpCallerId;
 
     /** Player request only; does not teleport, spawn, or warp the penguin. */
     public boolean respondToHelpCall(ServerPlayer caller) {
@@ -86,6 +87,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
         if(closest==null)return false;
         callResponseTicks=20*8;
+        helpCallerId=caller.getUUID();
         getLookControl().setLookAt(closest,14f,14f);
         getNavigation().moveTo(closest,1.15);
         triggerAnim("gift_gesture","ward");
@@ -148,7 +150,9 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         triggerAnim("gift_gesture", "help");
         int favors=HauntGameplayRuntime.recordSmilerFavor(recipient);
         recipient.sendSystemMessage(Component.literal(
-                "[Smiler] Here are two torches. "+SmilerTrustPolicy.advice(favors)));
+                "[Smiler] Here are two torches. "
+                    +(HauntGameplayRuntime.smilerAidEnabled(recipient)
+                        ?SmilerTrustPolicy.advice(favors):"Stay safe.")));
         return InteractionResult.SUCCESS;
     }
     @Override
@@ -172,11 +176,14 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         observationTicks=Math.min(10000,observationTicks+20);
         wardOffTicks=Math.min(20*8,wardOffTicks+20);
         callResponseTicks=Math.max(0,callResponseTicks-20);
+        if(callResponseTicks==0)helpCallerId=null;
         // Yellow is not afraid of Redactor. The penguin is its first target;
         // the player's trust is its reason to intervene. No cross-world scans.
         var players=world.getEntitiesOfClass(ServerPlayer.class,
                 getBoundingBox().inflate(22.0),
-                p->p.isAlive() && HauntGameplayRuntime.smilerAidEnabled(p));
+                p->p.isAlive() && HauntGameplayRuntime.smilerAidEnabled(p)
+                    && (callResponseTicks==0 || helpCallerId==null
+                        || helpCallerId.equals(p.getUUID())));
         ServerPlayer player=players.stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
         var birds=world.getEntitiesOfClass(GugugagaEntity.class,
@@ -231,6 +238,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                 tag.getInt("YellowSmilerObservedTicks")));
         wardOffTicks=0; // no immediate attack after a save/reload
         callResponseTicks=0; // calls are never retained across world reloads
+        helpCallerId=null;
         setRevealed(tag.getBoolean("YellowSmilerRevealed"));
         stageEncounter=tag.getBoolean("NightwatchStageGuest");
         stageLifetimeTicks=Math.max(0,Math.min(20*360,
