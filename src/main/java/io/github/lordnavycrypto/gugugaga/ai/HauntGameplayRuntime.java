@@ -67,6 +67,7 @@ public final class HauntGameplayRuntime {
     }
     public static void join(ServerPlayer player) {
         entries(player.serverLevel().getServer()).put(player.getUUID(),new Entry());
+        E2EGameplayProof.record("JOINED");
         player.sendSystemMessage(Component.literal(
                 "[Nightwatch] Joined the five-act survival horror loop. "
                 +"Look directly at a real creature for 4 seconds to investigate. "
@@ -185,6 +186,7 @@ public final class HauntGameplayRuntime {
             return false;
         }
         e.lastSmilerCallTick=now;
+        E2EGameplayProof.record("HELP_SUCCESS");
         player.sendSystemMessage(Component.literal(
                 "[Smiler] I hear you. The bird, not you, is my priority."));
         return true;
@@ -210,6 +212,7 @@ public final class HauntGameplayRuntime {
             return false;
         }
         entry.lastListenTick=now; // empty attempts also consume one cooldown
+        E2EGameplayProof.record("LISTEN_SUCCESS");
         ServerLevel level=player.serverLevel();
         AABB nearby=player.getBoundingBox().inflate(20);
         Entity closest=null;
@@ -331,7 +334,10 @@ public final class HauntGameplayRuntime {
                 e.act=next;
                 e.activeTicks=0;
                 e.gazeFocusTicks=0;
-                if(next==HauntGameplayPolicy.Act.STILLNESS)e.loops++;
+                if(next==HauntGameplayPolicy.Act.STILLNESS) {
+                    e.loops++;
+                    E2EGameplayProof.record("LOOP_TO_STILLNESS");
+                }
                 player.sendSystemMessage(Component.literal(stageMessage(next)));
                 // Act-specific scripted sighting is separate from the slow,
                 // unsolicited Nightwatch ambient encounter scheduler.
@@ -488,6 +494,7 @@ public final class HauntGameplayRuntime {
         e.act=next;
         e.activeTicks=0;
         e.gazeFocusTicks=0;
+        E2EGameplayProof.record("STAGE_"+next);
         player.sendSystemMessage(Component.literal(stageMessage(next)));
         if(next==HauntGameplayPolicy.Act.FALSE_SAFETY) {
             e.redactorSpawnAttempts=1;
@@ -595,6 +602,10 @@ public final class HauntGameplayRuntime {
                 +". Use /gugugaga play listen while crouched; "
                 +"check real entities in loaded ground near you. "
                 +"Missing actors retry twice during the stage."));
+        if(bird)E2EGameplayProof.record("SPAWN_GUGU");
+        if(redactor)E2EGameplayProof.record("SPAWN_LAPIS");
+        if(smiler)E2EGameplayProof.record("SPAWN_YELLOW");
+        if(bird && redactor && smiler)E2EGameplayProof.record("TRIAD_REAL_ENTITIES");
         return bird && (!allThree || redactor || smiler);
     }
 

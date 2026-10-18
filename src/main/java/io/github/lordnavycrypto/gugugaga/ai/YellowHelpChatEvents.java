@@ -19,6 +19,7 @@ public final class YellowHelpChatEvents {
                 || !YellowHelpChatPolicy.isHelpRequest(event.getRawText()))
             return;
         event.setCanceled(true); // roleplay command never broadcasts publicly
+        E2EGameplayProof.record("CHAT_HELP_INTERCEPTED");
         var player=event.getPlayer();
         // Schedule on logical server even if a chat-processing implementation
         // invokes the chat event off-thread. No client-side trust shortcut.
