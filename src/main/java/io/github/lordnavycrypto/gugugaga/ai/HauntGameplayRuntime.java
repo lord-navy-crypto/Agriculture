@@ -56,6 +56,7 @@ public final class HauntGameplayRuntime {
         long lastSmilerFavorTick=-1000000L;
         long lastSmilerCallTick=-1000000L;
         long lastListenTick=-1000000L;
+        boolean paused;
     }
     private static final Map<MinecraftServer,Map<UUID,Entry>> SESSIONS=
             new WeakHashMap<>();

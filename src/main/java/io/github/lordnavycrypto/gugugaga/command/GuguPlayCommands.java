@@ -10,8 +10,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
- * Voluntary horror gameplay. Administrators authorize WORLD availability;
- * each survival player must join individually. No quests/endings here.
+ * In-game Nightwatch actions. Normal players use the H-key panel and direct
+ * entity interactions; operator-only test scenes remain hidden behind permissions.
  */
 public final class GuguPlayCommands {
     private GuguPlayCommands(){}
