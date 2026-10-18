@@ -154,11 +154,28 @@ with LOG.open("wb") as f:
         wait_marker("LISTEN_V_KEY",7,required=False)
         wait_marker("LISTEN_SUCCESS",7,required=False)
         snap("13-sneak-V-listen")
+        # Apply actual Minecraft player_attack damage to each real actor.
+        # The server must record an escape/recovery instead of an instant kill.
+        say("/effect clear @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness")
+        say("/effect clear @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness")
+        say("/effect clear @e[type=gugugaga:yellow_smiler,limit=1,sort=nearest] minecraft:slowness")
+        say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
+        say("/tp @e[type=gugugaga:redactor,sort=nearest,limit=1] ~3 ~ ~5")
+        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
+        say("/damage @e[type=gugugaga:observer,sort=nearest,limit=1] 100 minecraft:player_attack by @s",3)
+        wait_marker("GUGU_WEAPON_SURVIVED",5,required=False)
+        say("/damage @e[type=gugugaga:redactor,sort=nearest,limit=1] 100 minecraft:player_attack by @s",3)
+        wait_marker("LAPIS_WEAPON_SURVIVED",5,required=False)
+        say("/damage @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] 100 minecraft:player_attack by @s",3)
+        wait_marker("YELLOW_WEAPON_SURVIVED",5,required=False)
+        snap("14-weapon-resilience")
         missing=[x for x in ("WORLD_PLAYER_READY","SERVER_ENABLED","JOINED",
                            "SPAWN_GUGU","SPAWN_LAPIS","SPAWN_YELLOW",
                            "TRIAD_REAL_ENTITIES","CHAT_HELP_INTERCEPTED",
                            "HELP_SUCCESS","LISTEN_V_KEY","LISTEN_SUCCESS",
-                           "STAGE_FALSE_SAFETY","STAGE_RESPITE","LOOP_TO_STILLNESS")
+                           "STAGE_FALSE_SAFETY","STAGE_RESPITE","LOOP_TO_STILLNESS",
+                           "GUGU_WEAPON_SURVIVED","LAPIS_WEAPON_SURVIVED",
+                           "YELLOW_WEAPON_SURVIVED")
                  if not results.get(x)]
         (OUT/"results.json").write_text(json.dumps({"markers":results,
                  "missing":missing,"elapsed_seconds":round(time.monotonic()-start,1)},indent=2))

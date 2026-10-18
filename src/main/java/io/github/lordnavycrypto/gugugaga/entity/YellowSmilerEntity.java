@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HorrorCombatPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof;
 import io.github.lordnavycrypto.gugugaga.ai.SmilerTrustPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,6 +27,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -77,6 +81,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
     private int wardOffTicks=20*8;
     private int callResponseTicks;
     private java.util.UUID helpCallerId;
+    private int playerWeaponGraceTicks;
 
     /** Player request only; does not teleport, spawn, or warp the penguin. */
     public boolean respondToHelpCall(ServerPlayer caller) {
@@ -113,9 +118,11 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,32.0)
-                .add(Attributes.MOVEMENT_SPEED,0.17)
-                .add(Attributes.FOLLOW_RANGE,32.0);
+                .add(Attributes.MAX_HEALTH,48.0)
+                .add(Attributes.ARMOR,4.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE,0.45)
+                .add(Attributes.MOVEMENT_SPEED,0.21)
+                .add(Attributes.FOLLOW_RANGE,36.0);
     }
     @Override
     protected void registerGoals() {
@@ -157,17 +164,43 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                         ?SmilerTrustPolicy.advice(favors):"Stay safe.")));
         return InteractionResult.SUCCESS;
     }
+    private static Player playerAttacker(DamageSource source) {
+        if(source.getEntity() instanceof Player player)return player;
+        if(source.getDirectEntity() instanceof Projectile projectile
+                && projectile.getOwner() instanceof Player player)return player;
+        return null;
+    }
+
     @Override
     public boolean hurt(DamageSource source,float amount) {
+        Player attacker=playerAttacker(source);
+        boolean playerAttack=attacker!=null;
+        if(!level().isClientSide && playerAttack
+                && HorrorCombatPolicy.shouldBlockPlayerHit(true,playerWeaponGraceTicks))
+            return false;
+        if(!level().isClientSide && HorrorCombatPolicy.shouldEscapeLethalHit(
+                playerAttack,getHealth(),amount,playerWeaponGraceTicks)) {
+            setHealth(HorrorCombatPolicy.recoveryHealth(getMaxHealth(),0.60f));
+            playerWeaponGraceTicks=HorrorCombatPolicy.PLAYER_HIT_GRACE_TICKS;
+            setRevealed(true);
+            if(attacker!=null) {
+                Vec3 away=position().subtract(attacker.position());
+                if(away.lengthSqr()<0.01)away=new Vec3(1,0,0);
+                Vec3 goal=position().add(away.normalize().scale(8.0));
+                getNavigation().moveTo(goal.x,goal.y,goal.z,1.0);
+            }
+            E2EGameplayProof.record("YELLOW_WEAPON_SURVIVED");
+            return true;
+        }
         boolean damaged=super.hurt(source,amount);
-        if(damaged && !level().isClientSide
-                && source.getEntity() instanceof ServerPlayer && !revealed())
+        if(damaged && !level().isClientSide && playerAttack && !revealed())
             setRevealed(true);
         return damaged;
     }
     @Override
     public void tick() {
         super.tick();
+        if(!level().isClientSide && playerWeaponGraceTicks>0)playerWeaponGraceTicks--;
         if(!level().isClientSide && stageEncounter && ++stageLifetimeTicks>=20*360) {
             // Scripted horror actors cannot accumulate in old saves forever.
             discard();
