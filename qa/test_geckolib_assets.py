@@ -36,7 +36,7 @@ class GeckoLibAssetTests(unittest.TestCase):
         props = (ROOT / "gradle.properties").read_text()
         meta = (ROOT / "src/main/templates/META-INF/neoforge.mods.toml").read_text()
         gradle = (ROOT / "build.gradle").read_text()
-        self.assertIn("geckolib_version=4.9.3", props)
+        self.assertIn("geckolib_version=4.8.2", props)
         self.assertIn('modId="geckolib"', meta)
         self.assertIn('side="BOTH"', meta)
         self.assertIn("software.bernie.geckolib:geckolib-neoforge-", gradle)
