@@ -113,11 +113,10 @@ with LOG.open("wb") as f:
         wait_marker("CHAT_HELP_INTERCEPTED",6,required=False)
         wait_marker("HELP_SUCCESS",6,required=False)
         snap("09-chat-help")
-        key("Shift_L")
         # xdotool 'key' releases shift; send real held key separately.
         command("xdotool","keydown","Shift_L")
         time.sleep(1)
-        key("v")
+        command("xdotool","key","v",check=True)
         time.sleep(2)
         command("xdotool","keyup","Shift_L")
         wait_marker("LISTEN_V_KEY",7,required=False)
