@@ -1,11 +1,31 @@
-# Gugu-Gaga v0.21: practical version compatibility
+# Gugu-Gaga v0.21.1: runtime compatibility correction
 
-v0.20.1 required NeoForge >=21.1.259 and GeckoLib >=4.9.3. Those floors were tied to the newest local development environment instead of an actual oldest-API check.
+## Verified incident and root cause
 
-The candidate v0.21 targets Minecraft Java **1.21.1** and Java **21**, and proposes NeoForge **21.1.100 or later in the 21.1 series**, plus GeckoLib **4.8.2 or later but below 5.0** using the **NeoForge 1.21.1** variant. Both the client and dedicated server need the matching GeckoLib and mod JARs. GeckoLib remains mandatory: all three original animated actors extend its classes. Forge and Fabric GeckoLib files are *not* substitutes.
+The v0.21.0 mod required NeoForge >=21.1.100 and GeckoLib >=4.8.2. Compilation passed, but REAL dedicated server boot at NeoForge 21.1.100 + GeckoLib 4.8.2 fails before mod construction, because **GeckoLib itself requires NeoForge 21.1.150 or newer**. The exact failure is:
 
-The *release JAR is compiled against the earliest proposed versions* (NeoForge 21.1.100 + GeckoLib 4.8.2). The CI matrix also compiles against NeoForge 21.1.100 + GeckoLib 4.9.3, NeoForge 21.1.200 + GeckoLib 4.8.4, NeoForge 21.1.259 + GeckoLib 4.8.2, and NeoForge 21.1.259 + GeckoLib 4.9.3. The build dependencies and declared minimum versions are independent variables, so building against a new library cannot accidentally raise the runtime floor. Review actual GitHub Actions results and do not publish this range if baseline or matrix builds fail.
+> Mod geckolib requires neoforge 21.1.150 or above. Currently, neoforge is 21.1.100.
 
-Only one Gugu-Gaga JAR belongs in mods; remove older copies. Do not install the downloaded artifact ZIP directly. The player HELP-only chat, crouch+V listening, gaze investigation, all five stages and the automatic fifth-to-first loop are unchanged.
+Never present compile-only Gradle builds as proof of runtime compatibility again. That previous release candidate's claimed lower NeoForge bound was invalid.
 
-**Not asserted**: compatibility with Minecraft 1.20.1 or 1.21.4, Forge, Fabric, GeckoLib 5.x, Java 17 or all future versions. CI compilation is not full 3D game, dedicated server, modpack conflict or animation rendering validation. For failed launches provide latest.log / crash report with Minecraft, NeoForge, GeckoLib and Java versions.
+## Corrected candidates and requirements
+
+- Minecraft Java 1.21.1 only; Java 21.
+- NeoForge **21.1.150 or newer** in Minecraft 1.21.1 line. Individual newer GeckoLib builds MAY impose a stricter minimum; users must honor the installed GeckoLib JAR's own version requirement.
+- GeckoLib NeoForge Minecraft 1.21.1 edition, version **4.8.2 or newer 4.x**, required on BOTH client and dedicated server. Forge/Fabric builds are not interchangeable.
+- Recommended first working combo **NeoForge 21.1.259 + GeckoLib 4.9.3**: confirmed booting a real dedicated server in earlier CI.
+- Lowest candidate **NeoForge 21.1.150 + GeckoLib 4.8.2** requires current live server boot checks to pass before claiming support.
+
+The shipped candidate is compiled against NeoForge 21.1.150 + GeckoLib 4.8.2, with extra compile matrix coverage and real dedicated server boot checks on representative pairs. GitHub Actions requires BOTH a real mod constructor startup marker and the Minecraft server-ready log marker. All failed startup logs are retained as Actions artifacts.
+
+## Install and manual client QA
+
+1. Create a separate Minecraft 1.21.1 NeoForge test profile, using Java 21 and a backed-up test world.
+2. Remove ALL earlier Gugu-Gaga versions from the profile's mods folder (one Gugu-Gaga JAR only). Extract the Actions artifact ZIP; place only the included v0.21.1 JAR in mods.
+3. Install a matching GeckoLib **NeoForge for Minecraft 1.21.1** 4.x JAR. Start with NeoForge 21.1.259 + GeckoLib 4.9.3 when possible to isolate the lowest-version problem.
+4. Read the crash screen and latest.log (or newest crash-reports file) if Minecraft still fails. The reporter must provide Minecraft, NeoForge, GeckoLib and Java versions; no claim about their particular machine can be made from GitHub CI alone.
+5. If it launches, verify uppercase HELP rescue, crouch+V listening, real four-second gaze investigation, three actors and repeating five-act cycle.
+
+## What we have NOT verified
+
+Automated dedicated server startup is not a Mac GUI client launch or an interactive in-world graphics test. It does NOT certify audio/animations/shader stacks, game balance, safety of existing save worlds or client mod conflicts. Keep this branch as an unmerged draft until actual user playtests succeed.
