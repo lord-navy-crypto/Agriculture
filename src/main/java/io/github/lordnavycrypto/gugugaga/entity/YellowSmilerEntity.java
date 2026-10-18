@@ -2,6 +2,8 @@ package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.SmilerTrustPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
+import net.minecraft.core.particles.ParticleTypes;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.sounds.SoundEvents;
@@ -208,6 +210,11 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                 bird.hurt(world.damageSources().mobAttack(this),1.0f);
                 wardOffTicks=0;
                 triggerAnim("gift_gesture","ward");
+                int n=CinematicVfxPolicy.count(CinematicVfxPolicy.Event.SMILER_WARD,
+                        NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get(),true,
+                        hasLineOfSight(bird));
+                if(n>0)world.sendParticles(ParticleTypes.WAX_ON,
+                        getX(),getY()+1.3,getZ(),n,0.16,0.14,0.16,0.01);
                 int favors=HauntGameplayRuntime.recordSmilerFavor(player);
                 if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
                     player.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,
