@@ -41,7 +41,10 @@ public final class NightwatchListenKey {
                 // Screens/chat should never unexpectedly initiate a listen.
                 if(mc.screen==null && mc.player!=null
                         && mc.player.isCrouching() && mc.getConnection()!=null)
+                {
+                    io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof.record("LISTEN_V_KEY");
                     mc.getConnection().sendCommand("gugugaga play listen");
+                }
             }
         }
     }

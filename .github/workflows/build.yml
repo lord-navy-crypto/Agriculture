@@ -328,3 +328,38 @@ jobs:
             runs/client/crash-reports/*.txt
             run/logs/latest.log
           if-no-files-found: warn
+
+  real-gameplay:
+    name: REAL in-world gameplay — real entities, chat HELP, V, and five-act cycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Install virtual Linux Minecraft controls and OpenGL
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb xauth xdotool imagemagick libgl1-mesa-dri libgl1
+      - name: Enter real survival world and exercise in-game controls
+        env:
+          GUGU_GAME_TIMEOUT: "570"
+        run: xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" python3 qa/gameplay_e2e.py
+      - name: Upload screenshot proof and full game logs (even on FAIL)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-actual-gameplay-e2e
+          path: |
+            build/gameplay-e2e/*
+            run/logs/latest.log
+            runs/client/logs/latest.log
+            run/crash-reports/*.txt
+          if-no-files-found: warn

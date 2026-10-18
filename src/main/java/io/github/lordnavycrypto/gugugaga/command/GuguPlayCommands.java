@@ -90,6 +90,7 @@ public final class GuguPlayCommands {
     }
     private static int server(CommandSourceStack src,boolean active) {
         NightwatchConfig.PLAYABLE_LOOP_ENABLED.set(active);
+        if(active)io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof.record("SERVER_ENABLED");
         // Enabling the game loop also allows the pre-existing 8-minute
         // sighting scheduler to introduce the first Gugu. Each player must
         // still join. Disabling this experimental mode shuts auto spawning
