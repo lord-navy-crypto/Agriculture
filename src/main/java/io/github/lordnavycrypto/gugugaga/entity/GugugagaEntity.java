@@ -45,7 +45,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.watch");
     private static final software.bernie.geckolib.animation.RawAnimation WALK =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.walk");
-    private static final software.bernie.geckolib.animation.RawAnimation RETREAT =
+    private static final software.bernie.geckolib.animation.RawAnimation RETREAT_ANIM =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.retreat");
     private static final software.bernie.geckolib.animation.RawAnimation ANGRY =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.gugugaga.angry");
@@ -64,7 +64,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 case DORMANT -> IDLE;
                 case OBSERVE -> WATCH;
                 case APPROACH -> WALK;
-                case RETREAT -> RETREAT;
+                case RETREAT -> RETREAT_ANIM;
             });
         }));
     }
