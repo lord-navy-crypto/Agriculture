@@ -26,6 +26,18 @@ class V015Regression(unittest.TestCase):
             self.assertNotIn(bad,smiler)
             self.assertNotIn(bad,runtime)
 
+    def test_staged_sightings_are_replayable_and_bounded(self):
+        runtime=(JAVA/"ai/HauntGameplayRuntime.java").read_text()
+        self.assertIn("next==HauntGameplayPolicy.Act.WITNESS",runtime)
+        self.assertIn("GuguGagaMod.OBSERVER.get()",runtime)
+        self.assertIn("e.witnessSpawnAttempts<3",runtime)
+        self.assertIn("observer.markAmbientEncounter()",runtime)
+        self.assertIn("summonOne(level,player,GuguGagaMod.REDACTOR.get())",runtime)
+        self.assertIn("summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get())",runtime)
+        self.assertIn("getChunkSource().hasChunk",runtime)
+        self.assertIn("global>=6",runtime)
+        self.assertNotIn("forceChunk(",runtime)
+
     def test_disguise_with_observable_tells(self):
         redactor=(JAVA/"entity/RedactorEntity.java").read_text()
         for key in ("MimicDeceptionPolicy.shouldCreep(", "MimicDeceptionPolicy.canShowTell(",

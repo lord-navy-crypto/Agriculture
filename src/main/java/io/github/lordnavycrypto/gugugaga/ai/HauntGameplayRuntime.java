@@ -49,6 +49,7 @@ public final class HauntGameplayRuntime {
         long lastEvidenceTick=-1000000L;
         boolean smilerAidAllowed=true;
         int smilerFavors;
+        int witnessSpawnAttempts;
         long lastSmilerFavorTick=-1000000L;
         long lastSmilerCallTick=-1000000L;
     }
@@ -236,7 +237,23 @@ public final class HauntGameplayRuntime {
                 e.activeTicks=0;
                 if(next==HauntGameplayPolicy.Act.STILLNESS)e.loops++;
                 player.sendSystemMessage(Component.literal(stageMessage(next)));
+                // Act-specific scripted sighting is separate from the slow,
+                // unsolicited Nightwatch ambient encounter scheduler.
+                if(next==HauntGameplayPolicy.Act.WITNESS) {
+                    e.witnessSpawnAttempts=1;
+                    if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
+                        e.witnessSpawnAttempts=3;
+                }
             } else {
+                // If local terrain has no suitable room, retry twice at
+                // most, every 20s, until one nearby loaded actor is found.
+                if(e.act==HauntGameplayPolicy.Act.WITNESS
+                        && e.activeTicks>0 && e.activeTicks%(20*20)==0
+                        && e.witnessSpawnAttempts<3) {
+                    e.witnessSpawnAttempts++;
+                    if(summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get()))
+                        e.witnessSpawnAttempts=3;
+                }
                 // Individually addressed cinematic cues. They never broadcast
                 // to nearby unjoined players or force camera/screen effects.
                 CinematicSuspensePolicy.Cue cue=DepthSuspensePolicy.adapt(
@@ -328,8 +345,10 @@ public final class HauntGameplayRuntime {
         e.act=next;
         e.activeTicks=0;
         player.sendSystemMessage(Component.literal(stageMessage(next)));
-        if(next==HauntGameplayPolicy.Act.FALSE_SAFETY)
+        if(next==HauntGameplayPolicy.Act.FALSE_SAFETY) {
             summonOne(level,player,GuguGagaMod.REDACTOR.get());
+            summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
+        }
         else if(next==HauntGameplayPolicy.Act.RESPITE)
             summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
         return true;
@@ -392,6 +411,8 @@ public final class HauntGameplayRuntime {
                 T spawned=kind.create(level);
                 if(spawned==null)return false;
                 spawned.moveTo(x+0.5,y,z+0.5,level.random.nextFloat()*360f,0);
+                if(spawned instanceof GugugagaEntity observer)
+                    observer.markAmbientEncounter(); // 90s capped stage witness
                 if(spawned instanceof RedactorEntity redactor)
                     redactor.markStageEncounter();
                 if(spawned instanceof YellowSmilerEntity yellow)

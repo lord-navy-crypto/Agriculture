@@ -16,6 +16,11 @@
 - `/gugugaga play aid off` disables that participant's unsolicited Smiler assistance, persuasion and help calls. `aid on` restores it. `play leave` clears the in-memory favor state.
 - The existing right-click 2-torch gift cooldown remains unchanged. No inventory confiscation, no invasive HUD or outbound connections.
 
+## Playable stage-specific appearances (new)
+- At entry to **WITNESS**, one Gugu can appear in a nearby safe *already-loaded* position. If no legal position exists, the session tries at most two more times at 20-second intervals. The stage observer uses the old 90-second capped ambient lifetime; the pre-existing **random** ambient scheduler retains its 8-minute cooldown.
+- After the player genuinely spots and investigates Gugu, entering **FALSE_SAFETY** now tries to spawn both Redactor and Yellow within existing per-type global six-actor and 48-block nearby caps, allowing first-cycle three-party confrontation and player aid.
+- No forced chunk loads, terrain edits, teleporting player, permanent stage actor population, or dramatic storyline.
+
 ## Acceptance
 1. Full Python tests + original Java21 tests + new 120k policy smoke + NeoForge Gradle build + jar artifact pass.
 2. Observe Redactor Lapis in-game: staring (within 15) causes rare tell; turn away at 8–20 and it walks on valid paths; at close visible range the mask can fall; wall-separated players do not trigger surprise/reveal.
