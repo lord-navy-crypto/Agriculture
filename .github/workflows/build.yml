@@ -114,6 +114,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
             qa/java/AdvancedCharacterPolicySmoke.java
           java -cp build/gugu-advanced-modes AdvancedCharacterPolicySmoke
+      - name: Verify repeatable v0.10 five-act horror without forced story endings
+        run: |
+          mkdir -p build/haunt-game-smoke
+          javac -d build/haunt-game-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            qa/java/HauntGameplayPolicySmoke.java
+          java -cp build/haunt-game-smoke HauntGameplayPolicySmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke
