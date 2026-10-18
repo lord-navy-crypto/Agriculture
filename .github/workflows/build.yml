@@ -188,6 +188,15 @@ jobs:
             qa/java/V018CavePressureSmoke.java
           java -cp build/v018-horror-smoke V018HorrorTacticsSmoke
           java -cp build/v018-horror-smoke V018CavePressureSmoke
+      - name: Verify v0.20 exact chat, 4-second gaze and chat privacy policy
+        run: |
+          mkdir -p build/v020-natural-policy
+          javac -d build/v020-natural-policy \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/GazeInvestigationPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/YellowHelpChatPolicy.java \
+            qa/java/V020NaturalInteractionSmoke.java
+          java -cp build/v020-natural-policy V020NaturalInteractionSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - name: Audit and assemble exact Sacred Nightwatch RC1 release
