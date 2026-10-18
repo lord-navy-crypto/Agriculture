@@ -93,7 +93,9 @@ public final class NightwatchDirector {
             if(!EncounterPolicy.eligible(true,
                     level.dimension()==Level.OVERWORLD,
                     !player.isCreative()&&!player.isSpectator(),
-                    state.quietPlayers.contains(id),
+                    state.quietPlayers.contains(id)
+                            || (NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
+                                && !HauntGameplayRuntime.isJoined(server,id)),
                     night,nearby,global,state.ticks-last,
                     EncounterPolicy.boundedCooldown(
                             NightwatchConfig.ENCOUNTER_COOLDOWN_TICKS.get())))continue;
