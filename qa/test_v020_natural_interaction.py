@@ -12,8 +12,9 @@ class NaturalInteractions(unittest.TestCase):
                   "player.serverLevel().getServer().execute("):
             self.assertIn(k,s)
         policy=(SRC/"ai/YellowHelpChatPolicy.java").read_text()
-        self.assertIn("help yellow face",policy)
-        self.assertIn("message.length()>64",policy)
+        self.assertIn('message.trim().equals("HELP")',policy)
+        self.assertNotIn("help yellow face",policy)
+        self.assertNotIn("toLowerCase",policy)
         self.assertNotIn("contains(\"help\")",policy)
         runtime=(SRC/"ai/HauntGameplayRuntime.java").read_text()
         self.assertIn("SmilerTrustPolicy.canRequestAid(",runtime)

@@ -7,8 +7,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ServerChatEvent;
 
 /**
- * Server-authoritative chat interop. No slash command needed for HELP Yellow
- * Face. Exact phrase is kept private; no chat interception if mode is off.
+ * Server-authoritative chat interop. No slash command needed for the uppercase word HELP.
+ * Exact word is kept private; no chat interception if mode is off.
  */
 @EventBusSubscriber(modid=GuguGagaMod.MOD_ID)
 public final class YellowHelpChatEvents {
