@@ -91,12 +91,12 @@ def check_and_bundle(build_libs,out):
     }
     (out/"NATURAL_PLAYTEST_MANIFEST.json").write_text(json.dumps(manifest,indent=2)+"\n")
     (out/"NATURAL_PLAYTEST_INSTRUCTIONS.txt").write_text(
-        "GUGU-GAGA NATURAL INTERACTION v0.20 / PLAYTEST PACKAGE\n"
+        "GUGU-GAGA COMPATIBILITY v0.21 / PLAYTEST PACKAGE\n"
         "Experimental, NOT a stable release. Use backup/test world.\n"
         "Minecraft 1.21.1 | NeoForge 21.1.100+ | Java 21\n"
-        "REQUIRES GeckoLib 4.8.2+ (4.x) for NeoForge 1.21.1 on BOTH client and dedicated server.\n"
+        "REQUIRES GeckoLib NeoForge for Minecraft 1.21.1: 4.8.2 or newer 4.x on BOTH client and dedicated server.\n"
         "Install the ONE JAR above in mods; remove older gugugaga JAR versions.\n"
-        "The UI input/held-gaze interactions replace most gameplay slash commands.\n"
+        "v0.21 relaxes loader AND GeckoLib minimums, verified by a five-build API matrix.\nThe UI input/held-gaze interactions replace most gameplay slash commands.\n"
         "Do not put the zip of this artifact directly in mods.\n"
         "Creative testing: /time set night, then /gamemode survival\n"
         "OP: /gugugaga play server on\n"
