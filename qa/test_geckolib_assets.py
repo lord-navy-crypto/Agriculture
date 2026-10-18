@@ -18,14 +18,14 @@ CASES = {
     "redactor": {
         "models": ["redactor_lapis", "redactor_true"],
         "bones": {"lapis", "revealed", "mask", "left_arm", "right_arm"},
-        "animations": {"lapis_idle", "true_idle"},
+        "animations": {"lapis_idle", "true_idle", "mask_tell"},
         "entity": "RedactorEntity",
         "renderer": "RedactorRenderer",
     },
     "smiler": {
         "models": ["yellow_smiler"],
         "bones": {"body", "head", "left_arm", "right_arm"},
-        "animations": {"friendly", "exposed", "help"},
+        "animations": {"friendly", "exposed", "help", "ward"},
         "entity": "YellowSmilerEntity",
         "renderer": "YellowSmilerRenderer",
     },

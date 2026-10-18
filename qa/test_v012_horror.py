@@ -26,7 +26,10 @@ class V012Horror(unittest.TestCase):
         for marker in ("handleHorrorPursuit(", "HorrorChasePolicy.canStart(",
                        "HorrorChasePolicy.canContinue(", "retreatFromSmiler("):
             self.assertIn(marker,bird)
-        self.assertIn("HauntGameplayRuntime.inChaseAct",yellow)
+        # v0.15 keeps chase-act eligibility inside the personal aid opt-out check.
+        self.assertIn("HauntGameplayRuntime.smilerAidEnabled",yellow)
+        runtime=(SRC/"ai/HauntGameplayRuntime.java").read_text()
+        self.assertIn("e.smilerAidAllowed && inChaseAct(player)",runtime)
         self.assertIn("getBoundingBox().inflate(22.0)",redactor)
         self.assertIn("bird.retreatFromSmiler(this)",yellow)
         self.assertIn("bird.hurt(",yellow)

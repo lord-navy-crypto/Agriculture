@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.MimicAttackPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.MimicDeceptionPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
@@ -43,11 +44,17 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.redactor.lapis_idle");
     private static final software.bernie.geckolib.animation.RawAnimation TRUE_FORM =
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.redactor.true_idle");
+    private static final software.bernie.geckolib.animation.RawAnimation MASK_TELL =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenPlay("animation.redactor.mask_tell");
 
     @Override
     public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "mask_state", 6,
                 state -> state.setAndContinue(revealed() ? TRUE_FORM : LAPIS)));
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this,
+                "tell_gesture",0,
+                state->software.bernie.geckolib.animation.PlayState.STOP)
+                .triggerableAnim("tell",MASK_TELL));
     }
 
     @Override
@@ -66,6 +73,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
 
     private int corruptionCooldown=ThreeEntityReactionPolicy.CORRUPT_INTERVAL_TICKS;
     private int whisperCooldown;
+    private int tellCooldown=MimicDeceptionPolicy.TELL_COOLDOWN_TICKS;
     private int warningTicks;
     private int attackCooldown=MimicAttackPolicy.STRIKE_COOLDOWN_TICKS;
     private int quietTicks;
@@ -128,6 +136,8 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         attackCooldown=Math.min(MimicAttackPolicy.STRIKE_COOLDOWN_TICKS,
                 attackCooldown+20);
         whisperCooldown=Math.max(0,whisperCooldown-20);
+        tellCooldown=Math.min(MimicDeceptionPolicy.TELL_COOLDOWN_TICKS,
+                tellCooldown+20);
         YellowSmilerEntity smiler=closest(this,YellowSmilerEntity.class,24);
         GugugagaEntity bird=closest(this,GugugagaEntity.class,24);
         double smilerSq=smiler==null?Double.POSITIVE_INFINITY:distanceToSqr(smiler);
@@ -135,8 +145,13 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         ServerPlayer player=eligibleNearestPlayer(world);
         boolean canSeePlayer=player!=null && hasLineOfSight(player);
         double playerSq=player==null?Double.POSITIVE_INFINITY:distanceToSqr(player);
+        // No disguise reveal or stalking from a player behind a wall.
+        double visiblePlayerSq=canSeePlayer?playerSq:Double.POSITIVE_INFINITY;
+        double visibleBirdSq=bird!=null&&hasLineOfSight(bird)
+                ?guguSq:Double.POSITIVE_INFINITY;
         action=ThreeEntityReactionPolicy.redactor(
-                smilerSq,guguSq,playerSq,smiler!=null&&smiler.revealed());
+                smilerSq,visibleBirdSq,visiblePlayerSq,
+                smiler!=null&&smiler.revealed());
         if(action==RedactorAction.FLEE_SMILER) {
             warningTicks=0;
             quietTicks=0;
@@ -177,8 +192,27 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
                 }
             }
             case WATCH_PLAYER -> {
-                getNavigation().stop();
-                if(player!=null)getLookControl().setLookAt(player,11f,11f);
+                if(player==null || !canSeePlayer
+                        || !HauntGameplayRuntime.inChaseAct(player)) {
+                    getNavigation().stop();
+                    break;
+                }
+                boolean watched=isPlayerStaring(player);
+                getLookControl().setLookAt(player,11f,11f);
+                if(watched)getNavigation().stop();
+                else if(MimicDeceptionPolicy.shouldCreep(!revealed(),true,
+                        canSeePlayer,false,playerSq,tickCount))
+                    getNavigation().moveTo(player,0.67);
+                if(MimicDeceptionPolicy.canShowTell(!revealed(),true,
+                        canSeePlayer,watched,playerSq,tellCooldown)) {
+                    triggerAnim("tell_gesture","tell");
+                    tellCooldown=0;
+                    player.displayClientMessage(Component.literal(
+                            "[Nightwatch] The blue figure looked away a moment too late."),true);
+                    if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
+                        player.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,
+                                SoundSource.AMBIENT,0.11f,0.47f);
+                }
             }
             case WATCH_GUGU -> {
                 getNavigation().stop();
@@ -195,6 +229,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
                         setRevealed(false);
                 }
                 if(!revealed() && whisperCooldown==0 && player!=null
+                        && canSeePlayer && HauntGameplayRuntime.inChaseAct(player)
                         && playerSq<=9*9) {
                     player.sendSystemMessage(Component.literal("[Lapis] Lapis..."));
                     whisperCooldown=20*35;
@@ -219,6 +254,14 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
             }
         } else warningTicks=0;
     }
+    /** A clue players can learn: the disguise freezes while directly watched. */
+    private boolean isPlayerStaring(ServerPlayer player) {
+        if(!player.hasLineOfSight(this))return false;
+        Vec3 toward=getEyePosition().subtract(player.getEyePosition());
+        return toward.lengthSqr()>0.001
+                && player.getLookAngle().dot(toward.normalize())>0.88;
+    }
+
     private void reveal(ServerLevel world) {
         setRevealed(true);
         if(NightwatchConfig.HAUNTING_PARTICLES_ENABLED.get())
@@ -247,5 +290,6 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         // Fresh windup after reload prevents instant strikes against relogging players.
         attackCooldown=0;
         warningTicks=0;
+        tellCooldown=0; // reloading should not immediately startle spectators
     }
 }

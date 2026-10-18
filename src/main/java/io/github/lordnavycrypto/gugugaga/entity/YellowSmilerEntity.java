@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.SmilerTrustPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.sounds.SoundEvents;
@@ -42,13 +43,16 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
             software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.smiler.exposed");
     private static final software.bernie.geckolib.animation.RawAnimation HELP =
             software.bernie.geckolib.animation.RawAnimation.begin().thenPlay("animation.smiler.help");
+    private static final software.bernie.geckolib.animation.RawAnimation WARD =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenPlay("animation.smiler.ward");
 
     @Override
     public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "smile", 8,
                 state -> state.setAndContinue(revealed() ? EXPOSED : FRIENDLY)));
         controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "gift_gesture", 0,
-                state -> software.bernie.geckolib.animation.PlayState.STOP).triggerableAnim("help", HELP));
+                state -> software.bernie.geckolib.animation.PlayState.STOP)
+                .triggerableAnim("help", HELP).triggerableAnim("ward",WARD));
     }
 
     @Override
@@ -69,6 +73,26 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
 
     private int observationTicks;
     private int wardOffTicks=20*8;
+    private int callResponseTicks;
+    private java.util.UUID helpCallerId;
+
+    /** Player request only; does not teleport, spawn, or warp the penguin. */
+    public boolean respondToHelpCall(ServerPlayer caller) {
+        if(level().isClientSide || !HauntGameplayRuntime.smilerAidEnabled(caller))
+            return false;
+        var birds=level().getEntitiesOfClass(GugugagaEntity.class,
+                getBoundingBox().inflate(22.0),
+                net.minecraft.world.entity.Entity::isAlive);
+        GugugagaEntity closest=birds.stream()
+                .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
+        if(closest==null)return false;
+        callResponseTicks=20*8;
+        helpCallerId=caller.getUUID();
+        getLookControl().setLookAt(closest,14f,14f);
+        getNavigation().moveTo(closest,1.15);
+        triggerAnim("gift_gesture","ward");
+        return true;
+    }
 
     public YellowSmilerEntity(EntityType<? extends PathfinderMob> type,Level level) {
         super(type,level);
@@ -124,8 +148,11 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         }
         recipient.getPersistentData().putLong(LAST_HELP,now);
         triggerAnim("gift_gesture", "help");
+        int favors=HauntGameplayRuntime.recordSmilerFavor(recipient);
         recipient.sendSystemMessage(Component.literal(
-                "[Smiler] Here. Stay in the light. That penguin is strange, isn't it?"));
+                "[Smiler] Here are two torches. "
+                    +(HauntGameplayRuntime.smilerAidEnabled(recipient)
+                        ?SmilerTrustPolicy.advice(favors):"Stay safe.")));
         return InteractionResult.SUCCESS;
     }
     @Override
@@ -148,11 +175,15 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                 || tickCount%20!=0)return;
         observationTicks=Math.min(10000,observationTicks+20);
         wardOffTicks=Math.min(20*8,wardOffTicks+20);
+        callResponseTicks=Math.max(0,callResponseTicks-20);
+        if(callResponseTicks==0)helpCallerId=null;
         // Yellow is not afraid of Redactor. The penguin is its first target;
         // the player's trust is its reason to intervene. No cross-world scans.
         var players=world.getEntitiesOfClass(ServerPlayer.class,
                 getBoundingBox().inflate(22.0),
-                p->p.isAlive() && HauntGameplayRuntime.inChaseAct(p));
+                p->p.isAlive() && HauntGameplayRuntime.smilerAidEnabled(p)
+                    && (callResponseTicks==0 || helpCallerId==null
+                        || helpCallerId.equals(p.getUUID())));
         ServerPlayer player=players.stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
         var birds=world.getEntitiesOfClass(GugugagaEntity.class,
@@ -167,18 +198,22 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         if(role==ThreeEntityReactionPolicy.SmilerAction.CONFRONT_GUGU
                 && player!=null && NightwatchConfig.CHASES_ENABLED.get()) {
             getLookControl().setLookAt(bird,14f,14f);
-            if(birdSq>3*3 && tickCount%40==0)getNavigation().moveTo(bird,1.08);
-            if(ThreeEntityReactionPolicy.smilerCanWardOff(birdSq,wardOffTicks)) {
+            if(birdSq>3*3 && (callResponseTicks>0 || tickCount%40==0))
+                getNavigation().moveTo(bird,callResponseTicks>0?1.16:1.08);
+            if(ThreeEntityReactionPolicy.smilerCanWardOff(birdSq,wardOffTicks)
+                    && hasLineOfSight(bird)) {
                 bird.retreatFromSmiler(this);
                 // The Smiler tries to defeat the penguin instead of attacking
                 // players or automatically destroying any game/story objects.
                 bird.hurt(world.damageSources().mobAttack(this),1.0f);
                 wardOffTicks=0;
+                triggerAnim("gift_gesture","ward");
+                int favors=HauntGameplayRuntime.recordSmilerFavor(player);
                 if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
                     player.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,
                             SoundSource.HOSTILE,0.28f,0.72f);
                 player.displayClientMessage(Component.literal(
-                        "[Smiler] See? Stay with me. We can drive it away."),true);
+                        "[Smiler] "+SmilerTrustPolicy.advice(favors)),true);
             }
         } else if(player!=null) {
             getNavigation().stop();
@@ -202,6 +237,8 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         observationTicks=Math.max(0,Math.min(10000,
                 tag.getInt("YellowSmilerObservedTicks")));
         wardOffTicks=0; // no immediate attack after a save/reload
+        callResponseTicks=0; // calls are never retained across world reloads
+        helpCallerId=null;
         setRevealed(tag.getBoolean("YellowSmilerRevealed"));
         stageEncounter=tag.getBoolean("NightwatchStageGuest");
         stageLifetimeTicks=Math.max(0,Math.min(20*360,
