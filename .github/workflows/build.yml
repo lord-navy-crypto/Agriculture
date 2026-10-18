@@ -277,6 +277,8 @@ jobs:
       - name: Actual server boot and mod registry initialization
         env:
           GUGU_BOOT_TIMEOUT: "400"
+          GUGU_NEO_VERSION: ${{ matrix.neo }}
+          GUGU_GECKOLIB_VERSION: ${{ matrix.gecko }}
         run: >
           python3 qa/smoke_server_boot.py
       - name: Upload server startup diagnostic logs

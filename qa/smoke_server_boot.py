@@ -27,8 +27,15 @@ def test():
         (path/"eula.txt").write_text("eula=true\n",encoding="utf8")
     print("Launching NeoForge test server with real registry, animation dependency and EULA accepted.",flush=True)
     with LOG.open("wb") as logfile:
+        command=["gradle","--no-daemon","--console=plain"]
+        neo=os.environ.get("GUGU_NEO_VERSION")
+        gecko=os.environ.get("GUGU_GECKOLIB_VERSION")
+        if neo:command.append("-Pneo_version="+neo)
+        if gecko:command.append("-Pgeckolib_version="+gecko)
+        command.append("runServer")
+        print("Runtime pair:",neo or "default",gecko or "default",flush=True)
         proc=subprocess.Popen(
-            ["gradle","--no-daemon","--console=plain","runServer"],
+            command,
             cwd=ROOT,stdout=logfile,stderr=subprocess.STDOUT,
             start_new_session=True)
         try:
