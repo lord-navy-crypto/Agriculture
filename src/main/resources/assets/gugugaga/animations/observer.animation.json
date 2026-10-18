@@ -1,0 +1,321 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.gugugaga.idle": {
+      "animation_length": 4,
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0": [
+              0,
+              -3,
+              0
+            ],
+            "2": [
+              0,
+              3,
+              0
+            ],
+            "4": [
+              0,
+              -3,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.watch": {
+      "animation_length": 4,
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0": [
+              0,
+              -8,
+              -2
+            ],
+            "2": [
+              -3,
+              6,
+              -4
+            ],
+            "4": [
+              0,
+              -8,
+              -2
+            ]
+          }
+        },
+        "left_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              4
+            ],
+            "2": [
+              0,
+              0,
+              7
+            ],
+            "4": [
+              0,
+              0,
+              4
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.walk": {
+      "animation_length": 0.85,
+      "loop": true,
+      "bones": {
+        "left_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              5
+            ],
+            "0.4": [
+              0,
+              0,
+              22
+            ],
+            "0.85": [
+              0,
+              0,
+              5
+            ]
+          }
+        },
+        "right_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              -5
+            ],
+            "0.4": [
+              0,
+              0,
+              -22
+            ],
+            "0.85": [
+              0,
+              0,
+              -5
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.retreat": {
+      "animation_length": 0.65,
+      "loop": true,
+      "bones": {
+        "left_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              18
+            ],
+            "0.3": [
+              0,
+              0,
+              39
+            ],
+            "0.65": [
+              0,
+              0,
+              18
+            ]
+          }
+        },
+        "right_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              -18
+            ],
+            "0.3": [
+              0,
+              0,
+              -39
+            ],
+            "0.65": [
+              0,
+              0,
+              -18
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.angry": {
+      "animation_length": 2,
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0": [
+              -4,
+              -6,
+              6
+            ],
+            "1": [
+              -3,
+              5,
+              6
+            ],
+            "2": [
+              -4,
+              -6,
+              6
+            ]
+          }
+        },
+        "left_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              19
+            ],
+            "2": [
+              0,
+              0,
+              19
+            ]
+          }
+        },
+        "right_wing": {
+          "rotation": {
+            "0": [
+              0,
+              0,
+              -13
+            ],
+            "2": [
+              0,
+              0,
+              -13
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.corrupted": {
+      "animation_length": 3,
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0": [
+              -9,
+              -4,
+              -14
+            ],
+            "3": [
+              -9,
+              -4,
+              -14
+            ],
+            "1.5": [
+              -9,
+              2,
+              -20
+            ]
+          }
+        },
+        "left_wing": {
+          "rotation": {
+            "0": [
+              9,
+              0,
+              31
+            ],
+            "3": [
+              9,
+              0,
+              31
+            ]
+          }
+        },
+        "right_wing": {
+          "rotation": {
+            "0": [
+              -5,
+              0,
+              -8
+            ],
+            "3": [
+              -5,
+              0,
+              -8
+            ]
+          }
+        }
+      }
+    },
+    "animation.gugugaga.blackened": {
+      "animation_length": 5,
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0": [
+              -15,
+              0,
+              -26
+            ],
+            "5": [
+              -15,
+              0,
+              -26
+            ],
+            "2.5": [
+              -16,
+              2,
+              -27
+            ]
+          }
+        },
+        "left_wing": {
+          "rotation": {
+            "0": [
+              10,
+              0,
+              40
+            ],
+            "5": [
+              10,
+              0,
+              40
+            ]
+          }
+        },
+        "right_wing": {
+          "rotation": {
+            "0": [
+              -8,
+              0,
+              -12
+            ],
+            "5": [
+              -8,
+              0,
+              -12
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.redactor.lapis_idle": {
+      "animation_length": 5,
+      "loop": true,
+      "bones": {
+        "lapis": {
+          "rotation": {
+            "0": [
+              0,
+              -3,
+              0
+            ],
+            "5": [
+              0,
+              -3,
+              0
+            ],
+            "2.5": [
+              0,
+              3,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.redactor.true_idle": {
+      "animation_length": 4,
+      "loop": true,
+      "bones": {
+        "mask": {
+          "rotation": {
+            "0": [
+              -5,
+              0,
+              -8
+            ],
+            "2": [
+              -5,
+              5,
+              -10
+            ],
+            "4": [
+              -5,
+              0,
+              -8
+            ]
+          }
+        },
+        "left_arm": {
+          "rotation": {
+            "0": [
+              -5,
+              0,
+              0
+            ],
+            "2": [
+              6,
+              0,
+              0
+            ],
+            "4": [
+              -5,
+              0,
+              0
+            ]
+          }
+        },
+        "right_arm": {
+          "rotation": {
+            "0": [
+              2,
+              0,
+              0
+            ],
+            "2": [
+              -4,
+              0,
+              0
+            ],
+            "4": [
+              2,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}
