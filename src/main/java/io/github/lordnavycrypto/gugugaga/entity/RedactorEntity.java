@@ -110,7 +110,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
                 p->p.isAlive()&&!p.isCreative()&&!p.isSpectator()
                     && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID())
                     && (!NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
-                        || HauntGameplayRuntime.isActiveParticipant(p)).stream()
+                        || HauntGameplayRuntime.isActiveParticipant(p))).stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
     }
     @Override
