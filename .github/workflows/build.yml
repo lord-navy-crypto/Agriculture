@@ -203,7 +203,7 @@ jobs:
         run: python3 qa/package_sacred_rc.py build/libs build/sacred-release
       - uses: actions/upload-artifact@v4
         with:
-          name: gugugaga-compat-v021
+          name: gugugaga-runtime-fixed-v0211
           path: build/sacred-release/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
@@ -227,7 +227,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - neo: '21.1.100'
+          - neo: '21.1.150'
             gecko: '4.9.3'
           - neo: '21.1.200'
             gecko: '4.8.4'
@@ -261,8 +261,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - neo: '21.1.100'
+          - neo: '21.1.150'
             gecko: '4.8.2'
+          - neo: '21.1.200'
+            gecko: '4.8.4'
           - neo: '21.1.259'
             gecko: '4.9.3'
     steps:
