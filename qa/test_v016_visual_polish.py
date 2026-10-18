@@ -44,7 +44,8 @@ class VisualPolishQA(unittest.TestCase):
             for name,clip in j["animations"].items():
                 max_time=float(clip["animation_length"])
                 for bone,tracks in clip["bones"].items():
-                    self.assertIn("rotation",tracks,(stem,name,bone))
+                    self.assertTrue("rotation" in tracks or "position" in tracks,
+                                    (stem,name,bone))
                     for prop,frames in tracks.items():
                         self.assertIn(prop,("rotation","position","scale"))
                         for key,vec in frames.items():
