@@ -3,7 +3,7 @@
 
 No borrowed skins/sounds/artwork. Python 3 standard library only.
 Output is generated under build/ and bundled by Gradle processResources.
-This is an alpha ORIGINAL ART PLACEHOLDER for later hand-drawn refinement.
+v0.16 adds hand-authored pixel accents, shadows and material-specific highlights.
 """
 import pathlib
 import struct
@@ -115,14 +115,98 @@ def exposed_smiler():
     dot(p,17,17,(22,22,23))
     return p
 
+
+# v0.16: small fully original hand-authored pixel clusters over deterministic
+# base shading, not external textures or licensed character artwork.
+def bevel(p, x0, y0, x1, y1, top, shade):
+    line(p,x0,y0,x1-1,y0,top)
+    line(p,x0,y0,x0,y1-1,top)
+    line(p,x0+1,y1-1,x1-1,y1-1,shade)
+    line(p,x1-1,y0+1,x1-1,y1-1,shade)
+
+def scratches(p, offset, ink, glint):
+    # Different offsets prevent repeated parallel-striping across materials.
+    for n in range(6):
+        x=(offset+7*n)%54+4
+        y=(offset*3+11*n)%46+7
+        line(p,x,y,x+2+(n%3),y-1,ink)
+        if n%2==0:dot(p,x+1,y-2,glint)
+
+def polish_lapis(p):
+    bevel(p,3,4,25,26,(74,140,185),(12,45,76))
+    scratches(p,3,(20,62,104),(92,166,197))
+    # A clean, readable face on the north plaque, plus a fractured facet.
+    rect(p,1,33,10,45,(36,110,163))
+    line(p,1,33,9,33,(117,185,213))
+    line(p,1,44,9,44,(19,61,99))
+    rect(p,2,36,4,38,(217,237,237))
+    rect(p,7,36,9,38,(217,237,237))
+    line(p,3,40,8,40,(206,226,225))
+    line(p,13,37,18,43,(25,74,119))
+    dot(p,15,36,(124,196,219))
+    for x,y in ((36,42),(41,46),(45,38),(51,52)):
+        rect(p,x,y,x+2,y+2,(82,155,189))
+    return p
+
+def polish_revealed(p):
+    bevel(p,1,1,20,20,(80,120,126),(5,17,28))
+    scratches(p,9,(54,97,98),(118,166,148))
+    # Retain the face's original sharp mouth; visibly fractured not gory.
+    line(p,5,5,10,9,(29,62,68))
+    line(p,9,10,13,13,(64,113,114))
+    line(p,4,18,12,22,(35,90,94))
+    line(p,38,24,46,30,(83,148,140))
+    line(p,46,30,43,36,(117,173,151))
+    for x,y in ((3,29),(14,25),(26,36),(52,43)):
+        dot(p,x,y,(142,186,158))
+    return p
+
+def polish_yellow(p):
+    # Warm cloth shadows and cold mask details, no emissive bloom.
+    bevel(p,2,3,30,27,(251,223,117),(132,99,35))
+    for y in range(35,49,4):
+        line(p,34,y,55,y,(176,137,41))
+        dot(p,35,y-1,(240,205,99))
+    # Symmetrical face is deliberately too perfect, with softened cheeks.
+    rect(p,10,10,20,20,(248,217,100))
+    rect(p,12,13,14,15,(28,29,25))
+    rect(p,17,13,19,15,(28,29,25))
+    line(p,13,17,17,17,(43,37,23))
+    dot(p,12,16,(43,37,23));dot(p,18,16,(43,37,23))
+    dot(p,11,16,(224,176,76));dot(p,19,16,(224,176,76))
+    line(p,10,10,19,10,(254,232,137))
+    return p
+
+def polish_exposed_smiler(p):
+    # Same face layout, colder palette and noticeably asymmetrical seams.
+    bevel(p,2,3,30,27,(191,179,98),(83,67,32))
+    line(p,10,10,19,10,(200,181,96))
+    line(p,14,12,16,16,(89,76,40))
+    line(p,12,18,17,18,(33,34,28))
+    line(p,17,18,19,17,(33,34,28))
+    dot(p,11,12,(98,95,66))
+    scratches(p,19,(100,91,57),(186,167,77))
+    return p
+
+def polish_blackened_penguin(p):
+    # Muted frost-edged silhouette, keeping the source bird identifiable.
+    bevel(p,1,1,35,32,(54,67,76),(11,17,24))
+    scratches(p,14,(33,44,55),(90,112,126))
+    rect(p,40,0,57,8,(139,155,160))
+    line(p,40,0,56,0,(214,228,230))
+    line(p,40,7,56,7,(76,96,109))
+    rect(p,40,16,52,24,(64,87,103))
+    line(p,40,16,51,16,(145,172,177))
+    return p
+
 def main():
     if len(sys.argv)!=2:raise SystemExit("Usage: generate_character_sprites.py <resource root>")
     target=pathlib.Path(sys.argv[1])/"assets/gugugaga/textures/entity"
-    for name,fn in (("lapis_mask.png",lapis),
-                    ("redactor_true.png",revealed),
-                    ("yellow_smiler.png",yellow),
-                    ("yellow_smiler_true.png",exposed_smiler),
-                    ("observer_blackened.png",blackened_penguin)):
+    for name,fn in (("lapis_mask.png",lambda:polish_lapis(lapis())),
+                    ("redactor_true.png",lambda:polish_revealed(revealed())),
+                    ("yellow_smiler.png",lambda:polish_yellow(yellow())),
+                    ("yellow_smiler_true.png",lambda:polish_exposed_smiler(exposed_smiler())),
+                    ("observer_blackened.png",lambda:polish_blackened_penguin(blackened_penguin()))):
         file=png(target/name,fn())
         assert file.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
         print("ORIGINAL_SPRITE",file,len(file.read_bytes()))
