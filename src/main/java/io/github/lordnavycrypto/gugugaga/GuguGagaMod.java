@@ -8,6 +8,8 @@ import io.github.lordnavycrypto.gugugaga.command.NightwatchCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguTalkCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguStoryCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguAdvancedCommands;
+import io.github.lordnavycrypto.gugugaga.command.GuguPlayCommands;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.registries.Registries;
@@ -56,7 +58,9 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguTalkCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguStoryCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguAdvancedCommands::register);
+        NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
+        NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
     }
 
     private static void onAttributes(EntityAttributeCreationEvent event) {
