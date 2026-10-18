@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.entity;
 import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.HorrorChasePolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HorrorHearingPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.LastSeenSearchPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
@@ -111,6 +112,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     // Target memory is server-only and intentionally transient on reload.
     private java.util.UUID chaseTargetId;
     private Vec3 lastSeenChasePosition;
+    // Transient position obtained from a REAL audible sprint, not magical sight.
+    private Vec3 lastHeardChasePosition;
     private int searchTicks;
 
     public GugugagaEntity(EntityType<? extends PathfinderMob> type, Level level) {
@@ -209,6 +212,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         chaseRemainingTicks=0;
         chaseTargetId=null;
         lastSeenChasePosition=null;
+        lastHeardChasePosition=null;
         searchTicks=0;
         setSearching(false);
         repelledTicks=Math.max(repelledTicks,20*5);
@@ -326,6 +330,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             chaseRemainingTicks=0;
             chaseTargetId=null;
             lastSeenChasePosition=null;
+            lastHeardChasePosition=null;
             setSearching(false);
             if(phase()!=Phase.DORMANT)changePhase(Phase.DORMANT);
             getNavigation().stop();
@@ -391,31 +396,45 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 setSearching(false);
                 chaseTargetId=null;
                 lastSeenChasePosition=null;
+                lastHeardChasePosition=null;
                 unseenChaseTicks=0;
                 getNavigation().stop();
                 return false;
             }
             boolean visible=hasLineOfSight(player);
+            // The only way to update the memory THROUGH cover is for the
+            // actual chased player to sprint while moving within earshot.
+            boolean noisy=!visible && HorrorHearingPolicy.hearsRunner(
+                    allowed,true,player.isSprinting(),player.isCrouching(),
+                    player.getDeltaMovement().horizontalDistanceSqr(),
+                    distanceSquared,player.getY()-getY());
             if(visible) {
                 lastSeenChasePosition=player.position();
+                lastHeardChasePosition=null;
+                unseenChaseTicks=0;
+            } else if(noisy) {
+                lastHeardChasePosition=player.position();
                 unseenChaseTicks=0;
             } else unseenChaseTicks+=10;
             if(!HorrorChasePolicy.canContinue(true,true,distanceSquared,
                     chaseRemainingTicks,unseenChaseTicks)) {
+                Vec3 remembered=lastHeardChasePosition!=null
+                        ?lastHeardChasePosition:lastSeenChasePosition;
                 boolean search=LastSeenSearchPolicy.beginSearch(!visible,
-                        unseenChaseTicks,lastSeenChasePosition!=null,allowed);
+                        unseenChaseTicks,remembered!=null,allowed);
                 chaseRemainingTicks=0;
                 searchTicks=search?LastSeenSearchPolicy.SEARCH_TICKS:0;
                 setSearching(searchTicks>0);
                 unseenChaseTicks=0;
                 // Navigation goes ONLY to the remembered visible location;
                 // the AI has no access to the obscured player's new position.
-                if(search && lastSeenChasePosition!=null) {
-                    Vec3 last=lastSeenChasePosition;
-                    getNavigation().moveTo(last.x,last.y,last.z,0.85);
+                if(search && remembered!=null) {
+                    getNavigation().moveTo(
+                            remembered.x,remembered.y,remembered.z,0.85);
                 } else {
                     getNavigation().stop();
                     lastSeenChasePosition=null;
+                    lastHeardChasePosition=null;
                     chaseTargetId=null;
                 }
                 player.displayClientMessage(net.minecraft.network.chat.Component.literal(
@@ -427,10 +446,14 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             if(visible)getLookControl().setLookAt(player,18f,18f);
             if(tickCount%20==0) {
                 if(visible)getNavigation().moveTo(player,1.12);
-                else if(LastSeenSearchPolicy.useLastSeen(false,
-                        lastSeenChasePosition!=null,unseenChaseTicks,true)) {
-                    Vec3 last=lastSeenChasePosition;
-                    getNavigation().moveTo(last.x,last.y,last.z,0.88);
+                else {
+                    Vec3 heardOrSeen=lastHeardChasePosition!=null
+                            ?lastHeardChasePosition:lastSeenChasePosition;
+                    if(LastSeenSearchPolicy.useLastSeen(false,
+                            heardOrSeen!=null,unseenChaseTicks,true)) {
+                        getNavigation().moveTo(heardOrSeen.x,
+                                heardOrSeen.y,heardOrSeen.z,0.88);
+                    }
                 }
             }
             if(visible && HauntGameplayRuntime.tryScare(player,this))
@@ -444,11 +467,14 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
                 getNavigation().stop();
                 chaseTargetId=null;
                 lastSeenChasePosition=null;
+                lastHeardChasePosition=null;
                 return false;
             }
-            if(tickCount%20==0 && lastSeenChasePosition!=null) {
-                Vec3 last=lastSeenChasePosition;
-                getNavigation().moveTo(last.x,last.y,last.z,0.68);
+            if(tickCount%20==0) {
+                Vec3 remembered=lastHeardChasePosition!=null
+                        ?lastHeardChasePosition:lastSeenChasePosition;
+                if(remembered!=null)getNavigation().moveTo(remembered.x,
+                        remembered.y,remembered.z,0.68);
             }
             changePhaseIfNeeded(Phase.OBSERVE);
             return true;
@@ -459,6 +485,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             setSearching(false);
             chaseTargetId=null;
             lastSeenChasePosition=null;
+            lastHeardChasePosition=null;
             getNavigation().stop();
         }
         if(HorrorChasePolicy.canStart(allowed,NightwatchConfig.CHASES_ENABLED.get(),
@@ -469,6 +496,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             unseenChaseTicks=0;
             chaseTargetId=player.getUUID();
             lastSeenChasePosition=player.position(); // acquired through LOS
+            lastHeardChasePosition=null;
             changePhaseIfNeeded(Phase.APPROACH);
             player.displayClientMessage(net.minecraft.network.chat.Component.literal(
                     "[Nightwatch] The penguin is hunting you. Break line of sight!"),true);
@@ -600,6 +628,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
         unseenChaseTicks=0;
         chaseTargetId=null;
         lastSeenChasePosition=null;
+        lastHeardChasePosition=null;
         searchTicks=0;
         setSearching(false);
         chaseCooldownTicks=Math.max(0,Math.min(HorrorChasePolicy.COOLDOWN_TICKS,
