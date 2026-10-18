@@ -251,6 +251,46 @@ class ProjectSanity(unittest.TestCase):
             for forbidden in ("forceChunk(", "teleportTo(", "setBlock(", "explode("):
                 self.assertNotIn(forbidden,body)
 
+    def test_v010_playable_loop_is_player_owned_and_story_free(self):
+        logic=(SRC / "ai/HauntGameplayPolicy.java").read_text()
+        runtime=(SRC / "ai/HauntGameplayRuntime.java").read_text()
+        commands=(SRC / "command/GuguPlayCommands.java").read_text()
+        config=(SRC / "config/NightwatchConfig.java").read_text()
+        director=(SRC / "ai/NightwatchDirector.java").read_text()
+        redactor=(SRC / "entity/RedactorEntity.java").read_text()
+        smiler=(SRC / "entity/YellowSmilerEntity.java").read_text()
+        main=(SRC / "GuguGagaMod.java").read_text()
+        for k in ("STILLNESS", "WHISPERS", "WITNESS", "FALSE_SAFETY",
+                  "RESPITE", "nearEvidence", "playerEligible"):
+            self.assertIn(k,logic)
+        for k in ("HauntGameplayPolicy.advance(", "getEntitiesOfClass(",
+                  "player.hasLineOfSight(other)", "player.getUUID()",
+                  "NightwatchDirector.isQuiet", "REDACTOR.get()",
+                  "YELLOW_SMILER.get()", "getChunkSource().hasChunk",
+                  "level.noCollision(spawned)", "global>=6"):
+            self.assertIn(k,runtime)
+        for k in ("Commands.literal(\"play\")",
+                  "Commands.literal(\"investigate\")",
+                  "Commands.literal(\"join\")",
+                  "Commands.literal(\"leave\")",
+                  "Commands.literal(\"server\")"):
+            self.assertIn(k,commands)
+        self.assertIn("src.hasPermission(2)",commands)
+        self.assertIn('define("playable_loop",false)',config)
+        self.assertIn("HauntGameplayRuntime.isJoined(server,id)",director)
+        self.assertIn("markStageEncounter()",redactor)
+        self.assertIn("markStageEncounter()",smiler)
+        self.assertIn("GuguPlayCommands::register",main)
+        self.assertIn("HauntGameplayRuntime::onTick",main)
+        self.assertIn("NEOFORGE_1211_ANIMATION_AND_HORROR_DEPENDENCIES.md",
+                      (ROOT / "README.md").read_text())
+        for body in (runtime,logic,commands):
+            for wrong in ("forceChunk(", "setBlock(", "explode(",
+                          "teleportTo(", "getChunk(", "Runtime.getRuntime()"):
+                self.assertNotIn(wrong,body)
+        self.assertNotIn("System.exit(",runtime)
+        self.assertNotIn("setGameMode(",runtime)
+
     def test_local_ai_is_optional_and_non_authoritative(self):
         config = (SRC / "config/NightwatchConfig.java").read_text()
         client = (SRC / "ai/ollama/OllamaClient.java").read_text()
