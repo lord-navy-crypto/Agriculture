@@ -38,6 +38,13 @@ import java.util.Comparator;
 public final class RedactorEntity extends PathfinderMob {
     private static final EntityDataAccessor<Boolean> REVEALED =
             SynchedEntityData.defineId(RedactorEntity.class,EntityDataSerializers.BOOLEAN);
+    private boolean stageEncounter;
+    private int stageLifetimeTicks;
+    public void markStageEncounter() {
+        stageEncounter=true;
+        stageLifetimeTicks=0;
+    }
+
     private int corruptionCooldown=ThreeEntityReactionPolicy.CORRUPT_INTERVAL_TICKS;
     private int whisperCooldown;
     private int warningTicks;
@@ -89,6 +96,11 @@ public final class RedactorEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
+        if(!level().isClientSide && stageEncounter && ++stageLifetimeTicks>=20*360) {
+            // Scripted horror actors cannot accumulate in old saves forever.
+            discard();
+            return;
+        }
         if(level().isClientSide || !(level() instanceof ServerLevel world)
                 || tickCount%20!=0)return;
         corruptionCooldown=Math.min(ThreeEntityReactionPolicy.CORRUPT_INTERVAL_TICKS,
@@ -182,12 +194,17 @@ public final class RedactorEntity extends PathfinderMob {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("RedactorRevealed",revealed());
+        tag.putBoolean("NightwatchStageGuest",stageEncounter);
+        tag.putInt("NightwatchStageGuestLifetime",stageLifetimeTicks);
         tag.putInt("RedactorCorruptCooldown",corruptionCooldown);
         tag.putInt("RedactorAttackCooldown",attackCooldown);
     }
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        stageEncounter=tag.getBoolean("NightwatchStageGuest");
+        stageLifetimeTicks=Math.max(0,Math.min(20*360,
+                tag.getInt("NightwatchStageGuestLifetime")));
         setRevealed(tag.getBoolean("RedactorRevealed"));
         corruptionCooldown=Math.max(0,Math.min(
                 ThreeEntityReactionPolicy.CORRUPT_INTERVAL_TICKS,
