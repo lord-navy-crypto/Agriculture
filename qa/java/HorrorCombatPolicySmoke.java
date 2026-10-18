@@ -1,3 +1,5 @@
+import io.github.lordnavycrypto.gugugaga.ai.HorrorCombatPolicy;
+
 public final class HorrorCombatPolicySmoke {
     private HorrorCombatPolicySmoke() {}
     public static void main(String[] args) {
@@ -15,7 +17,7 @@ public final class HorrorCombatPolicySmoke {
                 "non-player damage is not blocked by player grace");
         check(HorrorCombatPolicy.recoveryHealth(80.0f, 0.45f) == 36.0f,
                 "Gugu recovers to 45 percent");
-        check(HorrorCombatPolicy.recoveryHealth(64.0f, 0.40f) == 25.6f,
+        check(Math.abs(HorrorCombatPolicy.recoveryHealth(64.0f, 0.40f)-25.6f)<0.001f,
                 "Lapis recovers to 40 percent");
         check(Math.abs(HorrorCombatPolicy.recoveryHealth(48.0f,0.60f)-28.8f)<0.001f,
                 "Yellow recovers to 60 percent");

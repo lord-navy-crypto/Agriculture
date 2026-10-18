@@ -8,7 +8,7 @@ class RuntimeFloor(unittest.TestCase):
         self.assertIn("neo_min_version=21.1.150",props)
         self.assertNotIn("neo_min_version=21.1.100",props)
         self.assertIn("geckolib_min_version=4.8.2",props)
-        self.assertIn("mod_version=0.21.2-rc.1",props)
+        self.assertIn("mod_version=0.21.3-rc.1",props)
         pack=(ROOT/"qa/package_sacred_rc.py").read_text()
         self.assertIn('versionRange="[21.1.150,)"',pack)
         self.assertIn("NeoForge 21.1.150+",pack)
