@@ -112,8 +112,13 @@ public final class HauntGameplayRuntime {
                 player.hasLineOfSight(source),player.distanceToSqr(source),since))
             return false;
         entry.lastScareTick=now;
-        player.playNotifySound(SoundEvents.ENDERMAN_STARE,SoundSource.HOSTILE,0.48f,0.80f);
-        player.displayClientMessage(Component.literal("[Nightwatch] IT SAW YOU."),true);
+        if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
+            player.playNotifySound(SoundEvents.ENDERMAN_STARE,
+                    SoundSource.HOSTILE,0.36f,0.82f);
+        player.displayClientMessage(Component.literal(
+                source instanceof RedactorEntity
+                    ? "[Nightwatch] Lapis was not what it seemed."
+                    : "[Nightwatch] IT SAW YOU."),true);
         return true;
     }
 
@@ -148,12 +153,36 @@ public final class HauntGameplayRuntime {
                 e.activeTicks=0;
                 if(next==HauntGameplayPolicy.Act.STILLNESS)e.loops++;
                 player.sendSystemMessage(Component.literal(stageMessage(next)));
-            } else if(HauntGameplayPolicy.shouldCue(e.act,e.activeTicks,
-                    id.getLeastSignificantBits())
-                    && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get()) {
-                ServerLevel level=player.serverLevel();
-                level.playSound(null,player.blockPosition(),SoundEvents.AMETHYST_BLOCK_CHIME,
-                        SoundSource.AMBIENT,HauntGameplayPolicy.cueVolume(e.act),0.65f);
+            } else {
+                // Individually addressed cinematic cues. They never broadcast
+                // to nearby unjoined players or force camera/screen effects.
+                CinematicSuspensePolicy.Cue cue=CinematicSuspensePolicy.choose(
+                        e.act,e.activeTicks,e.loops,id.getLeastSignificantBits());
+                if(cue!=CinematicSuspensePolicy.Cue.NONE) {
+                    if(cue==CinematicSuspensePolicy.Cue.SILENCE) {
+                        player.displayClientMessage(Component.literal(
+                                "[Nightwatch] Everything goes quiet."),true);
+                    } else {
+                        if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get()) {
+                            var sound=switch(cue) {
+                                case FALSE_STEP -> SoundEvents.AMETHYST_BLOCK_STEP;
+                                case HOLLOW_TAP, DISTANT_CHIME -> SoundEvents.AMETHYST_BLOCK_CHIME;
+                                case NONE,SILENCE -> SoundEvents.AMETHYST_BLOCK_CHIME;
+                            };
+                            float pitch=switch(cue) {
+                                case FALSE_STEP -> 0.56f;
+                                case HOLLOW_TAP -> 0.48f;
+                                case DISTANT_CHIME -> 0.82f;
+                                case NONE,SILENCE -> 1.0f;
+                            };
+                            player.playNotifySound(sound,SoundSource.AMBIENT,
+                                    CinematicSuspensePolicy.volume(cue),pitch);
+                        }
+                        if(cue==CinematicSuspensePolicy.Cue.FALSE_STEP)
+                            player.displayClientMessage(Component.literal(
+                                    "[Nightwatch] A step... then nothing."),true);
+                    }
+                }
             }
         }
         // No UUID, encounter attempts, or player position history after logout.
