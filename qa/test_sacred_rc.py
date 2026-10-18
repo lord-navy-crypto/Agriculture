@@ -80,7 +80,7 @@ class SacredNightwatchIntegration(unittest.TestCase):
         self.assertIn("Math.min(Integer.MAX_VALUE-20,e.activeTicks+20)",self.rt)
         props=(ROOT/"gradle.properties").read_text()
         self.assertIn("mod_version=0.21.0-rc.1",props)
-        self.assertIn("geckolib_version=4.9.3",props)
+        self.assertIn("geckolib_version=4.8.2",props)
 
 if __name__=="__main__":
     unittest.main()
