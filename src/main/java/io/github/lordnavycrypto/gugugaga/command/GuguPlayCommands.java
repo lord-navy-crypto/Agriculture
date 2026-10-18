@@ -29,6 +29,12 @@ public final class GuguPlayCommands {
                         .then(Commands.literal("scares")
                                 .then(Commands.literal("on").executes(ctx->scares(ctx.getSource(),true)))
                                 .then(Commands.literal("off").executes(ctx->scares(ctx.getSource(),false))))
+                        .then(Commands.literal("test")
+                                .requires(src->src.hasPermission(2))
+                                .then(Commands.literal("witness")
+                                        .executes(ctx->testScene(ctx.getSource(),false)))
+                                .then(Commands.literal("triad")
+                                        .executes(ctx->testScene(ctx.getSource(),true))))
                         .then(Commands.literal("server")
                                 .requires(src->src.hasPermission(2))
                                 .then(Commands.literal("on").executes(ctx->server(ctx.getSource(),true)))
@@ -36,6 +42,12 @@ public final class GuguPlayCommands {
                 .then(Commands.literal("investigate")
                         .executes(ctx->investigate(ctx.getSource()))));
     }
+    private static int testScene(CommandSourceStack src,boolean allThree)
+            throws CommandSyntaxException {
+        return HauntGameplayRuntime.startOperatorTestScene(
+                src.getPlayerOrException(),allThree)?1:0;
+    }
+
     private static int join(CommandSourceStack src) throws CommandSyntaxException {
         ServerPlayer player=src.getPlayerOrException();
         if(!NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()){
