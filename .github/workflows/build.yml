@@ -158,6 +158,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorEvidencePolicy.java \
             qa/java/V014HorrorEvidenceSmoke.java
           java -cp build/v014-evidence-smoke V014HorrorEvidenceSmoke
+      - name: Verify v0.15 optional persuasion, mimic and rescue policies
+        run: |
+          mkdir -p build/v015-deception-smoke
+          javac -d build/v015-deception-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/MimicDeceptionPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/SmilerTrustPolicy.java \
+            qa/java/V015DeceptionTrustPolicySmoke.java
+          java -cp build/v015-deception-smoke V015DeceptionTrustPolicySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
