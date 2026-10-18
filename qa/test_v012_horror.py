@@ -26,7 +26,8 @@ class V012Horror(unittest.TestCase):
         for marker in ("handleHorrorPursuit(", "HorrorChasePolicy.canStart(",
                        "HorrorChasePolicy.canContinue(", "retreatFromSmiler("):
             self.assertIn(marker,bird)
-        self.assertIn("HauntGameplayRuntime.isActiveParticipant",yellow)
+        self.assertIn("HauntGameplayRuntime.inChaseAct",yellow)
+        self.assertIn("getBoundingBox().inflate(22.0)",redactor)
         self.assertIn("bird.retreatFromSmiler(this)",yellow)
         self.assertIn("bird.hurt(",yellow)
         self.assertIn("ThreeEntityReactionPolicy.redactor(",redactor)

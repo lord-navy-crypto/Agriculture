@@ -152,7 +152,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         // the player's trust is its reason to intervene. No cross-world scans.
         var players=world.getEntitiesOfClass(ServerPlayer.class,
                 getBoundingBox().inflate(22.0),
-                p->p.isAlive() && HauntGameplayRuntime.isActiveParticipant(p));
+                p->p.isAlive() && HauntGameplayRuntime.inChaseAct(p));
         ServerPlayer player=players.stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
         var birds=world.getEntitiesOfClass(GugugagaEntity.class,

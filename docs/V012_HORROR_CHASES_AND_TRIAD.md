@@ -4,8 +4,8 @@ This Draft is based on the GeckoLib v0.11 animation branch. The game remains a f
 
 ## Character AI priorities
 - Gugu-Gaga: nearby opted-in PLAYER first, Redactor second. A missing player lets the old observer notice the Redactor.
-- Redactor (Lapis disguise): player and Gugu have EQUAL interest, with nearest target chosen; either can reveal the true form. Redactor runs from REVEALED Yellow Smiler, not the disguised Yellow.
-- Yellow Smiler: HELPS player, but Gugu is its primary adversary, and it does not fear the Redactor. Near an opted-in player, it approaches and drives Gugu into a short visible retreat, with one small in-world monster-to-monster hit on cooldown. Its fictional dialogue encourages the player to drive the penguin and Redactor away.
+- Redactor (Lapis disguise): player and Gugu have EQUAL interest within comparable 22-block search radii, with nearest target chosen; either can reveal the true form. Redactor runs from REVEALED Yellow Smiler, not the disguised Yellow.
+- Yellow Smiler: HELPS player, but Gugu is its primary adversary, and it does not fear the Redactor. Near an opted-in player during an active chase act, it approaches and drives Gugu into a short visible retreat, with one small in-world monster-to-monster hit on cooldown. Its fictional dialogue encourages the player to drive the penguin and Redactor away.
 
 ## Gameplay changes
 - Penguin pursuit is line-of-sight initiated within 19 blocks, max 14 seconds, 42-second cooldown. Running 27 blocks away or breaking sight for 4 seconds ends it. Standard Minecraft navigation, no teleports/chunk forcing.

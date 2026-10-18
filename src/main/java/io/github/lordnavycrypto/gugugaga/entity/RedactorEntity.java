@@ -106,7 +106,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
     }
     private ServerPlayer eligibleNearestPlayer(ServerLevel world) {
         return world.getEntitiesOfClass(ServerPlayer.class,
-                getBoundingBox().inflate(10.0),
+                getBoundingBox().inflate(22.0),
                 p->p.isAlive()&&!p.isCreative()&&!p.isSpectator()
                     && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID())
                     && (!NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
