@@ -21,6 +21,9 @@ public final class GuguPlayCommands {
                         .then(Commands.literal("join").executes(ctx->join(ctx.getSource())))
                         .then(Commands.literal("leave").executes(ctx->leave(ctx.getSource())))
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                        .then(Commands.literal("scares")
+                                .then(Commands.literal("on").executes(ctx->scares(ctx.getSource(),true)))
+                                .then(Commands.literal("off").executes(ctx->scares(ctx.getSource(),false))))
                         .then(Commands.literal("server")
                                 .requires(src->src.hasPermission(2))
                                 .then(Commands.literal("on").executes(ctx->server(ctx.getSource(),true)))
@@ -40,6 +43,11 @@ public final class GuguPlayCommands {
     }
     private static int leave(CommandSourceStack src) throws CommandSyntaxException {
         HauntGameplayRuntime.leave(src.getPlayerOrException());
+        return 1;
+    }
+    private static int scares(CommandSourceStack src,boolean enabled)
+            throws CommandSyntaxException {
+        HauntGameplayRuntime.setScaresAllowed(src.getPlayerOrException(),enabled);
         return 1;
     }
     private static int status(CommandSourceStack src) throws CommandSyntaxException {

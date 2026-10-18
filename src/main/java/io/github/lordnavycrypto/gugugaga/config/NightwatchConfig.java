@@ -21,6 +21,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue CORRUPTION_VISUALS_ENABLED;
     public static final ModConfigSpec.BooleanValue REDACTOR_HOSTILITY_ENABLED;
     public static final ModConfigSpec.BooleanValue PLAYABLE_LOOP_ENABLED;
+    public static final ModConfigSpec.BooleanValue CHASES_ENABLED;
+    public static final ModConfigSpec.BooleanValue JUMPSCARES_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -93,6 +95,14 @@ public final class NightwatchConfig {
                 "Experimental five-act survival horror mode. OFF by default. "
                 +"Each player must explicitly join. No story endings or forced game modes.")
                 .define("playable_loop",false);
+        CHASES_ENABLED=BUILDER.comment(
+                "Short sight-driven pursuits for voluntarily participating players. " +
+                "OFF disables v0.12 pursuit. Damage remains gated by the existing hostility toggle.")
+                .define("horror_chases",true);
+        JUMPSCARES_ENABLED=BUILDER.comment(
+                "Volume-capped, sight-gated scares with long cooldown. " +
+                "A player can separately use /gugugaga play scares off.")
+                .define("horror_jumpscares",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
