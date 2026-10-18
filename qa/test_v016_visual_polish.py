@@ -61,7 +61,7 @@ class VisualPolishQA(unittest.TestCase):
             for stem in ["lapis_mask","redactor_true","yellow_smiler",
                          "yellow_smiler_true","observer_blackened"]:
                 blob=(folder/(stem+".png")).read_bytes()
-                self.assertEqual(blob[:8],b"\\x89PNG\\r\\n\\x1a\\n")
+                self.assertEqual(blob[:8],b"\x89PNG\r\n\x1a\n")
                 self.assertEqual(struct.unpack(">II",blob[16:24]),(64,64))
                 self.assertGreater(len(blob),350,(stem,len(blob)))
                 # Original per-pixel shading, not five flat/color-swapped skins.
