@@ -14,7 +14,7 @@ class CombatResilienceSourceTest(unittest.TestCase):
         g=(R/"src/main/java/io/github/lordnavycrypto/gugugaga/entity/GugugagaEntity.java").read_text()
         r=(R/"src/main/java/io/github/lordnavycrypto/gugugaga/entity/RedactorEntity.java").read_text()
         self.assertIn("HauntGameplayRuntime.isActiveParticipant(player)",g)
-        self.assertIn("HauntGameplayRuntime.isActiveParticipant(player)",r)
+        self.assertIn("HauntGameplayRuntime.inChaseAct(player)",r)
         self.assertIn("player.hurt(world.damageSources().mobAttack(this),3.0f)",g)
     def test_e2e_contains_real_player_attack_damage_checks(self):
         s=(R/"qa/gameplay_e2e.py").read_text()

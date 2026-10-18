@@ -22,7 +22,7 @@ public final class NightwatchScreen extends Screen {
         int step=25;
         addCommandButton("screen.gugugaga.nightwatch.join","gugugaga play join",left,row,buttonWidth);
         addCommandButton("screen.gugugaga.nightwatch.leave","gugugaga play leave",right,row,buttonWidth);
-        addCommandButton("screen.gugugaga.nightwatch.listen","gugugaga play listen",left,row+step,buttonWidth);
+        addCommandButton("screen.gugugaga.nightwatch.listen","gugugaga play listen-panel",left,row+step,buttonWidth);
         addCommandButton("screen.gugugaga.nightwatch.help","gugugaga play help",right,row+step,buttonWidth);
         addCommandButton("screen.gugugaga.nightwatch.aid_on","gugugaga play aid on",left,row+step*2,buttonWidth);
         addCommandButton("screen.gugugaga.nightwatch.aid_off","gugugaga play aid off",right,row+step*2,buttonWidth);

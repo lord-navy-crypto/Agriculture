@@ -205,18 +205,30 @@ public final class HauntGameplayRuntime {
      * from real loaded nearby mobs. Players cannot use it as an all-seeing map.
      * No sound is generated for entities that do not exist.
      */
+    /** Sneak + V is intentionally gated by the player's crouch state. */
     public static boolean listen(ServerPlayer player) {
+        return listenWithIntent(player,player.isCrouching());
+    }
+
+    /** Explicit button press from the Nightwatch panel counts as deliberate intent. */
+    public static boolean listenFromPanel(ServerPlayer player) {
+        return listenWithIntent(player,true);
+    }
+
+    private static boolean listenWithIntent(ServerPlayer player,boolean crouching) {
         Entry entry=entries(player.serverLevel().getServer()).get(player.getUUID());
-        if(entry==null || !isActiveParticipant(player)) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] Join Nightwatch in night-time survival first."));
+        if(entry==null || entry.paused || !isActiveParticipant(player)) {
+            player.displayClientMessage(Component.literal(
+                    "[Nightwatch] Nightwatch is not active. Press H to join at night."),
+                    true);
             return false;
         }
         long now=player.serverLevel().getGameTime();
-        if(!HorrorListeningPolicy.mayListen(true,true,
+        if(!HorrorListeningPolicy.mayListen(true,crouching,
                 now,entry.lastListenTick)) {
             player.displayClientMessage(Component.literal(
-                    "[Nightwatch] Listen again after the 12-second cooldown."),true);
+                    "[Nightwatch] Hold sneak to listen, or use the panel button. Try again after the 12-second cooldown."),
+                    true);
             return false;
         }
         entry.lastListenTick=now; // empty attempts also consume one cooldown
@@ -262,8 +274,6 @@ public final class HauntGameplayRuntime {
                     HorrorListeningPolicy.Source.NONE,
                     HorrorListeningPolicy.Direction.AHEAD,0);
         }
-        // Action bar is the real player-facing UI. Keep a copy in chat
-        // history so that slower readers can review a clue when convenient.
         player.displayClientMessage(Component.literal("[Nightwatch] "+clue),true);
         player.sendSystemMessage(Component.literal("[Nightwatch Listening] "+clue));
         return true;

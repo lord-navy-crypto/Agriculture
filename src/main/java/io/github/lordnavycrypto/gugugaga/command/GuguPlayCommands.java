@@ -23,6 +23,7 @@ public final class GuguPlayCommands {
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
                         .then(Commands.literal("help").executes(ctx->help(ctx.getSource())))
                         .then(Commands.literal("listen").executes(ctx->listen(ctx.getSource())))
+                        .then(Commands.literal("listen-panel").executes(ctx->listenFromPanel(ctx.getSource())))
                         .then(Commands.literal("aid")
                                 .then(Commands.literal("on").executes(ctx->aid(ctx.getSource(),true)))
                                 .then(Commands.literal("off").executes(ctx->aid(ctx.getSource(),false))))
@@ -65,6 +66,9 @@ public final class GuguPlayCommands {
     private static int listen(CommandSourceStack src) throws CommandSyntaxException {
         return HauntGameplayRuntime.listen(src.getPlayerOrException())?1:0;
     }
+    private static int listenFromPanel(CommandSourceStack src) throws CommandSyntaxException {
+        return HauntGameplayRuntime.listenFromPanel(src.getPlayerOrException())?1:0;
+    }
     private static int help(CommandSourceStack src) throws CommandSyntaxException {
         return HauntGameplayRuntime.requestSmilerHelp(src.getPlayerOrException())?1:0;
     }
@@ -97,9 +101,8 @@ public final class GuguPlayCommands {
         // off, without forcibly despawning existing manually summoned mobs.
         NightwatchConfig.ENCOUNTERS_ENABLED.set(active);
         src.sendSuccess(()->Component.literal(
-                active?"Five-act Nightwatch enabled. Every player must /gugugaga play join."
-                        +" Witnesses follow the original 8-minute minimum sighting cooldown."
-                    :"Five-act Nightwatch disabled. Automatic encounters also disabled."),
+                active?"Nightwatch enabled. Survival players join the horror loop automatically at night; press H for controls."
+                    :"Nightwatch disabled for this world. Existing entities remain in place."),
                 true);
         return 1;
     }
