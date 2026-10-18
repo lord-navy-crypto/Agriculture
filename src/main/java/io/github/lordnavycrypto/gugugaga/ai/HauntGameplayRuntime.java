@@ -541,10 +541,16 @@ public final class HauntGameplayRuntime {
         double nearest=HauntGameplayPolicy.EVIDENCE_RADIUS_SQ+0.001;
         for(T entity:level.getEntitiesOfClass(clazz,bounds,Entity::isAlive)) {
             double distance=player.distanceToSqr(entity);
-            if(distance>=nearest || !player.hasLineOfSight(entity))continue;
             var toActor=entity.getEyePosition().subtract(player.getEyePosition());
             if(toActor.lengthSqr()<0.0001)continue;
+            boolean sight=player.hasLineOfSight(entity);
             double dot=player.getLookAngle().dot(toActor.normalize());
+            if(Boolean.getBoolean("gugugaga.e2e"))
+                System.out.println("GUGUGAGA_E2E_GAZE_DIAGNOSTIC "+clazz.getSimpleName()
+                        +" dist="+Math.sqrt(distance)+" los="+sight
+                        +" dot="+String.format(java.util.Locale.ROOT,"%.3f",dot)
+                        +" phase="+player.getYRot()+"/"+player.getXRot());
+            if(distance>=nearest || !sight)continue;
             if(GazeInvestigationPolicy.aimedAt(dot,distance,true,true)) {
                 closest=entity;
                 nearest=distance;

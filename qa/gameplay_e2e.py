@@ -109,10 +109,34 @@ with LOG.open("wb") as f:
         say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
         time.sleep(2)
         snap("08-real-three-entities")
+        # Yellow proactively drives away Gugu; keep guardian away during
+        # the independent natural-looking investigation acceptance.
+        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~30 ~ ~30")
+        say("/gugugaga play test witness")
+        say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 35 255 true")
+        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:observer,limit=1,sort=nearest] eyes")
+        time.sleep(6)
+        wait_marker("STAGE_FALSE_SAFETY",5,required=False)
+        snap("09-witness-four-second-gaze")
+        say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 35 255 true")
+        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:redactor,limit=1,sort=nearest] eyes")
+        time.sleep(6)
+        wait_marker("STAGE_RESPITE",5,required=False)
+        snap("10-false-safety-four-second-gaze")
+        # At night with gamerule frozen, 70 seconds valid play time
+        # is sufficient for automatic fifth -> first cycling.
+        if results.get("STAGE_RESPITE"):
+            wait_marker("LOOP_TO_STILLNESS",88,required=False)
+        snap("11-after-five-stage-cycle")
+        # Restore the existing mobs near the player, then re-enter the live
+        # false-safety act to test a real uppercase chat HELP dispatch.
+        say("/tp @e[type=gugugaga:observer,sort=nearest,limit=1] ~ ~ ~5")
+        say("/tp @e[type=gugugaga:yellow_smiler,sort=nearest,limit=1] ~-3 ~ ~5")
+        say("/gugugaga play test triad",4)
         say("HELP",3.5) # Normal chat, NOT /gugugaga play help
         wait_marker("CHAT_HELP_INTERCEPTED",6,required=False)
         wait_marker("HELP_SUCCESS",6,required=False)
-        snap("09-chat-help")
+        snap("12-chat-help")
         # xdotool 'key' releases shift; send real held key separately.
         command("xdotool","keydown","Shift_L")
         time.sleep(1)
@@ -121,23 +145,7 @@ with LOG.open("wb") as f:
         command("xdotool","keyup","Shift_L")
         wait_marker("LISTEN_V_KEY",7,required=False)
         wait_marker("LISTEN_SUCCESS",7,required=False)
-        snap("10-sneak-V-listen")
-        say("/gugugaga play test witness")
-        say("/effect give @e[type=gugugaga:observer,limit=1,sort=nearest] minecraft:slowness 35 255 true")
-        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:observer,limit=1,sort=nearest] eyes")
-        time.sleep(6)
-        wait_marker("STAGE_FALSE_SAFETY",5,required=False)
-        snap("11-witness-four-second-gaze")
-        say("/effect give @e[type=gugugaga:redactor,limit=1,sort=nearest] minecraft:slowness 35 255 true")
-        say("/tp @s ~ ~ ~ facing entity @e[type=gugugaga:redactor,limit=1,sort=nearest] eyes")
-        time.sleep(6)
-        wait_marker("STAGE_RESPITE",5,required=False)
-        snap("12-false-safety-four-second-gaze")
-        # At night with gamerule frozen, 70 seconds valid play time
-        # is sufficient for automatic fifth -> first cycling.
-        if results.get("STAGE_RESPITE"):
-            wait_marker("LOOP_TO_STILLNESS",88,required=False)
-        snap("13-after-five-stage-cycle")
+        snap("13-sneak-V-listen")
         missing=[x for x in ("WORLD_PLAYER_READY","SERVER_ENABLED","JOINED",
                            "SPAWN_GUGU","SPAWN_LAPIS","SPAWN_YELLOW",
                            "TRIAD_REAL_ENTITIES","CHAT_HELP_INTERCEPTED",
