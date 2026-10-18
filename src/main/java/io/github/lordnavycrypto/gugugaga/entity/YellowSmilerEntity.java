@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HorrorCombatPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof;
 import io.github.lordnavycrypto.gugugaga.ai.SmilerTrustPolicy;

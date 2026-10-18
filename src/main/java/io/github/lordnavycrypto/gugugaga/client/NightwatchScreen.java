@@ -53,11 +53,11 @@ public final class NightwatchScreen extends Screen {
     public void render(GuiGraphics graphics,int mouseX,int mouseY,float partialTick) {
         graphics.fill(0,0,width,height,0xC010141C);
         super.render(graphics,mouseX,mouseY,partialTick);
-        drawCenteredString(graphics,font,title,width/2,height/2-132,0xFFF0F1F5);
-        drawCenteredString(graphics,font,
+        graphics.drawCenteredString(font,title,width/2,height/2-132,0xFFF0F1F5);
+        graphics.drawCenteredString(font,
                 Component.translatable("screen.gugugaga.nightwatch.subtitle"),
                 width/2,height/2-108,0xFFD4D9E2);
-        drawCenteredString(graphics,font,
+        graphics.drawCenteredString(font,
                 Component.translatable("screen.gugugaga.nightwatch.footer"),
                 width/2,height/2+86,0xFFB9C0CC);
     }
