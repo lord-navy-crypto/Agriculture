@@ -10,8 +10,10 @@ displayName="${mod_name}"
 displayURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror"
 authors="Gugu Gaga Nightwatch contributors"
 description='''
-A suspense-driven penguin observer for Minecraft.
-Pre-alpha: original placeholder texture and experimental non-combat AI.
+Gugu-Gaga Sacred Nightwatch test candidate: three original creatures,
+opt-in five-act survival suspense, fair chasing, stealth, investigation,
+GeckoLib character animations, the Lapis disguise and Yellow Smiler rescue.
+This is an experimental test build, not a stable release.
 '''
 
 [[dependencies.${mod_id}]]

@@ -173,3 +173,8 @@ Voluntary investigation for all players:
 ```
 
 Three genuine witness clues unlock the ability to reassure a nearby angry/corrupted bird, and canonical `/gugugaga talk` replies react to a player's current investigation position. Choices may be changed freely. The original odd penguin material is retained; slow gaze and uneven wing/head postures convey the uncanny without copied, flashing, or excessively loud effects. See `docs/V07_DUAL_NATURE_STORY_AND_VISUALS.md` for the four-chapter plan, shipped/unshipped boundary and visual design rules.
+
+
+## Sacred Nightwatch RC1 — integrated hands-on test candidate (0.19.0-rc.1)
+
+**This is not a finished/stable release.** All existing Nightwatch 5-act gameplay, triad, GeckoLib, chasing, Lapis disguise, Yellow aid, real evidence/listening, stealth/cave pressure and v0.17 visual polish are included on branch `release/sacred-nightwatch-rc1` without merging draft work into `main`. Use the built RC1 CI artifact, NOT an old downloaded JAR. See [RC1 installation and stage test checklist](docs/SACRED_NIGHTWATCH_RC1_PLAYTEST.md). Server owner enables `/gugugaga play server on`; players `/gugugaga play join`, then OP can test `/gugugaga play test witness` or `/gugugaga play test triad` during survival night. Requires NeoForge 1.21.1, Java 21, separate GeckoLib 4.9.3 client/server. Test on disposable world; provide `latest.log` for crashes. Normal unrelated mod feature documentation above remains historical; use this RC1 guide for the current playable test.

@@ -190,6 +190,13 @@ jobs:
           java -cp build/v018-horror-smoke V018CavePressureSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
+      - name: Audit and assemble exact Sacred Nightwatch RC1 release
+        run: python3 qa/package_sacred_rc.py build/libs build/sacred-release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-sacred-nightwatch-rc1
+          path: build/sacred-release/*
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: gugugaga-v017-visual-review
