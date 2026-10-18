@@ -4,9 +4,9 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 class Compat(unittest.TestCase):
     def test_props(self):
         p=(ROOT/"gradle.properties").read_text()
-        for x in ("neo_version=21.1.100","neo_min_version=21.1.100",
+        for x in ("neo_version=21.1.150","neo_min_version=21.1.150",
                   "geckolib_version=4.8.2","geckolib_min_version=4.8.2",
-                  "minecraft_version=1.21.1","mod_version=0.21.0-rc.1"):
+                  "minecraft_version=1.21.1","mod_version=0.21.1-rc.1"):
             self.assertIn(x,p)
     def test_metadata(self):
         g=(ROOT/"build.gradle").read_text()
@@ -20,7 +20,7 @@ class Compat(unittest.TestCase):
     def test_matrix(self):
         s=(ROOT/".github/workflows/build.yml").read_text()
         self.assertIn("compatibility:",s)
-        for item in ("neo: '21.1.100'","neo: '21.1.200'","neo: '21.1.259'",
+        for item in ("neo: '21.1.150'","neo: '21.1.200'","neo: '21.1.259'",
                      "gecko: '4.8.2'","gecko: '4.8.4'","gecko: '4.9.3'"):
             self.assertIn(item,s)
         self.assertIn("-Pneo_version=",s)

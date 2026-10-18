@@ -203,7 +203,7 @@ jobs:
         run: python3 qa/package_sacred_rc.py build/libs build/sacred-release
       - uses: actions/upload-artifact@v4
         with:
-          name: gugugaga-compat-v021
+          name: gugugaga-runtime-fixed-v0211
           path: build/sacred-release/*
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
@@ -227,7 +227,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - neo: '21.1.100'
+          - neo: '21.1.150'
             gecko: '4.9.3'
           - neo: '21.1.200'
             gecko: '4.8.4'
@@ -250,3 +250,46 @@ jobs:
           -Pneo_version=${{ matrix.neo }}
           -Pgeckolib_version=${{ matrix.gecko }}
           build
+
+  runtime-startup:
+    name: Real server startup NeoForge ${{ matrix.neo }} / GeckoLib ${{ matrix.gecko }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - neo: '21.1.150'
+            gecko: '4.8.2'
+          - neo: '21.1.200'
+            gecko: '4.8.4'
+          - neo: '21.1.259'
+            gecko: '4.9.3'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Actual server boot and mod registry initialization
+        env:
+          GUGU_BOOT_TIMEOUT: "400"
+          GUGU_NEO_VERSION: ${{ matrix.neo }}
+          GUGU_GECKOLIB_VERSION: ${{ matrix.gecko }}
+        run: >
+          python3 qa/smoke_server_boot.py
+      - name: Upload server startup diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-server-boot-${{ matrix.neo }}-${{ matrix.gecko }}
+          path: |
+            build/server-runtime-smoke.log
+            runs/server/logs/latest.log
+            runs/server/crash-reports/*.txt
+          if-no-files-found: warn

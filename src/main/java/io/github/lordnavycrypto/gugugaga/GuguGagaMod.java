@@ -50,6 +50,9 @@ public final class GuguGagaMod {
                     .updateInterval(3).build("gugugaga:yellow_smiler"));
 
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
+        // Real runtime constructor marker: a JAR compilation alone cannot
+        // prove Forge/GeckoLib successfully initialized on either side.
+        System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
         ENTITIES.register(modBus);
         modBus.addListener(GuguGagaMod::onAttributes);
         container.registerConfig(ModConfig.Type.SERVER, NightwatchConfig.SPEC);
