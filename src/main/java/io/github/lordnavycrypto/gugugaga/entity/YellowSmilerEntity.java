@@ -1,6 +1,10 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
+import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -64,6 +68,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
     }
 
     private int observationTicks;
+    private int wardOffTicks=20*8;
 
     public YellowSmilerEntity(EntityType<? extends PathfinderMob> type,Level level) {
         super(type,level);
@@ -143,42 +148,51 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
                 || tickCount%20!=0)return;
         getNavigation().stop();
         observationTicks=Math.min(10000,observationTicks+20);
-        // When revealed, it visibly focuses on the fearful Redactor.
-        // While masked it politely looks at Gugu-Gaga or a nearby player.
-        if(revealed()) {
-            RedactorEntity target=world.getEntitiesOfClass(RedactorEntity.class,
-                    getBoundingBox().inflate(28.0),
-                    net.minecraft.world.entity.Entity::isAlive).stream()
-                    .min(Comparator.comparingDouble(this::distanceToSqr))
-                    .orElse(null);
-            if(target!=null) {
-                getLookControl().setLookAt(target,6f,6f);
-                return;
-            }
-        }
+        wardOffTicks=Math.min(20*8,wardOffTicks+20);
+        // Yellow is not afraid of Redactor. The penguin is its first target;
+        // the player's trust is its reason to intervene. No cross-world scans.
+        var players=world.getEntitiesOfClass(ServerPlayer.class,
+                getBoundingBox().inflate(22.0),
+                p->p.isAlive() && HauntGameplayRuntime.isActiveParticipant(p));
+        ServerPlayer player=players.stream()
+                .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
         var birds=world.getEntitiesOfClass(GugugagaEntity.class,
                 getBoundingBox().inflate(22.0),
                 net.minecraft.world.entity.Entity::isAlive);
-        GugugagaEntity nearest=birds.stream()
+        GugugagaEntity bird=birds.stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
-        double guguSq=nearest==null?Double.POSITIVE_INFINITY:distanceToSqr(nearest);
-        if(ThreeEntityReactionPolicy.smiler(guguSq)
-                ==ThreeEntityReactionPolicy.SmilerAction.WATCH_GUGU) {
-            getLookControl().setLookAt(nearest,5f,5f);
+        double birdSq=bird==null?Double.POSITIVE_INFINITY:distanceToSqr(bird);
+        double playerSq=player==null?Double.POSITIVE_INFINITY:distanceToSqr(player);
+        var role=ThreeEntityReactionPolicy.smiler(birdSq,playerSq,
+                Double.POSITIVE_INFINITY);
+        if(role==ThreeEntityReactionPolicy.SmilerAction.CONFRONT_GUGU
+                && player!=null && NightwatchConfig.CHASES_ENABLED.get()) {
+            getLookControl().setLookAt(bird,14f,14f);
+            if(birdSq>3*3 && tickCount%40==0)getNavigation().moveTo(bird,1.08);
+            if(ThreeEntityReactionPolicy.smilerCanWardOff(birdSq,wardOffTicks)) {
+                bird.retreatFromSmiler(this);
+                // The Smiler tries to defeat the penguin instead of attacking
+                // players or automatically destroying any game/story objects.
+                bird.hurt(world.damageSources().mobAttack(this),1.0f);
+                wardOffTicks=0;
+                if(NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
+                    player.playNotifySound(SoundEvents.AMETHYST_BLOCK_CHIME,
+                            SoundSource.HOSTILE,0.28f,0.72f);
+                player.displayClientMessage(Component.literal(
+                        "[Smiler] See? Stay with me. We can drive it away."),true);
+            }
+        } else if(player!=null) {
+            getNavigation().stop();
+            getLookControl().setLookAt(player,6f,6f);
         } else {
-            var players=world.getEntitiesOfClass(ServerPlayer.class,
-                    getBoundingBox().inflate(12.0),
-                    p->p.isAlive()&&!p.isSpectator());
-            ServerPlayer nearestPlayer=players.stream()
-                    .min(Comparator.comparingDouble(this::distanceToSqr))
-                    .orElse(null);
-            if(nearestPlayer!=null)getLookControl().setLookAt(nearestPlayer,5f,5f);
+            getNavigation().stop();
         }
     }
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("YellowSmilerObservedTicks",observationTicks);
+        tag.putInt("YellowSmilerWardCooldown",wardOffTicks);
         tag.putBoolean("NightwatchStageGuest",stageEncounter);
         tag.putInt("NightwatchStageGuestLifetime",stageLifetimeTicks);
         tag.putBoolean("YellowSmilerRevealed",revealed());
@@ -188,6 +202,7 @@ public final class YellowSmilerEntity extends PathfinderMob implements software.
         super.readAdditionalSaveData(tag);
         observationTicks=Math.max(0,Math.min(10000,
                 tag.getInt("YellowSmilerObservedTicks")));
+        wardOffTicks=0; // no immediate attack after a save/reload
         setRevealed(tag.getBoolean("YellowSmilerRevealed"));
         stageEncounter=tag.getBoolean("NightwatchStageGuest");
         stageLifetimeTicks=Math.max(0,Math.min(20*360,
