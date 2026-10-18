@@ -21,6 +21,10 @@ public final class GuguPlayCommands {
                         .then(Commands.literal("join").executes(ctx->join(ctx.getSource())))
                         .then(Commands.literal("leave").executes(ctx->leave(ctx.getSource())))
                         .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                        .then(Commands.literal("help").executes(ctx->help(ctx.getSource())))
+                        .then(Commands.literal("aid")
+                                .then(Commands.literal("on").executes(ctx->aid(ctx.getSource(),true)))
+                                .then(Commands.literal("off").executes(ctx->aid(ctx.getSource(),false))))
                         .then(Commands.literal("scares")
                                 .then(Commands.literal("on").executes(ctx->scares(ctx.getSource(),true)))
                                 .then(Commands.literal("off").executes(ctx->scares(ctx.getSource(),false))))
@@ -45,6 +49,15 @@ public final class GuguPlayCommands {
         HauntGameplayRuntime.leave(src.getPlayerOrException());
         return 1;
     }
+    private static int help(CommandSourceStack src) throws CommandSyntaxException {
+        return HauntGameplayRuntime.requestSmilerHelp(src.getPlayerOrException())?1:0;
+    }
+    private static int aid(CommandSourceStack src,boolean enabled)
+            throws CommandSyntaxException {
+        HauntGameplayRuntime.setSmilerAid(src.getPlayerOrException(),enabled);
+        return 1;
+    }
+
     private static int scares(CommandSourceStack src,boolean enabled)
             throws CommandSyntaxException {
         HauntGameplayRuntime.setScaresAllowed(src.getPlayerOrException(),enabled);
