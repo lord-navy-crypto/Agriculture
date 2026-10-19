@@ -1,3 +1,10 @@
+> **NEW ANTHOLOGY EXPERIMENT / 志怪恐怖模组合集（独立新分支，2026-10-19）**  
+> Following a new, explicit user proposal, this branch starts a Chinese folklore horror anthology inspired by 《山海经》 and 《聊斋志异》. It does **not** unfreeze, merge or modify the old draft PRs #29–#31 or `main`. The original Gugu-Gaga / Lapis / Yellow Smiler remain authored characters.  
+> **Current maturity: policy/design + Java smoke tests ONLY.** Three source-inspired case profiles (长右、狸力、画皮之影), one-active-case slot, multi-instrument evidence, case resolution and timeout/cooldown are implemented as **pure Java logic**. There are **not yet** new registered Minecraft creatures, craftable detector items, natural-case spawns, a deduction GUI or in-world acceptance. This is **not** an installable anthology release.  
+> [Read the Chinese folklore anthology vision](docs/ZHIGUAI_FOLKLORE_ANTHOLOGY_VISION.md) · [Draft PR #32](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/32). Existing historical v0.10 and newer v0.21.x freeze references below are preserved as background.
+
+---
+
 > **v0.10 restart branch / v0.10 恢复开发分支（2026-10-19）**  
 > This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.3 is a **UI-first experimental test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
 >
