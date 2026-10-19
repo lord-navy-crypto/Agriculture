@@ -5,6 +5,8 @@ import io.github.lordnavycrypto.gugugaga.folklore.FolkloreEncounterPolicy.Eviden
 import io.github.lordnavycrypto.gugugaga.folklore.FolkloreEncounterPolicy.Instrument;
 import io.github.lordnavycrypto.gugugaga.folklore.FolkloreEncounterPolicy.Resolution;
 import io.github.lordnavycrypto.gugugaga.folklore.FolkloreEncounterPolicy.Stage;
+import io.github.lordnavycrypto.gugugaga.folklore.OriginalTrioCasePolicy.Actor;
+import io.github.lordnavycrypto.gugugaga.folklore.OriginalTrioCasePolicy.Beat;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -25,6 +27,7 @@ public final class FolkloreCaseDirector {
         final EnumSet<Instrument> used=EnumSet.noneOf(Instrument.class);
         final EnumSet<Evidence> clues=EnumSet.noneOf(Evidence.class);
         Stage stage=Stage.UNDISCOVERED;
+        Beat trioBeat=Beat.FIRST_SIGHTING;
 
         ActiveCase(Creature creature,long startedTick) {
             this.creature=creature;
@@ -36,6 +39,30 @@ public final class FolkloreCaseDirector {
     private long lastFinishedTick=Long.MIN_VALUE;
 
     public boolean active() { return active!=null; }
+
+    /** Server-side case identity; do not reveal to client UI until identified. */
+    public Creature activeCaseType() {
+        return active==null?null:active.creature;
+    }
+
+    /** One coherent three-actor story, not three random unrelated monsters. */
+    public Beat originalTrioBeat() {
+        return active!=null && active.creature==Creature.ORIGINAL_GUGU_TRIO
+                ?active.trioBeat:null;
+    }
+
+    /**
+     * Call ONLY after a server-side real entity interaction/gaze validator.
+     * The original case requires Gugu -> Lapis -> Yellow narrative evidence.
+     */
+    public boolean witnessOriginalActor(Actor observed) {
+        if(active==null || active.creature!=Creature.ORIGINAL_GUGU_TRIO
+                || observed==null)return false;
+        Beat next=OriginalTrioCasePolicy.witness(active.trioBeat,observed);
+        if(next==active.trioBeat)return false;
+        active.trioBeat=next;
+        return true;
+    }
     public Stage stage() {
         return active==null?Stage.UNDISCOVERED:active.stage;
     }
@@ -55,13 +82,21 @@ public final class FolkloreCaseDirector {
     public boolean attemptStart(long nowTick,long seed,int chance,
             boolean playerInSurvival,boolean overworld,boolean night,
             boolean quiet,boolean serverEnabled) {
+        return attemptStart(nowTick,seed,chance,playerInSurvival,overworld,night,
+                quiet,serverEnabled,false);
+    }
+
+    /** Biome eligibility matters when the server selects a case. */
+    public boolean attemptStart(long nowTick,long seed,int chance,
+            boolean playerInSurvival,boolean overworld,boolean night,
+            boolean quiet,boolean serverEnabled,boolean coldBiome) {
         if(nowTick<0)return false;
         long since=lastFinishedTick==Long.MIN_VALUE
                 ?FolkloreEncounterPolicy.MIN_COOLDOWN_TICKS
                 :Math.max(0,nowTick-lastFinishedTick);
         if(!FolkloreEncounterPolicy.mayStart(active(),playerInSurvival,
                 overworld,night,quiet,serverEnabled,since,chance))return false;
-        active=new ActiveCase(FolkloreEncounterPolicy.choose(seed),nowTick);
+        active=new ActiveCase(FolkloreEncounterPolicy.chooseForBiome(seed,coldBiome),nowTick);
         return true;
     }
 
@@ -92,6 +127,11 @@ public final class FolkloreCaseDirector {
         boolean correct=FolkloreEncounterPolicy.canResolve(active.stage,
                 active.creature,active.creature,method,playerWithinCase,true);
         if(!correct)return false;
+        // Evidence identification alone cannot skip the authored three-role
+        // story. Wrong-role/duplicate clicks are ignored by witnessOriginalActor.
+        if(active.creature==Creature.ORIGINAL_GUGU_TRIO
+                && !OriginalTrioCasePolicy.mayConclude(active.trioBeat))
+            return false;
         finish(nowTick);
         return true;
     }

@@ -19,7 +19,10 @@ public final class FolkloreEncounterPolicy {
     public enum Creature {
         CHANGYOU("山海经·南山经", "长右", Resolution.CALM_WATERS),
         LILI("山海经·南山经", "狸力", Resolution.SETTLE_EARTH),
-        PAINTED_SPIRIT("聊斋志异·画皮", "画皮之影", Resolution.BREAK_ILLUSION);
+        PAINTED_SPIRIT("聊斋志异·画皮", "画皮之影", Resolution.BREAK_ILLUSION),
+        // A complete ORIGINAL three-character case, not three unrelated spawns.
+        ORIGINAL_GUGU_TRIO("原创设定·Gugu-Gaga/Lapis/Yellow Smiler",
+                "冰原三影", Resolution.REVEAL_FROST_TRUTH);
 
         public final String originalSource;
         public final String displayName;
@@ -35,9 +38,9 @@ public final class FolkloreEncounterPolicy {
     public enum Instrument { LUOPAN, COPPER_BELL, REVEAL_MIRROR }
     public enum Evidence {
         WATER_RESONANCE, EARTH_RESONANCE, FOURFOLD_CALL,
-        HOLLOW_FOOTPRINT, FALSE_VOICE, REFLECTION_RIPPLE
+        HOLLOW_FOOTPRINT, FALSE_VOICE, REFLECTION_RIPPLE, FROST_DISSONANCE, SMILING_AFTERIMAGE
     }
-    public enum Resolution { CALM_WATERS, SETTLE_EARTH, BREAK_ILLUSION }
+    public enum Resolution { CALM_WATERS, SETTLE_EARTH, BREAK_ILLUSION, REVEAL_FROST_TRUTH }
     public enum Stage { UNDISCOVERED, INVESTIGATING, IDENTIFIED, RESOLVED }
 
     public static final int CASE_CHECK_INTERVAL_TICKS = 20 * 30;
@@ -64,6 +67,17 @@ public final class FolkloreEncounterPolicy {
         return kinds[(int)Math.floorMod(seed,kinds.length)];
     }
 
+    /** Original trio is cold-biome exclusive; do NOT roll it in warm worlds. */
+    public static Creature chooseForBiome(long seed, boolean coldBiome) {
+        if(coldBiome)return choose(seed);
+        Creature[] ordinary={Creature.CHANGYOU,Creature.LILI,Creature.PAINTED_SPIRIT};
+        return ordinary[(int)Math.floorMod(seed,ordinary.length)];
+    }
+
+    public static int actorsPerCase(Creature creature) {
+        return creature==Creature.ORIGINAL_GUGU_TRIO?3:1;
+    }
+
     /**
      * Different instruments reveal different ambiguous fingerprints.
      * Each creature is uniquely identifiable after evidence from ANY TWO
@@ -85,6 +99,13 @@ public final class FolkloreEncounterPolicy {
                 case LUOPAN -> Evidence.HOLLOW_FOOTPRINT;
                 case COPPER_BELL -> Evidence.FALSE_VOICE;
                 case REVEAL_MIRROR -> Evidence.REFLECTION_RIPPLE;
+            };
+            case ORIGINAL_GUGU_TRIO -> switch(instrument) {
+                case LUOPAN -> Evidence.FROST_DISSONANCE;
+                // The counterfeit voice resembles Painted Spirit:
+                // not enough to identify a case by one signal.
+                case COPPER_BELL -> Evidence.FALSE_VOICE;
+                case REVEAL_MIRROR -> Evidence.SMILING_AFTERIMAGE;
             };
         };
     }

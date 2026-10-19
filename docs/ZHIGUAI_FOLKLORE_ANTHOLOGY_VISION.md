@@ -15,6 +15,19 @@ This **new anthology branch** intentionally starts from the frozen, UI-first `v0
 5. **Fictional in-game ritual props:** compass-like `罗盘`, a `铜铃`, and a `照妖镜` are stylized gameplay sensors. Symbolic seals are Minecraft puzzle items, **not representations of real supernatural detection or real-world ritual instructions**.
 6. **No borrowed game assets:** Investigation/identification pacing may be inspired by ghost-hunting games, but the individual creatures, textures, behavior and puzzles must have independently authored implementation and Chinese folkloric storytelling.
 
+## Original-character family is also an investigable anthology case
+
+**One case, three original actors:** Gugu-Gaga → Lapis/Redactor → Yellow Smiler.
+`ORIGINAL_GUGU_TRIO` now participates in the same evidence-table, two-tool
+deduction, single-event director, and correct-response rules as the three
+source-inspired cases. It is *original author-owned fiction*, never a character
+attributed to `山海经` or `聊斋志异`. Its selection is cold-biome-only at
+the **pure Java policy level**, with live biome detection deferred.
+
+The case additionally requires all three actual character witness beats,
+and cannot be ended by two scans alone. Its planned noncombat resolution is
+`REVEAL_FROST_TRUTH`. See the full [原创冰原三影调查案](ORIGINAL_TRIO_INVESTIGATION_CASE.md).
+
 ## First three source-based prototypes
 
 | Case | Original source evidence | Designed behavior **(new fiction, not literal text)** | Characteristic clues | In-game ending |
