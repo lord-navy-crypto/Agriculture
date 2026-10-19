@@ -10,6 +10,7 @@ import io.github.lordnavycrypto.gugugaga.command.GuguStoryCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguAdvancedCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguPlayCommands;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
+import io.github.lordnavycrypto.gugugaga.network.NightwatchActionPacket;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.registries.Registries;
@@ -52,6 +53,7 @@ public final class GuguGagaMod {
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
         ENTITIES.register(modBus);
         modBus.addListener(GuguGagaMod::onAttributes);
+        modBus.addListener(NightwatchActionPacket::register);
         container.registerConfig(ModConfig.Type.SERVER, NightwatchConfig.SPEC);
         NeoForge.EVENT_BUS.addListener(OllamaCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchCommands::register);
