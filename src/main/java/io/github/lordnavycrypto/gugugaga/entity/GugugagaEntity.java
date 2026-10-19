@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
@@ -139,7 +140,8 @@ public class GugugagaEntity extends PathfinderMob {
         // chunks or a server-wide player/world scan.
         for(ServerPlayer candidate:world.getEntitiesOfClass(ServerPlayer.class,bounds,
                 p->p.isAlive()&&!p.isSpectator()&&!p.isCreative()
-                    && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID()))) {
+                    && !NightwatchDirector.isQuiet(world.getServer(),p.getUUID())
+                    && HauntGameplayRuntime.canTargetPlayer(p))) {
             double distance=distanceToSqr(candidate);
             if(distance<=closestDistance) {
                 closestDistance=distance;
