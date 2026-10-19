@@ -121,6 +121,16 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
             qa/java/HauntGameplayPolicySmoke.java
           java -cp build/haunt-game-smoke HauntGameplayPolicySmoke
+      - name: Validate folklore creature references and evidence deduction
+        run: |
+          mkdir -p build/folklore-policy-smoke
+          javac -encoding UTF-8 -d build/folklore-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/folklore/FolkloreEncounterPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/folklore/FolkloreCaseDirector.java \
+            qa/java/FolkloreEncounterPolicySmoke.java \
+            qa/java/FolkloreCaseDirectorSmoke.java
+          java -cp build/folklore-policy-smoke FolkloreEncounterPolicySmoke
+          java -cp build/folklore-policy-smoke FolkloreCaseDirectorSmoke
       - name: Enforce localhost-only Ollama policy (pure Java21)
         run: |
           mkdir -p build/ollama-policy-smoke
