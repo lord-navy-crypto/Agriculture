@@ -1,3 +1,40 @@
+> **PROJECT FROZEN / 项目已冻结（2026-10-19）**  
+> All Gugu-Gaga Horror development is paused by request. The latest previously CI-verified test build is **v0.9 alpha** (PR #11), not a live-play validated stable release. The newer **v0.10 gameplay loop is unfinished and unverified**, and must not be installed/merged as a release. All designs, three entities, five planned endings and restart instructions are preserved in [the Project Freeze Archive](docs/PROJECT_FREEZE_2026-10-19.md). Work resumes only upon explicit instruction. No dependency installations or scheduled actions are in progress.
+>
+> ---
+>
+## v0.10 playable survival horror — NO endings, NO extra mandatory mods
+
+The earlier v0.2–v0.9 entities and canon are preserved. v0.10 adds
+a replayable five-act NIGHT horror game loop: **Stillness → Whispers →
+Witness → False Safety → Respite**. A player investigates actual visible
+Gugu-Gaga and then the Redactor / Smiler to unlock each stage.
+This is repeatable gameplay, **not** the five planned story endings.
+
+One-time server setup (operator): `/gugugaga play server on`.
+Each player explicitly opts in: `/gugugaga play join`.
+Use `/gugugaga play status` and `/gugugaga investigate`; quit at any time
+with `/gugugaga play leave` or `/gugugaga quiet on`. It runs only at night
+in Survival Overworld, keeps the existing minimum 8-minute natural penguin
+sighting cooldown, and spawns capped Redactor/Yellow guest actors ONLY
+after an actual player investigation. Scripted guest actors expire in six
+minutes. No world edits, forced loading, jump scare flashes, boss endings,
+external network dependency or player admin permission changes.
+
+**Animation/dependency guidance**: See the verified official NeoForge
+1.21.1 versions in [animation and horror dependency guide]
+(docs/NEOFORGE_1211_ANIMATION_AND_HORROR_DEPENDENCIES.md).
+Current project uses NATIVE Java ModelPart renderers and requires **zero
+additional third-party animation mods**. GeckoLib 4.9.3 NeoForge 1.21.1
+is planned for a later, explicitly tested keyframe animation migration,
+NOT a working integration in v0.10. Sound Physics, AmbientSounds+CreativeCore,
+Embeddium and Iris are optional client enhancements.
+
+The README and docs continue to preserve A/B/C/D/E endings **as FUTURE**
+long-term worldbuilding and never claim those endings are implemented.
+
+---
+
 ## v0.9 — Distinct corruption, Lapis ambush and Yellow helping/true form
 
 New, EXPERIMENTAL (no story quests or ending triggers):

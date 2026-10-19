@@ -34,6 +34,13 @@ public final class YellowSmilerEntity extends PathfinderMob {
             SynchedEntityData.defineId(YellowSmilerEntity.class,
                     EntityDataSerializers.BOOLEAN);
     private static final String LAST_HELP="GuguGagaSmilerLastHelp";
+    private boolean stageEncounter;
+    private int stageLifetimeTicks;
+    public void markStageEncounter() {
+        stageEncounter=true;
+        stageLifetimeTicks=0;
+    }
+
     private int observationTicks;
 
     public YellowSmilerEntity(EntityType<? extends PathfinderMob> type,Level level) {
@@ -104,6 +111,11 @@ public final class YellowSmilerEntity extends PathfinderMob {
     @Override
     public void tick() {
         super.tick();
+        if(!level().isClientSide && stageEncounter && ++stageLifetimeTicks>=20*360) {
+            // Scripted horror actors cannot accumulate in old saves forever.
+            discard();
+            return;
+        }
         if(level().isClientSide || !(level() instanceof ServerLevel world)
                 || tickCount%20!=0)return;
         getNavigation().stop();
@@ -144,6 +156,8 @@ public final class YellowSmilerEntity extends PathfinderMob {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("YellowSmilerObservedTicks",observationTicks);
+        tag.putBoolean("NightwatchStageGuest",stageEncounter);
+        tag.putInt("NightwatchStageGuestLifetime",stageLifetimeTicks);
         tag.putBoolean("YellowSmilerRevealed",revealed());
     }
     @Override
@@ -152,5 +166,8 @@ public final class YellowSmilerEntity extends PathfinderMob {
         observationTicks=Math.max(0,Math.min(10000,
                 tag.getInt("YellowSmilerObservedTicks")));
         setRevealed(tag.getBoolean("YellowSmilerRevealed"));
+        stageEncounter=tag.getBoolean("NightwatchStageGuest");
+        stageLifetimeTicks=Math.max(0,Math.min(20*360,
+                tag.getInt("NightwatchStageGuestLifetime")));
     }
 }
