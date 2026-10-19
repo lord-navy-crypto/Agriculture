@@ -276,7 +276,7 @@ class ProjectSanity(unittest.TestCase):
                   "Commands.literal(\"server\")"):
             self.assertIn(k,commands)
         self.assertIn("src.hasPermission(2)",commands)
-        self.assertIn('define("playable_loop",false)',config)
+        self.assertIn('define("playable_loop",true)',config)
         self.assertIn("HauntGameplayRuntime.isJoined(server,id)",director)
         self.assertIn("markStageEncounter()",redactor)
         self.assertIn("markStageEncounter()",smiler)
