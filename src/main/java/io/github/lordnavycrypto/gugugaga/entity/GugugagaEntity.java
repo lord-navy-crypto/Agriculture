@@ -13,6 +13,7 @@ import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -159,8 +160,16 @@ public class GugugagaEntity extends PathfinderMob {
     protected InteractionResult mobInteract(Player player,InteractionHand hand) {
         if(hand!=InteractionHand.MAIN_HAND)return InteractionResult.PASS;
         if(level().isClientSide)return InteractionResult.SUCCESS;
-        if(player instanceof ServerPlayer participant)
-            HauntGameplayRuntime.investigate(participant,this);
+        if(player instanceof ServerPlayer participant) {
+            if(!HauntGameplayRuntime.investigate(participant,this)) {
+                String key=switch(mood()) {
+                    case ANGRY -> "message.gugugaga.interact.angry";
+                    case CORRUPTED -> "message.gugugaga.interact.corrupted";
+                    default -> "message.gugugaga.interact.calm";
+                };
+                participant.displayClientMessage(Component.translatable(key),true);
+            }
+        }
         return InteractionResult.SUCCESS;
     }
 
