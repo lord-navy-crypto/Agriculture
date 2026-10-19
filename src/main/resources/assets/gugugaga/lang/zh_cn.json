@@ -31,5 +31,10 @@
   "screen.gugugaga.nightwatch.footer": "按 H 打开界面；游戏全程不需要聊天栏指令。",
   "screen.gugugaga.nightwatch.journal": "查看见闻手记",
   "screen.gugugaga.nightwatch.journal_on": "开启手记记录",
-  "screen.gugugaga.nightwatch.journal_off": "暂停手记记录"
+  "screen.gugugaga.nightwatch.journal_off": "暂停手记记录",
+  "message.gugugaga.interact.calm": "[咕咕嘎嘎] 企鹅注视着你，轻轻歪了歪头。",
+  "message.gugugaga.interact.angry": "[咕咕嘎嘎] 它警惕地盯着你的手。",
+  "message.gugugaga.interact.corrupted": "[咕咕嘎嘎] 它的羽毛伴随幽暗低语微微颤动。",
+  "message.gugugaga.interact.lapis": "[青金石] 蓝色身影点了点头，却不愿解释。",
+  "message.gugugaga.interact.redactor": "[篡改者] 熟悉的伪装已经消失。"
 }
