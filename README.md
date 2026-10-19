@@ -1,3 +1,8 @@
+> **PROJECT FROZEN / 项目已冻结（2026-10-19）**  
+> All Gugu-Gaga Horror development is paused by request. The latest previously CI-verified test build is **v0.9 alpha** (PR #11), not a live-play validated stable release. The newer **v0.10 gameplay loop is unfinished and unverified**, and must not be installed/merged as a release. All designs, three entities, five planned endings and restart instructions are preserved in [the Project Freeze Archive](docs/PROJECT_FREEZE_2026-10-19.md). Work resumes only upon explicit instruction. No dependency installations or scheduled actions are in progress.
+>
+> ---
+>
 ## v0.10 playable survival horror — NO endings, NO extra mandatory mods
 
 The earlier v0.2–v0.9 entities and canon are preserved. v0.10 adds
