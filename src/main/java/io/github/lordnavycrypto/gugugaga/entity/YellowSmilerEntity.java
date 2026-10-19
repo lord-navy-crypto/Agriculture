@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.SmilerGiftPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -145,7 +146,8 @@ public final class YellowSmilerEntity extends PathfinderMob {
         } else {
             var players=world.getEntitiesOfClass(ServerPlayer.class,
                     getBoundingBox().inflate(12.0),
-                    p->p.isAlive()&&!p.isSpectator());
+                    p->p.isAlive()&&!p.isSpectator()
+                            && HauntGameplayRuntime.canTargetPlayer(p));
             ServerPlayer nearestPlayer=players.stream()
                     .min(Comparator.comparingDouble(this::distanceToSqr))
                     .orElse(null);
