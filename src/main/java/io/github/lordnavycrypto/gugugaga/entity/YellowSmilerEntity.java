@@ -74,6 +74,8 @@ public final class YellowSmilerEntity extends PathfinderMob {
         if(level().isClientSide)return InteractionResult.SUCCESS;
         if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
+        if(HauntGameplayRuntime.investigate(recipient,this))
+            return InteractionResult.SUCCESS;
         if(revealed()) {
             recipient.sendSystemMessage(Component.literal(
                     "[Smiler] I suppose the smile is no longer necessary."));
