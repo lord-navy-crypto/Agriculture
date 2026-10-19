@@ -1,3 +1,5 @@
+> **CORRECTION — THIS IS A HISTORICAL v0.10 BRANCH-ONLY SNAPSHOT.** The full GitHub repo contains newer v0.11–v0.21.3 draft branches. The authoritative **global repository freeze checkpoint** is now [docs/PROJECT_FREEZE_2026-10-19.md on PR #29's latest branch](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/blob/fix/horror-combat-resilience/docs/PROJECT_FREEZE_2026-10-19.md). In particular, v0.9 is NOT the latest repo test milestone; v0.21.3's in-world gameplay gate was failing and GeckoLib has become a required dependency on the newer chain. The statements below describe ONLY the status of this earlier v0.10 branch.
+
 # PROJECT FREEZE / 项目冻结档案
 **Date:** 2026-10-19 (Asia/Shanghai).  
 **State:** **FROZEN BY USER REQUEST**. No new implementation, refactors, releases, merges, automatic tasks, or expansion until the user explicitly resumes the project.  
