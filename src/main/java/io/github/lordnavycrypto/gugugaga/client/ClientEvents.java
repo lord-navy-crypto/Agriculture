@@ -22,5 +22,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(GuguGagaMod.OBSERVER.get(), ObserverRenderer::new);
         event.registerEntityRenderer(GuguGagaMod.REDACTOR.get(),RedactorRenderer::new);
         event.registerEntityRenderer(GuguGagaMod.YELLOW_SMILER.get(),YellowSmilerRenderer::new);
+        System.out.println("GUGUGAGA_CLIENT_RENDERERS_REGISTERED");
     }
 }
