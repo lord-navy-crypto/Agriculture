@@ -127,6 +127,7 @@ jobs:
           javac -encoding UTF-8 -d build/folklore-policy-smoke \
             src/main/java/io/github/lordnavycrypto/gugugaga/folklore/FolkloreEncounterPolicy.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/folklore/FolkloreCaseDirector.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/folklore/OriginalTrioCasePolicy.java \
             qa/java/FolkloreEncounterPolicySmoke.java \
             qa/java/FolkloreCaseDirectorSmoke.java
           java -cp build/folklore-policy-smoke FolkloreEncounterPolicySmoke
