@@ -21,6 +21,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -149,6 +152,16 @@ public class GugugagaEntity extends PathfinderMob {
             }
         }
         return closest;
+    }
+
+    /** Inspect a real entity directly; no text command or admin rights needed. */
+    @Override
+    protected InteractionResult mobInteract(Player player,InteractionHand hand) {
+        if(hand!=InteractionHand.MAIN_HAND)return InteractionResult.PASS;
+        if(level().isClientSide)return InteractionResult.SUCCESS;
+        if(player instanceof ServerPlayer participant)
+            HauntGameplayRuntime.investigate(participant,this);
+        return InteractionResult.SUCCESS;
     }
 
     @Override
