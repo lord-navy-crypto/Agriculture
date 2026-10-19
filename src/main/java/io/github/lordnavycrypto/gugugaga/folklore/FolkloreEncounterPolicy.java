@@ -50,9 +50,9 @@ public final class FolkloreEncounterPolicy {
      * group, no matter how many players stand nearby.
      */
     public static boolean mayStart(boolean hasActiveCase, boolean playerInSurvival,
-            boolean inOverworld, boolean playerQuiet, boolean allowedByServer,
+            boolean inOverworld, boolean isNight, boolean playerQuiet, boolean allowedByServer,
             long ticksSinceLastCase, int randomPercent) {
-        return !hasActiveCase && playerInSurvival && inOverworld
+        return !hasActiveCase && playerInSurvival && inOverworld && isNight
                 && !playerQuiet && allowedByServer
                 && ticksSinceLastCase >= MIN_COOLDOWN_TICKS
                 && randomPercent >= 0 && randomPercent < CHANCE_PER_CHECK_PERCENT;
