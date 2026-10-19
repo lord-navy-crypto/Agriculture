@@ -34,7 +34,7 @@ public final class NightwatchConfig {
         BUILDER.push("encounters");
         ENCOUNTERS_ENABLED = BUILDER.comment(
                 "Allow rare nonviolent observer encounters. OFF by default. No chunk forcing.")
-                .define("enabled", false);
+                .define("enabled", true);
         ENCOUNTER_COOLDOWN_TICKS = BUILDER.comment(
                 "Minimum cooldown per player, ticks. Never below 8 minutes; default 10 minutes.")
                 .defineInRange("cooldown_ticks", 12000, 9600, 72000);
@@ -90,9 +90,10 @@ public final class NightwatchConfig {
         BUILDER.pop();
         BUILDER.push("survival_gameplay");
         PLAYABLE_LOOP_ENABLED=BUILDER.comment(
-                "Experimental five-act survival horror mode. OFF by default. "
-                +"Each player must explicitly join. No story endings or forced game modes.")
-                .define("playable_loop",false);
+                "Five-act survival horror can be activated from the H-key panel; "
+                +"world defaults ON for new profiles. Every player must voluntarily JOIN "
+                +"using the UI. Server owners can pause through the same panel.")
+                .define("playable_loop",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

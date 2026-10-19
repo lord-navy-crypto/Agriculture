@@ -1,77 +1,73 @@
-> **CORRECTION — THIS IS A HISTORICAL v0.10 BRANCH-ONLY SNAPSHOT.** The full GitHub repo contains newer v0.11–v0.21.3 draft branches. The authoritative **global repository freeze checkpoint** is now [docs/PROJECT_FREEZE_2026-10-19.md on PR #29's latest branch](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/blob/fix/horror-combat-resilience/docs/PROJECT_FREEZE_2026-10-19.md). In particular, v0.9 is NOT the latest repo test milestone; v0.21.3's in-world gameplay gate was failing and GeckoLib has become a required dependency on the newer chain. The statements below describe ONLY the status of this earlier v0.10 branch.
+# Gugu-Gaga Horror — Final Project Freeze / 谷谷嘎嘎恐怖模组最终封存档案
 
-# PROJECT FREEZE / 项目冻结档案
-**Date:** 2026-10-19 (Asia/Shanghai).  
-**State:** **FROZEN BY USER REQUEST**. No new implementation, refactors, releases, merges, automatic tasks, or expansion until the user explicitly resumes the project.  
+**Date:** 2026-10-19 (Asia/Shanghai)  
+**State:** **FROZEN BY EXPLICIT USER REQUEST — NO MORE DEVELOPMENT.**  
 **Repository:** https://github.com/lord-navy-crypto/Gugu-Gaga-horror  
-**Archive scope:** Gugu-Gaga Horror Mode (Minecraft 1.21.1, NeoForge 21.1.259, Java 21).
+**Archive scope:** all historical branches, source code, original assets, experiments, character designs, mechanics and the five planned endings.
 
-## 冻结决议 / What this means
+> This document is the **newest project-wide freeze status**, correcting the earlier v0.10-only snapshot and supplementing the [v0.21.3 freeze on PR #29](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/blob/fix/horror-combat-resilience/docs/PROJECT_FREEZE_2026-10-19.md). The original historical snapshots remain accessible on their respective branches. This is a **development freeze**, not a GitHub repository-wide read-only archive flag.
 
-- The horror project and all planned narrative endings are **paused**. Preserve all prior code, art-generation scripts, plans and draft PRs in place, without deleting/rebasing/merging.
-- Do **not** confuse a passed CI build with live client or multiplayer acceptance.
-- Do **not** treat the unfinished v0.10 horror-loop branch as a stable release or distribute it as an installable new version.
-- No Minecraft server permissions, external disk files, browser or non-Minecraft worlds may be affected by fictional horror mechanics.
-- This is a **development freeze**, NOT GitHub's repository-wide archive/read-only switch. Everything is left available for review and a controlled future restart.
+## 1. Exact preservation points
 
-## 已保存版本与精确边界
+| Track | Ref | Status at final freeze |
+| --- | --- | --- |
+| Initial work v0.2–v0.9 | Draft PRs #1–#11 and their feature branches | Earlier original prototypes, characters, art, dialogue, moods, and tests preserved |
+| Early v0.10 loop | [Draft PR #12](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/12) / `feat/nightwatch-v010-playable-horror-loop` | Historical five-act, command-first implementation, retained only as history |
+| v0.10 stage recovery | [Draft PR #30](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/30) / `fix/v010-stage-recovery-and-optout-20261019` | `0.10.0-alpha.2`, CI build + true server and virtual graphical client startup PASSED |
+| **Final v0.10 command-free gameplay UI** | **[Draft PR #31](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/31) / `feat/v010-native-ui-entity-interactions-20261019`** | **`0.10.0-alpha.3` source frozen at commit `b5e8d453733ad40a8b7ff04a2180bb45ee71f891` BEFORE this documentation-only freeze commit** |
+| Cumulative newer experimental line v0.11–v0.21.3 | Draft PRs #13–#29; latest [PR #29](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/29) / `fix/horror-combat-resilience` | More extensive GeckoLib/combat/AI/UI experiments preserved independently. Earlier PR #29 **in-world gameplay CI failed**; no stable release |
 
-| Version | Branch / GitHub PR | Freeze-day status |
-|---|---|---|
-| v0.2 | PR #1, base observer | Basic observer, original prototype assets, opt-in night AI, optional local Ollama |
-| v0.3 | PR #5 | Three-level sparse atmosphere cues, visual head/wing motion, temporary night encounters |
-| v0.4 | PR #6 | Per-player witness journal (Chinese and English) |
-| v0.5 | PR #7 | Six-event suspense director with deliberate silence and tension |
-| v0.6 | PR #8 | Chinese/English offline dialogue and optional local Ollama; colder-biome sightings |
-| v0.7 | PR #9 | Reversible angry/corrupted Gugu, optional close attacks, first faction/Redactor story |
-| v0.8 | PR #10 | Three actual registered entity types, original art, Lapis-mask Redactor and Yellow Smiler interactions |
-| **v0.9.0-alpha.1** | **PR #11** (`feat/nightwatch-v09-moods-mimic-smiler`) | **Latest previously confirmed green GitHub Actions + distributable test JAR**; three different character modes. NOT real-game-accepted |
-| **v0.10 WIP** | **`feat/nightwatch-v010-playable-horror-loop`**, branched from v0.9 | **INCOMPLETE, NOT BUILD-VERIFIED**; partial gameplay loop source saved on GitHub. Frozen; not for installation |
+All named PRs are kept DRAFT and unmerged at this checkpoint. `main` is **not** the complete merged horror mod. Do not merge, rebase, delete, or consolidate branches without explicit future authorization.
 
-All previously opened feature pull requests remain **DRAFT** and **unmerged**. The default `main` branch is **not** the combined v0.9 mod; most recent functional state is in stacked feature branches. Do not claim main is stable/comprehensive, and do not mass-merge the PR chain without new review.
+## 2. Final v0.10-alpha.3: what has actually been implemented
 
-## v0.10 — precisely what had been started before freezing
+- **No normal-play chat commands required.** Remappable **H** key opens a native Minecraft Nightwatch GUI; it is not a facade that types slash commands.
+- Buttons: join/resume, pause/leave, status, quiet mode, private witness journal, and an operator-gated world enable/disable action.
+- Native typed NeoForge client-to-server packet, with server-side permission, entity/participant and action validation; no arbitrary command text as the UI transport.
+- Real **right-click** Gugu-Gaga, Lapis/Redactor or Yellow Smiler to investigate and advance the five-act survival horror loop when the correct evidence/phase is present; ordinary nearby right-clicks yield contextual feedback.
+- Introductory one-time H-key hint, Chinese/English UI text, actor-spawn retry limits and per-player opt-out targeting checks.
+- Fresh v0.10 configs default world availability on, **but each individual player must actively join**. Existing server config may override the default; the operator has a UI control.
+- The acts are STILLNESS → WHISPERS → WITNESS → FALSE_SAFETY → RESPITE → repeat; the full cinematic plot and five endings are **not** implemented here.
+- Legacy slash commands remain in source for development/debug backwards compatibility, **never required** in normal player workflow.
 
-Already committed to this branch before the freeze:
-- `ai/HauntGameplayPolicy.java`: pure, reusable suspense loop policy with stages STILLNESS, WHISPERS, WITNESS, FALSE_SAFETY, RESPITE; no story ending mechanics.
-- `ai/HauntGameplayRuntime.java`: optional server-tick loop with nearby actual entity evidence, quiet cues and bounded, player-triggered future encounters.
-- `command/GuguPlayCommands.java`: `/gugugaga play server on|off`, `play join|leave|status`, and `/gugugaga investigate`.
-- `config/NightwatchConfig.java`: default-off `PLAYABLE_LOOP_ENABLED` switch.
-- `GuguGagaMod.java`: registration of commands and gameplay ticks.
-- `ai/NightwatchDirector.java`: when playable mode is enabled, prevent ordinary automatic sightings for players who have not voluntarily joined.
+### Exact verified CI
 
-**None of the v0.10 work received a full CI test/JAR verification by freeze time.** The gameplay experience, mechanics and user consent need compilation, bug fixes and real field QA before any future v0.10 use. Its partial state is deliberately preserved, not backported to v0.9, and should not be installed as a JAR.
+**Commit tested:** `b5e8d453733ad40a8b7ff04a2180bb45ee71f891`  
+**Run:** [GitHub Actions #39220216675](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/actions/runs/39220216675) — **OVERALL SUCCESS**, all three jobs green:
 
-## 三个角色与未完成内容
+1. `build` — Python/Java policy and source checks, Gradle package and artifact.
+2. `Actual NeoForge v0.10 dedicated-server startup` — startup with real NeoForge runtime markers.
+3. `Actual v0.10 graphical client + three native renderer registrations` — Linux virtual-OpenGL Minecraft client initialization.
 
-1. **Gugu-Gaga**: original A-design-target penguin (current art is acknowledged prototype), watches players, prefers cold biomes, private offline/optional local dialogue, anger/corruption/blackening (reversible). Angry attacks separately opt-in.
-2. **Lapis / Redactor**: one character + one EntityType with friendly blue disguise and taller true form; prioritizes Gugu corruption and fleeing from Yellow. Limited hostile hits separately disabled by default.
-3. **Yellow Smiler**: friendly yellow figure, voluntary two-torch help at rate-limited intervals, reveals a more sinister appearance, causes Redactor to flee. Final boss/actual betrayal **not implemented**.
-4. **Player**: vanilla participant, not a fourth custom entity.
+**Generated artifact:** `gugugaga-nightwatch-jar` on that workflow run (GitHub artifact ID `12172400039`). The workflow's artifact is a test build, not a fully gameplay-accepted stable release. The tested source commit is unchanged by this documentation-only freeze recording.
 
-FUTURE/NOT SHIPPED: mature multi-stage horror acceptance, original final A visual fidelity, more original recordings/animations, evidence structures, automatic environmental biome spawns of the two new NPCs, cinematic revelations, the proper final Redactor/Yellow boss encounters, four main/secret endings + fifth beyond-creator ending, desert/warm-ocean 32–40-block high sanctuary, safe visual-only command-block portal homage.
+**NOT TESTED / NOT ACCEPTED:** real graphical survival-world five-act playthrough, real on-screen H button clicks and right-click story advancement, long-running multiplayer, player privacy under all conditions, NBT/relog/restart and hard terrain, physical Mac/client modpack compatibility. Client boot ≠ gameplay acceptance. No claim that alpha.3 is stable.
 
-**Historical canon and all five endings** remain fully preserved in:
-- [Canon + Long-Term Archive](GUGUGAGA_CANON_AND_LONG_TERM_ARCHIVE.md)
-- [Three-entity Behavior and Original Assets](V08_THREE_ENTITY_BEHAVIOR_AND_ASSET_SPEC.md)
-- [Three Character Advanced Modes](V09_THREE_UNIQUE_MODES_SPEC.md)
-- [Historical Horror Feature Masterplan](HORROR_FEATURE_MASTERPLAN.md)
+**Runtime of v0.10:** Minecraft 1.21.1, Java 21, NeoForge 21.1.259, native model renderers; **no GeckoLib dependency in the v0.10 branch**. **Important:** the distinct v0.11–v0.21.3 branch line does require GeckoLib 4.x; do not mix version dependencies or JARs.
 
-## Dependencies — do not install any new libraries while frozen
+## 3. All original characters, narrative canon and long-term concepts remain archived
 
-- **Required runtime** for the last confirmed experimental test artifact: **Minecraft 1.21.1, NeoForge 21.1.259, Java 21.**
-- Current `build.gradle` uses NeoForge's ModDevGradle and custom native entity models. **GeckoLib has NOT been integrated as a required dependency** in v0.9 or untested v0.10. Avoid claiming it is mandatory until a documented version-compatible implementation is built.
-- Sound Physics, AmbientSounds, Entity Culling, FerriteCore and similar performance/ambience mods are only **optional future compatibility/testing candidates**; no new dependency requirements have been added.
-- Optional local Ollama integration is not needed to start the test mod and is default off.
+- **Gugu-Gaga:** cold-biome watcher/penguin guardian; original textures and older mutable temperament, corruption and blackening mechanics.
+- **Lapis / Redactor:** one entity with innocent blue masquerade and sinister true appearance; attempts to corrupt Gugu and flees Yellow Smiler.
+- **Yellow Smiler:** apparently friendly original figure and supply helper; true form and potential future betrayal. The final playable boss is not complete.
+- **Vanilla player:** participant, not a fourth custom mob.
+- Preserved **five planned endings:** A Perfect Smile, B False Victory, C Last Witness, D True Lapis (warm-biome sanctuary), E Beyond the Creator (fictional in-Minecraft visual-only creator/portal sequence). **These remain designs, not five implemented endings.**
 
-## 恢复开发时的严格顺序 (future, not an automatic task)
+Historical files preserved:
+- [Canon and long-term archive](GUGUGAGA_CANON_AND_LONG_TERM_ARCHIVE.md)
+- [Horror feature masterplan](HORROR_FEATURE_MASTERPLAN.md)
+- [Three-entity behavior and assets](V08_THREE_ENTITY_BEHAVIOR_AND_ASSET_SPEC.md)
+- [Advanced character modes](V09_THREE_UNIQUE_MODES_SPEC.md)
+- [Final v0.10 player interaction and acceptance checklist](V010_COMPLETION_PLAYTEST.md)
 
-1. Ask the user to explicitly **resume**; do not auto-start work.
-2. Reinspect the PR stack, compare frozen v0.9 vs v0.10 branch, and check correct NeoForge 1.21.1 APIs.
-3. Preserve the **v0.9 CI-verified alpha as a baseline** and avoid mixing incomplete v0.10 code into it prematurely.
-4. Only if user wants to continue v0.10, run full CI, pure Java state-machine tests, manual NeoForge client, NBT/relog, dedicated server, two-player tests, player opt-in and manual opt-out. Fix defects on the experimental branch.
-5. Do not add GeckoLib/other dependencies unless version verified for **NeoForge 1.21.1** and compatibility tests are green; never mistake Fabric/Forge build for NeoForge.
-6. Only merge PRs after code review, tests and explicit user approval. No destructive cleanup.
-7. Resume **playable multi-stage horror** ahead of story endings, as the user prioritized before freezing.
+## 4. Binding freeze rules
 
-**Final freeze summary:** Code and story safely stored in GitHub draft branches. Last build-confirmed test release is v0.9 alpha. The newer v0.10 is a saved, unfinished work-in-progress. All further work intentionally stopped.
+1. **Stop all Gugu-Gaga development now:** no new mechanics, source changes, refactors, UI upgrades, tests, experiments, releases, merges, rebases, dependency installations, automated follow-ups, or silent background work.
+2. Preserve all GitHub code and planned endings; leave drafts as drafts; do not delete files/branches or change `main`.
+3. Do **not** market a CI-tested test JAR as a stable, complete horror game. Current UI-first line has good boot validation but lacks real in-world gameplay acceptance.
+4. This freeze does **not** archive/read-only lock the entire repository: it records an explicit project stop, keeping the code inspectable and reversible.
+5. Separate external work sessions or autonomous agents are not controlled by this GitHub note. They must also be stopped independently if running.
+6. Only a **new explicit instruction from the user** may resume work. On resumption, choose which track (`alpha.3` native UI versus `v0.21.3` GeckoLib experimental line) to stabilize before editing or merging; never assume a higher semantic version means it passed the actual in-world gameplay gate.
+7. Player-facing principle to preserve: **real gameplay through buttons, native keybinding and entity interactions — never command-driven progression**.
+
+**Final summary / 最终结论:** All prior creations and unfinished story branches are preserved. The v0.10.0-alpha.3 UI-first code has **green build, real-server boot, and virtual-client boot CI**, but **not real world gameplay acceptance**. The distinct higher-feature v0.21.3 line remains experimentally incomplete. **The Gugu-Gaga Horror project is now frozen until expressly reopened.**

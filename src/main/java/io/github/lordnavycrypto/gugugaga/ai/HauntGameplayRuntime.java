@@ -62,8 +62,8 @@ public final class HauntGameplayRuntime {
         entries(player.serverLevel().getServer()).put(player.getUUID(),new Entry());
         player.sendSystemMessage(Component.literal(
                 "[Nightwatch] Joined the five-act survival horror loop. "
-                +"Wait for a real witness, then /gugugaga investigate. "
-                +"Use /gugugaga play leave to stop."));
+                +"Right-click actual creatures to investigate. "
+                +"Press H to pause or check your status."));
     }
     public static void leave(ServerPlayer player) {
         entries(player.serverLevel().getServer()).remove(player.getUUID());
@@ -74,7 +74,7 @@ public final class HauntGameplayRuntime {
         Entry e=entries(player.serverLevel().getServer()).get(player.getUUID());
         return "Server="+NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()+
                 ", joined="+(e!=null)+", act="+(e==null?"NONE":e.act)
-                +", next clue=/gugugaga investigate; "
+                +", investigate by right-clicking a creature; "
                 +"original Nightwatch observers retain 8-minute minimum cooldown.";
     }
     private static boolean eligible(ServerPlayer player,boolean joined) {
@@ -133,25 +133,44 @@ public final class HauntGameplayRuntime {
             case STILLNESS -> "[Nightwatch] The forest is quiet again. It may not last.";
             case WHISPERS -> "[Nightwatch] A faint sound answers another. Keep watching.";
             case WITNESS -> "[Nightwatch] Something is out there. Find Gugu-Gaga, "
-                    +"then use /gugugaga investigate within 12 blocks.";
+                    +"then right-click it to investigate.";
             case FALSE_SAFETY -> "[Nightwatch] The bird noticed something blue. "
                     +"Find Lapis or the smiling stranger and investigate.";
             case RESPITE -> "[Nightwatch] Your investigation is complete for now. "
                     +"The world is quiet... but the encounter may return.";
         };
     }
+    /** Legacy debug entry point; ordinary gameplay is right-click only. */
     public static boolean investigate(ServerPlayer player) {
+        return investigate(player,null);
+    }
+
+    /** The server validates the actual clicked actor and 12-block line-of-sight. */
+    public static boolean investigate(ServerPlayer player,Entity target) {
         Map<UUID,Entry> all=entries(player.serverLevel().getServer());
         Entry e=all.get(player.getUUID());
         if(e==null || !eligible(player,true)) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] Join via /gugugaga play join, then investigate "
-                    +"at night in survival when the server enabled the loop."));
+            if(target==null)player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] Press H to join, then explore at night in Survival."));
             return false;
         }
         ServerLevel level=player.serverLevel();
         HauntGameplayPolicy.Evidence evidence=HauntGameplayPolicy.Evidence.NONE;
-        if(e.act==HauntGameplayPolicy.Act.WITNESS) {
+        if(target!=null) {
+            if(!target.isAlive() || target.level()!=level
+                    || !HauntGameplayPolicy.nearEvidence(
+                            player.distanceToSqr(target),player.hasLineOfSight(target)))
+                return false;
+            if(e.act==HauntGameplayPolicy.Act.WITNESS
+                    && target instanceof GugugagaEntity)
+                evidence=HauntGameplayPolicy.Evidence.GUGU_GAGA;
+            if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
+                if(target instanceof RedactorEntity)
+                    evidence=HauntGameplayPolicy.Evidence.LAPIS_REDACTOR;
+                else if(target instanceof YellowSmilerEntity)
+                    evidence=HauntGameplayPolicy.Evidence.YELLOW_SMILER;
+            }
+        } else if(e.act==HauntGameplayPolicy.Act.WITNESS) {
             if(visible(level,player,GugugagaEntity.class))
                 evidence=HauntGameplayPolicy.Evidence.GUGU_GAGA;
         } else if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY) {
@@ -160,12 +179,11 @@ public final class HauntGameplayRuntime {
             else if(visible(level,player,YellowSmilerEntity.class))
                 evidence=HauntGameplayPolicy.Evidence.YELLOW_SMILER;
         }
-        HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(e.act,
-                e.activeTicks,evidence,true);
+        HauntGameplayPolicy.Act next=HauntGameplayPolicy.advance(
+                e.act,e.activeTicks,evidence,true);
         if(next==e.act) {
-            player.sendSystemMessage(Component.literal(
-                    "[Nightwatch] No new clue yet. Explore, watch and listen. "
-                    +"Stage="+e.act));
+            if(target==null)player.sendSystemMessage(Component.literal(
+                    "[Nightwatch] No clue yet. Explore and watch. Stage="+e.act));
             return false;
         }
         e.act=next;
@@ -177,6 +195,7 @@ public final class HauntGameplayRuntime {
             summonOne(level,player,GuguGagaMod.YELLOW_SMILER.get());
         return true;
     }
+
     private static <T extends Entity> boolean visible(
             ServerLevel level,ServerPlayer player,Class<T> clazz) {
         AABB search=player.getBoundingBox().inflate(12);

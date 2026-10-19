@@ -1,4 +1,4 @@
-# v0.10.0-alpha.2 — five-act completion / actual gameplay acceptance
+# v0.10.0-alpha.3 — five-act completion / actual gameplay acceptance
 
 **Scope:** a narrowly scoped repair of the original v0.10 native-model, opt-in
 horror loop. The 2026-10-19 historic freeze files, original v0.9 baseline,
@@ -19,7 +19,7 @@ newer v0.11–v0.21.3 drafts, A–E ending concepts and `main` are untouched.
    and scripted Redactor/Yellow remain subject to their existing 6-minute
    lifetime. Manual `/summon` entities stay persistent.
 4. While the playable mode is enabled, Gugu, Redactor and Yellow only
-   voluntarily focus/attack joined participants. `play leave` excludes a
+   voluntarily focus/attack joined participants. the H-panel Pause / Leave button excludes a
    player from subsequent AI targeting even if already-spawned actors remain.
 
 No extra dependency: still Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21**,
@@ -35,17 +35,27 @@ GeckoLib-required v0.11–v0.21.x builds under the same `mods/` folder.
 
 In a disposable Survival **Overworld** world at night:
 
-- Operator: `/gugugaga play server on` (must be explicitly enabled).
-- Player: `/gugugaga play join`.
-- `/gugugaga play status` checks join and act.
-- In WITNESS, locate the visible Gugu within 12 blocks and run
-  `/gugugaga investigate`.
-- In FALSE_SAFETY, approach the real Redactor/Lapis or Yellow within
-  12 blocks, with direct line of sight, and run `/gugugaga investigate`.
-- RESPITE automatically returns to STILLNESS after 70 **eligible**
-  stage seconds. All earlier ambience is quiet and below volume 0.18.
-- `/gugugaga play leave` opts out; `/gugugaga play server off` stops
-  automatic encounters for the world.
+1. **Press H** (or your re-bound Nightwatch key); the UI must open with
+   no slash commands, fake chat command packets, or administrator mode.
+2. **Click Join / Resume.** This explicitly opts in; unjoined players must
+   not be targeted by scripted monsters or the observer director.
+3. New-world gameplay starts enabled by default. If a pre-existing server
+   config left it disabled, a server operator can click **World On (Admin)**
+   in the same screen (verified on the server).
+4. Stay in Survival at night. Complete STILLNESS and WHISPERS naturally.
+   In WITNESS, approach the actual Gugu and **right-click** it. A successful
+   real line-of-sight interaction advances to FALSE_SAFETY.
+5. Approach and **right-click** a real Lapis / Redactor or Yellow Smiler.
+   FALSE_SAFETY must advance to RESPITE; wait 70 eligible stage seconds for
+   the loop to restart.
+6. Open H again to view chapter status, read the witness journal, use quiet
+   mode, or Pause / Leave. A second player who never joins must not be
+   targeted. Rejoining resumes a new session.
+
+For developers, historical slash commands are retained as *optional* QA
+shortcuts but may never be required to start, progress, win, pause or quit
+the gameplay. The H menu uses a registered NeoForge play-to-server payload,
+not client chat command simulation.
 
 ## Honest release gates (not satisfied merely by compilation)
 
