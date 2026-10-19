@@ -28,5 +28,8 @@
   "screen.gugugaga.nightwatch.server_on": "World On (Admin)",
   "screen.gugugaga.nightwatch.server_off": "World Off (Admin)",
   "screen.gugugaga.nightwatch.hint": "At night: approach and right-click a creature to investigate.",
-  "screen.gugugaga.nightwatch.footer": "H opens this panel; no chat commands are needed."
+  "screen.gugugaga.nightwatch.footer": "H opens this panel; no chat commands are needed.",
+  "screen.gugugaga.nightwatch.journal": "Read Witness Journal",
+  "screen.gugugaga.nightwatch.journal_on": "Record Journal On",
+  "screen.gugugaga.nightwatch.journal_off": "Record Journal Off"
 }
