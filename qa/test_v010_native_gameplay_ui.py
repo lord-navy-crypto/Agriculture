@@ -56,6 +56,15 @@ class NativeGameplayUITests(unittest.TestCase):
         yellow=self.get("entity/YellowSmilerEntity.java")
         self.assertIn("HauntGameplayRuntime.investigate(recipient,this)",yellow)
 
+    def test_first_join_hint_is_one_time_and_never_force_enrolls(self):
+        on=self.get("ai/NightwatchOnboarding.java")
+        mod=self.get("GuguGagaMod.java")
+        self.assertIn("PlayerEvent.PlayerLoggedInEvent",on)
+        self.assertIn("GuguGagaUIIntroduced",on)
+        self.assertIn("Press H to open",on)
+        self.assertNotIn("HauntGameplayRuntime.join(",on)
+        self.assertIn("NightwatchOnboarding::onLogin",mod)
+
     def test_translations_and_enabled_new_world(self):
         cfg=self.get("config/NightwatchConfig.java")
         self.assertIn('define("playable_loop",true)',cfg)
