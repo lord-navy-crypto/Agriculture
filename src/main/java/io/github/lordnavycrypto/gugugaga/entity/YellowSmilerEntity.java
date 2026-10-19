@@ -29,7 +29,29 @@ import java.util.Comparator;
  * uncanny, non-attacking revealed threat. Future story betrayal/Boss is
  * intentionally NOT implemented. Gifts require direct player interaction.
  */
-public final class YellowSmilerEntity extends PathfinderMob {
+public final class YellowSmilerEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
+    private final software.bernie.geckolib.animatable.instance.AnimatableInstanceCache geoCache =
+            software.bernie.geckolib.util.GeckoLibUtil.createInstanceCache(this);
+    private static final software.bernie.geckolib.animation.RawAnimation FRIENDLY =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.smiler.friendly");
+    private static final software.bernie.geckolib.animation.RawAnimation EXPOSED =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenLoop("animation.smiler.exposed");
+    private static final software.bernie.geckolib.animation.RawAnimation HELP =
+            software.bernie.geckolib.animation.RawAnimation.begin().thenPlay("animation.smiler.help");
+
+    @Override
+    public void registerControllers(software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "smile", 8,
+                state -> state.setAndContinue(revealed() ? EXPOSED : FRIENDLY)));
+        controllers.add(new software.bernie.geckolib.animation.AnimationController<>(this, "gift_gesture", 0,
+                state -> software.bernie.geckolib.animation.PlayState.STOP).triggerableAnim("help", HELP));
+    }
+
+    @Override
+    public software.bernie.geckolib.animatable.instance.AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
     private static final EntityDataAccessor<Boolean> REVEALED =
             SynchedEntityData.defineId(YellowSmilerEntity.class,
                     EntityDataSerializers.BOOLEAN);
@@ -96,6 +118,7 @@ public final class YellowSmilerEntity extends PathfinderMob {
             return InteractionResult.SUCCESS;
         }
         recipient.getPersistentData().putLong(LAST_HELP,now);
+        triggerAnim("gift_gesture", "help");
         recipient.sendSystemMessage(Component.literal(
                 "[Smiler] Here. Stay in the light. That penguin is strange, isn't it?"));
         return InteractionResult.SUCCESS;

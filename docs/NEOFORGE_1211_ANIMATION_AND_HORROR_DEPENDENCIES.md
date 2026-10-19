@@ -1,3 +1,5 @@
+> **New v0.11 animation development branch:** GeckoLib 4.9.3 is now a required dependency in `feat/geckolib-v011-entity-animation` (both client and server). The v0.10 instructions below apply to the **unchanged v0.10 release/PR only**. See [v0.11 acceptance checklist](V011_GECKOLIB_ANIMATION_ACCEPTANCE.md) before installing a v0.11 test JAR. No real client/dedicated-server acceptance claimed yet.
+
 # Gugu-Gaga Horror — Dependency Matrix (NeoForge 1.21.1, verified 2026-10-18)
 
 Read FIRST: Gugu-Gaga v0.10's real entity models currently use **native Minecraft ModelPart / MobRenderer** animation. The five-act survival loop uses vanilla entity AI / audio and server-owned state. Therefore, there are **NO required third-party animation JARs in v0.10**. Do not claim GeckoLib is integrated; a future phase must port entities to GeoEntity / GeoModel / animation controllers and pass an actual build before adding a hard required mod dependency.
