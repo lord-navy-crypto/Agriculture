@@ -53,6 +53,11 @@ public final class HauntGameplayRuntime {
     public static boolean isJoined(MinecraftServer server,UUID id) {
         return entries(server).containsKey(id);
     }
+    /** Once playable mode is on, non-participants must never be stalked or attacked. */
+    public static boolean canTargetPlayer(ServerPlayer player) {
+        return !NightwatchConfig.PLAYABLE_LOOP_ENABLED.get()
+                || isJoined(player.serverLevel().getServer(),player.getUUID());
+    }
     public static void join(ServerPlayer player) {
         entries(player.serverLevel().getServer()).put(player.getUUID(),new Entry());
         player.sendSystemMessage(Component.literal(
@@ -109,6 +114,15 @@ public final class HauntGameplayRuntime {
                 ServerLevel level=player.serverLevel();
                 level.playSound(null,player.blockPosition(),SoundEvents.AMETHYST_BLOCK_CHIME,
                         SoundSource.AMBIENT,HauntGameplayPolicy.cueVolume(e.act),0.65f);
+            }
+            // A rare director sighting alone can leave WITNESS stuck past dawn.
+            // This scripted, joined-player-only encounter has its own retry
+            // budget but NEVER bypasses loaded-chunk, collision or mob caps.
+            if(HauntGameplayPolicy.shouldSeekStageActor(e.act,e.activeTicks)) {
+                if(e.act==HauntGameplayPolicy.Act.WITNESS)
+                    summonOne(player.serverLevel(),player,GuguGagaMod.OBSERVER.get());
+                else if(e.act==HauntGameplayPolicy.Act.FALSE_SAFETY)
+                    summonOne(player.serverLevel(),player,GuguGagaMod.REDACTOR.get());
             }
         }
         // No UUID, encounter attempts, or player position history after logout.
@@ -185,10 +199,13 @@ public final class HauntGameplayRuntime {
                 player.getBoundingBox().inflate(48),
                 e->e.getType()==kind).isEmpty())return false;
         long seed=player.getUUID().getLeastSignificantBits()^level.getGameTime();
-        for(int i=0;i<4;i++) {
+        // Eight distinct close, loaded-only candidate locations improve
+        // recovery in narrow terrain without placing an unseen distant actor.
+        for(int i=0;i<8;i++) {
             double a=HauntDirectorPolicy.bearing(seed,i);
-            int x=(int)Math.floor(player.getX()+Math.cos(a)*(12+i));
-            int z=(int)Math.floor(player.getZ()+Math.sin(a)*(12+i));
+            int distance=8+(i%4);
+            int x=(int)Math.floor(player.getX()+Math.cos(a)*distance);
+            int z=(int)Math.floor(player.getZ()+Math.sin(a)*distance);
             if(!level.getChunkSource().hasChunk(x>>4,z>>4))continue;
             // Require a full chunk margin for entity collision checks.
             if((x&15)<2||(x&15)>13||(z&15)<2||(z&15)>13)continue;
@@ -204,6 +221,8 @@ public final class HauntGameplayRuntime {
                 T spawned=kind.create(level);
                 if(spawned==null)return false;
                 spawned.moveTo(x+0.5,y,z+0.5,level.random.nextFloat()*360f,0);
+                if(spawned instanceof GugugagaEntity gugu)
+                    gugu.markAmbientEncounter();
                 if(spawned instanceof RedactorEntity redactor)
                     redactor.markStageEncounter();
                 if(spawned instanceof YellowSmilerEntity yellow)
