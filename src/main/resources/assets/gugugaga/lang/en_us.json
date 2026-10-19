@@ -31,5 +31,10 @@
   "screen.gugugaga.nightwatch.footer": "H opens this panel; no chat commands are needed.",
   "screen.gugugaga.nightwatch.journal": "Read Witness Journal",
   "screen.gugugaga.nightwatch.journal_on": "Record Journal On",
-  "screen.gugugaga.nightwatch.journal_off": "Record Journal Off"
+  "screen.gugugaga.nightwatch.journal_off": "Record Journal Off",
+  "message.gugugaga.interact.calm": "[Gugu-Gaga] The penguin studies you, then tilts its head.",
+  "message.gugugaga.interact.angry": "[Gugu-Gaga] It watches your hands carefully.",
+  "message.gugugaga.interact.corrupted": "[Gugu-Gaga] Its feathers shiver with a dark whisper.",
+  "message.gugugaga.interact.lapis": "[Lapis] The blue figure nods, but will not explain itself.",
+  "message.gugugaga.interact.redactor": "[Redactor] The familiar face is gone."
 }
