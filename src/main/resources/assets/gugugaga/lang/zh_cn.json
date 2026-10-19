@@ -28,5 +28,8 @@
   "screen.gugugaga.nightwatch.server_on": "开启世界玩法（管理员）",
   "screen.gugugaga.nightwatch.server_off": "关闭世界玩法（管理员）",
   "screen.gugugaga.nightwatch.hint": "夜间靠近角色并右键调查，无需输入命令。",
-  "screen.gugugaga.nightwatch.footer": "按 H 打开界面；游戏全程不需要聊天栏指令。"
+  "screen.gugugaga.nightwatch.footer": "按 H 打开界面；游戏全程不需要聊天栏指令。",
+  "screen.gugugaga.nightwatch.journal": "查看见闻手记",
+  "screen.gugugaga.nightwatch.journal_on": "开启手记记录",
+  "screen.gugugaga.nightwatch.journal_off": "暂停手记记录"
 }
