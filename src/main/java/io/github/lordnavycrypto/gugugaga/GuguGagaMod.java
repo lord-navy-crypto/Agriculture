@@ -61,6 +61,8 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
+        // Dedicated-server smoke must observe real mod construction, not just compilation.
+        System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
     }
 
     private static void onAttributes(EntityAttributeCreationEvent event) {

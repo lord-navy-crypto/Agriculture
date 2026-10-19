@@ -6,7 +6,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
-@EventBusSubscriber(modid = GuguGagaMod.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = GuguGagaMod.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class ClientEvents {
     private ClientEvents() {}
 
@@ -22,5 +22,6 @@ public final class ClientEvents {
         event.registerEntityRenderer(GuguGagaMod.OBSERVER.get(), ObserverRenderer::new);
         event.registerEntityRenderer(GuguGagaMod.REDACTOR.get(),RedactorRenderer::new);
         event.registerEntityRenderer(GuguGagaMod.YELLOW_SMILER.get(),YellowSmilerRenderer::new);
+        System.out.println("GUGUGAGA_CLIENT_RENDERERS_REGISTERED");
     }
 }

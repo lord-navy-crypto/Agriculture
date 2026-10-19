@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.MimicAttackPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
+import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.ThreeEntityReactionPolicy.RedactorAction;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy.Mood;
@@ -90,7 +91,8 @@ public final class RedactorEntity extends PathfinderMob {
                 getBoundingBox().inflate(10.0),
                 p->p.isAlive()&&!p.isCreative()&&!p.isSpectator()
                     && !NightwatchDirector.isQuiet(
-                            world.getServer(),p.getUUID())).stream()
+                            world.getServer(),p.getUUID())
+                    && HauntGameplayRuntime.canTargetPlayer(p)).stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null);
     }
     @Override
