@@ -42,6 +42,12 @@ public final class NightwatchScreen extends Screen {
                 NightwatchActionPacket.SERVER_ON,left,y+step*3,buttonWidth);
         addAction("screen.gugugaga.nightwatch.server_off",
                 NightwatchActionPacket.SERVER_OFF,right,y+step*3,buttonWidth);
+        addAction("screen.gugugaga.nightwatch.journal",
+                NightwatchActionPacket.JOURNAL,left,y+step*4,buttonWidth);
+        addAction("screen.gugugaga.nightwatch.journal_on",
+                NightwatchActionPacket.JOURNAL_ON,right,y+step*4,buttonWidth);
+        addAction("screen.gugugaga.nightwatch.journal_off",
+                NightwatchActionPacket.JOURNAL_OFF,left,y+step*5,buttonWidth);
     }
 
     private void addAction(String label,int action,int x,int y,int buttonWidth) {
@@ -62,10 +68,10 @@ public final class NightwatchScreen extends Screen {
                 width/2,height/2-110,0xFFCCD1D7);
         graphics.drawCenteredString(font,
                 Component.translatable("screen.gugugaga.nightwatch.hint"),
-                width/2,height/2+56,0xFFF0D48D);
+                width/2,height/2+92,0xFFF0D48D);
         graphics.drawCenteredString(font,
                 Component.translatable("screen.gugugaga.nightwatch.footer"),
-                width/2,height/2+75,0xFFAEB7C5);
+                width/2,height/2+110,0xFFAEB7C5);
     }
 
     @Override
