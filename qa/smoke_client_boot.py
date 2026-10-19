@@ -16,6 +16,7 @@ LOG = ROOT / "build" / "client-runtime-smoke.log"
 TOKENS = (
     "GUGUGAGA_RUNTIME_INIT_OK",
     "GUGUGAGA_CLIENT_RENDERERS_REGISTERED",
+    "GUGUGAGA_V010_UI_KEY_REGISTERED",
     "GUGUGAGA_CLIENT_TICK_OK",
 )
 TIMEOUT = int(os.environ.get("GUGU_CLIENT_TIMEOUT", "420"))
