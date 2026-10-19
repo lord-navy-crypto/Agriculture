@@ -44,7 +44,8 @@ public final class FolkloreCaseDirector {
                 :EnumSet.copyOf(active.clues);
     }
     public Set<Creature> possibleCreatures() {
-        return FolkloreEncounterPolicy.candidates(collected());
+        return active==null?EnumSet.noneOf(Creature.class)
+                :FolkloreEncounterPolicy.candidates(collected());
     }
 
     /**
@@ -52,14 +53,14 @@ public final class FolkloreCaseDirector {
      * Identity is chosen by the SERVER, never supplied by a client packet.
      */
     public boolean attemptStart(long nowTick,long seed,int chance,
-            boolean playerInSurvival,boolean overworld,
+            boolean playerInSurvival,boolean overworld,boolean night,
             boolean quiet,boolean serverEnabled) {
         if(nowTick<0)return false;
         long since=lastFinishedTick==Long.MIN_VALUE
                 ?FolkloreEncounterPolicy.MIN_COOLDOWN_TICKS
                 :Math.max(0,nowTick-lastFinishedTick);
         if(!FolkloreEncounterPolicy.mayStart(active(),playerInSurvival,
-                overworld,quiet,serverEnabled,since,chance))return false;
+                overworld,night,quiet,serverEnabled,since,chance))return false;
         active=new ActiveCase(FolkloreEncounterPolicy.choose(seed),nowTick);
         return true;
     }
