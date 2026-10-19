@@ -135,3 +135,33 @@ jobs:
           name: gugugaga-nightwatch-jar
           path: build/libs/*.jar
           if-no-files-found: error
+
+  dedicated-server-smoke:
+    name: Actual NeoForge v0.10 dedicated-server startup
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Launch and validate real NeoForge server
+        env:
+          GUGU_BOOT_TIMEOUT: "420"
+        run: python3 qa/smoke_server_boot.py
+      - name: Upload diagnostic server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-v010-server-startup
+          path: |
+            build/server-runtime-smoke.log
+            runs/server/logs/latest.log
+            runs/server/crash-reports/*.txt
+          if-no-files-found: warn
