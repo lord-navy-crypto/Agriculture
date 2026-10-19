@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.network;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
+import io.github.lordnavycrypto.gugugaga.ai.WitnessJournal;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
  */
 public record NightwatchActionPacket(int action) implements CustomPacketPayload {
     public static final int JOIN=0, LEAVE=1, STATUS=2, QUIET_ON=3,
-            QUIET_OFF=4, SERVER_ON=5, SERVER_OFF=6;
+            QUIET_OFF=4, SERVER_ON=5, SERVER_OFF=6,
+            JOURNAL=7, JOURNAL_ON=8, JOURNAL_OFF=9;
     public static final Type<NightwatchActionPacket> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(
                     GuguGagaMod.MOD_ID,"nightwatch_action"));
@@ -57,6 +59,14 @@ public record NightwatchActionPacket(int action) implements CustomPacketPayload 
             case LEAVE -> HauntGameplayRuntime.leave(player);
             case STATUS -> player.sendSystemMessage(Component.literal(
                     "[Nightwatch] "+HauntGameplayRuntime.status(player)));
+            case JOURNAL -> WitnessJournal.show(player);
+            case JOURNAL_ON, JOURNAL_OFF -> {
+                boolean enabled=packet.action()==JOURNAL_ON;
+                WitnessJournal.setEnabled(player,enabled);
+                player.sendSystemMessage(Component.translatable(enabled
+                        ? "message.gugugaga.journal.on"
+                        : "message.gugugaga.journal.off"));
+            }
             case QUIET_ON, QUIET_OFF -> {
                 boolean quiet=packet.action()==QUIET_ON;
                 NightwatchDirector.setQuiet(player.serverLevel().getServer(),
