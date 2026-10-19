@@ -1,5 +1,5 @@
-> **PROJECT FROZEN / 项目已冻结（2026-10-19）**  
-> All Gugu-Gaga Horror development is paused by request. The latest previously CI-verified test build is **v0.9 alpha** (PR #11), not a live-play validated stable release. The newer **v0.10 gameplay loop is unfinished and unverified**, and must not be installed/merged as a release. All designs, three entities, five planned endings and restart instructions are preserved in [the Project Freeze Archive](docs/PROJECT_FREEZE_2026-10-19.md). Work resumes only upon explicit instruction. No dependency installations or scheduled actions are in progress.
+> **v0.10 restart branch / v0.10 恢复开发分支（2026-10-19）**  
+> This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.2 is a **test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
 >
 > ---
 >
@@ -15,10 +15,13 @@ One-time server setup (operator): `/gugugaga play server on`.
 Each player explicitly opts in: `/gugugaga play join`.
 Use `/gugugaga play status` and `/gugugaga investigate`; quit at any time
 with `/gugugaga play leave` or `/gugugaga quiet on`. It runs only at night
-in Survival Overworld, keeps the existing minimum 8-minute natural penguin
-sighting cooldown, and spawns capped Redactor/Yellow guest actors ONLY
-after an actual player investigation. Scripted guest actors expire in six
-minutes. No world edits, forced loading, jump scare flashes, boss endings,
+in Survival Overworld, keeps the existing minimum 8-minute **natural** penguin
+sighting cooldown, and independently offers a temporary Gugu in WITNESS
+(8-second initial attempt, then 20-second rate-limited retries). Blocked
+Redactor arrivals are retried in FALSE_SAFETY. Existing actor/collision
+caps and loaded-chunk-only checks still apply. The Redactor/Yellow
+remain bounded, and scripted Redactor/Yellow guests expire in six minutes;
+scripted Gugu sightings expire after 90 seconds. No world edits, forced loading, jump scare flashes, boss endings,
 external network dependency or player admin permission changes.
 
 **Animation/dependency guidance**: See the verified official NeoForge
