@@ -1,5 +1,5 @@
 > **v0.10 restart branch / v0.10 恢复开发分支（2026-10-19）**  
-> This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.2 is a **test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
+> This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.3 is a **UI-first experimental test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
 >
 > ---
 >
@@ -11,10 +11,17 @@ Witness → False Safety → Respite**. A player investigates actual visible
 Gugu-Gaga and then the Redactor / Smiler to unlock each stage.
 This is repeatable gameplay, **not** the five planned story endings.
 
-One-time server setup (operator): `/gugugaga play server on`.
-Each player explicitly opts in: `/gugugaga play join`.
-Use `/gugugaga play status` and `/gugugaga investigate`; quit at any time
-with `/gugugaga play leave` or `/gugugaga quiet on`. It runs only at night
+**NO COMMANDS REQUIRED FOR NORMAL PLAY.** Install the mod and press **H**
+(the new, remappable Nightwatch key). Click **Join / Resume** to opt in,
+**Pause / Leave** to opt out, or use the panel for chapter status, quiet mode,
+the private witness journal, and optional world-wide server controls
+(operator-only, server permission checked). In WITNESS, approach a real
+Gugu-Gaga and **right-click** it; then right-click the real Redactor/Lapis
+or Yellow Smiler in FALSE_SAFETY. The five acts then continue automatically.
+World gameplay is ON by default for fresh installs, but is inactive for
+nonparticipants. Existing configs which disabled gameplay can be re-enabled
+through the H panel's operator-only World On button. Slash commands are
+legacy diagnostics only; the GUI sends validated custom packets, NOT commands. It runs only at night
 in Survival Overworld, keeps the existing minimum 8-minute **natural** penguin
 sighting cooldown, and independently offers a temporary Gugu in WITNESS
 (8-second initial attempt, then 20-second rate-limited retries). Blocked
