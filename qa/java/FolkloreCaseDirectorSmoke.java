@@ -15,9 +15,10 @@ public final class FolkloreCaseDirectorSmoke {
         FolkloreCaseDirector director=new FolkloreCaseDirector();
         long seed=creature.ordinal();
         long now=200000;
-        check(director.attemptStart(now,seed,0,true,true,false,true),"case starts");
+        check(director.attemptStart(now,seed,0,true,true,true,false,true),"case starts");
         check(director.active(),"active case");
-        check(!director.attemptStart(now+20,seed+1,0,true,true,false,true),
+        check(director.possibleCreatures().size()==3,"all candidates before evidence");
+        check(!director.attemptStart(now+20,seed+1,0,true,true,true,false,true),
                 "no overlapping second group");
         check(!director.identify(creature),"cannot guess before using tools");
         Evidence first=director.probe(Instrument.COPPER_BELL);
@@ -43,10 +44,10 @@ public final class FolkloreCaseDirectorSmoke {
         check(director.resolve(creature.resolution,true,now+100),
                 "correct resolution clears case");
         check(!director.active(),"no case after resolution");
-        check(!director.attemptStart(now+101,seed,0,true,true,false,true),
+        check(!director.attemptStart(now+101,seed,0,true,true,true,false,true),
                 "cooldown prevents case chain");
         long resumed=now+100+FolkloreEncounterPolicy.MIN_COOLDOWN_TICKS;
-        check(director.attemptStart(resumed,seed,0,true,true,false,true),
+        check(director.attemptStart(resumed,seed,0,true,true,true,false,true),
                 "new case after cooldown");
         check(!director.expire(resumed+100),"not expired instantly");
         check(director.expire(resumed+
