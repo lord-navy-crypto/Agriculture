@@ -39,5 +39,20 @@ class V010StageSafetyTests(unittest.TestCase):
             self.assertIn("HauntGameplayRuntime.canTargetPlayer(p)", source, mob)
 
 
+    def test_real_client_native_renderers_use_mod_event_bus(self):
+        render = self.read("client/ClientEvents.java")
+        probe = self.read("client/ClientTickProbe.java")
+        self.assertIn("value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD", render)
+        for key in ("ObserverRenderer::new", "RedactorRenderer::new",
+                    "YellowSmilerRenderer::new",
+                    "GUGUGAGA_CLIENT_RENDERERS_REGISTERED"):
+            self.assertIn(key, render)
+        self.assertIn("ClientTickEvent.Post", probe)
+        self.assertIn("GUGUGAGA_CLIENT_TICK_OK", probe)
+        self.assertIn("GUGUGAGA_RUNTIME_INIT_OK",
+                      self.read("GuguGagaMod.java"))
+
+
+
 if __name__ == "__main__":
     unittest.main()
