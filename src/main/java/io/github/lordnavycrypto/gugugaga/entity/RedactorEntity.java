@@ -103,8 +103,13 @@ public final class RedactorEntity extends PathfinderMob {
     protected InteractionResult mobInteract(Player player,InteractionHand hand) {
         if(hand!=InteractionHand.MAIN_HAND)return InteractionResult.PASS;
         if(level().isClientSide)return InteractionResult.SUCCESS;
-        if(player instanceof ServerPlayer participant)
-            HauntGameplayRuntime.investigate(participant,this);
+        if(player instanceof ServerPlayer participant) {
+            if(!HauntGameplayRuntime.investigate(participant,this)) {
+                participant.displayClientMessage(Component.translatable(
+                        revealed()?"message.gugugaga.interact.redactor"
+                                :"message.gugugaga.interact.lapis"),true);
+            }
+        }
         return InteractionResult.SUCCESS;
     }
 
