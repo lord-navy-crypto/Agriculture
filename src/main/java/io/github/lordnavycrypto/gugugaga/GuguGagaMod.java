@@ -10,6 +10,7 @@ import io.github.lordnavycrypto.gugugaga.command.GuguStoryCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguAdvancedCommands;
 import io.github.lordnavycrypto.gugugaga.command.GuguPlayCommands;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
+import io.github.lordnavycrypto.gugugaga.ai.NightwatchOnboarding;
 import io.github.lordnavycrypto.gugugaga.network.NightwatchActionPacket;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
@@ -63,6 +64,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
     }
