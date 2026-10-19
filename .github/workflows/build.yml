@@ -363,3 +363,57 @@ jobs:
             runs/client/logs/latest.log
             run/crash-reports/*.txt
           if-no-files-found: warn
+
+  horror-combat-policy:
+    name: Verify horror entities survive ordinary player weapons and can fight back
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Test nonlethal recovery policy
+        run: |
+          mkdir -p build/combat-policy-smoke
+          javac -d build/combat-policy-smoke src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorCombatPolicy.java qa/java/HorrorCombatPolicySmoke.java
+          java -cp build/combat-policy-smoke HorrorCombatPolicySmoke
+      - name: Test integration and in-world damage assertions are present
+        run: python3 -m unittest qa.test_combat_resilience -v
+
+  production-jar-consumer:
+    name: Install packaged 0.21.3 JAR into a clean NeoForge server
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Build the exact distributable JAR
+        run: gradle --no-daemon --console=plain build
+      - name: Install official NeoForge and GeckoLib into clean mods folder
+        env:
+          GUGU_CONSUMER_NEO: "21.1.259"
+          GUGU_CONSUMER_GECKO: "4.9.3"
+          GUGU_CONSUMER_TIMEOUT: "350"
+        run: python3 qa/production_jar_server_smoke.py
+      - name: Upload clean consumer-install logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-0.21.3-production-jar-consumer
+          path: |
+            build/consumer-jar-smoke/*console.log
+            build/consumer-jar-smoke/logs/latest.log
+            build/consumer-jar-smoke/crash-reports/*.txt
+          if-no-files-found: warn

@@ -1,4 +1,15 @@
-## v0.10 playable survival horror — NO endings, NO extra mandatory mods
+## v0.21.3-rc.1 — automatic Nightwatch + in-game control panel
+
+Nightwatch now starts its five-act cycle automatically for eligible Survival
+players during the Overworld night. Press **H** (remappable under Controls) to
+open the in-game panel. It contains Join/Resume, Pause, Listen, Call Yellow,
+Yellow-aid and scare-cue toggles, journal, and quiet mode. **Normal play does
+not require typing commands.** Sneak + V remains the quick-listen shortcut.
+
+The three entities support direct right-click interaction: inspect Gugu-Gaga,
+break Lapis's disguise and investigate it, or crouch-right-click Yellow to
+request help during an active encounter. Four seconds of sustained gaze also
+advances investigation. Admin/test commands remain for QA only.
 
 The earlier v0.2–v0.9 entities and canon are preserved. v0.10 adds
 a replayable five-act NIGHT horror game loop: **Stillness → Whispers →
@@ -6,10 +17,8 @@ Witness → False Safety → Respite**. A player investigates actual visible
 Gugu-Gaga and then the Redactor / Smiler to unlock each stage.
 This is repeatable gameplay, **not** the five planned story endings.
 
-One-time server setup (operator): `/gugugaga play server on`.
-Each player explicitly opts in: `/gugugaga play join`.
-Use `/gugugaga play status` and `/gugugaga investigate`; quit at any time
-with `/gugugaga play leave` or `/gugugaga quiet on`. It runs only at night
+The loop is enabled by default; players can pause their own session from H.
+Server operators can still disable the loop in server configuration. It runs only at night
 in Survival Overworld, keeps the existing minimum 8-minute natural penguin
 sighting cooldown, and spawns capped Redactor/Yellow guest actors ONLY
 after an actual player investigation. Scripted guest actors expire in six

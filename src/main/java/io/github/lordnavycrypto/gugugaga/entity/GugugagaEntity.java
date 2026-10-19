@@ -3,6 +3,8 @@ package io.github.lordnavycrypto.gugugaga.entity;
 import io.github.lordnavycrypto.gugugaga.ai.HauntingCuePolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
 import io.github.lordnavycrypto.gugugaga.ai.HorrorChasePolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HorrorCombatPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof;
 import io.github.lordnavycrypto.gugugaga.ai.HorrorHearingPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.LastSeenSearchPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
@@ -13,6 +15,8 @@ import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CorruptionArcPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.ThreatPolicy.Mood;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import io.github.lordnavycrypto.gugugaga.ai.ObserverBrain.Phase;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,6 +31,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -35,11 +41,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Server-owned Nightwatch observer. World/AI evaluation every ten ticks,
- * path requests no faster than once per 30 ticks, with player opt-out,
- * bounded ambient lifetime and sparse original sound/particle storytelling.
- *
- * Never attacks, alters terrain, loads new chunks or requires Ollama.
+ * Server-owned Nightwatch Guardian. Observation, approach, retreat and
+ * opt-in night pursuit are integrated with the five-act game loop.
+ * Never alters terrain, loads new chunks or requires Ollama.
  */
 public class GugugagaEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
     private final software.bernie.geckolib.animatable.instance.AnimatableInstanceCache geoCache =
@@ -115,6 +119,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     // Transient position obtained from a REAL audible sprint, not magical sight.
     private Vec3 lastHeardChasePosition;
     private int searchTicks;
+    private int playerWeaponGraceTicks;
 
     public GugugagaEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -125,9 +130,11 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
 
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 18.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.23)
-                .add(Attributes.FOLLOW_RANGE, 32.0);
+                .add(Attributes.MAX_HEALTH, 80.0)
+                .add(Attributes.ARMOR, 10.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.80)
+                .add(Attributes.MOVEMENT_SPEED, 0.27)
+                .add(Attributes.FOLLOW_RANGE, 40.0);
     }
 
     @Override
@@ -172,13 +179,45 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     }
 
     @Override
+    protected InteractionResult mobInteract(Player player,InteractionHand hand) {
+        if(level().isClientSide)return InteractionResult.SUCCESS;
+        if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        HauntGameplayRuntime.interactWithGugu(recipient,this);
+        return InteractionResult.SUCCESS;
+    }
+
+    private static Player playerAttacker(DamageSource source) {
+        if(source.getEntity() instanceof Player player)return player;
+        if(source.getDirectEntity() instanceof Projectile projectile
+                && projectile.getOwner() instanceof Player player)return player;
+        return null;
+    }
+
+    @Override
     public boolean hurt(DamageSource source,float damage) {
+        Player attacker=playerAttacker(source);
+        boolean playerAttack=attacker!=null;
+        if(!level().isClientSide && playerAttack
+                && HorrorCombatPolicy.shouldBlockPlayerHit(true,playerWeaponGraceTicks))
+            return false;
+        if(!level().isClientSide && HorrorCombatPolicy.shouldEscapeLethalHit(
+                playerAttack,getHealth(),damage,playerWeaponGraceTicks)) {
+            setHealth(HorrorCombatPolicy.recoveryHealth(getMaxHealth(),0.45f));
+            playerWeaponGraceTicks=HorrorCombatPolicy.PLAYER_HIT_GRACE_TICKS;
+            setTemperament(Mood.CORRUPTED);
+            if(attacker!=null) {
+                getLookControl().setLookAt(attacker,18f,18f);
+                Vec3 away=position().subtract(attacker.position());
+                if(away.lengthSqr()<0.01)away=new Vec3(1,0,0);
+                Vec3 goal=position().add(away.normalize().scale(8.0));
+                getNavigation().moveTo(goal.x,goal.y,goal.z,1.2);
+            }
+            E2EGameplayProof.record("GUGU_WEAPON_SURVIVED");
+            return true;
+        }
         boolean applied=super.hurt(source,damage);
-        // The bird becomes upset when disturbed; by default it still will
-        // not attack. Only the server owner's explicit hostility toggle
-        // permits chase/strike actions.
-        if(applied && !level().isClientSide && source.getEntity() instanceof ServerPlayer
-                && mood()==Mood.CALM)
+        if(applied && !level().isClientSide && playerAttack && mood()==Mood.CALM)
             setTemperament(Mood.ANGRY);
         return applied;
     }
@@ -258,6 +297,7 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
     public void tick() {
         super.tick();
         if(level().isClientSide)return;
+        if(playerWeaponGraceTicks>0)playerWeaponGraceTicks--;
         if(chaseCooldownTicks>0)chaseCooldownTicks--;
         if(chaseRemainingTicks>0)chaseRemainingTicks--;
         if(repelledTicks>0)repelledTicks--;
@@ -445,6 +485,23 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
             }
             changePhaseIfNeeded(Phase.APPROACH);
             if(visible)getLookControl().setLookAt(player,18f,18f);
+            // A real pursuit is not just pathfinding: it can land a modest,
+            // clearly telegraphed strike when the player fails to escape.
+            if(visible && distanceSquared<=ThreatPolicy.ATTACK_RANGE_SQ) {
+                if(strikeWindupTicks==0 && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
+                    world.playSound(null,getX(),getY()+0.7,getZ(),
+                            SoundEvents.AMETHYST_BLOCK_CHIME,SoundSource.HOSTILE,
+                            0.25f,0.56f);
+                strikeWindupTicks=Math.min(ThreatPolicy.ATTACK_TELEGRAPH_TICKS,
+                        strikeWindupTicks+10);
+                if(strikeWindupTicks>=ThreatPolicy.ATTACK_TELEGRAPH_TICKS
+                        && ticksSinceStrike>=ThreatPolicy.ATTACK_COOLDOWN_TICKS) {
+                    player.hurt(world.damageSources().mobAttack(this),3.0f);
+                    ticksSinceStrike=0;
+                    strikeWindupTicks=0;
+                    getNavigation().stop();
+                }
+            } else strikeWindupTicks=0;
             if(tickCount%20==0) {
                 if(visible)getNavigation().moveTo(player,1.12);
                 else {
@@ -522,7 +579,8 @@ public class GugugagaEntity extends PathfinderMob implements software.bernie.gec
      */
     private boolean handleTemperament(ServerLevel world,ServerPlayer player,
             double distanceSquared) {
-        if(mood()==Mood.CALM || !NightwatchConfig.HOSTILITY_ENABLED.get()) {
+        if(mood()==Mood.CALM || (!NightwatchConfig.HOSTILITY_ENABLED.get()
+                && !HauntGameplayRuntime.isActiveParticipant(player))) {
             strikeWindupTicks=0;
             return false;
         }

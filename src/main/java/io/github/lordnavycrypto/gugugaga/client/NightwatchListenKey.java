@@ -17,6 +17,9 @@ public final class NightwatchListenKey {
     public static final KeyMapping LISTEN=new KeyMapping(
             "key.gugugaga.listen",InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_V,"key.categories.gugugaga");
+    public static final KeyMapping MENU=new KeyMapping(
+            "key.gugugaga.menu",InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_H,"key.categories.gugugaga");
 
     @EventBusSubscriber(modid=GuguGagaMod.MOD_ID,value=Dist.CLIENT,
             bus=EventBusSubscriber.Bus.MOD)
@@ -24,6 +27,7 @@ public final class NightwatchListenKey {
         @SubscribeEvent
         public static void keys(RegisterKeyMappingsEvent event) {
             event.register(LISTEN);
+            event.register(MENU);
         }
     }
 
@@ -35,6 +39,14 @@ public final class NightwatchListenKey {
             if(!clientTickProven && Minecraft.getInstance().getWindow()!=null) {
                 clientTickProven=true;
                 System.out.println("GUGUGAGA_CLIENT_TICK_OK");
+            }
+            while(MENU.consumeClick()) {
+                Minecraft mc=Minecraft.getInstance();
+                if(mc.screen==null && mc.player!=null && mc.getConnection()!=null) {
+                    mc.setScreen(new NightwatchScreen());
+                    if(Boolean.getBoolean("gugugaga.e2e"))
+                        System.out.println("GUGUGAGA_E2E_MENU_OPENED");
+                }
             }
             while(LISTEN.consumeClick()) {
                 Minecraft mc=Minecraft.getInstance();

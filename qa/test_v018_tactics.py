@@ -29,7 +29,9 @@ class V018Tactics(unittest.TestCase):
                        "HauntGameplayRuntime.listen(src.getPlayerOrException())"):
             self.assertIn(marker,commands)
         for marker in ("public static boolean listen(ServerPlayer player)",
-                       "HorrorListeningPolicy.mayListen(true,player.isCrouching()",
+                       "return listenWithIntent(player,player.isCrouching())",
+                       "public static boolean listenFromPanel(ServerPlayer player)",
+                       "HorrorListeningPolicy.mayListen(true,crouching",
                        "entry.lastListenTick=now",
                        "getEntitiesOfClass(", "Entity::isAlive",
                        "HorrorListeningPolicy.hint(source,direction,nearest)",

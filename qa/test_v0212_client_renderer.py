@@ -29,5 +29,5 @@ class ClientRenderer(unittest.TestCase):
             self.assertIn(x,smoke)
     def test_version_matches_package(self):
         p=(ROOT/"qa/package_sacred_rc.py").read_text()
-        self.assertIn('VERSION="0.21.2-rc.1"',p)
+        self.assertIn('VERSION="0.21.3-rc.1"',p)
 if __name__=="__main__":unittest.main()

@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.entity;
 
 import io.github.lordnavycrypto.gugugaga.ai.MimicAttackPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.HorrorCombatPolicy;
+import io.github.lordnavycrypto.gugugaga.ai.E2EGameplayProof;
 import io.github.lordnavycrypto.gugugaga.ai.MimicDeceptionPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.CinematicVfxPolicy;
 import io.github.lordnavycrypto.gugugaga.ai.HauntGameplayRuntime;
@@ -19,7 +21,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -33,9 +40,9 @@ import java.util.Comparator;
 /**
  * Lapis = Redactor's public, harmless-looking mask, NOT a separate NPC.
  *
- * Yellow Smiler flight always overrides: revealing, attacks, and corruption.
- * Revealed Redactor can give a small telegraphed strike only if the server
- * operator separately enables redactor_mimic.redactor_hostility.
+ * Yellow Smiler intervention overrides Lapis attacks. In the active night
+ * encounter, revealed Lapis can perform a short, telegraphed strike; outside
+ * that loop, hostility remains controlled by the server setting.
  * Does not load chunks, edit blocks, teleport or send network requests.
  */
 public final class RedactorEntity extends PathfinderMob implements software.bernie.geckolib.animatable.GeoEntity {
@@ -79,6 +86,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
     private int attackCooldown=MimicAttackPolicy.STRIKE_COOLDOWN_TICKS;
     private int quietTicks;
     private RedactorAction action=RedactorAction.IDLE_AS_LAPIS;
+    private int playerWeaponGraceTicks;
 
     public RedactorEntity(EntityType<? extends PathfinderMob> type,Level level) {
         super(type,level);
@@ -86,9 +94,11 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
     }
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,26.0)
-                .add(Attributes.MOVEMENT_SPEED,0.22)
-                .add(Attributes.FOLLOW_RANGE,28.0);
+                .add(Attributes.MAX_HEALTH,64.0)
+                .add(Attributes.ARMOR,8.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE,0.65)
+                .add(Attributes.MOVEMENT_SPEED,0.25)
+                .add(Attributes.FOLLOW_RANGE,36.0);
     }
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -107,6 +117,49 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         quietTicks=0;
         getNavigation().stop();
     }
+    @Override
+    protected InteractionResult mobInteract(Player player,InteractionHand hand) {
+        if(level().isClientSide)return InteractionResult.SUCCESS;
+        if(!(player instanceof ServerPlayer recipient) || hand!=InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        HauntGameplayRuntime.interactWithRedactor(recipient,this);
+        return InteractionResult.SUCCESS;
+    }
+
+    private static Player playerAttacker(DamageSource source) {
+        if(source.getEntity() instanceof Player player)return player;
+        if(source.getDirectEntity() instanceof Projectile projectile
+                && projectile.getOwner() instanceof Player player)return player;
+        return null;
+    }
+
+    @Override
+    public boolean hurt(DamageSource source,float amount) {
+        Player attacker=playerAttacker(source);
+        boolean playerAttack=attacker!=null;
+        if(!level().isClientSide && playerAttack
+                && HorrorCombatPolicy.shouldBlockPlayerHit(true,playerWeaponGraceTicks))
+            return false;
+        if(!level().isClientSide && HorrorCombatPolicy.shouldEscapeLethalHit(
+                playerAttack,getHealth(),amount,playerWeaponGraceTicks)) {
+            setHealth(HorrorCombatPolicy.recoveryHealth(getMaxHealth(),0.40f));
+            playerWeaponGraceTicks=HorrorCombatPolicy.PLAYER_HIT_GRACE_TICKS;
+            setRevealed(true);
+            if(attacker!=null) {
+                Vec3 away=position().subtract(attacker.position());
+                if(away.lengthSqr()<0.01)away=new Vec3(1,0,0);
+                Vec3 goal=position().add(away.normalize().scale(10.0));
+                getNavigation().moveTo(goal.x,goal.y,goal.z,1.15);
+            }
+            E2EGameplayProof.record("LAPIS_WEAPON_SURVIVED");
+            return true;
+        }
+        boolean damaged=super.hurt(source,amount);
+        if(damaged && !level().isClientSide && playerAttack && !revealed())
+            setRevealed(true);
+        return damaged;
+    }
+
     private static <T extends Entity> T closest(RedactorEntity src,Class<T> type,
             double radius) {
         return src.level().getEntitiesOfClass(type,
@@ -125,6 +178,7 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
     @Override
     public void tick() {
         super.tick();
+        if(!level().isClientSide && playerWeaponGraceTicks>0)playerWeaponGraceTicks--;
         if(!level().isClientSide && stageEncounter && ++stageLifetimeTicks>=20*360) {
             // Scripted horror actors cannot accumulate in old saves forever.
             discard();
@@ -245,8 +299,10 @@ public final class RedactorEntity extends PathfinderMob implements software.bern
         }
         // Combat is separate from the in-world guardian corruption mechanic.
         // A disguised Lapis cannot attack; no attack if Yellow is near.
-        if(revealed() && NightwatchConfig.REDACTOR_HOSTILITY_ENABLED.get()
-                && player!=null && canSeePlayer && playerSq<=6*6) {
+        if(revealed() && player!=null
+                && (NightwatchConfig.REDACTOR_HOSTILITY_ENABLED.get()
+                    || HauntGameplayRuntime.inChaseAct(player))
+                && canSeePlayer && playerSq<=6*6) {
             if(warningTicks==0 && NightwatchConfig.HAUNTING_AUDIO_ENABLED.get())
                 world.playSound(null,getX(),getY()+0.8,getZ(),
                         SoundEvents.AMETHYST_BLOCK_CHIME,SoundSource.HOSTILE,0.18f,0.52f);
