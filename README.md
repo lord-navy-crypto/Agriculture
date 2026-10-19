@@ -1,7 +1,7 @@
 > **NEW ANTHOLOGY EXPERIMENT / 志怪恐怖模组合集（独立新分支，2026-10-19）**  
 > Following a new, explicit user proposal, this branch starts a Chinese folklore horror anthology inspired by 《山海经》 and 《聊斋志异》. It does **not** unfreeze, merge or modify the old draft PRs #29–#31 or `main`. The original Gugu-Gaga / Lapis / Yellow Smiler remain authored characters.  
-> **Current maturity: policy/design + Java smoke tests ONLY.** Three source-inspired case profiles (长右、狸力、画皮之影), one-active-case slot, multi-instrument evidence, case resolution and timeout/cooldown are implemented as **pure Java logic**. There are **not yet** new registered Minecraft creatures, craftable detector items, natural-case spawns, a deduction GUI or in-world acceptance. This is **not** an installable anthology release.  
-> [Read the Chinese folklore anthology vision](docs/ZHIGUAI_FOLKLORE_ANTHOLOGY_VISION.md) · [Draft PR #32](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/32). Existing historical v0.10 and newer v0.21.x freeze references below are preserved as background.
+> **Current maturity: policy/design + Java smoke tests ONLY.** Three source-inspired case profiles (长右、狸力、画皮之影) **plus the original cold-biome Gugu/Lapis/Yellow three-actor case**, one-active-case slot, multi-instrument evidence, case resolution and timeout/cooldown are implemented as **pure Java logic**. There are **not yet** new registered Minecraft creatures, craftable detector items, natural-case spawns, a deduction GUI or in-world acceptance. This is **not** an installable anthology release.  
+> [Read the Chinese folklore anthology vision](docs/ZHIGUAI_FOLKLORE_ANTHOLOGY_VISION.md) · [Original Trio Investigation Case](docs/ORIGINAL_TRIO_INVESTIGATION_CASE.md) · [Draft PR #32](https://github.com/lord-navy-crypto/Gugu-Gaga-horror/pull/32). Existing historical v0.10 and newer v0.21.x freeze references below are preserved as background.
 
 ---
 
