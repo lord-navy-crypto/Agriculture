@@ -52,7 +52,7 @@ public final class FolkloreEncounterPolicySmoke {
                     validatedPairs++;
                 }
         }
-        check(validatedPairs==18, "all ordered species/tool pairs covered");
+        check(validatedPairs==24, "all four-case ordered tool pairs covered");
 
         for(int i=0;i<100;i++) {
             boolean eligible=FolkloreEncounterPolicy.mayStart(false,true,true,true,false,
@@ -74,9 +74,23 @@ public final class FolkloreEncounterPolicySmoke {
                 Long.MAX_VALUE,0), "honor world disable");
         check(!FolkloreEncounterPolicy.mayStart(false,true,true,false,false,true,
                 Long.MAX_VALUE,0), "no daytime supernatural case");
+        check(FolkloreEncounterPolicy.actorsPerCase(Creature.ORIGINAL_GUGU_TRIO)==3,
+                "original trio counts as ONE case containing THREE characters");
+        check(Creature.ORIGINAL_GUGU_TRIO.originalSource.startsWith("原创"),
+                "never misattribute original creatures to ancient texts");
+        check(FolkloreEncounterPolicy.actorsPerCase(Creature.CHANGYOU)==1,
+                "Changyou remains standalone for now");
+        for(long seed=-1000;seed<=1000;seed++) {
+            check(FolkloreEncounterPolicy.chooseForBiome(seed,false)
+                    !=Creature.ORIGINAL_GUGU_TRIO,
+                    "original trio must NOT spawn in warm biome");
+        }
+        check(FolkloreEncounterPolicy.chooseForBiome(3,true)
+                ==Creature.ORIGINAL_GUGU_TRIO,
+                "original trio is eligible in cold biomes");
         check(FolkloreEncounterPolicy.choose(Long.MIN_VALUE)!=null,"negative seed");
         check(FolkloreEncounterPolicy.choose(Long.MAX_VALUE)!=null,"positive seed");
-        System.out.println("FOLKLORE_ENCOUNTER_POLICY_OK: 3 profiles, "+
+        System.out.println("FOLKLORE_ENCOUNTER_POLICY_OK: 4 cases (one original trio), "+
                 validatedPairs+" tool combinations, single-group + cooldown guards");
     }
 }
