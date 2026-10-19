@@ -15,6 +15,9 @@ public final class HauntGameplayPolicy {
     public static final int WITNESS_AFTER_TICKS=20*90;
     public static final int RESPITE_TICKS=20*70;
     public static final int CUE_INTERVAL_TICKS=20*40;
+    // A scripted witness is independent from the rare ambient director's 8-minute timer.
+    public static final int STAGE_ACTOR_FIRST_TICKS=20*8;
+    public static final int STAGE_ACTOR_RETRY_TICKS=20*20;
     public static final double EVIDENCE_RADIUS_SQ=12.0*12.0;
     private HauntGameplayPolicy(){}
 
@@ -38,6 +41,13 @@ public final class HauntGameplayPolicy {
     public static boolean playerEligible(boolean survival,boolean night,
             boolean quiet,boolean overworld,boolean joined,boolean serverEnabled) {
         return survival&&night&&!quiet&&overworld&&joined&&serverEnabled;
+    }
+
+    /** Retry only when a joined player is actively waiting for an on-stage actor. */
+    public static boolean shouldSeekStageActor(Act act,int actTicks) {
+        return (act==Act.WITNESS || act==Act.FALSE_SAFETY)
+                && actTicks>=STAGE_ACTOR_FIRST_TICKS
+                && (actTicks-STAGE_ACTOR_FIRST_TICKS)%STAGE_ACTOR_RETRY_TICKS==0;
     }
 
     public static boolean nearEvidence(double distanceSquared,boolean lineOfSight) {
