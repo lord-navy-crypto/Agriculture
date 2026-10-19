@@ -55,23 +55,25 @@ public final class FolkloreEncounterPolicySmoke {
         check(validatedPairs==18, "all ordered species/tool pairs covered");
 
         for(int i=0;i<100;i++) {
-            boolean eligible=FolkloreEncounterPolicy.mayStart(false,true,true,false,
+            boolean eligible=FolkloreEncounterPolicy.mayStart(false,true,true,true,false,
                     true,FolkloreEncounterPolicy.MIN_COOLDOWN_TICKS,i);
             check(eligible==(i<FolkloreEncounterPolicy.CHANCE_PER_CHECK_PERCENT),
                     "fixed bounded random chance");
         }
-        check(!FolkloreEncounterPolicy.mayStart(true,true,true,false,true,
+        check(!FolkloreEncounterPolicy.mayStart(true,true,true,true,false,true,
                 Long.MAX_VALUE,0), "never start overlapping group");
-        check(!FolkloreEncounterPolicy.mayStart(false,true,true,true,true,
+        check(!FolkloreEncounterPolicy.mayStart(false,true,true,true,true,true,
                 Long.MAX_VALUE,0), "quiet players opt out");
-        check(!FolkloreEncounterPolicy.mayStart(false,true,true,false,true,
+        check(!FolkloreEncounterPolicy.mayStart(false,true,true,true,false,true,
                 FolkloreEncounterPolicy.MIN_COOLDOWN_TICKS-1,0),"cooldown");
-        check(!FolkloreEncounterPolicy.mayStart(false,false,true,false,true,
+        check(!FolkloreEncounterPolicy.mayStart(false,false,true,true,false,true,
                 Long.MAX_VALUE,0), "no creative/spectator");
-        check(!FolkloreEncounterPolicy.mayStart(false,true,false,false,true,
+        check(!FolkloreEncounterPolicy.mayStart(false,true,false,true,false,true,
                 Long.MAX_VALUE,0), "no foreign dimension");
-        check(!FolkloreEncounterPolicy.mayStart(false,true,true,false,false,
+        check(!FolkloreEncounterPolicy.mayStart(false,true,true,true,false,false,
                 Long.MAX_VALUE,0), "honor world disable");
+        check(!FolkloreEncounterPolicy.mayStart(false,true,true,false,false,true,
+                Long.MAX_VALUE,0), "no daytime supernatural case");
         check(FolkloreEncounterPolicy.choose(Long.MIN_VALUE)!=null,"negative seed");
         check(FolkloreEncounterPolicy.choose(Long.MAX_VALUE)!=null,"positive seed");
         System.out.println("FOLKLORE_ENCOUNTER_POLICY_OK: 3 profiles, "+
