@@ -17,6 +17,12 @@ class OneHealthUiContract(unittest.TestCase):
         self.assertIn('profile.animalImpact()',atlas)
         self.assertIn('profile.uncertainty()',atlas)
         self.assertIn('profile.ncbiTaxonId()',atlas)
+        self.assertIn('OneHealthHostNetwork.forProfile(profile.id())',atlas)
+        self.assertIn('network.edges()',atlas)
+        self.assertIn('network.node(edge.sourceNode()).caption()',atlas)
+        self.assertIn('network.node(edge.targetNode()).caption()',atlas)
+        self.assertIn('sectionIndex=(sectionIndex+1)%4',atlas)
+        self.assertIn('screen.gugugaga.onehealth.graph_disclaimer',atlas)
         self.assertIn('Component.translatable("screen.gugugaga.onehealth.title")',
                       atlas)
         self.assertIn('Minecraft.getInstance().setScreen(parent)',atlas)
@@ -30,7 +36,7 @@ class OneHealthUiContract(unittest.TestCase):
         zh=json.loads((lang/"zh_cn.json").read_text())
         keys=[
             'open','title','previous','next','details','back',
-            'noautomatic','sources'
+            'noautomatic','sources','network','graph_disclaimer'
         ]
         for key in keys:
             full='screen.gugugaga.onehealth.'+key
@@ -44,6 +50,16 @@ class OneHealthUiContract(unittest.TestCase):
         policy=(SRC/"microbes/OneHealthObservationPolicy.java").read_text()
         self.assertIn('11292',source)
         self.assertIn('11320',source)
+        self.assertIn('11082',source)
+        self.assertIn('https://www.cdc.gov/west-nile-virus/causes/',source)
+        graph=(SRC/"microbes/OneHealthHostNetwork.java").read_text()
+        self.assertIn('birds","mosquitoes"',graph)
+        self.assertIn('mosquitoes","birds"',graph)
+        self.assertIn('mosquitoes","person"',graph)
+        self.assertIn('mosquitoes","horse"',graph)
+        self.assertIn('Humans and horses are usually DEAD-END',graph)
+        self.assertNotIn('link("person","mosquitoes"',graph)
+        self.assertNotIn('link("horse","mosquitoes"',graph)
         self.assertIn('https://www.cdc.gov/rabies/about/',source)
         self.assertIn('https://www.who.int/news-room/fact-sheets/',source)
         for forbidden in ('infectionProbability','transmissionChance',
