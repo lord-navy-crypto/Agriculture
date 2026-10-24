@@ -2,6 +2,10 @@ package io.github.lordnavycrypto.gugugaga.pathogens;
 
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import java.util.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.MinecraftServer;
@@ -85,6 +89,67 @@ public final class FieldParticleOverlayRuntime {
             };
         };
     }
+
+    /** Cosmetic positions only: no game-field write or mob status changes. */
+    private record Anchor(double x,double y,double z) {}
+
+    private static Anchor anchor(ServerPlayer player,
+            FieldParticleSampling.Marker marker,List<Animal> nearbyAnimals){
+        var level=player.serverLevel();
+        var cell=marker.cell();
+        int x0=cell.x()*PathogenSpatialFieldMath.CELL_EDGE_BLOCKS;
+        int z0=cell.z()*PathogenSpatialFieldMath.CELL_EDGE_BLOCKS;
+        int cx=x0+2,cz=z0+2;
+        // No data load or height queries on a chunk that is not already loaded.
+        if(!level.getChunkSource().hasChunk(cx>>4,cz>>4))return null;
+        double observerY=player.getY();
+        int surfaceY=level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,cx,cz);
+
+        // Ground projections are decorative, not a claim of biological hosts.
+        // Check at most sixteen columns, in the chosen 4x4 cell only.
+        if(FieldParticleViewPolicy.surfaceInView(observerY,surfaceY)){
+            for(int dz=0;dz<4;dz++)for(int dx=0;dx<4;dx++){
+                int px=x0+dx,pz=z0+dz;
+                if(!level.getChunkSource().hasChunk(px>>4,pz>>4))continue;
+                int py=level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,px,pz);
+                if(!FieldParticleViewPolicy.surfaceInView(observerY,py))continue;
+                for(int offset=0;offset<=1;offset++){
+                    int y=py-offset;
+                    if(y<level.getMinBuildHeight())continue;
+                    if(level.getBlockState(new BlockPos(px,y,pz)).getBlock()
+                            instanceof CropBlock)
+                        return new Anchor(px+0.5,y+0.72,pz+0.5);
+                }
+            }
+        }
+
+        // Nearby vanilla animals can provide visual landmarks only. This
+        // deliberately never sets a status, effect or infection on an animal.
+        for(Animal animal:nearbyAnimals){
+            if(!animal.isAlive())continue;
+            BlockPos pos=animal.blockPosition();
+            if(FieldParticleViewPolicy.insideCell(pos.getX(),pos.getZ(),
+                    cell.x(),cell.z())
+                    &&FieldParticleViewPolicy.animalInView(observerY,animal.getY()))
+                return new Anchor(animal.getX(),
+                        animal.getY()+animal.getBbHeight()+0.2,animal.getZ());
+        }
+
+        if(FieldParticleViewPolicy.surfaceInView(observerY,surfaceY))
+            return new Anchor(cx+0.5,surfaceY+0.3,cz+0.5);
+
+        // Deep caves should not draw markers on a mountain far above the
+        // observer. Find nearby air without breaking blocks or loading chunks.
+        int baseY=player.blockPosition().getY();
+        for(int dy=0;dy<=2;dy++){
+            int y=baseY+dy;
+            if(y<level.getMinBuildHeight()||y>=level.getMaxBuildHeight())continue;
+            if(level.getBlockState(new BlockPos(cx,y,cz)).isAir())
+                return new Anchor(cx+0.5,y+0.5,cz+0.5);
+        }
+        return null; // Skip solid occluded cells instead of particle clipping.
+    }
+
     private static void render(ServerPlayer player,Session s){
         var level=player.serverLevel();
         String dimension=level.dimension().location().toString();
@@ -105,18 +170,22 @@ public final class FieldParticleOverlayRuntime {
         s.last=scan.current();
         int sent=0;
         ParticleOptions particle=style(choice);
+        // Single bounded vanilla-entity lookup per observer, not per marker.
+        List<Animal> nearbyAnimals=scan.markers().isEmpty()?List.of():
+                level.getEntitiesOfClass(Animal.class,
+                    player.getBoundingBox().inflate(16.0,8.0,16.0),
+                    Animal::isAlive);
         for(var marker:scan.markers()){
             if(sent>=MAX_PARTICLES_PER_VIEWER)break;
-            double px=marker.cell().x()*4.0+2.0;
-            double pz=marker.cell().z()*4.0+2.0;
-            double py=player.getY()+0.9;
-            // Floating 4x4-cell projections; never require a target block.
-            if(level.sendParticles(player,particle,false,px,py,pz,
+            Anchor at=anchor(player,marker,nearbyAnimals);
+            if(at==null)continue;
+            if(level.sendParticles(player,particle,false,at.x(),at.y(),at.z(),
                     1,0.15,0.12,0.15,0.0))sent++;
             if(marker.change()==FieldParticleSampling.Change.NEW_OR_INCREASED
                     &&sent<MAX_PARTICLES_PER_VIEWER) {
                 if(level.sendParticles(player,ParticleTypes.END_ROD,false,
-                        px,py+0.25,pz,1,0.08,0.08,0.08,0.0))sent++;
+                        at.x(),at.y()+0.25,at.z(),
+                        1,0.08,0.08,0.08,0.0))sent++;
             }
         }
     }
@@ -131,11 +200,9 @@ public final class FieldParticleOverlayRuntime {
         for(ServerPlayer player:server.getPlayerList().getPlayers())
             if(byPlayer.containsKey(player.getUUID()))watchers.add(player);
         if(watchers.isEmpty())return;
-        int begin=(int)Math.floorMod((tick/INTERVAL)*MAX_VIEWERS_PER_FRAME,
-                watchers.size());
-        int count=Math.min(MAX_VIEWERS_PER_FRAME,watchers.size());
-        for(int i=0;i<count;i++){
-            ServerPlayer player=watchers.get((begin+i)%watchers.size());
+        for(int index:FieldParticleViewPolicy.viewerSlots(watchers.size(),
+                MAX_VIEWERS_PER_FRAME,tick/INTERVAL)){
+            ServerPlayer player=watchers.get(index);
             render(player,byPlayer.get(player.getUUID()));
         }
     }
