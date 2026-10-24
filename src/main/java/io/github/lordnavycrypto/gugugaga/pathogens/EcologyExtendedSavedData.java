@@ -24,6 +24,11 @@ public final class EcologyExtendedSavedData extends SavedData {
         return level.getDataStorage().computeIfAbsent(FACTORY,FILE);
     }
     public int size(){return regions.size();}
+    /** Immutable-in-use snapshot for bounded read-only multi-route planning. */
+    public Map<PathogenSpatialFieldMath.Cell,int[]> snapshot(){
+        return java.util.Collections.unmodifiableMap(
+                EcologyExtensionToyField.deepCopy(regions));
+    }
     public int get(PathogenSpatialFieldMath.Cell cell,int channel){
         if(channel<0||channel>=EcologyExtensionToyField.CHANNELS)
             throw new IllegalArgumentException("Outside ecology catalog");
