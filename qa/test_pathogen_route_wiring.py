@@ -19,7 +19,8 @@ class TestPathogenRouting(unittest.TestCase):
   self.assertIn("MAX_MOVING_PLAYERS=64",rt)
   self.assertIn("hasChunk(",rt)
   self.assertIn("field.transfer(",rt)
-  self.assertIn("PathogenRouteGameMath.move(",field)
+  self.assertIn("PathogenRouteGameMath.canMove(",field)
+  self.assertNotIn("PathogenRouteGameMath.move(cells,",field)
   self.assertIn("PathogenRoutePolicy15.allows(ch",math)
   self.assertEqual(policy.count('p("'),15)
   for banned in ("getAllEntities(","forceChunk(","setBlock(","setHealth(",

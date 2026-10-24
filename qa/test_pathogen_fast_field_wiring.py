@@ -12,7 +12,7 @@ class FastPathogenGameDataWiring(unittest.TestCase):
   self.assertIn("destination[channel]++",store)
   self.assertNotIn("PathogenRouteGameMath.move(cells,from,to",store)
   self.assertNotIn("cells=change.cells()",store)
-  self.assertIn("if(cursor!=previousCursor)",store.replace("frame.moved()>0||frame.faded()>0||cursor!=previousCursor","if(cursor!=previousCursor)"))
+  self.assertIn("frame.moved()>0||frame.faded()>0||cursor!=previousCursor",store)
   self.assertIn("cells=new HashMap<>(PathogenSpatialFieldMath.immutableCopy(frame.cells()))",store)
   self.assertIn("public static boolean canMove(",math)
  def test_channel_starvation_and_visual_data(self):
