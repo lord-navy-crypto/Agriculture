@@ -24,8 +24,8 @@ public final class OneHealthScreen extends Screen {
     @Override
     protected void init() {
         int y=height-32;
-        int cell=Math.max(58,Math.min(100,(width-32)/4));
-        int x=(width-cell*4)/2;
+        int cell=Math.max(54,Math.min(100,(width-32)/5));
+        int x=(width-cell*5)/2;
         addRenderableWidget(Button.builder(
                 Component.translatable("screen.gugugaga.onehealth.previous"),
                 b->recordIndex=Math.floorMod(recordIndex-1,
@@ -41,9 +41,14 @@ public final class OneHealthScreen extends Screen {
                 b->sectionIndex=(sectionIndex+1)%3)
                 .bounds(x+cell*2,y,cell-2,20).build());
         addRenderableWidget(Button.builder(
+                Component.translatable("screen.gugugaga.onehealth.history"),
+                b->Minecraft.getInstance().setScreen(new OneHealthHistoryScreen(
+                        this,OneHealthEvidenceCatalog.all().get(recordIndex).id())))
+                .bounds(x+cell*3,y,cell-2,20).build());
+        addRenderableWidget(Button.builder(
                 Component.translatable("screen.gugugaga.onehealth.back"),
                 b->Minecraft.getInstance().setScreen(parent))
-                .bounds(x+cell*3,y,cell-2,20).build());
+                .bounds(x+cell*4,y,cell-2,20).build());
     }
 
     @Override

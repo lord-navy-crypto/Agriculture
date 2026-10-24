@@ -44,5 +44,22 @@
   "screen.gugugaga.onehealth.details": "Details",
   "screen.gugugaga.onehealth.back": "Back",
   "screen.gugugaga.onehealth.noautomatic": "An animal sighting or contact never means infection.",
-  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation."
+  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation.",
+  "screen.gugugaga.onehealth.history": "Timeline",
+  "screen.gugugaga.onehealth.history.title": "One Health | Verified History",
+  "screen.gugugaga.onehealth.history.previous": "Prev",
+  "screen.gugugaga.onehealth.history.next": "Next",
+  "screen.gugugaga.onehealth.history.virus": "Virus",
+  "screen.gugugaga.onehealth.history.category": "Type",
+  "screen.gugugaga.onehealth.history.source": "Source",
+  "screen.gugugaga.onehealth.history.back": "Back",
+  "screen.gugugaga.onehealth.history.empty": "No sourced records for this filter.",
+  "screen.gugugaga.onehealth.history.sourcelabel": "Original official report:",
+  "screen.gugugaga.onehealth.history.sourcecaveat": "Historical record, not a forecast or medical advice.",
+  "screen.gugugaga.onehealth.history.filter.all": "All",
+  "screen.gugugaga.onehealth.history.filter.rabies": "Rabies",
+  "screen.gugugaga.onehealth.history.filter.avian": "Avian influenza",
+  "screen.gugugaga.onehealth.history.filter.animal": "Animal reports",
+  "screen.gugugaga.onehealth.history.filter.human": "Human reports",
+  "screen.gugugaga.onehealth.history.filter.publichealth": "Public health"
 }
