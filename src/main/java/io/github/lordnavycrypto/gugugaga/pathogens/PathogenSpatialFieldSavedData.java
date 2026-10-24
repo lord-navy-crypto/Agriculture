@@ -20,6 +20,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
                     PathogenSpatialFieldSavedData::load);
     private Map<PathogenSpatialFieldMath.Cell,int[]> cells=new HashMap<>();
     private int cursor;
+    private int routeCursor;
 
     private PathogenSpatialFieldSavedData(){}
     public static PathogenSpatialFieldSavedData forLevel(ServerLevel level){
@@ -32,6 +33,18 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
     }
     public Map<PathogenSpatialFieldMath.Cell,int[]> snapshot(){
         return PathogenSpatialFieldMath.immutableCopy(cells);
+    }
+    /**
+     * Visit an equal bounded share of spatial data sources every update.
+     * The route cursor persists across save/reload, not per Java session.
+     */
+    public java.util.List<PathogenSpatialFieldMath.Cell> routeCandidates(int scanBudget){
+        var batch=PathogenRouteFairScheduler.next(cells.keySet(),routeCursor,scanBudget);
+        if(batch.nextCursor()!=routeCursor){
+            routeCursor=batch.nextCursor();
+            setDirty();
+        }
+        return batch.cells();
     }
     public boolean set(PathogenSpatialFieldMath.Cell cell,int channel,int value){
         var next=PathogenSpatialFieldMath.withPressure(cells,cell,channel,value);
@@ -82,6 +95,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
             }
         }
         value.cursor=Math.max(0,nbt.getInt("Cursor"));
+        value.routeCursor=Math.max(0,nbt.getInt("RouteCursor"));
         return value;
     }
     @Override public CompoundTag save(CompoundTag result,
@@ -96,6 +110,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         }
         result.put("Cells",list);
         result.putInt("Cursor",cursor);
+        result.putInt("RouteCursor",routeCursor);
         return result;
     }
 }

@@ -203,6 +203,17 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
             qa/java/PathogenRouteGameSmoke.java
           java -cp build/pathogen-route-game PathogenRouteGameSmoke
+      - name: Test 1024-cell route scheduling fairness and 7x7 data heatmaps (Java21)
+        run: |
+          mkdir -p build/pathogen-route-fairness
+          javac -d build/pathogen-route-fairness \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteFairScheduler.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldTextMap.java \
+            qa/java/PathogenRoutingFairnessSmoke.java
+          java -cp build/pathogen-route-fairness PathogenRoutingFairnessSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

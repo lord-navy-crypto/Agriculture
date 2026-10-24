@@ -4,6 +4,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenRoster15;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldMath;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldSavedData;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldTextMap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -18,6 +21,13 @@ public final class PathogenSpatialFieldCommands{
         event.getDispatcher().register(Commands.literal("gugugaga")
             .then(Commands.literal("field")
                 .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                .then(Commands.literal("map")
+                    .then(Commands.argument("taxon",StringArgumentType.word())
+                        .suggests((ctx,builder)->SharedSuggestionProvider.suggest(
+                            PathogenRoster15.FIRST_FIFTEEN.stream()
+                                .map(PathogenRoster15.Entry::id).toList(),builder))
+                        .executes(ctx->visualize(ctx.getSource(),
+                            StringArgumentType.getString(ctx,"taxon")))))
                 .then(Commands.literal("seed")
                     .requires(src->src.hasPermission(2))
                     .then(Commands.argument("taxon",StringArgumentType.word())
@@ -44,6 +54,32 @@ public final class PathogenSpatialFieldCommands{
         }
         src.sendFailure(Component.literal("Run /gugugaga field status as a player."));
         return 0;
+    }
+    private static int visualize(CommandSourceStack src,String taxon){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run field map as a player."));
+            return 0;
+        }
+        int channel;
+        try{
+            channel=PathogenSpatialFieldMath.channel(taxon);
+        }catch(IllegalArgumentException invalid){
+            src.sendFailure(Component.literal("Unknown first15 taxon: "+taxon));
+            return 0;
+        }
+        var center=PathogenSpatialFieldRuntime.cell(player.blockPosition());
+        var snapshot=PathogenSpatialFieldSavedData.forLevel(
+                player.serverLevel()).snapshot();
+        var lines=PathogenFieldTextMap.render(snapshot,center,channel);
+        player.sendSystemMessage(Component.literal(
+                "[Field map] "+taxon+" | center="+center.x()+","+center.z()
+                +" | N up, E right | 0..F = game-pressure 0..15"));
+        for(String line:lines){
+            player.sendSystemMessage(Component.literal("  "+line));
+        }
+        player.sendSystemMessage(Component.literal(
+                "This is a fictional Minecraft data view, not infection data."));
+        return 1;
     }
     private static int change(CommandSourceStack src,String id,int value){
         if(!NightwatchConfig.PATHOGEN_FIELD_ENABLED.get()){

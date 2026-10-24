@@ -3,6 +3,8 @@ package io.github.lordnavycrypto.gugugaga.pathogens;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +34,15 @@ public final class PathogenDataRoutesRuntime {
     private PathogenDataRoutesRuntime(){}
     private static final int TICK_INTERVAL=80;
     private static final int MAX_AMBIENT_TRANSFERS=24;
+    private static final int MAX_AMBIENT_SOURCES_SCANNED=64;
     private static final int MAX_MOVING_ANIMALS=64;
     private static final int MAX_MOVING_PLAYERS=64;
     private static final int MAX_TRACKED_ANIMALS=256;
     private record Location(String dimension,PathogenSpatialFieldMath.Cell cell){}
     private static final class History {
         final Map<UUID,Location> players=new HashMap<>();
-        final Map<UUID,Location> animals=new HashMap<>();
+        // Bounded, access-ordered location history; no server/world objects stored.
+        final Map<UUID,Location> animals=new LinkedHashMap<>(256,0.75f,true);
     }
     private static final Map<MinecraftServer,History> HISTORIES=new WeakHashMap<>();
 
@@ -76,11 +80,7 @@ public final class PathogenDataRoutesRuntime {
         // Snapshot prevents this frame's newly filled cells from acting
         // immediately. A maximum of 24 event moves per dimension/update.
         var snapshot=field.snapshot();
-        var cells=new ArrayList<>(snapshot.keySet());
-        cells.sort((a,b)->{
-            int x=Integer.compare(a.x(),b.x());
-            return x!=0?x:Integer.compare(a.z(),b.z());
-        });
+        var cells=field.routeCandidates(MAX_AMBIENT_SOURCES_SCANNED);
         int attempted=0,applied=0;
         boolean rain=world.isRaining();
         for(var from:cells){
@@ -172,8 +172,12 @@ public final class PathogenDataRoutesRuntime {
             environmentalGameEvents(world,watchers,field,time/TICK_INTERVAL);
         }
         history.players.keySet().retainAll(online);
-        history.animals.keySet().retainAll(observedAnimals);
-        if(history.animals.size()>MAX_TRACKED_ANIMALS)
-            history.animals.clear(); // hard cap; restart motion trail observations
+        // Do not discard trails for an animal just because the 64-event budget
+        // did not sample it on this one frame; evict ONLY oldest observations.
+        while(history.animals.size()>MAX_TRACKED_ANIMALS){
+            Iterator<UUID> oldest=history.animals.keySet().iterator();
+            oldest.next();
+            oldest.remove();
+        }
     }
 }
