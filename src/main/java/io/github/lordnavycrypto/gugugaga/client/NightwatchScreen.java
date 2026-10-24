@@ -54,6 +54,12 @@ public final class NightwatchScreen extends Screen {
                 Component.translatable("screen.gugugaga.onehealth.open"),
                 button->Minecraft.getInstance().setScreen(new OneHealthScreen(this)))
                 .bounds(right,y+step*5,buttonWidth,20).build());
+        // The original real NCBI microbes were previously backend-only.
+        // This opens their evidence-first field guide, not an exposure event.
+        addRenderableWidget(Button.builder(
+                Component.translatable("screen.gugugaga.microbes.open"),
+                button->Minecraft.getInstance().setScreen(new NaturalMicrobeScreen(this)))
+                .bounds(left,y+step*6,buttonWidth,20).build());
     }
 
     private void addAction(String label,int action,int x,int y,int buttonWidth) {
