@@ -14,13 +14,15 @@ public final class OneHealthEvidenceCatalog {
     private OneHealthEvidenceCatalog(){}
 
     public enum HostContext {
-        MAMMALS, PEOPLE, WILD_AQUATIC_BIRDS, DOMESTIC_BIRDS
+        MAMMALS, PEOPLE, WILD_AQUATIC_BIRDS, DOMESTIC_BIRDS,
+        WILD_BIRDS, MOSQUITOES, HORSES
     }
 
     public enum HumanInterface {
         INFECTED_ANIMAL_BITE_OR_SCRATCH,
         CLOSE_CONTACT_WITH_AFFECTED_ANIMALS,
-        CONTACT_WITH_ANIMAL_ASSOCIATED_ENVIRONMENT
+        CONTACT_WITH_ANIMAL_ASSOCIATED_ENVIRONMENT,
+        MOSQUITO_BITE_CONTEXT
     }
 
     public record Profile(String id,
@@ -101,7 +103,37 @@ public final class OneHealthEvidenceCatalog {
             "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11320&mode=Info",
             "https://www.who.int/news-room/fact-sheets/detail/influenza-%28avian-and-other-zoonotic%29");
 
-    private static final List<Profile> ALL=List.of(RABIES,AVIAN_INFLUENZA_A);
+    /**
+     * West Nile virus is a naturally occurring virus. CDC and WHO document
+     * an enzootic bird-mosquito ecosystem and incidental infections of
+     * humans/horses. People and horses are ordinarily dead-end hosts in that
+     * ecosystem, NOT new mosquito-amplifying sources.
+     *
+     * NO geographic occurrence, season, numerical transmission parameters,
+     * or Minecraft spawning behavior are inferred from this profile.
+     */
+    public static final Profile WEST_NILE = new Profile(
+            "west_nile_virus",
+            11082,
+            "West Nile virus",
+            "Naturally circulating mosquito-bird ecology and incidental"
+                    +" human and equine infection; NOT real-time local prevalence",
+            Set.of(HostContext.WILD_BIRDS,HostContext.MOSQUITOES,
+                    HostContext.HORSES,HostContext.PEOPLE),
+            Set.of(HumanInterface.MOSQUITO_BITE_CONTEXT),
+            "Can cause febrile illness and, less commonly, serious"
+                    +" neurological disease in people.",
+            "Circulates in a bird-mosquito ecosystem and can affect horses;"
+                    +" some bird species can experience illness.",
+            "Bird-mosquito ecological associations are documented, but"
+                    +" observing either animal does not establish infection."
+                    +" Humans and horses are generally dead-end hosts;"
+                    +" Minecraft animal sightings cannot predict human cases.",
+            "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=11082&mode=Info",
+            "https://www.cdc.gov/west-nile-virus/causes/");
+
+    private static final List<Profile> ALL=
+            List.of(RABIES,AVIAN_INFLUENZA_A,WEST_NILE);
     public static List<Profile> all(){return ALL;}
     public static Profile byId(String id) {
         Objects.requireNonNull(id);
