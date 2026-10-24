@@ -1,3 +1,10 @@
+> **NEW DRAFT EXPERIMENT — Gugu-Gaga: Outbreak & Care / 病原体与医疗重设计 (2026-10-24)**  
+> This is an independent new branch, forked from the earlier H-key UI v0.10 source. It does **not** merge, re-open or modify the frozen old horror branches, the Chinese folklore anthology PR #32, or stable `main`.  
+> The current code includes only a standalone Java21 **fictional** virus/bacterium gameplay policy, explicit opt-in contact events (including an abstract blood-contact game trigger), protective item checks, staged game illness, in-game testing and differentiated supportive/bacterial care, with executable CI smoke tests. **No in-world NeoForge infection items, GUI, world persistence, NPCs or playable hospital exist yet; not installable as an outbreak game.**  
+> [Read the full bilingual engineering plan](docs/PATHOGEN_MEDICAL_REDESIGN_2026-10-24.md). No real pathogen acquisition, handling, culture, transmission optimization, lab recipes or medical dosage information is implemented.
+
+---
+
 > **v0.10 restart branch / v0.10 恢复开发分支（2026-10-19）**  
 > This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.3 is a **UI-first experimental test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
 >
