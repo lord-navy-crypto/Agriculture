@@ -14,6 +14,7 @@ import io.github.lordnavycrypto.gugugaga.ai.NightwatchOnboarding;
 import io.github.lordnavycrypto.gugugaga.network.NightwatchActionPacket;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
+import io.github.lordnavycrypto.gugugaga.microbes.MicrobeWorldContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -53,6 +54,9 @@ public final class GuguGagaMod {
 
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
         ENTITIES.register(modBus);
+        MicrobeWorldContent.BLOCKS.register(modBus);
+        MicrobeWorldContent.ITEMS.register(modBus);
+        modBus.addListener(MicrobeWorldContent::onCreativeTab);
         modBus.addListener(GuguGagaMod::onAttributes);
         modBus.addListener(NightwatchActionPacket::register);
         container.registerConfig(ModConfig.Type.SERVER, NightwatchConfig.SPEC);
