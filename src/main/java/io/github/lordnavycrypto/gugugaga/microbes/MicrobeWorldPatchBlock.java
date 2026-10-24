@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -65,6 +67,21 @@ public final class MicrobeWorldPatchBlock extends BushBlock {
         BlockPos below=pos.below();
         if(!world.hasChunkAt(below))return;
         MicrobeLifecyclePolicy.Substrate substrate=substrateOf(world.getBlockState(below));
+        boolean nearWater=hasAdjacentWater(world,pos);
+        boolean damp=world.isRainingAt(pos.above())
+                ||world.getBlockState(below).is(Blocks.MUD)||nearWater;
+        boolean bright=world.getMaxLocalRawBrightness(pos.above())>=8;
+        var signal=MicrobeEnvironmentPolicy.decide(
+                species,substrate,damp,bright,nearWater);
+        if(species!=MicrobeLifecyclePolicy.Exhibit.ECOLI
+                &&species!=MicrobeLifecyclePolicy.Exhibit.T4_PHAGE){
+            if(signal==MicrobeEnvironmentPolicy.Signal.FADE){
+                if(state.getValue(VIEW)>0)
+                    world.setBlock(pos,state.setValue(VIEW,state.getValue(VIEW)-1),2);
+                return;
+            }
+            if(signal==MicrobeEnvironmentPolicy.Signal.HOLD)return;
+        }
         boolean neighbor=false;
         if(species==MicrobeLifecyclePolicy.Exhibit.T4_PHAGE)
             neighbor=adjacent(world,pos,MicrobeWorldContent.ECOLI.get())
@@ -101,6 +118,10 @@ public final class MicrobeWorldPatchBlock extends BushBlock {
             return MicrobeLifecyclePolicy.Exhibit.SOIL_BACILLUS;
         if(this==MicrobeWorldContent.PLANTARUM.get())
             return MicrobeLifecyclePolicy.Exhibit.PLANT_LACTIPLANTIBACILLUS;
+        if(this==MicrobeWorldContent.NITROSOMONAS.get())
+            return MicrobeLifecyclePolicy.Exhibit.SOIL_NITROSOMONAS;
+        if(this==MicrobeWorldContent.CHLORELLA.get())
+            return MicrobeLifecyclePolicy.Exhibit.AQUATIC_CHLORELLA;
         if(this==MicrobeWorldContent.ECOLI.get())
             return MicrobeLifecyclePolicy.Exhibit.ECOLI;
         return MicrobeLifecyclePolicy.Exhibit.T4_PHAGE;
@@ -113,6 +134,36 @@ public final class MicrobeWorldPatchBlock extends BushBlock {
              ||below.is(Blocks.MUD)||below.is(Blocks.MOSS_BLOCK))
             return MicrobeLifecyclePolicy.Substrate.SOIL;
         return MicrobeLifecyclePolicy.Substrate.OTHER;
+    }
+
+    private static boolean hasAdjacentWater(ServerLevel world,BlockPos pos){
+        for(Direction dir:HORIZONTAL){
+            BlockPos other=pos.relative(dir);
+            if(world.hasChunkAt(other)&&world.getBlockState(other).is(Blocks.WATER))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * A Minecraft environment encounter: a visual cue for animals or players.
+     * No effect on health, hunger, player attributes, NPC AI or infection.
+     */
+    @Override protected void entityInside(BlockState state,Level world,
+            BlockPos pos,Entity entity){
+        if(!(world instanceof ServerLevel server)
+                ||!NightwatchConfig.MICROBE_ENTITY_CUES_ENABLED.get()
+                ||entity.tickCount%160!=0)return;
+        if(this==MicrobeWorldContent.ECOLI.get()
+                ||this==MicrobeWorldContent.T4.get())return;
+        if(entity instanceof Player player){
+            player.displayClientMessage(Component.translatable(
+                    "message.gugugaga.microbeworld.ambient_observation"),true);
+        }else if(entity instanceof Animal){
+            server.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                    pos.getX()+0.5,pos.getY()+0.25,pos.getZ()+0.5,
+                    1,0.0,0.02,0.0,0.0);
+        }
     }
 
     private static boolean adjacent(ServerLevel world,BlockPos pos,Block desired){
@@ -146,7 +197,9 @@ public final class MicrobeWorldPatchBlock extends BushBlock {
                 }
             }
         }else if(this==MicrobeWorldContent.BACILLUS.get()
-                ||this==MicrobeWorldContent.PLANTARUM.get()){
+                ||this==MicrobeWorldContent.PLANTARUM.get()
+                ||this==MicrobeWorldContent.NITROSOMONAS.get()
+                ||this==MicrobeWorldContent.CHLORELLA.get()){
             world.addParticle(ParticleTypes.HAPPY_VILLAGER,
                 pos.getX()+0.5,pos.getY()+0.2,pos.getZ()+0.5,
                 0,0.005,0);

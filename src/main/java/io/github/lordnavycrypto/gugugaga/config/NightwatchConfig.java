@@ -23,6 +23,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PLAYABLE_LOOP_ENABLED;
     public static final ModConfigSpec.BooleanValue MICROBE_ECOLOGY_ENABLED;
     public static final ModConfigSpec.BooleanValue MICROBE_SATELLITES_ENABLED;
+    public static final ModConfigSpec.BooleanValue MICROBE_ENTITY_CUES_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -106,6 +107,10 @@ public final class NightwatchConfig {
                 "Allow each naturally generated soil/leaf decoration ONE neighboring satellite, "
                 +"without recursion. Turn OFF to keep the patches static.")
                 .define("one_satellite_per_patch",true);
+        MICROBE_ENTITY_CUES_ENABLED=BUILDER.comment(
+                "Show minor passive Minecraft ecological observations for players and animals. "
+                +"No health, disease, or mob attribute changes.")
+                .define("entity_observation_cues",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
