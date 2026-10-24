@@ -291,6 +291,34 @@ jobs:
             runs/server/crash-reports/*.txt
           if-no-files-found: warn
 
+  pathogen-world-disk-restart:
+    name: True two-process NeoForge world SavedData restart
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Boot ephemeral world, save to disk, stop, and boot same world
+        env:
+          GUGU_DISK_STAGE_TIMEOUT: "480"
+        run: python3 qa/smoke_pathogen_disk_restart.py
+      - name: Upload real disk-restart logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-field-disk-restart
+          path: |
+            build/field-disk-*.log
+          if-no-files-found: warn
+
   client-startup-smoke:
     name: Actual v0.10 graphical client + three native renderer registrations
     runs-on: ubuntu-latest
