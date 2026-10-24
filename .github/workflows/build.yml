@@ -283,6 +283,7 @@ jobs:
           mkdir -p build/one-health-science
           javac -encoding UTF-8 -d build/one-health-science \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
