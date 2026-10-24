@@ -1,10 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.pathogens;
 
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
-import java.util.WeakHashMap;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
@@ -21,31 +19,24 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 public final class PathogenFieldHudRuntime {
     private PathogenFieldHudRuntime(){}
     private static final int HUD_INTERVAL=40; // Two seconds in nominal game time
-    private static final WeakHashMap<MinecraftServer,Set<UUID>> ENABLED=
-            new WeakHashMap<>();
+    private static final PathogenHudSubscriptions ENABLED=new PathogenHudSubscriptions();
 
     public static boolean isEnabled(MinecraftServer server,UUID player){
-        var viewers=ENABLED.get(server);
-        return viewers!=null && viewers.contains(player);
+        return ENABLED.isEnabled(server,player);
     }
 
     public static void setEnabled(ServerPlayer player,boolean enable){
         MinecraftServer server=player.serverLevel().getServer();
-        if(enable)
-            ENABLED.computeIfAbsent(server,ignored->new HashSet<>())
-                    .add(player.getUUID());
-        else {
-            var viewers=ENABLED.get(server);
-            if(viewers!=null){
-                viewers.remove(player.getUUID());
-                if(viewers.isEmpty())ENABLED.remove(server);
-            }
-        }
+        ENABLED.set(server,player.getUUID(),enable);
     }
 
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event){
         if(!(event.getEntity() instanceof ServerPlayer player))return;
         setEnabled(player,false);
+    }
+
+    public static void onServerStopped(ServerStoppedEvent event){
+        ENABLED.clearServer(event.getServer());
     }
 
     public static void onTick(ServerTickEvent.Post event){

@@ -245,6 +245,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudTextPolicy.java \
             qa/java/PathogenHudTextSmoke.java
           java -cp build/pathogen-field-hud PathogenHudTextSmoke
+      - name: Verify two-player HUD isolation, logout and server teardown (Java21)
+        run: |
+          mkdir -p build/pathogen-hud-multiplayer
+          javac -d build/pathogen-hud-multiplayer \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudSubscriptions.java \
+            qa/java/PathogenHudSubscriptionsSmoke.java
+          java -cp build/pathogen-hud-multiplayer PathogenHudSubscriptionsSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

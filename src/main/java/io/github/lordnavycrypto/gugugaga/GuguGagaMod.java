@@ -96,6 +96,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(PathogenFieldServerSavedDataSmoke::onServerStarted);
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onLogout);
+        NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onServerStopped);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
