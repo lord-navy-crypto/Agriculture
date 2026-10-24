@@ -32,7 +32,7 @@ public final class NaturalMicrobeCatalog {
             Objects.requireNonNull(documentedHabitats,"documentedHabitats");
             Objects.requireNonNull(documentedHosts,"documentedHosts");
             Objects.requireNonNull(source,"source");
-            if(!id.matches("[a-z_]{3,48}") || ncbiTaxonId<=0)
+            if(!id.matches("[a-z0-9_]{3,48}") || ncbiTaxonId<=0)
                 throw new IllegalArgumentException("Invalid scientific record");
             if(scientificName.isBlank()
                     ||!source.startsWith("https://www.ncbi.nlm.nih.gov/"))
