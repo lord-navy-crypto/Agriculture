@@ -57,5 +57,16 @@
   "block.gugugaga.chlorella_freshwater_exhibit": "普通小球藻淡水微生态展品",
   "message.gugugaga.microbeworld.nitrosomonas_soil_patch": "真实土壤与淡水微生物的放大景观，并不代表实际检出。",
   "message.gugugaga.microbeworld.chlorella_freshwater_exhibit": "淡水绿藻生态展品，不是疾病或诊断结果。",
-  "message.gugugaga.microbeworld.ambient_observation": "你接触了游戏中的生态场景；这不是感染判定。"
+  "message.gugugaga.microbeworld.ambient_observation": "你接触了游戏中的生态场景；这不是感染判定。",
+  "block.gugugaga.rabies_wildlife_case": "狂犬病野生动物事件",
+  "block.gugugaga.avian_influenza_case": "禽流感动物健康事件",
+  "block.gugugaga.field_clinic": "野外医疗站",
+  "message.gugugaga.pathogen.contact": "已记录接触，不能判定感染；请前往医疗站评估。",
+  "message.gugugaga.pathogen.illness": "已进入模拟流感疾病状态，启用游戏化疲劳效果。",
+  "message.gugugaga.pathogen.not_diagnosed": "接触不等于狂犬病确诊，应及早进行评估。",
+  "message.gugugaga.pathogen.no_case": "医疗站：没有进行中的记录。",
+  "message.gugugaga.pathogen.supportive_care": "已完成游戏内支持性照护，进入恢复状态。",
+  "message.gugugaga.pathogen.early_care": "已完成早期照护；现实中疑似狂犬病暴露需及时就医。",
+  "message.gugugaga.pathogen.followup": "复查：正在恢复中。",
+  "message.gugugaga.pathogen.stage": "医疗游戏状态已变化。"
 }

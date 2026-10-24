@@ -24,6 +24,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue MICROBE_ECOLOGY_ENABLED;
     public static final ModConfigSpec.BooleanValue MICROBE_SATELLITES_ENABLED;
     public static final ModConfigSpec.BooleanValue MICROBE_ENTITY_CUES_ENABLED;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_GAMEPLAY_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -111,6 +112,12 @@ public final class NightwatchConfig {
                 "Show minor passive Minecraft ecological observations for players and animals. "
                 +"No health, disease, or mob attribute changes.")
                 .define("entity_observation_cues",true);
+        BUILDER.pop();
+        BUILDER.push("pathogen_survival");
+        PATHOGEN_GAMEPLAY_ENABLED=BUILDER.comment(
+                "Enable optional Minecraft survival pathogen encounter scenes and clinic. "
+                +"No biological transmission parameters or clinical prescriptions.")
+                .define("enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
