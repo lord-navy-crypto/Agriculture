@@ -21,6 +21,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 GAME_WORLD = "gugugaga-ci-scalar-field-only"
 NBT_NAME = "gugugaga_spatial_pathogen_field_v1.dat"
+EXTENSION_NBT_NAME = "gugugaga_ecology_extension_v1.dat"
 TIMEOUT = int(os.environ.get("GUGU_DISK_STAGE_TIMEOUT", "480"))
 READY = re.compile(r"Done \([0-9.,]+s\)! For help, type", re.I)
 INIT = "GUGUGAGA_RUNTIME_INIT_OK"
@@ -194,6 +195,13 @@ def main():
     if not any(p.is_file() and p.stat().st_size > 32 for p in expected):
         raise AssertionError("Minecraft did not write the game's actual SavedData NBT file")
     print("GUGUGAGA_REAL_WORLD_NBT_FILE_FOUND", flush=True)
+    extension_files = [
+        ROOT / "runs/server" / GAME_WORLD / "data" / EXTENSION_NBT_NAME,
+        ROOT / "run" / GAME_WORLD / "data" / EXTENSION_NBT_NAME,
+    ]
+    if not any(p.is_file() and p.stat().st_size > 32 for p in extension_files):
+        raise AssertionError("Minecraft did not write the extension SavedData NBT file")
+    print("GUGUGAGA_FIVE_FOCUS_EXTENSION_DISK_FOUND", flush=True)
     run_phase("verify", rcon_port, password)
     print("GUGUGAGA_REAL_WORLD_DISK_RESTART_PASS", flush=True)
     return 0

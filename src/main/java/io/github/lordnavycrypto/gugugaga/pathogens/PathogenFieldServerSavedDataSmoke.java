@@ -76,6 +76,8 @@ public final class PathogenFieldServerSavedDataSmoke {
         if(phase==null||phase.isEmpty())return;
         var live=PathogenSpatialFieldSavedData.forLevel(
                 event.getServer().overworld());
+        var extended=EcologyExtendedSavedData.forLevel(
+                event.getServer().overworld());
         var left=new PathogenSpatialFieldMath.Cell(-730,1139);
         var right=new PathogenSpatialFieldMath.Cell(-729,1139);
         int plant=PathogenSpatialFieldMath.channel("potato_virus_y");
@@ -85,6 +87,15 @@ public final class PathogenFieldServerSavedDataSmoke {
             check(live.set(left,plant,11),"initial game value A");
             check(live.set(right,plant,7),"initial game value B");
             check(live.set(left,animal,6),"independent game channel");
+            check(live.set(left,PathogenSpatialFieldMath.channel("influenza_a_virus"),10),
+                    "focus five animal-channel demo saved");
+            check(live.set(right,PathogenSpatialFieldMath.channel("salmonella_enterica"),8),
+                    "focus five bacterial-channel demo saved");
+            check(extended.size()==0,"CI extension sidecar starts fresh");
+            check(extended.set(left,EcologyExtendedTaxa.index("puccinia_graminis"),10),
+                    "focus five wheat visual number written to sidecar");
+            check(extended.set(right,EcologyExtendedTaxa.index("varroa_destructor"),9),
+                    "focus five bee visual number written to sidecar");
             var candidates=live.routeCandidates(1);
             check(candidates.size()==1&&candidates.get(0).equals(left),
                     "save cursor advances after first cell");
@@ -95,6 +106,15 @@ public final class PathogenFieldServerSavedDataSmoke {
             check(live.get(left,plant)==11,"disk reload: left channel");
             check(live.get(right,plant)==7,"disk reload: right channel");
             check(live.get(left,animal)==6,"disk reload: independent channel");
+            check(live.get(left,PathogenSpatialFieldMath.channel("influenza_a_virus"))==10,
+                    "real-disk reload of selected animal virus reference");
+            check(live.get(right,PathogenSpatialFieldMath.channel("salmonella_enterica"))==8,
+                    "real-disk reload of selected bacteria reference");
+            check(extended.size()==2,"real-disk extension area count");
+            check(extended.get(left,EcologyExtendedTaxa.index("puccinia_graminis"))==10,
+                    "real-disk reload of selected fungal reference");
+            check(extended.get(right,EcologyExtendedTaxa.index("varroa_destructor"))==9,
+                    "real-disk reload of selected parasite reference");
             var candidates=live.routeCandidates(1);
             check(candidates.size()==1&&candidates.get(0).equals(right),
                     "disk reload: persisted scanner cursor");
