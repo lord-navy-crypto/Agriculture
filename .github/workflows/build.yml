@@ -235,6 +235,16 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldOverview.java \
             qa/java/PathogenFieldOverviewSmoke.java
           java -cp build/pathogen-field-overview PathogenFieldOverviewSmoke
+      - name: Test opt-in 15-channel native action-bar game HUD (Java21)
+        run: |
+          mkdir -p build/pathogen-field-hud
+          javac -d build/pathogen-field-hud \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudTextPolicy.java \
+            qa/java/PathogenHudTextSmoke.java
+          java -cp build/pathogen-field-hud PathogenHudTextSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
