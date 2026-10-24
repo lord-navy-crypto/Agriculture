@@ -292,6 +292,17 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/OneHealthObservation.java \
             qa/java/OneHealthEvidence5Smoke.java
           java -cp build/one-health-science OneHealthEvidence5Smoke
+      - name: Verify measured Minecraft habitat and reversible crop gameplay (Java21)
+        run: |
+          mkdir -p build/vanilla-ecology-habitat
+          javac -encoding UTF-8 -d build/vanilla-ecology-habitat \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/MinecraftHabitatScience.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaCropGameFeedback.java \
+            qa/java/MinecraftHabitatScienceSmoke.java
+          java -cp build/vanilla-ecology-habitat MinecraftHabitatScienceSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

@@ -36,6 +36,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue VIRAL_HOST_GAME_EFFECTS_ENABLED;
     public static final ModConfigSpec.BooleanValue ECOLOGY_EXTENSIONS_ENABLED;
     public static final ModConfigSpec.BooleanValue FOCUS_FIVE_VISUALS_ENABLED;
+    public static final ModConfigSpec.BooleanValue ECOLOGY_CROP_GAME_FEEDBACK_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -190,6 +191,13 @@ public final class NightwatchConfig {
                 +"selected source-labelled plants/animals. The values are NOT "
                 +"actual pathogen concentration or clinical diagnosis.")
                 .define("visuals_enabled",true);
+        BUILDER.pop();
+        BUILDER.push("ecology_gameplay_environment");
+        ECOLOGY_CROP_GAME_FEEDBACK_ENABLED=BUILDER.comment(
+                "Optional deterministic Minecraft wheat growth game feedback "
+                +"for the pre-existing extended numerical signal. OFF by "
+                +"default. No new pathogen blocks or calibrated biology.")
+                .define("wheat_growth_feedback_enabled",false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

@@ -146,6 +146,20 @@ public final class PathogenSceneRuntime {
     public static void onCropGrow(CropGrowEvent.Pre event){
         if(!(event.getLevel() instanceof ServerLevel level))return;
         String current=blockId(level,event.getPos());
+        if(NightwatchConfig.ECOLOGY_CROP_GAME_FEEDBACK_ENABLED.get()
+                &&"minecraft:wheat".equals(current)
+                &&level.hasChunkAt(event.getPos())){
+            int decorative=EcologyExtendedSavedData.forLevel(level).get(
+                    PathogenSpatialFieldRuntime.cell(event.getPos()),
+                    EcologyExtendedTaxa.index("puccinia_graminis"));
+            if(VanillaCropGameFeedback.growth(current,decorative,
+                    event.getPos().getX(),event.getPos().getZ(),
+                    level.getGameTime())
+                    ==VanillaCropGameFeedback.Growth.SHORT_GAME_PAUSE){
+                event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
+                return;
+            }
+        }
         if(PathogenSpatialFieldRuntime.pauseCrop(level,event.getPos(),current)){
             event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
             return;

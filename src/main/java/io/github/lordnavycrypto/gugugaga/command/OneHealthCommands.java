@@ -37,6 +37,8 @@ public final class OneHealthCommands {
                                 FocusFiveProfiles.Profile::id).toList(),builder))
                         .executes(context->survey(context.getSource(),
                             StringArgumentType.getString(context,"taxon")))))
+                .then(Commands.literal("environment")
+                    .executes(context->environment(context.getSource())))
                 .then(Commands.literal("journal")
                     .executes(context->journal(context.getSource())))));
     }
@@ -113,6 +115,26 @@ public final class OneHealthCommands {
                 "Use /gugugaga health evidence "+id+" for source context."),false);
         return 1;
     }
+    private static int environment(CommandSourceStack src){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run environment inspection as a player."));
+            return 0;
+        }
+        var sample=MinecraftHabitatRuntime.sample(
+                player.serverLevel(),player.blockPosition());
+        var result=MinecraftHabitatScience.interpret(sample);
+        src.sendSuccess(()->Component.literal(
+                "[Minecraft environment] "+result.environmentTag()+
+                " | sampled cell "+sample.region().x()+","+
+                sample.region().z()+" | "+result.areaBlocks()+
+                " world blocks/cell"),false);
+        src.sendSuccess(()->Component.literal(result.observationSummary()),false);
+        src.sendSuccess(()->Component.literal(
+                "These are measurements of vanilla Minecraft game state, "+
+                "not real-world climate or infection estimates."),false);
+        return 1;
+    }
+
     private static int journal(CommandSourceStack src){
         if(!(src.getEntity() instanceof ServerPlayer player)){
             src.sendFailure(Component.literal("Run journal as an in-game player."));
