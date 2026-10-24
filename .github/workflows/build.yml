@@ -339,6 +339,22 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldParticleViewPolicy.java \
             qa/java/FieldParticleViewPolicySmoke.java
           java -cp build/v17-particle-view FieldParticleViewPolicySmoke
+      - name: V19 Minecraft environmental observation and missing-data policy (Java21)
+        run: |
+          mkdir -p build/v19-minecraft-environment
+          javac -encoding UTF-8 -d build/v19-minecraft-environment \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldEnvironmentObservation.java \
+            qa/java/FieldEnvironmentObservationSmoke.java
+          java -cp build/v19-minecraft-environment FieldEnvironmentObservationSmoke
+      - name: V19 long-run symbolic game-number transport correctness (Java21)
+        run: |
+          mkdir -p build/v19-field-numerics
+          javac -encoding UTF-8 -d build/v19-field-numerics \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            qa/java/FieldGameNumericsSmoke.java
+          java -cp build/v19-field-numerics FieldGameNumericsSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
