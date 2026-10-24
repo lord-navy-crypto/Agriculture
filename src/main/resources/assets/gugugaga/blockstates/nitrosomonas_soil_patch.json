@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "view=0,satellite=false": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_0"
+    },
+    "view=0,satellite=true": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_0"
+    },
+    "view=1,satellite=false": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_1"
+    },
+    "view=1,satellite=true": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_1"
+    },
+    "view=2,satellite=false": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_2"
+    },
+    "view=2,satellite=true": {
+      "model": "gugugaga:block/nitrosomonas_soil_patch_2"
+    }
+  }
+}

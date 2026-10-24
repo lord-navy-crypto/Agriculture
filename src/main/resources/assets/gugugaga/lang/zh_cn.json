@@ -52,5 +52,10 @@
   "block.gugugaga.ecoli_microhabitat_display": "大肠杆菌肠道环境展品",
   "message.gugugaga.microbeworld.ecoli_microhabitat_display": "大肠杆菌具有肠道生态关联，并非所有菌株都会致病。",
   "block.gugugaga.t4_phage_microhabitat_display": "T4 噬菌体宿主环境展品",
-  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 与大肠杆菌存在宿主关联；未模拟实际感染。"
+  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 与大肠杆菌存在宿主关联；未模拟实际感染。",
+  "block.gugugaga.nitrosomonas_soil_patch": "欧洲亚硝化单胞菌土壤微生态",
+  "block.gugugaga.chlorella_freshwater_exhibit": "普通小球藻淡水微生态展品",
+  "message.gugugaga.microbeworld.nitrosomonas_soil_patch": "真实土壤与淡水微生物的放大景观，并不代表实际检出。",
+  "message.gugugaga.microbeworld.chlorella_freshwater_exhibit": "淡水绿藻生态展品，不是疾病或诊断结果。",
+  "message.gugugaga.microbeworld.ambient_observation": "你接触了游戏中的生态场景；这不是感染判定。"
 }

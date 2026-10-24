@@ -8,7 +8,7 @@ package io.github.lordnavycrypto.gugugaga.microbes;
 public final class MicrobeLifecyclePolicy {
     private MicrobeLifecyclePolicy(){}
 
-    public enum Exhibit { SOIL_BACILLUS, PLANT_LACTIPLANTIBACILLUS, ECOLI, T4_PHAGE }
+    public enum Exhibit { SOIL_BACILLUS, PLANT_LACTIPLANTIBACILLUS, SOIL_NITROSOMONAS, AQUATIC_CHLORELLA, ECOLI, T4_PHAGE }
     public enum Substrate { SOIL, LEAF, OTHER }
 
     /** nextView is a purely visual progression. attemptSatellite is max ONE local decoration. */
@@ -16,9 +16,9 @@ public final class MicrobeLifecyclePolicy {
 
     public static boolean canBranch(Exhibit species,Substrate below) {
         return switch(species) {
-            case SOIL_BACILLUS -> below==Substrate.SOIL;
+            case SOIL_BACILLUS, SOIL_NITROSOMONAS -> below==Substrate.SOIL;
             case PLANT_LACTIPLANTIBACILLUS -> below==Substrate.LEAF;
-            case ECOLI,T4_PHAGE -> false;
+            case ECOLI,T4_PHAGE,AQUATIC_CHLORELLA -> false;
         };
     }
 
@@ -29,6 +29,9 @@ public final class MicrobeLifecyclePolicy {
         if(canBranch(species,substrate)) {
             // A three-frame Minecraft animation, with a strictly capped one-child branch.
             return new Outcome(Math.min(2,view+1),view==2&&!satellite,false);
+        }
+        if(species==Exhibit.AQUATIC_CHLORELLA) {
+            return new Outcome(Math.min(2,view+1),false,false);
         }
         if(species==Exhibit.T4_PHAGE || species==Exhibit.ECOLI) {
             // Host relationship cues only in a player-built exhibit.

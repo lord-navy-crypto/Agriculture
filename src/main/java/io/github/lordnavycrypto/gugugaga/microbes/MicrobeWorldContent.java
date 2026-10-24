@@ -29,16 +29,26 @@ public final class MicrobeWorldContent {
         BLOCKS.register("ecoli_microhabitat_display",MicrobeWorldContent::patch);
     public static final DeferredBlock<MicrobeWorldPatchBlock> T4=
         BLOCKS.register("t4_phage_microhabitat_display",MicrobeWorldContent::patch);
+    public static final DeferredBlock<MicrobeWorldPatchBlock> NITROSOMONAS=
+        BLOCKS.register("nitrosomonas_soil_patch",MicrobeWorldContent::patch);
+    public static final DeferredBlock<MicrobeWorldPatchBlock> CHLORELLA=
+        BLOCKS.register("chlorella_freshwater_exhibit",MicrobeWorldContent::patch);
     public static final Supplier<BlockItem> BACILLUS_ITEM=ITEMS.registerSimpleBlockItem(BACILLUS);
     public static final Supplier<BlockItem> PLANTARUM_ITEM=ITEMS.registerSimpleBlockItem(PLANTARUM);
     public static final Supplier<BlockItem> ECOLI_ITEM=ITEMS.registerSimpleBlockItem(ECOLI);
     public static final Supplier<BlockItem> T4_ITEM=ITEMS.registerSimpleBlockItem(T4);
+    public static final Supplier<BlockItem> NITROSOMONAS_ITEM=
+        ITEMS.registerSimpleBlockItem(NITROSOMONAS);
+    public static final Supplier<BlockItem> CHLORELLA_ITEM=
+        ITEMS.registerSimpleBlockItem(CHLORELLA);
     public static void onCreativeTab(BuildCreativeModeTabContentsEvent event){
         if(event.getTabKey()==CreativeModeTabs.NATURAL_BLOCKS){
             event.accept(BACILLUS_ITEM.get());
             event.accept(PLANTARUM_ITEM.get());
             event.accept(ECOLI_ITEM.get());
             event.accept(T4_ITEM.get());
+            event.accept(NITROSOMONAS_ITEM.get());
+            event.accept(CHLORELLA_ITEM.get());
         }
     }
 }

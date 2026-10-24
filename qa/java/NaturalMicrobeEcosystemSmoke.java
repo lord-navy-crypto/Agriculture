@@ -14,11 +14,15 @@ public final class NaturalMicrobeEcosystemSmoke {
         return facts.stream().filter(x->x.evidence()==kind).count();
     }
     public static void main(String[] args) {
-        check(NaturalMicrobeCatalog.all().size()==4,"only four documented starter taxa");
+        check(NaturalMicrobeCatalog.all().size()==6,"six documented taxa");
         check(NaturalMicrobeCatalog.E_COLI.ncbiTaxonId()==562,"real E. coli taxon ID");
         check(NaturalMicrobeCatalog.B_SUBTILIS.ncbiTaxonId()==1423,"real soil bacterium");
         check(NaturalMicrobeCatalog.L_PLANTARUM.ncbiTaxonId()==1590,"real plant bacterium");
         check(NaturalMicrobeCatalog.T4_PHAGE.ncbiTaxonId()==10665,"real T4 phage");
+        check(NaturalMicrobeCatalog.N_EUROPAEA.ncbiTaxonId()==915,"real soil/freshwater bacterium");
+        check(NaturalMicrobeCatalog.C_VULGARIS.ncbiTaxonId()==3077,"real freshwater green microalga");
+        check(NaturalMicrobeCatalog.C_VULGARIS.kind()==Kind.MICROALGA,
+                "algae are not bacteria or viruses");
         check(NaturalMicrobeCatalog.T4_PHAGE.kind()==Kind.VIRUS
                 &&NaturalMicrobeCatalog.E_COLI.kind()==Kind.BACTERIUM,
                 "real virus versus bacterial taxonomy");

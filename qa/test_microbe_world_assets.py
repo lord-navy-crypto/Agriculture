@@ -6,7 +6,8 @@ A=ROOT/"src/main/resources/assets/gugugaga"
 D=ROOT/"src/main/resources/data/gugugaga"
 J=ROOT/"src/main/java/io/github/lordnavycrypto/gugugaga"
 IDS=("soil_bacillus_patch","plant_lactiplantibacillus_patch",
-     "ecoli_microhabitat_display","t4_phage_microhabitat_display")
+     "ecoli_microhabitat_display","t4_phage_microhabitat_display",
+     "nitrosomonas_soil_patch","chlorella_freshwater_exhibit")
 class NativeWorldContent(unittest.TestCase):
  def test_native_registration(self):
   mod=(J/"GuguGagaMod.java").read_text()
@@ -19,6 +20,9 @@ class NativeWorldContent(unittest.TestCase):
   self.assertIn("world.setBlock(pos,state.setValue(VIEW,",code)
   self.assertIn("public void randomTick(",code)
   self.assertIn("MicrobeLifecyclePolicy.advance(",code)
+  self.assertIn("MicrobeEnvironmentPolicy.decide(",code)
+  self.assertIn("entityInside(BlockState state,Level world,",code)
+  self.assertIn("MICROBE_ENTITY_CUES_ENABLED",code)
   self.assertIn("world.hasChunkAt(other)",code)
   self.assertIn("setValue(SATELLITE,true)",code)
   self.assertIn(".randomTicks()",reg)
@@ -45,7 +49,7 @@ class NativeWorldContent(unittest.TestCase):
     self.assertIn("block.gugugaga."+id,l)
     self.assertIn("message.gugugaga.microbeworld."+id,l)
  def test_wild_generation_only_for_soil_and_leaf(self):
-  for id in IDS[:2]:
+  for id in IDS[:2]+IDS[4:5]:
    c=json.loads((D/"worldgen/configured_feature"/(id+".json")).read_text())
    p=json.loads((D/"worldgen/placed_feature"/(id+".json")).read_text())
    b=json.loads((D/"neoforge/biome_modifier"/(id+".json")).read_text())
@@ -55,6 +59,6 @@ class NativeWorldContent(unittest.TestCase):
    self.assertEqual(b["type"],"neoforge:add_features")
    self.assertEqual(b["features"],"gugugaga:"+id)
    self.assertEqual(b["step"],"vegetal_decoration")
-  for id in IDS[2:]:
+  for id in IDS[2:4]+IDS[5:]:
    self.assertFalse((D/"worldgen/placed_feature"/(id+".json")).exists())
 if __name__=="__main__": unittest.main()
