@@ -50,14 +50,26 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         return batch.cells();
     }
     public boolean set(PathogenSpatialFieldMath.Cell cell,int channel,int value){
-        if(value<0||value>PathogenSpatialFieldMath.MAX_PRESSURE)
-            throw new IllegalArgumentException("Invalid game pressure");
-        if(get(cell,channel)==value)return true; // avoid unnecessary dirty saves
-        var next=PathogenSpatialFieldMath.withPressure(cells,cell,channel,value);
-        if(value>0 && !cells.containsKey(cell) && next.size()==cells.size())
-            return false;
-        // Keep the owned live map mutable for the O(1) route-event fast path.
-        cells=new HashMap<>(next);
+        java.util.Objects.requireNonNull(cell);
+        if(channel<0||channel>=PathogenSpatialFieldMath.CHANNELS||
+                value<0||value>PathogenSpatialFieldMath.MAX_PRESSURE)
+            throw new IllegalArgumentException("Invalid game field value");
+        // In-place O(1) edit of our OWNED sparse map. snapshot() still
+        // deep-copies before returning data to external code.
+        int[] row=cells.get(cell);
+        int before=row==null?0:row[channel];
+        if(before==value)return true;
+        if(row==null){
+            if(cells.size()>=PathogenSpatialFieldMath.MAX_CELLS)return false;
+            row=new int[PathogenSpatialFieldMath.CHANNELS];
+            cells.put(cell,row);
+        }
+        row[channel]=value;
+        if(value==0){
+            boolean empty=true;
+            for(int v:row)if(v!=0){empty=false;break;}
+            if(empty)cells.remove(cell);
+        }
         setDirty();
         return true;
     }
@@ -100,7 +112,10 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         var frame=PathogenSpatialFieldMath.step(cells,cursor,64,gameStep,loadedActive);
         // Own independent arrays: callers may inspect/mutate returned Frame data,
         // but they must NEVER mutate our persisted world field through aliasing.
-        cells=new HashMap<>(PathogenSpatialFieldMath.immutableCopy(frame.cells()));
+        // Cursor-only updates must persist fairness progress but need not
+        // rehydrate 1024 x 15 arrays when values are unchanged.
+        if(frame.moved()>0||frame.faded()>0)
+            cells=new HashMap<>(PathogenSpatialFieldMath.immutableCopy(frame.cells()));
         int previousCursor=cursor;
         cursor=frame.nextCursor();
         if(frame.moved()>0||frame.faded()>0||cursor!=previousCursor)

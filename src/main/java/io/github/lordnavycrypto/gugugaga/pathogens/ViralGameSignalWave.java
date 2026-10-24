@@ -4,8 +4,10 @@ import java.util.function.Predicate;
 
 /**
  * Small fictional Minecraft DATA-wave pass, not real virus propagation.
- * Only 8 VIRUS-labelled channels can emit; emitted scores are invented.
- * Snapshot input prevents a new destination from acting in this same frame.
+ * Eight virus-labelled channels move bounded symbolic GAME scores.
+ * Every increase at a destination is debited from its source: exact
+ * discrete conservation, NOT biological mass, infectivity or kinetics.
+ * Snapshot input prevents new destinations from acting in this frame.
  * Both source and destination must be active and already chunk-loaded
  * according to the caller; at most 64 sources / 1024 world cells.
  */
@@ -48,20 +50,30 @@ public final class ViralGameSignalWave {
                         result.size()>=PathogenSpatialFieldMath.MAX_CELLS)
                     continue;
                 int beforeLevel=target==null?0:target[channel];
-                int next=ViralGameSignalPolicy.nextLevel(channel,
+                int desired=ViralGameSignalPolicy.nextLevel(channel,
                         source[channel],beforeLevel);
-                if(next>beforeLevel){
+                // Only the initial snapshot can fund the move; don't duplicate
+                // virtual units or send just-received numbers the same frame.
+                int[] sourceNow=result.get(sourceCell);
+                int transfer=Math.min(Math.max(0,desired-beforeLevel),
+                        Math.min(source[channel],sourceNow[channel]));
+                if(transfer>0){
                     if(target==null){
                         target=new int[15];
                         result.put(destination,target);
                         created++;
                     }
-                    target[channel]=next;
+                    sourceNow[channel]-=transfer;
+                    target[channel]+=transfer;
                     emitted++;
                 }
                 break; // At most one numeric event per source and tick.
             }
         }
+        result.entrySet().removeIf(entry->{
+            for(int n:entry.getValue())if(n>0)return false;
+            return true;
+        });
         return new Frame(result,visit.nextCursor(),visit.cells().size(),
                 emitted,created);
     }

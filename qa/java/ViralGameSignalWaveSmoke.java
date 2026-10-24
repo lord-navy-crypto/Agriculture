@@ -18,7 +18,9 @@ public final class ViralGameSignalWaveSmoke {
   yes(first.emitted()==1&&first.cells().size()==2,
     "real first-frame adjacent game information appears");
   yes(first.newCells()==1,"one new numerical region");
-  yes(first.cells().get(start)[virus]==12,"game wave does not consume source marker");
+  yes(first.cells().get(start)[virus]==6,"source debited for six game units");
+  yes(first.cells().values().stream().mapToInt(row->row[virus]).sum()==12,
+    "exact symbolic source/destination ledger balance");
   yes(first.visited()<=64,"bounded source budget");
   var current=first.cells();
   for(int f=1;f<200;f++){
@@ -41,7 +43,8 @@ public final class ViralGameSignalWaveSmoke {
   full.get(new PathogenSpatialFieldMath.Cell(0,0))[virus]=15;
   var capped=ViralGameSignalWave.advance(full,0,64,0,c->true);
   yes(capped.cells().size()==1024,"no allocation above max data cells");
-  yes(capped.emitted()==0,"occupied full field with no eligible viral recipient");
+  yes(capped.cells().values().stream().mapToInt(row->row[virus]).sum()==15,
+    "no game units may be created at storage capacity");
   int[] chicken=new int[15];
   chicken[PathogenSpatialFieldMath.channel("influenza_a_virus")]=10;
   yes(ViralHostVisualPolicy.forAnimal("minecraft:chicken",chicken).cue()
