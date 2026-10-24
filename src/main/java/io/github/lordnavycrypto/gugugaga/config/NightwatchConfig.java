@@ -26,6 +26,9 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue MICROBE_ENTITY_CUES_ENABLED;
     public static final ModConfigSpec.BooleanValue PATHOGEN_GAMEPLAY_ENABLED;
     public static final ModConfigSpec.BooleanValue LIVING_MICROBE_SIMULATION;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_ENGINE_ENABLED;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_CROP_PAUSE;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_ANIMAL_CUES;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -126,6 +129,18 @@ public final class NightwatchConfig {
                 +"No unobserved wild animals start infected; no pathogen transfer "
                 +"or real experimental population values.")
                 .define("enabled",true);
+        BUILDER.pop();
+        BUILDER.push("vanilla_host_scenes");
+        PATHOGEN_SCENE_ENGINE_ENABLED=BUILDER.comment(
+                "Enable manually selected, object-bound Minecraft art scenarios "
+                +"for 15 real taxon labels; never an actual infection model.")
+                .define("enabled",true);
+        PATHOGEN_SCENE_CROP_PAUSE=BUILDER.comment(
+                "A short, reversible natural growth pause on individually enrolled crops only.")
+                .define("enrolled_crop_growth_pause",true);
+        PATHOGEN_SCENE_ANIMAL_CUES=BUILDER.comment(
+                "Small, finite movement cue on explicitly enrolled animals only.")
+                .define("enrolled_animal_movement_cue",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
