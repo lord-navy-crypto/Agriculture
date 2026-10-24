@@ -332,6 +332,13 @@ jobs:
           java -cp build/game-field-mass-balance ViralGameSignalsSmoke
           java -cp build/game-field-mass-balance ViralGameSignalWaveSmoke
           java -cp build/game-field-mass-balance FieldMassBalanceSmoke
+      - name: Verify V17 surface projection and 200-player cosmetic viewer fairness (Java21)
+        run: |
+          mkdir -p build/v17-particle-view
+          javac -encoding UTF-8 -d build/v17-particle-view \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldParticleViewPolicy.java \
+            qa/java/FieldParticleViewPolicySmoke.java
+          java -cp build/v17-particle-view FieldParticleViewPolicySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
