@@ -16,3 +16,10 @@ Next: original microbe sprites, natural cave/water habitat content, environmenta
 ## In-world ecological visual connection
 
 Neighboring creative-placeable T4 and E. coli exhibit blocks render a small native ENCHANT particle cue only when the documented species-level host association is present. This is a rendered classroom-style association, NEVER evidence that phage infection or bacterial lysis actually occurred. Natural soil/plant patches get budget-limited happy-particle visuals when in camera range. The particle random draw is an aesthetic budget, not a disease probability; no surrounding chunks are loaded to test neighbors.
+
+
+## Lifecycle and bounded expansion (second implementation)
+
+Game rules are independent of clinical or laboratory biology. Vanilla block random ticks advance the soil/plant visual patch through three frames. Once a mature original reaches its final visual frame, it can create at most **one adjacent satellite** on the same compatible substrate, and both blocks are marked `satellite=true` (the child is non-branching). A failed placement does not force a chunk or generate a new one. Repeated patches therefore cannot chain-expand without a new player-placed/world-generated origin. E. coli and T4 exhibits **never** create offspring blocks; when the documented T4/E. coli association is represented by physically adjacent exhibits, they cycle a purely symbolic display and otherwise revert to the idle frame. This does **not** assert infection, strain susceptibility, viral replication rates, bacterial growth rates or public-health consequences.
+
+Server config `microbe_ecology.enabled` and `microbe_ecology.one_satellite_per_patch` let server owners disable art changes or extra patches without affecting item registrations or scientific records. Substrate checks and neighbor scans are strictly loaded-chunk-only. `MicrobeLifecyclePolicy` is separately tested using pure Java 21. The feature uses no time-based epidemiological coefficients, player diseases, destructive block modifications or independent server tick loop.

@@ -21,6 +21,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue CORRUPTION_VISUALS_ENABLED;
     public static final ModConfigSpec.BooleanValue REDACTOR_HOSTILITY_ENABLED;
     public static final ModConfigSpec.BooleanValue PLAYABLE_LOOP_ENABLED;
+    public static final ModConfigSpec.BooleanValue MICROBE_ECOLOGY_ENABLED;
+    public static final ModConfigSpec.BooleanValue MICROBE_SATELLITES_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -94,6 +96,16 @@ public final class NightwatchConfig {
                 +"world defaults ON for new profiles. Every player must voluntarily JOIN "
                 +"using the UI. Server owners can pause through the same panel.")
                 .define("playable_loop",true);
+        BUILDER.pop();
+        BUILDER.push("microbe_ecology");
+        MICROBE_ECOLOGY_ENABLED=BUILDER.comment(
+                "Allow native enlarged ecosystem-art patch states to advance on vanilla random ticks. "
+                +"These are Minecraft art states, not real biological growth values.")
+                .define("enabled",true);
+        MICROBE_SATELLITES_ENABLED=BUILDER.comment(
+                "Allow each naturally generated soil/leaf decoration ONE neighboring satellite, "
+                +"without recursion. Turn OFF to keep the patches static.")
+                .define("one_satellite_per_patch",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

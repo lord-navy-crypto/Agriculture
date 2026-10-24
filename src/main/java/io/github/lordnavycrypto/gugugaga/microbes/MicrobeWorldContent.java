@@ -19,7 +19,7 @@ public final class MicrobeWorldContent {
         DeferredRegister.createItems(GuguGagaMod.MOD_ID);
     private static MicrobeWorldPatchBlock patch(){
         return new MicrobeWorldPatchBlock(BlockBehaviour.Properties.of()
-            .noCollission().noOcclusion().instabreak().sound(SoundType.GRASS));
+            .noCollission().noOcclusion().instabreak().randomTicks().sound(SoundType.GRASS));
     }
     public static final DeferredBlock<MicrobeWorldPatchBlock> BACILLUS=
         BLOCKS.register("soil_bacillus_patch",MicrobeWorldContent::patch);

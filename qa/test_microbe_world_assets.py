@@ -17,6 +17,11 @@ class NativeWorldContent(unittest.TestCase):
   self.assertIn("MicrobeWorldContent::onCreativeTab",mod)
   self.assertIn("CreativeModeTabs.NATURAL_BLOCKS",reg)
   self.assertIn("world.setBlock(pos,state.setValue(VIEW,",code)
+  self.assertIn("public void randomTick(",code)
+  self.assertIn("MicrobeLifecyclePolicy.advance(",code)
+  self.assertIn("world.hasChunkAt(other)",code)
+  self.assertIn("setValue(SATELLITE,true)",code)
+  self.assertIn(".randomTicks()",reg)
   self.assertIn("NaturalMicrobeCatalog.documentedHostRelation(",code)
   self.assertIn("ParticleTypes.ENCHANT",code)
   self.assertIn("world.hasChunkAt(nearby)",code)
@@ -27,9 +32,9 @@ class NativeWorldContent(unittest.TestCase):
   langs=[json.loads((A/"lang"/(k+".json")).read_text()) for k in ("en_us","zh_cn")]
   for id in IDS:
    states=json.loads((A/"blockstates"/(id+".json")).read_text())["variants"]
-   self.assertEqual(set(states),{"view=0","view=1","view=2"})
+   self.assertEqual(set(states),{f"view={v},satellite={str(s).lower()}" for v in range(3) for s in (False,True)})
    for n in range(3):
-    p=states["view="+str(n)]["model"].split(":")[1].split("/")[1]
+    p=states[f"view={n},satellite=false"]["model"].split(":")[1].split("/")[1]
     m=json.loads((A/"models/block"/(p+".json")).read_text())
     self.assertEqual(m["parent"],"minecraft:block/cross")
    item=json.loads((A/"models/item"/(id+".json")).read_text())
