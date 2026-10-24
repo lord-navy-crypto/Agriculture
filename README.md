@@ -1,3 +1,10 @@
+> **NEW NATURAL MICROBIOLOGY BRANCH — 真实细菌与病毒生态模拟 (2026-10-24)**  
+> User-directed correction: **no fictional pathogens, no invented biological reproduction/transmission rates and NO mandatory medical devices or treatment systems**. This new experimental branch builds an NCBI-sourced ecology of genuinely existing species: *Escherichia coli* (taxid 562), *Bacillus subtilis* (1423), *Lactiplantibacillus plantarum* (1590) and the natural bacterial virus *Tequatrovirus T4* (10665). The T4–E. coli relation is documented, but bacterial strain-level susceptibility and site-specific occurrence are NOT assumed.  
+> Initial delivery: pure Java 21 source-backed real-species catalog and evidence-only ecological relationships + automated tests. **It is not yet a native Minecraft in-world microorganism visualization or population simulator.** The old frozen historical horror/folklore branches and stable `main` are untouched.  
+> [Detailed natural microbial ecology plan](docs/REAL_NATURAL_MICROBE_ECOLOGY_2026-10-24.md).
+
+---
+
 > **v0.10 restart branch / v0.10 恢复开发分支（2026-10-19）**  
 > This branch was created following the user's explicit request to complete the older v0.10 gameplay loop. The historical [freeze archive](docs/PROJECT_FREEZE_2026-10-19.md), original v0.10 branch, v0.9 baseline, newer experimental branches and `main` are preserved. Prior v0.10 CI was green, but a green CI is **not** proof of real client/multiplayer gameplay. v0.10.0-alpha.3 is a **UI-first experimental test candidate**, not a stable release. Consult [v0.10 acceptance plan](docs/V010_COMPLETION_PLAYTEST.md).
 >
