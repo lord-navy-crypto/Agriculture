@@ -15,6 +15,8 @@ import io.github.lordnavycrypto.gugugaga.network.NightwatchActionPacket;
 import io.github.lordnavycrypto.gugugaga.ai.NightwatchDirector;
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import io.github.lordnavycrypto.gugugaga.microbes.MicrobeWorldContent;
+import io.github.lordnavycrypto.gugugaga.microbes.PathogenWorldContent;
+import io.github.lordnavycrypto.gugugaga.microbes.PathogenGameplayRuntime;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -56,6 +58,9 @@ public final class GuguGagaMod {
         ENTITIES.register(modBus);
         MicrobeWorldContent.BLOCKS.register(modBus);
         MicrobeWorldContent.ITEMS.register(modBus);
+        PathogenWorldContent.BLOCKS.register(modBus);
+        PathogenWorldContent.ITEMS.register(modBus);
+        modBus.addListener(PathogenWorldContent::onCreativeTab);
         modBus.addListener(MicrobeWorldContent::onCreativeTab);
         modBus.addListener(GuguGagaMod::onAttributes);
         modBus.addListener(NightwatchActionPacket::register);
@@ -68,6 +73,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(PathogenGameplayRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");

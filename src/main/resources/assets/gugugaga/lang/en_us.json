@@ -57,5 +57,16 @@
   "block.gugugaga.chlorella_freshwater_exhibit": "C. vulgaris Freshwater Exhibit",
   "message.gugugaga.microbeworld.nitrosomonas_soil_patch": "Soil/freshwater microbe: enlarged Minecraft scenery, not an actual detection.",
   "message.gugugaga.microbeworld.chlorella_freshwater_exhibit": "Freshwater green microalga exhibit; no disease or diagnosis.",
-  "message.gugugaga.microbeworld.ambient_observation": "You noticed an environmental micro-ecology scene, not an infection."
+  "message.gugugaga.microbeworld.ambient_observation": "You noticed an environmental micro-ecology scene, not an infection.",
+  "block.gugugaga.rabies_wildlife_case": "Wildlife rabies incident",
+  "block.gugugaga.avian_influenza_case": "Avian influenza animal incident",
+  "block.gugugaga.field_clinic": "Field medical clinic",
+  "message.gugugaga.pathogen.contact": "Contact recorded; not infection. Visit the clinic for assessment.",
+  "message.gugugaga.pathogen.illness": "A simulated influenza illness began; game fatigue enabled.",
+  "message.gugugaga.pathogen.not_diagnosed": "Rabies contact alone is not a diagnosis. Early medical assessment matters.",
+  "message.gugugaga.pathogen.no_case": "Clinic: no active recorded case.",
+  "message.gugugaga.pathogen.supportive_care": "Supportive-care gameplay visit completed. Recovering.",
+  "message.gugugaga.pathogen.early_care": "Early care completed. Real possible rabies exposure requires prompt medical advice.",
+  "message.gugugaga.pathogen.followup": "Clinical follow-up: recovery in progress.",
+  "message.gugugaga.pathogen.stage": "Medical-game stage has changed."
 }

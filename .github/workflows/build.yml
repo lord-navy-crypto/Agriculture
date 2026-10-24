@@ -159,6 +159,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeEnvironmentPolicy.java \
             qa/java/MicrobeEnvironmentSmoke.java
           java -cp build/microbe-environment-smoke MicrobeEnvironmentSmoke
+      - name: Test source-scoped pathogen incident and clinic state machine (Java21)
+        run: |
+          mkdir -p build/pathogen-medical-smoke
+          javac -d build/pathogen-medical-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/PathogenGameplayPolicy.java \
+            qa/java/PathogenGameplaySmoke.java
+          java -cp build/pathogen-medical-smoke PathogenGameplaySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
