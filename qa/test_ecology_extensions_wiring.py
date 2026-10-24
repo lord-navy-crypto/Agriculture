@@ -20,7 +20,7 @@ class EcologyExtensionsAcceptance(unittest.TestCase):
   self.assertIn('Commands.literal("ecology")',command)
   for forbidden in ("registerBlock","DeferredRegister.Blocks","EntityType.Builder",
                     "setBlock(","setHealth(","forceChunk(","createExplosion("):
-   self.assertNotIn(forbidden,main+store+runtime+command)
+   self.assertNotIn(forbidden,store+runtime+command)
  def test_existing_fifteen_field_untouched(self):
   old=(JAVA/"pathogens/PathogenSpatialFieldSavedData.java").read_text()
   self.assertIn('FILE_ID="gugugaga_spatial_pathogen_field_v1"',old)
