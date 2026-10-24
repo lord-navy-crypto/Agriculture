@@ -225,6 +225,16 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
             qa/java/PathogenFastRouteParitySmoke.java
           java -cp build/pathogen-fast-route-parity PathogenFastRouteParitySmoke
+      - name: Verify source-backed 15-channel game field overview and 7x7 display (Java21)
+        run: |
+          mkdir -p build/pathogen-field-overview
+          javac -d build/pathogen-field-overview \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldOverview.java \
+            qa/java/PathogenFieldOverviewSmoke.java
+          java -cp build/pathogen-field-overview PathogenFieldOverviewSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

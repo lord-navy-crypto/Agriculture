@@ -7,6 +7,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldMath;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldSavedData;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldTextMap;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldOverview;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -21,6 +22,7 @@ public final class PathogenSpatialFieldCommands{
         event.getDispatcher().register(Commands.literal("gugugaga")
             .then(Commands.literal("field")
                 .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                .then(Commands.literal("overview").executes(ctx->overview(ctx.getSource())))
                 .then(Commands.literal("map")
                     .then(Commands.argument("taxon",StringArgumentType.word())
                         .suggests((ctx,builder)->SharedSuggestionProvider.suggest(
@@ -54,6 +56,28 @@ public final class PathogenSpatialFieldCommands{
         }
         src.sendFailure(Component.literal("Run /gugugaga field status as a player."));
         return 0;
+    }
+    private static int overview(CommandSourceStack src){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run field overview as a player."));
+            return 0;
+        }
+        var at=PathogenSpatialFieldRuntime.cell(player.blockPosition());
+        var field=PathogenSpatialFieldSavedData.forLevel(player.serverLevel()).snapshot();
+        var state=PathogenFieldOverview.inspect(field,at);
+        player.sendSystemMessage(Component.literal("[Game field] "+
+                state.active()+" active channels; "+state.total()+" game units; "+
+                state.occupied()+"/49 occupied nearby regions."));
+        for(var e:state.top())
+            player.sendSystemMessage(Component.literal("  "+e.id()+" ["+e.type()+"] "+
+                    e.gameUnits()+"/15"));
+        player.sendSystemMessage(Component.literal(
+                "7x7 numeric region overview | 0..F = strongest game indicator"));
+        for(var row:state.map())
+            player.sendSystemMessage(Component.literal("  "+row));
+        player.sendSystemMessage(Component.literal(
+                "Fictional Minecraft values; not an actual infection measurement."));
+        return 1;
     }
     private static int visualize(CommandSourceStack src,String taxon){
         if(!(src.getEntity() instanceof ServerPlayer player)){
