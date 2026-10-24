@@ -44,5 +44,13 @@
   "screen.gugugaga.onehealth.details": "切换资料",
   "screen.gugugaga.onehealth.back": "返回",
   "screen.gugugaga.onehealth.noautomatic": "看到动物或接触事件，并不代表发生感染。",
-  "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。"
+  "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。",
+  "block.gugugaga.soil_bacillus_patch": "枯草芽孢杆菌土壤微生态",
+  "message.gugugaga.microbeworld.soil_bacillus_patch": "真实土壤关联；这是放大的游戏模型，不代表实际检测。",
+  "block.gugugaga.plant_lactiplantibacillus_patch": "植物乳植杆菌植物微生态",
+  "message.gugugaga.microbeworld.plant_lactiplantibacillus_patch": "真实植物材料关联；这是游戏模型，不代表实际检测。",
+  "block.gugugaga.ecoli_microhabitat_display": "大肠杆菌肠道环境展品",
+  "message.gugugaga.microbeworld.ecoli_microhabitat_display": "大肠杆菌具有肠道生态关联，并非所有菌株都会致病。",
+  "block.gugugaga.t4_phage_microhabitat_display": "T4 噬菌体宿主环境展品",
+  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 与大肠杆菌存在宿主关联；未模拟实际感染。"
 }

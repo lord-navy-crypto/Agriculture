@@ -44,5 +44,13 @@
   "screen.gugugaga.onehealth.details": "Details",
   "screen.gugugaga.onehealth.back": "Back",
   "screen.gugugaga.onehealth.noautomatic": "An animal sighting or contact never means infection.",
-  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation."
+  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation.",
+  "block.gugugaga.soil_bacillus_patch": "Bacillus subtilis Soil Microhabitat",
+  "message.gugugaga.microbeworld.soil_bacillus_patch": "Documented soil association; this is enlarged game art, not an actual microbe detection.",
+  "block.gugugaga.plant_lactiplantibacillus_patch": "L. plantarum Plant Microhabitat",
+  "message.gugugaga.microbeworld.plant_lactiplantibacillus_patch": "Documented plant-material association; this is game art, not an actual microbe detection.",
+  "block.gugugaga.ecoli_microhabitat_display": "E. coli Intestinal-context Exhibit",
+  "message.gugugaga.microbeworld.ecoli_microhabitat_display": "E. coli has intestinal host associations; not all strains are pathogens.",
+  "block.gugugaga.t4_phage_microhabitat_display": "T4 Phage Host-context Exhibit",
+  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 has a documented E. coli host relation; no actual phage infection is simulated."
 }
