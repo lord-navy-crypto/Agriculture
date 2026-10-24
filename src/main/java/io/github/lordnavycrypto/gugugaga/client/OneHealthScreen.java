@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.client;
 
 import io.github.lordnavycrypto.gugugaga.microbes.OneHealthEvidenceCatalog;
+import io.github.lordnavycrypto.gugugaga.microbes.OneHealthHostNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -38,7 +39,7 @@ public final class OneHealthScreen extends Screen {
                 .bounds(x+cell,y,cell-2,20).build());
         addRenderableWidget(Button.builder(
                 Component.translatable("screen.gugugaga.onehealth.details"),
-                b->sectionIndex=(sectionIndex+1)%3)
+                b->sectionIndex=(sectionIndex+1)%4)
                 .bounds(x+cell*2,y,cell-2,20).build());
         addRenderableWidget(Button.builder(
                 Component.translatable("screen.gugugaga.onehealth.back"),
@@ -80,6 +81,31 @@ public final class OneHealthScreen extends Screen {
                     "Documented interface types: "+
                     profile.documentedInterfaceCategories()),
                     textX,153,wrap,0xFFCFDEDD);
+        } else if(sectionIndex==2) {
+            var network=OneHealthHostNetwork.forProfile(profile.id());
+            g.drawCenteredString(font,Component.translatable(
+                    "screen.gugugaga.onehealth.network"),width/2,60,0xFF9CE4C2);
+            int row=0;
+            int rowHeight=Math.max(21,Math.min(31,(height-116)/
+                    Math.max(1,network.edges().size())));
+            for(var edge:network.edges()) {
+                int lineY=78+(row++)*rowHeight;
+                if(lineY>height-58)break;
+                g.fill(textX-5,lineY-3,textX-2,lineY+10,0xFF83B6AA);
+                g.drawWordWrap(font,Component.literal(
+                        network.node(edge.sourceNode()).caption()+"  >  "+
+                        network.node(edge.targetNode()).caption()),
+                        textX,lineY,wrap,0xFFE3E8E6);
+                // The explanatory edge type is shown explicitly: this
+                // is an ecological concept graph, not a prediction of
+                // real transmission or an infection event in Minecraft.
+                if(rowHeight>=29)
+                    g.drawWordWrap(font,Component.literal(edge.annotation()),
+                            textX+7,lineY+13,wrap-7,0xFFB2C8C3);
+            }
+            g.drawCenteredString(font,Component.translatable(
+                    "screen.gugugaga.onehealth.graph_disclaimer"),
+                    width/2,height-44,0xFFFFD39A);
         } else {
             g.drawWordWrap(font,Component.literal(profile.uncertainty()),
                     textX,62,wrap,0xFFEAD9AA);

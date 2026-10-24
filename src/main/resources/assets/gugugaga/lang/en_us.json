@@ -44,5 +44,14 @@
   "screen.gugugaga.onehealth.details": "Details",
   "screen.gugugaga.onehealth.back": "Back",
   "screen.gugugaga.onehealth.noautomatic": "An animal sighting or contact never means infection.",
-  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation."
+  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation.",
+  "screen.gugugaga.onehealth.network": "Evidence graph: animals, vectors and people",
+  "screen.gugugaga.onehealth.graph_disclaimer": "Documented categories only; no automatic infection",
+  "screen.gugugaga.microbes.open": "Natural Microbes Field Guide",
+  "screen.gugugaga.microbes.title": "Real Bacteria & Bacteriophages",
+  "screen.gugugaga.microbes.kind": "Microorganism group: %s",
+  "screen.gugugaga.microbes.habitat": "Documented habitat associations: %s",
+  "screen.gugugaga.microbes.host": "Documented host taxon IDs: %s",
+  "screen.gugugaga.microbes.not_observed": "A habitat association does not prove presence in Minecraft.",
+  "screen.gugugaga.microbes.source": "Scientific taxonomy reference: NCBI %s"
 }

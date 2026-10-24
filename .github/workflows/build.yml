@@ -142,8 +142,11 @@ jobs:
           javac -d build/onehealth-evidence-smoke \
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthEvidenceCatalog.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthObservationPolicy.java \
-            qa/java/OneHealthEvidenceSmoke.java
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthHostNetwork.java \
+            qa/java/OneHealthEvidenceSmoke.java \
+            qa/java/OneHealthHostNetworkSmoke.java
           java -cp build/onehealth-evidence-smoke OneHealthEvidenceSmoke
+          java -cp build/onehealth-evidence-smoke OneHealthHostNetworkSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

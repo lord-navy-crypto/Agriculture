@@ -16,11 +16,25 @@ public final class OneHealthEvidenceSmoke {
                 category,"Minecraft research observation (not a diagnosis)");
     }
     public static void main(String[] args) {
-        check(OneHealthEvidenceCatalog.all().size()==2,"two original source-backed case studies");
+        check(OneHealthEvidenceCatalog.all().size()==3,"three original source-backed case studies");
         check(OneHealthEvidenceCatalog.RABIES.ncbiTaxonId()==11292,
                 "Rabies current NCBI taxon 11292");
         check(OneHealthEvidenceCatalog.AVIAN_INFLUENZA_A.ncbiTaxonId()==11320,
                 "Influenza A NCBI taxon 11320");
+        check(OneHealthEvidenceCatalog.WEST_NILE.ncbiTaxonId()==11082,
+                "West Nile virus NCBI taxon 11082");
+        check(OneHealthEvidenceCatalog.WEST_NILE.documentedContexts().contains(
+                HostContext.WILD_BIRDS),"CDC documented bird host group");
+        check(OneHealthEvidenceCatalog.WEST_NILE.documentedContexts().contains(
+                HostContext.MOSQUITOES),"CDC documented mosquito ecology");
+        check(OneHealthEvidenceCatalog.WEST_NILE.documentedContexts().contains(
+                HostContext.HORSES),"CDC documented incidental equine health");
+        check(OneHealthEvidenceCatalog.WEST_NILE.documentedInterfaceCategories()
+                .contains(HumanInterface.MOSQUITO_BITE_CONTEXT),
+                "CDC documented high-level human interface");
+        check(!OneHealthEvidenceCatalog.WEST_NILE.documentedInterfaceCategories()
+                .contains(HumanInterface.INFECTED_ANIMAL_BITE_OR_SCRATCH),
+                "do not copy rabies bite contexts to West Nile");
         check(OneHealthEvidenceCatalog.RABIES.scientificName()
                 .equals("Lyssavirus rabies"),"current ICTV Rabies taxon");
         check(OneHealthEvidenceCatalog.AVIAN_INFLUENZA_A.scientificName()
