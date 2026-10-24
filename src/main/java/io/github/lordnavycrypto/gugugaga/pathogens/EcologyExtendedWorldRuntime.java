@@ -1,5 +1,6 @@
 package io.github.lordnavycrypto.gugugaga.pathogens;
 
+import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -41,6 +42,7 @@ public final class EcologyExtendedWorldRuntime {
         return false;
     }
     public static void onTick(ServerTickEvent.Post event){
+        if(!NightwatchConfig.ECOLOGY_EXTENSIONS_ENABLED.get())return;
         var server=event.getServer();
         long tick=server.overworld().getGameTime();
         if(tick%INTERVAL!=0)return;

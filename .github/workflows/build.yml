@@ -252,6 +252,19 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudSubscriptions.java \
             qa/java/PathogenHudSubscriptionsSmoke.java
           java -cp build/pathogen-hud-multiplayer PathogenHudSubscriptionsSmoke
+      - name: Verify four real fungi, three real parasite identities, phage, and 1m/block game field
+        run: |
+          mkdir -p build/ecology-taxonomy-extra
+          javac -d build/ecology-taxonomy-extra \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtensionToyField.java \
+            qa/java/EcologyExtendedTaxaSmoke.java \
+            qa/java/EcologyExtensionToyFieldSmoke.java
+          java -cp build/ecology-taxonomy-extra EcologyExtendedTaxaSmoke
+          java -cp build/ecology-taxonomy-extra EcologyExtensionToyFieldSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

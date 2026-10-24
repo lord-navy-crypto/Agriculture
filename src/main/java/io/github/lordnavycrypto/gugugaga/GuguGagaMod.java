@@ -25,6 +25,8 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenDataRoutesRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldServerSavedDataSmoke;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.EcologyExtendedWorldRuntime;
+import io.github.lordnavycrypto.gugugaga.command.EcologyExtensionCommands;
 import io.github.lordnavycrypto.gugugaga.pathogens.ViralWorldHostRuntime;
 import io.github.lordnavycrypto.gugugaga.command.PathogenSpatialFieldCommands;
 import net.minecraft.core.registries.Registries;
@@ -86,6 +88,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguAdvancedCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
         NeoForge.EVENT_BUS.addListener(PathogenSpatialFieldCommands::register);
+        NeoForge.EVENT_BUS.addListener(EcologyExtensionCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenGameplayRuntime::onTick);
@@ -99,6 +102,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onLogout);
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onServerStopped);
         NeoForge.EVENT_BUS.addListener(ViralWorldHostRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(EcologyExtendedWorldRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");

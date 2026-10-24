@@ -34,6 +34,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PATHOGEN_ROUTE_EVENTS_ENABLED;
     public static final ModConfigSpec.BooleanValue VIRAL_GAME_WAVES_ENABLED;
     public static final ModConfigSpec.BooleanValue VIRAL_HOST_GAME_EFFECTS_ENABLED;
+    public static final ModConfigSpec.BooleanValue ECOLOGY_EXTENSIONS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -175,6 +176,12 @@ public final class NightwatchConfig {
                 +"cues, and vanilla crop growth feedback from matching viral "
                 +"game field signals. No actual infection or clinical effect.")
                 .define("host_game_cues",true);
+        BUILDER.pop();
+        BUILDER.push("ecology_taxa_extensions");
+        ECOLOGY_EXTENSIONS_ENABLED=BUILDER.comment(
+                "Enable optional fungi, parasite and phage identity plus fictional "
+                +"eight-channel numeric visual scenery. Never real infectiousness.")
+                .define("enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
