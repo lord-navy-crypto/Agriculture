@@ -44,5 +44,7 @@
   "screen.gugugaga.onehealth.details": "切换资料",
   "screen.gugugaga.onehealth.back": "返回",
   "screen.gugugaga.onehealth.noautomatic": "看到动物或接触事件，并不代表发生感染。",
-  "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。"
+  "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。",
+  "screen.gugugaga.onehealth.network": "真实生态关系：动物、媒介与人类",
+  "screen.gugugaga.onehealth.graph_disclaimer": "仅展示文献中的关联，不代表游戏中发生感染"
 }
