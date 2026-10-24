@@ -278,6 +278,19 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveReadout.java \
             qa/java/FocusFiveSmoke.java
           java -cp build/focus-five-observer FocusFiveSmoke
+      - name: Source-verified One Health evidence and bounded Minecraft survey model (Java21)
+        run: |
+          mkdir -p build/one-health-science
+          javac -encoding UTF-8 -d build/one-health-science \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveProfiles.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/OneHealthEvidence5.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/OneHealthObservation.java \
+            qa/java/OneHealthEvidence5Smoke.java
+          java -cp build/one-health-science OneHealthEvidence5Smoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

@@ -50,6 +50,20 @@ public final class FocusFiveServerSelftest {
                 "clear game art example");
         yes(core.get(at,PathogenSpatialFieldMath.channel("potato_virus_y"))==12,
                 "extension value changes never alter original field");
+        var journal=OneHealthObservationLog.load(new CompoundTag(),registry);
+        journal.append(new OneHealthObservationLog.Record(
+                "puccinia_graminis",at.x(),at.z(),123L,7,12));
+        journal.append(new OneHealthObservationLog.Record(
+                "salmonella_enterica",at.x(),at.z(),124L,2,4));
+        var persistedJournal=OneHealthObservationLog.load(
+                journal.save(new CompoundTag(),registry),registry);
+        yes(persistedJournal.size()==2,"real game survey journal NBT");
+        yes(persistedJournal.recent(1).get(0).taxonId()
+                .equals("salmonella_enterica"),"observation replay order");
+        yes(persistedJournal.recent(2).get(0).vanillaObjects()==7,
+                "actual Minecraft object count retained");
+        System.out.println("GUGUGAGA_ONE_HEALTH_NBT_PASS"+
+                " journalEntries=2 medicalDiagnosis=false");
         System.out.println(PASS+
             " fiveFocus=true independentNBT=true noNewPathogenBlocks=true");
     }

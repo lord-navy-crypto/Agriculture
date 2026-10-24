@@ -28,6 +28,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.EcologyExtendedWorldRuntime;
 import io.github.lordnavycrypto.gugugaga.command.EcologyExtensionCommands;
 import io.github.lordnavycrypto.gugugaga.command.FocusFiveCommands;
+import io.github.lordnavycrypto.gugugaga.command.OneHealthCommands;
 import io.github.lordnavycrypto.gugugaga.pathogens.FocusFiveVisualRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.FocusFiveServerSelftest;
 import io.github.lordnavycrypto.gugugaga.pathogens.ViralWorldHostRuntime;
@@ -93,6 +94,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(PathogenSpatialFieldCommands::register);
         NeoForge.EVENT_BUS.addListener(EcologyExtensionCommands::register);
         NeoForge.EVENT_BUS.addListener(FocusFiveCommands::register);
+        NeoForge.EVENT_BUS.addListener(OneHealthCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenGameplayRuntime::onTick);
