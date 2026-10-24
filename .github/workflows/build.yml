@@ -144,6 +144,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthObservationPolicy.java \
             qa/java/OneHealthEvidenceSmoke.java
           java -cp build/onehealth-evidence-smoke OneHealthEvidenceSmoke
+      - name: Verify bounded in-world colony life-cycle and host-only display (Java21)
+        run: |
+          mkdir -p build/microbe-lifecycle-smoke
+          javac -d build/microbe-lifecycle-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeLifecyclePolicy.java \
+            qa/java/MicrobeLifecycleSmoke.java
+          java -cp build/microbe-lifecycle-smoke MicrobeLifecycleSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

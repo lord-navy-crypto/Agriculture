@@ -6,7 +6,8 @@
       "state": {
         "Name": "gugugaga:soil_bacillus_patch",
         "Properties": {
-          "view": "0"
+          "view": "0",
+          "satellite": "false"
         }
       }
     }

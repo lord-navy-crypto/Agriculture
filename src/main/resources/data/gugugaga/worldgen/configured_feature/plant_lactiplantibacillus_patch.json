@@ -6,7 +6,8 @@
       "state": {
         "Name": "gugugaga:plant_lactiplantibacillus_patch",
         "Properties": {
-          "view": "0"
+          "view": "0",
+          "satellite": "false"
         }
       }
     }
