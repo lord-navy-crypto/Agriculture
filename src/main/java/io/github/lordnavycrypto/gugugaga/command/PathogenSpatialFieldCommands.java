@@ -11,6 +11,8 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldOverview;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleOverlayRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleSampling;
+import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentObservation;
+import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentRuntime;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -147,6 +149,11 @@ public final class PathogenSpatialFieldCommands{
             src.sendSuccess(()->Component.literal(
                 "[Pathogen Field] "+PathogenSpatialFieldRuntime.summary(
                     player.serverLevel(),player.blockPosition())),false);
+            var environment=FieldEnvironmentRuntime.observe(
+                    player.serverLevel(),player.blockPosition());
+            src.sendSuccess(()->Component.literal(
+                "[Minecraft observation] "+FieldEnvironmentObservation.describe(
+                    environment)),false);
             return 1;
         }
         src.sendFailure(Component.literal("Run /gugugaga field status as a player."));
