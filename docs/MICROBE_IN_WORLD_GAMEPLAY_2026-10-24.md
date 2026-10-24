@@ -11,3 +11,8 @@ No client/server custom packet, forced chunk generation, player health alteratio
 CI checks test JSON, models, loot, translations and registering code; Gradle compilation, actual dedicated-server and graphical-client startup must pass independently. Bootstrap does NOT prove fresh world generation or clicking behavior. Manually explore brand-new terrain in a disposable world and take screenshots before promoting.
 
 Next: original microbe sprites, natural cave/water habitat content, environmental mechanics, in-game observation tools and coexistence with passive animals (without misdiagnosing them), cross-mod compatibility and multiplayer stress tests. The former One Health atlas is **secondary**.
+
+
+## In-world ecological visual connection
+
+Neighboring creative-placeable T4 and E. coli exhibit blocks render a small native ENCHANT particle cue only when the documented species-level host association is present. This is a rendered classroom-style association, NEVER evidence that phage infection or bacterial lysis actually occurred. Natural soil/plant patches get budget-limited happy-particle visuals when in camera range. The particle random draw is an aesthetic budget, not a disease probability; no surrounding chunks are loaded to test neighbors.

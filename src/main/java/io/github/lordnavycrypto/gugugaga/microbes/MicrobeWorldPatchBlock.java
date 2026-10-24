@@ -2,6 +2,9 @@ package io.github.lordnavycrypto.gugugaga.microbes;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
@@ -44,6 +47,35 @@ public final class MicrobeWorldPatchBlock extends BushBlock {
     }
     @Override protected VoxelShape getShape(BlockState state,BlockGetter world,
             BlockPos pos,CollisionContext context){return SHAPE;}
+    /**
+     * Lightweight client-only world visuals. A visible T4-to-E. coli link
+     * means a DOCUMENTED SPECIES-LEVEL HOST ASSOCIATION, not an in-world
+     * phage infection, strain susceptibility, dose or replication event.
+     */
+    @Override public void animateTick(BlockState state,Level world,
+            BlockPos pos,RandomSource random){
+        if(random.nextInt(10)!=0)return; // Cosmetic particle budget ONLY.
+        if(this==MicrobeWorldContent.T4.get() &&
+                NaturalMicrobeCatalog.documentedHostRelation(
+                    "tequatrovirus_t4","escherichia_coli")){
+            for(Direction facing:Direction.Plane.HORIZONTAL){
+                BlockPos nearby=pos.relative(facing);
+                if(world.hasChunkAt(nearby) &&
+                        world.getBlockState(nearby).is(MicrobeWorldContent.ECOLI.get())){
+                    world.addParticle(ParticleTypes.ENCHANT,
+                        pos.getX()+0.5,pos.getY()+0.32,pos.getZ()+0.5,
+                        0.0,0.025,0.0);
+                    break;
+                }
+            }
+        }else if(this==MicrobeWorldContent.BACILLUS.get()
+                ||this==MicrobeWorldContent.PLANTARUM.get()){
+            world.addParticle(ParticleTypes.HAPPY_VILLAGER,
+                pos.getX()+0.5,pos.getY()+0.2,pos.getZ()+0.5,
+                0,0.005,0);
+        }
+    }
+
     @Override protected InteractionResult useWithoutItem(BlockState state,Level world,
             BlockPos pos,Player player,BlockHitResult hit){
         if(!world.isClientSide()){

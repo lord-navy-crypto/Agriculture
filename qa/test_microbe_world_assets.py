@@ -17,6 +17,9 @@ class NativeWorldContent(unittest.TestCase):
   self.assertIn("MicrobeWorldContent::onCreativeTab",mod)
   self.assertIn("CreativeModeTabs.NATURAL_BLOCKS",reg)
   self.assertIn("world.setBlock(pos,state.setValue(VIEW,",code)
+  self.assertIn("NaturalMicrobeCatalog.documentedHostRelation(",code)
+  self.assertIn("ParticleTypes.ENCHANT",code)
+  self.assertIn("world.hasChunkAt(nearby)",code)
   for key in IDS: self.assertIn('"'+key+'"',reg)
   for bad in ("forceChunk(","getChunk(","setHealth(","addEffect(","infectPlayer("):
    self.assertNotIn(bad,reg+code)
