@@ -10,7 +10,7 @@ class DiskRestartSourceSmoke(unittest.TestCase):
          "GUGUGAGA_FIELD_DISK_WRITE_PASS","GUGUGAGA_FIELD_DISK_RESTART_PASS",
          "PathogenSpatialFieldSavedData.forLevel(","live.routeCandidates(1)"):
    self.assertIn(expected,java)
- def test_ephemeral_two-process_persistence(self):
+ def test_ephemeral_two_process_persistence(self):
   script=(ROOT/"qa/smoke_pathogen_disk_restart.py").read_text()
   workflow=(ROOT/".github/workflows/build.yml").read_text()
   for phrase in ('GITHUB_ACTIONS','secrets.token_hex(24)',
