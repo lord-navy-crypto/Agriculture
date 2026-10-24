@@ -7,10 +7,20 @@ package io.github.lordnavycrypto.gugugaga.pathogens;
  */
 public final class ViralHostVisualPolicy {
     private ViralHostVisualPolicy(){}
-    public enum Cue { NONE, ANIMAL_PARTICLES, ANIMAL_MOVEMENT_CUE, CROP_PAUSE }
+    public enum Cue { NONE, ANIMAL_PARTICLES, ANIMAL_MOVEMENT_CUE, CROP_PARTICLES, CROP_PAUSE }
     public static final int VISUAL_LEVEL=4,STRONG_LEVEL=9;
 
     public record Observation(String taxonId,int level,Cue cue) {}
+
+    /** Fast rejection for unmodified 1.21.1 vanilla blocks. */
+    public static boolean isViralCrop(String blockId){
+        return "minecraft:potatoes".equals(blockId)
+                ||"minecraft:beetroots".equals(blockId)
+                ||"minecraft:melon_stem".equals(blockId)
+                ||"minecraft:attached_melon_stem".equals(blockId)
+                ||"minecraft:pumpkin_stem".equals(blockId)
+                ||"minecraft:attached_pumpkin_stem".equals(blockId);
+    }
 
     public static Observation forAnimal(String vanillaEntityId,int[] field){
         return choose(vanillaEntityId,field,true);
@@ -37,7 +47,7 @@ public final class ViralHostVisualPolicy {
         String taxon=PathogenRoster15.FIRST_FIFTEEN.get(channel).id();
         Cue cue=animal ? (strongest>=STRONG_LEVEL
                     ?Cue.ANIMAL_MOVEMENT_CUE:Cue.ANIMAL_PARTICLES)
-                :(strongest>=STRONG_LEVEL ?Cue.CROP_PAUSE:Cue.NONE);
+                :(strongest>=STRONG_LEVEL ?Cue.CROP_PAUSE:Cue.CROP_PARTICLES);
         return new Observation(taxon,strongest,cue);
     }
 }
