@@ -36,5 +36,13 @@
   "message.gugugaga.interact.angry": "[咕咕嘎嘎] 它警惕地盯着你的手。",
   "message.gugugaga.interact.corrupted": "[咕咕嘎嘎] 它的羽毛伴随幽暗低语微微颤动。",
   "message.gugugaga.interact.lapis": "[青金石] 蓝色身影点了点头，却不愿解释。",
-  "message.gugugaga.interact.redactor": "[篡改者] 熟悉的伪装已经消失。"
+  "message.gugugaga.interact.redactor": "[篡改者] 熟悉的伪装已经消失。",
+  "screen.gugugaga.onehealth.open": "真实病毒与动物健康图鉴",
+  "screen.gugugaga.onehealth.title": "同一健康：动物、人类与病毒",
+  "screen.gugugaga.onehealth.previous": "上一种",
+  "screen.gugugaga.onehealth.next": "下一种",
+  "screen.gugugaga.onehealth.details": "切换资料",
+  "screen.gugugaga.onehealth.back": "返回",
+  "screen.gugugaga.onehealth.noautomatic": "看到动物或接触事件，并不代表发生感染。",
+  "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。"
 }
