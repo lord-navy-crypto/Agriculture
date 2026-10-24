@@ -128,6 +128,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/ai/ollama/OllamaEndpointPolicy.java \
             qa/java/OllamaEndpointPolicySmoke.java
           java -cp build/ollama-policy-smoke OllamaEndpointPolicySmoke
+      - name: Verify fictional viral and bacterial gameplay, protective events and medical care (pure Java 21)
+        run: |
+          mkdir -p build/pathogen-medical-smoke
+          javac -d build/pathogen-medical-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogen/PathogenGamePolicy.java \
+            qa/java/PathogenGamePolicySmoke.java
+          java -cp build/pathogen-medical-smoke PathogenGamePolicySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
