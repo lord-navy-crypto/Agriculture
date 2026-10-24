@@ -52,5 +52,10 @@
   "block.gugugaga.ecoli_microhabitat_display": "E. coli Intestinal-context Exhibit",
   "message.gugugaga.microbeworld.ecoli_microhabitat_display": "E. coli has intestinal host associations; not all strains are pathogens.",
   "block.gugugaga.t4_phage_microhabitat_display": "T4 Phage Host-context Exhibit",
-  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 has a documented E. coli host relation; no actual phage infection is simulated."
+  "message.gugugaga.microbeworld.t4_phage_microhabitat_display": "T4 has a documented E. coli host relation; no actual phage infection is simulated.",
+  "block.gugugaga.nitrosomonas_soil_patch": "N. europaea Soil Microhabitat",
+  "block.gugugaga.chlorella_freshwater_exhibit": "C. vulgaris Freshwater Exhibit",
+  "message.gugugaga.microbeworld.nitrosomonas_soil_patch": "Soil/freshwater microbe: enlarged Minecraft scenery, not an actual detection.",
+  "message.gugugaga.microbeworld.chlorella_freshwater_exhibit": "Freshwater green microalga exhibit; no disease or diagnosis.",
+  "message.gugugaga.microbeworld.ambient_observation": "You noticed an environmental micro-ecology scene, not an infection."
 }

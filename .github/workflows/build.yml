@@ -151,6 +151,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeLifecyclePolicy.java \
             qa/java/MicrobeLifecycleSmoke.java
           java -cp build/microbe-lifecycle-smoke MicrobeLifecycleSmoke
+      - name: Verify Minecraft-only environmental microbe response policy (Java21)
+        run: |
+          mkdir -p build/microbe-environment-smoke
+          javac -d build/microbe-environment-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeLifecyclePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeEnvironmentPolicy.java \
+            qa/java/MicrobeEnvironmentSmoke.java
+          java -cp build/microbe-environment-smoke MicrobeEnvironmentSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
