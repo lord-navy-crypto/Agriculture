@@ -37,6 +37,11 @@ public final class PathogenSpatialFieldRuntime {
                 ||!NightwatchConfig.PATHOGEN_FIELD_CROP_CUES.get())return false;
         var fields=PathogenSpatialFieldSavedData.forLevel(world);
         var at=cell(pos);
+        int[] levels=new int[15];
+        for(int i=0;i<15;i++)levels[i]=fields.get(at,i);
+        if(NightwatchConfig.VIRAL_HOST_GAME_EFFECTS_ENABLED.get()
+                &&ViralHostVisualPolicy.forCrop(blockId,levels).cue()
+                    ==ViralHostVisualPolicy.Cue.CROP_PAUSE)return true;
         for(int i=0;i<PathogenRoster15.FIRST_FIFTEEN.size();i++){
             var taxon=PathogenRoster15.FIRST_FIFTEEN.get(i);
             if(fields.get(at,i)>=12
@@ -85,6 +90,10 @@ public final class PathogenSpatialFieldRuntime {
             var field=PathogenSpatialFieldSavedData.forLevel(world);
             if(field.size()==0)continue;
             field.step(worldTime/INTERVAL,c->active(world,players,c));
+            if(NightwatchConfig.VIRAL_GAME_WAVES_ENABLED.get()){
+                field.viralWave(worldTime/INTERVAL,
+                        c->active(world,players,c));
+            }
             // Opt-in HUD is handled by PathogenFieldHudRuntime.
             // Nothing is rendered for players who did not request it.
         }

@@ -32,6 +32,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_ENABLED;
     public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_CROP_CUES;
     public static final ModConfigSpec.BooleanValue PATHOGEN_ROUTE_EVENTS_ENABLED;
+    public static final ModConfigSpec.BooleanValue VIRAL_GAME_WAVES_ENABLED;
+    public static final ModConfigSpec.BooleanValue VIRAL_HOST_GAME_EFFECTS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -161,6 +163,18 @@ public final class NightwatchConfig {
                 +"Air/rain/vector cues and player/animal/item-held trails are not "
                 +"pathogen transmission physics or infection.")
                 .define("enabled",true);
+        BUILDER.pop();
+        BUILDER.push("virus_game_signals");
+        VIRAL_GAME_WAVES_ENABLED=BUILDER.comment(
+                "Allow eight virus-named Minecraft information channels to form "
+                +"limited neighboring visual-data waves. These are entirely "
+                +"invented game numbers, not biological replication or rates.")
+                .define("waves_enabled",true);
+        VIRAL_HOST_GAME_EFFECTS_ENABLED=BUILDER.comment(
+                "Enable cosmetic native-animal particles, optional tiny movement "
+                +"cues, and vanilla crop growth feedback from matching viral "
+                +"game field signals. No actual infection or clinical effect.")
+                .define("host_game_cues",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

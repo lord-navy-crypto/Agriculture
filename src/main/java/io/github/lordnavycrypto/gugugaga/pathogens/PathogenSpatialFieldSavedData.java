@@ -21,6 +21,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
     private Map<PathogenSpatialFieldMath.Cell,int[]> cells=new HashMap<>();
     private int cursor;
     private int routeCursor;
+    private int virusWaveCursor;
 
     private PathogenSpatialFieldSavedData(){}
     public static PathogenSpatialFieldSavedData forLevel(ServerLevel level){
@@ -81,6 +82,19 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         setDirty();
         return true;
     }
+    /** Advance the GAME-ONLY wave for eight virus-labeled numeric channels. */
+    public ViralGameSignalWave.Frame viralWave(long gameFrame,
+            java.util.function.Predicate<PathogenSpatialFieldMath.Cell> active){
+        var frame=ViralGameSignalWave.advance(cells,virusWaveCursor,64,
+                gameFrame,active);
+        int previousCursor=virusWaveCursor;
+        virusWaveCursor=frame.nextCursor();
+        if(frame.emitted()>0){
+            cells=new HashMap<>(PathogenSpatialFieldMath.immutableCopy(frame.cells()));
+        }
+        if(frame.emitted()>0||virusWaveCursor!=previousCursor)setDirty();
+        return frame;
+    }
     public PathogenSpatialFieldMath.Frame step(long gameStep,
             java.util.function.Predicate<PathogenSpatialFieldMath.Cell> loadedActive){
         var frame=PathogenSpatialFieldMath.step(cells,cursor,64,gameStep,loadedActive);
@@ -117,6 +131,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         }
         value.cursor=Math.max(0,nbt.getInt("Cursor"));
         value.routeCursor=Math.max(0,nbt.getInt("RouteCursor"));
+        value.virusWaveCursor=Math.max(0,nbt.getInt("VirusWaveCursor"));
         return value;
     }
     @Override public CompoundTag save(CompoundTag result,
@@ -132,6 +147,7 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         result.put("Cells",list);
         result.putInt("Cursor",cursor);
         result.putInt("RouteCursor",routeCursor);
+        result.putInt("VirusWaveCursor",virusWaveCursor);
         return result;
     }
 }
