@@ -189,9 +189,20 @@ jobs:
           mkdir -p build/pathogen-spatial-field
           javac -d build/pathogen-spatial-field \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
             qa/java/PathogenSpatialFieldSmoke.java
           java -cp build/pathogen-spatial-field PathogenSpatialFieldSmoke
+      - name: Verify source-labeled game route eligibility and bounded information transfers (Java21)
+        run: |
+          mkdir -p build/pathogen-route-game
+          javac -d build/pathogen-route-game \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
+            qa/java/PathogenRouteGameSmoke.java
+          java -cp build/pathogen-route-game PathogenRouteGameSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

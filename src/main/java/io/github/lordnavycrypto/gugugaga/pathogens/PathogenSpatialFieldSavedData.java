@@ -41,6 +41,16 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         setDirty();
         return true;
     }
+    /** Transfer a single abstract game number between two already loaded areas. */
+    public boolean transfer(PathogenSpatialFieldMath.Cell from,
+            PathogenSpatialFieldMath.Cell to,int channel,
+            PathogenRoutePolicy15.Route route,boolean loaded){
+        var change=PathogenRouteGameMath.move(cells,from,to,channel,route,loaded);
+        if(!change.applied())return false;
+        cells=change.cells();
+        setDirty();
+        return true;
+    }
     public PathogenSpatialFieldMath.Frame step(long gameStep,
             java.util.function.Predicate<PathogenSpatialFieldMath.Cell> loadedActive){
         var frame=PathogenSpatialFieldMath.step(cells,cursor,64,gameStep,loadedActive);

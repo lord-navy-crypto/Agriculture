@@ -128,7 +128,10 @@ public final class PathogenSpatialFieldMath {
                 int direction=Math.floorMod(
                         cell.x()*17+cell.z()*31+ch*7+(int)(gameStep&3L),4);
                 Cell target=cell.adjacent(direction);
-                if(source[ch]>=SPILL_THRESHOLD &&loadedAndActive.test(target)
+                if(source[ch]>=SPILL_THRESHOLD
+                        &&PathogenRoutePolicy15.allows(ch,
+                                PathogenRoutePolicy15.Route.LOCAL_GAME_FIELD)
+                        &&loadedAndActive.test(target)
                         &&(snapshot.containsKey(target)
                            ||updated.containsKey(target)
                            ||updated.size()<MAX_CELLS)) {

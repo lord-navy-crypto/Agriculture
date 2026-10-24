@@ -19,16 +19,16 @@ public final class PathogenSpatialFieldSmoke{
   }
   var origin=new PathogenSpatialFieldMath.Cell(0,0);
   var seeded=PathogenSpatialFieldMath.withPressure(
-    Map.of(),origin,PathogenSpatialFieldMath.channel("potato_virus_y"),12);
+    Map.of(),origin,PathogenSpatialFieldMath.channel("phytophthora_infestans"),12);
   ok(seeded.size()==1,"only one cell persisted for seed");
-  ok(seeded.get(origin)[11]==12,"correct taxon index and pressure");
+  ok(seeded.get(origin)[12]==12,"correct taxon index and pressure");
   var locked=PathogenSpatialFieldMath.step(seeded,0,64,1,c->c.equals(origin));
   ok(locked.moved()==0&&locked.cells().size()==1,"unloaded neighbors never receive pressure");
-  ok(locked.cells().get(origin)[11]==12,"no phantom loss into unloaded neighbors");
+  ok(locked.cells().get(origin)[12]==12,"no phantom loss into unloaded neighbors");
   var open=PathogenSpatialFieldMath.step(seeded,0,64,1,c->true);
   ok(open.moved()==1&&open.cells().size()==2,"cell-to-cell game field update");
   ok(total(open.cells())==12,"game spill is mass-conserving outside decay");
-  var before=seeded.get(origin)[11];
+  var before=seeded.get(origin)[12];
   ok(before==12,"field update does not mutate caller snapshot");
   var later=PathogenSpatialFieldMath.step(open.cells(),0,64,8,c->true);
   ok(total(later.cells())<=total(open.cells()),"abstract pressure only moves or fades");

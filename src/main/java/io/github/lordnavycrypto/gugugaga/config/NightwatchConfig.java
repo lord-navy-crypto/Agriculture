@@ -31,6 +31,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_ANIMAL_CUES;
     public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_ENABLED;
     public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_CROP_CUES;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_ROUTE_EVENTS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -153,6 +154,13 @@ public final class NightwatchConfig {
                 "Optional fictional growth pause in appropriate vanilla crops "
                 +"inside high-game-pressure cells. No disease diagnosis.")
                 .define("crop_game_cues",true);
+        BUILDER.pop();
+        BUILDER.push("pathogen_information_routes");
+        PATHOGEN_ROUTE_EVENTS_ENABLED=BUILDER.comment(
+                "Move abstract Minecraft game SIGNALS via loaded-region event routing. "
+                +"Air/rain/vector cues and player/animal/item-held trails are not "
+                +"pathogen transmission physics or infection.")
+                .define("enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
