@@ -9,6 +9,8 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldSavedData
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldTextMap;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldOverview;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleOverlayRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleSampling;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -30,6 +32,19 @@ public final class PathogenSpatialFieldCommands{
                         .executes(ctx->hud(ctx.getSource(),false)))
                     .then(Commands.literal("status")
                         .executes(ctx->hudStatus(ctx.getSource()))))
+                .then(Commands.literal("particles")
+                    .then(Commands.literal("on")
+                        .executes(ctx->particles(ctx.getSource(),true)))
+                    .then(Commands.literal("off")
+                        .executes(ctx->particles(ctx.getSource(),false)))
+                    .then(Commands.literal("status")
+                        .executes(ctx->particleStatus(ctx.getSource())))
+                    .then(Commands.literal("select")
+                        .then(Commands.argument("taxon",StringArgumentType.word())
+                            .suggests((ctx,builder)->SharedSuggestionProvider.suggest(
+                                FieldParticleSampling.selectableIds(),builder))
+                            .executes(ctx->selectParticle(ctx.getSource(),
+                                StringArgumentType.getString(ctx,"taxon"))))))
                 .then(Commands.literal("overview").executes(ctx->overview(ctx.getSource())))
                 .then(Commands.literal("map")
                     .then(Commands.argument("taxon",StringArgumentType.word())
@@ -54,6 +69,53 @@ public final class PathogenSpatialFieldCommands{
                                 .map(PathogenRoster15.Entry::id).toList(),builder))
                         .executes(ctx->change(ctx.getSource(),
                             StringArgumentType.getString(ctx,"taxon"),0))))));
+    }
+    private static int particles(CommandSourceStack src,boolean enable){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run this as an in-world player."));
+            return 0;
+        }
+        if(enable&&!NightwatchConfig.FIELD_PARTICLE_OVERLAY_ENABLED.get()){
+            src.sendFailure(Component.literal("Server disabled particle overlay."));
+            return 0;
+        }
+        if(enable)FieldParticleOverlayRuntime.enable(player);
+        else FieldParticleOverlayRuntime.disable(player);
+        player.sendSystemMessage(Component.literal("Numeric field particles "+
+                (enable?"ON":"OFF")+"; read-only vanilla particle display."));
+        return 1;
+    }
+    private static int particleStatus(CommandSourceStack src){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run this as an in-world player."));
+            return 0;
+        }
+        boolean on=FieldParticleOverlayRuntime.isEnabled(player);
+        String id=FieldParticleOverlayRuntime.selection(player);
+        player.sendSystemMessage(Component.literal("Field particles: "+
+                (on?"ON":"OFF")+"; taxon="+id+
+                "; 7x7 loaded areas, at most 6 highlighted areas."));
+        return 1;
+    }
+    private static int selectParticle(CommandSourceStack src,String id){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run this as an in-world player."));
+            return 0;
+        }
+        if(!NightwatchConfig.FIELD_PARTICLE_OVERLAY_ENABLED.get()){
+            src.sendFailure(Component.literal("Server disabled particle overlay."));
+            return 0;
+        }
+        try{FieldParticleOverlayRuntime.select(player,id);}
+        catch(IllegalArgumentException unknown){
+            src.sendFailure(Component.literal(
+                "Unsupported world display label (virtual-only entries have no particles): "+id));
+            return 0;
+        }
+        player.sendSystemMessage(Component.literal(
+            "Showing "+id+" as private 4x4-block information field particles. "+
+            "Use /gugugaga field particles off to hide."));
+        return 1;
     }
     private static int hud(CommandSourceStack src,boolean enable){
         if(!(src.getEntity() instanceof ServerPlayer player)){

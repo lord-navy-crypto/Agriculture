@@ -37,6 +37,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue ECOLOGY_EXTENSIONS_ENABLED;
     public static final ModConfigSpec.BooleanValue FOCUS_FIVE_VISUALS_ENABLED;
     public static final ModConfigSpec.BooleanValue ECOLOGY_CROP_GAME_FEEDBACK_ENABLED;
+    public static final ModConfigSpec.BooleanValue FIELD_PARTICLE_OVERLAY_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -198,6 +199,13 @@ public final class NightwatchConfig {
                 +"for the pre-existing extended numerical signal. OFF by "
                 +"default. No new pathogen blocks or calibrated biology.")
                 .define("wheat_growth_feedback_enabled",false);
+        BUILDER.pop();
+        BUILDER.push("numeric_field_particles");
+        FIELD_PARTICLE_OVERLAY_ENABLED=BUILDER.comment(
+                "Allow player-initiated, per-player vanilla particle projections "
+                +"of existing numeric 4x4 game regions. Personal particle view "
+                +"defaults OFF; no new blocks, infected entities, or chunk loading.")
+                .define("viewer_enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

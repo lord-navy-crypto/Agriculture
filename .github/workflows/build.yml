@@ -303,6 +303,17 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaCropGameFeedback.java \
             qa/java/MinecraftHabitatScienceSmoke.java
           java -cp build/vanilla-ecology-habitat MinecraftHabitatScienceSmoke
+      - name: Test read-only 23-label game field sampling and per-player particle ceilings (Java21)
+        run: |
+          mkdir -p build/game-field-particle-projection
+          javac -encoding UTF-8 -d build/game-field-particle-projection \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldParticleSampling.java \
+            qa/java/FieldParticleSamplingSmoke.java
+          java -cp build/game-field-particle-projection FieldParticleSamplingSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

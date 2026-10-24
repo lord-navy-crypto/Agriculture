@@ -25,6 +25,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenDataRoutesRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldServerSavedDataSmoke;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleOverlayRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.EcologyExtendedWorldRuntime;
 import io.github.lordnavycrypto.gugugaga.command.EcologyExtensionCommands;
 import io.github.lordnavycrypto.gugugaga.command.FocusFiveCommands;
@@ -107,6 +108,9 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onLogout);
         NeoForge.EVENT_BUS.addListener(PathogenFieldHudRuntime::onServerStopped);
+        NeoForge.EVENT_BUS.addListener(FieldParticleOverlayRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(FieldParticleOverlayRuntime::onLogout);
+        NeoForge.EVENT_BUS.addListener(FieldParticleOverlayRuntime::onServerStopped);
         NeoForge.EVENT_BUS.addListener(ViralWorldHostRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(EcologyExtendedWorldRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(FocusFiveVisualRuntime::onTick);
