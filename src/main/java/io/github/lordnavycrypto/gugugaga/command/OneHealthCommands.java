@@ -37,10 +37,21 @@ public final class OneHealthCommands {
                                 FocusFiveProfiles.Profile::id).toList(),builder))
                         .executes(context->survey(context.getSource(),
                             StringArgumentType.getString(context,"taxon")))))
+                .then(Commands.literal("biology")
+                    .executes(context->biology(context.getSource())))
                 .then(Commands.literal("environment")
                     .executes(context->environment(context.getSource())))
                 .then(Commands.literal("journal")
                     .executes(context->journal(context.getSource())))));
+    }
+    private static int biology(CommandSourceStack src){
+        for(var concept:BiologyConcepts.ENTRIES){
+            src.sendSuccess(()->Component.literal(
+                "[Science] "+concept.category()+" — "+concept.fact()),false);
+            src.sendSuccess(()->Component.literal(
+                "Reference: "+concept.sourceUrl()),false);
+        }
+        return BiologyConcepts.ENTRIES.size();
     }
     private static OneHealthEvidence5.Fact known(CommandSourceStack src,String id){
         try{return OneHealthEvidence5.byId(id);}
