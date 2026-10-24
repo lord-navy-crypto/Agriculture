@@ -265,6 +265,19 @@ jobs:
             qa/java/EcologyExtensionToyFieldSmoke.java
           java -cp build/ecology-taxonomy-extra EcologyExtendedTaxaSmoke
           java -cp build/ecology-taxonomy-extra EcologyExtensionToyFieldSmoke
+      - name: Verify five curated host-aware ecology profiles and game-only states (Java21)
+        run: |
+          mkdir -p build/focus-five-observer
+          javac -d build/focus-five-observer \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveProfiles.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveReadout.java \
+            qa/java/FocusFiveSmoke.java
+          java -cp build/focus-five-observer FocusFiveSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

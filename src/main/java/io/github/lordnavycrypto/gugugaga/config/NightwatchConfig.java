@@ -35,6 +35,7 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue VIRAL_GAME_WAVES_ENABLED;
     public static final ModConfigSpec.BooleanValue VIRAL_HOST_GAME_EFFECTS_ENABLED;
     public static final ModConfigSpec.BooleanValue ECOLOGY_EXTENSIONS_ENABLED;
+    public static final ModConfigSpec.BooleanValue FOCUS_FIVE_VISUALS_ENABLED;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -182,6 +183,13 @@ public final class NightwatchConfig {
                 "Enable optional fungi, parasite and phage identity plus fictional "
                 +"eight-channel numeric visual scenery. Never real infectiousness.")
                 .define("enabled",true);
+        BUILDER.pop();
+        BUILDER.push("focus_five_eco_observation");
+        FOCUS_FIVE_VISUALS_ENABLED=BUILDER.comment(
+                "Show small distinctive Minecraft-only particle art for five "
+                +"selected source-labelled plants/animals. The values are NOT "
+                +"actual pathogen concentration or clinical diagnosis.")
+                .define("visuals_enabled",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
