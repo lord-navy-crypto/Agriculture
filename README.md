@@ -1,3 +1,10 @@
+> **ONE HEALTH EXPERIMENT — 真正的动物病毒、人类影响与传播证据图鉴 (2026-10-24)**  
+> Continuing the **real natural microbe ecology** foundation, this stacked Draft adds real *Lyssavirus rabies* (NCBI 11292) and animal-origin *Influenza A virus* (NCBI 11320, strictly limited to the avian/zoonotic subset in WHO's evidence). Native Minecraft **H-key → One Health** GUI has 2 detailed bilingual-accessible species pages, documented animal/human impacts, high-level zoonotic interface categories and scientific uncertainties.  
+> **Contact is not infection**: no fabricated transmission rates, player/animal contagious state, automatic disease spread, human symptoms diagnosis, mutation or medical action. Host and transmission categories are educational background facts with links to CDC/WHO.  
+> [One Health development notes and real source references](docs/ONE_HEALTH_ANIMAL_HUMAN_TRANSMISSION_EVIDENCE_2026-10-24.md). In-game visual/graphical acceptance remains subject to the PR's full NeoForge client test. Stable main and unrelated frozen branches untouched.
+
+---
+
 > **NEW NATURAL MICROBIOLOGY BRANCH — 真实细菌与病毒生态模拟 (2026-10-24)**  
 > User-directed correction: **no fictional pathogens, no invented biological reproduction/transmission rates and NO mandatory medical devices or treatment systems**. This new experimental branch builds an NCBI-sourced ecology of genuinely existing species: *Escherichia coli* (taxid 562), *Bacillus subtilis* (1423), *Lactiplantibacillus plantarum* (1590) and the natural bacterial virus *Tequatrovirus T4* (10665). The T4–E. coli relation is documented, but bacterial strain-level susceptibility and site-specific occurrence are NOT assumed.  
 > Initial delivery: pure Java 21 source-backed real-species catalog and evidence-only ecological relationships + automated tests. **It is not yet a native Minecraft in-world microorganism visualization or population simulator.** The old frozen historical horror/folklore branches and stable `main` are untouched.  
