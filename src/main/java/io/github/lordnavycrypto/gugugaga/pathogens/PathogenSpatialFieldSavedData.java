@@ -61,8 +61,6 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
             try{
                 var c=new PathogenSpatialFieldMath.Cell(
                         row.getInt("CellX"),row.getInt("CellZ"));
-                var before=PathogenSpatialFieldMath.withPressure(
-                    Map.of(),c,0,0); // force bounds path on first access
                 boolean nonzero=false,valid=true;
                 for(int n:levels){
                     if(n<0||n>PathogenSpatialFieldMath.MAX_PRESSURE)valid=false;

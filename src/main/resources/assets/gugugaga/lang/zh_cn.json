@@ -76,5 +76,8 @@
   "item.gugugaga.pathogen_field_scanner": "原版宿主情景观察器",
   "message.gugugaga.pathogen_scenes.inspect": "%s — %s — 游戏情景：%s（并非实际感染诊断）",
   "message.gugugaga.pathogen_scenes.cleared": "已清除该对象的游戏情景。",
-  "message.gugugaga.pathogen_scenes.plant_limit": "每个维度最多保存512个作物或树叶情景。"
+  "message.gugugaga.pathogen_scenes.plant_limit": "每个维度最多保存512个作物或树叶情景。",
+  "message.gugugaga.pathogen_field.observed": "所在区域的游戏数值场：%s，强度 %s/15（并非感染判定）",
+  "message.gugugaga.pathogen_field.admin": "已更新当前位置的虚拟病原体数值场。",
+  "message.gugugaga.pathogen_field.disabled": "服务器配置已关闭空间数值场计算。"
 }

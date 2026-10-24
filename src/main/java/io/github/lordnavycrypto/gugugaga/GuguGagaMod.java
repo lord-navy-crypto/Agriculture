@@ -21,6 +21,8 @@ import io.github.lordnavycrypto.gugugaga.microbes.LivingMicrobeContent;
 import io.github.lordnavycrypto.gugugaga.microbes.LivingMicrobeRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSceneContent;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSceneRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
+import io.github.lordnavycrypto.gugugaga.command.PathogenSpatialFieldCommands;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -79,12 +81,14 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(GuguStoryCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguAdvancedCommands::register);
         NeoForge.EVENT_BUS.addListener(GuguPlayCommands::register);
+        NeoForge.EVENT_BUS.addListener(PathogenSpatialFieldCommands::register);
         NeoForge.EVENT_BUS.addListener(NightwatchDirector::onTick);
         NeoForge.EVENT_BUS.addListener(HauntGameplayRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenGameplayRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(LivingMicrobeRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenSceneRuntime::onServerTick);
         NeoForge.EVENT_BUS.addListener(PathogenSceneRuntime::onCropGrow);
+        NeoForge.EVENT_BUS.addListener(PathogenSpatialFieldRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");

@@ -29,6 +29,8 @@ public final class NightwatchConfig {
     public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_ENGINE_ENABLED;
     public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_CROP_PAUSE;
     public static final ModConfigSpec.BooleanValue PATHOGEN_SCENE_ANIMAL_CUES;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_ENABLED;
+    public static final ModConfigSpec.BooleanValue PATHOGEN_FIELD_CROP_CUES;
     public static final ModConfigSpec SPEC;
 
     static {
@@ -141,6 +143,16 @@ public final class NightwatchConfig {
         PATHOGEN_SCENE_ANIMAL_CUES=BUILDER.comment(
                 "Small, finite movement cue on explicitly enrolled animals only.")
                 .define("enrolled_animal_movement_cue",true);
+        BUILDER.pop();
+        BUILDER.push("pathogen_spatial_field");
+        PATHOGEN_FIELD_ENABLED=BUILDER.comment(
+                "Run a 15-channel 4x4-block abstract Minecraft scalar field. "
+                +"Game pressure is not real pathogen concentration or spread.")
+                .define("enabled",true);
+        PATHOGEN_FIELD_CROP_CUES=BUILDER.comment(
+                "Optional fictional growth pause in appropriate vanilla crops "
+                +"inside high-game-pressure cells. No disease diagnosis.")
+                .define("crop_game_cues",true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

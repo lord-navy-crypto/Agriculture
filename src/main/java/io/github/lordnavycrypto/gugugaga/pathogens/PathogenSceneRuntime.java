@@ -73,6 +73,7 @@ public final class PathogenSceneRuntime {
         if(next==null)return false;
         save(target,next);
         var world=player.serverLevel();
+        if(!preview)PathogenSpatialFieldRuntime.set(world,target.blockPosition(),next.pathogenId(),12);
         world.sendParticles(particle(next),target.getX(),
                 target.getY()+target.getBbHeight()+0.1,target.getZ(),
                 2,0.1,0.1,0.1,0);
@@ -116,6 +117,7 @@ public final class PathogenSceneRuntime {
                 return false;
             }
         }
+        if(!preview)PathogenSpatialFieldRuntime.set(level,pos,next.pathogenId(),12);
         level.sendParticles(particle(next),pos.getX()+0.5,pos.getY()+0.6,
                 pos.getZ()+0.5,2,0.12,0.1,0.12,0);
         describe(player,next,id);
@@ -142,12 +144,16 @@ public final class PathogenSceneRuntime {
 
     /** Optional, reversible crop game effect on manually selected plants. */
     public static void onCropGrow(CropGrowEvent.Pre event){
+        if(!(event.getLevel() instanceof ServerLevel level))return;
+        String current=blockId(level,event.getPos());
+        if(PathogenSpatialFieldRuntime.pauseCrop(level,event.getPos(),current)){
+            event.setResult(CropGrowEvent.Pre.Result.DO_NOT_GROW);
+            return;
+        }
         if(!NightwatchConfig.PATHOGEN_SCENE_ENGINE_ENABLED.get()
-                ||!NightwatchConfig.PATHOGEN_SCENE_CROP_PAUSE.get()
-                ||!(event.getLevel() instanceof ServerLevel level))return;
+                ||!NightwatchConfig.PATHOGEN_SCENE_CROP_PAUSE.get())return;
         var scene=PathogenCropSceneSavedData.forLevel(level).get(event.getPos());
         if(scene==null)return;
-        String current=blockId(level,event.getPos());
         if(VanillaHostMapping15.keepsHost(scene.pathogenId(),
                 scene.minecraftTargetId(),current)
                 &&PathogenGameSceneEngine.effect(scene)

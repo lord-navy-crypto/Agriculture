@@ -184,6 +184,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenGameCuePolicy.java \
             qa/java/PathogenVanillaSceneSmoke.java
           java -cp build/vanilla-host-scenes PathogenVanillaSceneSmoke
+      - name: Test per-position 15-channel pathogen game-data field (Java21)
+        run: |
+          mkdir -p build/pathogen-spatial-field
+          javac -d build/pathogen-spatial-field \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            qa/java/PathogenSpatialFieldSmoke.java
+          java -cp build/pathogen-spatial-field PathogenSpatialFieldSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

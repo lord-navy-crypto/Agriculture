@@ -117,8 +117,9 @@ public final class PathogenSpatialFieldMath {
         Map<Cell,int[]> updated=new HashMap<>();
         snapshot.forEach((cell,pressure)->updated.put(cell,Arrays.copyOf(pressure,CHANNELS)));
         int scanned=0,moved=0,faded=0;
-        for(int i=0;i<keys.size()&&scanned<budget;i++){
-            Cell cell=keys.get((start+i)%keys.size());
+        int visited=0;
+        for(;visited<keys.size()&&visited<budget;visited++){
+            Cell cell=keys.get((start+visited)%keys.size());
             if(!loadedAndActive.test(cell))continue;
             scanned++;
             int[] source=snapshot.get(cell);
@@ -149,7 +150,7 @@ public final class PathogenSpatialFieldMath {
             }
         }
         updated.entrySet().removeIf(entry->zero(entry.getValue()));
-        int newCursor=(start+Math.min(keys.size(),budget))%keys.size();
+        int newCursor=(start+visited)%keys.size();
         return new Frame(updated,newCursor,scanned,moved,faded);
     }
 }
