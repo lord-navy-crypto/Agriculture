@@ -2,6 +2,9 @@ package io.github.lordnavycrypto.gugugaga.pathogens;
 
 import io.github.lordnavycrypto.gugugaga.config.NightwatchConfig;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -80,19 +83,30 @@ public final class PathogenSpatialFieldRuntime {
     public static void onTick(ServerTickEvent.Post event){
         if(!NightwatchConfig.PATHOGEN_FIELD_ENABLED.get())return;
         var server=event.getServer();
-        long worldTime=server.overworld().getGameTime();
-        if(worldTime%INTERVAL!=0)return;
         for(ServerLevel world:server.getAllLevels()){
+            // Dimensions have independent game clocks and active-region masks.
+            long worldTime=world.getGameTime();
+            if(worldTime%INTERVAL!=0)continue;
             List<ServerPlayer> players=world.players().stream()
                     .filter(p->p instanceof ServerPlayer)
                     .map(p->(ServerPlayer)p).toList();
             if(players.isEmpty())continue;
             var field=PathogenSpatialFieldSavedData.forLevel(world);
             if(field.size()==0)continue;
-            field.step(worldTime/INTERVAL,c->active(world,players,c));
+            // Cache chunk-loaded and nearby-player checks across the two
+            // toy-game numerical passes in this same server tick. Never cache
+            // beyond this frame (world chunks and players may move).
+            Map<PathogenSpatialFieldMath.Cell,Boolean> activeCache=new HashMap<>();
+            Predicate<PathogenSpatialFieldMath.Cell> checked=c->{
+                Boolean prior=activeCache.get(c);
+                if(prior!=null)return prior;
+                boolean eligible=active(world,players,c);
+                if(activeCache.size()<4096)activeCache.put(c,eligible);
+                return eligible;
+            };
+            field.step(worldTime/INTERVAL,checked);
             if(NightwatchConfig.VIRAL_GAME_WAVES_ENABLED.get()){
-                field.viralWave(worldTime/INTERVAL,
-                        c->active(world,players,c));
+                field.viralWave(worldTime/INTERVAL,checked);
             }
             // Opt-in HUD is handled by PathogenFieldHudRuntime.
             // Nothing is rendered for players who did not request it.
