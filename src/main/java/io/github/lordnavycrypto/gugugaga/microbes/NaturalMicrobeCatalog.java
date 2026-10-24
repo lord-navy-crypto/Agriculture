@@ -17,9 +17,9 @@ import java.util.Set;
 public final class NaturalMicrobeCatalog {
     private NaturalMicrobeCatalog() {}
 
-    public enum Kind { BACTERIUM, VIRUS }
+    public enum Kind { BACTERIUM, VIRUS, MICROALGA }
     public enum Habitat {
-        SOIL, WATER, PLANT_MATERIAL, ANIMAL_INTESTINE, BACTERIAL_HOST
+        SOIL, WATER, FRESHWATER, PLANT_MATERIAL, ANIMAL_INTESTINE, BACTERIAL_HOST
     }
 
     public record Organism(String id, int ncbiTaxonId, String scientificName,
@@ -75,10 +75,22 @@ public final class NaturalMicrobeCatalog {
             EnumSet.of(Habitat.BACTERIAL_HOST),Set.of(E_COLI.ncbiTaxonId()),
             "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=10665&mode=Info");
 
+    /** A real ammonia-oxidizing soil/freshwater bacterial species (taxon 915). */
+    public static final Organism N_EUROPAEA = new Organism(
+            "nitrosomonas_europaea",915,"Nitrosomonas europaea",Kind.BACTERIUM,
+            EnumSet.of(Habitat.SOIL,Habitat.FRESHWATER),Set.of(),
+            "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=915&mode=Info");
+
+    /** Freshwater green microalga, explicitly not a bacterium or pathogen. */
+    public static final Organism C_VULGARIS = new Organism(
+            "chlorella_vulgaris",3077,"Chlorella vulgaris",Kind.MICROALGA,
+            EnumSet.of(Habitat.FRESHWATER),Set.of(),
+            "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=3077&mode=Info");
+
     private static final Map<String,Organism> BY_ID;
     static {
         LinkedHashMap<String,Organism> records=new LinkedHashMap<>();
-        for(Organism item:new Organism[]{E_COLI,B_SUBTILIS,L_PLANTARUM,T4_PHAGE}) {
+        for(Organism item:new Organism[]{E_COLI,B_SUBTILIS,L_PLANTARUM,T4_PHAGE,N_EUROPAEA,C_VULGARIS}) {
             if(records.put(item.id(),item)!=null)
                 throw new IllegalStateException("Duplicate scientific species ID");
         }
