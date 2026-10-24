@@ -46,5 +46,12 @@
   "screen.gugugaga.onehealth.noautomatic": "看到动物或接触事件，并不代表发生感染。",
   "screen.gugugaga.onehealth.sources": "完整权威资料链接见项目文档。",
   "screen.gugugaga.onehealth.network": "真实生态关系：动物、媒介与人类",
-  "screen.gugugaga.onehealth.graph_disclaimer": "仅展示文献中的关联，不代表游戏中发生感染"
+  "screen.gugugaga.onehealth.graph_disclaimer": "仅展示文献中的关联，不代表游戏中发生感染",
+  "screen.gugugaga.microbes.open": "真实细菌与噬菌体图鉴",
+  "screen.gugugaga.microbes.title": "真实自然微生物图鉴",
+  "screen.gugugaga.microbes.kind": "微生物类别：%s",
+  "screen.gugugaga.microbes.habitat": "有文献依据的生态关联：%s",
+  "screen.gugugaga.microbes.host": "文献记载的宿主分类编号：%s",
+  "screen.gugugaga.microbes.not_observed": "生态关联不意味着 Minecraft 当前区块里一定有这种微生物。",
+  "screen.gugugaga.microbes.source": "分类学来源：NCBI %s"
 }
