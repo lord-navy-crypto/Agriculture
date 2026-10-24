@@ -19,3 +19,10 @@ This extension adds an offline, read-only, bilingual historical time line to the
 
 ## Validation
 Run the Python QA suite, the Java 21 OneHealthHistorySmoke, the NeoForge build, and the existing real dedicated-server and graphical-client startup tests. A real game-session H-key button/small-window Chinese/English visual screenshot remains outstanding; a successful CI boot alone is not that test. Keep both original PR #36 and stable main unchanged pending acceptance.
+
+## Evidence-association graph extension
+- H -> One Health -> Hosts opens six source-backed, bilingual host/virus/evidence cards, with host group, real viral profile, documented statement, source reference and explicit limitations.
+- Rabies: susceptible mammal groups and human disease (CDC). Avian-origin influenza A subset: wild birds and domestic poultry (WHO); 2024 U.S. dairy-cattle detection (CDC); one documented U.S. human case and reported cattle exposure history (WHO).
+- The connecting lines are GRAPHIC evidence associations, not reconstructed transmission pathways. No game health state changes, health scores or player infections.
+- The Hosts page links back to the historical timeline with the matching viral profile filter.
+- Separate Java 21 smoke and Python UI regression tests are mandatory; manual in-game graphical acceptance still remains.

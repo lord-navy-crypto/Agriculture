@@ -61,5 +61,16 @@
   "screen.gugugaga.onehealth.history.filter.avian": "Avian influenza",
   "screen.gugugaga.onehealth.history.filter.animal": "Animal reports",
   "screen.gugugaga.onehealth.history.filter.human": "Human reports",
-  "screen.gugugaga.onehealth.history.filter.publichealth": "Public health"
+  "screen.gugugaga.onehealth.history.filter.publichealth": "Public health",
+  "screen.gugugaga.onehealth.host.open": "Hosts",
+  "screen.gugugaga.onehealth.host.title": "One Health | Host Evidence",
+  "screen.gugugaga.onehealth.host.previous": "Prev",
+  "screen.gugugaga.onehealth.host.next": "Next",
+  "screen.gugugaga.onehealth.host.virus": "Virus",
+  "screen.gugugaga.onehealth.host.source": "Source",
+  "screen.gugugaga.onehealth.host.timeline": "History",
+  "screen.gugugaga.onehealth.host.back": "Back",
+  "screen.gugugaga.onehealth.host.hostlabel": "Documented host or case context",
+  "screen.gugugaga.onehealth.host.association": "Evidence association (NOT spread)",
+  "screen.gugugaga.onehealth.host.notspread": "These lines are NOT transmission pathways."
 }

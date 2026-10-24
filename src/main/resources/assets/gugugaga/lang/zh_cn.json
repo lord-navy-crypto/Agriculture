@@ -61,5 +61,16 @@
   "screen.gugugaga.onehealth.history.filter.avian": "禽源流感",
   "screen.gugugaga.onehealth.history.filter.animal": "动物报告",
   "screen.gugugaga.onehealth.history.filter.human": "人类病例",
-  "screen.gugugaga.onehealth.history.filter.publichealth": "公共卫生"
+  "screen.gugugaga.onehealth.history.filter.publichealth": "公共卫生",
+  "screen.gugugaga.onehealth.host.open": "宿主关系",
+  "screen.gugugaga.onehealth.host.title": "同一健康｜宿主关系证据",
+  "screen.gugugaga.onehealth.host.previous": "上一个",
+  "screen.gugugaga.onehealth.host.next": "下一个",
+  "screen.gugugaga.onehealth.host.virus": "病毒",
+  "screen.gugugaga.onehealth.host.source": "来源",
+  "screen.gugugaga.onehealth.host.timeline": "历史",
+  "screen.gugugaga.onehealth.host.back": "返回",
+  "screen.gugugaga.onehealth.host.hostlabel": "有记录支持的宿主或病例",
+  "screen.gugugaga.onehealth.host.association": "证据关联（非传播）",
+  "screen.gugugaga.onehealth.host.notspread": "连线不是传播途径。"
 }
