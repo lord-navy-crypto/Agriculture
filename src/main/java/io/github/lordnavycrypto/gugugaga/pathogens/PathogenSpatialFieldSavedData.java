@@ -28,6 +28,8 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
     }
     public int size(){return cells.size();}
     public int get(PathogenSpatialFieldMath.Cell cell,int channel){
+        if(channel<0||channel>=PathogenSpatialFieldMath.CHANNELS)
+            throw new IllegalArgumentException("Invalid data channel");
         int[] row=cells.get(cell);
         return row==null?0:row[channel];
     }
@@ -47,10 +49,14 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
         return batch.cells();
     }
     public boolean set(PathogenSpatialFieldMath.Cell cell,int channel,int value){
+        if(value<0||value>PathogenSpatialFieldMath.MAX_PRESSURE)
+            throw new IllegalArgumentException("Invalid game pressure");
+        if(get(cell,channel)==value)return true; // avoid unnecessary dirty saves
         var next=PathogenSpatialFieldMath.withPressure(cells,cell,channel,value);
         if(value>0 && !cells.containsKey(cell) && next.size()==cells.size())
             return false;
-        cells=next;
+        // Keep the owned live map mutable for the O(1) route-event fast path.
+        cells=new HashMap<>(next);
         setDirty();
         return true;
     }
@@ -58,18 +64,33 @@ public final class PathogenSpatialFieldSavedData extends SavedData {
     public boolean transfer(PathogenSpatialFieldMath.Cell from,
             PathogenSpatialFieldMath.Cell to,int channel,
             PathogenRoutePolicy15.Route route,boolean loaded){
-        var change=PathogenRouteGameMath.move(cells,from,to,channel,route,loaded);
-        if(!change.applied())return false;
-        cells=change.cells();
+        if(!PathogenRouteGameMath.canMove(cells,from,to,channel,route,loaded))
+            return false;
+        // Only two channel integers change; don't clone all 1,024*15 cells
+        // for each Minecraft movement/ambient event.
+        int[] source=cells.get(from);
+        int[] destination=cells.computeIfAbsent(to,
+                ignored->new int[PathogenSpatialFieldMath.CHANNELS]);
+        source[channel]--;
+        destination[channel]++;
+        boolean empty=true;
+        for(int count:source){
+            if(count>0){empty=false;break;}
+        }
+        if(empty)cells.remove(from);
         setDirty();
         return true;
     }
     public PathogenSpatialFieldMath.Frame step(long gameStep,
             java.util.function.Predicate<PathogenSpatialFieldMath.Cell> loadedActive){
         var frame=PathogenSpatialFieldMath.step(cells,cursor,64,gameStep,loadedActive);
-        cells=frame.cells();
+        // Own independent arrays: callers may inspect/mutate returned Frame data,
+        // but they must NEVER mutate our persisted world field through aliasing.
+        cells=new HashMap<>(PathogenSpatialFieldMath.immutableCopy(frame.cells()));
+        int previousCursor=cursor;
         cursor=frame.nextCursor();
-        if(frame.moved()>0||frame.faded()>0)setDirty();
+        if(frame.moved()>0||frame.faded()>0||cursor!=previousCursor)
+            setDirty();
         return frame;
     }
 

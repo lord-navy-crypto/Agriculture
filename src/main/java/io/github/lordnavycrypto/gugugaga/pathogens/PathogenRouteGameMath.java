@@ -17,28 +17,41 @@ public final class PathogenRouteGameMath {
                            boolean applied,int sourceBefore,int targetAfter){
         public Transfer{cells=PathogenSpatialFieldMath.immutableCopy(cells);}
     }
-    public static Transfer move(Map<PathogenSpatialFieldMath.Cell,int[]> input,
+    /**
+     * O(1) preflight on two existing region records, unlike a full map clone.
+     * Intended for the server-owned SavedData fast path. All numbers are game
+     * tokens only, not actual biological rates or pathogen particles.
+     */
+    public static boolean canMove(Map<PathogenSpatialFieldMath.Cell,int[]> input,
             PathogenSpatialFieldMath.Cell source,PathogenSpatialFieldMath.Cell target,
-            int channel,PathogenRoutePolicy15.Route route,boolean bothLoaded) {
+            int channel,PathogenRoutePolicy15.Route route,boolean bothLoaded){
         Objects.requireNonNull(input);
         Objects.requireNonNull(source);
         Objects.requireNonNull(target);
         Objects.requireNonNull(route);
-        if(channel<0||channel>=15)throw new IllegalArgumentException("Invalid channel");
-        int distance=Math.abs((long)source.x()-target.x())+
-                     Math.abs((long)source.z()-target.z())>Integer.MAX_VALUE
-                     ?Integer.MAX_VALUE:(int)(Math.abs((long)source.x()-target.x())+
-                            Math.abs((long)source.z()-target.z()));
-        Map<PathogenSpatialFieldMath.Cell,int[]> before=
-                PathogenSpatialFieldMath.immutableCopy(input);
-        int[] from=before.get(source),to=before.get(target);
-        int supply=from==null?0:from[channel],targetLevel=to==null?0:to[channel];
-        if(!bothLoaded||source.equals(target)||distance>MAX_ROUTE_STEPS||
-                distance==0||!PathogenRoutePolicy15.allows(channel,route)||
-                supply==0||targetLevel>=PathogenSpatialFieldMath.MAX_PRESSURE||
-                (to==null&&before.size()>=PathogenSpatialFieldMath.MAX_CELLS))
-            return new Transfer(before,false,supply,targetLevel);
-        Map<PathogenSpatialFieldMath.Cell,int[]> next=new HashMap<>(before);
+        if(channel<0||channel>=PathogenSpatialFieldMath.CHANNELS)
+            throw new IllegalArgumentException("Invalid channel");
+        long distance=Math.abs((long)source.x()-target.x())+
+                Math.abs((long)source.z()-target.z());
+        int[] from=input.get(source),to=input.get(target);
+        return bothLoaded && !source.equals(target) && distance>=1
+                && distance<=MAX_ROUTE_STEPS
+                && PathogenRoutePolicy15.allows(channel,route)
+                && from!=null && from[channel]>0
+                && (to==null||to[channel]<PathogenSpatialFieldMath.MAX_PRESSURE)
+                && (to!=null||input.size()<PathogenSpatialFieldMath.MAX_CELLS);
+    }
+
+    public static Transfer move(Map<PathogenSpatialFieldMath.Cell,int[]> input,
+            PathogenSpatialFieldMath.Cell source,PathogenSpatialFieldMath.Cell target,
+            int channel,PathogenRoutePolicy15.Route route,boolean bothLoaded) {
+        boolean allowed=canMove(input,source,target,channel,route,bothLoaded);
+        int[] from=input.get(source),to=input.get(target);
+        int supply=from==null?0:from[channel];
+        int targetLevel=to==null?0:to[channel];
+        if(!allowed)
+            return new Transfer(input,false,supply,targetLevel);
+        Map<PathogenSpatialFieldMath.Cell,int[]> next=new HashMap<>(input);
         int[] left=Arrays.copyOf(from,15);
         int[] right=to==null?new int[15]:Arrays.copyOf(to,15);
         left[channel]--;
