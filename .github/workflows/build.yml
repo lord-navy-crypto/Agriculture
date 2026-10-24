@@ -251,6 +251,7 @@ jobs:
       - name: Launch and validate real NeoForge server
         env:
           GUGU_BOOT_TIMEOUT: "420"
+          GUGU_FIELD_SELFTEST: "1"
         run: python3 qa/smoke_server_boot.py
       - name: Upload diagnostic server logs
         if: always()

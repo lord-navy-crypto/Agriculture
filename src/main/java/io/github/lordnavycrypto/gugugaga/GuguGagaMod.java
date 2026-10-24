@@ -23,6 +23,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSceneContent;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSceneRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenDataRoutesRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldServerSavedDataSmoke;
 import io.github.lordnavycrypto.gugugaga.command.PathogenSpatialFieldCommands;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -91,6 +92,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(PathogenSceneRuntime::onCropGrow);
         NeoForge.EVENT_BUS.addListener(PathogenSpatialFieldRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(PathogenDataRoutesRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(PathogenFieldServerSavedDataSmoke::onServerStarted);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
