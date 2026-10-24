@@ -36,5 +36,13 @@
   "message.gugugaga.interact.angry": "[Gugu-Gaga] It watches your hands carefully.",
   "message.gugugaga.interact.corrupted": "[Gugu-Gaga] Its feathers shiver with a dark whisper.",
   "message.gugugaga.interact.lapis": "[Lapis] The blue figure nods, but will not explain itself.",
-  "message.gugugaga.interact.redactor": "[Redactor] The familiar face is gone."
+  "message.gugugaga.interact.redactor": "[Redactor] The familiar face is gone.",
+  "screen.gugugaga.onehealth.open": "One Health: Real Viruses",
+  "screen.gugugaga.onehealth.title": "One Health | Animals, People & Viruses",
+  "screen.gugugaga.onehealth.previous": "Previous",
+  "screen.gugugaga.onehealth.next": "Next",
+  "screen.gugugaga.onehealth.details": "Details",
+  "screen.gugugaga.onehealth.back": "Back",
+  "screen.gugugaga.onehealth.noautomatic": "An animal sighting or contact never means infection.",
+  "screen.gugugaga.onehealth.sources": "See the source URLs in project documentation."
 }

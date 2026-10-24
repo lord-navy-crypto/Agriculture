@@ -23,7 +23,7 @@ public final class NightwatchScreen extends Screen {
         int gap=8;
         int left=(width-(buttonWidth*2+gap))/2;
         int right=left+buttonWidth+gap;
-        int y=height/2-73, step=26;
+        int y=height/2-100, step=26;
         addAction("screen.gugugaga.nightwatch.join",
                 NightwatchActionPacket.JOIN,left,y,buttonWidth);
         addAction("screen.gugugaga.nightwatch.leave",
@@ -48,6 +48,12 @@ public final class NightwatchScreen extends Screen {
                 NightwatchActionPacket.JOURNAL_ON,right,y+step*4,buttonWidth);
         addAction("screen.gugugaga.nightwatch.journal_off",
                 NightwatchActionPacket.JOURNAL_OFF,left,y+step*5,buttonWidth);
+        // Real One Health encyclopedia: a local native read-only page,
+        // not a disguised slash-command or an infection event.
+        addRenderableWidget(Button.builder(
+                Component.translatable("screen.gugugaga.onehealth.open"),
+                button->Minecraft.getInstance().setScreen(new OneHealthScreen(this)))
+                .bounds(right,y+step*5,buttonWidth,20).build());
     }
 
     private void addAction(String label,int action,int x,int y,int buttonWidth) {

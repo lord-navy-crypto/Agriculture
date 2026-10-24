@@ -136,6 +136,14 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/microbes/NaturalMicrobeEcosystem.java \
             qa/java/NaturalMicrobeEcosystemSmoke.java
           java -cp build/natural-ecology-smoke NaturalMicrobeEcosystemSmoke
+      - name: Verify real One Health animal-human effects, documentation and non-predictive observations
+        run: |
+          mkdir -p build/onehealth-evidence-smoke
+          javac -d build/onehealth-evidence-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthEvidenceCatalog.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthObservationPolicy.java \
+            qa/java/OneHealthEvidenceSmoke.java
+          java -cp build/onehealth-evidence-smoke OneHealthEvidenceSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
