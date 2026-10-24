@@ -85,27 +85,8 @@ public final class PathogenSpatialFieldRuntime {
             var field=PathogenSpatialFieldSavedData.forLevel(world);
             if(field.size()==0)continue;
             field.step(worldTime/INTERVAL,c->active(world,players,c));
-            for(ServerPlayer player:players){
-                var at=cell(player.blockPosition());
-                int strongest=0;
-                String taxon=null;
-                for(int i=0;i<15;i++){
-                    int n=field.get(at,i);
-                    if(n>strongest){
-                        strongest=n;
-                        taxon=PathogenRoster15.FIRST_FIFTEEN.get(i).id();
-                    }
-                }
-                // Readable observable number; NOT infection or disease diagnosis.
-                if(strongest>0 &&worldTime%(INTERVAL*4)==0){
-                    player.displayClientMessage(Component.translatable(
-                            "message.gugugaga.pathogen_field.observed",
-                            taxon,strongest),true);
-                    world.sendParticles(ParticleTypes.ENCHANT,
-                            player.getX(),player.getY()+0.4,player.getZ(),
-                            1,0.3,0.1,0.3,0);
-                }
-            }
+            // Opt-in HUD is handled by PathogenFieldHudRuntime.
+            // Nothing is rendered for players who did not request it.
         }
     }
 }

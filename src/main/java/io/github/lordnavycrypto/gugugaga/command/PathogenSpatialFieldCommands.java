@@ -8,6 +8,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldMath;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenSpatialFieldSavedData;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldTextMap;
 import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldOverview;
+import io.github.lordnavycrypto.gugugaga.pathogens.PathogenFieldHudRuntime;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -22,6 +23,13 @@ public final class PathogenSpatialFieldCommands{
         event.getDispatcher().register(Commands.literal("gugugaga")
             .then(Commands.literal("field")
                 .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                .then(Commands.literal("hud")
+                    .then(Commands.literal("on")
+                        .executes(ctx->hud(ctx.getSource(),true)))
+                    .then(Commands.literal("off")
+                        .executes(ctx->hud(ctx.getSource(),false)))
+                    .then(Commands.literal("status")
+                        .executes(ctx->hudStatus(ctx.getSource()))))
                 .then(Commands.literal("overview").executes(ctx->overview(ctx.getSource())))
                 .then(Commands.literal("map")
                     .then(Commands.argument("taxon",StringArgumentType.word())
@@ -46,6 +54,31 @@ public final class PathogenSpatialFieldCommands{
                                 .map(PathogenRoster15.Entry::id).toList(),builder))
                         .executes(ctx->change(ctx.getSource(),
                             StringArgumentType.getString(ctx,"taxon"),0))))));
+    }
+    private static int hud(CommandSourceStack src,boolean enable){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run the field HUD command as a player."));
+            return 0;
+        }
+        if(enable&&!NightwatchConfig.PATHOGEN_FIELD_ENABLED.get()){
+            src.sendFailure(Component.literal("The server has disabled the game field."));
+            return 0;
+        }
+        PathogenFieldHudRuntime.setEnabled(player,enable);
+        player.sendSystemMessage(Component.literal("Gugu-Gaga numeric field HUD "+
+                (enable?"ON":"OFF")+" (personal, action bar, game data only)"));
+        return 1;
+    }
+    private static int hudStatus(CommandSourceStack src){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run the HUD status command as a player."));
+            return 0;
+        }
+        boolean on=PathogenFieldHudRuntime.isEnabled(
+                player.serverLevel().getServer(),player.getUUID());
+        player.sendSystemMessage(Component.literal("Gugu-Gaga field HUD: "+
+                (on?"ON":"OFF")+" (disabled by default)"));
+        return 1;
     }
     private static int status(CommandSourceStack src){
         if(src.getEntity() instanceof ServerPlayer player){
