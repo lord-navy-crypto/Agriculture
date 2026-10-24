@@ -1,5 +1,5 @@
 > **ONE HEALTH vNext — 真实动物／媒介／人类关系图（2026-10-24）**  
-> Built on the prior real microbe and human–animal evidence branches: **real West Nile virus (NCBI 11082)** joins rabies and avian-origin influenza A. The existing Minecraft **H key → One Health → Details** now includes an annotated ecological network with CDC/WHO-backed bird–mosquito relations, incidental human/horse health context and explicit scope limitations.  
+> Built on the prior real microbe and human–animal evidence branches: **real West Nile virus (NCBI 11082)** joins rabies and avian-origin influenza A. The existing Minecraft **H key → One Health → Details** now includes an annotated ecological network with CDC/WHO-backed bird–mosquito relations, incidental human/horse health context and explicit scope limitations. A SECOND usable native H-key button, **Natural Microbes**, now browses all four real NCBI-listed bacteria and bacteriophage taxa from PR #35, with habitat/host evidence and no fictional spawn rates.  
 > Every graph edge is scientific source metadata, **not automatic infection, an invented spread rate or a prediction**. No phantom human→mosquito transmission. The original main/old horror/folklore code is not overwritten.  
 > [One Health vector-host graph plan and authoritative references](docs/ONE_HEALTH_REAL_VECTOR_HOST_NETWORK_2026-10-24.md).
 
