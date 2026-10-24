@@ -29,6 +29,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.EcologyExtendedWorldRuntime;
 import io.github.lordnavycrypto.gugugaga.command.EcologyExtensionCommands;
 import io.github.lordnavycrypto.gugugaga.command.FocusFiveCommands;
 import io.github.lordnavycrypto.gugugaga.pathogens.FocusFiveVisualRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.FocusFiveServerSelftest;
 import io.github.lordnavycrypto.gugugaga.pathogens.ViralWorldHostRuntime;
 import io.github.lordnavycrypto.gugugaga.command.PathogenSpatialFieldCommands;
 import net.minecraft.core.registries.Registries;
@@ -107,6 +108,7 @@ public final class GuguGagaMod {
         NeoForge.EVENT_BUS.addListener(ViralWorldHostRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(EcologyExtendedWorldRuntime::onTick);
         NeoForge.EVENT_BUS.addListener(FocusFiveVisualRuntime::onTick);
+        NeoForge.EVENT_BUS.addListener(FocusFiveServerSelftest::onServerStarted);
         NeoForge.EVENT_BUS.addListener(NightwatchOnboarding::onLogin);
         // Dedicated-server smoke must observe real mod construction, not just compilation.
         System.out.println("GUGUGAGA_RUNTIME_INIT_OK");
