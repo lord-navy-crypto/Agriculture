@@ -18,6 +18,15 @@ public final class PathogenRouteFairScheduler {
     public record Batch(List<PathogenSpatialFieldMath.Cell> cells,int nextCursor){
         public Batch { cells=List.copyOf(cells); }
     }
+    /**
+     * Rotate the first channel considered at each cell. Without this, the
+     * lowest-index game taxon can monopolize a busy 15-channel source.
+     */
+    public static int startChannel(PathogenSpatialFieldMath.Cell cell,long gameFrame){
+        Objects.requireNonNull(cell);
+        return (int)Math.floorMod(gameFrame+cell.x()*3L+cell.z()*5L,
+                PathogenSpatialFieldMath.CHANNELS);
+    }
     public static Batch next(Collection<PathogenSpatialFieldMath.Cell> coordinates,
                              int cursor,int budget){
         Objects.requireNonNull(coordinates);

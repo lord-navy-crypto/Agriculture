@@ -214,6 +214,17 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldTextMap.java \
             qa/java/PathogenRoutingFairnessSmoke.java
           java -cp build/pathogen-route-fairness PathogenRoutingFairnessSmoke
+      - name: Verify fast route eligibility parity, 1024-cell pressure constraints and 15-channel rotation (Java21)
+        run: |
+          mkdir -p build/pathogen-fast-route-parity
+          javac -d build/pathogen-fast-route-parity \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteFairScheduler.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
+            qa/java/PathogenFastRouteParitySmoke.java
+          java -cp build/pathogen-fast-route-parity PathogenFastRouteParitySmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4

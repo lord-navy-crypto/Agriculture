@@ -87,7 +87,9 @@ public final class PathogenDataRoutesRuntime {
             if(attempted>=MAX_AMBIENT_TRANSFERS)break;
             if(!loadedAndClose(world,watchers,from))continue;
             int[] levels=snapshot.get(from);
-            for(int channel=0;channel<15;channel++){
+            for(int offset=0;offset<15;offset++){
+                int channel=(PathogenRouteFairScheduler.startChannel(from,frame)
+                        +offset)%15;
                 if(levels[channel]<=0)continue;
                 PathogenRoutePolicy15.Route mode=rain
                         ?PathogenRoutePolicy15.Route.RAIN_VISUAL
