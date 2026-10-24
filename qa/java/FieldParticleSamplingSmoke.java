@@ -42,8 +42,9 @@ public class FieldParticleSamplingSmoke{
       c->{throw new AssertionError("read unloaded area");},Map.of());
   yes(blocked.visited()==0&&blocked.markers().isEmpty(),
       "unloaded chunks never accessed or rendered");
+  var previouslyHigher=new PathogenSpatialFieldMath.Cell(origin.x()+1,origin.z());
   var smaller=FieldParticleSampling.scan(origin,choice,c->true,
-      c->c.equals(origin)?1:0,scan.current());
+      c->c.equals(previouslyHigher)?1:0,scan.current());
   yes(smaller.markers().size()==1&&smaller.markers().get(0).change()==
       FieldParticleSampling.Change.DECREASED,"decreasing game trend");
   var absent=FieldParticleSampling.scan(origin,phage,c->true,
