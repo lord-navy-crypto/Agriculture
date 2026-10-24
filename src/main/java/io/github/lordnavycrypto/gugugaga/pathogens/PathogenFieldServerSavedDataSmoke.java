@@ -60,6 +60,49 @@ public final class PathogenFieldServerSavedDataSmoke {
         // No call to world.getDataStorage(): this cannot dirty an actual
         // player's world or leave a test taxon label behind after startup.
         System.out.println(PASS+" channels=15 gameCells=2 persistedCursor=true");
+        verifyRealDiskPhase(event);
+    }
+
+    /**
+     * A two-process CI integration test for the REAL Overworld SavedData
+     * filesystem, unlike the in-memory NBT smoke above.
+     *
+     * ONLY on temporary GitHub Actions test runners explicitly setting
+     * GUGU_FIELD_SELFTEST=1 and GUGU_FIELD_DISK_PHASE=write or verify.
+     * This method NEVER runs during ordinary Minecraft play.
+     */
+    private static void verifyRealDiskPhase(ServerStartedEvent event){
+        String phase=System.getenv("GUGU_FIELD_DISK_PHASE");
+        if(phase==null||phase.isEmpty())return;
+        var live=PathogenSpatialFieldSavedData.forLevel(
+                event.getServer().overworld());
+        var left=new PathogenSpatialFieldMath.Cell(-730,1139);
+        var right=new PathogenSpatialFieldMath.Cell(-729,1139);
+        int plant=PathogenSpatialFieldMath.channel("potato_virus_y");
+        int animal=PathogenSpatialFieldMath.channel("lyssavirus_rabies");
+        if(phase.equals("write")){
+            check(live.size()==0,"CI must use fresh temporary test world");
+            check(live.set(left,plant,11),"initial game value A");
+            check(live.set(right,plant,7),"initial game value B");
+            check(live.set(left,animal,6),"independent game channel");
+            var candidates=live.routeCandidates(1);
+            check(candidates.size()==1&&candidates.get(0).equals(left),
+                    "save cursor advances after first cell");
+            System.out.println("GUGUGAGA_FIELD_DISK_WRITE_PASS"+
+                    " regions="+live.size()+" channels=15");
+        }else if(phase.equals("verify")){
+            check(live.size()==2,"expected persisted game regions");
+            check(live.get(left,plant)==11,"disk reload: left channel");
+            check(live.get(right,plant)==7,"disk reload: right channel");
+            check(live.get(left,animal)==6,"disk reload: independent channel");
+            var candidates=live.routeCandidates(1);
+            check(candidates.size()==1&&candidates.get(0).equals(right),
+                    "disk reload: persisted scanner cursor");
+            System.out.println("GUGUGAGA_FIELD_DISK_RESTART_PASS"+
+                    " worldReloaded=true cursorRecovered=true noNewBlocks=true");
+        }else{
+            throw new IllegalArgumentException("Unknown CI-only disk test phase");
+        }
     }
 
     private static void check(boolean result,String description){
