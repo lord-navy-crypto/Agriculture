@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import java.util.Map;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -53,6 +54,8 @@ public final class CropClimate {
     }
     /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
     public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
+        // This models irrigated lowland rice; it does not claim every rice system needs flooding.
+        if ("rice_seeds".equals(seedName) && !hasPaddyWater(level, pos)) return false;
         if (level.dimension() != Level.OVERWORLD) return random.nextInt(6) == 0;
         Band crop = cropBand(seedName);
         String name = level.getBiome(pos).unwrapKey()
@@ -76,4 +79,23 @@ public final class CropClimate {
                 || (biome == Band.DRY && (crop == Band.WET || crop == Band.COOL));
         return random.nextInt(harsh ? 4 : 2) == 0;
     }
+    /**
+     * Finds freshwater near the crop without forcing neighboring chunks to load.
+     * The vertical offsets cover water at crop height or the farmland level below.
+     */
+    private static boolean hasPaddyWater(ServerLevel level, BlockPos cropPos) {
+        for (int dx = -3; dx <= 3; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                for (int dy = -1; dy <= 0; dy++) {
+                    BlockPos candidate = cropPos.offset(dx, dy, dz);
+                    if (level.hasChunkAt(candidate)
+                            && level.getFluidState(candidate).is(FluidTags.WATER)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

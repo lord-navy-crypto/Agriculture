@@ -1,19 +1,21 @@
-# Gugu-Gaga Agriculture & Apiaries — v0.2 Development
+# Gugu-Gaga Agriculture & Apiaries — development branch
 
-This is a source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion built on the experimental Gugu-Gaga repo.
-Code remains on a draft PR; do not treat it as a released mod.
+A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. This remains experimental branch work, not a released mod.
 
 ## Working content
 
-- **24 plantable field crops**: original 10 (corn, tomato, onion, rice, soybean, strawberry, cucumber, blueberry, bell pepper, garlic), plus 14 (barley, oat, rye, pea, lettuce, cabbage, spinach, broccoli, eggplant, cotton, flax, peanut, sorghum, sunflower seed).
-- Crop seeds, 8 stage blockstates, produced items, loot tables, recipes, basic edible item definitions, and English/Chinese translations.
-- **8 wild seed-source plants** with explicit Minecraft vanilla biome generation: barley, oat, pea, lettuce, flax, sunflower, blueberry and strawberry. These represent wild relatives as a gameplay simplification, **not** genetically accurate wild copies of modern cultivars.
-- **Four additional distinct bee entity types**: bumblebee, mason bee, squash bee and leafcutter bee. They naturally spawn in selected vanilla biomes at conservative rates, each has its own entity registry ID, and pollination compatibility is crop-sensitive.
-- Three optional *vanilla bee* foraging profile tags (meadow, orchard, berry).
-- A **2×2 apiary kit** that places four individually functional vanilla beehives. It does not enlarge the storage of a single hive.
-- Source-based growth adaptation to vanilla biome categories, including **10 published soil germination minimum temperatures** used as relative cool-biome sensitivity thresholds.
+- **36 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
+- Crop seeds, eight age stages, harvested items, loot tables, seed recipes, bilingual English/Chinese names and placeholder vanilla textures.
+- **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
+- **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
+- Crop-aware, late-stage bee-assisted growth bonuses, plus meadow/orchard/berry tags for vanilla bees.
+- A **2×2 apiary kit** placing four separate functional vanilla beehives; it does not enlarge a single hive.
+- Biome-based crop-growth suitability using published seed-germination references as relative sensitivity categories. Real measurements are not converted into Minecraft ticks.
+- **Rice paddy rule (v0.4):** rice growth requires freshwater within three horizontal blocks at crop height or the farmland level below. The crop remains planted on normal farmland. This is an irrigated-lowland gameplay model, not a universal claim about every rice-growing system.
 
-## Build / test
+## Build and QA
+
+Target Java 21, Minecraft 1.21.1 and NeoForge 21.1.259.
 
 ```sh
 gradle --no-daemon --stacktrace build
@@ -22,23 +24,26 @@ python3 qa/validate_agriculture_expansion.py
 python3 qa/validate_agriculture_ecology.py
 python3 qa/validate_bee_biodiversity.py
 python3 qa/validate_agronomic_sources.py
+python3 qa/validate_agriculture_v0_3.py
+python3 qa/validate_rice_paddy.py
 python3 qa/smoke_rewrite_server.py
 ```
 
-GitHub Actions compiles, validates resources, and starts a real dedicated NeoForge server. Passing those checks **does not replace a graphical client/in-world world-generation test**.
+GitHub Actions compiles the mod, validates resource structure and starts a dedicated NeoForge server. Passing CI does **not** replace a graphical client test of crop growth, visuals and world generation in fresh chunks.
 
 ## Biological and gameplay boundaries
 
-The four newly registered bees still inherit **vanilla honeybee AI, animation, bee textures, hive use and breeding**. Therefore they are identifiable entity prototypes, not yet independent accurate species simulations. Real mason/leafcutter/squash bee solitary nesting and bumblebee colony mechanics remain to be implemented.
+- Crop and wild-plant textures remain vanilla placeholders; crop shapes and crop-specific yield models are not complete.
+- The bee entities are registered prototypes, not independent species simulations. Solitary nesting for mason, leafcutter, carpenter and mining bees, colony lifecycle for bumblebees, unique art and inherited bee traits remain future work.
+- Soil pH, crop rotation, nutrient depletion, cultivar differences, seasons and a measured pollination-to-fruit-set/yield model are not implemented.
+- The rice rule models irrigated lowland cultivation. IRRI documents both flooded-field practices and water-saving alternate wetting and drying; other systems, including aerobic rice, exist.
 
-Wild plants currently use placeholder vanilla plant textures, and crops currently use placeholder vanilla age models. Rice paddies, unusual crop shapes/height, crop-specific yields, and true pollination-to-fruit-set calculations still need implementation. The soil temperature data in the pack are real (Fahrenheit) but Minecraft biomes do not express measured degrees Fahrenheit and all random-tick rates remain gameplay tuning.
+## Research references
 
-## Evidence
-
-- Real germination data: `docs/REAL_AGRICULTURE_DATA_V0_2.md`
-- Biome mapping: `docs/AGRICULTURE_ECOLOGY_V0_2.md`
-- Pollinator biodiversity: `docs/BEE_BIODIVERSITY_V0_2.md`
-- NeoForge world generation: https://docs.neoforged.net/docs/1.21.1/worldgen/biomemodifier/
-- University of Minnesota crop pollination: https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements
-- Xerces bee nesting: https://www.xerces.org/pollinator-conservation/nesting-resources
-- USDA leafcutter bee: https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/alfalfa-leafcutting-bee-alcb/
+- Germination temperature references and limitations: `docs/REAL_AGRICULTURE_DATA_V0_2.md`
+- Crop/biome and bee design: `docs/AGRICULTURE_ECOLOGY_V0_2.md`, `docs/AGRICULTURE_V0_3_BIOMES.md`, `docs/BEE_BIODIVERSITY_V0_2.md`
+- International Rice Research Institute, [Alternate Wetting and Drying](https://ghgmitigation.irri.org/mitigation-technologies/alternate-wetting-and-drying)
+- International Rice Research Institute, [Healthy Soils, Healthy Rice](https://ricetoday.irri.org/healthy-soils-healthy-rice/)
+- NeoForged 1.21.1 biome modifiers: https://docs.neoforged.net/docs/1.21.1/worldgen/biomemodifier/
+- University of Minnesota Extension crop guidance: https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden
+- Xerces Society, bee nesting resources: https://www.xerces.org/pollinator-conservation/nesting-resources

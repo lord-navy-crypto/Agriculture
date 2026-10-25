@@ -19,7 +19,7 @@
 | cranberry (蔓越莓) | COOL | berry | Yes; late growth only |
 | sesame (芝麻) | DRY | oilseed | Yes; late growth only |
 
-Minecraft farmland + water + normal light remains required. Seeds can be found through wild populations (four kinds) or unlocked through simplified crafting conversions; vanilla textures are **temporary placeholders**. The crop climate system merely adjusts relative chance of vanilla growth; it is not soil thermodynamics. No plant matures in a real agricultural number of days.
+Minecraft farmland + normal light remains required. **Rice has an additional paddy-water gate:** growth only proceeds when freshwater is found within a 3-block horizontal radius at crop height or the farmland level below. This is a simplified irrigated-lowland gameplay model, not a claim that every rice variety requires standing water. IRRI documents alternate wetting and drying as well as aerobic rice systems. Seeds can be found through wild populations (four kinds) or unlocked through simplified crafting conversions; vanilla textures are **temporary placeholders**. The crop climate system adjusts relative chance of vanilla growth; it is not soil thermodynamics. No plant matures in a real agricultural number of days.
 
 ## Wild forage and biomes
 
@@ -49,6 +49,8 @@ These are *fictional wild relatives / obtainable seed proxies*. Modern cultivar 
 
 UMN Extension provides days-to-maturity ranges for **radish 30–60**, **turnip 50–60**, **kale 40–65** and **summer squash 50–65**; these are stored with an explicit source in the JSON, but never equated to Minecraft crop ticks. Variety, locality, season and management affect real duration.
 - UMN Extension vegetable planting guide: https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden
+- IRRI, irrigated rice and alternate wetting/drying: https://ghgmitigation.irri.org/mitigation-technologies/alternate-wetting-and-drying
+- IRRI, soil and water management in rice: https://ricetoday.irri.org/healthy-soils-healthy-rice/
 - UMN Extension climate resilience crop maturity table: https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota
 - USDA NRCS habitat guidance: https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf
 - Xerces Society ground-nesting bee background: https://www.xerces.org/blog/why-do-some-bees-dig
