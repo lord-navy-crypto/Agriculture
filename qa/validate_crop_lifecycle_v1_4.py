@@ -14,8 +14,10 @@ def main():
         load("data/gugugaga/agronomy/crop_additions_v1_0.json")["crops"],
         load("data/gugugaga/agronomy/crop_additions_v1_3.json")["crops"],
     ]
-    crops = [row["crop"] for group in profiles for row in group]
+    profile_rows = [row for group in profiles for row in group]
+    crops = [row["crop"] for row in profile_rows]
     assert len(crops) == 64 and len(set(crops)) == 64
+    assert all(isinstance(row.get("harvested_organ"), str) and row["harvested_organ"].strip() for row in profile_rows)
     en, zh = load("assets/gugugaga/lang/en_us.json"), load("assets/gugugaga/lang/zh_cn.json")
     reg = (SRC / "AgricultureContent.java").read_text("utf8")
     climate = (SRC / "CropClimate.java").read_text("utf8")
@@ -46,13 +48,19 @@ def main():
     assert "palettes = [" in generator and "categoryGroups = [" in generator
     assert "leafFormGroups = [" in generator
     assert "leafFormByCrop.keySet()" in generator
-    assert "organFormGroups = [" in generator
+    assert "organFormFromProfile = {" in generator
     assert "harvestedOrganByCrop" in generator
+    assert "organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])" in generator
+    assert "No harvested-organ icon mapping for profile value:" in generator
     assert "organFormByCrop.keySet()" in generator
-    assert "Every crop must declare a harvested organ" in generator
-    assert "if (organForm == 'rhizome')" in generator
-    assert "if (organForm == 'head')" in generator
-    assert "if (crop == 'sunflower_seed')" in generator
+    assert "seedFormGroups = [" in generator
+    assert "seedFormByCrop.keySet()" in generator
+    assert "String seedForm = seedFormByCrop[crop].toString()" in generator
+    assert "seedForm == 'kernel'" in generator
+    assert "seedForm == 'legume'" in generator
+    assert "seedForm == 'oilseed'" in generator
+    assert "seedForm == 'brassica'" in generator
+    assert "organForm == 'fiber' || organForm == 'fiber_seed'" in generator
     assert "leafForm == 'rosette'" in generator
     assert "leafForm == 'vine'" in generator
     assert "leafForm == 'fern'" in generator
