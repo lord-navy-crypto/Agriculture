@@ -59,6 +59,9 @@ def main():
     assert "organFormByCrop.keySet()" in generator
     assert "seedFormGroups = [" in generator
     assert "seedFormByCrop.keySet()" in generator
+    # Seed-icon rendering has its own local palette; foliage-only variables must not leak into it.
+    assert "put.call(image,pt[0]-1,pt[1],leafLight)" not in generator
+    assert "put.call(image,pt[0]-1,pt[1],light)" in generator
     assert "String seedForm = seedFormByCrop[crop].toString()" in generator
     assert "seedForm == 'kernel'" in generator
     assert "seedForm == 'legume'" in generator
