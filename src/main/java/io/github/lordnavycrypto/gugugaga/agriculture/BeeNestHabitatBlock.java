@@ -115,7 +115,10 @@ public final class BeeNestHabitatBlock extends Block {
                         || id.equals("blueberry_crop") || id.equals("raspberry_crop")
                         || id.equals("cranberry_crop") || id.equals("sunflower_seed_crop")
                         || id.equals("buckwheat_crop") || id.equals("cucumber_crop")
-                        || id.equals("zucchini_crop")) {
+                        || id.equals("zucchini_crop")
+                        || id.equals("lavender_crop") || id.equals("clover_crop")
+                        || id.equals("canola_crop") || id.equals("mustard_crop")
+                        || id.equals("basil_crop") || id.equals("mint_crop")) {
                     return true;
                 }
             }

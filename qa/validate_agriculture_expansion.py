@@ -3,8 +3,8 @@
 import json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "src/main/resources"
-CROPS = "corn tomato onion rice soybean strawberry cucumber blueberry bell_pepper garlic barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame".split()
-NEW = "barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame".split()
+CROPS = "corn tomato onion rice soybean strawberry cucumber blueberry bell_pepper garlic barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek".split()
+NEW = "barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek".split()
 def j(p): return json.loads((ROOT / p).read_text(encoding="utf8"))
 def main():
   en=j("assets/gugugaga/lang/en_us.json")
