@@ -1325,6 +1325,22 @@ tasks.register('generateCropAssets') {
                     line.call(image, 8, 5, 8, 12, greenDark)
                     line.call(image, 8, 8, 5, 10, greenDark)
                     line.call(image, 8, 8, 11, 10, greenDark)
+                } else if (crop == 'chives') {
+                    // Chive leaves are long, narrow hollow blades; avoid the generic broad-leaf silhouette.
+                    line.call(image, 4, 13, 5, 4, greenDark)
+                    line.call(image, 6, 14, 6, 3, accent)
+                    line.call(image, 8, 14, 9, 5, greenLight)
+                    line.call(image, 10, 13, 11, 3, accent)
+                    line.call(image, 12, 13, 12, 6, green)
+                    put.call(image, 5, 4, cream)
+                    put.call(image, 6, 3, greenLight)
+                    put.call(image, 9, 5, cream)
+                    put.call(image, 11, 3, greenLight)
+                    put.call(image, 4, 13, greenDark)
+                    put.call(image, 6, 14, greenDark)
+                    put.call(image, 8, 14, greenDark)
+                    put.call(image, 10, 13, greenDark)
+                    put.call(image, 12, 13, greenDark)
                 } else {
                     line.call(image, 8, 14, 8, 4, greenDark)
                     disc.call(image, 5, 7, 2, 3, green)
