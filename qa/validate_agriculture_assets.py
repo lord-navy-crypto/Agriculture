@@ -16,7 +16,8 @@ CROPS = {
     "bell_pepper": ("carrots", "pumpkin_seeds", "carrot", "minecraft:pumpkin_seeds", "minecraft:carrot"),
     "garlic": ("beetroots", "beetroot_seeds", "beetroot", "minecraft:beetroot_seeds", "minecraft:potato"),
 }
-BEE_ITEMS = ("meadow_bee_tag", "orchard_bee_tag", "berry_bee_tag", "large_apiary_kit")
+BEE_ITEMS = ("meadow_bee_tag", "orchard_bee_tag", "berry_bee_tag", "large_apiary_kit", "honey_harvester")
+POLLINATED_CROPS = {"tomato", "strawberry", "cucumber", "blueberry", "bell_pepper", "eggplant", "sunflower_seed", "buckwheat", "zucchini", "raspberry", "cranberry", "sesame"}
 
 def read_json(path):
     with path.open(encoding="utf-8") as stream:
@@ -32,11 +33,11 @@ def main():
     zh = read_json(ROOT / "assets/gugugaga/lang/zh_cn.json")
     for crop, (block_texture, seed_texture, produce_texture, seed_input_a, seed_input_b) in CROPS.items():
         blockstate = read_json(ROOT / f"assets/gugugaga/blockstates/{crop}_crop.json")
-        assert len(blockstate["variants"]) == 8, f"{crop}: expected eight age variants"
-        for age in range(8):
-            assert f"age={age}" in blockstate["variants"], f"{crop}: missing age={age}"
+        expected_states = ({f"age={age},pollinated={flag}" for age in range(8) for flag in ("false", "true")}
+                           if crop in POLLINATED_CROPS else {f"age={age}" for age in range(8)})
+        assert set(blockstate["variants"]) == expected_states, f"{crop}: age/pollination variant mismatch"
         loot = read_json(ROOT / f"data/gugugaga/loot_table/blocks/{crop}_crop.json")
-        assert len(loot["pools"]) == 2, f"{crop}: seed and produce loot pools required"
+        assert len(loot["pools"]) == (3 if crop in POLLINATED_CROPS else 2), f"{crop}: seed, produce and optional pollination loot pools"
         model = read_json(ROOT / f"assets/gugugaga/models/item/{crop}_seeds.json")
         assert model["textures"]["layer0"].startswith("minecraft:item/")
         assert f"item.gugugaga.{crop}_seeds" in en and f"item.gugugaga.{crop}_seeds" in zh

@@ -8,6 +8,7 @@ J=lambda p: json.loads((ASSETS/p).read_text("utf8"))
 ids=["millet","buckwheat","chickpea","lentil","radish","turnip","sweet_potato","kale","zucchini","raspberry","cranberry","sesame"]
 wild=["wild_millet","wild_radish","wild_raspberry","wild_sesame"]
 bees=["carpenter_bee","mining_bee"]
+POLLINATED = {"tomato", "strawberry", "cucumber", "blueberry", "bell_pepper", "eggplant", "sunflower_seed", "buckwheat", "zucchini", "raspberry", "cranberry", "sesame"}
 p=J("data/gugugaga/agronomy/crop_profiles_v0_3.json")
 h=J("data/gugugaga/agronomy/biome_habitats_v0_3.json")
 assert len(p["crops"])==12
@@ -19,7 +20,7 @@ for obj in p["crops"]:
   assert f'crop("{id}_crop", "{id}_seeds"' in java,id
   assert f'food("{id}"' in java,id
   assert J(f"data/gugugaga/recipe/{id}_seeds.json")["result"]["id"]==f"gugugaga:{id}_seeds"
-  assert len(J(f"assets/gugugaga/blockstates/{id}_crop.json")["variants"])==8
+  assert len(J(f"assets/gugugaga/blockstates/{id}_crop.json")["variants"])==(16 if id in POLLINATED else 8)
   assert f'"{id}_seeds"' in climate or obj["growth_band_gameplay"]=="TEMPERATE",id
   if "real_maturity_days_range_reference" in obj:
     a,b=obj["real_maturity_days_range_reference"]

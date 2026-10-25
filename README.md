@@ -47,3 +47,13 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 - NeoForged 1.21.1 biome modifiers: https://docs.neoforged.net/docs/1.21.1/worldgen/biomemodifier/
 - University of Minnesota Extension crop guidance: https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden
 - Xerces Society, bee nesting resources: https://www.xerces.org/pollinator-conservation/nesting-resources
+
+## v0.4 bee habitat and pollination prototype
+
+- Fixed to **36 crop species**, with **12 crop lines** gaining a persistent late-stage `pollinated` state and one extra mature-harvest item on a compatible bee visit.
+- The registered bumblebee, mason bee, squash bee and leafcutter bee now have four matching habitat blocks. Progress currently uses nearby matching entities and flowers/reproductive-age crops, not a full bee colony lifecycle or custom home AI.
+- Custom solitary-bee habitats yield cocoon items rather than incorrectly generating honeycomb. Bumblebee habitat yields a nectar provision.
+- A gentle beekeeper brush can collect one honey bottle with a glass bottle in the offhand or three honeycombs without one. A legacy honey harvester offers inventory-bottle honey collection. Both require a full vanilla beehive and lit campfire smoke.
+- All crops and bee habitats still use placeholder assets; a completed species-specific renderer, nesting AI and in-game client regression are not yet claimed.
+
+Science: [UMN Extension pollination](https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements), [Xerces nesting habitats](https://xerces.org/pollinator-conservation/nesting-resources).

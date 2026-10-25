@@ -5,16 +5,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "src/main/resources"
 CROPS = "corn tomato onion rice soybean strawberry cucumber blueberry bell_pepper garlic barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame".split()
 NEW = "barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame".split()
+POLLINATED = {"tomato", "strawberry", "cucumber", "blueberry", "bell_pepper", "eggplant", "sunflower_seed", "buckwheat", "zucchini", "raspberry", "cranberry", "sesame"}
 def j(p): return json.loads((ROOT / p).read_text(encoding="utf8"))
 def main():
   en=j("assets/gugugaga/lang/en_us.json")
   zh=j("assets/gugugaga/lang/zh_cn.json")
   for crop in CROPS:
     states=j(f"assets/gugugaga/blockstates/{crop}_crop.json")["variants"]
-    assert set(states)=={f"age={a}" for a in range(8)},crop
+    expected = ({f"age={a},pollinated={flag}" for a in range(8) for flag in ("false", "true")} if crop in POLLINATED else {f"age={a}" for a in range(8)})
+    assert set(states)==expected,crop
     assert j(f"data/gugugaga/recipe/{crop}_seeds.json")["result"]["id"]==f"gugugaga:{crop}_seeds"
     loot=j(f"data/gugugaga/loot_table/blocks/{crop}_crop.json")["pools"]
-    assert len(loot)==2,crop
+    assert len(loot)==(3 if crop in POLLINATED else 2),crop
+    if crop in POLLINATED:
+      cond = loot[2]["entries"][0]["conditions"][0]
+      assert cond["properties"]=={"age":"7","pollinated":"true"},crop
     for item in (crop,crop+"_seeds"):
       j(f"assets/gugugaga/models/item/{item}.json")
       assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
