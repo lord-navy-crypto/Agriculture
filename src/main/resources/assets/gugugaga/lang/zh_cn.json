@@ -126,5 +126,10 @@
   "block.gugugaga.wild_raspberry": "野生覆盆子",
   "block.gugugaga.wild_sesame": "野生芝麻",
   "entity.gugugaga.carpenter_bee": "木蜂",
-  "entity.gugugaga.mining_bee": "地栖采矿蜂"
+  "entity.gugugaga.mining_bee": "地栖采矿蜂",
+  "item.gugugaga.honey_harvester": "蜂蜜采集器",
+  "message.gugugaga.honey_harvester_not_ready": "蜂巢尚未装满（蜂蜜等级需要达到 5）。",
+  "message.gugugaga.honey_harvester_smoke_required": "请在蜂巢下方放置点燃的营火或灵魂营火，并保持烟雾通道畅通。",
+  "message.gugugaga.honey_harvester_bottle_required": "你的物品栏中需要一个空玻璃瓶。",
+  "message.gugugaga.honey_harvester_collected": "已安全采集蜂蜜。"
 }
