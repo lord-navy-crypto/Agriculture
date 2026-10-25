@@ -703,6 +703,70 @@
     "gugugaga:water_spinach": {
       "chance": 0.65,
       "can_villager_compost": false
+    },
+    "gugugaga:celeriac_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:celeriac": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:purslane_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:purslane": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:chayote_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:chayote": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:grape_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:grape": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:tea_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:tea": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:coffee_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:coffee": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:rapini_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:rapini": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:napa_cabbage_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:napa_cabbage": {
+      "chance": 0.65,
+      "can_villager_compost": false
     }
   }
 }
