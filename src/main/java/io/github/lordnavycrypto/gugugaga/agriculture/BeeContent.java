@@ -86,6 +86,14 @@ public final class BeeContent {
     public static final DeferredItem<HoneyBottleItem> ENDIVE_HONEY_BOTTLE = floralHoney("endive_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> KOHLRABI_HONEY_BOTTLE = floralHoney("kohlrabi_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> RUTABAGA_HONEY_BOTTLE = floralHoney("rutabaga_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> JICAMA_BLOSSOM_HONEY_BOTTLE = floralHoney("jicama_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> ADZUKI_BEAN_BLOSSOM_HONEY_BOTTLE = floralHoney("adzuki_bean_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> MUNG_BEAN_BLOSSOM_HONEY_BOTTLE = floralHoney("mung_bean_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> COWPEA_BLOSSOM_HONEY_BOTTLE = floralHoney("cowpea_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> SAFFLOWER_HONEY_BOTTLE = floralHoney("safflower_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> CHICORY_BLOSSOM_HONEY_BOTTLE = floralHoney("chicory_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> MUSTARD_GREENS_HONEY_BOTTLE = floralHoney("mustard_greens_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> WATER_SPINACH_HONEY_BOTTLE = floralHoney("water_spinach_honey_bottle");
 
     /**
      * Fantasy status effects follow the vanilla suspicious-stew design pattern.
@@ -183,6 +191,30 @@ public final class BeeContent {
             case "rutabaga_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.30F)
                     .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 160, 0), 1.0F);
+            case "jicama_blossom_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.25F)
+                    .effect(() -> new MobEffectInstance(MobEffects.JUMP, 80, 0), 1.0F);
+            case "adzuki_bean_blossom_honey_bottle" -> food.nutrition(7)
+                    .saturationModifier(0.25F)
+                    .effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 80, 0), 1.0F);
+            case "mung_bean_blossom_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.30F)
+                    .effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 100, 0), 1.0F);
+            case "cowpea_blossom_honey_bottle" -> food.nutrition(7)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0), 1.0F);
+            case "safflower_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.25F)
+                    .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0), 1.0F);
+            case "chicory_blossom_honey_bottle" -> food.nutrition(5)
+                    .saturationModifier(0.35F)
+                    .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0), 1.0F);
+            case "mustard_greens_honey_bottle" -> food.nutrition(5)
+                    .saturationModifier(0.30F)
+                    .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 80, 0), 1.0F);
+            case "water_spinach_honey_bottle" -> food.nutrition(5)
+                    .saturationModifier(0.35F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WATER_BREATHING, 80, 0), 1.0F);
             default -> throw new IllegalArgumentException("Unknown floral honey: " + name);
         }
         return ITEMS.register(name, () -> name.equals("lily_of_the_valley_honey_bottle")
