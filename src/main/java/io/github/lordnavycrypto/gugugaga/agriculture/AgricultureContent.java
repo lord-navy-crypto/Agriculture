@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-/** Registry for the first ten plantable crop lines and their harvested produce. */
+/** Registry for plantable crop lines, their propagules, and harvested produce. */
 public final class AgricultureContent {
     private AgricultureContent() {}
 
@@ -276,6 +276,32 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> SWEET_CORN_SEEDS = seed("sweet_corn_seeds", SWEET_CORN_CROP);
     public static final DeferredItem<Item> SWEET_CORN = food("sweet_corn", 3, 0.4F);
 
+    /** v1.8: root crops, a fine-seeded grain, and cool/wet leafy crops. */
+    public static final DeferredBlock<AgricultureCropBlock> CASSAVA_CROP = crop("cassava_crop", "cassava_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> CASSAVA_SEEDS = seed("cassava_seeds", CASSAVA_CROP);
+    public static final DeferredItem<Item> CASSAVA = material("cassava");
+    public static final DeferredBlock<AgricultureCropBlock> TARO_CROP = crop("taro_crop", "taro_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> TARO_SEEDS = seed("taro_seeds", TARO_CROP);
+    public static final DeferredItem<Item> TARO = material("taro");
+    public static final DeferredBlock<AgricultureCropBlock> YAM_CROP = crop("yam_crop", "yam_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> YAM_SEEDS = seed("yam_seeds", YAM_CROP);
+    public static final DeferredItem<Item> YAM = material("yam");
+    public static final DeferredBlock<AgricultureCropBlock> TEFF_CROP = crop("teff_crop", "teff_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> TEFF_SEEDS = seed("teff_seeds", TEFF_CROP);
+    public static final DeferredItem<Item> TEFF = food("teff", 3, 0.3F);
+    public static final DeferredBlock<AgricultureCropBlock> WATERCRESS_CROP = crop("watercress_crop", "watercress_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> WATERCRESS_SEEDS = seed("watercress_seeds", WATERCRESS_CROP);
+    public static final DeferredItem<Item> WATERCRESS = food("watercress", 1, 0.2F);
+    public static final DeferredBlock<AgricultureCropBlock> ENDIVE_CROP = crop("endive_crop", "endive_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> ENDIVE_SEEDS = seed("endive_seeds", ENDIVE_CROP);
+    public static final DeferredItem<Item> ENDIVE = food("endive", 1, 0.2F);
+    public static final DeferredBlock<AgricultureCropBlock> KOHLRABI_CROP = crop("kohlrabi_crop", "kohlrabi_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> KOHLRABI_SEEDS = seed("kohlrabi_seeds", KOHLRABI_CROP);
+    public static final DeferredItem<Item> KOHLRABI = food("kohlrabi", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> RUTABAGA_CROP = crop("rutabaga_crop", "rutabaga_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> RUTABAGA_SEEDS = seed("rutabaga_seeds", RUTABAGA_CROP);
+    public static final DeferredItem<Item> RUTABAGA = food("rutabaga", 2, 0.25F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -378,6 +404,14 @@ public final class AgricultureContent {
             event.accept(AMARANTH_SEEDS.get());
             event.accept(CHIVES_SEEDS.get());
             event.accept(SWEET_CORN_SEEDS.get());
+            event.accept(CASSAVA_SEEDS.get());
+            event.accept(TARO_SEEDS.get());
+            event.accept(YAM_SEEDS.get());
+            event.accept(TEFF_SEEDS.get());
+            event.accept(WATERCRESS_SEEDS.get());
+            event.accept(ENDIVE_SEEDS.get());
+            event.accept(KOHLRABI_SEEDS.get());
+            event.accept(RUTABAGA_SEEDS.get());
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(BASIL.get());
             event.accept(MINT.get());
@@ -468,6 +502,14 @@ public final class AgricultureContent {
             event.accept(AMARANTH.get());
             event.accept(CHIVES.get());
             event.accept(SWEET_CORN.get());
+            event.accept(CASSAVA.get());
+            event.accept(TARO.get());
+            event.accept(YAM.get());
+            event.accept(TEFF.get());
+            event.accept(WATERCRESS.get());
+            event.accept(ENDIVE.get());
+            event.accept(KOHLRABI.get());
+            event.accept(RUTABAGA.get());
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BeeContent.MEADOW_BEE_TAG.get());
             event.accept(BeeContent.ORCHARD_BEE_TAG.get());
