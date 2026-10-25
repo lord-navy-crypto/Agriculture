@@ -33,6 +33,7 @@ assert "BeeContent.BLOCKS.register(modBus)" in mod
 for id in names:
     assert f'"{id}"' in registry, id
 assert "randomTick" in habitat and "hasMatchingBee" in habitat and "hasForage" in habitat
+assert "activity - 1" in habitat and "activity + 1" in habitat
 assert "hasChunkAt" in habitat and "level.getEntitiesOfClass" in habitat
 assert "new ItemStack" not in habitat and "Items.HONEY_BOTTLE" not in habitat
 assert 'if (id.equals("zucchini_crop")) return true;' in habitat

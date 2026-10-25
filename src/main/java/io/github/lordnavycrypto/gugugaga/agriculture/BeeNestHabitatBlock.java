@@ -56,9 +56,16 @@ public final class BeeNestHabitatBlock extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(ACTIVITY) >= 3 || random.nextInt(4) != 0) return;
-        if (!hasMatchingBee(level, pos) || !hasForage(level, pos)) return;
-        level.setBlock(pos, state.setValue(ACTIVITY, state.getValue(ACTIVITY) + 1), 3);
+        // The activity gauge represents a recent habitat observation, not permanent occupancy.
+        // One in four random ticks checks nearby bees; absent bees slowly reduce the gauge.
+        if (random.nextInt(4) != 0) return;
+        int activity = state.getValue(ACTIVITY);
+        boolean active = hasMatchingBee(level, pos) && hasForage(level, pos);
+        if (active && activity < 3) {
+            level.setBlock(pos, state.setValue(ACTIVITY, activity + 1), 3);
+        } else if (!active && activity > 0 && random.nextInt(3) == 0) {
+            level.setBlock(pos, state.setValue(ACTIVITY, activity - 1), 3);
+        }
     }
 
     private boolean hasMatchingBee(ServerLevel level, BlockPos pos) {

@@ -73,3 +73,7 @@ Sources:
 - https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide
 - https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements
 - https://extension.umn.edu/agriculture/specialty-crops/pollination/minnesota-pollinators
+
+### Activity lifecycle correction
+
+Nest-site activity is no longer permanently locked at level 3 after a single bee visit. Once nearby matching bees or suitable flowering forage disappear, activity decays gradually. This is only an observational gameplay indicator, not colony death or a count of living brood. The process is bounded by random block ticks without background jobs, autonomous spawning, or force-loaded chunks.
