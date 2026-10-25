@@ -15,6 +15,7 @@ public final class GuguGagaMod {
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
         AgricultureContent.BLOCKS.register(modBus);
         AgricultureContent.ITEMS.register(modBus);
+        BeeContent.BLOCKS.register(modBus);
         BeeContent.ITEMS.register(modBus);
         BeeWildlife.ENTITIES.register(modBus);
         modBus.addListener(BeeWildlife::onAttributes);

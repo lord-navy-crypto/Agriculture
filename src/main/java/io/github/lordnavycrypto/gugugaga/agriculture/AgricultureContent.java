@@ -255,6 +255,10 @@ public final class AgricultureContent {
             event.accept(BeeContent.BERRY_BEE_TAG.get());
             event.accept(BeeContent.LARGE_APIARY_KIT.get());
             event.accept(BeeContent.HONEY_HARVESTER.get());
+            event.accept(BeeContent.BUMBLEBEE_HABITAT_ITEM.get());
+            event.accept(BeeContent.MASON_BEE_HABITAT_ITEM.get());
+            event.accept(BeeContent.SQUASH_BEE_HABITAT_ITEM.get());
+            event.accept(BeeContent.LEAFCUTTER_BEE_HABITAT_ITEM.get());
         }
     }
 
