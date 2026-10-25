@@ -110,7 +110,7 @@ def main():
     assert '"endive_seeds", "watercress_seeds"' in crop_java
     assert "hasNearbyFreshWater(level, pos, 2, -1, 1)" in climate
     assert '"taro_seeds".equals(seedName) || "watercress_seeds".equals(seedName)' in climate
-    assert "propagule:'cassava taro yam'.split(' ')" in generator
+    assert "propagule:'cassava taro yam chayote'.split(' ')" in generator
     assert "organ.contains('corm')" in generator and "organ.contains('tuber')" in generator
     print("AGRICULTURE_V1_8_OK: v1.8 crop cycle verified; global catalog 96 crops; 1152 stage models/textures; 192 custom produce and seed icons")
 
