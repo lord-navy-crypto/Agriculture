@@ -1262,6 +1262,8 @@ tasks.register('generateCropAssets') {
         int itemTextureCount = 0
         def matureTextureHashes = [] as Set
         def allStageHashes = [] as Set
+        def produceIconHashes = [] as Set
+        def seedIconHashes = [] as Set
         def digest = MessageDigest.getInstance('SHA-256')
         cropIds.each { crop ->
             def thisCropStageHashes = [] as Set
@@ -1294,9 +1296,13 @@ tasks.register('generateCropAssets') {
                 }
             }
             if (thisCropStageHashes.size() != 8) throw new GradleException('Growth stages must all have distinct sprites: ' + crop)
-            savePng.call('assets/gugugaga/textures/item/crops/' + crop + '.png', itemTexture.call(crop, false))
+            String producePath = 'assets/gugugaga/textures/item/crops/' + crop + '.png'
+            savePng.call(producePath, itemTexture.call(crop, false))
+            produceIconHashes.add(digest.digest(new File(outputRoot, producePath).bytes).encodeHex().toString())
             itemTextureCount++
-            savePng.call('assets/gugugaga/textures/item/crops/' + crop + '_seeds.png', itemTexture.call(crop, true))
+            String seedPath = 'assets/gugugaga/textures/item/crops/' + crop + '_seeds.png'
+            savePng.call(seedPath, itemTexture.call(crop, true))
+            seedIconHashes.add(digest.digest(new File(outputRoot, seedPath).bytes).encodeHex().toString())
             itemTextureCount++
         }
         if (modelCount != 768 || blockTextureCount != 768 || itemTextureCount != 128) {
@@ -1304,6 +1310,8 @@ tasks.register('generateCropAssets') {
         }
         if (matureTextureHashes.size() != 64) throw new GradleException('Every crop must have a unique mature texture')
         if (allStageHashes.size() != 768) throw new GradleException('Crop growth/pollination stage textures must be unique')
+        if (produceIconHashes.size() != 64) throw new GradleException('All 64 produce icons must be visually distinct')
+        if (seedIconHashes.size() != 64) throw new GradleException('All 64 seed icons must be visually distinct')
         // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
         // This is a build report only; it is not packaged as a game texture.
         int tile = 48
