@@ -735,7 +735,34 @@ tasks.register('generateCropAssets') {
 
             if (seeds) {
                 // Seed icons follow seed morphology, not the harvested organ or foliage palette alone.
-                if (seedForm == 'kernel') {
+                if (crop == 'blackberry') {
+                    // Blackberry propagules use a cluster of tiny dark drupelet seeds.
+                    for (int[] pt : [[4,5],[7,4],[10,5],[5,8],[8,7],[11,8],[4,11],[8,10],[11,12]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 1, 1, dark)
+                        put.call(image, pt[0] + 1, pt[1], cream)
+                    }
+                } else if (crop == 'blackcurrant') {
+                    // Blackcurrant seedlets are represented as fewer oval, glossy seeds.
+                    disc.call(image, 5, 6, 2, 1, accent)
+                    disc.call(image, 10, 9, 2, 1, shade.call(accent, 0.78d))
+                    disc.call(image, 7, 11, 1, 1, accent)
+                    put.call(image, 5, 5, cream); put.call(image, 10, 8, light); put.call(image, 7, 10, cream)
+                } else if (crop == 'cranberry') {
+                    // Cranberry seeds are narrow and elongated, unlike the round berry-seed clusters.
+                    for (int[] pt : [[5,4],[9,5],[11,8],[6,10],[9,12]] as int[][]) {
+                        line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 2, accent)
+                        put.call(image, pt[0], pt[1], cream)
+                    }
+                } else if (crop == 'pineapple') {
+                    // Pineapple is vegetatively propagated; the icon deliberately represents a small crown/slip.
+                    line.call(image, 7, 13, 7, 7, accent)
+                    line.call(image, 7, 8, 4, 4, greenDark)
+                    line.call(image, 7, 8, 6, 2, greenLight)
+                    line.call(image, 7, 8, 9, 3, green)
+                    line.call(image, 7, 8, 12, 5, greenDark)
+                    disc.call(image, 7, 11, 2, 2, yellow)
+                    put.call(image, 7, 10, light); put.call(image, 8, 12, dark)
+                } else if (seedForm == 'kernel') {
                     if (crop == 'corn') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[5,9],[8,8],[11,9]] as int[][]) {
                             disc.call(image, pt[0], pt[1], 1, 1, yellow)
