@@ -348,6 +348,14 @@ tasks.register('generateCropAssets') {
                     case 'chicory': put.call(image, 5, 13, shade.call(accent, 0.8d)); put.call(image, 9, 13, leafLight); break
                     case 'mustard_greens': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leaf); break
                     case 'water_spinach': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, shade.call(leaf, 0.8d)); break
+                    case 'celeriac': put.call(image, 5, 13, cream); put.call(image, 9, 13, leafLight); break
+                    case 'purslane': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, shade.call(accent, 0.8d)); break
+                    case 'chayote': put.call(image, 5, 13, leaf); put.call(image, 9, 13, accent); break
+                    case 'grape': put.call(image, 5, 13, shade.call(accent, 0.8d)); put.call(image, 9, 13, leafLight); break
+                    case 'tea': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'coffee': put.call(image, 5, 13, accent); put.call(image, 9, 13, cream); break
+                    case 'rapini': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leaf); break
+                    case 'napa_cabbage': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, cream); break
                 }
             } else {
                 switch (crop) {
@@ -597,6 +605,14 @@ tasks.register('generateCropAssets') {
                     case 'chicory': if (stage >= 3) { for (int[] pt : [[7,7],[4,9],[10,9],[5,12],[9,12]] as int[][]) { line.call(image,7,12,pt[0],pt[1],leaf); put.call(image,pt[0],pt[1],leafLight) }; if (stage >= 6) { disc.call(image,7,5,2,1,rgb.call('#6A86D5')); put.call(image,7,4,white) } }; break
                     case 'mustard_greens': if (stage >= 3) { for (int[] pt : [[5,8],[9,7],[4,11],[10,10],[7,12]] as int[][]) { line.call(image,7,13,pt[0],pt[1],leaf); disc.call(image,pt[0],pt[1],2,1,leafLight) }; if (stage >= 6) { put.call(image,7,5,yellow); put.call(image,8,4,yellow) } }; break
                     case 'water_spinach': if (stage >= 3) { line.call(image,7,14,5,8,leafDark); line.call(image,7,12,11,6,leafDark); line.call(image,5,8,3,6,leafLight); line.call(image,11,6,13,4,leaf); line.call(image,7,12,8,9,leafLight); if (stage >= 6) { put.call(image,5,5,white); put.call(image,6,4,white) } }; break
+                    case 'celeriac': if (stage >= 3) { line.call(image,7,14,7,8,leafDark); for (int[] pt : [[4,8],[6,6],[9,7],[11,9],[5,11],[9,11]] as int[][]) { line.call(image,7,10,pt[0],pt[1],leaf); put.call(image,pt[0],pt[1],leafLight) }; if (stage >= 6) { disc.call(image,7,14,2,1,cream); put.call(image,7,13,accent) } }; break
+                    case 'purslane': if (stage >= 3) { line.call(image,7,13,3,11,accent); line.call(image,7,13,12,10,accent); line.call(image,7,13,7,9,leafDark); for (int[] pt : [[4,10],[6,9],[9,10],[11,9],[7,11]] as int[][]) disc.call(image,pt[0],pt[1],1,1,leafLight); if (stage >= 6) { put.call(image,5,8,yellow); put.call(image,10,7,yellow) } }; break
+                    case 'chayote': if (stage >= 3) { line.call(image,7,14,8,5,leafDark); line.call(image,8,9,4,6,leaf); line.call(image,8,7,11,5,leafLight); line.call(image,8,5,12,3,leaf); if (stage >= 5) { disc.call(image,10,11,2,3,accent); line.call(image,10,8,11,7,leafDark); put.call(image,9,10,leafLight) } }; break
+                    case 'grape': if (stage >= 3) { line.call(image,7,14,7,5,leafDark); line.call(image,7,8,4,6,leaf); line.call(image,7,7,11,4,leafLight); if (stage >= 5) { for (int[] pt : [[8,8],[10,9],[7,10],[9,11],[11,11]] as int[][]) disc.call(image,pt[0],pt[1],1,1,accent); line.call(image,7,7,8,8,leafDark) } }; break
+                    case 'tea': if (stage >= 3) { line.call(image,7,14,7,6,leafDark); for (int[] pt : [[4,8],[5,5],[9,7],[11,5],[10,10],[4,11]] as int[][]) { line.call(image,7,10,pt[0],pt[1],leaf); put.call(image,pt[0],pt[1],leafLight) }; if (stage >= 6) { put.call(image,6,4,white); put.call(image,7,3,white); put.call(image,8,4,yellow) } }; break
+                    case 'coffee': if (stage >= 3) { line.call(image,7,14,7,6,leafDark); for (int[] pt : [[4,7],[10,7],[5,10],[9,11],[7,5]] as int[][]) { line.call(image,7,10,pt[0],pt[1],leaf); disc.call(image,pt[0],pt[1],1,1,leafLight) }; if (stage >= 5) { disc.call(image,5,12,1,1,red); disc.call(image,8,11,1,1,red); disc.call(image,10,12,1,1,red) } }; break
+                    case 'rapini': if (stage >= 3) { line.call(image,7,14,7,5,leafDark); line.call(image,7,9,4,7,leaf); line.call(image,7,8,10,6,leafLight); line.call(image,7,7,5,5,leaf); if (stage >= 5) { disc.call(image,5,4,1,1,yellow); disc.call(image,7,3,1,1,yellow); disc.call(image,9,4,1,1,yellow); disc.call(image,11,5,1,1,accent) } }; break
+                    case 'napa_cabbage': if (stage >= 3) { line.call(image,7,14,7,8,leafDark); disc.call(image,5,8,3,3,leafLight); disc.call(image,9,8,3,3,leaf); disc.call(image,7,6,3,3,cream); line.call(image,7,8,7,13,white); if (stage >= 6) { line.call(image,7,6,7,3,leafDark); put.call(image,7,2,yellow) } }; break
                     case 'artichoke':
                         if (stage >= 4) { line.call(image,7,7,5,4,leafDark); line.call(image,7,7,9,4,leafDark); line.call(image,7,7,7,3,leafLight); disc.call(image,7,6,2,2,accent); put.call(image,7,4,leafLight) }
                         break
