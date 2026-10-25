@@ -49,6 +49,9 @@ def main():
     assert "matureTextureHashes.size() != 64" in generator
     assert "allStageHashes.size() != 768" in generator
     assert "tasks.named('processResources')" in generator
+    assert "crop-stage-contact-sheet.png" in generator
+    workflow = (ROOT / ".github/workflows/rewrite-build.yml").read_text(encoding="utf8")
+    assert "crop-stage-contact-sheet.png" in workflow
     assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
     detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
     # Each of the 64 crops must have both a seedling-specific mark and a mature-form
