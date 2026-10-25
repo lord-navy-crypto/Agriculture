@@ -1,6 +1,6 @@
 {
   "schema_version": "0.9",
-  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at harvest. Dominant sources yield their own bottle; sufficiently diverse mixed forage yields wildflower honey. These are gameplay proxies, not botanical purity tests.",
+  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at harvest. Dominant known sources yield their own bottle; sufficiently diverse mixed forage yields wildflower honey. Mature mod crops count as potential nectar forage by default except explicitly modeled wind/self-pollinated grains (corn, rice, barley, oat, rye, sorghum, millet, teff, quinoa, amaranth). These are gameplay proxies, not botanical purity tests.",
   "nectar_flower_minimum": 6,
   "dominant_share_at_least": 0.6666666666666666,
   "honey_variants": [
