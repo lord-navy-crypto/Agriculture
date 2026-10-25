@@ -21,7 +21,8 @@ public final class NectarHoneySource {
 
     // This order is intentionally stable for tie handling.
     private static final String[] SOURCES = {
-            "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop"
+            "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop",
+            "minecraft:dandelion", "minecraft:poppy", "minecraft:allium", "minecraft:cornflower"
     };
 
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
@@ -53,7 +54,20 @@ public final class NectarHoneySource {
                         }
                         if (!matched && isOtherNectarCrop(cropId)) otherFlowers++;
                     } else if (state.is(BlockTags.FLOWERS)) {
-                        otherFlowers++;
+                        // Vanilla flowers can now produce distinct honey types too.
+                        // A modded bloom with a matching path must not impersonate
+                        // a Minecraft vanilla flower.
+                        var flowerId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+                        String identifier = flowerId.toString();
+                        boolean matched = false;
+                        for (int i = 0; i < SOURCES.length; i++) {
+                            if (SOURCES[i].equals(identifier)) {
+                                sourceCounts[i]++;
+                                matched = true;
+                                break;
+                            }
+                        }
+                        if (!matched) otherFlowers++;
                     }
                 }
             }
@@ -80,6 +94,10 @@ public final class NectarHoneySource {
             case 1 -> BeeContent.LAVENDER_HONEY_BOTTLE.get();
             case 2 -> BeeContent.BUCKWHEAT_HONEY_BOTTLE.get();
             case 3 -> BeeContent.SUNFLOWER_HONEY_BOTTLE.get();
+            case 4 -> BeeContent.DANDELION_HONEY_BOTTLE.get();
+            case 5 -> BeeContent.POPPY_HONEY_BOTTLE.get();
+            case 6 -> BeeContent.ALLIUM_HONEY_BOTTLE.get();
+            case 7 -> BeeContent.CORNFLOWER_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);

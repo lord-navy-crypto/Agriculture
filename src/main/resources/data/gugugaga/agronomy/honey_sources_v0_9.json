@@ -1,24 +1,72 @@
 {
   "schema_version": "0.9",
-  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at honey harvest; real monofloral honey needs time-resolved nectar analysis and botanical authentication.",
+  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at honey harvest; real monofloral honey needs time-resolved nectar analysis and botanical authentication. Vanilla flower sources may also count when present. All potion effects are explicitly fantasy gameplay, not medical effects.",
   "nectar_flower_minimum": 6,
   "dominant_share_at_least": 0.6666666666666666,
   "honey_variants": [
     {
       "item": "clover_honey_bottle",
-      "source_crop": "clover_crop"
+      "source_crop": "clover_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 200
     },
     {
       "item": "lavender_honey_bottle",
-      "source_crop": "lavender_crop"
+      "source_crop": "lavender_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 300
     },
     {
       "item": "buckwheat_honey_bottle",
-      "source_crop": "buckwheat_crop"
+      "source_crop": "buckwheat_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.15,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 200
     },
     {
       "item": "sunflower_honey_bottle",
-      "source_crop": "sunflower_seed_crop"
+      "source_crop": "sunflower_seed_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 240
+    },
+    {
+      "item": "dandelion_honey_bottle",
+      "source_crop": "minecraft:dandelion",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 240
+    },
+    {
+      "item": "poppy_honey_bottle",
+      "source_crop": "minecraft:poppy",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "SLOW_FALLING",
+      "effect_duration_ticks": 200
+    },
+    {
+      "item": "allium_honey_bottle",
+      "source_crop": "minecraft:allium",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 100
+    },
+    {
+      "item": "cornflower_honey_bottle",
+      "source_crop": "minecraft:cornflower",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WATER_BREATHING",
+      "effect_duration_ticks": 240
     }
   ],
   "unknown_or_mixed_output": "minecraft:honey_bottle",

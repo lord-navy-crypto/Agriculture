@@ -268,6 +268,10 @@ public final class AgricultureContent {
             event.accept(BeeContent.LAVENDER_HONEY_BOTTLE.get());
             event.accept(BeeContent.BUCKWHEAT_HONEY_BOTTLE.get());
             event.accept(BeeContent.SUNFLOWER_HONEY_BOTTLE.get());
+            event.accept(BeeContent.DANDELION_HONEY_BOTTLE.get());
+            event.accept(BeeContent.POPPY_HONEY_BOTTLE.get());
+            event.accept(BeeContent.ALLIUM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.CORNFLOWER_HONEY_BOTTLE.get());
             event.accept(CORN.get());
             event.accept(TOMATO.get());
             event.accept(ONION.get());
