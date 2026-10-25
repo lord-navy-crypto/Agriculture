@@ -68,7 +68,7 @@ forage still yields regular honey. See `docs/AGRICULTURE_CROPS_AND_NECTAR_V0_9.m
 
 
 ### Agriculture native composting (v1.3)
-All 64 harvested organic crop items and 64 corresponding seeds support vanilla
+All 80 harvested organic crop items and 80 corresponding seeds support vanilla
 composters through NeoForge's item `neoforge:compostables` data map. Seeds have a
 30% level-up chance and harvested biomass a 65% chance; villager auto-composting
 remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
@@ -76,10 +76,16 @@ remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
 
 ### Crop lifecycle and custom textures (v1.4)
 
-All 64 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_4.md.
+All 80 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_8.md.
 
 The sprites are custom Minecraft pixel art informed by crop morphology, not photographs or claims that a single cultivar looks identical in every region. Published maturity ranges, cold tolerance and critical watering stages guide relative gameplay categories; they are not converted directly into Minecraft ticks. Client-side visual checks remain necessary after the build.
 
-### Crop-specific texture precision (v1.5)
+#### Crop and honey expansion (v1.8 / honey v1.2)
 
-The crop-only visual pass gives all 64 crops explicit leaf architectures plus crop-specific seedling and mature details. Produce icon families are derived from each crop profile's `harvested_organ` field; unknown values fail generation. Seed icons use a separate 16-form morphology map, with build-time coverage checks and unique-pixel-hash validation for all 64 produce icons and 64 seed icons. Existing crop IDs, recipes, loot tables, growth ages and harvest/regrowth behavior are preserved. CI publishes review sheets for crop stages/pollination, produce icons and seed icons. See `docs/AGRICULTURE_CROP_TEXTURE_PRECISION_V1_5.md` for the asset contract and acceptance limits.
+The crop catalog now contains **80 complete crop lines**, each with eight growth ages, custom seed and produce icons, bilingual names, loot, recipes, and validated crop-specific texture mappings. Seven new crops—cassava, taro, yam, teff, watercress, endive, kohlrabi, and rutabaga—have dedicated growth-stage art and climate/wet-bed rules where appropriate.
+
+The honey system now contains **30 distinct floral-honey variants**: 29 specific forage sources and a wildflower blend. The seven new insect-pollinated crop lines also have dedicated blossom honeys with bilingual names, custom 16×16 bottle sprites, item models, and short fantasy effects. Wind/self-pollinated grain crops are excluded from nectar counts; other mature crops participate in mixed-forage balancing. CI checks crop coverage, honey routing, effects, models, and generated texture uniqueness. See `docs/AGRICULTURE_HONEY_CROP_BLOSSOMS_V1_2.md` and `docs/AGRICULTURE_HONEY_FORAGE_COVERAGE_V1_1.md`.
+
+## Crop-specific texture precision (v1.5)
+
+The crop-only visual pass gives all 80 crops explicit leaf architectures plus crop-specific seedling and mature details. Produce icon families are derived from each crop profile's `harvested_organ` field; unknown values fail generation. Seed icons use a separate 16-form morphology map, with build-time coverage checks and unique-pixel-hash validation for all 80 produce icons and 80 seed icons. Existing crop IDs, recipes, loot tables, growth ages and harvest/regrowth behavior are preserved. CI publishes review sheets for crop stages/pollination, produce icons and seed icons. See `docs/AGRICULTURE_CROP_TEXTURE_PRECISION_V1_5.md` for the asset contract and acceptance limits.
