@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -37,11 +38,11 @@ public final class HoneyHarvesterItem extends Item {
 
         if (player == null
                 || (!state.is(Blocks.BEEHIVE) && !state.is(Blocks.BEE_NEST))
-                || !state.hasProperty(BlockStateProperties.HONEY_LEVEL)) {
+                || !state.hasProperty(BeehiveBlock.HONEY_LEVEL)) {
             return InteractionResult.PASS;
         }
 
-        if (state.getValue(BlockStateProperties.HONEY_LEVEL) < 5) {
+        if (state.getValue(BeehiveBlock.HONEY_LEVEL) < 5) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
                         Component.translatable("message.gugugaga.honey_harvester_not_ready"), true);
@@ -80,7 +81,7 @@ public final class HoneyHarvesterItem extends Item {
                     level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, honeyBottle));
         }
 
-        level.setBlock(pos, state.setValue(BlockStateProperties.HONEY_LEVEL, 0), 3);
+        level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
         level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         player.swing(context.getHand());
         player.displayClientMessage(
