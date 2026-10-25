@@ -70,6 +70,8 @@ public final class CropClimate {
         // Game balancing, not measured degrees C. Suitable climates keep native growth,
         // moderately different climates get 2/3 rolls; strong mismatches get 1/4.
         boolean suitable = crop == biome
+                // Cranberry is a cool-season wetland crop; Minecraft swamps are its wetland proxy.
+                || "cranberry_seeds".equals(seedName) && biome == Band.WET
                 || biome == Band.TEMPERATE && crop != Band.WET
                 || crop == Band.TEMPERATE && biome == Band.COOL
                 || crop == Band.WARM && biome == Band.DRY
