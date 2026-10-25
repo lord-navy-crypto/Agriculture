@@ -126,5 +126,10 @@
   "block.gugugaga.wild_raspberry": "Wild Raspberry",
   "block.gugugaga.wild_sesame": "Wild Sesame",
   "entity.gugugaga.carpenter_bee": "Carpenter Bee",
-  "entity.gugugaga.mining_bee": "Mining Bee"
+  "entity.gugugaga.mining_bee": "Mining Bee",
+  "item.gugugaga.honey_harvester": "Honey Harvester",
+  "message.gugugaga.honey_harvester_not_ready": "This hive is not full yet (honey level 5 required).",
+  "message.gugugaga.honey_harvester_smoke_required": "Place a lit campfire or soul campfire below the hive with a clear smoke column.",
+  "message.gugugaga.honey_harvester_bottle_required": "You need an empty glass bottle in your inventory.",
+  "message.gugugaga.honey_harvester_collected": "Honey collected safely."
 }
