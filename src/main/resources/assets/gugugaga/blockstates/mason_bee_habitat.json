@@ -1,16 +1,16 @@
 {
   "variants": {
     "activity=0": {
-      "model": "minecraft:block/beehive"
+      "model": "gugugaga:block/mason_bee_habitat"
     },
     "activity=1": {
-      "model": "minecraft:block/beehive"
+      "model": "gugugaga:block/mason_bee_habitat"
     },
     "activity=2": {
-      "model": "minecraft:block/beehive"
+      "model": "gugugaga:block/mason_bee_habitat"
     },
     "activity=3": {
-      "model": "minecraft:block/beehive"
+      "model": "gugugaga:block/mason_bee_habitat_active"
     }
   }
 }

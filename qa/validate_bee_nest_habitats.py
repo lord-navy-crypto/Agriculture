@@ -18,8 +18,13 @@ assert {v["id"] for v in profiles["habitats"]} == set(names)
 for id in names:
     state = load(f"assets/gugugaga/blockstates/{id}.json")["variants"]
     assert set(state) == {f"activity={n}" for n in range(4)}, id
-    assert all(v["model"].startswith("minecraft:block/") for v in state.values()), id
-    assert load(f"assets/gugugaga/models/item/{id}.json")["parent"].startswith("minecraft:block/"), id
+    assert state["activity=0"]["model"] == f"gugugaga:block/{id}", id
+    assert state["activity=3"]["model"] == f"gugugaga:block/{id}_active", id
+    for model_name in (id, f"{id}_active"):
+        model = load(f"assets/gugugaga/models/block/{model_name}.json")
+        assert model["parent"] == "minecraft:block/cube", model_name
+        assert set(model["textures"]) == {"particle","down","up","north","south","west","east"}, model_name
+    assert load(f"assets/gugugaga/models/item/{id}.json")["parent"] == f"gugugaga:block/{id}"
     assert load(f"data/gugugaga/recipe/{id}.json")["result"]["id"] == f"gugugaga:{id}", id
     drop = load(f"data/gugugaga/loot_table/blocks/{id}.json")["pools"][0]["entries"][0]["name"]
     assert drop == f"gugugaga:{id}", id
@@ -32,7 +37,12 @@ habitat = (java / "agriculture/BeeNestHabitatBlock.java").read_text("utf8")
 assert "BeeContent.BLOCKS.register(modBus)" in mod
 for id in names:
     assert f'"{id}"' in registry, id
-assert "randomTick" in habitat and "hasMatchingBee" in habitat and "hasForage" in habitat
+assert "randomTick" in habitat and "countMatchingBees" in habitat and "hasForage" in habitat
+assert "populationLimit()" in habitat and "random.nextInt(32)" in habitat
+assert 'ResourceLocation.fromNamespaceAndPath("gugugaga", beeSpecies)' in habitat
+assert 'child.getPersistentData().putLong("gugugaga_wild_nest_origin"' in habitat
+assert "child.setBaby(true)" in habitat and "level.addFreshEntity(child)" in habitat
+assert "nearbyBees > 0 && hasForage(level, pos)" in habitat
 assert "activity - 1" in habitat and "activity + 1" in habitat
 assert 'beeSpecies.equals("squash_bee") && level.getDayTime() % 24000L >= 6000L' in habitat
 assert habitat.index('level.getDayTime()') < habitat.index("if (random.nextInt(4) != 0)")
@@ -46,4 +56,4 @@ assert 'if (id.equals("zucchini_crop")) return true;' in habitat
 crop = (java / "agriculture/AgricultureCropBlock.java").read_text("utf8")
 assert 'case "squash_bee" -> seedName.equals("zucchini_seeds")' in crop
 assert 'seedName.equals("tomato_seeds") || seedName.equals("eggplant_seeds")' in crop
-print("BEE_NEST_HABITATS_OK: 4 distinct habitat assets, recipes, drops and source profiles")
+print("BEE_NEST_HABITATS_OK: 4 distinct nest models + activity, established population-capped emergences, no honey")

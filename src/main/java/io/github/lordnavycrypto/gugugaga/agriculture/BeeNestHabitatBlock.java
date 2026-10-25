@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -79,21 +81,45 @@ public final class BeeNestHabitatBlock extends Block {
         }
         if (random.nextInt(4) != 0) return;
         int activity = state.getValue(ACTIVITY);
-        boolean active = hasMatchingBee(level, pos) && hasForage(level, pos);
+        int nearbyBees = countMatchingBees(level, pos);
+        boolean active = nearbyBees > 0 && hasForage(level, pos);
         if (active && activity < 3) {
             level.setBlock(pos, state.setValue(ACTIVITY, activity + 1), 3);
         } else if (!active && activity > 0 && random.nextInt(3) == 0) {
             level.setBlock(pos, state.setValue(ACTIVITY, activity - 1), 3);
         }
+
+        // Established and flower-supported nesting sites can nurture a limited
+        // new cohort. This is bounded Minecraft emergence, NOT colony storage,
+        // honey production, or a real larval timer.
+        if (active && activity == 3 && nearbyBees < populationLimit()
+                && random.nextInt(32) == 0 && level.getBlockState(pos.above()).isAir()) {
+            Entity next = BuiltInRegistries.ENTITY_TYPE.get(
+                    ResourceLocation.fromNamespaceAndPath("gugugaga", beeSpecies)).create(level);
+            if (next instanceof Bee child) {
+                child.setPos(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D);
+                child.setBaby(true);
+                // A nest-origin marker is retained for later bee-AI extensions.
+                child.getPersistentData().putLong("gugugaga_wild_nest_origin", pos.asLong());
+                level.addFreshEntity(child);
+            }
+        }
     }
 
-    private boolean hasMatchingBee(ServerLevel level, BlockPos pos) {
+    private int populationLimit() {
+        // Bumblebees are social and may maintain a small local group. The
+        // cavity/ground solitary species are capped to a lower nearby count.
+        return beeSpecies.equals("bumblebee") ? 4 : 2;
+    }
+
+    private int countMatchingBees(ServerLevel level, BlockPos pos) {
+        int count = 0;
         for (Bee bee : level.getEntitiesOfClass(Bee.class, new AABB(pos).inflate(8.0D), Bee::isAlive)) {
             var key = BuiltInRegistries.ENTITY_TYPE.getKey(bee.getType());
             if (key != null && key.getNamespace().equals("gugugaga")
-                    && key.getPath().equals(beeSpecies)) return true;
+                    && key.getPath().equals(beeSpecies)) count++;
         }
-        return false;
+        return count;
     }
 
     private boolean hasForage(ServerLevel level, BlockPos pos) {
@@ -130,8 +156,10 @@ public final class BeeNestHabitatBlock extends Block {
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                             Player player, BlockHitResult hit) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
+        int population = level instanceof ServerLevel server ? countMatchingBees(server, pos) : 0;
         player.displayClientMessage(Component.translatable(
-                "message.gugugaga.bee_habitat_activity", state.getValue(ACTIVITY), 3), true);
+                "message.gugugaga.bee_habitat_activity",
+                state.getValue(ACTIVITY), 3, population, populationLimit()), true);
         return InteractionResult.CONSUME;
     }
 }

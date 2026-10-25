@@ -1,6 +1,6 @@
 {
   "schema_version": "0.5",
-  "description": "Habitat activity is a proximity gameplay indicator, not live occupancy/brood reproduction. None of these native bees produces harvestable honey bottles or honeycomb.",
+  "description": "Four biome/ecology-aware nest-site blocks with distinct Minecraft-texture models, local colony activity, limited same-species brood emergence from already-established sites, and no honey output. No actual entity stasis/occupancy or full bee life-cycle simulation.",
   "sources": [
     "https://xerces.org/pollinator-conservation/nesting-resources",
     "https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide",
@@ -12,32 +12,44 @@
       "species": "bumblebee",
       "substrate": "sheltered_cavity",
       "ground_required": false,
-      "output": "none",
-      "progress": "matching bee and floral forage"
+      "output": "juvenile bee entity only (rare), no honey or item drops",
+      "progress": "matching bee and floral forage",
+      "emergence_needs": "activity=3, same-species adult already nearby, suitable mature forage",
+      "nearby_population_cap": 4,
+      "emergence_is_gameplay_proxy": true
     },
     {
       "id": "mason_bee_habitat",
       "species": "mason_bee",
       "substrate": "wooden_cavity",
       "ground_required": false,
-      "output": "none",
-      "progress": "matching bee and floral forage"
+      "output": "juvenile bee entity only (rare), no honey or item drops",
+      "progress": "matching bee and floral forage",
+      "emergence_needs": "activity=3, same-species adult already nearby, suitable mature forage",
+      "nearby_population_cap": 2,
+      "emergence_is_gameplay_proxy": true
     },
     {
       "id": "squash_bee_habitat",
       "species": "squash_bee",
       "substrate": "uncovered_soil",
       "ground_required": true,
-      "output": "none",
-      "progress": "matching squash bee and mature zucchini (Cucurbita pepo), with nest activity checks in the Minecraft morning"
+      "output": "juvenile bee entity only (rare), no honey or item drops",
+      "progress": "matching squash bee and mature zucchini (Cucurbita pepo), with nest activity checks in the Minecraft morning",
+      "emergence_needs": "activity=3, same-species adult already nearby, suitable mature forage",
+      "nearby_population_cap": 2,
+      "emergence_is_gameplay_proxy": true
     },
     {
       "id": "leafcutter_bee_habitat",
       "species": "leafcutter_bee",
       "substrate": "wooden_cavity",
       "ground_required": false,
-      "output": "none",
-      "progress": "matching bee and floral forage"
+      "output": "juvenile bee entity only (rare), no honey or item drops",
+      "progress": "matching bee and floral forage",
+      "emergence_needs": "activity=3, same-species adult already nearby, suitable mature forage",
+      "nearby_population_cap": 2,
+      "emergence_is_gameplay_proxy": true
     }
   ]
 }
