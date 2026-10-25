@@ -37,21 +37,21 @@ def main():
     assert "if (!matched && isOtherNectarCrop(cropId))" in source
     assert "return !NON_NECTAR_CROPS.contains(cropId);" in source
 
-    # New insect-pollinated crop lines are automatically counted as mixed forage.
-    expected_generic = {
+    # The seven new insect-pollinated crop lines now have dedicated honey variants.
+    expected_specialty = {
         "cassava_crop", "taro_crop", "yam_crop", "watercress_crop",
         "endive_crop", "kohlrabi_crop", "rutabaga_crop",
     }
-    assert expected_generic <= crop_blocks - specific_sources - non_nectar
+    assert expected_specialty <= specific_sources
     assert "teff_crop" in non_nectar
 
     generic = crop_blocks - specific_sources - non_nectar
-    assert len(specific_sources) == 8
+    assert len(specific_sources) == 15
     assert len(non_nectar) == 11
-    assert len(generic) == 61
+    assert len(generic) == 54
     data = json.loads((RES / "data/gugugaga/agronomy/honey_sources_v0_9.json").read_text(encoding="utf-8"))
     assert "Mature mod crops count as potential nectar forage by default" in data["description"]
-    print("HONEY_FORAGE_COVERAGE_V1_1_OK: 80 crops; 8 specific source crops; 11 explicit non-nectar crops; 61 generic nectar/mixed-forage crops")
+    print("HONEY_FORAGE_COVERAGE_V1_1_OK: 80 crops; 15 specific source crops; 11 explicit non-nectar crops; 54 generic nectar/mixed-forage crops")
 
 if __name__ == "__main__":
     main()
