@@ -243,7 +243,7 @@
       "source_crop": "endive_crop",
       "food_nutrition": 5,
       "saturation_modifier": 0.3,
-      "gameplay_effect": "HASTE",
+      "gameplay_effect": "DIG_SPEED",
       "effect_duration_ticks": 120,
       "source_of_effect": "mod_original_custom"
     },
