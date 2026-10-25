@@ -422,12 +422,12 @@ tasks.register('generateCropAssets') {
                 line.call(image, 7, 13, 5, Math.max(top + 2, 7), stem)
                 line.call(image, 7, 13, 10, Math.max(top + 3, 8), stem)
             }
-            int nodes = Math.min(5, stage + 1)
+            int nodes = Math.min(6, stage + 1)
             for (int node = 0; node < nodes; node++) {
                 int y = 14 - node * 2
                 if (y < top + 1) continue
-                int span = kind == 'leafy' ? Math.min(3, 1 + stage.intdiv(3)) :
-                           kind == 'grain' ? 1 : Math.min(2, 1 + stage.intdiv(4))
+                int span = kind == 'leafy' ? Math.min(4, 1 + stage.intdiv(2)) :
+                           kind == 'grain' ? 1 : Math.min(3, 1 + stage.intdiv(3))
                 for (int d = 1; d <= span; d++) {
                     int ly = y - (d > 1 ? 1 : 0)
                     put.call(image, 7 - d, ly, d == span ? leafLight : leaf)
@@ -491,6 +491,20 @@ tasks.register('generateCropAssets') {
             if (kind == 'root' && stage >= 5) {
                 line.call(image, 7, 14, 4, 12, leafLight)
                 line.call(image, 7, 14, 10, 12, leafLight)
+            }
+            // Ages 4-7 progressively add side growth, so the cycle is visibly developmental
+            // even for crops whose harvested organ is small or hidden below the soil line.
+            if (stage >= 4) {
+                int branchCount = stage - 3
+                for (int branch = 0; branch < branchCount; branch++) {
+                    int y = 12 - branch * 2
+                    int direction = branch % 2 == 0 ? -1 : 1
+                    int reach = stage >= 6 ? 3 : 2
+                    int tipX = 7 + direction * reach
+                    int branchColor = branch % 2 == 0 ? leafLight : leaf
+                    line.call(image, 7, y, tipX, y - 2, branchColor)
+                    put.call(image, tipX, y - 2, branchColor)
+                }
             }
             cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)
             // Keep every age visibly distinct even if a large mature organ overlaps the stem.
