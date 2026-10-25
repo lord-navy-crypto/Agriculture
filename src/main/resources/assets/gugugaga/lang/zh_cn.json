@@ -131,5 +131,10 @@
   "message.gugugaga.honey_harvester_not_ready": "蜂巢尚未装满（蜂蜜等级需要达到 5）。",
   "message.gugugaga.honey_harvester_smoke_required": "请在蜂巢下方放置点燃的营火或灵魂营火，并保持烟雾通道畅通。",
   "message.gugugaga.honey_harvester_bottle_required": "你的物品栏中需要一个空玻璃瓶。",
-  "message.gugugaga.honey_harvester_collected": "已安全采集蜂蜜。"
+  "message.gugugaga.honey_harvester_collected": "已安全采集蜂蜜。",
+  "block.gugugaga.bumblebee_habitat": "熊蜂隐蔽巢址",
+  "block.gugugaga.mason_bee_habitat": "壁蜂筑巢管",
+  "block.gugugaga.squash_bee_habitat": "南瓜蜂土壤巢址",
+  "block.gugugaga.leafcutter_bee_habitat": "切叶蜂筑巢管",
+  "message.gugugaga.bee_habitat_activity": "巢址活动度：%s/%s（需要附近对应的蜜蜂和花源）"
 }

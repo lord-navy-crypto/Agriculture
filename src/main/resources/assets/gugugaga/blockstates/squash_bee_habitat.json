@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "activity=0": {
+      "model": "minecraft:block/dirt"
+    },
+    "activity=1": {
+      "model": "minecraft:block/dirt"
+    },
+    "activity=2": {
+      "model": "minecraft:block/dirt"
+    },
+    "activity=3": {
+      "model": "minecraft:block/dirt"
+    }
+  }
+}

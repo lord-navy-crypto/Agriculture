@@ -46,3 +46,21 @@ The four primary independent pollinator entities remain bumblebee, mason bee, sq
 2. Replace shared vanilla-bee nesting assumptions only after the custom entity and hive APIs are verified against Minecraft 1.21.1 / NeoForge 21.1.259.
 3. Add dedicated in-game integration tests for harvest output, campfire safety, and crop-yield changes.
 4. Build species-specific nesting-site blocks and lifecycle behavior without pretending solitary bees make harvestable honey.
+
+## v0.5: four source-backed bee nesting-site prototypes
+
+The original 36 crops remain unchanged in count. Four habitat blocks are now registered with individual block IDs, recipes, loot tables and activity values (0–3), unlocked via the creative tools tab:
+
+- `gugugaga:bumblebee_habitat`: sheltered cavity, accepts nearby bumblebees plus flowering forage.
+- `gugugaga:mason_bee_habitat`: wooden cavity/stem proxy for mason bees.
+- `gugugaga:squash_bee_habitat`: a bare-soil habitat that must be placed above dirt/grass/sand-like substrates. Activity requires squash bees and cucumber or zucchini crops at reproductive age.
+- `gugugaga:leafcutter_bee_habitat`: wooden nesting tube proxy for solitary leafcutter bees.
+
+The four new blocks are **nesting-site activity indicators**, not new honey-producing beehives. They gain activity levels from nearby corresponding bees and suitable flowers or crops. They **do not yet store bees, simulate brood, force bees to return home, or generate honey**. All bee AI currently still inherits vanilla Bee behavior; species-specific nesting goals remain a later, more invasive change.
+
+This is biologically motivated by Xerces Society guidance that bumble bees occupy sheltered cavities, mason/leafcutter bees use cavities, and squash bees dig nests in soil near cucurbits. UMN Extension confirms squash bee/cucurbit affinity; USDA ARS documents cavity nesting and brood cells for alfalfa leafcutting bees. No numeric nest-time parameter was converted from real data.
+
+Sources:
+- https://xerces.org/pollinator-conservation/nesting-resources
+- https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide
+- https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/alfalfa-leafcutting-bee-alcb/

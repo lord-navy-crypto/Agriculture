@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.5",
+  "description": "Habitat activity is a proximity gameplay indicator, not live occupancy/brood reproduction. None of these native bees produces harvestable honey bottles or honeycomb.",
+  "sources": [
+    "https://xerces.org/pollinator-conservation/nesting-resources",
+    "https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide",
+    "https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/alfalfa-leafcutting-bee-alcb/"
+  ],
+  "habitats": [
+    {
+      "id": "bumblebee_habitat",
+      "species": "bumblebee",
+      "substrate": "sheltered_cavity",
+      "ground_required": false,
+      "output": "none",
+      "progress": "matching bee and floral forage"
+    },
+    {
+      "id": "mason_bee_habitat",
+      "species": "mason_bee",
+      "substrate": "wooden_cavity",
+      "ground_required": false,
+      "output": "none",
+      "progress": "matching bee and floral forage"
+    },
+    {
+      "id": "squash_bee_habitat",
+      "species": "squash_bee",
+      "substrate": "uncovered_soil",
+      "ground_required": true,
+      "output": "none",
+      "progress": "matching bee and mature cucumber/zucchini"
+    },
+    {
+      "id": "leafcutter_bee_habitat",
+      "species": "leafcutter_bee",
+      "substrate": "wooden_cavity",
+      "ground_required": false,
+      "output": "none",
+      "progress": "matching bee and floral forage"
+    }
+  ]
+}
