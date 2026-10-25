@@ -19,6 +19,7 @@ jobs:
           python3 qa/validate_agriculture_expansion.py
           python3 qa/validate_agriculture_ecology.py
           python3 qa/validate_bee_biodiversity.py
+          python3 qa/validate_agronomic_sources.py
 
   neoforge:
     runs-on: ubuntu-latest

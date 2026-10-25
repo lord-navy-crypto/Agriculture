@@ -1,5 +1,6 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
+import java.util.Map;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -12,6 +13,20 @@ import net.minecraft.world.level.Level;
 public final class CropClimate {
     private CropClimate() {}
     private enum Band { COOL, TEMPERATE, WARM, DRY, WET }
+
+    /** Published minimum seed-germination soil temperatures, Fahrenheit, where available. */
+    private static final Map<String, Integer> MIN_GERMINATION_F = Map.of(
+            "corn_seeds", 50,
+            "pea_seeds", 40,
+            "onion_seeds", 35,
+            "lettuce_seeds", 35,
+            "spinach_seeds", 35,
+            "tomato_seeds", 50,
+            "bell_pepper_seeds", 60,
+            "cucumber_seeds", 60,
+            "eggplant_seeds", 60,
+            "cabbage_seeds", 40
+    );
     private static Band cropBand(String seedName) {
         return switch (seedName) {
             case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
@@ -50,6 +65,10 @@ public final class CropClimate {
                 || crop == Band.DRY && biome == Band.WARM
                 || crop == Band.WET && biome == Band.WARM;
         if (suitable) return true;
+        // Uses real minimum germination categories as a relative cold-biome sensitivity,
+        // NOT as a claim that Minecraft biome temperatures equal soil temperatures.
+        if (biome == Band.COOL && MIN_GERMINATION_F.getOrDefault(seedName, 0) >= 50)
+            return random.nextInt(6) == 0;
         boolean harsh = (biome == Band.COOL && (crop == Band.WARM || crop == Band.DRY))
                 || (biome == Band.DRY && (crop == Band.WET || crop == Band.COOL));
         return random.nextInt(harsh ? 4 : 2) == 0;
