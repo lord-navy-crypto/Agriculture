@@ -6,6 +6,8 @@ Keep the existing 36 plantable crops. This milestone improves their pollination 
 
 ## Crop behavior
 
+- The new data file `data/gugugaga/agronomy/crop_profiles_v0_4.json` now records reviewed profiles for all 36 existing crops: harvested organ, gameplay climate band, qualitative water class, real-world pollination notes, game pollination group, and cited maturity ranges where a suitable extension source provides them.
+- CropClimate explicitly classifies all 36 registered seed types and fails fast if a future crop is added without a climate classification.
 - The current crop-growth climate bands remain a gameplay abstraction, not a claim that Minecraft biome temperatures equal real soil temperatures.
 - Crops in the existing NONE pollination group remain independent of bee presence.
 - Pollinator-compatible crops can be pollinated during their reproductive/flowering growth stages (age 4–6).
@@ -42,5 +44,5 @@ The four primary independent pollinator entities remain bumblebee, mason bee, sq
 
 1. Add species-specific nest-site blocks and spawn/habitat checks for the four primary pollinators.
 2. Replace shared vanilla-bee nesting assumptions only after the custom entity and hive APIs are verified against Minecraft 1.21.1 / NeoForge 21.1.259.
-3. Extend crop metadata so each of the 36 crops has a reviewed category for temperature band, water needs, harvest part, and pollination mode.
-4. Add a dedicated integration test for harvest output, campfire safety, and crop-yield changes in a running game.
+3. Add dedicated in-game integration tests for harvest output, campfire safety, and crop-yield changes.
+4. Build species-specific nesting-site blocks and lifecycle behavior without pretending solitary bees make harvestable honey.
