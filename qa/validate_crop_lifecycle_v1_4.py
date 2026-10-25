@@ -53,6 +53,8 @@ def main():
     workflow = (ROOT / ".github/workflows/rewrite-build.yml").read_text(encoding="utf8")
     assert "crop-stage-contact-sheet.png" in workflow
     assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
+    assert "int growthTipY = Math.max(1, top)" in generator
+    assert "shade.call(accent, 0.72d + stage * 0.05d)" in generator
     detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
     # Each of the 64 crops must have both a seedling-specific mark and a mature-form
     # detail branch. Palette-only variation is not accepted as crop-specific artwork.
