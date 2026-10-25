@@ -69,6 +69,8 @@ def main():
     assert "thisCropStageHashes.size() != 8" in generator
     assert "matureTextureHashes.size() != 64" in generator
     assert "allStageHashes.size() != 768" in generator
+    assert "produceIconHashes.size() != 64" in generator
+    assert "seedIconHashes.size() != 64" in generator
     assert "tasks.named('processResources')" in generator
     assert "crop-stage-contact-sheet.png" in generator
     assert "outputs.dir(layout.buildDirectory.dir('reports/agriculture'))" in generator
