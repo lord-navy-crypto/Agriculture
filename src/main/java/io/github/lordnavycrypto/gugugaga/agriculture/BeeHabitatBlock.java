@@ -46,9 +46,7 @@ public final class BeeHabitatBlock extends Block {
         builder.add(STAGE);
     }
 
-    @Override
-    public boolean canSurvive(BlockState state, Level level, BlockPos pos) {
-        if (!cucurbitOnly) return super.canSurvive(state, level, pos);
+    private boolean hasSuitableGround(Level level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
         return below.is(Blocks.DIRT) || below.is(Blocks.GRASS_BLOCK)
                 || below.is(Blocks.COARSE_DIRT) || below.is(Blocks.ROOTED_DIRT)
@@ -60,6 +58,7 @@ public final class BeeHabitatBlock extends Block {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int stage = state.getValue(STAGE);
         if (stage >= 3 || random.nextInt(2) != 0) return;
+        if (cucurbitOnly && !hasSuitableGround(level, pos)) return;
         if (!hasMatchingBee(level, pos) || !hasForage(level, pos)) return;
         level.setBlock(pos, state.setValue(STAGE, stage + 1), 3);
     }

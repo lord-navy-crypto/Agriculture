@@ -31,6 +31,8 @@ public final class BeeContent {
             "large_apiary_kit", () -> new LargeApiaryKitItem(new Item.Properties()));
     public static final DeferredItem<Item> BEEKEEPER_BRUSH = ITEMS.register(
             "bee_keeper_brush", () -> new BeeKeeperBrushItem(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<Item> HONEY_HARVESTER = ITEMS.register(
+            "honey_harvester", () -> new HoneyHarvesterItem(new Item.Properties()));
 
     public static final DeferredItem<Item> BUMBLEBEE_NECTAR = ITEMS.register("bumblebee_nectar", () ->
             new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.1F).build())));
@@ -72,6 +74,7 @@ public final class BeeContent {
             event.accept(LEAFCUTTER_BEE_HOUSE_ITEM.get());
         } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(BEEKEEPER_BRUSH.get());
+            event.accept(HONEY_HARVESTER.get());
             event.accept(MEADOW_BEE_TAG.get());
             event.accept(ORCHARD_BEE_TAG.get());
             event.accept(BERRY_BEE_TAG.get());
