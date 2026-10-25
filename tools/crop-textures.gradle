@@ -37,7 +37,14 @@ tasks.register('generateCropAssets') {
         def cropIds = cropProfiles.collect { it.crop.toString() }.unique().sort()
         if (cropIds.size() != 64) throw new GradleException('Expected exactly 64 unique crop profiles, found ' + cropIds.size())
         def harvestedOrganByCrop = [:]
-        cropProfiles.each { profile -> harvestedOrganByCrop[profile.crop.toString()] = profile.harvested_organ.toString() }
+        cropProfiles.each { profile ->
+            String crop = profile.crop.toString()
+            def rawOrgan = profile.harvested_organ
+            if (rawOrgan == null || rawOrgan.toString().trim().isEmpty()) {
+                throw new GradleException('Crop ' + crop + ' must declare a harvested organ before item art can be generated')
+            }
+            harvestedOrganByCrop[crop] = rawOrgan.toString()
+        }
         if (!(cropIds as Set).equals(harvestedOrganByCrop.keySet())) {
             throw new GradleException('Every crop must declare a harvested organ before item art can be generated')
         }
@@ -108,35 +115,72 @@ tasks.register('generateCropAssets') {
             throw new GradleException('Crop leaf forms must cover the 64 crop IDs exactly')
         }
 
-        // Inventory art follows the actual harvested organ recorded in the agronomy profiles.
-        // This is separate from the plant silhouette and the broader climate/growth categories.
-        def organFormGroups = [
-            grain:'corn rice barley oat rye sorghum millet buckwheat quinoa'.split(' '),
-            fruit:'tomato cucumber bell_pepper eggplant zucchini chili_pepper'.split(' '),
-            berry:'strawberry blueberry raspberry cranberry'.split(' '),
-            bulb:'onion garlic shallot fennel'.split(' '),
-            rhizome:'ginger turmeric'.split(' '),
-            root:'radish turnip sweet_potato parsnip'.split(' '),
-            seed:'soybean sunflower_seed chickpea lentil sesame mustard canola black_bean'.split(' '),
-            pod:'pea peanut green_bean okra'.split(' '),
-            leaf:'lettuce spinach kale arugula swiss_chard collard_greens bok_choy basil mint dill cilantro parsley'.split(' '),
-            head:'cabbage broccoli brussels_sprouts cauliflower artichoke'.split(' '),
-            fiber:'cotton flax'.split(' '),
-            flower:'lavender clover'.split(' '),
-            stalk:'celery leek'.split(' ')
-        ]
+        // Derive the produce icon family from the actual harvested-organ text in the data profile.
+        // Unknown descriptions fail the build instead of silently receiving a plausible-looking wrong icon.
+        def organFormFromProfile = { String raw ->
+            String organ = raw.toLowerCase(Locale.ROOT)
+                    .replace('_', ' ')
+                    .replaceAll('[^a-z ]', ' ')
+                    .replaceAll('\\s+', ' ')
+                    .trim()
+            if (organ.contains('fiber') && organ.contains('seed')) return 'fiber_seed'
+            if (organ.contains('grain')) return 'grain'
+            if (organ.contains('berry')) return 'berry'
+            if (organ.contains('fruit pod') || organ.contains('pods') || organ.contains('pod')) return 'pod'
+            if (organ.contains('fruit')) return 'fruit'
+            if (organ.contains('flower head') || organ.contains('flower buds') ||
+                    organ.contains('flower curd') || organ.contains('curd') ||
+                    organ.contains('lateral leaf buds')) return 'head'
+            if (organ.contains('bulb') || organ.contains('leaf base')) return 'bulb'
+            if (organ.contains('rhizome')) return 'rhizome'
+            if (organ.contains('root')) return 'root'
+            if (organ.contains('fiber')) return 'fiber'
+            if (organ.contains('oilseed') || organ.contains('seed')) return 'seed'
+            if (organ.contains('leaf stalk') || organ.contains('pseudostem') ||
+                    organ.contains('sheath')) return 'stalk'
+            if (organ.contains('flower')) return 'flower'
+            if (organ.contains('leaf') || organ.contains('leaves') ||
+                    organ.contains('foliage') || organ.contains('petiole')) return 'leaf'
+            throw new GradleException('No harvested-organ icon mapping for profile value: ' + raw)
+        }
         def organFormByCrop = [:]
-        organFormGroups.each { form, names ->
-            names.each { name ->
-                if (organFormByCrop.containsKey(name)) throw new GradleException('Duplicate crop harvested-organ art form: ' + name)
-                organFormByCrop[name] = form.toString()
-            }
+        cropProfiles.each { profile ->
+            String crop = profile.crop.toString()
+            organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])
         }
         if (!(cropIds as Set).equals(organFormByCrop.keySet())) {
-            throw new GradleException('Harvested-organ art forms must cover the 64 crop IDs exactly')
+            throw new GradleException('Harvested-organ icon mapping must cover the 64 crop IDs exactly')
         }
-        if (cropIds.any { crop -> harvestedOrganByCrop[crop] == null || harvestedOrganByCrop[crop].trim().isEmpty() }) {
-            throw new GradleException('Every crop needs a non-empty harvested-organ profile')
+
+        // Seed appearance is a separate botanical property: it must not be inferred from
+        // the harvested organ (e.g. leafy crops still have seeds). Keep this taxonomy explicit.
+        def seedFormGroups = [
+            kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa'.split(' '),
+            legume:'soybean black_bean chickpea lentil pea green_bean peanut'.split(' '),
+            oilseed:'sunflower_seed sesame mustard canola flax'.split(' '),
+            nightshade:'tomato bell_pepper chili_pepper eggplant'.split(' '),
+            cucurbit:'cucumber zucchini'.split(' '),
+            berry:'strawberry blueberry raspberry cranberry'.split(' '),
+            brassica:'cabbage broccoli kale brussels_sprouts cauliflower bok_choy collard_greens arugula'.split(' '),
+            allium:'onion garlic shallot leek'.split(' '),
+            root:'radish turnip parsnip sweet_potato'.split(' '),
+            herb:'basil mint lavender dill cilantro parsley fennel clover'.split(' '),
+            rhizome:'ginger turmeric'.split(' '),
+            fiber:['cotton'],
+            flower:['artichoke'],
+            stalk:['celery'],
+            leafy:'lettuce spinach swiss_chard'.split(' '),
+            capsule:['okra']
+        ]
+        def seedFormByCrop = [:]
+        seedFormGroups.each { form, names ->
+            names.each { name ->
+                if (seedFormByCrop.containsKey(name)) throw new GradleException('Duplicate crop seed icon form: ' + name)
+                seedFormByCrop[name] = form.toString()
+            }
+        }
+        if (!(cropIds as Set).equals(seedFormByCrop.keySet())) {
+            throw new GradleException('Seed icon forms must cover the 64 crop IDs exactly')
         }
 
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
@@ -651,66 +695,214 @@ tasks.register('generateCropAssets') {
             int red = rgb.call('#C93B43')
             int purple = rgb.call('#76509A')
             String organForm = organFormByCrop[crop].toString()
+            String seedForm = seedFormByCrop[crop].toString()
 
             if (seeds) {
-                // Seed icons use the crop's harvested-organ family and crop-specific seed cues.
-                if (organForm == 'grain') {
-                    for (int i = 0; i < 6; i++) {
-                        int sx = 4 + (i % 3) * 3
-                        int sy = 4 + (i.intdiv(3)) * 5
-                        line.call(image, sx, sy, sx + 1, sy + 2, shade.call(accent, 0.78d + (i % 2) * 0.2d))
-                        put.call(image, sx + 1, sy, light)
+                // Seed icons follow seed morphology, not the harvested organ or foliage palette alone.
+                if (seedForm == 'kernel') {
+                    if (crop == 'corn') {
+                        for (int[] pt : [[5,5],[8,4],[11,5],[5,9],[8,8],[11,9]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, yellow)
+                            put.call(image, pt[0] - 1, pt[1], shade.call(yellow, 1.15d))
+                        }
+                    } else if (crop == 'rice') {
+                        for (int[] pt : [[5,5],[9,4],[6,8],[10,7],[5,11],[9,10]] as int[][]) {
+                            line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 2, cream)
+                            put.call(image, pt[0], pt[1], light)
+                        }
+                    } else if (crop == 'barley') {
+                        line.call(image, 8, 13, 8, 4, dark)
+                        for (int y in [5,7,9]) {
+                            line.call(image, 8, y, 5, y - 2, light)
+                            line.call(image, 8, y, 11, y - 2, accent)
+                        }
+                    } else if (crop == 'oat') {
+                        line.call(image, 8, 13, 8, 5, dark)
+                        line.call(image, 8, 6, 5, 4, accent)
+                        line.call(image, 8, 8, 11, 5, accent)
+                        line.call(image, 8, 10, 5, 8, light)
+                        put.call(image, 5, 4, cream); put.call(image, 11, 5, cream); put.call(image, 5, 8, cream)
+                    } else if (crop == 'rye') {
+                        for (int[] pt : [[6,5],[9,4],[6,8],[9,7],[6,11],[9,10]] as int[][]) {
+                            line.call(image, pt[0], pt[1], pt[0], pt[1] + 2, dark)
+                            put.call(image, pt[0], pt[1], accent)
+                        }
+                    } else if (crop == 'sorghum' || crop == 'millet') {
+                        for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[9,7],[5,11],[8,10],[11,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], crop == 'millet' ? 0 : 1, crop == 'millet' ? 0 : 1, accent)
+                            put.call(image, pt[0] - 1, pt[1], light)
+                        }
+                    } else if (crop == 'buckwheat') {
+                        for (int[] pt : [[5,5],[10,4],[7,8],[11,9],[5,11]] as int[][]) {
+                            line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] - 1, dark)
+                            line.call(image, pt[0] + 1, pt[1] - 1, pt[0] + 2, pt[1] + 1, accent)
+                            put.call(image, pt[0] + 1, pt[1], light)
+                        }
+                    } else { // quinoa: tiny round grains rather than elongated cereal kernels
+                        for (int[] pt : [[5,5],[8,4],[11,5],[6,7],[9,7],[12,8],[5,10],[8,11],[11,10]] as int[][]) {
+                            put.call(image, pt[0], pt[1], accent)
+                            put.call(image, pt[0] - 1, pt[1], light)
+                        }
                     }
-                } else if (organForm == 'seed') {
-                    disc.call(image, 5, 6, 2, 1, dark)
-                    disc.call(image, 10, 5, 2, 1, accent)
-                    disc.call(image, 7, 10, 2, 1, light)
-                    put.call(image, 5, 6, light)
-                    put.call(image, 10, 5, shade.call(accent, 1.15d))
-                } else if (organForm == 'pod') {
-                    disc.call(image, 5, 6, 1, 2, light)
-                    disc.call(image, 8, 8, 1, 2, accent)
-                    disc.call(image, 11, 5, 1, 2, dark)
-                    put.call(image, 5, 5, shade.call(accent, 1.2d))
-                    put.call(image, 8, 7, light)
-                } else if (organForm == 'fiber') {
-                    disc.call(image, 5, 6, 1, 1, dark)
-                    disc.call(image, 10, 5, 1, 1, accent)
-                    disc.call(image, 7, 10, 1, 1, light)
-                    put.call(image, 6, 6, cream)
-                    put.call(image, 11, 5, cream)
-                } else if (organForm == 'leaf' || organForm == 'head' || organForm == 'flower') {
-                    disc.call(image, 5, 6, 1, 1, shade.call(accent, 0.85d))
-                    disc.call(image, 9, 5, 1, 1, light)
-                    disc.call(image, 7, 9, 1, 1, accent)
-                    disc.call(image, 11, 10, 1, 1, dark)
-                    put.call(image, 5, 5, light)
-                } else {
-                    disc.call(image, 5, 6, 1, 1, dark)
-                    disc.call(image, 9, 5, 1, 1, light)
-                    disc.call(image, 7, 9, 1, 1, accent)
-                    disc.call(image, 10, 10, 1, 1, shade.call(accent, 0.9d))
-                    put.call(image, 5, 6, light)
-                }
-                if (crop == 'sunflower_seed') {
-                    disc.call(image, 5, 5, 1, 2, rgb.call('#3C3831'))
-                    disc.call(image, 9, 7, 1, 2, rgb.call('#3C3831'))
-                    put.call(image, 5, 5, cream)
-                    put.call(image, 9, 7, cream)
-                } else if (crop == 'black_bean') {
-                    disc.call(image, 5, 6, 2, 1, rgb.call('#252525'))
-                    disc.call(image, 10, 9, 2, 1, rgb.call('#252525'))
-                    put.call(image, 4, 6, rgb.call('#88847C'))
-                } else if (crop == 'sesame' || crop == 'mustard' || crop == 'canola') {
-                    for (int[] pt : [[4,5],[7,4],[10,6],[5,10],[9,11]] as int[][]) {
-                        disc.call(image, pt[0], pt[1], 1, 1, crop == 'mustard' || crop == 'canola' ? yellow : cream)
+                } else if (seedForm == 'legume') {
+                    if (crop == 'black_bean') {
+                        disc.call(image, 5, 6, 2, 2, rgb.call('#292827'))
+                        disc.call(image, 10, 10, 2, 2, rgb.call('#292827'))
+                        put.call(image, 4, 6, cream); put.call(image, 9, 10, cream)
+                    } else if (crop == 'peanut') {
+                        disc.call(image, 5, 7, 2, 3, cream)
+                        disc.call(image, 10, 9, 2, 3, accent)
+                        line.call(image, 5, 5, 6, 9, dark)
+                        line.call(image, 10, 7, 11, 11, dark)
+                    } else if (crop == 'chickpea') {
+                        disc.call(image, 5, 7, 2, 2, cream)
+                        disc.call(image, 10, 9, 2, 2, accent)
+                        put.call(image, 7, 7, dark); put.call(image, 12, 9, dark)
+                    } else if (crop == 'lentil') {
+                        disc.call(image, 5, 7, 2, 1, accent)
+                        disc.call(image, 10, 9, 2, 1, light)
+                        disc.call(image, 8, 5, 2, 1, dark)
+                    } else if (crop == 'pea') {
+                        disc.call(image, 4, 7, 2, 2, greenLight)
+                        disc.call(image, 8, 6, 2, 2, green)
+                        disc.call(image, 12, 8, 2, 2, greenLight)
+                        put.call(image, 4, 6, cream); put.call(image, 8, 5, cream)
+                    } else if (crop == 'green_bean') {
+                        disc.call(image, 5, 6, 2, 1, cream)
+                        disc.call(image, 10, 9, 2, 1, light)
+                        put.call(image, 4, 6, greenDark); put.call(image, 9, 9, greenDark)
+                    } else { // soybean
+                        disc.call(image, 5, 7, 2, 2, rgb.call('#9FAF62'))
+                        disc.call(image, 10, 9, 2, 2, rgb.call('#B7C77A'))
+                        put.call(image, 5, 6, cream); put.call(image, 10, 8, cream)
                     }
-                } else if (crop == 'pea' || crop == 'green_bean' || crop == 'soybean') {
-                    disc.call(image, 5, 6, 2, 1, crop == 'soybean' ? rgb.call('#8CA45A') : greenLight)
-                    disc.call(image, 10, 9, 2, 1, crop == 'soybean' ? rgb.call('#8CA45A') : green)
-                    put.call(image, 5, 6, cream)
+                } else if (seedForm == 'oilseed') {
+                    if (crop == 'sunflower_seed') {
+                        for (int[] pt : [[5,5],[9,4],[11,8],[6,10]] as int[][]) {
+                            line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 3, rgb.call('#38332E'))
+                            put.call(image, pt[0], pt[1] + 1, cream)
+                        }
+                    } else if (crop == 'sesame') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[10,11]] as int[][]) {
+                            line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 1, cream)
+                            put.call(image, pt[0], pt[1], rgb.call('#F1E6CF'))
+                        }
+                    } else if (crop == 'flax') {
+                        for (int[] pt : [[5,5],[9,4],[11,8],[6,10],[9,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 0, rgb.call('#72523A'))
+                            put.call(image, pt[0] + 1, pt[1], rgb.call('#A9855D'))
+                        }
+                    } else {
+                        for (int[] pt : [[4,5],[7,4],[10,5],[5,8],[9,8],[12,9],[6,11],[10,12]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, crop == 'canola' ? yellow : shade.call(yellow, 0.88d))
+                        }
+                    }
+                } else if (seedForm == 'nightshade') {
+                    if (crop == 'tomato') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,9],[10,11]] as int[][]) disc.call(image, pt[0], pt[1], 1, 0, cream)
+                    } else if (crop == 'eggplant') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,9],[10,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 0, rgb.call('#E8D7A5'))
+                            put.call(image, pt[0], pt[1] + 1, cream)
+                        }
+                    } else {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,9],[10,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 0, white)
+                            put.call(image, pt[0], pt[1] + 1, cream)
+                        }
+                    }
+                } else if (seedForm == 'cucurbit') {
+                    for (int[] pt : [[5,5],[9,4],[11,8],[6,10]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 2, 1, cream)
+                        line.call(image, pt[0] - 1, pt[1], pt[0] + 1, pt[1], dark)
+                    }
+                } else if (seedForm == 'berry') {
+                    for (int[] pt : [[4,5],[7,4],[10,5],[12,7],[5,9],[8,8],[11,10],[7,12]] as int[][]) {
+                        put.call(image, pt[0], pt[1], crop == 'strawberry' ? rgb.call('#D7B14A') : dark)
+                        put.call(image, pt[0] + 1, pt[1], crop == 'cranberry' ? light : cream)
+                    }
+                } else if (seedForm == 'brassica') {
+                    for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 1, 1, crop == 'bok_choy' ? rgb.call('#514B3C') : dark)
+                        put.call(image, pt[0] - 1, pt[1], shade.call(accent, 0.82d))
+                    }
+                } else if (seedForm == 'allium') {
+                    for (int[] pt : [[5,5],[9,4],[11,7],[6,9],[10,11]] as int[][]) {
+                        line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 1, rgb.call('#272724'))
+                        put.call(image, pt[0], pt[1], rgb.call('#6C665B'))
+                    }
+                } else if (seedForm == 'root') {
+                    if (crop == 'sweet_potato') {
+                        line.call(image, 5, 12, 5, 7, green)
+                        line.call(image, 5, 7, 8, 4, greenLight)
+                        disc.call(image, 10, 11, 2, 2, accent)
+                    } else if (crop == 'parsnip') {
+                        line.call(image, 4, 6, 8, 4, cream)
+                        line.call(image, 8, 4, 12, 6, cream)
+                        line.call(image, 4, 6, 8, 8, light)
+                        line.call(image, 8, 8, 12, 6, cream)
+                    } else {
+                        for (int[] pt : [[5,5],[9,4],[11,8],[6,10]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#9D7D54'))
+                            put.call(image, pt[0], pt[1] - 1, cream)
+                        }
+                    }
+                } else if (seedForm == 'herb') {
+                    if (crop == 'lavender') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) line.call(image, pt[0], pt[1], pt[0], pt[1] + 2, rgb.call('#59443E'))
+                    } else if (crop == 'basil') {
+                        for (int[] pt : [[5,5],[8,4],[11,6],[6,9],[10,11]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#292B26'))
+                    } else if (crop == 'cilantro' || crop == 'fennel') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, accent)
+                            line.call(image, pt[0] - 1, pt[1] - 1, pt[0] + 1, pt[1] + 1, dark)
+                        }
+                    } else {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, dark)
+                            put.call(image, pt[0], pt[1] - 1, light)
+                        }
+                    }
+                } else if (seedForm == 'rhizome') {
+                    line.call(image, 4, 8, 7, 6, accent)
+                    line.call(image, 7, 6, 10, 8, accent)
+                    line.call(image, 10, 8, 12, 7, accent)
+                    put.call(image, 6, 6, greenLight); put.call(image, 10, 7, greenLight)
+                    put.call(image, 7, 8, light)
+                    if (crop == 'turmeric') put.call(image, 8, 7, yellow)
+                } else if (seedForm == 'fiber') {
+                    disc.call(image, 8, 9, 2, 3, dark)
+                    disc.call(image, 6, 6, 2, 2, white)
+                    disc.call(image, 9, 5, 2, 2, white)
+                    put.call(image, 8, 4, cream)
+                } else if (seedForm == 'flower') {
+                    line.call(image, 5, 5, 7, 10, dark)
+                    line.call(image, 8, 4, 10, 9, accent)
+                    line.call(image, 11, 6, 12, 11, dark)
+                    put.call(image, 7, 8, light)
+                } else if (seedForm == 'stalk') {
+                    for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) {
+                        line.call(image, pt[0], pt[1], pt[0], pt[1] + 2, dark)
+                        put.call(image, pt[0] + 1, pt[1] + 1, light)
+                    }
+                } else if (seedForm == 'leafy') {
+                    if (crop == 'lettuce') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10]] as int[][]) line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 2, cream)
+                    } else if (crop == 'spinach') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#7D6B4C'))
+                    } else {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, dark)
+                            put.call(image, pt[0] + 1, pt[1], light)
+                        }
+                    }
+                } else { // okra: many dark seeds from a ribbed capsule
+                    disc.call(image, 8, 7, 3, 3, greenDark)
+                    for (int[] pt : [[6,5],[8,4],[10,5],[6,8],[8,7],[10,8],[7,10],[9,10]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#37352F'))
+                    line.call(image, 8, 4, 8, 10, greenLight)
                 }
             } else if (organForm == 'grain') {
+
                 if (crop == 'corn') {
                     line.call(image, 5, 3, 10, 12, greenDark)
                     line.call(image, 6, 3, 11, 12, green)
@@ -1016,7 +1208,7 @@ tasks.register('generateCropAssets') {
                     line.call(image, 5, 8, 11, 8, greenDark)
                     line.call(image, 6, 6, 10, 10, greenDark)
                 }
-            } else if (organForm == 'fiber') {
+            } else if (organForm == 'fiber' || organForm == 'fiber_seed') {
                 if (crop == 'cotton') {
                     line.call(image, 8, 14, 8, 8, greenDark)
                     disc.call(image, 5, 6, 3, 3, white)
