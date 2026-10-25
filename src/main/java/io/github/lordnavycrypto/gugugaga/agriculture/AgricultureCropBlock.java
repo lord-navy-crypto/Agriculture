@@ -87,6 +87,10 @@ public class AgricultureCropBlock extends CropBlock {
     }
 
     private boolean compatibleSpecies(String species) {
+        // Generalist vanilla honeybees can pollinate fruit/berry/cucurbit crops, but cannot buzz-pollinate.
+        if (species.equals("bee")) {
+            return pollinationGroup != PollinationGroup.NONE && pollinationGroup != PollinationGroup.BUZZ;
+        }
         return switch (pollinationGroup) {
             case NONE -> false;
             case BUZZ -> species.equals("bumblebee");
