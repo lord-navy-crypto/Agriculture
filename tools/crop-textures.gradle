@@ -1023,7 +1023,7 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'brassica') {
-                    if (crop == 'rapini') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],leafLight) } }
+                    if (crop == 'rapini') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],light) } }
                     else if (crop == 'napa_cabbage') { for (int[] pt : [[4,5],[7,4],[10,5],[5,8],[9,8],[6,11],[11,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],cream) } }
                     else if (crop == 'mustard_greens') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],rgb.call('#B8A56B')) } }
                     else if (crop == 'kohlrabi') {
