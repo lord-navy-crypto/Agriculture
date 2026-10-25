@@ -4,7 +4,7 @@ A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. 
 
 ## Working content
 
-- **64 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
+- **80 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
 - Crop seeds, eight visually distinct growth stages per crop, crop-specific pixel-art sprites, pollination-stage overlays, harvested items, loot tables, seed recipes and bilingual English/Chinese names.
 - **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
 - **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
@@ -33,7 +33,7 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 
 ## Biological and gameplay boundaries
 
-- Crop textures are generated deterministically at build time from 64 crop-specific palettes and organ-aware pixel-art silhouettes; all crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
+- Crop textures are generated deterministically at build time from 80 crop-specific palettes and organ-aware pixel-art silhouettes; all 80 crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
 - The bee entities are registered prototypes, not independent species simulations. Solitary nesting for mason, leafcutter, carpenter and mining bees, colony lifecycle for bumblebees, unique art and inherited bee traits remain future work.
 - Soil pH, crop rotation, nutrient depletion, cultivar differences, seasons and a measured pollination-to-fruit-set/yield model are not implemented.
 - The rice rule models irrigated lowland cultivation. IRRI documents both flooded-field practices and water-saving alternate wetting and drying; other systems, including aerobic rice, exist.
