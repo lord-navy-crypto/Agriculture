@@ -39,6 +39,11 @@ def main():
             assert model["textures"]["layer0"].startswith("minecraft:item/")
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
         assert f"block.gugugaga.{name}_crop" in en and f"block.gugugaga.{name}_crop" in zh
+    crop_block = (SRC / "AgricultureCropBlock.java").read_text("utf8")
+    assert 'seedName.equals("basil_seeds") || seedName.equals("mint_seeds")' in crop_block
+    assert "public InteractionResult useWithoutItem" in crop_block
+    assert "Block.popResource(level, pos, new ItemStack(leaves))" in crop_block
+    assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in crop_block
     for flower in ("lavender", "clover", "mustard", "canola", "basil", "mint"):
         assert f'id.equals("{flower}_crop")' in habitat
 
@@ -60,7 +65,7 @@ def main():
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
         assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == "minecraft:item/honey_bottle"
     assert len(source["references"]) >= 3
-    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, 4 floral honey bottles, vanilla harvesting safeguards")
+    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, cut-and-regrow basil/mint, 4 floral honey bottles, vanilla safeguards")
 
 if __name__ == "__main__":
     main()

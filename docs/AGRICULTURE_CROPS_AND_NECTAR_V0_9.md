@@ -47,3 +47,14 @@ claimed. Wild bee nests never produce bottled honey.
   https://www.fao.org/4/x0083e/X0083E04.htm
 - USDA AMS, clover and buckwheat honey floras:
   https://www.ams.usda.gov/sites/default/files/media/Comb_Honey_Inspection_Instructions%5B1%5D.pdf
+
+## v0.9.1 iterative herb harvest
+
+Mature **basil and mint** crops can be harvested by empty-hand right-click,
+producing one leaf item while retaining the plant and returning it to age 4.
+Both plants can grow again normally. Ordinary plant breaking still uses
+the original seed/produce loot tables, so this is an alternative harvesting
+route, not duplicate simultaneous output. Other crops retain original behavior.
+
+UMN Extension documents successive harvests of culinary herb foliage:
+https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs

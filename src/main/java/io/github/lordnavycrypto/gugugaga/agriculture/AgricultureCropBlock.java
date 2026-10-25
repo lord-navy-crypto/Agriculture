@@ -11,6 +11,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
@@ -119,6 +123,29 @@ public final class AgricultureCropBlock extends CropBlock {
         if (growthAllowed) {
             super.randomTick(level.getBlockState(pos), level, pos, random);
         }
+    }
+
+    /**
+     * Basil and mint can be leaf-harvested repeatedly in real gardens.
+     * Empty-hand interaction harvests one mature crop item and leaves the plant
+     * at a vegetative stage to regrow. Breaking the plant still uses normal loot.
+     */
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+                                            Player player, BlockHitResult hit) {
+        boolean cuttingHerb = seedName.equals("basil_seeds") || seedName.equals("mint_seeds");
+        if (!cuttingHerb || state.getValue(AGE) < getMaxAge()) {
+            return InteractionResult.PASS;
+        }
+        if (!level.isClientSide) {
+            String name = seedName.substring(0, seedName.length() - "_seeds".length());
+            Item leaves = BuiltInRegistries.ITEM.get(
+                    ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, name));
+            // Native block drop enables collection by normal hoppers and inventory systems.
+            Block.popResource(level, pos, new ItemStack(leaves));
+            level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3);
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
