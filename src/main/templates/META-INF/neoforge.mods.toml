@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror"
+authors="Gugu-Gaga Virus Mod contributors"
+description='''
+New lightweight Minecraft 1.21.1/NeoForge game disease simulation,
+beginning with a directly playable fictional SEIR animal-status system.
+'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[${neo_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
