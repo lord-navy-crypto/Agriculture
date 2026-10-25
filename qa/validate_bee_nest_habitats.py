@@ -34,6 +34,10 @@ for id in names:
     assert f'"{id}"' in registry, id
 assert "randomTick" in habitat and "hasMatchingBee" in habitat and "hasForage" in habitat
 assert "activity - 1" in habitat and "activity + 1" in habitat
+assert "direction == Direction.DOWN && !canSurvive(state, level, pos)" in habitat
+assert "below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)" in habitat
+assert "below.is(Blocks.GRASS_BLOCK)" not in habitat
+assert 'id.equals("tomato_crop") || id.equals("eggplant_crop")' in habitat
 assert "hasChunkAt" in habitat and "level.getEntitiesOfClass" in habitat
 assert "new ItemStack" not in habitat and "Items.HONEY_BOTTLE" not in habitat
 assert 'if (id.equals("zucchini_crop")) return true;' in habitat

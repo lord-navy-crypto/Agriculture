@@ -52,3 +52,7 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 ### Beekeeping enhancement v0.6
 
 The honey harvester supports **bottling honey** (one glass bottle, from offhand/inventory) or **honeycomb harvesting** (shears held in the offhand, losing one durability, yields three honeycombs). Both modes require a full vanilla hive and lit unobstructed campfire smoke; the hive's honey level resets afterward. Bee pollination and climate-limited plant growth are evaluated independently. See docs/AGRICULTURE_BEECARE_V0_6.md for biological caveats and sources.
+
+### Agriculture ecology and performance v0.7
+
+Mature fields now skip unnecessary biome/water/pollinator scans. A bee must have recently foraged (the vanilla nectar flag) before it can set a crop's pollination marker. Rice water detection reuses one mutable coordinate, and native-bee habitats distinguish bare-soil squash-bee nesting from managed cavity-nesting habitat. The honey harvester now uses Minecraft's own campfire-smoke check. See docs/AGRICULTURE_BEECARE_V0_6.md for source references and limitations.

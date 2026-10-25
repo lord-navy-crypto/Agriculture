@@ -63,6 +63,11 @@ public final class AgricultureCropBlock extends CropBlock {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // Weather, biome and irrigation control vegetative growth, not whether a bee
         // can visit a flower. Keep the two events independent for source-informed biology.
+        // Mature crops no longer need irrigation, biome or entity proximity scans.
+        // The saved pollination state is still used by normal block loot at harvest.
+        if (state.getValue(AGE) >= getMaxAge()) {
+            return;
+        }
         boolean growthAllowed = CropClimate.allowGrowth(seedName, level, pos, random);
 
         BlockState current = level.getBlockState(pos);
@@ -75,6 +80,12 @@ public final class AgricultureCropBlock extends CropBlock {
             // until pollinated. This avoids a per-tick entity scan or background task.
             AABB searchArea = new AABB(pos).inflate(6.0D, 3.0D, 6.0D);
             for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, Bee::isAlive)) {
+                // Recent flower foraging is necessary; mere nearby bees do not
+                // grant pollination. Vanilla nectar is a pollen-carrying proxy,
+                // not evidence of a visit to the exact crop species.
+                if (!bee.hasNectar()) {
+                    continue;
+                }
                 String ecotype = bee.getPersistentData().getString(BeeEcotypeItem.DATA_KEY);
                 String species = BuiltInRegistries.ENTITY_TYPE.getKey(bee.getType()).getPath();
                 if (!compatibleSpecies(species, ecotype)) {

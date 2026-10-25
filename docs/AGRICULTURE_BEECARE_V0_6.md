@@ -14,3 +14,13 @@ This milestone refines the existing 36-crop / six-registered-bee content without
 - UMN Extension, squash bees and bumblebees forage on cucurbit flowers: https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide
 - Xerces Society, nesting resources for cavity- and ground-nesting bees: https://www.xerces.org/pollinator-conservation/nesting-resources
 - NeoForge 1.21.1 docs, interaction pipeline: https://docs.neoforged.net/docs/1.21.1/items/interactionpipeline/
+
+## v0.7 field ecology and performance correction
+
+- **Reproductive visits:** A live bee must carry nectar for a late-stage crop to receive the bee-assisted harvest marker. This is a lightweight proxy for recent forage visitation, not actual pollen-species tracking. Mature crops are never scanned, reducing unnecessary random-tick work in mature fields.
+- **Ground nesting:** The squash-bee habitat must be placed on bare dirt, coarse dirt, sand, or red sand. Grass, mycelium, rooted dirt and podzol no longer count as bare nesting substrate. The habitat loses support when soil below is removed. Source: Xerces Society, Nesting Resources, https://www.xerces.org/pollinator-conservation/nesting-resources .
+- **Floral associations:** Bumblebee habitats treat mature tomato and eggplant crops as forage sources. Squash-bee habitat remains restricted to zucchini (Cucurbita pepo), not cucumber (Cucumis sativus). UMN Extension: https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide and https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements .
+- **Rice performance:** The same seven-by-seven, two-height irrigation check now reuses a MutableBlockPos, avoiding up to 98 temporary coordinate allocations per random tick; the loaded-chunk guard and the freshwater requirement are preserved.
+- **Honey harvesting:** Campfire smoke uses Minecraft's own CampfireBlock.isSmokeyPos implementation after checking loaded chunks. This aligns the harvester with vanilla hive smoke behavior rather than imposing an unrelated air-only rule. NeoForge mappings for CampfireBlock (1.21.1): https://aldak.netlify.app/javadoc/1.21.1-21.1.x/net/minecraft/world/level/block/campfireblock .
+
+These are design and resource optimizations; no benchmark-based speedup percentage is claimed.

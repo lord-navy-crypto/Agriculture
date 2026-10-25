@@ -14,9 +14,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BeehiveBlock;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 /**
  * A careful honey-collection tool for vanilla hives.
@@ -119,21 +119,19 @@ public final class HoneyHarvesterItem extends Item {
         return ItemStack.EMPTY;
     }
 
-    /** Requires a lit vanilla campfire directly below the hive, with an unobstructed smoke column. */
+    /**
+     * Reuse Minecraft's native smoke test so vanilla nest, hive and harvester
+     * agree on when a nearby lit campfire safely calms bees.
+     * The loaded-chunk guard prevents a modded world boundary from force-loading.
+     */
     private static boolean hasClearCampfireSmoke(Level level, BlockPos hivePos) {
+        BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
         for (int distance = 1; distance <= 5; distance++) {
-            BlockPos candidate = hivePos.below(distance);
+            candidate.set(hivePos.getX(), hivePos.getY() - distance, hivePos.getZ());
             if (!level.hasChunkAt(candidate)) {
                 return false;
             }
-            BlockState below = level.getBlockState(candidate);
-            if (below.is(Blocks.CAMPFIRE) || below.is(Blocks.SOUL_CAMPFIRE)) {
-                return below.getValue(BlockStateProperties.LIT);
-            }
-            if (!below.isAir()) {
-                return false;
-            }
         }
-        return false;
+        return CampfireBlock.isSmokeyPos(level, hivePos);
     }
 }

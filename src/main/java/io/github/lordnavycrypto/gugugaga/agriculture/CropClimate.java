@@ -92,10 +92,14 @@ public final class CropClimate {
      * The vertical offsets cover water at crop height or the farmland level below.
      */
     private static boolean hasPaddyWater(ServerLevel level, BlockPos cropPos) {
+        // Reuse one mutable coordinate rather than allocating up to 98 BlockPos
+        // objects for every growing rice plant's random tick.
+        BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
         for (int dx = -3; dx <= 3; dx++) {
             for (int dz = -3; dz <= 3; dz++) {
                 for (int dy = -1; dy <= 0; dy++) {
-                    BlockPos candidate = cropPos.offset(dx, dy, dz);
+                    candidate.set(cropPos.getX() + dx,
+                            cropPos.getY() + dy, cropPos.getZ() + dz);
                     if (level.hasChunkAt(candidate)
                             && level.getFluidState(candidate).is(FluidTags.WATER)) {
                         return true;

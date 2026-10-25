@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -48,10 +50,20 @@ public final class BeeNestHabitatBlock extends Block {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (!groundNesting) return super.canSurvive(state, level, pos);
         BlockState below = level.getBlockState(pos.below());
-        return below.is(Blocks.DIRT) || below.is(Blocks.GRASS_BLOCK)
-                || below.is(Blocks.COARSE_DIRT) || below.is(Blocks.ROOTED_DIRT)
-                || below.is(Blocks.PODZOL) || below.is(Blocks.MYCELIUM)
+        // Ground-nesting squash bees need accessible bare soil. Turf, podzol
+        // and mycelium are not substitutes for an exposed nesting surface.
+        return below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)
                 || below.is(Blocks.SAND) || below.is(Blocks.RED_SAND);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
+                                     LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        // Avoid a floating burrow after its exposed soil is removed or covered.
+        if (groundNesting && direction == Direction.DOWN && !canSurvive(state, level, pos)) {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
@@ -86,7 +98,12 @@ public final class BeeNestHabitatBlock extends Block {
                     && nearby.getValue(AgricultureCropBlock.AGE) >= 4) {
                 String id = BuiltInRegistries.BLOCK.getKey(crop).getPath();
                 if (beeSpecies.equals("squash_bee")) {
+                    // Cucurbita specialist: zucchini is Cucurbita pepo; cucumber is Cucumis.
                     if (id.equals("zucchini_crop")) return true;
+                } else if (beeSpecies.equals("bumblebee")
+                        && (id.equals("tomato_crop") || id.equals("eggplant_crop"))) {
+                    // Bumblebees can buzz-pollinate these solanaceous flowers.
+                    return true;
                 } else if (id.equals("strawberry_crop")
                         || id.equals("blueberry_crop") || id.equals("raspberry_crop")
                         || id.equals("cranberry_crop") || id.equals("sunflower_seed_crop")

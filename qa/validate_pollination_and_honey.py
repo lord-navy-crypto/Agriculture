@@ -33,10 +33,13 @@ def main():
     assert "EquipmentSlot.OFFHAND" in harvester_source and "hurtAndBreak(1, player" in harvester_source
     assert 'combMode ? SoundEvents.BEEHIVE_SHEAR : SoundEvents.BOTTLE_FILL' in harvester_source
     assert "boolean growthAllowed = CropClimate.allowGrowth" in crop_source
+    assert "if (state.getValue(AGE) >= getMaxAge())" in crop_source
+    assert "if (!bee.hasNectar())" in crop_source
+    assert "BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos()" in (JAVA / "CropClimate.java").read_text(encoding="utf8")
     assert "if (growthAllowed)" in crop_source
     assert "message.gugugaga.honey_harvester_combs_collected" in en
     assert "message.gugugaga.honey_harvester_combs_collected" in zh
-    assert "Blocks.SOUL_CAMPFIRE" in harvester_source
+    assert "CampfireBlock.isSmokeyPos(level, hivePos)" in harvester_source
     assert "level.hasChunkAt(candidate)" in harvester_source
     assert "message.gugugaga.honey_harvester_collected" in en
     assert "message.gugugaga.honey_harvester_collected" in zh
