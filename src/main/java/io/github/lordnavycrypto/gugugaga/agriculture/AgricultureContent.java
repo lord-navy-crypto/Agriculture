@@ -611,6 +611,12 @@ public final class AgricultureContent {
             event.accept(CHICORY.get());
             event.accept(MUSTARD_GREENS.get());
             event.accept(WATER_SPINACH.get());
+            event.accept(CELERIAC.get());
+            event.accept(PURSLANE.get());
+            event.accept(CHAYOTE.get());
+            event.accept(GRAPE.get());
+            event.accept(RAPINI.get());
+            event.accept(NAPA_CABBAGE.get());
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BeeContent.MEADOW_BEE_TAG.get());
             event.accept(BeeContent.ORCHARD_BEE_TAG.get());
