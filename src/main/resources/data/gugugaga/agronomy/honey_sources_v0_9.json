@@ -52,8 +52,8 @@
     {
       "item": "poppy_honey_bottle",
       "source_crop": "minecraft:poppy",
-      "food_nutrition": 5,
-      "saturation_modifier": 0.3,
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
       "gameplay_effect": "NIGHT_VISION",
       "effect_duration_ticks": 100,
       "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
