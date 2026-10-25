@@ -20,6 +20,7 @@ def main():
     poison_java = (SRC / "PoisonFlowerHoneyBottleItem.java").read_text(encoding="utf-8")
     en = read_resource("assets/gugugaga/lang/en_us.json")
     zh = read_resource("assets/gugugaga/lang/zh_cn.json")
+    agriculture_content = (SRC / "AgricultureContent.java").read_text(encoding="utf-8")
 
     variants = data["honey_variants"]
     items = [row["item"] for row in variants]
@@ -63,6 +64,13 @@ def main():
 
         assert f'floralHoney("{item}")' in bee
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
+        assert f"item.gugugaga.{item}.effect" in en and f"item.gugugaga.{item}.effect" in zh
+        model_path = RES / "assets/gugugaga/models/item" / f"{item}.json"
+        model = json.loads(model_path.read_text(encoding="utf-8"))
+        assert model["parent"] == "minecraft:item/generated", item
+        assert model["textures"]["layer0"] == f"gugugaga:item/honey/{item}", item
+        constant = item.removesuffix("_honey_bottle").upper() + "_HONEY_BOTTLE"
+        assert f"event.accept(BeeContent.{constant}.get())" in agriculture_content, item
 
     # Source identifiers in data must match the exact identifiers scanned at harvest.
     source_block = source_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
