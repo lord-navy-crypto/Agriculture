@@ -128,7 +128,7 @@ tasks.register('generateCropAssets') {
             if (organ.contains('berry')) return 'berry'
             if (organ.contains('fruit pod') || organ.contains('pods') || organ.contains('pod')) return 'pod'
             if (organ.contains('fruit')) return 'fruit'
-            if (organ.contains('flower head') || organ.contains('flower buds') ||
+            if (organ == 'head' || organ.contains('flower head') || organ.contains('flower buds') ||
                     organ.contains('flower curd') || organ.contains('curd') ||
                     organ.contains('lateral leaf buds')) return 'head'
             if (organ.contains('bulb') || organ.contains('leaf base')) return 'bulb'
