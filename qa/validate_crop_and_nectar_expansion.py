@@ -59,7 +59,7 @@ def main():
     assert "1.0F" in bee
     for effect in ("JUMP", "NIGHT_VISION", "DAMAGE_RESISTANCE", "MOVEMENT_SPEED",
                    "SATURATION", "FIRE_RESISTANCE", "BLINDNESS", "REGENERATION",
-                   "WEAKNESS", "WITHER"):
+                   "WEAKNESS", "WITHER", "WATER_BREATHING", "HASTE", "ABSORPTION"):
         assert f"MobEffects.{effect}" in bee, effect
     for flower in ("dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose"):
         assert f'"minecraft:{flower}"' in nectar
@@ -76,7 +76,7 @@ def main():
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
         assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == f"gugugaga:item/honey/{id}"
     assert len(source["references"]) >= 3
-    print("CROPS_AND_NECTAR_V1_8_OK: 80 crop profiles, 30 differentiated honey variants, mixed-flower blend, vanilla safeguards")
+    print("AGRICULTURE_HONEY_INTEGRATION_OK: 80 crops, 30 honey variants, seven new blossom routes, mixed-forage blend, vanilla safeguards")
 
 if __name__ == "__main__":
     main()
