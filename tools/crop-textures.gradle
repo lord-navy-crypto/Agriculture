@@ -875,7 +875,17 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'root') {
-                    if (crop == 'sweet_potato') {
+                    if (crop == 'radish') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[10,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#8D684A'))
+                            put.call(image, pt[0], pt[1] - 1, rgb.call('#D7B28B'))
+                        }
+                    } else if (crop == 'turnip') {
+                        disc.call(image, 5, 6, 2, 1, rgb.call('#B5A1A6'))
+                        disc.call(image, 10, 9, 2, 1, rgb.call('#D9C5B4'))
+                        disc.call(image, 8, 5, 1, 1, rgb.call('#877D75'))
+                        put.call(image, 5, 5, cream); put.call(image, 10, 8, white)
+                    } else if (crop == 'sweet_potato') {
                         line.call(image, 5, 12, 5, 7, green)
                         line.call(image, 5, 7, 8, 4, greenLight)
                         disc.call(image, 10, 11, 2, 2, accent)
