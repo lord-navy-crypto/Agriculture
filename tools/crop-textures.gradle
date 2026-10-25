@@ -799,6 +799,21 @@ tasks.register('generateCropAssets') {
                     line.call(image, 7, 8, 12, 5, greenDark)
                     disc.call(image, 7, 11, 2, 2, yellow)
                     put.call(image, 7, 10, light); put.call(image, 8, 12, dark)
+                } else if (seedForm == 'propagule') {
+                    if (crop == 'cassava') {
+                        line.call(image, 4, 11, 12, 7, rgb.call('#8A6848'))
+                        line.call(image, 4, 10, 12, 6, accent)
+                        for (int x : [5,8,11]) { put.call(image,x,9-(x%2),cream); put.call(image,x,11-(x%2),dark) }
+                        line.call(image, 4, 10, 3, 7, greenDark); put.call(image, 3, 7, greenLight)
+                    } else if (crop == 'taro') {
+                        disc.call(image, 8, 9, 4, 3, accent); disc.call(image, 8, 8, 3, 2, dark)
+                        line.call(image, 8, 7, 8, 3, greenDark); line.call(image, 8, 4, 5, 2, green); line.call(image, 8, 4, 11, 2, greenLight)
+                        put.call(image, 6, 9, light); put.call(image, 10, 10, dark)
+                    } else {
+                        line.call(image, 3, 9, 7, 6, dark); line.call(image, 7, 6, 12, 9, accent)
+                        line.call(image, 4, 10, 7, 8, accent); line.call(image, 7, 8, 11, 10, dark)
+                        put.call(image, 5, 9, cream); put.call(image, 10, 9, light); put.call(image, 8, 6, greenDark)
+                    }
                 } else if (seedForm == 'kernel') {
                     if (crop == 'corn') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[5,9],[8,8],[11,9]] as int[][]) {
@@ -842,6 +857,8 @@ tasks.register('generateCropAssets') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[5,8],[8,7],[11,8],[6,11],[9,10]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,yellow); put.call(image,pt[0]-1,pt[1],shade.call(yellow,1.15d)) }
                     } else if (crop == 'amaranth') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[9,7],[5,11],[8,10],[11,11]] as int[][]) { put.call(image,pt[0],pt[1],accent); put.call(image,pt[0]-1,pt[1],light) }
+                    } else if (crop == 'teff') {
+                        for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[9,7],[5,11],[8,10],[11,11],[12,8]] as int[][]) { put.call(image,pt[0],pt[1],accent); put.call(image,pt[0]-1,pt[1],light) }
                     } else { // quinoa: tiny round grains rather than elongated cereal kernels
                         for (int[] pt : [[5,5],[8,4],[11,5],[6,7],[9,7],[12,8],[5,10],[8,11],[11,10]] as int[][]) {
                             put.call(image, pt[0], pt[1], accent)
@@ -954,9 +971,15 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'brassica') {
-                    for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) {
-                        disc.call(image, pt[0], pt[1], 1, 1, crop == 'bok_choy' ? rgb.call('#514B3C') : dark)
-                        put.call(image, pt[0] - 1, pt[1], rgb.call('#A69A75'))
+                    if (crop == 'kohlrabi') {
+                        for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],light) }
+                    } else if (crop == 'rutabaga') {
+                        for (int[] pt : [[4,5],[7,4],[10,5],[5,8],[9,8],[6,11],[11,11]] as int[][]) { put.call(image,pt[0],pt[1],dark); put.call(image,pt[0]-1,pt[1],cream) }
+                    } else {
+                        for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) {
+                            disc.call(image, pt[0], pt[1], 1, 1, crop == 'bok_choy' ? rgb.call('#514B3C') : dark)
+                            put.call(image, pt[0] - 1, pt[1], rgb.call('#A69A75'))
+                        }
                     }
                 } else if (seedForm == 'allium') {
                     if (crop == 'onion') {
@@ -1055,7 +1078,11 @@ tasks.register('generateCropAssets') {
                         put.call(image, pt[0] + 1, pt[1] + 1, light)
                     }
                 } else if (seedForm == 'leafy') {
-                    if (crop == 'lettuce') {
+                    if (crop == 'watercress') {
+                        for (int[] pt : [[5,5],[8,4],[11,6],[6,9],[10,10]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],light) }
+                    } else if (crop == 'endive') {
+                        for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) { line.call(image,pt[0],pt[1],pt[0]+1,pt[1]+2,dark); put.call(image,pt[0]-1,pt[1],light) }
+                    } else if (crop == 'lettuce') {
                         for (int[] pt : [[5,5],[9,4],[11,7],[6,10]] as int[][]) line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 2, cream)
                     } else if (crop == 'chives') {
                     line.call(image, 5, 14, 5, 4, greenLight)
