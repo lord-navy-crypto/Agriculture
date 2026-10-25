@@ -1,0 +1,175 @@
+name: NeoForge 1.21.1 build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Source and asset integrity checks
+        run: python3 -m unittest discover -s qa -p 'test_*.py' -v
+      - name: Java 21 observer state-machine executable acceptance
+        run: |
+          mkdir -p build/observer-brain-smoke
+          javac -d build/observer-brain-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            qa/java/ObserverBrainSmoke.java
+          java -cp build/observer-brain-smoke ObserverBrainSmoke
+      - name: Test optional Nightwatch encounter fairness and budgets (pure Java21)
+        run: |
+          mkdir -p build/encounter-policy-smoke
+          javac -d build/encounter-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/EncounterPolicy.java \
+            qa/java/EncounterPolicySmoke.java
+          java -cp build/encounter-policy-smoke EncounterPolicySmoke
+      - name: Verify v0.3 atmospheric cue timing, opt-out and volume ceilings
+        run: |
+          mkdir -p build/haunting-cue-smoke
+          javac -d build/haunting-cue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntingCuePolicy.java \
+            qa/java/HauntingCuePolicySmoke.java
+          java -cp build/haunting-cue-smoke HauntingCuePolicySmoke
+      - name: Verify v0.4 witness journal narrative, deduplication and limits
+        run: |
+          mkdir -p build/witness-journal-smoke
+          javac -d build/witness-journal-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/WitnessJournalPolicy.java \
+            qa/java/WitnessJournalPolicySmoke.java
+          java -cp build/witness-journal-smoke WitnessJournalPolicySmoke
+      - name: Verify v0.5 suspense event variety and fair director limits
+        run: |
+          mkdir -p build/haunt-director-smoke
+          javac -d build/haunt-director-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntDirectorPolicy.java \
+            qa/java/HauntDirectorPolicySmoke.java
+          java -cp build/haunt-director-smoke HauntDirectorPolicySmoke
+      - name: Verify v0.6 cold-biome relative sighting frequency (120k trials)
+        run: |
+          mkdir -p build/gugu-cold-smoke
+          javac -d build/gugu-cold-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ColdBiomePolicy.java \
+            qa/java/ColdBiomePolicySmoke.java
+          java -cp build/gugu-cold-smoke ColdBiomePolicySmoke
+      - name: Verify v0.6 offline chat, Unicode handling and response limits
+        run: |
+          mkdir -p build/gugu-dialogue-smoke
+          javac -d build/gugu-dialogue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/GuguDialoguePolicy.java \
+            qa/java/GuguDialoguePolicySmoke.java
+          java -cp build/gugu-dialogue-smoke GuguDialoguePolicySmoke
+      - name: Verify v0.7 reversible moods, safety rules, and Redactor factions
+        run: |
+          mkdir -p build/gugu-dual-nature-smoke
+          javac -d build/gugu-dual-nature-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreatPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
+            qa/java/ThreatPolicySmoke.java \
+            qa/java/FactionPolicySmoke.java
+          java -cp build/gugu-dual-nature-smoke ThreatPolicySmoke
+          java -cp build/gugu-dual-nature-smoke FactionPolicySmoke
+      - name: Verify v0.8 Redactor/Gugu/Smiler reactions and supremacy of Redactor flight
+        run: |
+          mkdir -p build/gugu-three-relations
+          javac -d build/gugu-three-relations \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            qa/java/ThreeEntityReactionPolicySmoke.java
+          java -cp build/gugu-three-relations ThreeEntityReactionPolicySmoke
+      - name: Generate and verify original character textures
+        run: |
+          python3 qa/generate_character_sprites.py build/test-original-sprites
+          python3 - <<'PY'
+          import pathlib,struct
+          base=pathlib.Path('build/test-original-sprites/assets/gugugaga/textures/entity')
+          for name in ['lapis_mask.png','redactor_true.png','yellow_smiler.png',
+                       'yellow_smiler_true.png','observer_blackened.png']:
+              data=(base/name).read_bytes()
+              assert data[:8]==b'\x89PNG\r\n\x1a\n',name
+              assert struct.unpack('>II',data[16:24])==(64,64),name
+              print('VALID_ORIGINAL_TEXTURE',name,len(data))
+          PY
+      - name: Verify v0.9 corruption, deceptive mimic strikes and helping Smiler
+        run: |
+          mkdir -p build/gugu-advanced-modes
+          javac -d build/gugu-advanced-modes \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CorruptionArcPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/MimicAttackPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/SmilerGiftPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            qa/java/AdvancedCharacterPolicySmoke.java
+          java -cp build/gugu-advanced-modes AdvancedCharacterPolicySmoke
+      - name: Verify repeatable v0.10 five-act horror without forced story endings
+        run: |
+          mkdir -p build/haunt-game-smoke
+          javac -d build/haunt-game-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            qa/java/HauntGameplayPolicySmoke.java
+          java -cp build/haunt-game-smoke HauntGameplayPolicySmoke
+      - name: Enforce localhost-only Ollama policy (pure Java21)
+        run: |
+          mkdir -p build/ollama-policy-smoke
+          javac -d build/ollama-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ollama/OllamaEndpointPolicy.java \
+            qa/java/OllamaEndpointPolicySmoke.java
+          java -cp build/ollama-policy-smoke OllamaEndpointPolicySmoke
+      - name: Verify v0.12 triad priorities, LOS escapes and capped scare policies
+        run: |
+          mkdir -p build/horror-pursuit-smoke
+          javac -d build/horror-pursuit-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorChasePolicy.java \
+            qa/java/HorrorChasePolicySmoke.java
+          java -cp build/horror-pursuit-smoke HorrorChasePolicySmoke
+      - name: Verify v0.13 cinematic restraint and location-memory search
+        run: |
+          mkdir -p build/v013-horror-smoke
+          javac -d build/v013-horror-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorChasePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CinematicSuspensePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/LastSeenSearchPolicy.java \
+            qa/java/CinematicSuspensePolicySmoke.java \
+            qa/java/LastSeenSearchPolicySmoke.java
+          java -cp build/v013-horror-smoke CinematicSuspensePolicySmoke
+          java -cp build/v013-horror-smoke LastSeenSearchPolicySmoke
+      - name: Verify v0.14 500k real-observation and enclosed-sound policy checks
+        run: |
+          mkdir -p build/v014-evidence-smoke
+          javac -d build/v014-evidence-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CinematicSuspensePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/DepthSuspensePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HorrorEvidencePolicy.java \
+            qa/java/V014HorrorEvidenceSmoke.java
+          java -cp build/v014-evidence-smoke V014HorrorEvidenceSmoke
+      - name: Verify v0.15 optional persuasion, mimic and rescue policies
+        run: |
+          mkdir -p build/v015-deception-smoke
+          javac -d build/v015-deception-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/MimicDeceptionPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/SmilerTrustPolicy.java \
+            qa/java/V015DeceptionTrustPolicySmoke.java
+          java -cp build/v015-deception-smoke V015DeceptionTrustPolicySmoke
+      - name: Compile and package NeoForge mod
+        run: gradle --no-daemon --stacktrace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-nightwatch-jar
+          path: build/libs/*.jar
+          if-no-files-found: error

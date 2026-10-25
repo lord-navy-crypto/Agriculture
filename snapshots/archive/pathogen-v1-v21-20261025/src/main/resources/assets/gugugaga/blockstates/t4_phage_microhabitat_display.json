@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "view=0,satellite=false": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_0"
+    },
+    "view=0,satellite=true": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_0"
+    },
+    "view=1,satellite=false": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_1"
+    },
+    "view=1,satellite=true": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_1"
+    },
+    "view=2,satellite=false": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_2"
+    },
+    "view=2,satellite=true": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_2"
+    }
+  }
+}

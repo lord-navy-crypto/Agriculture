@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "view=0,satellite=false": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_0"
+    },
+    "view=0,satellite=true": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_0"
+    },
+    "view=1,satellite=false": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_1"
+    },
+    "view=1,satellite=true": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_1"
+    },
+    "view=2,satellite=false": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_2"
+    },
+    "view=2,satellite=true": {
+      "model": "gugugaga:block/chlorella_freshwater_exhibit_2"
+    }
+  }
+}

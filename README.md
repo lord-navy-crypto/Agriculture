@@ -1,21 +1,8 @@
-# Gugu Gaga: Nightwatch
+# Consolidated archive
 
-An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
+This branch contains a point-in-time snapshot of every existing branch before the clean-slate reset.
 
-## Status
-**Pre-alpha / playable prototype under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
-
-## Gameplay direction
-- The entity initially **observes** instead of attacking.
-- A server-side state machine manages **dormant → observe → approach → retreat**.
-- A separate, bounded encounter director will eventually control pacing without scanning or changing unrelated chunks.
-- Player control: adjustable encounter frequency, opt-out, audio and visual accessibility settings.
-- Single-player first, then dedicated-server and multiplayer QA.
-
-## Build
-Java 21, Minecraft 1.21.1, NeoForge 21.1.x. See `docs/SETUP.md` after the first source commit.
-
-## Assets and licensing
-Code authored for this project is intended to be MIT-licensed (see LICENSE when added). **The words “inspired by” or “fan project” and the MIT code license do not grant permission to reuse third-party images, voices, or character designs.** Online meme images are references only; do not redistribute them. The prototype ships its own placeholder artwork. Asset provenance and publication clearance are tracked in `docs/ASSET_PROVENANCE.md`.
-
-Unofficial fan project; not endorsed by Arknights: Endfield, Hypergryph, Gryphline, BanG Dream!, or relevant creators.
+- Read [ARCHIVE_INDEX.md](ARCHIVE_INDEX.md) for all original branch names and commit IDs.
+- Browse [snapshots/](snapshots/) to inspect a branch's files.
+- Original branch histories are preserved through commit ancestry.
+- Start the new direction from an empty `main`; do not merge these snapshots back automatically.

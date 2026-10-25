@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "view=0": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_0"
+    },
+    "view=1": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_1"
+    },
+    "view=2": {
+      "model": "gugugaga:block/t4_phage_microhabitat_display_2"
+    }
+  }
+}

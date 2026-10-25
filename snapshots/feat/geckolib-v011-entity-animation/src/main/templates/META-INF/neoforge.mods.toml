@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror"
+authors="Gugu Gaga Nightwatch contributors"
+description='''
+A suspense-driven penguin observer for Minecraft.
+Pre-alpha: original placeholder texture and experimental non-combat AI.
+'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[${neo_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="geckolib"
+type="required"
+versionRange="[4.9.3,5.0.0)"
+ordering="AFTER"
+side="BOTH"

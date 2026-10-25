@@ -1,0 +1,20 @@
+{
+  "entity.gugugaga.observer": "咕咕嘎嘎观察者",
+  "message.gugugaga.journal.header": "—— 夜巡目击档案（%s/3）——",
+  "message.gugugaga.journal.gaze": "一 · 凝视——在你发现它之前，它已经望向你。",
+  "message.gugugaga.journal.footsteps": "二 · 脚步——你转过身时，轻微的脚步声戛然而止。",
+  "message.gugugaga.journal.retreat": "三 · 退去——它退入黑暗，却没有留下一串脚印。",
+  "message.gugugaga.journal.hidden": "？· 尚未发现的记录。",
+  "message.gugugaga.journal.ending": "最终笔记：在你第一次回头之前，脚步声就已经开始了。",
+  "message.gugugaga.journal.status": "线索记录：%s · /gugugaga journal on|off|clear",
+  "message.gugugaga.journal.enabled": "开启",
+  "message.gugugaga.journal.disabled": "关闭",
+  "message.gugugaga.journal.hint": "[夜巡] 你似乎注意到了什么。输入 /gugugaga journal 查看。",
+  "message.gugugaga.journal.on": "目击档案已继续记录。",
+  "message.gugugaga.journal.off": "目击档案已暂停记录，原有线索仍由你自己保管。",
+  "message.gugugaga.journal.clear": "目击档案已清空，记录开关保持不变。",
+  "entity.gugugaga.redactor": "遗忘校对者（Lapis）",
+  "entity.gugugaga.yellow_smiler": "黄色微笑者",
+  "key.categories.gugugaga": "咕咕嘎嘎·夜巡",
+  "key.gugugaga.listen": "聆听附近怪物（按住潜行）"
+}

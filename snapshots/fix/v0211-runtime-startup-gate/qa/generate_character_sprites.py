@@ -1,0 +1,214 @@
+#!/usr/bin/env python3
+"""Build original 64x64 PNG textures for the Redactor/Lapis and Yellow Smiler.
+
+No borrowed skins/sounds/artwork. Python 3 standard library only.
+Output is generated under build/ and bundled by Gradle processResources.
+v0.16 adds hand-authored pixel accents, shadows and material-specific highlights.
+"""
+import pathlib
+import struct
+import sys
+import zlib
+
+DIM=64
+def new(base):
+    return [[list(base) for _ in range(DIM)] for _ in range(DIM)]
+
+def rect(p,x0,y0,x1,y1,c):
+    for y in range(max(0,y0),min(DIM,y1)):
+        for x in range(max(0,x0),min(DIM,x1)):
+            p[y][x]=list(c)
+
+def dot(p,x,y,c): rect(p,x,y,x+1,y+1,c)
+
+def line(p,x0,y0,x1,y1,c):
+    count=max(abs(x1-x0),abs(y1-y0),1)
+    for i in range(count+1):
+        dot(p,round(x0+(x1-x0)*i/count),
+            round(y0+(y1-y0)*i/count),c)
+
+def png(path,p):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    raw=b"".join(b"\x00"+bytes(ch for pixel in row for ch in pixel) for row in p)
+    def chunk(kind,data):
+        return struct.pack(">I",len(data))+kind+data+struct.pack(">I",zlib.crc32(kind+data)&0xffffffff)
+    data=b"\x89PNG\r\n\x1a\n"+chunk(b"IHDR",struct.pack(">IIBBBBB",DIM,DIM,8,2,0,0,0))
+    data+=chunk(b"IDAT",zlib.compress(raw,9))+chunk(b"IEND",b"")
+    path.write_bytes(data)
+    return path
+
+def lapis():
+    p=new((27,77,118))
+    # original hand-mapped lapis gemstone blocks, a deliberately cheap-safe shell
+    for y in range(DIM):
+        for x in range(DIM):
+            n=((x*37+y*19+(x*y)%17)%17)-8
+            p[y][x]=[max(0,27+n//3),max(0,77+n),max(0,118+n)]
+    rect(p,10,10,20,20,(31,103,149)) # cube face
+    for y in range(10,20,2):line(p,10,y,19,y,(37,92+(y%5),146))
+    # On the thin original front plaque (texOffs 0,32; positive geometry
+    # on model's north side), gentle regular face rather than slapstick
+    rect(p,0,32,19,48,(53,129,170))
+    rect(p,2,35,4,37,(213,237,233))
+    rect(p,7,35,9,37,(213,237,233))
+    line(p,3,39,7,39,(218,237,231))
+    return p
+
+def revealed():
+    p=new((15,34,40))
+    for y in range(DIM):
+        for x in range(DIM):
+            n=(x*7+y*13+x*y)%11
+            p[y][x]=[14+n//4,33+n//2,39+n]
+    rect(p,6,6,14,14,(212,223,211)) # face of 8x8x6 true mask
+    dot(p,8,9,(37,67,67));dot(p,11,9,(37,67,67))
+    line(p,8,12,11,12,(42,72,72))
+    for off in (4,11,19,26):
+        line(p,32+off,8,32+off+3,15,(64,139,135))
+    line(p,38,23,43,29,(129,187,168))
+    line(p,40,30,45,37,(119,170,151))
+    return p
+
+def yellow():
+    p=new((208,169,59))
+    for y in range(DIM):
+        for x in range(DIM):
+            jitter=((x*7+y*13+(x*y)%9)%9)-4
+            p[y][x]=[max(0,214+jitter),max(0,180+jitter),max(0,58+jitter)]
+    # cube head front is approximately U=depth..depth+width,
+    # V=depth..depth+height. Uniform eyes and too-perfect smile.
+    rect(p,10,10,20,20,(244,210,88))
+    rect(p,12,13,14,15,(34,31,18))
+    rect(p,17,13,19,15,(34,31,18))
+    line(p,13,17,17,17,(45,38,19))
+    dot(p,12,16,(45,38,19));dot(p,18,16,(45,38,19))
+    return p
+
+def blackened_penguin():
+    """Original dark penguin variant; keeps the UV layout of ObserverModel."""
+    p=new((18,24,29))
+    for y in range(DIM):
+        for x in range(DIM):
+            jitter=(x*13+y*23+(x*y)%7)%9
+            p[y][x]=[16+jitter,20+jitter,28+jitter]
+    # Keep the belly recognizable instead of transforming the bird to a
+    # different character. Cold, muted off-white accents.
+    rect(p,40,0,57,8,(141,157,161))
+    rect(p,40,9,54,22,(73,79,87))
+    rect(p,0,33,35,42,(17,22,29))
+    rect(p,40,0,47,4,(220,232,237))
+    rect(p,40,16,52,24,(65,94,111))
+    return p
+
+def exposed_smiler():
+    """Same mask UV layout but faded sickly yellow with unnatural ink eyes."""
+    p=yellow()
+    for y in range(DIM):
+        for x in range(DIM):
+            red,green,blue=p[y][x]
+            p[y][x]=[max(0,red-62),max(0,green-71),max(0,blue-25)]
+    rect(p,10,10,20,20,(174,154,57))
+    rect(p,12,12,14,17,(19,22,24))
+    rect(p,17,12,19,17,(19,22,24))
+    line(p,12,18,18,18,(22,22,23))
+    dot(p,13,17,(22,22,23))
+    dot(p,17,17,(22,22,23))
+    return p
+
+
+# v0.16: small fully original hand-authored pixel clusters over deterministic
+# base shading, not external textures or licensed character artwork.
+def bevel(p, x0, y0, x1, y1, top, shade):
+    line(p,x0,y0,x1-1,y0,top)
+    line(p,x0,y0,x0,y1-1,top)
+    line(p,x0+1,y1-1,x1-1,y1-1,shade)
+    line(p,x1-1,y0+1,x1-1,y1-1,shade)
+
+def scratches(p, offset, ink, glint):
+    # Different offsets prevent repeated parallel-striping across materials.
+    for n in range(6):
+        x=(offset+7*n)%54+4
+        y=(offset*3+11*n)%46+7
+        line(p,x,y,x+2+(n%3),y-1,ink)
+        if n%2==0:dot(p,x+1,y-2,glint)
+
+def polish_lapis(p):
+    bevel(p,3,4,25,26,(74,140,185),(12,45,76))
+    scratches(p,3,(20,62,104),(92,166,197))
+    # A clean, readable face on the north plaque, plus a fractured facet.
+    rect(p,1,33,10,45,(36,110,163))
+    line(p,1,33,9,33,(117,185,213))
+    line(p,1,44,9,44,(19,61,99))
+    rect(p,2,36,4,38,(217,237,237))
+    rect(p,7,36,9,38,(217,237,237))
+    line(p,3,40,8,40,(206,226,225))
+    line(p,13,37,18,43,(25,74,119))
+    dot(p,15,36,(124,196,219))
+    for x,y in ((36,42),(41,46),(45,38),(51,52)):
+        rect(p,x,y,x+2,y+2,(82,155,189))
+    return p
+
+def polish_revealed(p):
+    bevel(p,1,1,20,20,(80,120,126),(5,17,28))
+    scratches(p,9,(54,97,98),(118,166,148))
+    # Retain the face's original sharp mouth; visibly fractured not gory.
+    line(p,5,5,10,9,(29,62,68))
+    line(p,9,10,13,13,(64,113,114))
+    line(p,4,18,12,22,(35,90,94))
+    line(p,38,24,46,30,(83,148,140))
+    line(p,46,30,43,36,(117,173,151))
+    for x,y in ((3,29),(14,25),(26,36),(52,43)):
+        dot(p,x,y,(142,186,158))
+    return p
+
+def polish_yellow(p):
+    # Warm cloth shadows and cold mask details, no emissive bloom.
+    bevel(p,2,3,30,27,(251,223,117),(132,99,35))
+    for y in range(35,49,4):
+        line(p,34,y,55,y,(176,137,41))
+        dot(p,35,y-1,(240,205,99))
+    # Symmetrical face is deliberately too perfect, with softened cheeks.
+    rect(p,10,10,20,20,(248,217,100))
+    rect(p,12,13,14,15,(28,29,25))
+    rect(p,17,13,19,15,(28,29,25))
+    line(p,13,17,17,17,(43,37,23))
+    dot(p,12,16,(43,37,23));dot(p,18,16,(43,37,23))
+    dot(p,11,16,(224,176,76));dot(p,19,16,(224,176,76))
+    line(p,10,10,19,10,(254,232,137))
+    return p
+
+def polish_exposed_smiler(p):
+    # Same face layout, colder palette and noticeably asymmetrical seams.
+    bevel(p,2,3,30,27,(191,179,98),(83,67,32))
+    line(p,10,10,19,10,(200,181,96))
+    line(p,14,12,16,16,(89,76,40))
+    line(p,12,18,17,18,(33,34,28))
+    line(p,17,18,19,17,(33,34,28))
+    dot(p,11,12,(98,95,66))
+    scratches(p,19,(100,91,57),(186,167,77))
+    return p
+
+def polish_blackened_penguin(p):
+    # Muted frost-edged silhouette, keeping the source bird identifiable.
+    bevel(p,1,1,35,32,(54,67,76),(11,17,24))
+    scratches(p,14,(33,44,55),(90,112,126))
+    rect(p,40,0,57,8,(139,155,160))
+    line(p,40,0,56,0,(214,228,230))
+    line(p,40,7,56,7,(76,96,109))
+    rect(p,40,16,52,24,(64,87,103))
+    line(p,40,16,51,16,(145,172,177))
+    return p
+
+def main():
+    if len(sys.argv)!=2:raise SystemExit("Usage: generate_character_sprites.py <resource root>")
+    target=pathlib.Path(sys.argv[1])/"assets/gugugaga/textures/entity"
+    for name,fn in (("lapis_mask.png",lambda:polish_lapis(lapis())),
+                    ("redactor_true.png",lambda:polish_revealed(revealed())),
+                    ("yellow_smiler.png",lambda:polish_yellow(yellow())),
+                    ("yellow_smiler_true.png",lambda:polish_exposed_smiler(exposed_smiler())),
+                    ("observer_blackened.png",lambda:polish_blackened_penguin(blackened_penguin()))):
+        file=png(target/name,fn())
+        assert file.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+        print("ORIGINAL_SPRITE",file,len(file.read_bytes()))
+
+if __name__=="__main__":main()

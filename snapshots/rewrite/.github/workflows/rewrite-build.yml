@@ -1,0 +1,65 @@
+name: Clean Virus Mod Rewrite (NeoForge 1.21.1)
+on:
+  push:
+    branches:
+      - 'rewrite/**'
+  pull_request:
+
+jobs:
+  pure-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile and execute real gameplay SEIR test
+        run: |
+          mkdir -p build/core-smoke
+          javac -encoding UTF-8 -d build/core-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/simulation/InfectionEngine.java \
+            qa/java/InfectionEngineSmoke.java
+          java -cp build/core-smoke InfectionEngineSmoke
+
+  neoforge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Compile and package Minecraft virus mod
+        run: gradle --no-daemon --stacktrace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-virus-mod-rewrite
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+  real-server-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Launch fresh real NeoForge 1.21.1 server
+        run: python3 qa/smoke_rewrite_server.py
+      - name: Upload launch logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rewrite-server-launch-log
+          path: build/rewrite-server-boot.log
+          if-no-files-found: warn

@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp"
+  ],
+  "features": "gugugaga:nitrosomonas_soil_patch",
+  "step": "vegetal_decoration"
+}

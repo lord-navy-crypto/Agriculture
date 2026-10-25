@@ -1,0 +1,475 @@
+name: NeoForge 1.21.1 build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Source and asset integrity checks
+        run: python3 -m unittest discover -s qa -p 'test_*.py' -v
+      - name: Java 21 observer state-machine executable acceptance
+        run: |
+          mkdir -p build/observer-brain-smoke
+          javac -d build/observer-brain-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            qa/java/ObserverBrainSmoke.java
+          java -cp build/observer-brain-smoke ObserverBrainSmoke
+      - name: Test optional Nightwatch encounter fairness and budgets (pure Java21)
+        run: |
+          mkdir -p build/encounter-policy-smoke
+          javac -d build/encounter-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/EncounterPolicy.java \
+            qa/java/EncounterPolicySmoke.java
+          java -cp build/encounter-policy-smoke EncounterPolicySmoke
+      - name: Verify v0.3 atmospheric cue timing, opt-out and volume ceilings
+        run: |
+          mkdir -p build/haunting-cue-smoke
+          javac -d build/haunting-cue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntingCuePolicy.java \
+            qa/java/HauntingCuePolicySmoke.java
+          java -cp build/haunting-cue-smoke HauntingCuePolicySmoke
+      - name: Verify v0.4 witness journal narrative, deduplication and limits
+        run: |
+          mkdir -p build/witness-journal-smoke
+          javac -d build/witness-journal-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ObserverBrain.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/WitnessJournalPolicy.java \
+            qa/java/WitnessJournalPolicySmoke.java
+          java -cp build/witness-journal-smoke WitnessJournalPolicySmoke
+      - name: Verify v0.5 suspense event variety and fair director limits
+        run: |
+          mkdir -p build/haunt-director-smoke
+          javac -d build/haunt-director-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntDirectorPolicy.java \
+            qa/java/HauntDirectorPolicySmoke.java
+          java -cp build/haunt-director-smoke HauntDirectorPolicySmoke
+      - name: Verify v0.6 cold-biome relative sighting frequency (120k trials)
+        run: |
+          mkdir -p build/gugu-cold-smoke
+          javac -d build/gugu-cold-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ColdBiomePolicy.java \
+            qa/java/ColdBiomePolicySmoke.java
+          java -cp build/gugu-cold-smoke ColdBiomePolicySmoke
+      - name: Verify v0.6 offline chat, Unicode handling and response limits
+        run: |
+          mkdir -p build/gugu-dialogue-smoke
+          javac -d build/gugu-dialogue-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/GuguDialoguePolicy.java \
+            qa/java/GuguDialoguePolicySmoke.java
+          java -cp build/gugu-dialogue-smoke GuguDialoguePolicySmoke
+      - name: Verify v0.7 reversible moods, safety rules, and Redactor factions
+        run: |
+          mkdir -p build/gugu-dual-nature-smoke
+          javac -d build/gugu-dual-nature-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreatPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/FactionPolicy.java \
+            qa/java/ThreatPolicySmoke.java \
+            qa/java/FactionPolicySmoke.java
+          java -cp build/gugu-dual-nature-smoke ThreatPolicySmoke
+          java -cp build/gugu-dual-nature-smoke FactionPolicySmoke
+      - name: Verify v0.8 Redactor/Gugu/Smiler reactions and supremacy of Redactor flight
+        run: |
+          mkdir -p build/gugu-three-relations
+          javac -d build/gugu-three-relations \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            qa/java/ThreeEntityReactionPolicySmoke.java
+          java -cp build/gugu-three-relations ThreeEntityReactionPolicySmoke
+      - name: Generate and verify original character textures
+        run: |
+          python3 qa/generate_character_sprites.py build/test-original-sprites
+          python3 - <<'PY'
+          import pathlib,struct
+          base=pathlib.Path('build/test-original-sprites/assets/gugugaga/textures/entity')
+          for name in ['lapis_mask.png','redactor_true.png','yellow_smiler.png',
+                       'yellow_smiler_true.png','observer_blackened.png']:
+              data=(base/name).read_bytes()
+              assert data[:8]==b'\x89PNG\r\n\x1a\n',name
+              assert struct.unpack('>II',data[16:24])==(64,64),name
+              print('VALID_ORIGINAL_TEXTURE',name,len(data))
+          PY
+      - name: Verify v0.9 corruption, deceptive mimic strikes and helping Smiler
+        run: |
+          mkdir -p build/gugu-advanced-modes
+          javac -d build/gugu-advanced-modes \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/CorruptionArcPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/MimicAttackPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/SmilerGiftPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ThreeEntityReactionPolicy.java \
+            qa/java/AdvancedCharacterPolicySmoke.java
+          java -cp build/gugu-advanced-modes AdvancedCharacterPolicySmoke
+      - name: Verify repeatable v0.10 five-act horror without forced story endings
+        run: |
+          mkdir -p build/haunt-game-smoke
+          javac -d build/haunt-game-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/HauntGameplayPolicy.java \
+            qa/java/HauntGameplayPolicySmoke.java
+          java -cp build/haunt-game-smoke HauntGameplayPolicySmoke
+      - name: Enforce localhost-only Ollama policy (pure Java21)
+        run: |
+          mkdir -p build/ollama-policy-smoke
+          javac -d build/ollama-policy-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/ai/ollama/OllamaEndpointPolicy.java \
+            qa/java/OllamaEndpointPolicySmoke.java
+          java -cp build/ollama-policy-smoke OllamaEndpointPolicySmoke
+      - name: Check source-based natural bacteria and T4 bacteriophage ecology (Java21)
+        run: |
+          mkdir -p build/natural-ecology-smoke
+          javac -d build/natural-ecology-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/NaturalMicrobeCatalog.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/NaturalMicrobeEcosystem.java \
+            qa/java/NaturalMicrobeEcosystemSmoke.java
+          java -cp build/natural-ecology-smoke NaturalMicrobeEcosystemSmoke
+      - name: Verify real One Health animal-human effects, documentation and non-predictive observations
+        run: |
+          mkdir -p build/onehealth-evidence-smoke
+          javac -d build/onehealth-evidence-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthEvidenceCatalog.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/OneHealthObservationPolicy.java \
+            qa/java/OneHealthEvidenceSmoke.java
+          java -cp build/onehealth-evidence-smoke OneHealthEvidenceSmoke
+      - name: Verify bounded in-world colony life-cycle and host-only display (Java21)
+        run: |
+          mkdir -p build/microbe-lifecycle-smoke
+          javac -d build/microbe-lifecycle-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeLifecyclePolicy.java \
+            qa/java/MicrobeLifecycleSmoke.java
+          java -cp build/microbe-lifecycle-smoke MicrobeLifecycleSmoke
+      - name: Verify Minecraft-only environmental microbe response policy (Java21)
+        run: |
+          mkdir -p build/microbe-environment-smoke
+          javac -d build/microbe-environment-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeLifecyclePolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/MicrobeEnvironmentPolicy.java \
+            qa/java/MicrobeEnvironmentSmoke.java
+          java -cp build/microbe-environment-smoke MicrobeEnvironmentSmoke
+      - name: Test source-scoped pathogen incident and clinic state machine (Java21)
+        run: |
+          mkdir -p build/pathogen-medical-smoke
+          javac -d build/pathogen-medical-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/PathogenGameplayPolicy.java \
+            qa/java/PathogenGameplaySmoke.java
+          java -cp build/pathogen-medical-smoke PathogenGameplaySmoke
+      - name: Test real-mob-attached microbe population GAME engine (Java21)
+        run: |
+          mkdir -p build/living-microbe-smoke
+          javac -d build/living-microbe-smoke \
+            src/main/java/io/github/lordnavycrypto/gugugaga/microbes/LivingMicrobePopulation.java \
+            qa/java/LivingMicrobePopulationSmoke.java
+          java -cp build/living-microbe-smoke LivingMicrobePopulationSmoke
+      - name: Test 15-taxonomy vanilla host scenes and round-robin fairness (Java21)
+        run: |
+          mkdir -p build/vanilla-host-scenes
+          javac -d build/vanilla-host-scenes \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenGameSceneEngine.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSceneFairSchedule.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenGameCuePolicy.java \
+            qa/java/PathogenVanillaSceneSmoke.java
+          java -cp build/vanilla-host-scenes PathogenVanillaSceneSmoke
+      - name: Test per-position 15-channel pathogen game-data field (Java21)
+        run: |
+          mkdir -p build/pathogen-spatial-field
+          javac -d build/pathogen-spatial-field \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            qa/java/PathogenSpatialFieldSmoke.java
+          java -cp build/pathogen-spatial-field PathogenSpatialFieldSmoke
+      - name: Verify source-labeled game route eligibility and bounded information transfers (Java21)
+        run: |
+          mkdir -p build/pathogen-route-game
+          javac -d build/pathogen-route-game \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
+            qa/java/PathogenRouteGameSmoke.java
+          java -cp build/pathogen-route-game PathogenRouteGameSmoke
+      - name: Test 1024-cell route scheduling fairness and 7x7 data heatmaps (Java21)
+        run: |
+          mkdir -p build/pathogen-route-fairness
+          javac -d build/pathogen-route-fairness \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteFairScheduler.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldTextMap.java \
+            qa/java/PathogenRoutingFairnessSmoke.java
+          java -cp build/pathogen-route-fairness PathogenRoutingFairnessSmoke
+      - name: Verify fast route eligibility parity, 1024-cell pressure constraints and 15-channel rotation (Java21)
+        run: |
+          mkdir -p build/pathogen-fast-route-parity
+          javac -d build/pathogen-fast-route-parity \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteFairScheduler.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteGameMath.java \
+            qa/java/PathogenFastRouteParitySmoke.java
+          java -cp build/pathogen-fast-route-parity PathogenFastRouteParitySmoke
+      - name: Verify source-backed 15-channel game field overview and 7x7 display (Java21)
+        run: |
+          mkdir -p build/pathogen-field-overview
+          javac -d build/pathogen-field-overview \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenFieldOverview.java \
+            qa/java/PathogenFieldOverviewSmoke.java
+          java -cp build/pathogen-field-overview PathogenFieldOverviewSmoke
+      - name: Test opt-in 15-channel native action-bar game HUD (Java21)
+        run: |
+          mkdir -p build/pathogen-field-hud
+          javac -d build/pathogen-field-hud \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudTextPolicy.java \
+            qa/java/PathogenHudTextSmoke.java
+          java -cp build/pathogen-field-hud PathogenHudTextSmoke
+      - name: Verify two-player HUD isolation, logout and server teardown (Java21)
+        run: |
+          mkdir -p build/pathogen-hud-multiplayer
+          javac -d build/pathogen-hud-multiplayer \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenHudSubscriptions.java \
+            qa/java/PathogenHudSubscriptionsSmoke.java
+          java -cp build/pathogen-hud-multiplayer PathogenHudSubscriptionsSmoke
+      - name: Verify four real fungi, three real parasite identities, phage, and 1m/block game field
+        run: |
+          mkdir -p build/ecology-taxonomy-extra
+          javac -d build/ecology-taxonomy-extra \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtensionToyField.java \
+            qa/java/EcologyExtendedTaxaSmoke.java \
+            qa/java/EcologyExtensionToyFieldSmoke.java
+          java -cp build/ecology-taxonomy-extra EcologyExtendedTaxaSmoke
+          java -cp build/ecology-taxonomy-extra EcologyExtensionToyFieldSmoke
+      - name: Verify five curated host-aware ecology profiles and game-only states (Java21)
+        run: |
+          mkdir -p build/focus-five-observer
+          javac -d build/focus-five-observer \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveProfiles.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveReadout.java \
+            qa/java/FocusFiveSmoke.java
+          java -cp build/focus-five-observer FocusFiveSmoke
+      - name: Source-verified One Health evidence and bounded Minecraft survey model (Java21)
+        run: |
+          mkdir -p build/one-health-science
+          javac -encoding UTF-8 -d build/one-health-science \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FocusFiveProfiles.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/OneHealthEvidence5.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/OneHealthObservation.java \
+            qa/java/OneHealthEvidence5Smoke.java
+          java -cp build/one-health-science OneHealthEvidence5Smoke
+      - name: Verify measured Minecraft habitat and reversible crop gameplay (Java21)
+        run: |
+          mkdir -p build/vanilla-ecology-habitat
+          javac -encoding UTF-8 -d build/vanilla-ecology-habitat \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/MinecraftHabitatScience.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaCropGameFeedback.java \
+            qa/java/MinecraftHabitatScienceSmoke.java
+          java -cp build/vanilla-ecology-habitat MinecraftHabitatScienceSmoke
+      - name: Test read-only 23-label game field sampling and per-player particle ceilings (Java21)
+        run: |
+          mkdir -p build/game-field-particle-projection
+          javac -encoding UTF-8 -d build/game-field-particle-projection \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/EcologyExtendedTaxa.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldParticleSampling.java \
+            qa/java/FieldParticleSamplingSmoke.java
+          java -cp build/game-field-particle-projection FieldParticleSamplingSmoke
+      - name: Validate conserved symbolic spatial waves, deterministic updates and hard resource caps (Java21)
+        run: |
+          mkdir -p build/game-field-mass-balance
+          javac -encoding UTF-8 -d build/game-field-mass-balance \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRouteFairScheduler.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/ViralGameSignalPolicy.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/ViralGameSignalWave.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/ViralHostVisualPolicy.java \
+            qa/java/ViralGameSignalsSmoke.java \
+            qa/java/ViralGameSignalWaveSmoke.java \
+            qa/java/FieldMassBalanceSmoke.java
+          java -cp build/game-field-mass-balance ViralGameSignalsSmoke
+          java -cp build/game-field-mass-balance ViralGameSignalWaveSmoke
+          java -cp build/game-field-mass-balance FieldMassBalanceSmoke
+      - name: Verify V17 surface projection and 200-player cosmetic viewer fairness (Java21)
+        run: |
+          mkdir -p build/v17-particle-view
+          javac -encoding UTF-8 -d build/v17-particle-view \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldParticleViewPolicy.java \
+            qa/java/FieldParticleViewPolicySmoke.java
+          java -cp build/v17-particle-view FieldParticleViewPolicySmoke
+      - name: V19 Minecraft environmental observation and missing-data policy (Java21)
+        run: |
+          mkdir -p build/v19-minecraft-environment
+          javac -encoding UTF-8 -d build/v19-minecraft-environment \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/FieldEnvironmentObservation.java \
+            qa/java/FieldEnvironmentObservationSmoke.java
+          java -cp build/v19-minecraft-environment FieldEnvironmentObservationSmoke
+      - name: V19 long-run symbolic game-number transport correctness (Java21)
+        run: |
+          mkdir -p build/v19-field-numerics
+          javac -encoding UTF-8 -d build/v19-field-numerics \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
+            qa/java/FieldGameNumericsSmoke.java
+          java -cp build/v19-field-numerics FieldGameNumericsSmoke
+      - name: V20 CDC/WHO sourced laboratory surveillance and empirical reporting smoke (Java21)
+        run: |
+          mkdir -p build/v20-publichealth
+          javac -encoding UTF-8 -d build/v20-publichealth \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PublicHealthSurveillance.java \
+            qa/java/PublicHealthSurveillanceSmoke.java
+          java -cp build/v20-publichealth:src/main/resources PublicHealthSurveillanceSmoke
+      - name: V21 validate real 15-agent catalog with host-proxy cautions (Java21)
+        run: |
+          mkdir -p build/v21-disease-agent-reference
+          javac -encoding UTF-8 -d build/v21-disease-agent-reference \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoster15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenRoutePolicy15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/VanillaHostMapping15.java \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/ScientificTaxonProfiles15.java \
+            qa/java/ScientificTaxonProfiles15Smoke.java
+          java -cp build/v21-disease-agent-reference ScientificTaxonProfiles15Smoke
+      - name: Compile and package NeoForge mod
+        run: gradle --no-daemon --stacktrace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-nightwatch-jar
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+  dedicated-server-smoke:
+    name: Actual NeoForge v0.10 dedicated-server startup
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Launch and validate real NeoForge server
+        env:
+          GUGU_BOOT_TIMEOUT: "420"
+          GUGU_FIELD_SELFTEST: "1"
+        run: python3 qa/smoke_server_boot.py
+      - name: Upload diagnostic server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-v010-server-startup
+          path: |
+            build/server-runtime-smoke.log
+            runs/server/logs/latest.log
+            runs/server/crash-reports/*.txt
+          if-no-files-found: warn
+
+  pathogen-world-disk-restart:
+    name: True two-process NeoForge world SavedData restart
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Boot ephemeral world, save to disk, stop, and boot same world
+        env:
+          GUGU_DISK_STAGE_TIMEOUT: "480"
+        run: python3 qa/smoke_pathogen_disk_restart.py
+      - name: Upload real disk-restart logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-field-disk-restart
+          path: |
+            build/field-disk-*.log
+          if-no-files-found: warn
+
+  client-startup-smoke:
+    name: Actual v0.10 graphical client + three native renderer registrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Install virtual display with Mesa software OpenGL
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libgl1
+      - name: Actually launch Minecraft 1.21.1 CLIENT and verify native renderers
+        env:
+          GUGU_CLIENT_TIMEOUT: "420"
+        run: python3 qa/smoke_client_boot.py
+      - name: Preserve client logs on failure or success
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gugugaga-v010-real-client-boot
+          path: |
+            build/client-runtime-smoke.log
+            runs/client/logs/latest.log
+            runs/client/crash-reports/*.txt
+            run/logs/latest.log
+          if-no-files-found: warn

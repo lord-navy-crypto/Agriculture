@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "gugugaga:soil_bacillus_patch",
+        "Properties": {
+          "view": "0",
+          "satellite": "false"
+        }
+      }
+    }
+  }
+}

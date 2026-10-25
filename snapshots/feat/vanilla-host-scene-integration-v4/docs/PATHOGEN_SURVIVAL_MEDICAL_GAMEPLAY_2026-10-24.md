@@ -1,0 +1,9 @@
+# Pathogens first: a native Minecraft survival and care loop
+
+Adds actual crafted, placeable Minecraft blocks rather than wiki entries: wildlife rabies incident, avian influenza animal-health incident, and field medical clinic. All are survival crafting recipes and Functional Blocks creative items. Right-click an incident in Survival to record a player incident in persistent NBT (NOT a diagnosis). In an avian scenario, sneak-right-click after contact to deliberately opt into a fictionalized game illness with temporary Slowness. This game effect is NOT based on a real virus replication, clinical timeline or probability.
+
+Rabies contact cannot automatically create symptoms; a clinic visit is for game early assessment. Clinically real suspected rabies exposure warrants prompt medical evaluation; a Minecraft station does NOT substitute for medical care. Influenza simulated illness receives a separate clinic-care transition and a finite recovery stage. The controls and action messages are bilingual.
+
+[CDC Rabies clinical overview](https://www.cdc.gov/rabies/hcp/clinical-overview/) and [WHO zoonotic animal influenza](https://www.who.int/en/news-room/fact-sheets/detail/influenza-%28avian-and-other-zoonotic%29) support pathogen-specific high-level context; the in-game status stages and tick durations are fictional Minecraft mechanics, not real patient predictions.
+
+No player-to-player contagion, involuntary disease state, animal source inference from mere proximity, virus cultivation, genome manipulation, lab methods, treatment doses or actual pathogen survival estimates. Server option pathogen_survival.enabled disables the loop. This is a functional first slice, not yet autonomous animal reservoir worldgen or epidemiological simulation. Next acceptance: NeoForge build, dedicated server/client boot, survival crafting and actual world-clicks, NBT save/relog and multiplayer isolation. Old main unchanged.

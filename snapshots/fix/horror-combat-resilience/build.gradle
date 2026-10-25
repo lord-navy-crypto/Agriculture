@@ -1,0 +1,83 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'idea'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = neo_version
+
+    parchment {
+        mappingsVersion = parchment_mappings_version
+        minecraftVersion = parchment_minecraft_version
+    }
+
+    runs {
+        client { client() }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+repositories {
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content { includeGroup('software.bernie.geckolib') }
+    }
+}
+
+dependencies {
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+}
+
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var vars = [
+        mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
+        mod_license: mod_license, loader_version_range: loader_version_range,
+        minecraft_version_range: minecraft_version_range, neo_min_version: neo_min_version,
+        geckolib_min_version: geckolib_min_version
+    ]
+    inputs.properties(vars)
+    expand(vars)
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+
+sourceSets.main.resources.srcDir generateModMetadata
+
+// Reproducible ORIGINAL character PNG assets. Never commit a borrowed skin.
+// GitHub Actions runner includes Python 3; no external Python libraries.
+var generateOriginalCharacterSprites = tasks.register('generateOriginalCharacterSprites', Exec) {
+    inputs.file('qa/generate_character_sprites.py')
+    outputs.dir(layout.buildDirectory.dir('generated/guguCharacterSprites'))
+    commandLine 'python3', 'qa/generate_character_sprites.py',
+            layout.buildDirectory.dir('generated/guguCharacterSprites').get().asFile.absolutePath
+}
+tasks.named('processResources').configure {
+    dependsOn generateOriginalCharacterSprites
+    from(layout.buildDirectory.dir('generated/guguCharacterSprites'))
+}
+
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
