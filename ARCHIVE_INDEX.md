@@ -1,6 +1,6 @@
 # Consolidated archive — 2026-10-25
 
-This branch snapshots all 44 original branches before the clean-slate reset. Each original tree is available at `snapshots/<branch-name>/`. The archive commit will also retain the unique original branch tips as commit parents so their reachable histories remain available.
+This branch snapshots all 44 original branches before the clean-slate reset. Each original tree is available at `snapshots/<branch-name>/`. The `rewrite/virus-mod-core-20261025` branch is additionally preserved at `snapshots/rewrite/` (the prefix directory) because its original name contains a path segment. The archive commit will also retain the unique original branch tips as commit parents so their reachable histories remain available.
 
 ## Original branch refs
 
