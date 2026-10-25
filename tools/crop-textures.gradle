@@ -1337,6 +1337,8 @@ tasks.register('generateCropAssets') {
         def allStageHashes = [] as Set
         def produceIconHashes = [] as Set
         def seedIconHashes = [] as Set
+        def produceIconNamesByHash = [:]
+        def seedIconNamesByHash = [:]
         def digest = MessageDigest.getInstance('SHA-256')
         cropIds.each { crop ->
             def thisCropStageHashes = [] as Set
@@ -1371,11 +1373,17 @@ tasks.register('generateCropAssets') {
             if (thisCropStageHashes.size() != 8) throw new GradleException('Growth stages must all have distinct sprites: ' + crop)
             String producePath = 'assets/gugugaga/textures/item/crops/' + crop + '.png'
             savePng.call(producePath, itemTexture.call(crop, false))
-            produceIconHashes.add(digest.digest(new File(outputRoot, producePath).bytes).encodeHex().toString())
+            String produceHash = digest.digest(new File(outputRoot, producePath).bytes).encodeHex().toString()
+            produceIconHashes.add(produceHash)
+            if (!produceIconNamesByHash.containsKey(produceHash)) produceIconNamesByHash[produceHash] = []
+            produceIconNamesByHash[produceHash] << crop.toString()
             itemTextureCount++
             String seedPath = 'assets/gugugaga/textures/item/crops/' + crop + '_seeds.png'
             savePng.call(seedPath, itemTexture.call(crop, true))
-            seedIconHashes.add(digest.digest(new File(outputRoot, seedPath).bytes).encodeHex().toString())
+            String seedHash = digest.digest(new File(outputRoot, seedPath).bytes).encodeHex().toString()
+            seedIconHashes.add(seedHash)
+            if (!seedIconNamesByHash.containsKey(seedHash)) seedIconNamesByHash[seedHash] = []
+            seedIconNamesByHash[seedHash] << crop.toString()
             itemTextureCount++
         }
         if (modelCount != 768 || blockTextureCount != 768 || itemTextureCount != 128) {
@@ -1383,6 +1391,10 @@ tasks.register('generateCropAssets') {
         }
         if (matureTextureHashes.size() != 64) throw new GradleException('Every crop must have a unique mature texture')
         if (allStageHashes.size() != 768) throw new GradleException('Crop growth/pollination stage textures must be unique')
+        def duplicateProduceIcons = produceIconNamesByHash.values().findAll { names -> names.size() > 1 }
+        def duplicateSeedIcons = seedIconNamesByHash.values().findAll { names -> names.size() > 1 }
+        if (!duplicateProduceIcons.isEmpty()) throw new GradleException('Duplicate produce icon pixel hashes: ' + duplicateProduceIcons.collect { names -> names.join(' = ') }.join('; '))
+        if (!duplicateSeedIcons.isEmpty()) throw new GradleException('Duplicate seed icon pixel hashes: ' + duplicateSeedIcons.collect { names -> names.join(' = ') }.join('; '))
         if (produceIconHashes.size() != 64) throw new GradleException('All 64 produce icons must be visually distinct')
         if (seedIconHashes.size() != 64) throw new GradleException('All 64 seed icons must be visually distinct')
         // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
