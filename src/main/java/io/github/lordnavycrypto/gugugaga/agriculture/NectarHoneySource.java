@@ -36,7 +36,9 @@ public final class NectarHoneySource {
             "minecraft:azure_bluet", "minecraft:blue_orchid", "minecraft:lily_of_the_valley", "minecraft:oxeye_daisy",
             "minecraft:torchflower", "minecraft:red_tulip", "minecraft:orange_tulip", "minecraft:white_tulip",
             "minecraft:pink_tulip", "minecraft:wither_rose",
-            "blackberry_crop", "blackcurrant_crop", "chives_crop", "pumpkin_crop"
+            "blackberry_crop", "blackcurrant_crop", "chives_crop", "pumpkin_crop",
+            "cassava_crop", "taro_crop", "yam_crop", "watercress_crop", "endive_crop",
+            "kohlrabi_crop", "rutabaga_crop"
     };
 
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
@@ -138,6 +140,13 @@ public final class NectarHoneySource {
             case 19 -> BeeContent.BLACKCURRANT_HONEY_BOTTLE.get();
             case 20 -> BeeContent.CHIVE_HONEY_BOTTLE.get();
             case 21 -> BeeContent.PUMPKIN_BLOSSOM_HONEY_BOTTLE.get();
+            case 22 -> BeeContent.CASSAVA_BLOSSOM_HONEY_BOTTLE.get();
+            case 23 -> BeeContent.TARO_BLOSSOM_HONEY_BOTTLE.get();
+            case 24 -> BeeContent.YAM_BLOSSOM_HONEY_BOTTLE.get();
+            case 25 -> BeeContent.WATERCRESS_HONEY_BOTTLE.get();
+            case 26 -> BeeContent.ENDIVE_HONEY_BOTTLE.get();
+            case 27 -> BeeContent.KOHLRABI_HONEY_BOTTLE.get();
+            case 28 -> BeeContent.RUTABAGA_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);
