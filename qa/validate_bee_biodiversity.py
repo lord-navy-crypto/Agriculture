@@ -14,7 +14,8 @@ for species in "bumblebee mason_bee squash_bee leafcutter_bee carpenter_bee mini
     assert f"entity.gugugaga.{species}" in words
 wildlife = (ROOT.parent / "java/io/github/lordnavycrypto/gugugaga/agriculture/BeeWildlife.java").read_text("utf8")
 wild_bee = (ROOT.parent / "java/io/github/lordnavycrypto/gugugaga/agriculture/WildPollinatorBee.java").read_text("utf8")
-assert "WildPollinatorBee::new" in wildlife and "Bee::new" not in wildlife
+assert "WildPollinatorBee::new" in wildlife
+assert "Builder.of(Bee::new" not in wildlife and "Builder.<Bee>of(Bee::new" not in wildlife
 assert "public boolean hasHive()" in wild_bee and "return false;" in wild_bee
 assert "public BlockPos getHivePos()" in wild_bee and "return null;" in wild_bee
 assert "public void setHivePos(BlockPos pos)" in wild_bee
