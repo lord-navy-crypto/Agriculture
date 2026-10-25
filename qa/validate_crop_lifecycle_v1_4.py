@@ -46,6 +46,13 @@ def main():
     assert "palettes = [" in generator and "categoryGroups = [" in generator
     assert "leafFormGroups = [" in generator
     assert "leafFormByCrop.keySet()" in generator
+    assert "organFormGroups = [" in generator
+    assert "harvestedOrganByCrop" in generator
+    assert "organFormByCrop.keySet()" in generator
+    assert "Every crop must declare a harvested organ" in generator
+    assert "if (organForm == 'rhizome')" in generator
+    assert "if (organForm == 'head')" in generator
+    assert "if (crop == 'sunflower_seed')" in generator
     assert "leafForm == 'rosette'" in generator
     assert "leafForm == 'vine'" in generator
     assert "leafForm == 'fern'" in generator
