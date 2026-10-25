@@ -61,9 +61,9 @@ public final class AgricultureCropBlock extends CropBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!CropClimate.allowGrowth(seedName, level, pos, random)) {
-            return;
-        }
+        // Weather, biome and irrigation control vegetative growth, not whether a bee
+        // can visit a flower. Keep the two events independent for source-informed biology.
+        boolean growthAllowed = CropClimate.allowGrowth(seedName, level, pos, random);
 
         BlockState current = level.getBlockState(pos);
         if (pollinationGroup != PollinationGroup.NONE
@@ -104,7 +104,10 @@ public final class AgricultureCropBlock extends CropBlock {
         }
 
         // Read the latest state so growth preserves a pollination mark set above.
-        super.randomTick(level.getBlockState(pos), level, pos, random);
+        // Pollination is permitted even when a climate roll prevents growth this tick.
+        if (growthAllowed) {
+            super.randomTick(level.getBlockState(pos), level, pos, random);
+        }
     }
 
     @Override

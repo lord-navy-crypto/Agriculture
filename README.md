@@ -8,7 +8,7 @@ A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. 
 - Crop seeds, eight age stages, harvested items, loot tables, seed recipes, bilingual English/Chinese names and placeholder vanilla textures.
 - **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
 - **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
-- Crop-aware, late-stage bee-assisted growth bonuses, plus meadow/orchard/berry tags for vanilla bees.
+- Crop-aware pollination marks persist through maturity and provide a bounded harvest-yield bonus. Pollination is checked separately from biome/irrigation growth rolls; meadow/orchard/berry tags remain available for vanilla bees.
 - A **2×2 apiary kit** placing four separate functional vanilla beehives; it does not enlarge a single hive.
 - Biome-based crop-growth suitability using published seed-germination references as relative sensitivity categories. Real measurements are not converted into Minecraft ticks.
 - **Rice paddy rule (v0.4):** rice growth requires freshwater within three horizontal blocks at crop height or the farmland level below. The crop remains planted on normal farmland. This is an irrigated-lowland gameplay model, not a universal claim about every rice-growing system.
@@ -47,3 +47,8 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 - NeoForged 1.21.1 biome modifiers: https://docs.neoforged.net/docs/1.21.1/worldgen/biomemodifier/
 - University of Minnesota Extension crop guidance: https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden
 - Xerces Society, bee nesting resources: https://www.xerces.org/pollinator-conservation/nesting-resources
+
+
+### Beekeeping enhancement v0.6
+
+The honey harvester supports **bottling honey** (one glass bottle, from offhand/inventory) or **honeycomb harvesting** (shears held in the offhand, losing one durability, yields three honeycombs). Both modes require a full vanilla hive and lit unobstructed campfire smoke; the hive's honey level resets afterward. Bee pollination and climate-limited plant growth are evaluated independently. See docs/AGRICULTURE_BEECARE_V0_6.md for biological caveats and sources.

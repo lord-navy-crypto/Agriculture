@@ -136,5 +136,6 @@
   "block.gugugaga.mason_bee_habitat": "Mason Bee Nesting Tubes",
   "block.gugugaga.squash_bee_habitat": "Squash Bee Soil Nest",
   "block.gugugaga.leafcutter_bee_habitat": "Leafcutter Bee Nesting Tubes",
-  "message.gugugaga.bee_habitat_activity": "Nesting-site activity: %s/%s (nearby bee + forage)"
+  "message.gugugaga.bee_habitat_activity": "Nesting-site activity: %s/%s (nearby bee + forage)",
+  "message.gugugaga.honey_harvester_combs_collected": "Safely collected 3 honeycombs using offhand shears."
 }

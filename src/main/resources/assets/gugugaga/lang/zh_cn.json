@@ -136,5 +136,6 @@
   "block.gugugaga.mason_bee_habitat": "壁蜂筑巢管",
   "block.gugugaga.squash_bee_habitat": "南瓜蜂土壤巢址",
   "block.gugugaga.leafcutter_bee_habitat": "切叶蜂筑巢管",
-  "message.gugugaga.bee_habitat_activity": "巢址活动度：%s/%s（需要附近对应的蜜蜂和花源）"
+  "message.gugugaga.bee_habitat_activity": "巢址活动度：%s/%s（需要附近对应的蜜蜂和花源）",
+  "message.gugugaga.honey_harvester_combs_collected": "使用副手剪刀安全采集了3个蜜脾。"
 }

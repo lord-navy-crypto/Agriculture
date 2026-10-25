@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,8 +59,12 @@ public final class HoneyHarvesterItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        ItemStack bottle = player.getAbilities().instabuild ? ItemStack.EMPTY : findGlassBottle(player);
-        if (!player.getAbilities().instabuild && bottle.isEmpty()) {
+        // An offhand pair of shears selects honeycomb mode; otherwise the tool bottles
+        // honey as before. Both modes require a full hive and a lit, clear smoke column.
+        boolean combMode = player.getOffhandItem().is(Items.SHEARS);
+        ItemStack bottle = (combMode || player.getAbilities().instabuild)
+                ? ItemStack.EMPTY : findGlassBottle(player);
+        if (!combMode && !player.getAbilities().instabuild && bottle.isEmpty()) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
                         Component.translatable("message.gugugaga.honey_harvester_bottle_required"), true);
@@ -71,21 +76,33 @@ public final class HoneyHarvesterItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        if (!player.getAbilities().instabuild) {
-            bottle.shrink(1);
+        ItemStack harvest;
+        if (combMode) {
+            // Shears are reusable tools: spending durability prevents free honeycomb output.
+            if (!player.getAbilities().instabuild) {
+                player.getOffhandItem().hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
+            }
+            harvest = new ItemStack(Items.HONEYCOMB, 3);
+        } else {
+            if (!player.getAbilities().instabuild) {
+                bottle.shrink(1);
+            }
+            harvest = new ItemStack(Items.HONEY_BOTTLE);
         }
 
-        ItemStack honeyBottle = new ItemStack(Items.HONEY_BOTTLE);
-        if (!player.getInventory().add(honeyBottle)) {
+        if (!player.getInventory().add(harvest)) {
             level.addFreshEntity(new ItemEntity(
-                    level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, honeyBottle));
+                    level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, harvest));
         }
 
         level.setBlock(pos, state.setValue(BeehiveBlock.HONEY_LEVEL, 0), 3);
-        level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, combMode ? SoundEvents.BEEHIVE_SHEAR : SoundEvents.BOTTLE_FILL,
+                SoundSource.BLOCKS, 1.0F, 1.0F);
         player.swing(context.getHand());
         player.displayClientMessage(
-                Component.translatable("message.gugugaga.honey_harvester_collected"), true);
+                Component.translatable(combMode
+                        ? "message.gugugaga.honey_harvester_combs_collected"
+                        : "message.gugugaga.honey_harvester_collected"), true);
         return InteractionResult.SUCCESS;
     }
 
