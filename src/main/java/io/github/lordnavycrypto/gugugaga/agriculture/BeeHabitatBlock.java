@@ -79,7 +79,7 @@ public final class BeeHabitatBlock extends Block {
             if (nearby.getBlock() instanceof AgricultureCropBlock crop
                     && nearby.getValue(AgricultureCropBlock.AGE) >= 4
                     && crop.getPollinationGroup() != AgricultureCropBlock.PollinationGroup.NONE) {
-                if (!cucurbitOnly || crop.getPollinationGroup() == AgricultureCropBlock.PollinationGroup.CUCURBIT) return true;
+                if (!cucurbitOnly || crop.getSeedName().equals("zucchini_seeds")) return true;
             }
         }
         return false;

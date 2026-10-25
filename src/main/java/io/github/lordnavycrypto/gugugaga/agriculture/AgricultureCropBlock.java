@@ -94,7 +94,8 @@ public class AgricultureCropBlock extends CropBlock {
         return switch (pollinationGroup) {
             case NONE -> false;
             case BUZZ -> species.equals("bumblebee");
-            case CUCURBIT -> species.equals("bumblebee") || species.equals("squash_bee");
+            case CUCURBIT -> species.equals("bumblebee")
+                    || (species.equals("squash_bee") && seedName.equals("zucchini_seeds"));
             case BERRY, GENERAL -> species.equals("bumblebee") || species.equals("mason_bee")
                     || species.equals("leafcutter_bee") || species.equals("carpenter_bee")
                     || species.equals("mining_bee");

@@ -34,3 +34,7 @@ Research: [Xerces Society — nesting resources](https://xerces.org/pollinator-c
 ### Safe smoke checks (2026-10-25)
 
 Both honey tools now use one shared `HoneySmoke` checker. It accepts a lit campfire or soul campfire at most five vertical blocks below the hive, a clear air column, and a single carpet directly on top of the campfire. It does not force-load neighboring chunks. This matches the basic carpet-over-campfire setup recommended for Minecraft Java Edition beekeeping. Reference: https://minecraft.wiki/w/Bee_nest .
+
+### Specialist-bee correction: *Cucurbita* is not *Cucumis*
+
+The squash bee is now allowed to pollinate **zucchini** (*Cucurbita pepo*) but not **cucumber** (*Cucumis sativus*). Its ground-nesting habitat also requires nearby zucchini, rather than any crop belonging to the broader gourd family. Honeybees and bumblebees may still provide cucumber pollination. This change follows the USDA ARS [Squash Pollination](https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/squash-pollination/) account of *Peponapis*/*Xenoglossa* specializing on *Cucurbita* pollen and NC State Extension's [squash bee identification guide](https://content.ces.ncsu.edu/squash-bees-in-the-home-garden).

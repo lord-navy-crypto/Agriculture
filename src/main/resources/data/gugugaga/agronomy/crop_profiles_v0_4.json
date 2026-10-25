@@ -90,6 +90,10 @@
       "source_urls": [
         "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
         "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ],
+      "specialist_bee_compatibility": [
+        "bumblebee",
+        "minecraft:bee"
       ]
     },
     {
@@ -418,6 +422,11 @@
       "real_maturity_days_range_reference": [
         50,
         65
+      ],
+      "specialist_bee_compatibility": [
+        "squash_bee",
+        "bumblebee",
+        "minecraft:bee"
       ]
     },
     {

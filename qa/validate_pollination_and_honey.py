@@ -72,6 +72,11 @@ def main():
     assert 'if (species.equals("bee"))' in crop_java
     assert 'pollinationGroup != PollinationGroup.BUZZ' in crop_java
     assert "HONEY_HARVESTER" in content and "BEEKEEPER_BRUSH" in content
+    assert 'species.equals("squash_bee") && seedName.equals("zucchini_seeds")' in crop_java
+    habitat_java = (JAVA / "BeeHabitatBlock.java").read_text("utf8")
+    assert 'crop.getSeedName().equals("zucchini_seeds")' in habitat_java
+    squash = next(s for s in species if s["id"] == "squash_bee")
+    assert squash["host_crop_ids"] == ["zucchini"]
     en = j("assets/gugugaga/lang/en_us.json")
     zh = j("assets/gugugaga/lang/zh_cn.json")
     for item in ("bee_keeper_brush","bumblebee_nectar","mason_bee_cocoon","squash_bee_cocoon","leafcutter_bee_cocoon","honey_harvester"):
