@@ -1144,7 +1144,29 @@ tasks.register('generateCropAssets') {
         new File(reportRoot, 'crop-stage-contact-sheet.txt').setText(
                 'Rows are crop IDs in alphabetical order. Columns 1-8 are ages 0-7; columns 9-12 are pollinated ages 4-7. Sprites are enlarged with nearest-neighbor scaling.\\n',
                 'UTF-8')
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 64 crops; 8 unique stages each; 4 pollen-marked stages per crop; 128 item icons; 768 crop models; visual contact sheet written.')
+        def writeItemContactSheet = { boolean seeds ->
+            BufferedImage sheet = new BufferedImage(labelWidth + tile, cropIds.size() * tile, BufferedImage.TYPE_INT_ARGB)
+            Graphics2D sheetGraphics = sheet.createGraphics()
+            sheetGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
+            sheetGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+            sheetGraphics.setColor(new Color(29, 34, 30, 255))
+            sheetGraphics.fillRect(0, 0, sheet.width, sheet.height)
+            sheetGraphics.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10))
+            cropIds.eachWithIndex { crop, row ->
+                int y = row * tile
+                sheetGraphics.setColor(new Color(238, 240, 232, 255))
+                sheetGraphics.drawString(crop.toString(), 4, y + 28)
+                String iconName = crop.toString() + (seeds ? '_seeds.png' : '.png')
+                File iconFile = new File(outputRoot, 'assets/gugugaga/textures/item/crops/' + iconName)
+                sheetGraphics.drawImage(ImageIO.read(iconFile), labelWidth, y, tile, tile, null)
+            }
+            sheetGraphics.dispose()
+            String sheetName = seeds ? 'seed-icon-contact-sheet.png' : 'produce-icon-contact-sheet.png'
+            ImageIO.write(sheet, 'png', new File(reportRoot, sheetName))
+        }
+        writeItemContactSheet.call(false)
+        writeItemContactSheet.call(true)
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 64 crops; 8 unique stages each; 4 pollen-marked stages per crop; 128 organ-specific item icons; 768 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
     }
 }
 tasks.named('processResources').configure {
