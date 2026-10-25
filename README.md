@@ -4,14 +4,14 @@ A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. 
 
 ## Working content
 
-- **88 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
+- **96 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
 - Crop seeds, eight visually distinct growth stages per crop, crop-specific pixel-art sprites, pollination-stage overlays, harvested items, loot tables, seed recipes and bilingual English/Chinese names.
 - **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
 - **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
 - Crop-aware pollination marks persist through maturity and provide a bounded harvest-yield bonus. Pollination is checked separately from biome/irrigation growth rolls; meadow/orchard/berry tags remain available for vanilla bees.
 - A **2×2 apiary kit** placing four separate functional vanilla beehives; it does not enlarge a single hive.
 - Biome-based crop-growth suitability using published seed-germination references as relative sensitivity categories. Real measurements are not converted into Minecraft ticks.
-- **Rice paddy rule (v0.4):** rice growth requires freshwater within three horizontal blocks at crop height or the farmland level below. The crop remains planted on normal farmland. This is an irrigated-lowland gameplay model, not a universal claim about every rice-growing system.
+- **Freshwater crop rules:** rice requires nearby freshwater within a wider radius, while taro and watercress use a compact wet-bed check. These checks inspect only loaded chunks and are gameplay proxies, not universal claims about real cultivation systems.
 
 ## Build and QA
 
@@ -33,7 +33,7 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 
 ## Biological and gameplay boundaries
 
-- Crop textures are generated deterministically at build time from 88 crop-specific palettes and organ-aware pixel-art silhouettes; all 88 crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
+- Crop textures are generated deterministically at build time from 96 crop-specific palettes and organ-aware pixel-art silhouettes; all 96 crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
 - The bee entities are registered prototypes, not independent species simulations. Solitary nesting for mason, leafcutter, carpenter and mining bees, colony lifecycle for bumblebees, unique art and inherited bee traits remain future work.
 - Soil pH, crop rotation, nutrient depletion, cultivar differences, seasons and a measured pollination-to-fruit-set/yield model are not implemented.
 - The rice rule models irrigated lowland cultivation. IRRI documents both flooded-field practices and water-saving alternate wetting and drying; other systems, including aerobic rice, exist.
@@ -68,7 +68,7 @@ forage still yields regular honey. See `docs/AGRICULTURE_CROPS_AND_NECTAR_V0_9.m
 
 
 ### Agriculture native composting (v1.3)
-All 88 harvested organic crop items and 88 corresponding seeds support vanilla
+All 96 harvested organic crop items and 96 corresponding seeds support vanilla
 composters through NeoForge's item `neoforge:compostables` data map. Seeds have a
 30% level-up chance and harvested biomass a 65% chance; villager auto-composting
 remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
@@ -76,7 +76,7 @@ remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
 
 ### Crop lifecycle and custom textures (v1.4)
 
-All 88 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_8.md.
+All 96 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_8.md.
 
 The sprites are custom Minecraft pixel art informed by crop morphology, not photographs or claims that a single cultivar looks identical in every region. Published maturity ranges, cold tolerance and critical watering stages guide relative gameplay categories; they are not converted directly into Minecraft ticks. Client-side visual checks remain necessary after the build.
 
@@ -91,4 +91,10 @@ The eight v1.9 additions are jicama, adzuki bean, mung bean, cowpea, safflower, 
 
 ## Crop-specific texture precision (v1.5)
 
-The crop-only visual pass gives all 80 crops explicit leaf architectures plus crop-specific seedling and mature details. Produce icon families are derived from each crop profile's `harvested_organ` field; unknown values fail generation. Seed icons use a separate 16-form morphology map, with build-time coverage checks and unique-pixel-hash validation for all 88 produce icons and 88 seed icons. Existing crop IDs, recipes, loot tables, growth ages and harvest/regrowth behavior are preserved. CI publishes review sheets for crop stages/pollination, produce icons and seed icons. See `docs/AGRICULTURE_CROP_TEXTURE_PRECISION_V1_5.md` for the asset contract and acceptance limits.
+The crop-only visual pass gives all 96 crops explicit leaf architectures plus crop-specific seedling and mature details. Produce icon families are derived from each crop profile's `harvested_organ` field; unknown values fail generation. Seed icons use a separate 16-form morphology map, with build-time coverage checks and unique-pixel-hash validation for all 96 produce icons and 96 seed icons. Existing crop IDs, recipes, loot tables, growth ages and harvest/regrowth behavior are preserved. CI publishes review sheets for crop stages/pollination, produce icons and seed icons. See `docs/AGRICULTURE_CROP_TEXTURE_PRECISION_V1_5.md` for the asset contract and acceptance limits.
+
+### Crop and honey expansion (v2.0 / honey v1.1)
+
+The catalog now contains **96 complete crop lines**. v2.0 adds celeriac, purslane, chayote, grape, tea, coffee, rapini and napa cabbage, with registered seed/planting items, eight growth ages, dedicated stage and inventory art, recipes, mature-only loot, bilingual names, climate bands and compost records. Purslane, tea and rapini use repeat-cut harvest; chayote and grape use repeat-fruit harvest, with the latter also receiving the berry pollination bonus.
+
+The honey catalog now contains **46 distinct bottle variants**: 45 recognized forage-source routes plus a neutral wildflower blend. The eight v2.0 crop sources each have a separate bottle sprite, item model, bilingual name and short level-I fantasy effect. Source dominance and mixed-forage thresholds remain unchanged; the effects are fictional game mechanics, not claims about real honey. CI validates all 96 crop cycles, 1,152 generated stage/model assets, 192 crop/seed icons, all 46 honey variants and 45 forage routes.
