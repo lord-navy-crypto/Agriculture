@@ -41,3 +41,25 @@ jobs:
           name: gugugaga-virus-mod-rewrite
           path: build/libs/*.jar
           if-no-files-found: error
+
+  real-server-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Launch fresh real NeoForge 1.21.1 server
+        run: python3 qa/smoke_rewrite_server.py
+      - name: Upload launch logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rewrite-server-launch-log
+          path: build/rewrite-server-boot.log
+          if-no-files-found: warn
