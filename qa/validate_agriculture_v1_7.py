@@ -50,6 +50,6 @@ def main():
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
     assert "otherFlowerKinds" in nectar and "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar
     assert "WILDFLOWER_HONEY_BOTTLE" in nectar and "wildflower_honey_bottle" in bee
-    assert "honeyTexturePalette.size() != 30" in generator and "honeyTextureHashes.size() != 30" in generator
+    assert "honeyTexturePalette.size() != 38" in generator and "honeyTextureHashes.size() != 38" in generator
     print("AGRICULTURE_V1_8_OK: 80 crops; 8 new crop cycles; 29 source-specific honey bottles; mixed-forage wildflower blend")
 if __name__ == "__main__": main()
