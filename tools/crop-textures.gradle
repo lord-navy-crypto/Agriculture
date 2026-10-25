@@ -22,7 +22,11 @@ tasks.register('generateCropAssets') {
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v0_9.json'),
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_0.json'),
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_3.json'),
-        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_7.json')
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_7.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_8.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_9.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v2_0.json'),
+        file('src/main/resources/data/gugugaga/agronomy/honey_sources_v1_1.json')
     )
     outputs.dir(cropGeneratedResources)
     outputs.dir(layout.buildDirectory.dir('reports/agriculture'))
@@ -31,12 +35,12 @@ tasks.register('generateCropAssets') {
         project.delete(outputRoot)
         outputRoot.mkdirs()
         def slurper = new JsonSlurper()
-        def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json','crop_additions_v1_7.json','crop_additions_v1_8.json','crop_additions_v1_9.json']
+        def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json','crop_additions_v1_7.json','crop_additions_v1_8.json','crop_additions_v1_9.json','crop_additions_v2_0.json']
         def cropProfiles = profileNames.collectMany { name ->
             slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops
         }
         def cropIds = cropProfiles.collect { it.crop.toString() }.unique().sort()
-        if (cropIds.size() != 88) throw new GradleException('Expected exactly 88 unique crop profiles, found ' + cropIds.size())
+        if (cropIds.size() != 96) throw new GradleException('Expected exactly 96 unique crop profiles, found ' + cropIds.size())
         def harvestedOrganByCrop = [:]
         cropProfiles.each { profile ->
             String crop = profile.crop.toString()
@@ -73,16 +77,18 @@ tasks.register('generateCropAssets') {
             yam:'#8F6245', teff:'#C3A46A', watercress:'#3F9B78', endive:'#77A95A',
             kohlrabi:'#95B85D', rutabaga:'#9D8B6C', jicama:'#D5B98C', adzuki_bean:'#8B4D40',
             mung_bean:'#8FA85A', cowpea:'#B79B68', safflower:'#D9A64C', chicory:'#8E6B49',
-            mustard_greens:'#6F9D47', water_spinach:'#3D8C68'
+            mustard_greens:'#6F9D47', water_spinach:'#3D8C68', celeriac:'#BCA783',
+            purslane:'#6E9C53', chayote:'#8AB65B', grape:'#75509A', tea:'#3F7650',
+            coffee:'#8A5739', rapini:'#739A4D', napa_cabbage:'#78B76D'
         ]
         def categoryGroups = [
             grain:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame sunflower_seed amaranth sweet_corn teff'.split(' '),
-            fruit:'tomato strawberry cucumber blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper pumpkin pineapple blackberry blackcurrant'.split(' '),
-            root:'onion garlic peanut radish turnip sweet_potato parsnip shallot ginger turmeric fennel cassava taro yam kohlrabi rutabaga jicama chicory'.split(' '),
-            leafy:'lettuce cabbage spinach broccoli kale celery leek arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy asparagus watercress endive mustard_greens water_spinach'.split(' '),
+            fruit:'tomato strawberry cucumber blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper pumpkin pineapple blackberry blackcurrant chayote grape coffee'.split(' '),
+            root:'onion garlic peanut radish turnip sweet_potato parsnip shallot ginger turmeric fennel cassava taro yam kohlrabi rutabaga jicama chicory celeriac'.split(' '),
+            leafy:'lettuce cabbage spinach broccoli kale celery leek arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy asparagus watercress endive mustard_greens water_spinach purslane rapini napa_cabbage'.split(' '),
             pod:'soybean pea chickpea lentil green_bean black_bean adzuki_bean mung_bean cowpea'.split(' '),
             flower:'lavender clover mustard canola artichoke safflower'.split(' '),
-            herb:'basil mint dill cilantro parsley chives'.split(' '),
+            herb:'basil mint dill cilantro parsley chives tea'.split(' '),
             fiber:'cotton flax'.split(' ')
         ]
         def categoryByCrop = [:]
@@ -93,23 +99,23 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(categoryByCrop.keySet())) {
-            throw new GradleException('Crop art categories do not match the 88 crop profiles')
+            throw new GradleException('Crop art categories do not match the 96 crop profiles')
         }
         if (!(cropIds as Set).equals(palettes.keySet())) {
-            throw new GradleException('Crop art palette map must cover all 88 crop IDs exactly')
+            throw new GradleException('Crop art palette map must cover all 96 crop IDs exactly')
         }
 
         // A crop's leaf architecture controls its silhouette, not just its color.
         // These groups intentionally cover every registered crop exactly once.
         def leafFormGroups = [
             blade:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame flax leek amaranth sweet_corn chives teff'.split(' '),
-            rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip strawberry pineapple taro endive kohlrabi rutabaga chicory mustard_greens'.split(' '),
-            bulb:'onion garlic shallot ginger turmeric parsnip'.split(' '),
-            vine:'cucumber zucchini pea green_bean sweet_potato pumpkin yam water_spinach'.split(' '),
-            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra blackberry blackcurrant cassava jicama adzuki_bean mung_bean cowpea'.split(' '),
+            rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip strawberry pineapple taro endive kohlrabi rutabaga chicory mustard_greens purslane napa_cabbage'.split(' '),
+            bulb:'onion garlic shallot ginger turmeric parsnip celeriac'.split(' '),
+            vine:'cucumber zucchini pea green_bean sweet_potato pumpkin yam water_spinach chayote grape'.split(' '),
+            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra blackberry blackcurrant cassava jicama adzuki_bean mung_bean cowpea tea coffee'.split(' '),
             fern:'fennel dill cilantro parsley watercress'.split(' '),
             flower:'lavender mustard canola sunflower_seed artichoke safflower'.split(' '),
-            stalk:'celery asparagus'.split(' ')
+            stalk:'celery asparagus rapini'.split(' ')
         ]
         def leafFormByCrop = [:]
         leafFormGroups.each { form, names ->
@@ -119,7 +125,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(leafFormByCrop.keySet())) {
-            throw new GradleException('Crop leaf forms must cover the 88 crop IDs exactly')
+            throw new GradleException('Crop leaf forms must cover the 96 crop IDs exactly')
         }
 
         // Derive the produce icon family from the actual harvested-organ text in the data profile.
@@ -159,28 +165,28 @@ tasks.register('generateCropAssets') {
             organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])
         }
         if (!(cropIds as Set).equals(organFormByCrop.keySet())) {
-            throw new GradleException('Harvested-organ icon mapping must cover the 88 crop IDs exactly')
+            throw new GradleException('Harvested-organ icon mapping must cover the 96 crop IDs exactly')
         }
 
         // Seed appearance is a separate botanical property: it must not be inferred from
         // the harvested organ (e.g. leafy crops still have seeds). Keep this taxonomy explicit.
         def seedFormGroups = [
-            kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa amaranth sweet_corn teff'.split(' '),
+            kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa amaranth sweet_corn teff coffee'.split(' '),
             legume:'soybean black_bean chickpea lentil pea green_bean peanut adzuki_bean mung_bean cowpea'.split(' '),
             oilseed:'sunflower_seed sesame mustard canola flax safflower'.split(' '),
             nightshade:'tomato bell_pepper chili_pepper eggplant'.split(' '),
             cucurbit:'cucumber zucchini pumpkin'.split(' '),
-            berry:'strawberry blueberry raspberry cranberry pineapple blackberry blackcurrant'.split(' '),
-            brassica:'cabbage broccoli kale brussels_sprouts cauliflower bok_choy collard_greens arugula kohlrabi rutabaga'.split(' '),
+            berry:'strawberry blueberry raspberry cranberry pineapple blackberry blackcurrant grape'.split(' '),
+            brassica:'cabbage broccoli kale brussels_sprouts cauliflower bok_choy collard_greens arugula kohlrabi rutabaga rapini napa_cabbage'.split(' '),
             allium:'onion garlic shallot leek chives'.split(' '),
             root:'radish turnip parsnip sweet_potato jicama'.split(' '),
-            herb:'basil mint lavender dill cilantro parsley fennel clover chicory'.split(' '),
+            herb:'basil mint lavender dill cilantro parsley fennel clover chicory celeriac purslane tea'.split(' '),
             rhizome:'ginger turmeric'.split(' '),
             fiber:['cotton'],
             flower:['artichoke'],
             stalk:['celery', 'asparagus'],
             leafy:'lettuce spinach swiss_chard endive watercress mustard_greens water_spinach'.split(' '),
-            propagule:'cassava taro yam'.split(' '),
+            propagule:'cassava taro yam chayote'.split(' '),
             capsule:['okra']
         ]
         def seedFormByCrop = [:]
@@ -191,7 +197,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(seedFormByCrop.keySet())) {
-            throw new GradleException('Seed icon forms must cover the 88 crop IDs exactly')
+            throw new GradleException('Seed icon forms must cover the 96 crop IDs exactly')
         }
 
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
@@ -1663,6 +1669,10 @@ tasks.register('generateCropAssets') {
 
         // Every honey variant gets its own 16x16 bottle sprite with source-colored nectar.
         def honeyTexturePalette = [
+            celeriac_blossom_honey_bottle:'#B7A681', purslane_blossom_honey_bottle:'#7F9B4F',
+            chayote_blossom_honey_bottle:'#91B85C', grape_blossom_honey_bottle:'#8161A8',
+            tea_blossom_honey_bottle:'#56815A', coffee_blossom_honey_bottle:'#9B6947',
+            rapini_blossom_honey_bottle:'#8DA85D', napa_cabbage_blossom_honey_bottle:'#A8C57C',
             clover_honey_bottle:'#B8A84B', lavender_honey_bottle:'#A48BCB',
             buckwheat_honey_bottle:'#98612D', sunflower_honey_bottle:'#E8C24A',
             dandelion_honey_bottle:'#DDB72E', poppy_honey_bottle:'#CB5558',
@@ -1713,21 +1723,21 @@ tasks.register('generateCropAssets') {
             savePng.call(honeyPath, bottle)
             honeyTextureHashes.add(digest.digest(new File(outputRoot, honeyPath).bytes).encodeHex().toString())
         }
-        if (honeyTexturePalette.size() != 38 || honeyTextureHashes.size() != 38) {
-            throw new GradleException('All 38 honey variants must have unique custom bottle sprites')
+        if (honeyTexturePalette.size() != 46 || honeyTextureHashes.size() != 46) {
+            throw new GradleException('All 46 honey variants must have unique custom bottle sprites')
         }
 
-        if (modelCount != 1056 || blockTextureCount != 1056 || itemTextureCount != 176) {
+        if (modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192) {
             throw new GradleException('Unexpected crop asset count: models=' + modelCount + ', block textures=' + blockTextureCount + ', item textures=' + itemTextureCount)
         }
-        if (matureTextureHashes.size() != 88) throw new GradleException('Every crop must have a unique mature texture')
-        if (allStageHashes.size() != 1056) throw new GradleException('Crop growth/pollination stage textures must be unique')
+        if (matureTextureHashes.size() != 96) throw new GradleException('Every crop must have a unique mature texture')
+        if (allStageHashes.size() != 1152) throw new GradleException('Crop growth/pollination stage textures must be unique')
         def duplicateProduceIcons = produceIconNamesByHash.values().findAll { names -> names.size() > 1 }
         def duplicateSeedIcons = seedIconNamesByHash.values().findAll { names -> names.size() > 1 }
         if (!duplicateProduceIcons.isEmpty()) throw new GradleException('Duplicate produce icon pixel hashes: ' + duplicateProduceIcons.collect { names -> names.join(' = ') }.join('; '))
         if (!duplicateSeedIcons.isEmpty()) throw new GradleException('Duplicate seed icon pixel hashes: ' + duplicateSeedIcons.collect { names -> names.join(' = ') }.join('; '))
-        if (produceIconHashes.size() != 88) throw new GradleException('All 80 produce icons must be visually distinct')
-        if (seedIconHashes.size() != 88) throw new GradleException('All 80 seed icons must be visually distinct')
+        if (produceIconHashes.size() != 96) throw new GradleException('All 96 produce icons must be visually distinct')
+        if (seedIconHashes.size() != 96) throw new GradleException('All 96 seed icons must be visually distinct')
         // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
         // This is a build report only; it is not packaged as a game texture.
         int tile = 48
@@ -1783,7 +1793,7 @@ tasks.register('generateCropAssets') {
         }
         writeItemContactSheet.call(false)
         writeItemContactSheet.call(true)
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 88 crops; 8 unique stages each; 4 pollen-marked stages per crop; 176 organ-specific item icons; 1056 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 96 crops; 8 unique stages each; 4 pollen-marked stages per crop; 192 organ-specific item icons; 1152 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
     }
 }
 tasks.named('processResources').configure {
