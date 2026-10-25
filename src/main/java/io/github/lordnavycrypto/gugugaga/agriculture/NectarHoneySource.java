@@ -46,7 +46,8 @@ public final class NectarHoneySource {
             "safflower_crop",
             "chicory_crop",
             "mustard_greens_crop",
-            "water_spinach_crop"
+            "water_spinach_crop", "celeriac_crop", "purslane_crop", "chayote_crop",
+            "grape_crop", "tea_crop", "coffee_crop", "rapini_crop", "napa_cabbage_crop"
     };
 
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
@@ -163,6 +164,14 @@ public final class NectarHoneySource {
             case 34 -> BeeContent.CHICORY_BLOSSOM_HONEY_BOTTLE.get();
             case 35 -> BeeContent.MUSTARD_GREENS_HONEY_BOTTLE.get();
             case 36 -> BeeContent.WATER_SPINACH_HONEY_BOTTLE.get();
+            case 37 -> BeeContent.CELERIAC_BLOSSOM_HONEY_BOTTLE.get();
+            case 38 -> BeeContent.PURSLANE_BLOSSOM_HONEY_BOTTLE.get();
+            case 39 -> BeeContent.CHAYOTE_BLOSSOM_HONEY_BOTTLE.get();
+            case 40 -> BeeContent.GRAPE_BLOSSOM_HONEY_BOTTLE.get();
+            case 41 -> BeeContent.TEA_BLOSSOM_HONEY_BOTTLE.get();
+            case 42 -> BeeContent.COFFEE_BLOSSOM_HONEY_BOTTLE.get();
+            case 43 -> BeeContent.RAPINI_BLOSSOM_HONEY_BOTTLE.get();
+            case 44 -> BeeContent.NAPA_CABBAGE_BLOSSOM_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);
