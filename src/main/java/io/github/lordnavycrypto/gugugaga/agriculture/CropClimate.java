@@ -39,11 +39,14 @@ public final class CropClimate {
                  "lettuce_seeds", "cabbage_seeds", "spinach_seeds", "broccoli_seeds",
                  "flax_seeds", "buckwheat_seeds", "lentil_seeds", "radish_seeds",
                  "turnip_seeds", "kale_seeds", "raspberry_seeds", "cranberry_seeds",
-                 "mustard_seeds", "canola_seeds", "celery_seeds", "leek_seeds" -> Band.COOL;
+                 "mustard_seeds", "canola_seeds", "celery_seeds", "leek_seeds",
+                 "parsnip_seeds", "arugula_seeds", "swiss_chard_seeds",
+                 "fennel_seeds", "dill_seeds", "cilantro_seeds", "parsley_seeds",
+                 "collard_greens_seeds", "brussels_sprouts_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
                  "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds",
-                 "basil_seeds" -> Band.WARM;
+                 "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds" -> Band.WARM;
             case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds" -> Band.DRY;
             case "rice_seeds" -> Band.WET;
             case "chickpea_seeds", "clover_seeds", "mint_seeds" -> Band.TEMPERATE;

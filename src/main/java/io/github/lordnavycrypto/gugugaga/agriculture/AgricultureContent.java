@@ -185,6 +185,45 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> LEEK_SEEDS = seed("leek_seeds", LEEK_CROP);
     public static final DeferredItem<Item> LEEK = food("leek", 2, 0.2F);
 
+
+    /** v1.0 twelve common culinary, vegetable and edible herb crops. */
+    public static final DeferredBlock<AgricultureCropBlock> PARSNIP_CROP = crop("parsnip_crop", "parsnip_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> PARSNIP_SEEDS = seed("parsnip_seeds", PARSNIP_CROP);
+    public static final DeferredItem<Item> PARSNIP = food("parsnip", 3, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> ARUGULA_CROP = crop("arugula_crop", "arugula_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> ARUGULA_SEEDS = seed("arugula_seeds", ARUGULA_CROP);
+    public static final DeferredItem<Item> ARUGULA = food("arugula", 1, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> SWISS_CHARD_CROP = crop("swiss_chard_crop", "swiss_chard_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> SWISS_CHARD_SEEDS = seed("swiss_chard_seeds", SWISS_CHARD_CROP);
+    public static final DeferredItem<Item> SWISS_CHARD = food("swiss_chard", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> OKRA_CROP = crop("okra_crop", "okra_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> OKRA_SEEDS = seed("okra_seeds", OKRA_CROP);
+    public static final DeferredItem<Item> OKRA = food("okra", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> FENNEL_CROP = crop("fennel_crop", "fennel_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> FENNEL_SEEDS = seed("fennel_seeds", FENNEL_CROP);
+    public static final DeferredItem<Item> FENNEL = food("fennel", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> DILL_CROP = crop("dill_crop", "dill_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> DILL_SEEDS = seed("dill_seeds", DILL_CROP);
+    public static final DeferredItem<Item> DILL = food("dill", 1, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> CILANTRO_CROP = crop("cilantro_crop", "cilantro_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> CILANTRO_SEEDS = seed("cilantro_seeds", CILANTRO_CROP);
+    public static final DeferredItem<Item> CILANTRO = food("cilantro", 1, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> PARSLEY_CROP = crop("parsley_crop", "parsley_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> PARSLEY_SEEDS = seed("parsley_seeds", PARSLEY_CROP);
+    public static final DeferredItem<Item> PARSLEY = food("parsley", 1, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> COLLARD_GREENS_CROP = crop("collard_greens_crop", "collard_greens_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> COLLARD_GREENS_SEEDS = seed("collard_greens_seeds", COLLARD_GREENS_CROP);
+    public static final DeferredItem<Item> COLLARD_GREENS = food("collard_greens", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> GREEN_BEAN_CROP = crop("green_bean_crop", "green_bean_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> GREEN_BEAN_SEEDS = seed("green_bean_seeds", GREEN_BEAN_CROP);
+    public static final DeferredItem<Item> GREEN_BEAN = food("green_bean", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> CHILI_PEPPER_CROP = crop("chili_pepper_crop", "chili_pepper_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> CHILI_PEPPER_SEEDS = seed("chili_pepper_seeds", CHILI_PEPPER_CROP);
+    public static final DeferredItem<Item> CHILI_PEPPER = food("chili_pepper", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> BRUSSELS_SPROUTS_CROP = crop("brussels_sprouts_crop", "brussels_sprouts_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> BRUSSELS_SPROUTS_SEEDS = seed("brussels_sprouts_seeds", BRUSSELS_SPROUTS_CROP);
+    public static final DeferredItem<Item> BRUSSELS_SPROUTS = food("brussels_sprouts", 2, 0.25F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -217,6 +256,18 @@ public final class AgricultureContent {
             event.accept(CANOLA_SEEDS.get());
             event.accept(CELERY_SEEDS.get());
             event.accept(LEEK_SEEDS.get());
+            event.accept(PARSNIP_SEEDS.get());
+            event.accept(ARUGULA_SEEDS.get());
+            event.accept(SWISS_CHARD_SEEDS.get());
+            event.accept(OKRA_SEEDS.get());
+            event.accept(FENNEL_SEEDS.get());
+            event.accept(DILL_SEEDS.get());
+            event.accept(CILANTRO_SEEDS.get());
+            event.accept(PARSLEY_SEEDS.get());
+            event.accept(COLLARD_GREENS_SEEDS.get());
+            event.accept(GREEN_BEAN_SEEDS.get());
+            event.accept(CHILI_PEPPER_SEEDS.get());
+            event.accept(BRUSSELS_SPROUTS_SEEDS.get());
             event.accept(CORN_SEEDS.get());
             event.accept(TOMATO_SEEDS.get());
             event.accept(ONION_SEEDS.get());
@@ -272,6 +323,18 @@ public final class AgricultureContent {
             event.accept(BeeContent.POPPY_HONEY_BOTTLE.get());
             event.accept(BeeContent.ALLIUM_HONEY_BOTTLE.get());
             event.accept(BeeContent.CORNFLOWER_HONEY_BOTTLE.get());
+            event.accept(PARSNIP.get());
+            event.accept(ARUGULA.get());
+            event.accept(SWISS_CHARD.get());
+            event.accept(OKRA.get());
+            event.accept(FENNEL.get());
+            event.accept(DILL.get());
+            event.accept(CILANTRO.get());
+            event.accept(PARSLEY.get());
+            event.accept(COLLARD_GREENS.get());
+            event.accept(GREEN_BEAN.get());
+            event.accept(CHILI_PEPPER.get());
+            event.accept(BRUSSELS_SPROUTS.get());
             event.accept(CORN.get());
             event.accept(TOMATO.get());
             event.accept(ONION.get());

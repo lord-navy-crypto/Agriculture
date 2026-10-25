@@ -109,7 +109,8 @@ public final class NectarHoneySource {
             case "canola_crop", "mustard_crop", "basil_crop", "mint_crop",
                     "cucumber_crop", "zucchini_crop", "blueberry_crop",
                     "raspberry_crop", "strawberry_crop", "cranberry_crop",
-                    "sunflower_crop", "sesame_crop" -> true;
+                    "sunflower_crop", "sesame_crop", "okra_crop",
+                    "chili_pepper_crop", "dill_crop", "cilantro_crop" -> true;
             default -> false;
         };
     }

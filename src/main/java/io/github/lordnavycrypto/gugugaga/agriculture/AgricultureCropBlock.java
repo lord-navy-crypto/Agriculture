@@ -133,7 +133,13 @@ public final class AgricultureCropBlock extends CropBlock {
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                             Player player, BlockHitResult hit) {
-        boolean cuttingHerb = seedName.equals("basil_seeds") || seedName.equals("mint_seeds");
+        boolean cuttingHerb = seedName.equals("basil_seeds") || seedName.equals("mint_seeds")
+                || seedName.equals("arugula_seeds")
+                || seedName.equals("swiss_chard_seeds")
+                || seedName.equals("parsley_seeds")
+                || seedName.equals("collard_greens_seeds")
+                || seedName.equals("dill_seeds")
+                || seedName.equals("cilantro_seeds");
         if (!cuttingHerb || state.getValue(AGE) < getMaxAge()) {
             return InteractionResult.PASS;
         }
