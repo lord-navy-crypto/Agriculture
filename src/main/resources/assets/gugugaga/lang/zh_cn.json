@@ -315,5 +315,19 @@
   "item.gugugaga.kohlrabi_seeds": "球茎甘蓝种子",
   "block.gugugaga.rutabaga_crop": "芜菁甘蓝作物",
   "item.gugugaga.rutabaga": "芜菁甘蓝",
-  "item.gugugaga.rutabaga_seeds": "芜菁甘蓝种子"
+  "item.gugugaga.rutabaga_seeds": "芜菁甘蓝种子",
+  "item.gugugaga.cassava_blossom_honey_bottle": "木薯花蜜瓶",
+  "item.gugugaga.cassava_blossom_honey_bottle.effect": "速度 I · 5秒（游戏效果）",
+  "item.gugugaga.taro_blossom_honey_bottle": "芋头花蜜瓶",
+  "item.gugugaga.taro_blossom_honey_bottle.effect": "水下呼吸 I · 6秒（游戏效果）",
+  "item.gugugaga.yam_blossom_honey_bottle": "山药花蜜瓶",
+  "item.gugugaga.yam_blossom_honey_bottle.effect": "抗性提升 I · 5秒（游戏效果）",
+  "item.gugugaga.watercress_honey_bottle": "西洋菜花蜜瓶",
+  "item.gugugaga.watercress_honey_bottle.effect": "生命恢复 I · 4秒（游戏效果）",
+  "item.gugugaga.endive_honey_bottle": "菊苣花蜜瓶",
+  "item.gugugaga.endive_honey_bottle.effect": "急迫 I · 6秒（游戏效果）",
+  "item.gugugaga.kohlrabi_honey_bottle": "球茎甘蓝花蜜瓶",
+  "item.gugugaga.kohlrabi_honey_bottle.effect": "伤害吸收 I · 5秒（游戏效果）",
+  "item.gugugaga.rutabaga_honey_bottle": "芜菁甘蓝花蜜瓶",
+  "item.gugugaga.rutabaga_honey_bottle.effect": "夜视 I · 8秒（游戏效果）"
 }
