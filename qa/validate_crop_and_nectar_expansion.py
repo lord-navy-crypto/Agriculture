@@ -28,7 +28,7 @@ def main():
         assert f'crop("{name}_crop", "{name}_seeds", AgricultureCropBlock.PollinationGroup.{row["pollination_gameplay"]})' in reg
         assert f'"{name}_seeds"' in cl
         states = read(f"assets/gugugaga/blockstates/{name}_crop.json")["variants"]
-        assert set(states) == {f"age={a}" for a in range(8)}, name
+        assert set(states) == {f"age={a},pollinated={p}" for a in range(8) for p in ("false","true")}, name
         loot = read(f"data/gugugaga/loot_table/blocks/{name}_crop.json")
         assert len(loot["pools"]) == 2
         assert loot["pools"][0]["entries"][0]["name"] == f"gugugaga:{name}_seeds"

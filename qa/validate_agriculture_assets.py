@@ -32,9 +32,10 @@ def main():
     zh = read_json(ROOT / "assets/gugugaga/lang/zh_cn.json")
     for crop, (block_texture, seed_texture, produce_texture, seed_input_a, seed_input_b) in CROPS.items():
         blockstate = read_json(ROOT / f"assets/gugugaga/blockstates/{crop}_crop.json")
-        assert len(blockstate["variants"]) == 8, f"{crop}: expected eight age variants"
+        assert len(blockstate["variants"]) == 16, f"{crop}: expected 16 age/pollination variants"
         for age in range(8):
-            assert f"age={age}" in blockstate["variants"], f"{crop}: missing age={age}"
+            assert f"age={age},pollinated=false" in blockstate["variants"], f"{crop}: missing age={age},pollinated=false"
+            assert f"age={age},pollinated=true" in blockstate["variants"], f"{crop}: missing age={age},pollinated=true"
         loot = read_json(ROOT / f"data/gugugaga/loot_table/blocks/{crop}_crop.json")
         assert len(loot["pools"]) == 2, f"{crop}: seed and produce loot pools required"
         model = read_json(ROOT / f"assets/gugugaga/models/item/{crop}_seeds.json")

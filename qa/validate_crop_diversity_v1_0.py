@@ -30,7 +30,7 @@ def main():
         assert f'{name.upper()}_SEEDS = seed(' in reg
         assert f'event.accept({name.upper()}_SEEDS.get())' in reg
         assert f'event.accept({name.upper()}.get())' in reg
-        assert set(load(f"assets/gugugaga/blockstates/{name}_crop.json")["variants"])=={f"age={i}" for i in range(8)}
+        assert set(load(f"assets/gugugaga/blockstates/{name}_crop.json")["variants"])=={f"age={i},pollinated={p}" for i in range(8) for p in ("false","true")}
         pools=load(f"data/gugugaga/loot_table/blocks/{name}_crop.json")["pools"]
         assert len(pools)==2 and pools[0]["entries"][0]["name"]==f"gugugaga:{name}_seeds"
         assert pools[1]["entries"][0]["name"]==f"gugugaga:{name}"

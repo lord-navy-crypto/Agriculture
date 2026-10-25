@@ -11,7 +11,7 @@ def main():
   zh=j("assets/gugugaga/lang/zh_cn.json")
   for crop in CROPS:
     states=j(f"assets/gugugaga/blockstates/{crop}_crop.json")["variants"]
-    assert set(states)=={f"age={a}" for a in range(8)},crop
+    assert set(states)=={f"age={a},pollinated={p}" for a in range(8) for p in ("false","true")},crop
     assert j(f"data/gugugaga/recipe/{crop}_seeds.json")["result"]["id"]==f"gugugaga:{crop}_seeds"
     loot=j(f"data/gugugaga/loot_table/blocks/{crop}_crop.json")["pools"]
     assert len(loot)==2,crop

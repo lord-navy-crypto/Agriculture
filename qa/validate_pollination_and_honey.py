@@ -68,7 +68,7 @@ def main():
         loot = read_json(RES / f"data/gugugaga/loot_table/blocks/{crop}_crop.json")
         assert len(loot["pools"]) == 2, crop
         states = read_json(RES / f"assets/gugugaga/blockstates/{crop}_crop.json")["variants"]
-        assert set(states) == {f"age={age}" for age in range(8)}, crop
+        assert set(states) == {f"age={age},pollinated={p}" for age in range(8) for p in ("false","true")}, crop
 
     print(f"POLLINATION_AND_HONEY_OK: {len(CROPS)} reviewed crop profiles + safe honey harvester")
 if __name__ == "__main__":

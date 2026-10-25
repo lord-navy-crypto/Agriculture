@@ -19,7 +19,7 @@ for obj in p["crops"]:
   assert f'crop("{id}_crop", "{id}_seeds"' in java,id
   assert f'food("{id}"' in java,id
   assert J(f"data/gugugaga/recipe/{id}_seeds.json")["result"]["id"]==f"gugugaga:{id}_seeds"
-  assert len(J(f"assets/gugugaga/blockstates/{id}_crop.json")["variants"])==8
+  assert len(J(f"assets/gugugaga/blockstates/{id}_crop.json")["variants"])==16
   assert f'"{id}_seeds"' in climate or obj["growth_band_gameplay"]=="TEMPERATE",id
   if "real_maturity_days_range_reference" in obj:
     a,b=obj["real_maturity_days_range_reference"]
