@@ -30,10 +30,16 @@ tasks.register('generateCropAssets') {
         outputRoot.mkdirs()
         def slurper = new JsonSlurper()
         def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json']
-        def cropIds = profileNames.collectMany { name ->
-            slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops.collect { it.crop.toString() }
-        }.unique().sort()
+        def cropProfiles = profileNames.collectMany { name ->
+            slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops
+        }
+        def cropIds = cropProfiles.collect { it.crop.toString() }.unique().sort()
         if (cropIds.size() != 64) throw new GradleException('Expected exactly 64 unique crop profiles, found ' + cropIds.size())
+        def harvestedOrganByCrop = [:]
+        cropProfiles.each { profile -> harvestedOrganByCrop[profile.crop.toString()] = profile.harvested_organ.toString() }
+        if (!(cropIds as Set).equals(harvestedOrganByCrop.keySet())) {
+            throw new GradleException('Every crop must declare a harvested organ before item art can be generated')
+        }
 
         def palettes = [
             corn:'#E8B932', tomato:'#D9473E', onion:'#CDB7D9', rice:'#D8C98B',
@@ -99,6 +105,37 @@ tasks.register('generateCropAssets') {
         }
         if (!(cropIds as Set).equals(leafFormByCrop.keySet())) {
             throw new GradleException('Crop leaf forms must cover the 64 crop IDs exactly')
+        }
+
+        // Inventory art follows the actual harvested organ recorded in the agronomy profiles.
+        // This is separate from the plant silhouette and the broader climate/growth categories.
+        def organFormGroups = [
+            grain:'corn rice barley oat rye sorghum millet buckwheat quinoa'.split(' '),
+            fruit:'tomato cucumber bell_pepper eggplant zucchini chili_pepper'.split(' '),
+            berry:'strawberry blueberry raspberry cranberry'.split(' '),
+            bulb:'onion garlic shallot fennel'.split(' '),
+            rhizome:'ginger turmeric'.split(' '),
+            root:'radish turnip sweet_potato parsnip'.split(' '),
+            seed:'soybean sunflower_seed chickpea lentil sesame mustard canola black_bean'.split(' '),
+            pod:'pea peanut green_bean okra'.split(' '),
+            leaf:'lettuce spinach kale arugula swiss_chard collard_greens bok_choy basil mint dill cilantro parsley'.split(' '),
+            head:'cabbage broccoli brussels_sprouts cauliflower artichoke'.split(' '),
+            fiber:'cotton flax'.split(' '),
+            flower:'lavender clover'.split(' '),
+            stalk:'celery leek'.split(' ')
+        ]
+        def organFormByCrop = [:]
+        organFormGroups.each { form, names ->
+            names.each { name ->
+                if (organFormByCrop.containsKey(name)) throw new GradleException('Duplicate crop harvested-organ art form: ' + name)
+                organFormByCrop[name] = form.toString()
+            }
+        }
+        if (!(cropIds as Set).equals(organFormByCrop.keySet())) {
+            throw new GradleException('Harvested-organ art forms must cover the 64 crop IDs exactly')
+        }
+        if (cropIds.any { crop -> harvestedOrganByCrop[crop] == null || harvestedOrganByCrop[crop].trim().isEmpty() }) {
+            throw new GradleException('Every crop needs a non-empty harvested-organ profile')
         }
 
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
