@@ -17,5 +17,7 @@ public final class BeeWildlifeClient {
         event.registerEntityRenderer(BeeWildlife.MASON_BEE.get(), BeeRenderer::new);
         event.registerEntityRenderer(BeeWildlife.SQUASH_BEE.get(), BeeRenderer::new);
         event.registerEntityRenderer(BeeWildlife.LEAFCUTTER_BEE.get(), BeeRenderer::new);
+        event.registerEntityRenderer(BeeWildlife.MINING_BEE.get(), BeeRenderer::new);
+        event.registerEntityRenderer(BeeWildlife.SWEAT_BEE.get(), BeeRenderer::new);
     }
 }

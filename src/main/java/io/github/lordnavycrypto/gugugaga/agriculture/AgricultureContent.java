@@ -108,6 +108,33 @@ public final class AgricultureContent {
     public static final DeferredBlock<WildSeedPlantBlock> WILD_BLUEBERRY = BLOCKS.register("wild_blueberry", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
     public static final DeferredBlock<WildSeedPlantBlock> WILD_STRAWBERRY = BLOCKS.register("wild_strawberry", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
 
+    public static final DeferredBlock<AgricultureCropBlock> RADISH_CROP = crop("radish_crop", "radish_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> RADISH_SEEDS = seed("radish_seeds", RADISH_CROP);
+    public static final DeferredItem<Item> RADISH = food("radish", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> TURNIP_CROP = crop("turnip_crop", "turnip_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> TURNIP_SEEDS = seed("turnip_seeds", TURNIP_CROP);
+    public static final DeferredItem<Item> TURNIP = food("turnip", 2, 0.3F);
+    public static final DeferredBlock<AgricultureCropBlock> PARSNIP_CROP = crop("parsnip_crop", "parsnip_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> PARSNIP_SEEDS = seed("parsnip_seeds", PARSNIP_CROP);
+    public static final DeferredItem<Item> PARSNIP = food("parsnip", 2, 0.3F);
+    public static final DeferredBlock<AgricultureCropBlock> KALE_CROP = crop("kale_crop", "kale_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> KALE_SEEDS = seed("kale_seeds", KALE_CROP);
+    public static final DeferredItem<Item> KALE = food("kale", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> SWISS_CHARD_CROP = crop("swiss_chard_crop", "swiss_chard_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> SWISS_CHARD_SEEDS = seed("swiss_chard_seeds", SWISS_CHARD_CROP);
+    public static final DeferredItem<Item> SWISS_CHARD = food("swiss_chard", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> BUCKWHEAT_CROP = crop("buckwheat_crop", "buckwheat_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> BUCKWHEAT_SEEDS = seed("buckwheat_seeds", BUCKWHEAT_CROP);
+    public static final DeferredItem<Item> BUCKWHEAT = food("buckwheat", 3, 0.4F);
+    public static final DeferredBlock<AgricultureCropBlock> MILLET_CROP = crop("millet_crop", "millet_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> MILLET_SEEDS = seed("millet_seeds", MILLET_CROP);
+    public static final DeferredItem<Item> MILLET = food("millet", 3, 0.4F);
+    public static final DeferredBlock<AgricultureCropBlock> SESAME_CROP = crop("sesame_crop", "sesame_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> SESAME_SEEDS = seed("sesame_seeds", SESAME_CROP);
+    public static final DeferredItem<Item> SESAME = food("sesame", 2, 0.3F);
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_RADISH = BLOCKS.register("wild_radish", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_MILLET = BLOCKS.register("wild_millet", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -128,6 +155,14 @@ public final class AgricultureContent {
 
     public static void onCreativeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(RADISH_SEEDS.get());
+            event.accept(TURNIP_SEEDS.get());
+            event.accept(PARSNIP_SEEDS.get());
+            event.accept(KALE_SEEDS.get());
+            event.accept(SWISS_CHARD_SEEDS.get());
+            event.accept(BUCKWHEAT_SEEDS.get());
+            event.accept(MILLET_SEEDS.get());
+            event.accept(SESAME_SEEDS.get());
             event.accept(CORN_SEEDS.get());
             event.accept(TOMATO_SEEDS.get());
             event.accept(ONION_SEEDS.get());
@@ -153,6 +188,14 @@ public final class AgricultureContent {
             event.accept(SORGHUM_SEEDS.get());
             event.accept(SUNFLOWER_SEED_SEEDS.get());
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(RADISH.get());
+            event.accept(TURNIP.get());
+            event.accept(PARSNIP.get());
+            event.accept(KALE.get());
+            event.accept(SWISS_CHARD.get());
+            event.accept(BUCKWHEAT.get());
+            event.accept(MILLET.get());
+            event.accept(SESAME.get());
             event.accept(CORN.get());
             event.accept(TOMATO.get());
             event.accept(ONION.get());

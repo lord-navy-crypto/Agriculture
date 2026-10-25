@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:beetroot_seeds"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:swiss_chard_seeds",
+    "count": 1
+  }
+}

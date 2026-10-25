@@ -87,6 +87,9 @@ public final class AgricultureCropBlock extends CropBlock {
     private boolean compatibleSpecies(String species) {
         return switch (species) {
             case "bumblebee" -> true;
+            case "mining_bee" -> pollinationGroup == PollinationGroup.ORCHARD
+                    || pollinationGroup == PollinationGroup.BERRY;
+            case "sweat_bee" -> true;
             case "mason_bee" -> pollinationGroup == PollinationGroup.ORCHARD
                     || pollinationGroup == PollinationGroup.BERRY;
             case "squash_bee" -> seedName.equals("cucumber_seeds");
