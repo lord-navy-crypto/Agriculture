@@ -82,10 +82,10 @@ tasks.register('generateCropAssets') {
         // These groups intentionally cover every registered crop exactly once.
         def leafFormGroups = [
             blade:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame flax leek'.split(' '),
-            rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip'.split(' '),
-            bulb:'onion garlic shallot ginger turmeric sweet_potato parsnip peanut'.split(' '),
-            vine:'cucumber zucchini strawberry pea green_bean chili_pepper okra'.split(' '),
-            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton'.split(' '),
+            rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip strawberry'.split(' '),
+            bulb:'onion garlic shallot ginger turmeric parsnip'.split(' '),
+            vine:'cucumber zucchini pea green_bean sweet_potato'.split(' '),
+            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra'.split(' '),
             fern:'fennel dill cilantro parsley'.split(' '),
             flower:'lavender mustard canola sunflower_seed artichoke'.split(' '),
             stalk:'celery'.split(' ')
