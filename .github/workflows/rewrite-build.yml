@@ -30,6 +30,7 @@ jobs:
           python3 qa/validate_crop_v1_3.py
           python3 qa/validate_crop_lifecycle_v1_4.py
           python3 qa/validate_agriculture_compost_v1_3.py
+          python3 qa/validate_agriculture_v1_7.py
 
   neoforge:
     runs-on: ubuntu-latest
@@ -45,6 +46,8 @@ jobs:
           gradle-version: '9.2.1'
       - name: Compile and package agriculture mod
         run: gradle --no-daemon --stacktrace build
+      - name: Validate generated honey bottle sprites
+        run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
       - uses: actions/upload-artifact@v4
         with:
           name: gugu-gaga-agriculture

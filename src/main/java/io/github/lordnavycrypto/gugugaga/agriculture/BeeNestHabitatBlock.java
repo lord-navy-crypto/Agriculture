@@ -166,7 +166,7 @@ public final class BeeNestHabitatBlock extends Block {
                 String id = BuiltInRegistries.BLOCK.getKey(crop).getPath();
                 if (beeSpecies.equals("squash_bee")) {
                     // Cucurbita specialist: zucchini is Cucurbita pepo; cucumber is Cucumis.
-                    if (id.equals("zucchini_crop")) return true;
+                    if (id.equals("zucchini_crop") || id.equals("pumpkin_crop")) return true;
                 } else if (beeSpecies.equals("bumblebee")
                         && (id.equals("tomato_crop") || id.equals("eggplant_crop"))) {
                     // Bumblebees can buzz-pollinate these solanaceous flowers.
@@ -178,7 +178,11 @@ public final class BeeNestHabitatBlock extends Block {
                         || id.equals("zucchini_crop")
                         || id.equals("lavender_crop") || id.equals("clover_crop")
                         || id.equals("canola_crop") || id.equals("mustard_crop")
-                        || id.equals("basil_crop") || id.equals("mint_crop")) {
+                        || id.equals("basil_crop") || id.equals("mint_crop")
+                        || id.equals("asparagus_crop") || id.equals("pumpkin_crop")
+                        || id.equals("pineapple_crop") || id.equals("blackberry_crop")
+                        || id.equals("blackcurrant_crop") || id.equals("amaranth_crop")
+                        || id.equals("chives_crop") || id.equals("sweet_corn_crop")) {
                     return true;
                 }
             }

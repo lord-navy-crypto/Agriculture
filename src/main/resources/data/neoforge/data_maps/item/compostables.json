@@ -511,6 +511,70 @@
     "gugugaga:artichoke": {
       "chance": 0.65,
       "can_villager_compost": false
+    },
+    "gugugaga:asparagus_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:asparagus": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:pumpkin_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:pumpkin": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:pineapple_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:pineapple": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:blackberry_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:blackberry": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:blackcurrant_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:blackcurrant": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:amaranth_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:amaranth": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:chives_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:chives": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sweet_corn_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sweet_corn": {
+      "chance": 0.65,
+      "can_villager_compost": false
     }
   }
 }

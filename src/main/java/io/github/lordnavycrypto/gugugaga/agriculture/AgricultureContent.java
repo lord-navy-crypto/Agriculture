@@ -250,6 +250,32 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> ARTICHOKE_SEEDS = seed("artichoke_seeds", ARTICHOKE_CROP);
     public static final DeferredItem<Item> ARTICHOKE = food("artichoke", 3, 0.25F);
 
+    /** v1.7 crop diversity: perennial spears, tropical fruit, berries, grains and culinary alliums. */
+    public static final DeferredBlock<AgricultureCropBlock> ASPARAGUS_CROP = crop("asparagus_crop", "asparagus_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> ASPARAGUS_SEEDS = seed("asparagus_seeds", ASPARAGUS_CROP);
+    public static final DeferredItem<Item> ASPARAGUS = food("asparagus", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> PUMPKIN_CROP = crop("pumpkin_crop", "pumpkin_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> PUMPKIN_SEEDS = seed("pumpkin_seeds", PUMPKIN_CROP);
+    public static final DeferredItem<Item> PUMPKIN = food("pumpkin", 3, 0.3F);
+    public static final DeferredBlock<AgricultureCropBlock> PINEAPPLE_CROP = crop("pineapple_crop", "pineapple_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> PINEAPPLE_SEEDS = seed("pineapple_seeds", PINEAPPLE_CROP);
+    public static final DeferredItem<Item> PINEAPPLE = food("pineapple", 4, 0.4F);
+    public static final DeferredBlock<AgricultureCropBlock> BLACKBERRY_CROP = crop("blackberry_crop", "blackberry_seeds", AgricultureCropBlock.PollinationGroup.BERRY);
+    public static final DeferredItem<Item> BLACKBERRY_SEEDS = seed("blackberry_seeds", BLACKBERRY_CROP);
+    public static final DeferredItem<Item> BLACKBERRY = food("blackberry", 2, 0.35F);
+    public static final DeferredBlock<AgricultureCropBlock> BLACKCURRANT_CROP = crop("blackcurrant_crop", "blackcurrant_seeds", AgricultureCropBlock.PollinationGroup.BERRY);
+    public static final DeferredItem<Item> BLACKCURRANT_SEEDS = seed("blackcurrant_seeds", BLACKCURRANT_CROP);
+    public static final DeferredItem<Item> BLACKCURRANT = food("blackcurrant", 2, 0.35F);
+    public static final DeferredBlock<AgricultureCropBlock> AMARANTH_CROP = crop("amaranth_crop", "amaranth_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> AMARANTH_SEEDS = seed("amaranth_seeds", AMARANTH_CROP);
+    public static final DeferredItem<Item> AMARANTH = food("amaranth", 3, 0.3F);
+    public static final DeferredBlock<AgricultureCropBlock> CHIVES_CROP = crop("chives_crop", "chives_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> CHIVES_SEEDS = seed("chives_seeds", CHIVES_CROP);
+    public static final DeferredItem<Item> CHIVES = food("chives", 1, 0.2F);
+    public static final DeferredBlock<AgricultureCropBlock> SWEET_CORN_CROP = crop("sweet_corn_crop", "sweet_corn_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> SWEET_CORN_SEEDS = seed("sweet_corn_seeds", SWEET_CORN_CROP);
+    public static final DeferredItem<Item> SWEET_CORN = food("sweet_corn", 3, 0.4F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -344,6 +370,14 @@ public final class AgricultureContent {
             event.accept(COTTON.get());
             event.accept(FLAX.get());
             event.accept(SUNFLOWER_SEED_SEEDS.get());
+            event.accept(ASPARAGUS_SEEDS.get());
+            event.accept(PUMPKIN_SEEDS.get());
+            event.accept(PINEAPPLE_SEEDS.get());
+            event.accept(BLACKBERRY_SEEDS.get());
+            event.accept(BLACKCURRANT_SEEDS.get());
+            event.accept(AMARANTH_SEEDS.get());
+            event.accept(CHIVES_SEEDS.get());
+            event.accept(SWEET_CORN_SEEDS.get());
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(BASIL.get());
             event.accept(MINT.get());
@@ -367,6 +401,11 @@ public final class AgricultureContent {
             event.accept(BeeContent.WHITE_TULIP_HONEY_BOTTLE.get());
             event.accept(BeeContent.PINK_TULIP_HONEY_BOTTLE.get());
             event.accept(BeeContent.WITHER_ROSE_HONEY_BOTTLE.get());
+            event.accept(BeeContent.BLACKBERRY_HONEY_BOTTLE.get());
+            event.accept(BeeContent.BLACKCURRANT_HONEY_BOTTLE.get());
+            event.accept(BeeContent.CHIVE_HONEY_BOTTLE.get());
+            event.accept(BeeContent.PUMPKIN_BLOSSOM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.WILDFLOWER_HONEY_BOTTLE.get());
             event.accept(PARSNIP.get());
             event.accept(ARUGULA.get());
             event.accept(SWISS_CHARD.get());
@@ -421,6 +460,14 @@ public final class AgricultureContent {
             event.accept(CRANBERRY.get());
             event.accept(SESAME.get());
             event.accept(SUNFLOWER_SEED.get());
+            event.accept(ASPARAGUS.get());
+            event.accept(PUMPKIN.get());
+            event.accept(PINEAPPLE.get());
+            event.accept(BLACKBERRY.get());
+            event.accept(BLACKCURRANT.get());
+            event.accept(AMARANTH.get());
+            event.accept(CHIVES.get());
+            event.accept(SWEET_CORN.get());
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BeeContent.MEADOW_BEE_TAG.get());
             event.accept(BeeContent.ORCHARD_BEE_TAG.get());

@@ -50,7 +50,7 @@ def main():
     source = read("data/gugugaga/agronomy/honey_sources_v0_9.json")
     assert source["schema_version"] == "0.9"
     ids = {row["item"] for row in source["honey_variants"]}
-    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose")}
+    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose","blackberry","blackcurrant","chive","pumpkin_blossom","wildflower")}
     bee = (SRC / "BeeContent.java").read_text("utf8")
     nectar = (SRC / "NectarHoneySource.java").read_text("utf8")
     harvest = (SRC / "HoneyHarvesterItem.java").read_text("utf8")
@@ -68,13 +68,15 @@ def main():
     assert "CampfireBlock.isSmokeyPos(level, hivePos)" in harvest
     assert "hasChunkAt(sample)" in nectar and "dominantCount < 6" in nectar
     assert "dominantCount * 3 < totalFlowers * 2" in nectar
+    assert "otherFlowerKinds" in nectar and "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar
+    assert "WILDFLOWER_HONEY_BOTTLE" in nectar
     assert "new ItemStack(Items.HONEY_BOTTLE)" in nectar
     for id in ids:
         assert f'floralHoney("{id}")' in bee
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
-        assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == "minecraft:item/honey_bottle"
+        assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == f"gugugaga:item/honey/{id}"
     assert len(source["references"]) >= 3
-    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, cut-and-regrow basil/mint, 18 flower-source honey variants, vanilla safeguards")
+    print("CROPS_AND_NECTAR_V1_7_OK: legacy crop lines retained, 23 differentiated honey variants, mixed-flower blend, vanilla safeguards")
 
 if __name__ == "__main__":
     main()
