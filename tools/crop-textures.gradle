@@ -1145,8 +1145,21 @@ tasks.register('generateCropAssets') {
                     disc.call(image, 10, 10, 2, 1, rgb.call('#302D2B'))
                     put.call(image, 5, 7, rgb.call('#E1D8CA'))
                     put.call(image, 9, 9, rgb.call('#E1D8CA'))
-                } else if (crop == 'sesame' || crop == 'mustard' || crop == 'canola') {
-                    for (int[] pt : [[5,5],[8,4],[11,6],[4,9],[7,10],[10,11]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, crop == 'mustard' || crop == 'canola' ? yellow : cream)
+                } else if (crop == 'sesame') {
+                    for (int[] pt : [[5,5],[8,4],[11,6],[4,9],[7,10],[10,11]] as int[][]) {
+                        line.call(image, pt[0], pt[1], pt[0] + 1, pt[1] + 1, cream)
+                        put.call(image, pt[0], pt[1], rgb.call('#F1E6CF'))
+                    }
+                } else if (crop == 'mustard') {
+                    for (int[] pt : [[5,5],[8,4],[11,6],[4,9],[7,10],[10,11]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#C7A83D'))
+                        put.call(image, pt[0] - 1, pt[1], yellow)
+                    }
+                } else if (crop == 'canola') {
+                    for (int[] pt : [[4,5],[7,4],[10,5],[12,7],[5,8],[8,8],[10,10],[6,11]] as int[][]) {
+                        put.call(image, pt[0], pt[1], yellow)
+                        put.call(image, pt[0] + 1, pt[1], rgb.call('#F8E06A'))
+                    }
                 } else {
                     disc.call(image, 5, 7, 2, 2, accent)
                     disc.call(image, 10, 9, 2, 2, dark)
