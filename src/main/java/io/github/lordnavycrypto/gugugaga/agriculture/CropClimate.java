@@ -44,15 +44,17 @@ public final class CropClimate {
                  "fennel_seeds", "dill_seeds", "cilantro_seeds", "parsley_seeds",
                  "collard_greens_seeds", "brussels_sprouts_seeds", "cauliflower_seeds",
                  "bok_choy_seeds", "shallot_seeds", "quinoa_seeds", "asparagus_seeds", "blackcurrant_seeds", "chives_seeds",
-                 "endive_seeds", "kohlrabi_seeds", "rutabaga_seeds", "chicory_seeds", "mustard_greens_seeds" -> Band.COOL;
+                 "endive_seeds", "kohlrabi_seeds", "rutabaga_seeds", "chicory_seeds", "mustard_greens_seeds",
+                 "celeriac_seeds", "rapini_seeds", "napa_cabbage_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
                  "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds",
                  "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds",
-                 "black_bean_seeds", "pumpkin_seeds", "sweet_corn_seeds", "cassava_seeds", "yam_seeds", "jicama_seeds", "adzuki_bean_seeds", "mung_bean_seeds", "cowpea_seeds" -> Band.WARM;
+                 "black_bean_seeds", "pumpkin_seeds", "sweet_corn_seeds", "cassava_seeds", "yam_seeds", "jicama_seeds", "adzuki_bean_seeds", "mung_bean_seeds", "cowpea_seeds",
+                 "purslane_seeds", "chayote_seeds", "coffee_seeds" -> Band.WARM;
             case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds", "amaranth_seeds", "teff_seeds", "safflower_seeds" -> Band.DRY;
             case "rice_seeds", "ginger_seeds", "turmeric_seeds", "pineapple_seeds", "taro_seeds", "watercress_seeds", "water_spinach_seeds" -> Band.WET;
-            case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds", "blackberry_seeds" -> Band.TEMPERATE;
+            case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds", "blackberry_seeds", "grape_seeds", "tea_seeds" -> Band.TEMPERATE;
             default -> throw new IllegalArgumentException("Unclassified crop seed: " + seedName);
         };
     }
