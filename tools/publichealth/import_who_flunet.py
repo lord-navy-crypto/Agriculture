@@ -60,6 +60,8 @@ def import_country(raw_path: Path, country: str, retrieved: str,
             week_start = dt.date.fromisoformat(date_raw)
             if week_start.weekday() != 0:
                 raise ValueError("Expected ISO week-start Monday")
+            if week_start > retrieved_on:
+                raise ValueError("Observation week cannot start after retrieval")
             if not tests_raw.isdigit() or not positive_raw.isdigit():
                 raise ValueError(f"Non-integer specimen count for {week_start}")
             tested, positive = int(tests_raw), int(positive_raw)
