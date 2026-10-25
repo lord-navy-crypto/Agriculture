@@ -49,6 +49,12 @@ def main():
     assert "matureTextureHashes.size() != 64" in generator
     assert "allStageHashes.size() != 768" in generator
     assert "tasks.named('processResources')" in generator
+    assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
+    detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
+    # Each of the 64 crops must have both a seedling-specific mark and a mature-form
+    # detail branch. Palette-only variation is not accepted as crop-specific artwork.
+    for crop in crops:
+        assert detail.count(f"case '{crop}':") >= 2, (crop, "missing seedling or mature morphology")
     for name in "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea broccoli brussels_sprouts cotton".split():
         assert f'"{name}_seeds"' in crop_java, name
     for name in "basil mint arugula swiss_chard parsley collard_greens dill cilantro bok_choy lettuce spinach kale celery".split():
@@ -56,6 +62,6 @@ def main():
     for name in "lavender clover artichoke".split():
         assert f'"{name}_seeds"' in crop_java, name
     assert "level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3)" in crop_java
-    print("CROP_LIFECYCLE_V1_4_OK: 64 crops; 8 stage models each; pollen variants; 128 custom item icons; seeds/loot/recipes/translations/compost validated")
+    print("CROP_LIFECYCLE_V1_5_OK: 64 crops; 64 explicit seedling/mature morphology pairs; 8 stage models each; pollen variants; 128 custom item icons; seeds/loot/recipes/translations/compost validated")
 if __name__ == "__main__":
     main()
