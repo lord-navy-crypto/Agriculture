@@ -24,6 +24,8 @@ import java.util.SplittableRandom;
  */
 public final class PublicHealthSurveillance {
     private PublicHealthSurveillance() {}
+    public static final String IMPORTED_RESOURCE =
+        "/data/gugugaga/publichealth/imported_weekly_observations.csv";
     public static final String BUNDLED_RESOURCE =
         "/data/gugugaga/publichealth/us_fluview_clinical_2026_weeks38_41.csv";
     private static final int MAX_ROWS = 520;
@@ -100,9 +102,15 @@ public final class PublicHealthSurveillance {
         catch(RuntimeException invalid){throw new IOException(invalid.getMessage(),invalid);}
     }
     public static Series loadBundled() throws IOException {
-        try (InputStream in=PublicHealthSurveillance.class
-                .getResourceAsStream(BUNDLED_RESOURCE)) {
-            if(in==null)throw new IOException("No bundled sourced surveillance CSV");
+        // A WHO file imported and packaged by the maintainer takes precedence.
+        // Otherwise use only the four explicitly sourced CDC demonstration weeks.
+        InputStream resource=PublicHealthSurveillance.class
+                .getResourceAsStream(IMPORTED_RESOURCE);
+        if(resource==null)resource=PublicHealthSurveillance.class
+                .getResourceAsStream(BUNDLED_RESOURCE);
+        if(resource==null)
+            throw new IOException("No sourced surveillance CSV is packaged");
+        try(InputStream in=resource) {
             return parse(new InputStreamReader(in,StandardCharsets.UTF_8));
         }
     }
