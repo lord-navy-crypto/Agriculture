@@ -36,7 +36,7 @@ tasks.register('generateCropAssets') {
             slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops
         }
         def cropIds = cropProfiles.collect { it.crop.toString() }.unique().sort()
-        if (cropIds.size() != 88) throw new GradleException('Expected exactly 80 unique crop profiles, found ' + cropIds.size())
+        if (cropIds.size() != 88) throw new GradleException('Expected exactly 88 unique crop profiles, found ' + cropIds.size())
         def harvestedOrganByCrop = [:]
         cropProfiles.each { profile ->
             String crop = profile.crop.toString()
@@ -93,10 +93,10 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(categoryByCrop.keySet())) {
-            throw new GradleException('Crop art categories do not match the 80 crop profiles')
+            throw new GradleException('Crop art categories do not match the 88 crop profiles')
         }
         if (!(cropIds as Set).equals(palettes.keySet())) {
-            throw new GradleException('Crop art palette map must cover all 80 crop IDs exactly')
+            throw new GradleException('Crop art palette map must cover all 88 crop IDs exactly')
         }
 
         // A crop's leaf architecture controls its silhouette, not just its color.
@@ -108,7 +108,7 @@ tasks.register('generateCropAssets') {
             vine:'cucumber zucchini pea green_bean sweet_potato pumpkin yam water_spinach'.split(' '),
             bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra blackberry blackcurrant cassava jicama adzuki_bean mung_bean cowpea'.split(' '),
             fern:'fennel dill cilantro parsley watercress'.split(' '),
-            flower:'lavender mustard canola sunflower_seed artichoke'.split(' '),
+            flower:'lavender mustard canola sunflower_seed artichoke safflower'.split(' '),
             stalk:'celery asparagus'.split(' ')
         ]
         def leafFormByCrop = [:]
@@ -119,7 +119,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(leafFormByCrop.keySet())) {
-            throw new GradleException('Crop leaf forms must cover the 80 crop IDs exactly')
+            throw new GradleException('Crop leaf forms must cover the 88 crop IDs exactly')
         }
 
         // Derive the produce icon family from the actual harvested-organ text in the data profile.
@@ -159,7 +159,7 @@ tasks.register('generateCropAssets') {
             organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])
         }
         if (!(cropIds as Set).equals(organFormByCrop.keySet())) {
-            throw new GradleException('Harvested-organ icon mapping must cover the 80 crop IDs exactly')
+            throw new GradleException('Harvested-organ icon mapping must cover the 88 crop IDs exactly')
         }
 
         // Seed appearance is a separate botanical property: it must not be inferred from
@@ -191,7 +191,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(seedFormByCrop.keySet())) {
-            throw new GradleException('Seed icon forms must cover the 80 crop IDs exactly')
+            throw new GradleException('Seed icon forms must cover the 88 crop IDs exactly')
         }
 
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
@@ -1783,7 +1783,7 @@ tasks.register('generateCropAssets') {
         }
         writeItemContactSheet.call(false)
         writeItemContactSheet.call(true)
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 80 crops; 8 unique stages each; 4 pollen-marked stages per crop; 160 organ-specific item icons; 960 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 88 crops; 8 unique stages each; 4 pollen-marked stages per crop; 176 organ-specific item icons; 1056 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
     }
 }
 tasks.named('processResources').configure {
