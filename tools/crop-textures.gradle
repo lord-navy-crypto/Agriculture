@@ -141,8 +141,8 @@ tasks.register('generateCropAssets') {
             for (int node = 0; node < nodes; node++) {
                 int y = 14 - node * 2
                 if (y < top + 1) continue
-                int span = kind == 'leafy' ? Math.min(3, 1 + stage / 3) :
-                           kind == 'grain' ? 1 : Math.min(2, 1 + stage / 4)
+                int span = kind == 'leafy' ? Math.min(3, 1 + stage.intdiv(3)) :
+                           kind == 'grain' ? 1 : Math.min(2, 1 + stage.intdiv(4))
                 for (int d = 1; d <= span; d++) {
                     int ly = y - (d > 1 ? 1 : 0)
                     put.call(image, 7 - d, ly, d == span ? leafLight : leaf)
