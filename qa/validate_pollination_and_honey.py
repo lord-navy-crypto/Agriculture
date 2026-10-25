@@ -62,10 +62,15 @@ def main():
     brush = (JAVA / "BeeKeeperBrushItem.java").read_text("utf8")
     harvester = (JAVA / "HoneyHarvesterItem.java").read_text("utf8")
     content = (JAVA / "BeeContent.java").read_text("utf8")
-    for string in ("BeehiveBlock.HONEY_LEVEL","Blocks.SOUL_CAMPFIRE","Items.HONEYCOMB","Items.HONEY_BOTTLE"):
+    for string in ("BeehiveBlock.HONEY_LEVEL","Items.HONEYCOMB","Items.HONEY_BOTTLE","HoneySmoke.hasClearCampfireSmoke"):
         assert string in brush, string
-    for string in ("BeehiveBlock.HONEY_LEVEL","Blocks.SOUL_CAMPFIRE","Items.HONEY_BOTTLE"):
+    for string in ("BeehiveBlock.HONEY_LEVEL","Items.HONEY_BOTTLE","HoneySmoke.hasClearCampfireSmoke"):
         assert string in harvester, string
+    smoke = (JAVA / "HoneySmoke.java").read_text("utf8")
+    for string in ("Blocks.CAMPFIRE","Blocks.SOUL_CAMPFIRE","CarpetBlock","BlockStateProperties.LIT","level.hasChunkAt"):
+        assert string in smoke, string
+    assert 'if (species.equals("bee"))' in crop_java
+    assert 'pollinationGroup != PollinationGroup.BUZZ' in crop_java
     assert "HONEY_HARVESTER" in content and "BEEKEEPER_BRUSH" in content
     en = j("assets/gugugaga/lang/en_us.json")
     zh = j("assets/gugugaga/lang/zh_cn.json")

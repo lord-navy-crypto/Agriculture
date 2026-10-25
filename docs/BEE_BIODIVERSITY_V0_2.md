@@ -30,3 +30,7 @@ Four new habitat blocks simulate nearby pollinator activity and forage: bumblebe
 Honey collection now provides two tools for vanilla beehives/bee nests: a honey harvester that uses one glass bottle from inventory to collect one honey bottle, and a gentle beekeeper brush that uses an offhand bottle for honey or yields three honeycombs without a bottle. Both require a lit campfire smoke column and a honey level of 5. This follows vanilla hive output rather than allowing infinite honey generation.
 
 Research: [Xerces Society — nesting resources](https://xerces.org/pollinator-conservation/nesting-resources); [Minnesota Extension — pollination requirements](https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements); [Minnesota Extension — squash and other cucurbits](https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide).
+
+### Safe smoke checks (2026-10-25)
+
+Both honey tools now use one shared `HoneySmoke` checker. It accepts a lit campfire or soul campfire at most five vertical blocks below the hive, a clear air column, and a single carpet directly on top of the campfire. It does not force-load neighboring chunks. This matches the basic carpet-over-campfire setup recommended for Minecraft Java Edition beekeeping. Reference: https://minecraft.wiki/w/Bee_nest .
