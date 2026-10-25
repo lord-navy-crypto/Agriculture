@@ -1,10 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
-import java.util.function.Supplier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemLike;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -21,16 +19,16 @@ public final class AgricultureContent {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GuguGagaMod.MOD_ID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GuguGagaMod.MOD_ID);
 
-    public static final DeferredBlock<AgricultureCropBlock> CORN_CROP = crop("corn_crop", () -> CORN_SEEDS.get(), AgricultureCropBlock.PollinationGroup.NONE);
-    public static final DeferredBlock<AgricultureCropBlock> TOMATO_CROP = crop("tomato_crop", () -> TOMATO_SEEDS.get(), AgricultureCropBlock.PollinationGroup.ORCHARD);
-    public static final DeferredBlock<AgricultureCropBlock> ONION_CROP = crop("onion_crop", () -> ONION_SEEDS.get(), AgricultureCropBlock.PollinationGroup.ORCHARD);
-    public static final DeferredBlock<AgricultureCropBlock> RICE_CROP = crop("rice_crop", () -> RICE_SEEDS.get(), AgricultureCropBlock.PollinationGroup.NONE);
-    public static final DeferredBlock<AgricultureCropBlock> SOYBEAN_CROP = crop("soybean_crop", () -> SOYBEAN_SEEDS.get(), AgricultureCropBlock.PollinationGroup.NONE);
-    public static final DeferredBlock<AgricultureCropBlock> STRAWBERRY_CROP = crop("strawberry_crop", () -> STRAWBERRY_SEEDS.get(), AgricultureCropBlock.PollinationGroup.BERRY);
-    public static final DeferredBlock<AgricultureCropBlock> CUCUMBER_CROP = crop("cucumber_crop", () -> CUCUMBER_SEEDS.get(), AgricultureCropBlock.PollinationGroup.ORCHARD);
-    public static final DeferredBlock<AgricultureCropBlock> BLUEBERRY_CROP = crop("blueberry_crop", () -> BLUEBERRY_SEEDS.get(), AgricultureCropBlock.PollinationGroup.BERRY);
-    public static final DeferredBlock<AgricultureCropBlock> BELL_PEPPER_CROP = crop("bell_pepper_crop", () -> BELL_PEPPER_SEEDS.get(), AgricultureCropBlock.PollinationGroup.ORCHARD);
-    public static final DeferredBlock<AgricultureCropBlock> GARLIC_CROP = crop("garlic_crop", () -> GARLIC_SEEDS.get(), AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> CORN_CROP = crop("corn_crop", "corn_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> TOMATO_CROP = crop("tomato_crop", "tomato_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> ONION_CROP = crop("onion_crop", "onion_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> RICE_CROP = crop("rice_crop", "rice_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> SOYBEAN_CROP = crop("soybean_crop", "soybean_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> STRAWBERRY_CROP = crop("strawberry_crop", "strawberry_seeds", AgricultureCropBlock.PollinationGroup.BERRY);
+    public static final DeferredBlock<AgricultureCropBlock> CUCUMBER_CROP = crop("cucumber_crop", "cucumber_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> BLUEBERRY_CROP = crop("blueberry_crop", "blueberry_seeds", AgricultureCropBlock.PollinationGroup.BERRY);
+    public static final DeferredBlock<AgricultureCropBlock> BELL_PEPPER_CROP = crop("bell_pepper_crop", "bell_pepper_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> GARLIC_CROP = crop("garlic_crop", "garlic_seeds", AgricultureCropBlock.PollinationGroup.NONE);
 
     public static final DeferredItem<Item> CORN_SEEDS = seed("corn_seeds", CORN_CROP);
     public static final DeferredItem<Item> TOMATO_SEEDS = seed("tomato_seeds", TOMATO_CROP);
@@ -55,12 +53,11 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> GARLIC = food("garlic", 1, 0.2F);
 
     private static DeferredBlock<AgricultureCropBlock> crop(
-            String name, Supplier<? extends ItemLike> seed,
-            AgricultureCropBlock.PollinationGroup group) {
+            String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
                 BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
                         .noCollission().randomTicks().instabreak().sound(SoundType.CROP),
-                seed, group));
+                seedName, group));
     }
 
     private static DeferredItem<Item> seed(String name, DeferredBlock<? extends Block> crop) {

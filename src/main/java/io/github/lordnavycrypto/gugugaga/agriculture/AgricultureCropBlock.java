@@ -1,15 +1,17 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
-import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Bee;
-import net.minecraft.world.item.ItemLike;
-import net.minecraft.world.level.block.BlockBehaviour;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.AABB;
+import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 
 /**
  * A normal seven-age farmland crop with a small, bounded bee-assisted growth bonus.
@@ -22,20 +24,21 @@ public final class AgricultureCropBlock extends CropBlock {
         BERRY
     }
 
-    private final Supplier<? extends ItemLike> seed;
+    private final String seedName;
     private final PollinationGroup pollinationGroup;
 
     public AgricultureCropBlock(BlockBehaviour.Properties properties,
-                                Supplier<? extends ItemLike> seed,
+                                String seedName,
                                 PollinationGroup pollinationGroup) {
         super(properties);
-        this.seed = seed;
+        this.seedName = seedName;
         this.pollinationGroup = pollinationGroup;
     }
 
     @Override
     protected ItemLike getBaseSeedId() {
-        return seed.get();
+        return BuiltInRegistries.ITEM.get(
+                ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, seedName));
     }
 
     @Override
