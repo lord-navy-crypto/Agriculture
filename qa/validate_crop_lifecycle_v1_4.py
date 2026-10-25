@@ -44,6 +44,12 @@ def main():
         assert loot[1]["entries"][0]["name"] == f"gugugaga:{crop}"
         assert f"block.gugugaga.{crop}_crop" in en and f"block.gugugaga.{crop}_crop" in zh
     assert "palettes = [" in generator and "categoryGroups = [" in generator
+    assert "leafFormGroups = [" in generator
+    assert "leafFormByCrop.keySet()" in generator
+    assert "leafForm == 'rosette'" in generator
+    assert "leafForm == 'vine'" in generator
+    assert "leafForm == 'fern'" in generator
+    assert "leafForm == 'bulb'" in generator
     assert "cropIds.size() != 64" in generator
     assert "thisCropStageHashes.size() != 8" in generator
     assert "matureTextureHashes.size() != 64" in generator
