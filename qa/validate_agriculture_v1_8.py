@@ -86,7 +86,7 @@ def main():
         assert climate_by_seed[f"{crop}_seeds"] == row["growth_band_gameplay"], crop
 
     registry_pollination = {
-        crop: group for crop, group in re.findall(
+        crop: group for crop, seed_name, group in re.findall(
             r'crop\("([a-z0-9_]+)_crop",\s*"([a-z0-9_]+)_seeds",\s*'
             r'AgricultureCropBlock\.PollinationGroup\.([A-Z]+)\)', registry
         )
