@@ -53,7 +53,7 @@ The original 36 crops remain unchanged in count. Four habitat blocks are now reg
 
 - `gugugaga:bumblebee_habitat`: sheltered cavity, accepts nearby bumblebees plus flowering forage.
 - `gugugaga:mason_bee_habitat`: wooden cavity/stem proxy for mason bees.
-- `gugugaga:squash_bee_habitat`: a bare-soil habitat that must be placed above dirt/grass/sand-like substrates. Activity requires squash bees and cucumber or zucchini crops at reproductive age.
+- `gugugaga:squash_bee_habitat`: a bare-soil habitat that must be placed above dirt/grass/sand-like substrates. Activity requires squash bees and zucchini crops at reproductive age.
 - `gugugaga:leafcutter_bee_habitat`: wooden nesting tube proxy for solitary leafcutter bees.
 
 The four new blocks are **nesting-site activity indicators**, not new honey-producing beehives. They gain activity levels from nearby corresponding bees and suitable flowers or crops. They **do not yet store bees, simulate brood, force bees to return home, or generate honey**. All bee AI currently still inherits vanilla Bee behavior; species-specific nesting goals remain a later, more invasive change.
@@ -64,3 +64,12 @@ Sources:
 - https://xerces.org/pollinator-conservation/nesting-resources
 - https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide
 - https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/alfalfa-leafcutting-bee-alcb/
+
+## v0.5 pollinator specificity correction
+
+A verified University of Minnesota Extension guide describes squash bees as closely associated with *Cucurbita* squash and pumpkins. Our 36-crop selection includes **zucchini** (*Cucurbita pepo*), but cucumbers belong to *Cucumis*. The squash-bee bonus and squash-bee soil habitat therefore require zucchini in this prototype, not cucumber. Other bee species can still assist cucumbers. Tomatoes and eggplants are self-fertile; the optional buzz-pollination yield bonus now recognizes bumblebees specifically without preventing normal no-bee crops from maturing.
+
+Sources:
+- https://extension.umn.edu/agriculture/specialty-crops/commercial-fruit-production/vining-vegetable-growing-guide
+- https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements
+- https://extension.umn.edu/agriculture/specialty-crops/pollination/minnesota-pollinators

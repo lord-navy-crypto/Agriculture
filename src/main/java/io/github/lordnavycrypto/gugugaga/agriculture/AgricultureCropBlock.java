@@ -125,6 +125,10 @@ public final class AgricultureCropBlock extends CropBlock {
     }
 
     private boolean compatibleSpecies(String species, String ecotype) {
+        // Tomatoes/eggplants can self-pollinate; bumblebee buzz visits give the modeled
+        // *optional* extra fruit bonus. Nearby ordinary honeybees do not produce this bonus.
+        if ((seedName.equals("tomato_seeds") || seedName.equals("eggplant_seeds"))
+                && !species.equals("bumblebee")) return false;
         if ("bee".equals(species)) {
             return isCompatible(ecotype);
         }
@@ -132,8 +136,7 @@ public final class AgricultureCropBlock extends CropBlock {
             case "bumblebee" -> true;
             case "mason_bee" -> pollinationGroup == PollinationGroup.ORCHARD
                     || pollinationGroup == PollinationGroup.BERRY;
-            case "squash_bee" -> seedName.equals("cucumber_seeds")
-                    || seedName.equals("zucchini_seeds");
+            case "squash_bee" -> seedName.equals("zucchini_seeds");
             case "leafcutter_bee" -> pollinationGroup == PollinationGroup.BERRY
                     || seedName.equals("buckwheat_seeds")
                     || seedName.equals("sunflower_seed_seeds");

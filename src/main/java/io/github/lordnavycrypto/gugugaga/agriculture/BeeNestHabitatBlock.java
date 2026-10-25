@@ -79,12 +79,12 @@ public final class BeeNestHabitatBlock extends Block {
                     && nearby.getValue(AgricultureCropBlock.AGE) >= 4) {
                 String id = BuiltInRegistries.BLOCK.getKey(crop).getPath();
                 if (beeSpecies.equals("squash_bee")) {
-                    if (id.equals("cucumber_crop") || id.equals("zucchini_crop")) return true;
-                } else if (crop != null && (id.equals("strawberry_crop")
+                    if (id.equals("zucchini_crop")) return true;
+                } else if (id.equals("strawberry_crop")
                         || id.equals("blueberry_crop") || id.equals("raspberry_crop")
                         || id.equals("cranberry_crop") || id.equals("sunflower_seed_crop")
                         || id.equals("buckwheat_crop") || id.equals("cucumber_crop")
-                        || id.equals("zucchini_crop"))) {
+                        || id.equals("zucchini_crop")) {
                     return true;
                 }
             }
