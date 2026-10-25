@@ -74,6 +74,6 @@ class PublicHealthImportTest(unittest.TestCase):
         meta=loader.import_country(self.raw,"Exampleland","2026-10-25",self.out)
         self.assertEqual(meta["excluded_missing_rows"],1)
         self.assertEqual(meta["imported_weeks"],4)
-        self.assertNotIn("2026-09-27",self.out.read_text())
+        self.assertNotIn("2026-09-20",self.out.read_text())
 
 if __name__=="__main__": unittest.main()
