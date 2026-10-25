@@ -50,7 +50,7 @@ public final class HoneyHarvesterItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        if (!hasClearCampfireSmoke(level, pos)) {
+        if (!HoneySmoke.hasClearCampfireSmoke(level, pos)) {
             if (!level.isClientSide) {
                 player.displayClientMessage(
                         Component.translatable("message.gugugaga.honey_harvester_smoke_required"), true);
@@ -100,23 +100,5 @@ public final class HoneyHarvesterItem extends Item {
             }
         }
         return ItemStack.EMPTY;
-    }
-
-    /** Requires a lit vanilla campfire directly below the hive, with an unobstructed smoke column. */
-    private static boolean hasClearCampfireSmoke(Level level, BlockPos hivePos) {
-        for (int distance = 1; distance <= 5; distance++) {
-            BlockPos candidate = hivePos.below(distance);
-            if (!level.hasChunkAt(candidate)) {
-                return false;
-            }
-            BlockState below = level.getBlockState(candidate);
-            if (below.is(Blocks.CAMPFIRE) || below.is(Blocks.SOUL_CAMPFIRE)) {
-                return below.getValue(BlockStateProperties.LIT);
-            }
-            if (!below.isAir()) {
-                return false;
-            }
-        }
-        return false;
     }
 }

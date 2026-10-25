@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.BeehiveBlock;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 /**
  * Gentle collection for vanilla beehives and bee nests. With a glass bottle in the offhand,
@@ -31,7 +30,7 @@ public final class BeeKeeperBrushItem extends Item {
         BlockState state = level.getBlockState(pos);
         if (!(state.is(Blocks.BEEHIVE) || state.is(Blocks.BEE_NEST))
                 || state.getValue(BeehiveBlock.HONEY_LEVEL) < 5) return InteractionResult.PASS;
-        if (!hasCampfireSmoke(level, pos)) return InteractionResult.FAIL;
+        if (!HoneySmoke.hasClearCampfireSmoke(level, pos)) return InteractionResult.FAIL;
         if (level.isClientSide) return InteractionResult.SUCCESS;
         Player player = context.getPlayer();
         if (player == null) return InteractionResult.PASS;
@@ -49,19 +48,5 @@ public final class BeeKeeperBrushItem extends Item {
         player.displayClientMessage(Component.translatable(
                 bottled ? "message.gugugaga.gentle_honey_bottle" : "message.gugugaga.gentle_honeycomb"), true);
         return InteractionResult.SUCCESS;
-    }
-
-    /** A lit campfire and a clear smoke column are required for a gentle harvest. */
-    private static boolean hasCampfireSmoke(Level level, BlockPos hivePos) {
-        for (int depth = 1; depth <= 5; depth++) {
-            BlockPos belowPos = hivePos.below(depth);
-            if (!level.hasChunkAt(belowPos)) return false;
-            BlockState below = level.getBlockState(belowPos);
-            if (below.is(Blocks.CAMPFIRE) || below.is(Blocks.SOUL_CAMPFIRE)) {
-                return below.getValue(BlockStateProperties.LIT);
-            }
-            if (!below.isAir()) return false;
-        }
-        return false;
     }
 }
