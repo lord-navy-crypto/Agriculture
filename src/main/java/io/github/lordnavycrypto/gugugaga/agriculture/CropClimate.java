@@ -42,14 +42,16 @@ public final class CropClimate {
                  "mustard_seeds", "canola_seeds", "celery_seeds", "leek_seeds",
                  "parsnip_seeds", "arugula_seeds", "swiss_chard_seeds",
                  "fennel_seeds", "dill_seeds", "cilantro_seeds", "parsley_seeds",
-                 "collard_greens_seeds", "brussels_sprouts_seeds" -> Band.COOL;
+                 "collard_greens_seeds", "brussels_sprouts_seeds", "cauliflower_seeds",
+                 "bok_choy_seeds", "shallot_seeds", "quinoa_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
                  "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds",
-                 "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds" -> Band.WARM;
+                 "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds",
+                 "black_bean_seeds" -> Band.WARM;
             case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds" -> Band.DRY;
-            case "rice_seeds" -> Band.WET;
-            case "chickpea_seeds", "clover_seeds", "mint_seeds" -> Band.TEMPERATE;
+            case "rice_seeds", "ginger_seeds", "turmeric_seeds" -> Band.WET;
+            case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds" -> Band.TEMPERATE;
             default -> throw new IllegalArgumentException("Unclassified crop seed: " + seedName);
         };
     }

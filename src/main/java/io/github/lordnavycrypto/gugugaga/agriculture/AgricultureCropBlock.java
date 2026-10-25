@@ -139,7 +139,8 @@ public final class AgricultureCropBlock extends CropBlock {
                 || seedName.equals("parsley_seeds")
                 || seedName.equals("collard_greens_seeds")
                 || seedName.equals("dill_seeds")
-                || seedName.equals("cilantro_seeds");
+                || seedName.equals("cilantro_seeds")
+                || seedName.equals("bok_choy_seeds");
         if (!cuttingHerb || state.getValue(AGE) < getMaxAge()) {
             return InteractionResult.PASS;
         }

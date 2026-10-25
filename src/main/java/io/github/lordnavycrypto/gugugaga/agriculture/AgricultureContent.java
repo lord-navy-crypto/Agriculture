@@ -224,6 +224,32 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> BRUSSELS_SPROUTS_SEEDS = seed("brussels_sprouts_seeds", BRUSSELS_SPROUTS_CROP);
     public static final DeferredItem<Item> BRUSSELS_SPROUTS = food("brussels_sprouts", 2, 0.25F);
 
+    /** v1.3 edible buds, leafy brassicas, legumes and tropical rhizomes. */
+    public static final DeferredBlock<AgricultureCropBlock> CAULIFLOWER_CROP = crop("cauliflower_crop", "cauliflower_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> CAULIFLOWER_SEEDS = seed("cauliflower_seeds", CAULIFLOWER_CROP);
+    public static final DeferredItem<Item> CAULIFLOWER = food("cauliflower", 3, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> BOK_CHOY_CROP = crop("bok_choy_crop", "bok_choy_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> BOK_CHOY_SEEDS = seed("bok_choy_seeds", BOK_CHOY_CROP);
+    public static final DeferredItem<Item> BOK_CHOY = food("bok_choy", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> SHALLOT_CROP = crop("shallot_crop", "shallot_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> SHALLOT_SEEDS = seed("shallot_seeds", SHALLOT_CROP);
+    public static final DeferredItem<Item> SHALLOT = food("shallot", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> GINGER_CROP = crop("ginger_crop", "ginger_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> GINGER_SEEDS = seed("ginger_seeds", GINGER_CROP);
+    public static final DeferredItem<Item> GINGER = food("ginger", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> TURMERIC_CROP = crop("turmeric_crop", "turmeric_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> TURMERIC_SEEDS = seed("turmeric_seeds", TURMERIC_CROP);
+    public static final DeferredItem<Item> TURMERIC = food("turmeric", 2, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> BLACK_BEAN_CROP = crop("black_bean_crop", "black_bean_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> BLACK_BEAN_SEEDS = seed("black_bean_seeds", BLACK_BEAN_CROP);
+    public static final DeferredItem<Item> BLACK_BEAN = food("black_bean", 3, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> QUINOA_CROP = crop("quinoa_crop", "quinoa_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> QUINOA_SEEDS = seed("quinoa_seeds", QUINOA_CROP);
+    public static final DeferredItem<Item> QUINOA = food("quinoa", 3, 0.25F);
+    public static final DeferredBlock<AgricultureCropBlock> ARTICHOKE_CROP = crop("artichoke_crop", "artichoke_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> ARTICHOKE_SEEDS = seed("artichoke_seeds", ARTICHOKE_CROP);
+    public static final DeferredItem<Item> ARTICHOKE = food("artichoke", 3, 0.25F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -268,6 +294,14 @@ public final class AgricultureContent {
             event.accept(GREEN_BEAN_SEEDS.get());
             event.accept(CHILI_PEPPER_SEEDS.get());
             event.accept(BRUSSELS_SPROUTS_SEEDS.get());
+            event.accept(CAULIFLOWER_SEEDS.get());
+            event.accept(BOK_CHOY_SEEDS.get());
+            event.accept(SHALLOT_SEEDS.get());
+            event.accept(GINGER_SEEDS.get());
+            event.accept(TURMERIC_SEEDS.get());
+            event.accept(BLACK_BEAN_SEEDS.get());
+            event.accept(QUINOA_SEEDS.get());
+            event.accept(ARTICHOKE_SEEDS.get());
             event.accept(CORN_SEEDS.get());
             event.accept(TOMATO_SEEDS.get());
             event.accept(ONION_SEEDS.get());
@@ -345,6 +379,14 @@ public final class AgricultureContent {
             event.accept(GREEN_BEAN.get());
             event.accept(CHILI_PEPPER.get());
             event.accept(BRUSSELS_SPROUTS.get());
+            event.accept(CAULIFLOWER.get());
+            event.accept(BOK_CHOY.get());
+            event.accept(SHALLOT.get());
+            event.accept(GINGER.get());
+            event.accept(TURMERIC.get());
+            event.accept(BLACK_BEAN.get());
+            event.accept(QUINOA.get());
+            event.accept(ARTICHOKE.get());
             event.accept(CORN.get());
             event.accept(TOMATO.get());
             event.accept(ONION.get());

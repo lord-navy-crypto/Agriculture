@@ -3,8 +3,8 @@
 import json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1] / "src/main/resources"
-CROPS = "corn tomato onion rice soybean strawberry cucumber blueberry bell_pepper garlic barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek parsnip arugula swiss_chard okra fennel dill cilantro parsley collard_greens green_bean chili_pepper brussels_sprouts".split()
-NEW = "barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek parsnip arugula swiss_chard okra fennel dill cilantro parsley collard_greens green_bean chili_pepper brussels_sprouts".split()
+CROPS = "corn tomato onion rice soybean strawberry cucumber blueberry bell_pepper garlic barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek parsnip arugula swiss_chard okra fennel dill cilantro parsley collard_greens green_bean chili_pepper brussels_sprouts cauliflower bok_choy shallot ginger turmeric black_bean quinoa artichoke".split()
+NEW = "barley oat rye pea lettuce cabbage spinach broccoli eggplant cotton flax peanut sorghum sunflower_seed millet buckwheat chickpea lentil radish turnip sweet_potato kale zucchini raspberry cranberry sesame lavender clover basil mint mustard canola celery leek parsnip arugula swiss_chard okra fennel dill cilantro parsley collard_greens green_bean chili_pepper brussels_sprouts cauliflower bok_choy shallot ginger turmeric black_bean quinoa artichoke".split()
 def j(p): return json.loads((ROOT / p).read_text(encoding="utf8"))
 def main():
   en=j("assets/gugugaga/lang/en_us.json")
