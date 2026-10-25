@@ -37,6 +37,25 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:sunflower_seed",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:sunflower_seed_crop",
+              "properties": {
+                "age": "7",
+                "pollinated": "true"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

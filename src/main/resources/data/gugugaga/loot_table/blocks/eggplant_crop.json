@@ -37,6 +37,25 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:eggplant",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:eggplant_crop",
+              "properties": {
+                "age": "7",
+                "pollinated": "true"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

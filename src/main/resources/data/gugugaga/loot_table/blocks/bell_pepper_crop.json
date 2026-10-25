@@ -37,6 +37,25 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:bell_pepper",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:bell_pepper_crop",
+              "properties": {
+                "age": "7",
+                "pollinated": "true"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
