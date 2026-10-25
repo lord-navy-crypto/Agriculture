@@ -575,6 +575,70 @@
     "gugugaga:sweet_corn": {
       "chance": 0.65,
       "can_villager_compost": false
+    },
+    "gugugaga:cassava_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cassava": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:taro_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:taro": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:yam_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:yam": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:teff_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:teff": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:watercress_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:watercress": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:endive_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:endive": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:kohlrabi_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:kohlrabi": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:rutabaga_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:rutabaga": {
+      "chance": 0.65,
+      "can_villager_compost": false
     }
   }
 }
