@@ -29,18 +29,20 @@ public final class CropClimate {
     );
     private static Band cropBand(String seedName) {
         return switch (seedName) {
-            case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
+            case "radish_seeds", "turnip_seeds", "buckwheat_seeds", "lentil_seeds",
+                 "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
                  "lettuce_seeds", "cabbage_seeds", "spinach_seeds",
                  "broccoli_seeds", "blueberry_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds",
                  "peanut_seeds" -> Band.WARM;
-            case "sorghum_seeds" -> Band.DRY;
+            case "sorghum_seeds", "millet_seeds", "chickpea_seeds" -> Band.DRY;
             case "rice_seeds" -> Band.WET;
             default -> Band.TEMPERATE;
         };
     }
     private static Band biomeBand(String name) {
+        if (name.equals("cherry_grove")) return Band.TEMPERATE;
         if (name.contains("jungle") || name.contains("swamp") || name.equals("river")) return Band.WET;
         if (name.contains("savanna") || name.contains("badlands") || name.equals("desert")) return Band.DRY;
         if (name.contains("snowy") || name.contains("frozen") || name.contains("taiga")
@@ -63,7 +65,8 @@ public final class CropClimate {
                 || crop == Band.TEMPERATE && biome == Band.COOL
                 || crop == Band.WARM && biome == Band.DRY
                 || crop == Band.DRY && biome == Band.WARM
-                || crop == Band.WET && biome == Band.WARM;
+                || crop == Band.WET && biome == Band.WARM
+                || crop == Band.WARM && biome == Band.WET;
         if (suitable) return true;
         // Uses real minimum germination categories as a relative cold-biome sensitivity,
         // NOT as a claim that Minecraft biome temperatures equal soil temperatures.

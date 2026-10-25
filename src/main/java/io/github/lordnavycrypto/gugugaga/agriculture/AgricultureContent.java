@@ -99,6 +99,31 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> SORGHUM = food("sorghum", 3, 0.4F);
     public static final DeferredItem<Item> SUNFLOWER_SEED = food("sunflower_seed", 2, 0.3F);
 
+
+    // v0.3 cool/dry season crop expansion (actual plant climate classes in CropClimate).
+    public static final DeferredBlock<AgricultureCropBlock> RADISH_CROP = crop("radish_crop", "radish_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> TURNIP_CROP = crop("turnip_crop", "turnip_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> MILLET_CROP = crop("millet_crop", "millet_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> BUCKWHEAT_CROP = crop("buckwheat_crop", "buckwheat_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> LENTIL_CROP = crop("lentil_crop", "lentil_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> CHICKPEA_CROP = crop("chickpea_crop", "chickpea_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+
+    public static final DeferredItem<Item> RADISH_SEEDS = seed("radish_seeds", RADISH_CROP);
+    public static final DeferredItem<Item> TURNIP_SEEDS = seed("turnip_seeds", TURNIP_CROP);
+    public static final DeferredItem<Item> MILLET_SEEDS = seed("millet_seeds", MILLET_CROP);
+    public static final DeferredItem<Item> BUCKWHEAT_SEEDS = seed("buckwheat_seeds", BUCKWHEAT_CROP);
+    public static final DeferredItem<Item> LENTIL_SEEDS = seed("lentil_seeds", LENTIL_CROP);
+    public static final DeferredItem<Item> CHICKPEA_SEEDS = seed("chickpea_seeds", CHICKPEA_CROP);
+
+    public static final DeferredItem<Item> RADISH = food("radish", 2, 0.3F);
+    public static final DeferredItem<Item> TURNIP = food("turnip", 2, 0.3F);
+    public static final DeferredItem<Item> MILLET = food("millet", 3, 0.3F);
+    public static final DeferredItem<Item> BUCKWHEAT = food("buckwheat", 3, 0.3F);
+    public static final DeferredItem<Item> LENTIL = food("lentil", 2, 0.3F);
+    public static final DeferredItem<Item> CHICKPEA = food("chickpea", 3, 0.3F);
+
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_RADISH = BLOCKS.register("wild_radish", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_TURNIP = BLOCKS.register("wild_turnip", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
     public static final DeferredBlock<WildSeedPlantBlock> WILD_BARLEY = BLOCKS.register("wild_barley", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
     public static final DeferredBlock<WildSeedPlantBlock> WILD_OAT = BLOCKS.register("wild_oat", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
     public static final DeferredBlock<WildSeedPlantBlock> WILD_PEA = BLOCKS.register("wild_pea", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
@@ -152,6 +177,12 @@ public final class AgricultureContent {
             event.accept(PEANUT_SEEDS.get());
             event.accept(SORGHUM_SEEDS.get());
             event.accept(SUNFLOWER_SEED_SEEDS.get());
+            event.accept(RADISH_SEEDS.get());
+            event.accept(TURNIP_SEEDS.get());
+            event.accept(MILLET_SEEDS.get());
+            event.accept(BUCKWHEAT_SEEDS.get());
+            event.accept(LENTIL_SEEDS.get());
+            event.accept(CHICKPEA_SEEDS.get());
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
             event.accept(CORN.get());
             event.accept(TOMATO.get());
@@ -177,6 +208,12 @@ public final class AgricultureContent {
             event.accept(PEANUT.get());
             event.accept(SORGHUM.get());
             event.accept(SUNFLOWER_SEED.get());
+            event.accept(RADISH.get());
+            event.accept(TURNIP.get());
+            event.accept(MILLET.get());
+            event.accept(BUCKWHEAT.get());
+            event.accept(LENTIL.get());
+            event.accept(CHICKPEA.get());
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BeeContent.MEADOW_BEE_TAG.get());
             event.accept(BeeContent.ORCHARD_BEE_TAG.get());

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pea_seeds"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:lentil_seeds",
+    "count": 1
+  }
+}
