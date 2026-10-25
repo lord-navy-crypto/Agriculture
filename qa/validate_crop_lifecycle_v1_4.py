@@ -55,6 +55,8 @@ def main():
     assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
     assert "int growthTipY = Math.max(1, top)" in generator
     assert "shade.call(accent, 0.72d + stage * 0.05d)" in generator
+    assert "int branchCount = stage - 3" in generator
+    assert "Math.min(4, 1 + stage.intdiv(2))" in generator
     detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
     # Each of the 64 crops must have both a seedling-specific mark and a mature-form
     # detail branch. Palette-only variation is not accepted as crop-specific artwork.
