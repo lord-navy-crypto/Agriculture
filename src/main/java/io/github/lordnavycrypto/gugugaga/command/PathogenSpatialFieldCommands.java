@@ -13,6 +13,8 @@ import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleOverlayRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleSampling;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentObservation;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentRuntime;
+import io.github.lordnavycrypto.gugugaga.pathogens.PublicHealthSurveillance;
+import java.io.IOException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -27,6 +29,8 @@ public final class PathogenSpatialFieldCommands{
         event.getDispatcher().register(Commands.literal("gugugaga")
             .then(Commands.literal("field")
                 .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
+                .then(Commands.literal("surveillance")
+                    .executes(ctx->surveillance(ctx.getSource())))
                 .then(Commands.literal("hud")
                     .then(Commands.literal("on")
                         .executes(ctx->hud(ctx.getSource(),true)))
@@ -143,6 +147,29 @@ public final class PathogenSpatialFieldCommands{
         player.sendSystemMessage(Component.literal("Gugu-Gaga field HUD: "+
                 (on?"ON":"OFF")+" (disabled by default)"));
         return 1;
+    }
+    private static int surveillance(CommandSourceStack src){
+        // Aggregated published laboratory tests: NOT actual infected people
+        // and never used as an organism-specific Minecraft spread coefficient.
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run field surveillance as a player."));
+            return 0;
+        }
+        try {
+            var series=PublicHealthSurveillance.loadBundled();
+            player.sendSystemMessage(Component.literal(
+                "[Public-health LAB surveillance] "
+                +PublicHealthSurveillance.summary(series)));
+            player.sendSystemMessage(Component.literal(
+                "Published lab specimen counts only; historical reporting "
+                +"and empirical scenario, never player infection or disease risk."));
+            return 1;
+        } catch(IOException | IllegalArgumentException unavailable) {
+            src.sendFailure(Component.literal(
+                "Sourced surveillance data unavailable or invalid: "
+                +unavailable.getMessage()));
+            return 0;
+        }
     }
     private static int status(CommandSourceStack src){
         if(src.getEntity() instanceof ServerPlayer player){
