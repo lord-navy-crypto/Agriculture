@@ -131,6 +131,8 @@ tasks.register('generateCropAssets') {
             int height = (int)(3 + Math.floor(stage * 11.0d / 7.0d))
             int top = 15 - height
             line.call(image, 7, 15, 7, top, stem)
+            // A tiny crop-specific seed/cotyledon pixel keeps even the earliest seedling sprite unique.
+            put.call(image, 5, 15, shade.call(accent, 0.72d))
             if (stage >= 3 && (kind == 'leafy' || kind == 'herb' || kind == 'fiber')) {
                 line.call(image, 7, 13, 5, Math.max(top + 2, 7), stem)
                 line.call(image, 7, 13, 10, Math.max(top + 3, 8), stem)
