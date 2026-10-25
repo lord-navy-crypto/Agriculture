@@ -141,15 +141,37 @@ public final class AgricultureCropBlock extends CropBlock {
                 || seedName.equals("dill_seeds")
                 || seedName.equals("cilantro_seeds")
                 || seedName.equals("bok_choy_seeds");
-        if (!cuttingHerb || state.getValue(AGE) < getMaxAge()) {
+        // Fruit-bearing plants remain rooted after picking: do not uproot a
+        // tomato vine or berry bush simply to collect one ripe fruit.
+        // Grain, roots, dry seed crops and bulbs still use break-and-replant.
+        boolean recurringFruit = switch (seedName) {
+            case "tomato_seeds", "cucumber_seeds", "strawberry_seeds",
+                    "blueberry_seeds", "bell_pepper_seeds", "eggplant_seeds",
+                    "zucchini_seeds", "raspberry_seeds", "cranberry_seeds",
+                    "okra_seeds", "chili_pepper_seeds", "green_bean_seeds",
+                    "pea_seeds" -> true;
+            default -> false;
+        };
+        if ((!cuttingHerb && !recurringFruit) || state.getValue(AGE) < getMaxAge()) {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide) {
             String name = seedName.substring(0, seedName.length() - "_seeds".length());
             Item leaves = BuiltInRegistries.ITEM.get(
                     ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, name));
-            // Native block drop enables collection by normal hoppers and inventory systems.
-            Block.popResource(level, pos, new ItemStack(leaves));
+            if (recurringFruit) {
+                // A persisted pollination marker improves this actual fruit
+                // harvest too; previously only breaking the entire crop paid
+                // the bonus, incentivizing destruction of fruiting plants.
+                int fruitCount = pollinationGroup != PollinationGroup.NONE
+                        && state.getValue(POLLINATED) ? 2 : 1;
+                Block.popResource(level, pos, new ItemStack(leaves, fruitCount));
+            } else {
+                // Native block drop enables collection by hoppers/inventory systems.
+                Block.popResource(level, pos, new ItemStack(leaves));
+            }
+            // Growth is required again before the next pick; no rapid repeated
+            // use can generate extra produce from a single mature block.
             level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3);
         }
         return InteractionResult.SUCCESS;

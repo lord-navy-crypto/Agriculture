@@ -50,7 +50,13 @@ public final class BeeNestHabitatBlock extends Block {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (!groundNesting) return super.canSurvive(state, level, pos);
+        // Crafted above-ground bee hotels and sheltered cavities need a solid
+        // support below them just as constructed blocks do in Minecraft.
+        // Unlike ground-burrowing squash bees they do not need bare soil.
+        if (!groundNesting) {
+            BlockPos footing = pos.below();
+            return level.getBlockState(footing).isFaceSturdy(level, footing, Direction.UP);
+        }
         BlockState below = level.getBlockState(pos.below());
         // Ground-nesting squash bees need accessible bare soil. Turf, podzol
         // and mycelium are not substitutes for an exposed nesting surface.
@@ -62,7 +68,7 @@ public final class BeeNestHabitatBlock extends Block {
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                      LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         // Avoid a floating burrow after its exposed soil is removed or covered.
-        if (groundNesting && direction == Direction.DOWN && !canSurvive(state, level, pos)) {
+        if (direction == Direction.DOWN && !canSurvive(state, level, pos)) {
             return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);

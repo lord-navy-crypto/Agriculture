@@ -47,6 +47,7 @@ assert "activity - 1" in habitat and "activity + 1" in habitat
 assert 'beeSpecies.equals("squash_bee") && level.getDayTime() % 24000L >= 6000L' in habitat
 assert habitat.index('level.getDayTime()') < habitat.index("if (random.nextInt(4) != 0)")
 assert "direction == Direction.DOWN && !canSurvive(state, level, pos)" in habitat
+assert "isFaceSturdy(level, footing, Direction.UP)" in habitat
 assert "below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)" in habitat
 assert "below.is(Blocks.GRASS_BLOCK)" not in habitat
 assert 'id.equals("tomato_crop") || id.equals("eggplant_crop")' in habitat

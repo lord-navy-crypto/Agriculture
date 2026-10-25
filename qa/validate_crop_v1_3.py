@@ -40,5 +40,11 @@ def main():
         for age in range(8):
             assert variants[f"age={age},pollinated=false"]==variants[f"age={age},pollinated=true"],crop_id
     assert 'seedName.equals("bok_choy_seeds")' in block
+    fruit_names = "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea".split()
+    for fruit in fruit_names:
+        assert f'"{fruit}_seeds"' in block, fruit
+    assert "int fruitCount = pollinationGroup != PollinationGroup.NONE" in block
+    assert "new ItemStack(leaves, fruitCount)" in block
+    assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in block
     print("CROP_V1_3_OK: eight new complete crop lines; all 64 have 16 visual states")
 if __name__=="__main__": main()
