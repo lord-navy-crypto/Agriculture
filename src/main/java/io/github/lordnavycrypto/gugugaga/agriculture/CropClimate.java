@@ -41,6 +41,7 @@ public final class CropClimate {
         };
     }
     private static Band biomeBand(String name) {
+        if (name.equals("cherry_grove")) return Band.TEMPERATE;
         if (name.contains("jungle") || name.contains("swamp") || name.equals("river")) return Band.WET;
         if (name.contains("savanna") || name.contains("badlands") || name.equals("desert")) return Band.DRY;
         if (name.contains("snowy") || name.contains("frozen") || name.contains("taiga")
@@ -63,7 +64,8 @@ public final class CropClimate {
                 || crop == Band.TEMPERATE && biome == Band.COOL
                 || crop == Band.WARM && biome == Band.DRY
                 || crop == Band.DRY && biome == Band.WARM
-                || crop == Band.WET && biome == Band.WARM;
+                || crop == Band.WET && biome == Band.WARM
+                || crop == Band.WARM && biome == Band.WET;
         if (suitable) return true;
         // Uses real minimum germination categories as a relative cold-biome sensitivity,
         // NOT as a claim that Minecraft biome temperatures equal soil temperatures.
