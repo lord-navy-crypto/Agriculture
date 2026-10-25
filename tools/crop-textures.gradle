@@ -24,6 +24,7 @@ tasks.register('generateCropAssets') {
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_3.json')
     )
     outputs.dir(cropGeneratedResources)
+    outputs.dir(layout.buildDirectory.dir('reports/agriculture'))
     doLast {
         File outputRoot = cropGeneratedResources.get().asFile
         project.delete(outputRoot)
