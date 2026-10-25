@@ -38,12 +38,28 @@ def main():
     assert read_json(RES / "data/gugugaga/recipe/honey_harvester.json")["result"]["id"] == "gugugaga:honey_harvester"
     assert read_json(RES / "assets/gugugaga/models/item/honey_harvester.json")["parent"] == "minecraft:item/shears"
 
+    profiles = read_json(RES / "data/gugugaga/agronomy/crop_profiles_v0_4.json")
+    assert profiles["schema_version"] == "0.4"
+    assert len(profiles["crops"]) == len(CROPS)
+    assert {profile["crop"] for profile in profiles["crops"]} == set(CROPS)
+    crop_climate = (JAVA / "CropClimate.java").read_text(encoding="utf8")
+    agriculture_content = (JAVA / "AgricultureContent.java").read_text(encoding="utf8")
+    allowed_bands = {"COOL", "TEMPERATE", "WARM", "DRY", "WET"}
+    allowed_pollination = {"NONE", "ORCHARD", "BERRY"}
+    for profile in profiles["crops"]:
+        crop = profile["crop"]
+        assert profile["growth_band_gameplay"] in allowed_bands, crop
+        assert profile["pollination_gameplay"] in allowed_pollination, crop
+        assert profile["source_urls"] and all(url.startswith("https://") for url in profile["source_urls"]), crop
+        assert f'"{crop}_seeds"' in crop_climate, crop
+        assert f'crop("{crop}_crop", "{crop}_seeds", AgricultureCropBlock.PollinationGroup.{profile["pollination_gameplay"]})' in agriculture_content, crop
+
     for crop in CROPS:
         loot = read_json(RES / f"data/gugugaga/loot_table/blocks/{crop}_crop.json")
         assert len(loot["pools"]) == 2, crop
         states = read_json(RES / f"assets/gugugaga/blockstates/{crop}_crop.json")["variants"]
         assert set(states) == {f"age={age}" for age in range(8)}, crop
 
-    print(f"POLLINATION_AND_HONEY_OK: {len(CROPS)} existing crops + safe honey harvester")
+    print(f"POLLINATION_AND_HONEY_OK: {len(CROPS)} reviewed crop profiles + safe honey harvester")
 if __name__ == "__main__":
     main()
