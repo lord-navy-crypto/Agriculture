@@ -50,6 +50,12 @@ jobs:
           name: gugu-gaga-agriculture
           path: build/libs/*.jar
           if-no-files-found: error
+      - name: Upload crop-stage visual proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: crop-stage-contact-sheet
+          path: build/reports/agriculture/crop-stage-contact-sheet.png
+          if-no-files-found: error
 
   real-server-boot:
     runs-on: ubuntu-latest
