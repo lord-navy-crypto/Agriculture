@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/white_wool"
+    "layer0": "gugugaga:item/crops/cotton"
   }
 }

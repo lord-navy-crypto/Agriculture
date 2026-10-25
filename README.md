@@ -4,8 +4,8 @@ A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. 
 
 ## Working content
 
-- **36 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
-- Crop seeds, eight age stages, harvested items, loot tables, seed recipes, bilingual English/Chinese names and placeholder vanilla textures.
+- **64 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
+- Crop seeds, eight visually distinct growth stages per crop, crop-specific pixel-art sprites, pollination-stage overlays, harvested items, loot tables, seed recipes and bilingual English/Chinese names.
 - **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
 - **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
 - Crop-aware pollination marks persist through maturity and provide a bounded harvest-yield bonus. Pollination is checked separately from biome/irrigation growth rolls; meadow/orchard/berry tags remain available for vanilla bees.
@@ -33,7 +33,7 @@ GitHub Actions compiles the mod, validates resource structure and starts a dedic
 
 ## Biological and gameplay boundaries
 
-- Crop and wild-plant textures remain vanilla placeholders; crop shapes and crop-specific yield models are not complete.
+- Crop textures are generated deterministically at build time from 64 crop-specific palettes and organ-aware pixel-art silhouettes; all crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
 - The bee entities are registered prototypes, not independent species simulations. Solitary nesting for mason, leafcutter, carpenter and mining bees, colony lifecycle for bumblebees, unique art and inherited bee traits remain future work.
 - Soil pH, crop rotation, nutrient depletion, cultivar differences, seasons and a measured pollination-to-fruit-set/yield model are not implemented.
 - The rice rule models irrigated lowland cultivation. IRRI documents both flooded-field practices and water-saving alternate wetting and drying; other systems, including aerobic rice, exist.
@@ -72,3 +72,10 @@ All 64 harvested organic crop items and 64 corresponding seeds support vanilla
 composters through NeoForge's item `neoforge:compostables` data map. Seeds have a
 30% level-up chance and harvested biomass a 65% chance; villager auto-composting
 remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
+
+
+### Crop lifecycle and custom textures (v1.4)
+
+All 64 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_4.md.
+
+The sprites are custom Minecraft pixel art informed by crop morphology, not photographs or claims that a single cultivar looks identical in every region. Published maturity ranges, cold tolerance and critical watering stages guide relative gameplay categories; they are not converted directly into Minecraft ticks. Client-side visual checks remain necessary after the build.

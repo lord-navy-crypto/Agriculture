@@ -38,7 +38,7 @@ def main():
         assert recipe["result"]["id"]==f"gugugaga:{name}_seeds"
         assert len(recipe["ingredients"])==2, name
         for item in [name,name+"_seeds"]:
-            assert load(f"assets/gugugaga/models/item/{item}.json")["textures"]["layer0"].startswith("minecraft:item/")
+            assert load(f"assets/gugugaga/models/item/{item}.json")["textures"]["layer0"] == f"gugugaga:item/crops/{item}"
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
         assert f"block.gugugaga.{name}_crop" in en and f"block.gugugaga.{name}_crop" in zh
     for herb in "arugula swiss_chard parsley collard_greens dill cilantro".split():

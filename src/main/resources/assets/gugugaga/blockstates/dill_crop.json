@@ -1,52 +1,52 @@
 {
   "variants": {
     "age=0,pollinated=false": {
-      "model": "minecraft:block/carrots_stage0"
+      "model": "gugugaga:block/crops/dill_stage0"
     },
     "age=0,pollinated=true": {
-      "model": "minecraft:block/carrots_stage0"
+      "model": "gugugaga:block/crops/dill_stage0"
     },
     "age=1,pollinated=false": {
-      "model": "minecraft:block/carrots_stage0"
+      "model": "gugugaga:block/crops/dill_stage1"
     },
     "age=1,pollinated=true": {
-      "model": "minecraft:block/carrots_stage0"
+      "model": "gugugaga:block/crops/dill_stage1"
     },
     "age=2,pollinated=false": {
-      "model": "minecraft:block/carrots_stage1"
+      "model": "gugugaga:block/crops/dill_stage2"
     },
     "age=2,pollinated=true": {
-      "model": "minecraft:block/carrots_stage1"
+      "model": "gugugaga:block/crops/dill_stage2"
     },
     "age=3,pollinated=false": {
-      "model": "minecraft:block/carrots_stage1"
+      "model": "gugugaga:block/crops/dill_stage3"
     },
     "age=3,pollinated=true": {
-      "model": "minecraft:block/carrots_stage1"
+      "model": "gugugaga:block/crops/dill_stage3"
     },
     "age=4,pollinated=false": {
-      "model": "minecraft:block/carrots_stage2"
+      "model": "gugugaga:block/crops/dill_stage4"
     },
     "age=4,pollinated=true": {
-      "model": "minecraft:block/carrots_stage2"
+      "model": "gugugaga:block/crops/dill_stage4_pollinated"
     },
     "age=5,pollinated=false": {
-      "model": "minecraft:block/carrots_stage2"
+      "model": "gugugaga:block/crops/dill_stage5"
     },
     "age=5,pollinated=true": {
-      "model": "minecraft:block/carrots_stage2"
+      "model": "gugugaga:block/crops/dill_stage5_pollinated"
     },
     "age=6,pollinated=false": {
-      "model": "minecraft:block/carrots_stage3"
+      "model": "gugugaga:block/crops/dill_stage6"
     },
     "age=6,pollinated=true": {
-      "model": "minecraft:block/carrots_stage3"
+      "model": "gugugaga:block/crops/dill_stage6_pollinated"
     },
     "age=7,pollinated=false": {
-      "model": "minecraft:block/carrots_stage3"
+      "model": "gugugaga:block/crops/dill_stage7"
     },
     "age=7,pollinated=true": {
-      "model": "minecraft:block/carrots_stage3"
+      "model": "gugugaga:block/crops/dill_stage7_pollinated"
     }
   }
 }

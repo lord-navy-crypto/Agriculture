@@ -36,11 +36,11 @@ def main():
         assert read(f"data/gugugaga/recipe/{name}_seeds.json")["result"]["id"] == f"gugugaga:{name}_seeds"
         for item in (name, f"{name}_seeds"):
             model = read(f"assets/gugugaga/models/item/{item}.json")
-            assert model["textures"]["layer0"].startswith("minecraft:item/")
+            assert model["textures"]["layer0"] == f"gugugaga:item/crops/{item}"
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
         assert f"block.gugugaga.{name}_crop" in en and f"block.gugugaga.{name}_crop" in zh
     crop_block = (SRC / "AgricultureCropBlock.java").read_text("utf8")
-    assert 'seedName.equals("basil_seeds") || seedName.equals("mint_seeds")' in crop_block
+    assert '"basil_seeds", "mint_seeds"' in crop_block
     assert "public InteractionResult useWithoutItem" in crop_block
     assert "Block.popResource(level, pos, new ItemStack(leaves))" in crop_block
     assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in crop_block

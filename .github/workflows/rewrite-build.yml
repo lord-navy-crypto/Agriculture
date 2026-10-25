@@ -28,6 +28,7 @@ jobs:
           python3 qa/validate_crop_diversity_v1_0.py
           python3 qa/validate_suspicious_stew_honey_parity.py
           python3 qa/validate_crop_v1_3.py
+          python3 qa/validate_crop_lifecycle_v1_4.py
           python3 qa/validate_agriculture_compost_v1_3.py
 
   neoforge:

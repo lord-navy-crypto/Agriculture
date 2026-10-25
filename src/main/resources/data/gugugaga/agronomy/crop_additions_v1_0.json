@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "count": 12,
-  "caveat": "Growth-band and individual plant seed crafting are Minecraft approximations. Crop blocks currently reuse native wheat stage models; biome temperature is not degrees Celsius.",
+  "caveat": "Growth-band and individual plant seed crafting are Minecraft approximations. Each crop now has custom generated pixel-art inventory icons and eight distinct growth-stage textures; tick duration remains a gameplay abstraction.",
   "crops": [
     {
       "crop": "parsnip",

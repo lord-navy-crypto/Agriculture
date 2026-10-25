@@ -32,19 +32,22 @@ def main():
         assert loot[1]["entries"][0]["name"]==f"gugugaga:{c}"
         assert load(f"data/gugugaga/recipe/{c}_seeds.json")["result"]["id"]==f"gugugaga:{c}_seeds"
         for item in (c,c+"_seeds"):
-            assert load(f"assets/gugugaga/models/item/{item}.json")["textures"]["layer0"].startswith("minecraft:item/")
+            assert load(f"assets/gugugaga/models/item/{item}.json")["textures"]["layer0"] == f"gugugaga:item/crops/{item}"
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
     for crop_id in all_ids:
         variants=load(f"assets/gugugaga/blockstates/{crop_id}_crop.json")["variants"]
         assert set(variants)=={f"age={i},pollinated={p}" for i in range(8) for p in ("false","true")},crop_id
         for age in range(8):
-            assert variants[f"age={age},pollinated=false"]==variants[f"age={age},pollinated=true"],crop_id
-    assert 'seedName.equals("bok_choy_seeds")' in block
-    fruit_names = "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea".split()
+            base = f"gugugaga:block/crops/{crop_id}_stage{age}"
+            assert variants[f"age={age},pollinated=false"]["model"] == base, crop_id
+            expected = base + ("_pollinated" if age >= 4 else "")
+            assert variants[f"age={age},pollinated=true"]["model"] == expected, crop_id
+    assert '"bok_choy_seeds"' in block
+    fruit_names = "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea broccoli brussels_sprouts cotton".split()
     for fruit in fruit_names:
         assert f'"{fruit}_seeds"' in block, fruit
-    assert "int fruitCount = pollinationGroup != PollinationGroup.NONE" in block
-    assert "new ItemStack(leaves, fruitCount)" in block
+    assert "int harvestCount = pollinationGroup != PollinationGroup.NONE" in block
+    assert "new ItemStack(leaves, harvestCount)" in block
     assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in block
-    print("CROP_V1_3_OK: eight new complete crop lines; all 64 have 16 visual states")
+    print("CROP_V1_3_OK: all 64 crops use distinct stage models and pollen-marked reproductive variants")
 if __name__=="__main__": main()

@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -125,53 +126,49 @@ public final class AgricultureCropBlock extends CropBlock {
         }
     }
 
-    /**
-     * Basil and mint can be leaf-harvested repeatedly in real gardens.
-     * Empty-hand interaction harvests one mature crop item and leaves the plant
-     * at a vegetative stage to regrow. Breaking the plant still uses normal loot.
-     */
+    private enum HarvestMode { SINGLE_HARVEST, FRUIT, LEAVES, FLOWERS }
+
+    private static final Set<String> REPEATED_FRUIT_HARVEST = Set.of(
+            "tomato_seeds", "cucumber_seeds", "strawberry_seeds", "blueberry_seeds",
+            "bell_pepper_seeds", "eggplant_seeds", "zucchini_seeds", "raspberry_seeds",
+            "cranberry_seeds", "okra_seeds", "chili_pepper_seeds", "green_bean_seeds",
+            "pea_seeds", "broccoli_seeds", "brussels_sprouts_seeds", "cotton_seeds");
+    private static final Set<String> REPEATED_LEAF_HARVEST = Set.of(
+            "basil_seeds", "mint_seeds", "arugula_seeds", "swiss_chard_seeds",
+            "parsley_seeds", "collard_greens_seeds", "dill_seeds", "cilantro_seeds",
+            "bok_choy_seeds", "lettuce_seeds", "spinach_seeds", "kale_seeds",
+            "celery_seeds");
+    private static final Set<String> REPEATED_FLOWER_HARVEST = Set.of(
+            "lavender_seeds", "clover_seeds", "artichoke_seeds");
+
+    private HarvestMode harvestMode() {
+        if (REPEATED_FRUIT_HARVEST.contains(seedName)) return HarvestMode.FRUIT;
+        if (REPEATED_LEAF_HARVEST.contains(seedName)) return HarvestMode.LEAVES;
+        if (REPEATED_FLOWER_HARVEST.contains(seedName)) return HarvestMode.FLOWERS;
+        return HarvestMode.SINGLE_HARVEST;
+    }
+
     @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                             Player player, BlockHitResult hit) {
-        boolean cuttingHerb = seedName.equals("basil_seeds") || seedName.equals("mint_seeds")
-                || seedName.equals("arugula_seeds")
-                || seedName.equals("swiss_chard_seeds")
-                || seedName.equals("parsley_seeds")
-                || seedName.equals("collard_greens_seeds")
-                || seedName.equals("dill_seeds")
-                || seedName.equals("cilantro_seeds")
-                || seedName.equals("bok_choy_seeds");
-        // Fruit-bearing plants remain rooted after picking: do not uproot a
-        // tomato vine or berry bush simply to collect one ripe fruit.
-        // Grain, roots, dry seed crops and bulbs still use break-and-replant.
-        boolean recurringFruit = switch (seedName) {
-            case "tomato_seeds", "cucumber_seeds", "strawberry_seeds",
-                    "blueberry_seeds", "bell_pepper_seeds", "eggplant_seeds",
-                    "zucchini_seeds", "raspberry_seeds", "cranberry_seeds",
-                    "okra_seeds", "chili_pepper_seeds", "green_bean_seeds",
-                    "pea_seeds" -> true;
-            default -> false;
-        };
-        if ((!cuttingHerb && !recurringFruit) || state.getValue(AGE) < getMaxAge()) {
+        HarvestMode mode = harvestMode();
+        if (mode == HarvestMode.SINGLE_HARVEST || state.getValue(AGE) < getMaxAge()) {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide) {
             String name = seedName.substring(0, seedName.length() - "_seeds".length());
             Item leaves = BuiltInRegistries.ITEM.get(
                     ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, name));
-            if (recurringFruit) {
-                // A persisted pollination marker improves this actual fruit
-                // harvest too; previously only breaking the entire crop paid
-                // the bonus, incentivizing destruction of fruiting plants.
-                int fruitCount = pollinationGroup != PollinationGroup.NONE
-                        && state.getValue(POLLINATED) ? 2 : 1;
-                Block.popResource(level, pos, new ItemStack(leaves, fruitCount));
-            } else {
-                // Native block drop enables collection by hoppers/inventory systems.
+            if (mode == HarvestMode.LEAVES) {
+                // Leaf harvest happens before seed set and gets no artificial bee bonus.
                 Block.popResource(level, pos, new ItemStack(leaves));
+            } else {
+                int harvestCount = pollinationGroup != PollinationGroup.NONE
+                        && state.getValue(POLLINATED) ? 2 : 1;
+                Block.popResource(level, pos, new ItemStack(leaves, harvestCount));
             }
-            // Growth is required again before the next pick; no rapid repeated
-            // use can generate extra produce from a single mature block.
+            // The plant stays rooted and must regrow from stage 4 to stage 7
+            // before another harvest can occur.
             level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3);
         }
         return InteractionResult.SUCCESS;

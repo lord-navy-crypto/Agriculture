@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/pumpkin_seeds"
+    "layer0": "gugugaga:item/crops/cucumber_seeds"
   }
 }

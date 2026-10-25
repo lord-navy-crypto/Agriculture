@@ -45,3 +45,6 @@ neoForge.ideSyncTask generateModMetadata
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+// Generate and package crop-specific growth-stage and inventory sprites.
+apply from: 'tools/crop-textures.gradle'
