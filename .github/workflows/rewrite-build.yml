@@ -24,6 +24,7 @@ jobs:
           python3 qa/validate_rice_paddy.py
           python3 qa/validate_pollination_and_honey.py
           python3 qa/validate_bee_nest_habitats.py
+          python3 qa/validate_crop_and_nectar_expansion.py
 
   neoforge:
     runs-on: ubuntu-latest

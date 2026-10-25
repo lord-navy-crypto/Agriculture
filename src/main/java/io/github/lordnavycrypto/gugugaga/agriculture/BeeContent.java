@@ -2,6 +2,8 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.HoneyBottleItem;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -50,6 +52,19 @@ public final class BeeContent {
             "berry_bee_tag", () -> new BeeEcotypeItem("berry", new Item.Properties()));
     public static final DeferredItem<Item> LARGE_APIARY_KIT = ITEMS.register(
             "large_apiary_kit", () -> new LargeApiaryKitItem(new Item.Properties()));
+
+    /** Distinct nectar-source bottles use the native drinkable honey item behavior. */
+    public static final DeferredItem<HoneyBottleItem> CLOVER_HONEY_BOTTLE = floralHoney("clover_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> LAVENDER_HONEY_BOTTLE = floralHoney("lavender_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> BUCKWHEAT_HONEY_BOTTLE = floralHoney("buckwheat_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> SUNFLOWER_HONEY_BOTTLE = floralHoney("sunflower_honey_bottle");
+
+    private static DeferredItem<HoneyBottleItem> floralHoney(String name) {
+        // HoneyBottleItem provides drinking, poison removal and glass-bottle return.
+        return ITEMS.register(name, () -> new HoneyBottleItem(new Item.Properties()
+                .stacksTo(16).food(new FoodProperties.Builder()
+                        .nutrition(6).saturationModifier(0.1F).alwaysEdible().build())));
+    }
 
     public static final DeferredItem<Item> HONEY_HARVESTER = ITEMS.register(
             "honey_harvester", () -> new HoneyHarvesterItem(new Item.Properties()));

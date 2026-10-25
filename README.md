@@ -56,3 +56,12 @@ The honey harvester supports **bottling honey** (one glass bottle, from offhand/
 ### Agriculture ecology and performance v0.7
 
 Mature fields now skip unnecessary biome/water/pollinator scans. A bee must have recently foraged (the vanilla nectar flag) before it can set a crop's pollination marker. Rice water detection reuses one mutable coordinate, and native-bee habitats distinguish bare-soil squash-bee nesting from managed cavity-nesting habitat. The honey harvester now uses Minecraft's own campfire-smoke check. See docs/AGRICULTURE_BEECARE_V0_6.md for source references and limitations.
+
+
+### v0.9: 44 crop lines and floral-source honey bottles
+
+Eight newly plantable crops (lavender, clover, basil, mint, mustard, canola,
+celery, leek) extend the original 36. New drinkable honey bottles are clover,
+lavender, buckwheat and sunflower; they are classified from predominant nearby
+flowering crops only when harvesting a full smoked native hive. Mixed/uncertain
+forage still yields regular honey. See `docs/AGRICULTURE_CROPS_AND_NECTAR_V0_9.md`.

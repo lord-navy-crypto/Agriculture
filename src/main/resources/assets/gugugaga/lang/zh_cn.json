@@ -161,5 +161,9 @@
   "item.gugugaga.celery": "芹菜",
   "block.gugugaga.leek_crop": "韭葱作物",
   "item.gugugaga.leek_seeds": "韭葱种子",
-  "item.gugugaga.leek": "韭葱"
+  "item.gugugaga.leek": "韭葱",
+  "item.gugugaga.clover_honey_bottle": "三叶草蜂蜜瓶",
+  "item.gugugaga.lavender_honey_bottle": "薰衣草蜂蜜瓶",
+  "item.gugugaga.buckwheat_honey_bottle": "荞麦蜂蜜瓶",
+  "item.gugugaga.sunflower_honey_bottle": "向日葵蜂蜜瓶"
 }

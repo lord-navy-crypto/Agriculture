@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.9",
+  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at honey harvest; real monofloral honey needs time-resolved nectar analysis and botanical authentication.",
+  "nectar_flower_minimum": 6,
+  "dominant_share_at_least": 0.6666666666666666,
+  "honey_variants": [
+    {
+      "item": "clover_honey_bottle",
+      "source_crop": "clover_crop"
+    },
+    {
+      "item": "lavender_honey_bottle",
+      "source_crop": "lavender_crop"
+    },
+    {
+      "item": "buckwheat_honey_bottle",
+      "source_crop": "buckwheat_crop"
+    },
+    {
+      "item": "sunflower_honey_bottle",
+      "source_crop": "sunflower_seed_crop"
+    }
+  ],
+  "unknown_or_mixed_output": "minecraft:honey_bottle",
+  "requires": "a native beehive or bee nest at honey level 5, an empty bottle, and vanilla campfire smoke",
+  "references": [
+    "https://extension.arizona.edu/publication/monofloral-honeys",
+    "https://extension.arizona.edu/publication/arizona-specialty-honeys",
+    "https://www.fao.org/4/x0083e/X0083E04.htm",
+    "https://www.ams.usda.gov/sites/default/files/media/Comb_Honey_Inspection_Instructions%5B1%5D.pdf"
+  ]
+}

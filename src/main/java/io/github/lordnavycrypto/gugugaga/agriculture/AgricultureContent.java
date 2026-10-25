@@ -264,6 +264,10 @@ public final class AgricultureContent {
             event.accept(MINT.get());
             event.accept(CELERY.get());
             event.accept(LEEK.get());
+            event.accept(BeeContent.CLOVER_HONEY_BOTTLE.get());
+            event.accept(BeeContent.LAVENDER_HONEY_BOTTLE.get());
+            event.accept(BeeContent.BUCKWHEAT_HONEY_BOTTLE.get());
+            event.accept(BeeContent.SUNFLOWER_HONEY_BOTTLE.get());
             event.accept(CORN.get());
             event.accept(TOMATO.get());
             event.accept(ONION.get());

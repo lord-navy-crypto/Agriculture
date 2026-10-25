@@ -83,7 +83,7 @@
       "pollination_mode_real_world": "Stalks harvested before flowering; no bee dependence",
       "seed_recipe_gameplay": "minecraft:beetroot_seeds",
       "source_urls": [
-        "https://extension.umn.edu/vegetables/growing-celery"
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
       ]
     },
     {
@@ -95,7 +95,8 @@
       "pollination_mode_real_world": "Leaf sheaths harvested before flowering; seed pollination not required for food harvest",
       "seed_recipe_gameplay": "minecraft:beetroot_seeds",
       "source_urls": [
-        "https://extension.umn.edu/vegetables/growing-onions"
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/starting-seeds-indoors",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-onions"
       ]
     }
   ]

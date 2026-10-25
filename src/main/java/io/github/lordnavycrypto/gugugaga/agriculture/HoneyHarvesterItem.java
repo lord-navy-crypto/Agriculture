@@ -87,7 +87,7 @@ public final class HoneyHarvesterItem extends Item {
             if (!player.getAbilities().instabuild) {
                 bottle.shrink(1);
             }
-            harvest = new ItemStack(Items.HONEY_BOTTLE);
+            harvest = NectarHoneySource.selectHoneyBottle(level, pos);
         }
 
         if (!player.getInventory().add(harvest)) {
