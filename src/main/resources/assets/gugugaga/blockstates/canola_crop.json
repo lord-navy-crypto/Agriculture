@@ -1,27 +1,51 @@
 {
   "variants": {
-    "age=0": {
+    "age=0,pollinated=false": {
       "model": "minecraft:block/wheat_stage0"
     },
-    "age=1": {
+    "age=0,pollinated=true": {
       "model": "minecraft:block/wheat_stage0"
     },
-    "age=2": {
+    "age=1,pollinated=false": {
+      "model": "minecraft:block/wheat_stage0"
+    },
+    "age=1,pollinated=true": {
+      "model": "minecraft:block/wheat_stage0"
+    },
+    "age=2,pollinated=false": {
       "model": "minecraft:block/wheat_stage1"
     },
-    "age=3": {
+    "age=2,pollinated=true": {
       "model": "minecraft:block/wheat_stage1"
     },
-    "age=4": {
+    "age=3,pollinated=false": {
+      "model": "minecraft:block/wheat_stage1"
+    },
+    "age=3,pollinated=true": {
+      "model": "minecraft:block/wheat_stage1"
+    },
+    "age=4,pollinated=false": {
       "model": "minecraft:block/wheat_stage2"
     },
-    "age=5": {
+    "age=4,pollinated=true": {
+      "model": "minecraft:block/wheat_stage2"
+    },
+    "age=5,pollinated=false": {
       "model": "minecraft:block/dandelion"
     },
-    "age=6": {
+    "age=5,pollinated=true": {
       "model": "minecraft:block/dandelion"
     },
-    "age=7": {
+    "age=6,pollinated=false": {
+      "model": "minecraft:block/dandelion"
+    },
+    "age=6,pollinated=true": {
+      "model": "minecraft:block/dandelion"
+    },
+    "age=7,pollinated=false": {
+      "model": "minecraft:block/dandelion"
+    },
+    "age=7,pollinated=true": {
       "model": "minecraft:block/dandelion"
     }
   }
