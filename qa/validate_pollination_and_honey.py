@@ -27,7 +27,7 @@ def main():
     assert "POLLINATED" in crop_source
     assert "getDrops(BlockState state, LootParams.Builder builder)" in crop_source
     assert "HONEY_HARVESTER" in bee_source
-    assert "BlockStateProperties.HONEY_LEVEL" in harvester_source
+    assert "BeehiveBlock.HONEY_LEVEL" in harvester_source
     assert "Items.GLASS_BOTTLE" in harvester_source
     assert "Blocks.SOUL_CAMPFIRE" in harvester_source
     assert "level.hasChunkAt(candidate)" in harvester_source
