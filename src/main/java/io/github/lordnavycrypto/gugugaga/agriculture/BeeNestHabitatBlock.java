@@ -13,6 +13,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -31,6 +34,13 @@ import net.minecraft.world.phys.BlockHitResult;
  */
 public final class BeeNestHabitatBlock extends Block {
     public static final IntegerProperty ACTIVITY = IntegerProperty.create("activity", 0, 3);
+    // Selection and collision outlines match each nest's actual rendered silhouette,
+    // rather than leaving invisible full-cube walls around a shallow soil burrow.
+    private static final VoxelShape BUMBLE_MOUND = Block.box(2, 0, 2, 14, 9, 14);
+    private static final VoxelShape MASON_HOTEL = Block.box(1, 0, 2, 15, 16, 15);
+    private static final VoxelShape SQUASH_BURROW = Block.box(0, 0, 0, 16, 3, 16);
+    private static final VoxelShape LEAFCUTTER_TUBES = Block.box(1, 0, 2, 15, 15, 14);
+
 
     private final String beeSpecies;
     private final boolean groundNesting;
@@ -46,6 +56,24 @@ public final class BeeNestHabitatBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ACTIVITY);
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+                                  CollisionContext context) {
+        return switch (beeSpecies) {
+            case "bumblebee" -> BUMBLE_MOUND;
+            case "mason_bee" -> MASON_HOTEL;
+            case "squash_bee" -> SQUASH_BURROW;
+            case "leafcutter_bee" -> LEAFCUTTER_TUBES;
+            default -> BUMBLE_MOUND;
+        };
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos,
+                                           CollisionContext context) {
+        return getShape(state, level, pos, context);
     }
 
     @Override

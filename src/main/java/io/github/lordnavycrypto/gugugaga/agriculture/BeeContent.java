@@ -39,7 +39,7 @@ public final class BeeContent {
     private static DeferredBlock<BeeNestHabitatBlock> habitat(String id, String beeId, boolean ground) {
         return BLOCKS.register(id, () -> new BeeNestHabitatBlock(beeId, ground,
                 BlockBehaviour.Properties.of().mapColor(ground ? MapColor.DIRT : MapColor.WOOD)
-                        .strength(ground ? 0.6F : 1.5F).sound(ground ? SoundType.GRAVEL : SoundType.WOOD)));
+                        .strength(ground ? 0.6F : 1.5F).noOcclusion().sound(ground ? SoundType.GRAVEL : SoundType.WOOD)));
     }
 
     private static DeferredItem<Item> habitatItem(String id, DeferredBlock<? extends Block> block) {

@@ -22,8 +22,13 @@ for id in names:
     assert state["activity=3"]["model"] == f"gugugaga:block/{id}_active", id
     for model_name in (id, f"{id}_active"):
         model = load(f"assets/gugugaga/models/block/{model_name}.json")
-        assert model["parent"] == "minecraft:block/cube", model_name
-        assert set(model["textures"]) == {"particle","down","up","north","south","west","east"}, model_name
+        assert model["parent"] == "minecraft:block/block", model_name
+        assert set(model["textures"]) == {"particle","down","up","north","south","west","east","hole","decoration"}, model_name
+        assert len(model["elements"]) >= 5, model_name
+        for element in model["elements"]:
+            assert len(element["from"]) == len(element["to"]) == 3, model_name
+            assert all(0 <= lo < hi <= 16 for lo,hi in zip(element["from"],element["to"])), model_name
+            assert all(face["texture"].startswith("#") for face in element["faces"].values()), model_name
     assert load(f"assets/gugugaga/models/item/{id}.json")["parent"] == f"gugugaga:block/{id}"
     assert load(f"data/gugugaga/recipe/{id}.json")["result"]["id"] == f"gugugaga:{id}", id
     drop = load(f"data/gugugaga/loot_table/blocks/{id}.json")["pools"][0]["entries"][0]["name"]
@@ -35,8 +40,12 @@ mod = (java / "GuguGagaMod.java").read_text("utf8")
 registry = (java / "agriculture/BeeContent.java").read_text("utf8")
 habitat = (java / "agriculture/BeeNestHabitatBlock.java").read_text("utf8")
 assert "BeeContent.BLOCKS.register(modBus)" in mod
+assert ".noOcclusion()" in registry
 for id in names:
     assert f'"{id}"' in registry, id
+assert "getCollisionShape(BlockState state, BlockGetter level" in habitat
+assert "BUMBLE_MOUND" in habitat and "MASON_HOTEL" in habitat
+assert "SQUASH_BURROW" in habitat and "LEAFCUTTER_TUBES" in habitat
 assert "randomTick" in habitat and "countMatchingBees" in habitat and "hasForage" in habitat
 assert "populationLimit()" in habitat and "random.nextInt(32)" in habitat
 assert 'ResourceLocation.fromNamespaceAndPath("gugugaga", beeSpecies)' in habitat
