@@ -23,7 +23,7 @@ def main():
 
     variants = data["honey_variants"]
     items = [row["item"] for row in variants]
-    assert len(items) == 23 and len(set(items)) == 23
+    assert len(items) == 30 and len(set(items)) == 30
 
     switch_body = bee.split('private static DeferredItem<HoneyBottleItem> floralHoney(String name)', 1)[1]
     switch_body = switch_body.split("return ITEMS.register(name", 1)[0]
@@ -72,7 +72,7 @@ def main():
         if row["source_crop"] != "mixed_flower_forage"
     }
     assert routed_sources == expected_sources
-    assert len(routed_sources) == 22
+    assert len(routed_sources) == 29
 
     # Every item needs an explicit route from the dominant source or mixed-forage branch.
     for item in items:
@@ -91,7 +91,7 @@ def main():
         if row["source_of_effect"] == "minecraft_java_1_21_1_suspicious_stew"
     }
     assert vanilla_stew_items == vanilla_flower_items
-    print("HONEY_SOURCE_CONTRACT_OK: 23 variants; food metadata/effects match code; 22 forage routes; 14 vanilla flower stew effects preserved")
+    print("HONEY_SOURCE_CONTRACT_OK: 30 variants; food metadata/effects match code; 29 forage routes; 14 vanilla flower stew effects preserved")
 
 
 if __name__ == "__main__":
