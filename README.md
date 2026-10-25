@@ -1,37 +1,40 @@
-# Gugu-Gaga Virus Mod — Clean Rewrite (0.1 dev)
+# Gugu-Gaga Agriculture & Apiaries
 
-Minecraft 1.21.1 / NeoForge 21.1.259 / Java 21.
+A clean, source-informed Minecraft 1.21.1 / NeoForge agriculture expansion for crops, bee husbandry, pollination, and apiary building.
 
-**New direction:** playable in-world infection game engine, not the previous informational 0–15 pathogen-map overlay. This branch is rebuilt from the bare main baseline.
+## Current development slice
 
-## Current prototype
-A server-side animal infection model runs directly on actual loaded vanilla Minecraft animal entities. It supports four in-game states: **Susceptible → Exposed → Infectious → Recovered (SEIR)**.
+- Ten plantable crops: corn, tomato, onion, rice, soybean, strawberry, cucumber, blueberry, bell pepper, and garlic.
+- Normal Minecraft crop rules: farmland planting, random-tick growth, mature harvesting, and seed recovery.
+- Pollination-aware growth for flowering/fruiting crops. Vanilla bees act as the general meadow ecotype; players can tag a bee as a meadow, orchard, or berry line using a crafted tag. The lines have different crop compatibility and effective foraging radii.
+- A large-apiary kit places a 2×2 arrangement of four vanilla beehives, retaining vanilla hive block entities and their normal behavior. This gives a compact 12-bee installation (four hives × three stored bees) without replacing Minecraft’s native hive storage.
+- Bilingual English/Chinese names and basic recipes.
 
-A seeded infectious animal can expose nearby susceptible animals. Later game frames advance the exposure stage into an infectious stage, which can produce another generation of contacts, before recovery. ENCHANT particles mark infectious animals.
+## Technical target
 
-Run as a player:
-```text
-/gugugaga infection status
-```
-Operators can start or reset a demonstration:
-```text
-/gugugaga infection seed
-/gugugaga infection clear
-```
+- Minecraft 1.21.1
+- NeoForge 21.1.259
+- Java 21
+- Mod ID: gugugaga
 
-Status is dimension-scoped. The rewrite has no persistent infected-entity save data yet; multiplayer, actual in-game optics and save/restart are not fully validated. Contact range and transition times are **gameplay settings, not specific real pathogens' biological rates**.
+## Build and checks
 
-## Build
-Use Java 21 and Gradle 9.2.1:
-```sh
-gradle --no-daemon build
-```
-The packaged JAR is under `build/libs/`. NeoForge's plugin downloads the necessary Minecraft dependencies.
+Run gradle --no-daemon --stacktrace build, then python3 qa/validate_agriculture_assets.py and python3 qa/smoke_rewrite_server.py.
 
-## Archived legacy development
-The original V1–V21 code, research, tests, and history remain at:
-`archive/pathogen-v1-v21-20261025` (commit `ad618120795fc699949aa008a45db94882b3e7db`).
+The asset validator checks JSON validity, crop state coverage, loot tables, item models, localization, and recipes. CI also compiles the mod and launches a disposable NeoForge dedicated server. A successful build is not a substitute for a graphical in-world acceptance test.
 
-PR #44 was closed **without merging**. The old prototype and files are intact. Do not treat old 0–15 numerical visual indicators as part of this rewrite.
+## Gameplay simplifications and next steps
 
-See `docs/REWRITE_V0_1_ACCEPTANCE.md` for test coverage and known limits.
+- Crop textures currently reuse vanilla Minecraft crop/item textures as placeholders; custom art and crop-specific silhouettes are a follow-up.
+- Rice is currently a normal farmland crop rather than a water-managed paddy.
+- Pollination is represented by a small, bounded growth bonus rather than a full flower-to-fruit yield simulation.
+- Bee lines are data-tagged ecotypes of the vanilla bee, not separately modelled biological species yet. They share vanilla appearance, breeding, hive behavior, and pathfinding. Species-specific entities/models, richer hive capacity, and dedicated pollination/yield rules remain future work.
+
+## Research grounding
+
+The game rules are simplified, but their direction is informed by:
+- USDA NRCS, Insects and Pollinators: https://www.nrcs.usda.gov/conservation-basics/animals/insects-pollinators
+- Utah State University Extension, Pollination: https://extension.usu.edu/vegetableguide/production/pollination
+- FAO, What is agricultural biodiversity?: https://www.fao.org/agriculture/crops/thematic-sitemap/theme/compendium/tools-guidelines/what-is-agricultural-biodiversity/en/
+
+These sources inform the design; in-game timers and bonuses are gameplay abstractions, not claims about exact real-world crop growth rates.

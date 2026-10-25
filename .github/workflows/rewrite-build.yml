@@ -1,26 +1,20 @@
-name: Clean Virus Mod Rewrite (NeoForge 1.21.1)
+name: Agriculture & Apiaries (NeoForge 1.21.1)
 on:
   push:
     branches:
-      - 'rewrite/**'
+      - 'feat/agriculture/**'
   pull_request:
 
 jobs:
-  pure-engine:
+  validate-assets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-python@v5
         with:
-          distribution: temurin
-          java-version: '21'
-      - name: Compile and execute real gameplay SEIR test
-        run: |
-          mkdir -p build/core-smoke
-          javac -encoding UTF-8 -d build/core-smoke \
-            src/main/java/io/github/lordnavycrypto/gugugaga/simulation/InfectionEngine.java \
-            qa/java/InfectionEngineSmoke.java
-          java -cp build/core-smoke InfectionEngineSmoke
+          python-version: '3.x'
+      - name: Validate crop resources, loot tables, translations, and recipes
+        run: python3 qa/validate_agriculture_assets.py
 
   neoforge:
     runs-on: ubuntu-latest
@@ -34,11 +28,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.2.1'
-      - name: Compile and package Minecraft virus mod
+      - name: Compile and package agriculture mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
         with:
-          name: gugugaga-virus-mod-rewrite
+          name: gugu-gaga-agriculture
           path: build/libs/*.jar
           if-no-files-found: error
 
@@ -60,6 +54,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rewrite-server-launch-log
-          path: build/rewrite-server-boot.log
+          name: agriculture-server-launch-log
+          path: build/agriculture-server-boot.log
           if-no-files-found: warn

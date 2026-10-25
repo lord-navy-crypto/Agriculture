@@ -8,10 +8,10 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 displayURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror"
-authors="Gugu-Gaga Virus Mod contributors"
+authors="Gugu-Gaga Agriculture contributors"
 description='''
-New lightweight Minecraft 1.21.1/NeoForge game disease simulation,
-beginning with a directly playable fictional SEIR animal-status system.
+A source-informed Minecraft agriculture expansion with ten plantable crops,
+pollination-aware growth, bee ecotype tags, and a four-hive apiary placement kit.
 '''
 
 [[dependencies.${mod_id}]]
