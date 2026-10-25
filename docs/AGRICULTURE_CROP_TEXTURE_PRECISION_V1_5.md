@@ -28,7 +28,7 @@ The Gradle generator still creates assets deterministically under `build/generat
 - 128 custom inventory icons: one produce icon and one seed icon for each crop.
 
 QA now checks that every crop ID has explicit seedling and mature morphology branches, a validated leaf-architecture assignment, and a harvested-organ item-art assignment sourced from a non-empty crop profile. This sits alongside the existing checks for 64 crop registrations/profiles, eight distinct stages per crop, 64 unique mature sprites, 768 unique stage/pollination textures, bilingual labels, seed recipes, harvest loot and composting entries.
-The Gradle build also emits `build/reports/agriculture/crop-stage-contact-sheet.png`: each crop appears on one labeled row, with ages 0–7 followed by pollinated ages 4–7. CI uploads this sheet as a separate `crop-stage-contact-sheet` artifact so the actual generated sprites can be visually reviewed instead of trusting file counts alone.
+The Gradle build emits three visual review sheets under `build/reports/agriculture/`: `crop-stage-contact-sheet.png` (all ages and pollinated variants), `produce-icon-contact-sheet.png` (all 64 harvested-product icons), and `seed-icon-contact-sheet.png` (all 64 seed icons). Each sheet uses one labeled crop per row and nearest-neighbor enlargement. CI publishes all three together as the `agriculture-visual-proof` artifact so reviewers can inspect the generated art instead of trusting file counts alone.
 
 ## Acceptance boundary
 
