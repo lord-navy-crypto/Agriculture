@@ -21,6 +21,14 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class NectarHoneySource {
     private NectarHoneySource() {}
 
+    // These mature crops are wind/self-pollinated in this gameplay model and do not
+    // count as nectar forage. New insect-pollinated crop lines are included by default,
+    // so adding a crop does not silently make nearby floral honey too easy to obtain.
+    private static final Set<String> NON_NECTAR_CROPS = Set.of(
+            "corn_crop", "sweet_corn_crop", "rice_crop", "barley_crop", "oat_crop",
+            "rye_crop", "sorghum_crop", "millet_crop", "teff_crop", "quinoa_crop",
+            "amaranth_crop");
+
     // This order is intentionally stable for tie handling.
     private static final String[] SOURCES = {
             "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop",
@@ -136,15 +144,10 @@ public final class NectarHoneySource {
     }
 
     private static boolean isOtherNectarCrop(String cropId) {
-        // These currently grow in the mod and may compete as nectar sources.
-        return switch (cropId) {
-            case "canola_crop", "mustard_crop", "basil_crop", "mint_crop",
-                    "cucumber_crop", "zucchini_crop", "blueberry_crop",
-                    "raspberry_crop", "strawberry_crop", "cranberry_crop",
-                    "sunflower_crop", "sesame_crop", "okra_crop",
-                    "chili_pepper_crop", "dill_crop", "cilantro_crop", "asparagus_crop",
-                    "pineapple_crop", "amaranth_crop", "sweet_corn_crop" -> true;
-            default -> false;
-        };
+        // Only crops explicitly modeled as wind/self-pollinated are excluded.
+        // Every other mature AgricultureCropBlock is a potential nectar source.
+        // This default keeps new crop additions participating in honey mixing without
+        // requiring a second hand-maintained whitelist.
+        return !NON_NECTAR_CROPS.contains(cropId);
     }
 }
