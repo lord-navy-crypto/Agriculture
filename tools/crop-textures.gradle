@@ -809,7 +809,7 @@ tasks.register('generateCropAssets') {
                         disc.call(image, 8, 9, 4, 3, accent); disc.call(image, 8, 8, 3, 2, dark)
                         line.call(image, 8, 7, 8, 3, greenDark); line.call(image, 8, 4, 5, 2, green); line.call(image, 8, 4, 11, 2, greenLight)
                         put.call(image, 6, 9, light); put.call(image, 10, 10, dark)
-                    } else {
+                    } else if (crop == 'yam') {
                         line.call(image, 3, 9, 7, 6, dark); line.call(image, 7, 6, 12, 9, accent)
                         line.call(image, 4, 10, 7, 8, accent); line.call(image, 7, 8, 11, 10, dark)
                         put.call(image, 5, 9, cream); put.call(image, 10, 9, light); put.call(image, 8, 6, greenDark)
