@@ -33,6 +33,12 @@ public final class BeeWildlife {
     public static final DeferredHolder<EntityType<?>, EntityType<Bee>> LEAFCUTTER_BEE =
             bee("leafcutter_bee", 0.60F, 0.50F);
 
+    /** Ground-nesting mining bees (Andrena-like, with temporary vanilla bee AI). */
+    public static final DeferredHolder<EntityType<?>, EntityType<Bee>> MINING_BEE =
+            bee("mining_bee", 0.54F, 0.45F);
+    /** Sweat bees (Halictidae-like, temporary vanilla bee AI). */
+    public static final DeferredHolder<EntityType<?>, EntityType<Bee>> SWEAT_BEE =
+            bee("sweat_bee", 0.46F, 0.40F);
     private static DeferredHolder<EntityType<?>, EntityType<Bee>> bee(String name, float width, float height) {
         return ENTITIES.register(name, () -> EntityType.Builder.of(Bee::new, MobCategory.CREATURE)
                 .sized(width, height).clientTrackingRange(8)
@@ -44,6 +50,8 @@ public final class BeeWildlife {
         event.put(MASON_BEE.get(), Bee.createAttributes().build());
         event.put(SQUASH_BEE.get(), Bee.createAttributes().build());
         event.put(LEAFCUTTER_BEE.get(), Bee.createAttributes().build());
+        event.put(MINING_BEE.get(), Bee.createAttributes().build());
+        event.put(SWEAT_BEE.get(), Bee.createAttributes().build());
     }
 
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {
@@ -51,6 +59,8 @@ public final class BeeWildlife {
         place(event, MASON_BEE.get());
         place(event, SQUASH_BEE.get());
         place(event, LEAFCUTTER_BEE.get());
+        place(event, MINING_BEE.get());
+        place(event, SWEAT_BEE.get());
     }
 
     private static void place(RegisterSpawnPlacementsEvent event, EntityType<Bee> type) {

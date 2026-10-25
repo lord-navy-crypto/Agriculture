@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "notes": "Source-backed real values separated from fictional Minecraft mechanics; not calibrated weather or soil data.",
+  "realReference": [
+    {
+      "crop": "radish",
+      "maturityDaysRange": [
+        30,
+        60
+      ],
+      "source": "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+    },
+    {
+      "crop": "turnip",
+      "maturityDaysRange": [
+        50,
+        60
+      ],
+      "source": "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+    },
+    {
+      "crop": "radish",
+      "minimumGerminationF": 45,
+      "source": "https://www.nrcs.usda.gov/sites/default/files/2022-09/NE_CC_QuickReference.pdf"
+    },
+    {
+      "crop": "turnip",
+      "minimumGerminationF": 45,
+      "source": "https://www.nrcs.usda.gov/sites/default/files/2022-09/NE_CC_QuickReference.pdf"
+    },
+    {
+      "crop": "buckwheat",
+      "minimumGerminationF": 50,
+      "source": "https://www.nrcs.usda.gov/sites/default/files/2022-09/NE_CC_QuickReference.pdf"
+    }
+  ],
+  "gameProfiles": {
+    "radish": {
+      "climate": "cool",
+      "pollination": "none for edible root",
+      "wildBiomes": [
+        "plains",
+        "meadow",
+        "flower_forest"
+      ]
+    },
+    "turnip": {
+      "climate": "cool",
+      "pollination": "none for edible root"
+    },
+    "parsnip": {
+      "climate": "cool",
+      "pollination": "none for edible root"
+    },
+    "kale": {
+      "climate": "cool",
+      "pollination": "none for leafy harvest"
+    },
+    "swiss_chard": {
+      "climate": "cool",
+      "pollination": "none for leafy harvest"
+    },
+    "buckwheat": {
+      "climate": "warm",
+      "pollination": "simplified insect visit bonus"
+    },
+    "millet": {
+      "climate": "dry",
+      "pollination": "wind",
+      "wildBiomes": [
+        "plains",
+        "savanna",
+        "sunflower_plains"
+      ]
+    },
+    "sesame": {
+      "climate": "warm",
+      "pollination": "simplified insect visit bonus"
+    }
+  }
+}
