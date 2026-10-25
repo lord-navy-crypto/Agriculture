@@ -22,6 +22,7 @@ jobs:
           python3 qa/validate_agronomic_sources.py
           python3 qa/validate_agriculture_v0_3.py
           python3 qa/validate_rice_paddy.py
+          python3 qa/validate_pollination_and_honey.py
 
   neoforge:
     runs-on: ubuntu-latest
