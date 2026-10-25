@@ -5,6 +5,12 @@ on:
       - 'feat/agriculture/**'
   pull_request:
 
+# Supersede stale asset-by-asset runs with the latest branch validation.
+# Push and pull-request events for the same head branch share one concurrency group.
+concurrency:
+  group: agriculture-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   validate-assets:
     runs-on: ubuntu-latest
