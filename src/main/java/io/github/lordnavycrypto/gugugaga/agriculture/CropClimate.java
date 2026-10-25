@@ -29,16 +29,20 @@ public final class CropClimate {
             "cabbage_seeds", 40
     );
     private static Band cropBand(String seedName) {
+        // Broad gameplay groups informed by crop-season guidance, not measured biome temperatures.
         return switch (seedName) {
             case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
-                 "lettuce_seeds", "cabbage_seeds", "spinach_seeds",
-                 "broccoli_seeds", "blueberry_seeds", "buckwheat_seeds",
-                 "radish_seeds", "turnip_seeds", "kale_seeds", "cranberry_seeds" -> Band.COOL;
+                 "lettuce_seeds", "cabbage_seeds", "spinach_seeds", "broccoli_seeds",
+                 "blueberry_seeds", "buckwheat_seeds", "radish_seeds", "turnip_seeds",
+                 "kale_seeds", "cranberry_seeds", "strawberry_seeds", "onion_seeds",
+                 "garlic_seeds", "flax_seeds", "lentil_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
-                 "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds",
-                 "peanut_seeds", "sweet_potato_seeds", "zucchini_seeds" -> Band.WARM;
-            case "sorghum_seeds", "millet_seeds", "sesame_seeds" -> Band.DRY;
+                 "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
+                 "sweet_potato_seeds", "zucchini_seeds", "sunflower_seed_seeds",
+                 "sesame_seeds" -> Band.WARM;
+            case "sorghum_seeds", "millet_seeds" -> Band.DRY;
             case "rice_seeds" -> Band.WET;
+            case "chickpea_seeds", "raspberry_seeds" -> Band.TEMPERATE;
             default -> Band.TEMPERATE;
         };
     }
