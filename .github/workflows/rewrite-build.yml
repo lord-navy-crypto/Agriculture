@@ -31,6 +31,7 @@ jobs:
           python3 qa/validate_crop_lifecycle_v1_4.py
           python3 qa/validate_agriculture_compost_v1_3.py
           python3 qa/validate_agriculture_v1_7.py
+          python3 qa/validate_agriculture_v1_8.py
 
   neoforge:
     runs-on: ubuntu-latest
