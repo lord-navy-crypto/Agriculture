@@ -493,6 +493,10 @@ tasks.register('generateCropAssets') {
                 line.call(image, 7, 14, 10, 12, leafLight)
             }
             cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)
+            // Keep every age visibly distinct even if a large mature organ overlaps the stem.
+            // The changing tip highlight follows the plant's growth height and crop accent.
+            int growthTipY = Math.max(1, top)
+            put.call(image, 7, growthTipY, shade.call(accent, 0.72d + stage * 0.05d))
             if (pollinated && stage >= 4) {
                 put.call(image, 4, Math.min(13, top + 5), pollen)
                 put.call(image, 11, Math.min(13, top + 6), pollen)
