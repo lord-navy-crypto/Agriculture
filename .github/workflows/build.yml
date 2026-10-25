@@ -355,6 +355,13 @@ jobs:
             src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PathogenSpatialFieldMath.java \
             qa/java/FieldGameNumericsSmoke.java
           java -cp build/v19-field-numerics FieldGameNumericsSmoke
+      - name: V20 CDC/WHO sourced laboratory surveillance and empirical reporting smoke (Java21)
+        run: |
+          mkdir -p build/v20-publichealth
+          javac -encoding UTF-8 -d build/v20-publichealth \
+            src/main/java/io/github/lordnavycrypto/gugugaga/pathogens/PublicHealthSurveillance.java \
+            qa/java/PublicHealthSurveillanceSmoke.java
+          java -cp build/v20-publichealth:src/main/resources PublicHealthSurveillanceSmoke
       - name: Compile and package NeoForge mod
         run: gradle --no-daemon --stacktrace build
       - uses: actions/upload-artifact@v4
