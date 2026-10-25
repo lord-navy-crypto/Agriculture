@@ -39,12 +39,12 @@ public final class NectarHoneySource {
             "blackberry_crop", "blackcurrant_crop", "chives_crop", "pumpkin_crop",
             "cassava_crop", "taro_crop", "yam_crop", "watercress_crop", "endive_crop",
             "kohlrabi_crop", "rutabaga_crop",
-            "jicama_blossom_crop",
-            "adzuki_bean_blossom_crop",
-            "mung_bean_blossom_crop",
-            "cowpea_blossom_crop",
+            "jicama_crop",
+            "adzuki_bean_crop",
+            "mung_bean_crop",
+            "cowpea_crop",
             "safflower_crop",
-            "chicory_blossom_crop",
+            "chicory_crop",
             "mustard_greens_crop",
             "water_spinach_crop"
     };

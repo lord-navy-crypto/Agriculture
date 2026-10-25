@@ -14,7 +14,7 @@ PROFILE_FILES = (
     "crop_additions_v1_0.json",
     "crop_additions_v1_3.json",
     "crop_additions_v1_7.json",
-    "crop_additions_v1_8.json",
+    "crop_additions_v1_8.json", "crop_additions_v1_9.json",
 )
 
 def main():
@@ -22,7 +22,7 @@ def main():
     for name in PROFILE_FILES:
         data = json.loads((RES / "data/gugugaga/agronomy" / name).read_text(encoding="utf-8"))
         crop_names.extend(row["crop"] for row in data["crops"])
-    assert len(crop_names) == 80 and len(set(crop_names)) == 80
+    assert len(crop_names) == 88 and len(set(crop_names)) == 88
     crop_blocks = {name + "_crop" for name in crop_names}
 
     source = SOURCE.read_text(encoding="utf-8")
@@ -41,17 +41,19 @@ def main():
     expected_specialty = {
         "cassava_crop", "taro_crop", "yam_crop", "watercress_crop",
         "endive_crop", "kohlrabi_crop", "rutabaga_crop",
+        "jicama_crop", "adzuki_bean_crop", "mung_bean_crop", "cowpea_crop",
+        "safflower_crop", "chicory_crop", "mustard_greens_crop", "water_spinach_crop",
     }
     assert expected_specialty <= specific_sources
     assert "teff_crop" in non_nectar
 
     generic = crop_blocks - specific_sources - non_nectar
-    assert len(specific_sources) == 15
+    assert len(specific_sources) == 23
     assert len(non_nectar) == 11
     assert len(generic) == 54
-    data = json.loads((RES / "data/gugugaga/agronomy/honey_sources_v0_9.json").read_text(encoding="utf-8"))
+    data = json.loads((RES / "data/gugugaga/agronomy/honey_sources_v1_0.json").read_text(encoding="utf-8"))
     assert "Mature mod crops count as potential nectar forage by default" in data["description"]
-    print("HONEY_FORAGE_COVERAGE_V1_1_OK: 80 crops; 15 specific source crops; 11 explicit non-nectar crops; 54 generic nectar/mixed-forage crops")
+    print("HONEY_FORAGE_COVERAGE_V1_1_OK: 88 crops; 23 specific source crops; 11 explicit non-nectar crops; 54 generic nectar/mixed-forage crops")
 
 if __name__ == "__main__":
     main()

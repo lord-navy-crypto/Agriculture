@@ -32,6 +32,7 @@ jobs:
           python3 qa/validate_agriculture_compost_v1_3.py
           python3 qa/validate_agriculture_v1_7.py
           python3 qa/validate_agriculture_v1_8.py
+          python3 qa/validate_agriculture_v1_9.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
 
