@@ -93,7 +93,7 @@ def main():
     assert "int branchCount = stage - 3" in generator
     assert "Math.min(4, 1 + stage.intdiv(2))" in generator
     detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
-    # Each of the 88 crops must have both a seedling-specific mark and a mature-form
+    # Each of the 96 crops must have both a seedling-specific mark and a mature-form
     # detail branch. Palette-only variation is not accepted as crop-specific artwork.
     for crop in crops:
         assert detail.count(f"case '{crop}':") >= 2, (crop, "missing seedling or mature morphology")
