@@ -12,4 +12,13 @@ for species in "bumblebee mason_bee squash_bee leafcutter_bee carpenter_bee mini
   for lang in ["en_us","zh_cn"]:
     words=json.loads((ROOT/f"assets/gugugaga/lang/{lang}.json").read_text("utf8"))
     assert f"entity.gugugaga.{species}" in words
-print("BEE_DIVERSITY_ASSETS_OK: 4 distinct entity types and habitat spawns")
+wildlife = (ROOT.parent / "java/io/github/lordnavycrypto/gugugaga/agriculture/BeeWildlife.java").read_text("utf8")
+wild_bee = (ROOT.parent / "java/io/github/lordnavycrypto/gugugaga/agriculture/WildPollinatorBee.java").read_text("utf8")
+assert "WildPollinatorBee::new" in wildlife and "Bee::new" not in wildlife
+assert "public boolean hasHive()" in wild_bee and "return false;" in wild_bee
+assert "public BlockPos getHivePos()" in wild_bee and "return null;" in wild_bee
+assert "public void setHivePos(BlockPos pos)" in wild_bee
+assert "other.getType() == getType()" in wild_bee
+assert "public Bee getBreedOffspring(ServerLevel level, AgeableMob mate)" in wild_bee
+assert "getType().create(level)" in wild_bee
+print("BEE_DIVERSITY_ASSETS_OK: 6 distinct registered types, habitat spawns and hive-free species-preserving bees")

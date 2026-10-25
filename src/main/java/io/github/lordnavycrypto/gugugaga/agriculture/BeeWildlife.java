@@ -16,7 +16,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
  * Four distinct entity IDs in the v0.2 pollinator prototype.
- * They currently reuse vanilla Bee AI/model/hive behavior; true nesting AI comes later.
+ * Wild bees retain vanilla flight and nectar goals but never claim managed honey hives;
+ * the separate wild-pollinator entity class also preserves species when bred.
  */
 public final class BeeWildlife {
     private BeeWildlife() {}
@@ -39,7 +40,7 @@ public final class BeeWildlife {
             bee("mining_bee", 0.45F, 0.42F);
 
     private static DeferredHolder<EntityType<?>, EntityType<Bee>> bee(String name, float width, float height) {
-        return ENTITIES.register(name, () -> EntityType.Builder.of(Bee::new, MobCategory.CREATURE)
+        return ENTITIES.register(name, () -> EntityType.Builder.<Bee>of(WildPollinatorBee::new, MobCategory.CREATURE)
                 .sized(width, height).clientTrackingRange(8)
                 .build("gugugaga:" + name));
     }

@@ -24,3 +24,30 @@ This milestone refines the existing 36-crop / six-registered-bee content without
 - **Honey harvesting:** Campfire smoke uses Minecraft's own CampfireBlock.isSmokeyPos implementation after checking loaded chunks. This aligns the harvester with vanilla hive smoke behavior rather than imposing an unrelated air-only rule. NeoForge mappings for CampfireBlock (1.21.1): https://aldak.netlify.app/javadoc/1.21.1-21.1.x/net/minecraft/world/level/block/campfireblock .
 
 These are design and resource optimizations; no benchmark-based speedup percentage is claimed.
+
+
+## v0.8 wild bee entity behavior: hive separation and lineage preservation
+
+The six **existing** native-bee IDs now instantiate `WildPollinatorBee`, still extending
+the native `Bee` class. No registry ID changed, and no crop was added.
+
+- Wild bees cannot claim, travel to, or enter vanilla `beehive` / `bee_nest` blocks
+  through normal vanilla hive goals. `hasHive()` remains false, hive assignments
+  are ignored, and `getHivePos()` is null even for older entities with saved hive data.
+  Consequently they should not inflate honey production as managed honeybee workers.
+- Flower-assisted animal breeding (a **gameplay abstraction**, not accurate solitary-bee
+  reproduction) now requires parents of the same registered species and returns that
+  same entity type, never a vanilla honeybee.
+- The four separate habitat blocks remain observational nest-site structures, not
+  physically occupied colonies. Vanilla Bee flight, model, nectar-gathering and other
+  behavior are **still reused**. Do not claim full solitary-bee seasonal nesting or
+  brood provisioning, which is outside the scope of this change.
+
+### Biological and code references
+
+- Xerces Society, nesting resources (ground/cavity/bumblebee distinction):
+  https://xerces.org/pollinator-conservation/nesting-resources
+- USDA ARS, squash bees are solitary ground nesters and Cucurbita specialists:
+  https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/squash-pollination/
+- NeoForge 1.21.1 Bee API (hive and reproduction virtual methods):
+  https://aldak.netlify.app/javadoc/1.21.1-21.1.x/net/minecraft/world/entity/animal/bee
