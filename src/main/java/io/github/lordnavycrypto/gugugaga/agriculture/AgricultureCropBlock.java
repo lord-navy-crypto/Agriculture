@@ -54,6 +54,9 @@ public final class AgricultureCropBlock extends CropBlock {
             return;
         }
 
+        // Only reproductive-stage crops receive a game pollination bonus.
+        // Lower scan frequency avoids a bee entity query on every crop tick.
+        if (current.getValue(AGE) < 4 || random.nextInt(3) != 0) return;
         AABB searchArea = new AABB(pos).inflate(6.0D, 3.0D, 6.0D);
         for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, Bee::isAlive)) {
             String ecotype = bee.getPersistentData().getString(BeeEcotypeItem.DATA_KEY);
@@ -89,9 +92,14 @@ public final class AgricultureCropBlock extends CropBlock {
             case "bumblebee" -> true;
             case "mason_bee" -> pollinationGroup == PollinationGroup.ORCHARD
                     || pollinationGroup == PollinationGroup.BERRY;
-            case "squash_bee" -> seedName.equals("cucumber_seeds");
+            case "squash_bee" -> seedName.equals("cucumber_seeds")
+                    || seedName.equals("zucchini_seeds");
             case "leafcutter_bee" -> pollinationGroup == PollinationGroup.ORCHARD
                     || seedName.equals("cucumber_seeds");
+            case "carpenter_bee" -> pollinationGroup == PollinationGroup.ORCHARD
+                    || pollinationGroup == PollinationGroup.BERRY;
+            case "mining_bee" -> pollinationGroup == PollinationGroup.ORCHARD
+                    || pollinationGroup == PollinationGroup.BERRY;
             default -> true;
         };
     }

@@ -31,11 +31,12 @@ public final class CropClimate {
         return switch (seedName) {
             case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
                  "lettuce_seeds", "cabbage_seeds", "spinach_seeds",
-                 "broccoli_seeds", "blueberry_seeds" -> Band.COOL;
+                 "broccoli_seeds", "blueberry_seeds", "buckwheat_seeds",
+                 "radish_seeds", "turnip_seeds", "kale_seeds", "cranberry_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds",
-                 "peanut_seeds" -> Band.WARM;
-            case "sorghum_seeds" -> Band.DRY;
+                 "peanut_seeds", "sweet_potato_seeds", "zucchini_seeds" -> Band.WARM;
+            case "sorghum_seeds", "millet_seeds", "sesame_seeds" -> Band.DRY;
             case "rice_seeds" -> Band.WET;
             default -> Band.TEMPERATE;
         };

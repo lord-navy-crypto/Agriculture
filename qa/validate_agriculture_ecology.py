@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]/"src/main/resources/data/gugugaga"
-WILD="wild_barley wild_oat wild_pea wild_lettuce wild_flax wild_sunflower_seed wild_blueberry wild_strawberry".split()
+WILD="wild_barley wild_oat wild_pea wild_lettuce wild_flax wild_sunflower_seed wild_blueberry wild_strawberry wild_millet wild_radish wild_raspberry wild_sesame".split()
 def check(p): return json.loads((ROOT/p).read_text("utf8"))
 for name in WILD:
     feature=check(f"worldgen/configured_feature/{name}.json")

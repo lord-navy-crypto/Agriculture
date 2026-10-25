@@ -1,0 +1,59 @@
+{
+  "note": "Biome choices are fictional habitat analogues; not geographic distribution records or real-time climate.",
+  "wild_plants": {
+    "wild_millet": {
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:savanna",
+        "minecraft:savanna_plateau"
+      ],
+      "rarity_one_in": 23
+    },
+    "wild_radish": {
+      "biomes": [
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:forest"
+      ],
+      "rarity_one_in": 20
+    },
+    "wild_raspberry": {
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:taiga"
+      ],
+      "rarity_one_in": 18
+    },
+    "wild_sesame": {
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:plains"
+      ],
+      "rarity_one_in": 28
+    }
+  },
+  "bees": {
+    "carpenter_bee": {
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:flower_forest",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:plains"
+      ],
+      "prototype_ai": "vanilla_honeybee"
+    },
+    "mining_bee": {
+      "biomes": [
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:sunflower_plains",
+        "minecraft:savanna",
+        "minecraft:flower_forest"
+      ],
+      "prototype_ai": "vanilla_honeybee"
+    }
+  }
+}

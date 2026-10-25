@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]/"src/main/resources"
-for species in "bumblebee mason_bee squash_bee leafcutter_bee".split():
+for species in "bumblebee mason_bee squash_bee leafcutter_bee carpenter_bee mining_bee".split():
   p=ROOT/f"data/gugugaga/neoforge/biome_modifier/spawn_{species}.json"
   obj=json.loads(p.read_text("utf8"))
   assert obj["type"]=="neoforge:add_spawns"
