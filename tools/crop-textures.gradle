@@ -1,5 +1,9 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import java.awt.Color
+import java.awt.Font
+import java.awt.Graphics2D
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import java.security.MessageDigest
@@ -641,7 +645,40 @@ tasks.register('generateCropAssets') {
         }
         if (matureTextureHashes.size() != 64) throw new GradleException('Every crop must have a unique mature texture')
         if (allStageHashes.size() != 768) throw new GradleException('Crop growth/pollination stage textures must be unique')
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 64 crops; 8 unique stages each; 4 pollen-marked stages per crop; 128 item icons; 768 crop models.')
+        // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
+        // This is a build report only; it is not packaged as a game texture.
+        int tile = 48
+        int labelWidth = 112
+        int columns = 12 // age 0..7, then pollinated ages 4..7
+        BufferedImage contactSheet = new BufferedImage(
+                labelWidth + columns * tile, cropIds.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        Graphics2D graphics = contactSheet.createGraphics()
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        graphics.setColor(new Color(29, 34, 30, 255))
+        graphics.fillRect(0, 0, contactSheet.width, contactSheet.height)
+        graphics.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10))
+        cropIds.eachWithIndex { crop, row ->
+            int y = row * tile
+            graphics.setColor(new Color(238, 240, 232, 255))
+            graphics.drawString(crop.toString(), 4, y + 28)
+            (0..7).each { age ->
+                File png = new File(outputRoot, 'assets/gugugaga/textures/block/crops/' + crop + '_stage' + age + '.png')
+                graphics.drawImage(ImageIO.read(png), labelWidth + age * tile, y, tile, tile, null)
+            }
+            (4..7).each { age ->
+                File png = new File(outputRoot, 'assets/gugugaga/textures/block/crops/' + crop + '_stage' + age + '_pollinated.png')
+                graphics.drawImage(ImageIO.read(png), labelWidth + (8 + age - 4) * tile, y, tile, tile, null)
+            }
+        }
+        graphics.dispose()
+        File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
+        reportRoot.mkdirs()
+        ImageIO.write(contactSheet, 'png', new File(reportRoot, 'crop-stage-contact-sheet.png'))
+        new File(reportRoot, 'crop-stage-contact-sheet.txt').setText(
+                'Rows are crop IDs in alphabetical order. Columns 1-8 are ages 0-7; columns 9-12 are pollinated ages 4-7. Sprites are enlarged with nearest-neighbor scaling.\\n',
+                'UTF-8')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 64 crops; 8 unique stages each; 4 pollen-marked stages per crop; 128 item icons; 768 crop models; visual contact sheet written.')
     }
 }
 tasks.named('processResources').configure {
