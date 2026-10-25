@@ -1116,6 +1116,9 @@ tasks.register('generateCropAssets') {
                     }
                     line.call(image, 5, 10, 3, 13, green)
                     line.call(image, 9, 11, 13, 13, greenLight)
+                } else if (crop == 'teff') {
+                    line.call(image, 8, 14, 8, 3, greenDark)
+                    for (int[] pt : [[6,4],[7,6],[9,5],[10,7],[6,8],[8,9],[10,10]] as int[][]) { put.call(image,pt[0],pt[1],accent); put.call(image,pt[0]+1,pt[1],light) }
                 } else {
                     line.call(image, 8, 14, 8, 3, greenDark)
                     for (int y = 4; y <= 11; y += 2) {
@@ -1241,12 +1244,27 @@ tasks.register('generateCropAssets') {
                     line.call(image, 8, 8, 8, 2, green)
                     line.call(image, 10, 9, 12, 3, greenLight)
                     line.call(image, 7, 11, 7, 13, cream)
+                } else if (crop == 'kohlrabi') {
+                    disc.call(image, 8, 10, 4, 3, shade.call(accent,1.12d))
+                    disc.call(image, 8, 9, 3, 2, accent)
+                    line.call(image, 6, 8, 5, 3, greenLight); line.call(image, 8, 8, 8, 2, green)
+                    line.call(image, 10, 8, 12, 3, greenLight); put.call(image,8,12,cream)
                 } else {
                     disc.call(image, 8, 9, 3, 4, accent)
                     line.call(image, 8, 5, 8, 13, dark)
                     put.call(image, 6, 8, light); put.call(image, 10, 10, dark)
                     line.call(image, 8, 5, 8, 2, green)
                 }
+            } else if (organForm == 'corm') {
+                disc.call(image, 8, 9, 4, 3, accent)
+                disc.call(image, 8, 8, 3, 2, dark)
+                line.call(image, 8, 6, 8, 3, greenDark)
+                line.call(image, 8, 4, 5, 2, green); line.call(image, 8, 4, 11, 2, greenLight)
+                put.call(image, 5, 9, light); put.call(image, 10, 10, cream)
+            } else if (organForm == 'tuber') {
+                line.call(image, 3, 9, 7, 6, dark); line.call(image, 7, 6, 12, 9, accent)
+                line.call(image, 4, 10, 7, 8, accent); line.call(image, 7, 8, 11, 10, dark)
+                put.call(image, 5, 9, cream); put.call(image, 10, 9, light); put.call(image, 8, 6, greenDark)
             } else if (organForm == 'rhizome') {
                 disc.call(image, 4, 9, 2, 1, accent)
                 disc.call(image, 7, 8, 2, 1, accent)
@@ -1284,6 +1302,14 @@ tasks.register('generateCropAssets') {
                     line.call(image, 4, 12, 9, 9, dark)
                     line.call(image, 5, 10, 6, 8, light)
                     put.call(image, 12, 6, dark)
+                } else if (crop == 'cassava') {
+                    line.call(image, 8, 3, 5, 12, cream); line.call(image, 8, 3, 11, 12, accent)
+                    line.call(image, 5, 12, 8, 14, cream); line.call(image, 11, 12, 8, 14, dark)
+                    line.call(image, 6, 8, 7, 6, light); put.call(image, 8, 4, cream)
+                } else if (crop == 'rutabaga') {
+                    disc.call(image, 8, 8, 3, 3, cream); disc.call(image, 8, 6, 3, 2, purple)
+                    line.call(image, 8, 10, 8, 14, accent); line.call(image, 7, 5, 5, 2, green)
+                    line.call(image, 9, 5, 11, 2, greenLight)
                 } else {
                     line.call(image, 8, 3, 5, 11, accent)
                     line.call(image, 8, 3, 11, 11, accent)
@@ -1343,7 +1369,21 @@ tasks.register('generateCropAssets') {
                     put.call(image, 3, 10, greenDark); put.call(image, 12, 5, greenDark)
                 }
             } else if (organForm == 'leaf') {
-                if (crop == 'swiss_chard') {
+                if (crop == 'watercress') {
+                    line.call(image, 8, 14, 8, 9, greenDark)
+                    for (int[] pt : [[4,8],[7,6],[10,8],[5,11],[10,12]] as int[][]) {
+                        disc.call(image,pt[0],pt[1],2,1,pt[0] % 2 == 0 ? greenLight : accent)
+                        put.call(image,pt[0],pt[1],greenDark)
+                    }
+                    line.call(image, 8, 10, 5, 8, greenDark); line.call(image, 8, 10, 10, 8, greenDark)
+                } else if (crop == 'endive') {
+                    line.call(image, 8, 14, 8, 7, greenDark)
+                    for (int[] pt : [[7,5],[5,7],[10,7],[4,10],[11,10],[7,11]] as int[][]) {
+                        line.call(image,8,10,pt[0],pt[1],green)
+                        put.call(image,pt[0],pt[1],greenLight)
+                    }
+                    put.call(image,6,8,accent); put.call(image,9,9,greenDark)
+                } else if (crop == 'swiss_chard') {
                     line.call(image, 8, 14, 8, 4, red)
                     disc.call(image, 5, 6, 3, 2, green)
                     disc.call(image, 11, 7, 3, 2, greenLight)
