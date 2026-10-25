@@ -853,9 +853,15 @@ tasks.register('generateCropAssets') {
                         line.call(image, 3, 9, 7, 6, dark); line.call(image, 7, 6, 12, 9, accent)
                         line.call(image, 4, 10, 7, 8, accent); line.call(image, 7, 8, 11, 10, dark)
                         put.call(image, 5, 9, cream); put.call(image, 10, 9, light); put.call(image, 8, 6, greenDark)
+                    } else if (crop == 'chayote') {
+                        disc.call(image, 8, 8, 3, 4, accent); line.call(image, 8, 4, 8, 2, greenDark)
+                        line.call(image, 6, 7, 10, 10, shade.call(accent,0.8d)); put.call(image, 7, 7, light)
                     }
                 } else if (seedForm == 'kernel') {
-                    if (crop == 'corn') {
+                    if (crop == 'coffee') {
+                        disc.call(image, 6, 7, 2, 3, rgb.call('#7B4A32')); disc.call(image, 10, 10, 2, 3, rgb.call('#9B6947'))
+                        line.call(image, 6, 5, 6, 9, cream); line.call(image, 10, 8, 10, 12, cream)
+                    } else if (crop == 'corn') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[5,9],[8,8],[11,9]] as int[][]) {
                             disc.call(image, pt[0], pt[1], 1, 1, yellow)
                             put.call(image, pt[0] - 1, pt[1], shade.call(yellow, 1.15d))
@@ -996,7 +1002,9 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'berry') {
-                    if (crop == 'strawberry') {
+                    if (crop == 'grape') {
+                        for (int[] pt : [[6,5],[9,5],[5,8],[8,8],[11,8],[7,11],[10,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,rgb.call('#73518C')); put.call(image,pt[0],pt[1]-1,cream) }
+                    } else if (crop == 'strawberry') {
                         for (int[] pt : [[4,5],[7,4],[10,5],[12,7],[5,9],[8,8],[11,10],[7,12]] as int[][]) put.call(image, pt[0], pt[1], rgb.call('#D7B14A'))
                     } else if (crop == 'blueberry') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) {
@@ -1015,7 +1023,9 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'brassica') {
-                    if (crop == 'mustard_greens') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],rgb.call('#B8A56B')) } }
+                    if (crop == 'rapini') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],leafLight) } }
+                    else if (crop == 'napa_cabbage') { for (int[] pt : [[4,5],[7,4],[10,5],[5,8],[9,8],[6,11],[11,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],cream) } }
+                    else if (crop == 'mustard_greens') { for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],rgb.call('#B8A56B')) } }
                     else if (crop == 'kohlrabi') {
                         for (int[] pt : [[5,5],[8,4],[11,5],[6,8],[10,8],[5,11],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],light) }
                     } else if (crop == 'rutabaga') {
@@ -1079,7 +1089,10 @@ tasks.register('generateCropAssets') {
                         }
                     }
                 } else if (seedForm == 'herb') {
-                    if (crop == 'chicory') { for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],rgb.call('#8DA7E1')) } }
+                    if (crop == 'celeriac') { for (int[] pt : [[5,5],[8,4],[11,6],[6,9],[10,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],cream) } }
+                    else if (crop == 'purslane') { for (int[] pt : [[5,5],[8,4],[11,6],[6,9],[10,11]] as int[][]) { put.call(image,pt[0],pt[1],rgb.call('#292B26')); put.call(image,pt[0]-1,pt[1],rgb.call('#B5BDA0')) } }
+                    else if (crop == 'tea') { for (int[] pt : [[5,5],[8,4],[11,6],[6,9],[10,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,rgb.call('#3D3528')); put.call(image,pt[0]-1,pt[1],cream) } }
+                    else if (crop == 'chicory') { for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) { disc.call(image,pt[0],pt[1],1,1,dark); put.call(image,pt[0]-1,pt[1],rgb.call('#8DA7E1')) } }
                     else if (crop == 'lavender') {
                         for (int[] pt : [[5,5],[9,4],[11,7],[6,10],[9,11]] as int[][]) {
                             line.call(image, pt[0], pt[1], pt[0], pt[1] + 2, rgb.call('#59443E'))
@@ -1204,7 +1217,9 @@ tasks.register('generateCropAssets') {
                     }
                 }
             } else if (organForm == 'fruit') {
-                if (crop == 'pumpkin') {
+                if (crop == 'chayote') {
+                    disc.call(image,8,9,3,4,accent); line.call(image,8,5,8,3,greenDark); line.call(image,6,8,10,11,shade.call(accent,0.82d)); put.call(image,7,8,light)
+                } else if (crop == 'pumpkin') {
                     disc.call(image, 8, 9, 4, 4, accent); line.call(image, 8, 5, 8, 13, dark); put.call(image, 7, 5, green); put.call(image, 8, 4, greenDark); put.call(image, 10, 8, light)
                 } else if (crop == 'pineapple') {
                     disc.call(image, 8, 9, 2, 4, accent); for (int y : [6,8,10,12]) put.call(image,8,y,dark); line.call(image,8,5,6,2,green); line.call(image,8,5,10,2,greenLight); put.call(image,8,2,greenDark)
@@ -1246,7 +1261,10 @@ tasks.register('generateCropAssets') {
                     put.call(image, 7, 5, greenDark); put.call(image, 9, 5, greenDark)
                 }
             } else if (organForm == 'berry') {
-                if (crop == 'strawberry') {
+                if (crop == 'grape') {
+                    for (int[] pt : [[6,5],[9,5],[5,8],[8,8],[11,8],[7,11],[10,11]] as int[][]) disc.call(image,pt[0],pt[1],2,2,accent)
+                    line.call(image,8,4,8,2,greenDark); line.call(image,8,3,11,2,greenLight); put.call(image,6,5,light)
+                } else if (crop == 'strawberry') {
                     disc.call(image, 8, 8, 3, 3, accent)
                     line.call(image, 5, 8, 8, 13, accent)
                     line.call(image, 11, 8, 8, 13, dark)
@@ -1331,7 +1349,9 @@ tasks.register('generateCropAssets') {
                     put.call(image, 6, 9, cream); put.call(image, 9, 10, cream)
                 }
             } else if (organForm == 'root') {
-                if (crop == 'radish') {
+                if (crop == 'celeriac') {
+                    disc.call(image,8,9,3,3,cream); disc.call(image,8,8,2,2,shade.call(cream,0.9d)); line.call(image,8,6,6,3,green); line.call(image,8,6,10,3,greenLight); put.call(image,8,12,accent)
+                } else if (crop == 'radish') {
                     disc.call(image, 8, 8, 3, 3, red)
                     line.call(image, 7, 10, 8, 14, white)
                     line.call(image, 9, 10, 8, 14, white)
@@ -1360,6 +1380,8 @@ tasks.register('generateCropAssets') {
                     line.call(image, 9, 5, 11, 2, greenLight)
                 } else if (crop == 'jicama') {
                     disc.call(image,8,8,3,4,cream); disc.call(image,8,8,2,3,shade.call(cream,0.92d)); line.call(image,8,4,8,2,greenDark); put.call(image,6,7,light); put.call(image,10,10,dark)
+                } else if (crop == 'celeriac') {
+                    disc.call(image,8,9,3,3,cream); disc.call(image,8,8,2,2,shade.call(cream,0.9d)); line.call(image,8,6,6,3,green); line.call(image,8,6,10,3,greenLight); put.call(image,8,12,accent)
                 } else if (crop == 'chicory') {
                     line.call(image,8,3,6,12,accent); line.call(image,8,3,10,12,shade.call(accent,0.8d)); line.call(image,6,12,8,14,cream); put.call(image,8,4,light); line.call(image,7,5,5,2,green)
                 } else {
@@ -1370,7 +1392,8 @@ tasks.register('generateCropAssets') {
                     put.call(image, 8, 4, cream)
                 }
             } else if (organForm == 'seed') {
-                if (crop == 'adzuki_bean') { disc.call(image,6,8,2,2,accent); disc.call(image,10,10,2,2,shade.call(accent,0.85d)); put.call(image,6,7,cream); put.call(image,10,9,light) }
+                if (crop == 'coffee') { disc.call(image,7,8,3,4,rgb.call('#7B4A32')); disc.call(image,9,9,2,3,rgb.call('#9B6947')); line.call(image,7,5,7,11,cream); put.call(image,10,7,light) }
+                else if (crop == 'adzuki_bean') { disc.call(image,6,8,2,2,accent); disc.call(image,10,10,2,2,shade.call(accent,0.85d)); put.call(image,6,7,cream); put.call(image,10,9,light) }
                 else if (crop == 'mung_bean') { disc.call(image,6,8,2,2,shade.call(accent,1.1d)); disc.call(image,10,10,2,2,accent); put.call(image,6,7,light); put.call(image,10,9,cream) }
                 else if (crop == 'safflower') { for (int[] pt : [[5,6],[8,5],[10,8],[6,10],[10,11]] as int[][]) { line.call(image,pt[0],pt[1],pt[0]+1,pt[1]+2,accent); put.call(image,pt[0],pt[1],cream) } }
                 else if (crop == 'sunflower_seed') {
@@ -1425,7 +1448,15 @@ tasks.register('generateCropAssets') {
                     put.call(image, 3, 10, greenDark); put.call(image, 12, 5, greenDark)
                 }
             } else if (organForm == 'leaf') {
-                if (crop == 'mustard_greens') { line.call(image,8,14,8,7,greenDark); for (int[] pt : [[6,5],[4,7],[10,6],[12,8],[5,10],[10,11]] as int[][]) { line.call(image,8,10,pt[0],pt[1],green); put.call(image,pt[0],pt[1],greenLight) } }
+                if (crop == 'purslane') {
+                    line.call(image,8,14,5,10,accent); line.call(image,8,13,12,9,accent); line.call(image,8,12,8,7,greenDark)
+                    for (int[] pt : [[4,10],[6,8],[9,9],[12,8],[7,11]] as int[][]) disc.call(image,pt[0],pt[1],2,1,greenLight)
+                    put.call(image,5,9,greenDark); put.call(image,10,8,accent)
+                } else if (crop == 'tea') {
+                    line.call(image,8,14,8,6,greenDark)
+                    for (int[] pt : [[4,8],[5,5],[9,7],[11,5],[10,10],[4,11]] as int[][]) { line.call(image,8,10,pt[0],pt[1],green); put.call(image,pt[0],pt[1],greenLight) }
+                    put.call(image,6,7,accent); put.call(image,9,8,greenDark)
+                } else if (crop == 'mustard_greens') { line.call(image,8,14,8,7,greenDark); for (int[] pt : [[6,5],[4,7],[10,6],[12,8],[5,10],[10,11]] as int[][]) { line.call(image,8,10,pt[0],pt[1],green); put.call(image,pt[0],pt[1],greenLight) } }
                 else if (crop == 'water_spinach') { line.call(image,8,14,6,8,greenDark); line.call(image,6,8,3,5,green); line.call(image,8,12,11,6,greenDark); line.call(image,11,6,13,3,greenLight); put.call(image,5,8,greenLight); put.call(image,10,7,accent) }
                 else if (crop == 'watercress') {
                     line.call(image, 8, 14, 8, 9, greenDark)
@@ -1538,7 +1569,13 @@ tasks.register('generateCropAssets') {
                     line.call(image, 8, 8, 11, 6, greenDark)
                 }
             } else if (organForm == 'head') {
-                if (crop == 'broccoli') {
+                if (crop == 'rapini') {
+                    line.call(image,8,14,8,8,greenDark); line.call(image,8,10,5,7,green); line.call(image,8,9,11,6,greenLight)
+                    for (int[] pt : [[5,5],[8,4],[11,5],[7,7],[10,8]] as int[][]) disc.call(image,pt[0],pt[1],1,1,yellow)
+                } else if (crop == 'napa_cabbage') {
+                    disc.call(image,8,8,4,4,green); disc.call(image,8,7,3,3,cream); line.call(image,8,5,8,13,white)
+                    line.call(image,5,7,8,9,greenLight); line.call(image,11,7,8,9,greenLight)
+                } else if (crop == 'broccoli') {
                     line.call(image, 8, 14, 8, 8, greenDark)
                     disc.call(image, 5, 6, 3, 3, green)
                     disc.call(image, 8, 4, 3, 3, greenLight)
