@@ -1,21 +1,37 @@
-# Gugu Gaga: Nightwatch
+# Gugu-Gaga Virus Mod — Clean Rewrite (0.1 dev)
 
-An experimental **Minecraft 1.21.1 / NeoForge** psychological-horror mod, focused on a single penguin-like observer, gradual suspense, and fair survival gameplay.
+Minecraft 1.21.1 / NeoForge 21.1.259 / Java 21.
 
-## Status
-**Pre-alpha / playable prototype under development.** The code is being built and verified through pull requests; do not treat it as a released mod.
+**New direction:** playable in-world infection game engine, not the previous informational 0–15 pathogen-map overlay. This branch is rebuilt from the bare main baseline.
 
-## Gameplay direction
-- The entity initially **observes** instead of attacking.
-- A server-side state machine manages **dormant → observe → approach → retreat**.
-- A separate, bounded encounter director will eventually control pacing without scanning or changing unrelated chunks.
-- Player control: adjustable encounter frequency, opt-out, audio and visual accessibility settings.
-- Single-player first, then dedicated-server and multiplayer QA.
+## Current prototype
+A server-side animal infection model runs directly on actual loaded vanilla Minecraft animal entities. It supports four in-game states: **Susceptible → Exposed → Infectious → Recovered (SEIR)**.
+
+A seeded infectious animal can expose nearby susceptible animals. Later game frames advance the exposure stage into an infectious stage, which can produce another generation of contacts, before recovery. ENCHANT particles mark infectious animals.
+
+Run as a player:
+```text
+/gugugaga infection status
+```
+Operators can start or reset a demonstration:
+```text
+/gugugaga infection seed
+/gugugaga infection clear
+```
+
+Status is dimension-scoped. The rewrite has no persistent infected-entity save data yet; multiplayer, actual in-game optics and save/restart are not fully validated. Contact range and transition times are **gameplay settings, not specific real pathogens' biological rates**.
 
 ## Build
-Java 21, Minecraft 1.21.1, NeoForge 21.1.x. See `docs/SETUP.md` after the first source commit.
+Use Java 21 and Gradle 9.2.1:
+```sh
+gradle --no-daemon build
+```
+The packaged JAR is under `build/libs/`. NeoForge's plugin downloads the necessary Minecraft dependencies.
 
-## Assets and licensing
-Code authored for this project is intended to be MIT-licensed (see LICENSE when added). **The words “inspired by” or “fan project” and the MIT code license do not grant permission to reuse third-party images, voices, or character designs.** Online meme images are references only; do not redistribute them. The prototype ships its own placeholder artwork. Asset provenance and publication clearance are tracked in `docs/ASSET_PROVENANCE.md`.
+## Archived legacy development
+The original V1–V21 code, research, tests, and history remain at:
+`archive/pathogen-v1-v21-20261025` (commit `ad618120795fc699949aa008a45db94882b3e7db`).
 
-Unofficial fan project; not endorsed by Arknights: Endfield, Hypergryph, Gryphline, BanG Dream!, or relevant creators.
+PR #44 was closed **without merging**. The old prototype and files are intact. Do not treat old 0–15 numerical visual indicators as part of this rewrite.
+
+See `docs/REWRITE_V0_1_ACCEPTANCE.md` for test coverage and known limits.
