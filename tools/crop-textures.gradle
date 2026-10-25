@@ -118,6 +118,287 @@ tasks.register('generateCropAssets') {
             target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
         }
 
+
+        /*
+         * Species-specific morphology pass. The category silhouette is only the base;
+         * these crop-ID keyed marks distinguish the harvested organ and growth habit.
+         * This intentionally stays 16x16 pixel art so it packs into Minecraft's atlas.
+         */
+        def cropSpecificStageDetail = { BufferedImage image, String crop, int stage, int top, int accent, int leaf, int leafDark, int leafLight ->
+            int cream = rgb.call('#E7D8B8')
+            int white = rgb.call('#F3F0E5')
+            int yellow = rgb.call('#F2CF4A')
+            int red = rgb.call('#C93B43')
+            int purple = rgb.call('#76509A')
+            if (stage < 3) {
+                // Seedling silhouettes are still small, but their cotyledon direction and
+                // accent pixels are crop-specific instead of recolored vanilla wheat.
+                switch (crop) {
+                    case 'corn': put.call(image, 5, 13, yellow); put.call(image, 9, 13, leafLight); break
+                    case 'rice': put.call(image, 6, 12, leafLight); put.call(image, 8, 13, leaf); break
+                    case 'barley': put.call(image, 5, 12, cream); put.call(image, 9, 13, cream); break
+                    case 'oat': put.call(image, 6, 13, cream); put.call(image, 9, 12, leafLight); break
+                    case 'rye': put.call(image, 5, 13, shade.call(accent, 0.9d)); put.call(image, 9, 12, accent); break
+                    case 'sorghum': put.call(image, 5, 12, accent); put.call(image, 9, 13, accent); break
+                    case 'millet': put.call(image, 6, 13, yellow); put.call(image, 8, 12, yellow); break
+                    case 'buckwheat': put.call(image, 5, 13, accent); put.call(image, 9, 13, shade.call(accent, 0.8d)); break
+                    case 'quinoa': put.call(image, 5, 12, cream); put.call(image, 9, 12, accent); break
+                    case 'sesame': put.call(image, 6, 13, cream); put.call(image, 8, 13, cream); break
+                    case 'sunflower_seed': put.call(image, 6, 12, yellow); put.call(image, 8, 12, yellow); break
+                    case 'tomato': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leaf); break
+                    case 'strawberry': put.call(image, 5, 13, red); put.call(image, 9, 13, red); break
+                    case 'cucumber': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'blueberry': put.call(image, 5, 13, rgb.call('#526BC2')); put.call(image, 9, 13, rgb.call('#526BC2')); break
+                    case 'bell_pepper': put.call(image, 5, 13, red); put.call(image, 9, 13, red); break
+                    case 'eggplant': put.call(image, 5, 13, purple); put.call(image, 9, 13, purple); break
+                    case 'zucchini': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'raspberry': put.call(image, 5, 13, red); put.call(image, 9, 13, shade.call(red, 0.8d)); break
+                    case 'cranberry': put.call(image, 5, 13, rgb.call('#B82F4D')); put.call(image, 9, 13, rgb.call('#B82F4D')); break
+                    case 'okra': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafDark); break
+                    case 'chili_pepper': put.call(image, 5, 13, red); put.call(image, 9, 13, red); break
+                    case 'onion': put.call(image, 6, 13, cream); put.call(image, 8, 13, cream); break
+                    case 'garlic': put.call(image, 6, 13, white); put.call(image, 8, 13, white); break
+                    case 'peanut': put.call(image, 5, 13, rgb.call('#B98957')); put.call(image, 9, 13, rgb.call('#B98957')); break
+                    case 'radish': put.call(image, 5, 13, red); put.call(image, 9, 13, white); break
+                    case 'turnip': put.call(image, 5, 13, purple); put.call(image, 9, 13, white); break
+                    case 'sweet_potato': put.call(image, 5, 13, rgb.call('#C67B4A')); put.call(image, 9, 13, rgb.call('#C67B4A')); break
+                    case 'parsnip': put.call(image, 6, 13, cream); put.call(image, 8, 13, cream); break
+                    case 'shallot': put.call(image, 5, 13, purple); put.call(image, 9, 13, purple); break
+                    case 'ginger': put.call(image, 5, 13, cream); put.call(image, 9, 13, rgb.call('#C6A56C')); break
+                    case 'turmeric': put.call(image, 5, 13, yellow); put.call(image, 9, 13, rgb.call('#D99B22')); break
+                    case 'fennel': put.call(image, 6, 13, cream); put.call(image, 8, 13, leafLight); break
+                    case 'lettuce': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafLight); break
+                    case 'cabbage': put.call(image, 5, 13, leaf); put.call(image, 9, 13, leaf); break
+                    case 'spinach': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'broccoli': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafDark); break
+                    case 'kale': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafDark); break
+                    case 'celery': put.call(image, 6, 13, cream); put.call(image, 8, 13, cream); break
+                    case 'leek': put.call(image, 6, 13, white); put.call(image, 8, 13, leafDark); break
+                    case 'arugula': put.call(image, 5, 13, leaf); put.call(image, 9, 13, leafLight); break
+                    case 'swiss_chard': put.call(image, 6, 13, red); put.call(image, 8, 13, red); break
+                    case 'collard_greens': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'brussels_sprouts': put.call(image, 6, 13, leafLight); put.call(image, 8, 13, leafLight); break
+                    case 'cauliflower': put.call(image, 6, 13, white); put.call(image, 8, 13, white); break
+                    case 'bok_choy': put.call(image, 6, 13, white); put.call(image, 8, 13, leafLight); break
+                    case 'soybean': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, accent); break
+                    case 'pea': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafLight); break
+                    case 'chickpea': put.call(image, 5, 13, cream); put.call(image, 9, 13, cream); break
+                    case 'lentil': put.call(image, 5, 13, accent); put.call(image, 9, 13, accent); break
+                    case 'green_bean': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leafLight); break
+                    case 'black_bean': put.call(image, 5, 13, rgb.call('#453F3D')); put.call(image, 9, 13, rgb.call('#453F3D')); break
+                    case 'lavender': put.call(image, 6, 12, purple); put.call(image, 8, 13, purple); break
+                    case 'clover': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafLight); break
+                    case 'mustard': put.call(image, 6, 12, yellow); put.call(image, 8, 13, yellow); break
+                    case 'canola': put.call(image, 5, 12, yellow); put.call(image, 9, 13, yellow); break
+                    case 'artichoke': put.call(image, 6, 12, leafDark); put.call(image, 8, 13, leafDark); break
+                    case 'basil': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafLight); break
+                    case 'mint': put.call(image, 5, 13, leaf); put.call(image, 9, 13, leaf); break
+                    case 'dill': put.call(image, 6, 12, leafLight); put.call(image, 8, 13, leafLight); break
+                    case 'cilantro': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafDark); break
+                    case 'parsley': put.call(image, 5, 13, leafDark); put.call(image, 9, 13, leaf); break
+                    case 'cotton': put.call(image, 6, 12, white); put.call(image, 8, 13, white); break
+                    case 'flax': put.call(image, 6, 12, rgb.call('#79A9E4')); put.call(image, 8, 13, rgb.call('#79A9E4')); break
+                }
+            } else {
+                switch (crop) {
+                    case 'corn':
+                        if (stage >= 3) { line.call(image, 5, 11, 3, 8, leafLight); line.call(image, 9, 10, 12, 7, leaf) }
+                        if (stage >= 4) { line.call(image, 5, 10, 5, 13, accent); line.call(image, 6, 10, 6, 13, yellow); for (int y=10; y<=13; y++) put.call(image, 5 + (y % 2), y, yellow) }
+                        break
+                    case 'tomato':
+                        if (stage >= 5) { disc.call(image, 4, 11, 2, 2, accent); disc.call(image, 10, 10, 2, 2, shade.call(accent,0.9d)); put.call(image,4,8,leaf); put.call(image,3,9,leafDark); put.call(image,5,9,leafLight); put.call(image,10,7,leaf); put.call(image,9,8,leafDark); put.call(image,11,8,leafLight) }
+                        break
+                    case 'onion':
+                        if (stage >= 5) { disc.call(image,7,13,2,2,accent); put.call(image,6,12,shade.call(accent,1.15d)); put.call(image,7,15,cream); line.call(image,6,12,6,9,leafLight); line.call(image,8,12,9,8,leaf) }
+                        break
+                    case 'rice':
+                        if (stage >= 4) { line.call(image,7,7,10,9,accent); line.call(image,10,9,12,11,accent); put.call(image,11,10,yellow); put.call(image,12,11,cream); put.call(image,9,8,yellow); put.call(image,10,10,cream) }
+                        break
+                    case 'soybean':
+                        if (stage >= 4) { disc.call(image,4,10,1,2,accent); disc.call(image,10,8,1,2,shade.call(accent,0.9d)); put.call(image,4,9,leafLight); put.call(image,10,7,leafLight); put.call(image,5,11,leafDark) }
+                        break
+                    case 'strawberry':
+                        if (stage >= 5) { disc.call(image,5,11,2,3,accent); put.call(image,5,8,leaf); put.call(image,4,9,leafLight); put.call(image,6,9,leaf); put.call(image,4,11,white); put.call(image,5,12,white); put.call(image,6,11,white) }
+                        break
+                    case 'cucumber':
+                        if (stage >= 5) { line.call(image,3,11,6,13,accent); line.call(image,6,13,10,10,accent); line.call(image,4,11,7,13,leafLight); put.call(image,5,12,leafDark); put.call(image,8,11,leafDark); put.call(image,10,9,leaf) }
+                        break
+                    case 'blueberry':
+                        if (stage >= 5) { disc.call(image,4,11,1,1,accent); disc.call(image,7,9,1,1,shade.call(accent,0.75d)); disc.call(image,10,11,1,1,accent); put.call(image,4,10,white); put.call(image,7,8,white); put.call(image,10,10,white) }
+                        break
+                    case 'bell_pepper':
+                        if (stage >= 5) { disc.call(image,5,11,2,3,accent); disc.call(image,9,11,2,3,shade.call(accent,0.9d)); put.call(image,5,8,leaf); put.call(image,6,9,leafDark); put.call(image,9,8,leaf); put.call(image,8,9,leafDark) }
+                        break
+                    case 'garlic':
+                        if (stage >= 5) { disc.call(image,7,13,2,2,white); put.call(image,6,12,cream); put.call(image,8,12,cream); put.call(image,7,14,shade.call(cream,0.9d)); line.call(image,7,11,7,8,leafLight) }
+                        break
+                    case 'barley':
+                        if (stage >= 4) { for (int y=4; y<=8; y++) { put.call(image,7,y,accent); line.call(image,7,y,5,y-2,cream); line.call(image,7,y,9,y-2,cream) } }
+                        break
+                    case 'oat':
+                        if (stage >= 4) { line.call(image,7,7,5,5,accent); line.call(image,7,7,10,4,accent); put.call(image,5,5,cream); put.call(image,10,4,cream); put.call(image,4,6,accent); put.call(image,11,5,accent) }
+                        break
+                    case 'rye':
+                        if (stage >= 4) { for (int y=4; y<=9; y++) { put.call(image,7,y,accent); put.call(image,6,y,shade.call(accent,0.85d)); put.call(image,8,y,shade.call(accent,1.1d)) } }
+                        break
+                    case 'pea':
+                        if (stage >= 4) { line.call(image,4,11,10,7,leafLight); disc.call(image,5,10,1,1,leafDark); disc.call(image,7,9,1,1,leafDark); disc.call(image,9,8,1,1,leafDark) }
+                        break
+                    case 'lettuce':
+                        if (stage >= 3) { disc.call(image,4,11,2,2,leafLight); disc.call(image,10,11,2,2,leaf); disc.call(image,7,9,3,2,leafLight); put.call(image,7,8,leafDark) }
+                        break
+                    case 'cabbage':
+                        if (stage >= 4) { disc.call(image,7,9,3,3,leafLight); disc.call(image,7,9,2,2,leaf); line.call(image,4,10,6,8,cream); line.call(image,10,10,8,8,cream) }
+                        break
+                    case 'spinach':
+                        if (stage >= 3) { line.call(image,7,12,4,7,leafLight); line.call(image,4,7,6,8,leaf); line.call(image,7,12,11,6,leafLight); line.call(image,11,6,9,8,leaf); put.call(image,4,7,leafDark); put.call(image,11,6,leafDark) }
+                        break
+                    case 'broccoli':
+                        if (stage >= 5) { disc.call(image,5,7,2,2,leafDark); disc.call(image,8,6,2,2,leaf); disc.call(image,11,7,2,2,leafDark); put.call(image,8,5,leafLight) }
+                        break
+                    case 'eggplant':
+                        if (stage >= 5) { line.call(image,4,12,8,8,accent); line.call(image,5,13,9,9,shade.call(accent,0.8d)); put.call(image,8,7,leaf); put.call(image,9,7,leafDark); put.call(image,7,8,leafLight) }
+                        break
+                    case 'cotton':
+                        if (stage >= 5) { disc.call(image,5,8,2,2,white); disc.call(image,9,8,2,2,white); put.call(image,5,7,cream); put.call(image,9,7,cream); put.call(image,7,10,shade.call(accent,0.9d)) }
+                        break
+                    case 'flax':
+                        if (stage >= 4) { disc.call(image,5,5,1,1,rgb.call('#79A9E4')); disc.call(image,8,4,1,1,rgb.call('#79A9E4')); disc.call(image,10,6,1,1,rgb.call('#79A9E4')); put.call(image,5,4,white); put.call(image,8,3,white) }
+                        break
+                    case 'peanut':
+                        if (stage >= 5) { line.call(image,4,13,6,11,accent); line.call(image,6,11,9,12,accent); put.call(image,5,12,cream); put.call(image,7,11,cream); put.call(image,9,12,shade.call(accent,0.8d)) }
+                        break
+                    case 'sorghum':
+                        if (stage >= 4) { disc.call(image,7,5,2,3,accent); put.call(image,6,4,shade.call(accent,1.15d)); put.call(image,8,5,shade.call(accent,0.8d)); put.call(image,7,7,accent) }
+                        break
+                    case 'sunflower_seed':
+                        if (stage >= 4) { disc.call(image,7,5,2,2,accent); put.call(image,7,5,shade.call(accent,0.65d)); for (int x : [4,5,9,10]) put.call(image,x,5,yellow); put.call(image,7,2,yellow); put.call(image,7,8,yellow) }
+                        break
+                    case 'millet':
+                        if (stage >= 4) { disc.call(image,7,5,2,2,accent); put.call(image,6,4,cream); put.call(image,8,5,shade.call(accent,0.8d)); put.call(image,7,6,cream) }
+                        break
+                    case 'buckwheat':
+                        if (stage >= 4) { put.call(image,6,5,accent); put.call(image,7,4,accent); put.call(image,8,5,accent); put.call(image,6,7,shade.call(accent,0.8d)); put.call(image,8,7,cream) }
+                        break
+                    case 'chickpea':
+                        if (stage >= 4) { disc.call(image,4,10,1,2,cream); disc.call(image,10,8,1,2,cream); put.call(image,4,9,accent); put.call(image,10,7,accent) }
+                        break
+                    case 'lentil':
+                        if (stage >= 4) { disc.call(image,5,10,2,1,accent); disc.call(image,9,8,2,1,shade.call(accent,0.8d)); put.call(image,5,10,cream); put.call(image,9,8,cream) }
+                        break
+                    case 'radish':
+                        if (stage >= 5) { disc.call(image,7,13,2,2,accent); line.call(image,7,14,7,15,white); line.call(image,7,11,5,8,leafLight) }
+                        break
+                    case 'turnip':
+                        if (stage >= 5) { disc.call(image,7,13,2,2,white); put.call(image,6,12,purple); put.call(image,7,12,purple); line.call(image,7,14,7,15,cream) }
+                        break
+                    case 'sweet_potato':
+                        if (stage >= 5) { line.call(image,4,13,7,11,accent); line.call(image,7,11,11,13,shade.call(accent,0.8d)); put.call(image,5,12,shade.call(accent,1.2d)); put.call(image,9,12,accent) }
+                        break
+                    case 'kale':
+                        if (stage >= 3) { for (int x : [3,5,9,11]) { put.call(image,x,9,leafDark); put.call(image,x,11,leafLight) }; put.call(image,4,8,leafLight); put.call(image,10,8,leafLight) }
+                        break
+                    case 'zucchini':
+                        if (stage >= 5) { line.call(image,3,11,6,13,accent); line.call(image,6,13,11,9,accent); put.call(image,5,12,leafLight); put.call(image,8,11,leafDark); put.call(image,10,9,leafLight) }
+                        break
+                    case 'raspberry':
+                        if (stage >= 5) { for (int[] pt : [[4,10],[5,9],[6,10],[5,11],[9,9],[10,10],[9,11]] as int[][]) disc.call(image,pt[0],pt[1],1,1,accent); put.call(image,4,9,white); put.call(image,9,8,white) }
+                        break
+                    case 'cranberry':
+                        if (stage >= 5) { disc.call(image,4,11,1,1,accent); disc.call(image,7,10,1,1,shade.call(accent,0.8d)); disc.call(image,10,11,1,1,accent); put.call(image,4,10,white); put.call(image,10,10,white) }
+                        break
+                    case 'sesame':
+                        if (stage >= 4) { line.call(image,5,8,5,11,accent); line.call(image,9,6,9,9,accent); put.call(image,4,9,cream); put.call(image,6,10,cream); put.call(image,8,7,cream); put.call(image,10,8,cream) }
+                        break
+                    case 'lavender':
+                        if (stage >= 3) { for (int y=3; y<=7; y++) { if (y % 2 == 1) put.call(image,6,y,purple); put.call(image,8,y,shade.call(purple,1.1d)) }; put.call(image,7,2,purple) }
+                        break
+                    case 'clover':
+                        if (stage >= 3) { disc.call(image,5,9,1,1,leafLight); disc.call(image,9,9,1,1,leafLight); disc.call(image,7,7,1,1,leafLight); disc.call(image,7,5,1,1,white); put.call(image,7,5,accent) }
+                        break
+                    case 'basil':
+                        if (stage >= 3) { disc.call(image,5,8,2,1,leafLight); disc.call(image,10,8,2,1,leaf); put.call(image,5,8,leafDark); put.call(image,10,8,leafDark) }
+                        break
+                    case 'mint':
+                        if (stage >= 3) { for (int y : [6,9,12]) { put.call(image,4,y,leafLight); put.call(image,5,y-1,leaf); put.call(image,10,y,leafLight); put.call(image,9,y-1,leaf) } }
+                        break
+                    case 'mustard':
+                        if (stage >= 3) { for (int[] pt : [[5,5],[8,4],[10,6],[6,7]] as int[][]) disc.call(image,pt[0],pt[1],1,1,yellow); put.call(image,5,4,cream); put.call(image,10,5,cream) }
+                        break
+                    case 'canola':
+                        if (stage >= 3) { disc.call(image,5,5,1,1,yellow); disc.call(image,8,4,1,1,yellow); disc.call(image,10,6,1,1,yellow); disc.call(image,7,7,1,1,yellow) }
+                        break
+                    case 'celery':
+                        if (stage >= 3) { line.call(image,5,14,5,7,cream); line.call(image,7,14,7,5,leafLight); line.call(image,9,14,9,8,cream); put.call(image,5,7,leaf); put.call(image,9,8,leaf) }
+                        break
+                    case 'leek':
+                        if (stage >= 3) { line.call(image,5,14,4,4,leafDark); line.call(image,7,14,7,2,leafLight); line.call(image,9,14,11,4,leaf); line.call(image,6,15,8,15,white) }
+                        break
+                    case 'parsnip':
+                        if (stage >= 5) { line.call(image,7,11,6,15,cream); line.call(image,7,11,8,14,white); put.call(image,6,12,shade.call(cream,0.9d)); line.call(image,7,11,5,8,leafLight) }
+                        break
+                    case 'arugula':
+                        if (stage >= 3) { line.call(image,7,13,4,7,leafLight); put.call(image,4,8,leafDark); put.call(image,5,9,leaf); put.call(image,10,7,leafLight); put.call(image,9,8,leafDark); put.call(image,8,10,leaf) }
+                        break
+                    case 'swiss_chard':
+                        if (stage >= 3) { line.call(image,5,14,5,7,red); line.call(image,9,14,9,6,rgb.call('#D5B9B4')); line.call(image,5,8,3,5,leafLight); line.call(image,9,7,12,4,leaf) }
+                        break
+                    case 'okra':
+                        if (stage >= 5) { line.call(image,4,12,7,7,leafLight); line.call(image,5,12,8,7,accent); line.call(image,6,12,9,7,leafDark); put.call(image,7,6,leaf) }
+                        break
+                    case 'fennel':
+                        if (stage >= 3) { disc.call(image,7,13,2,2,cream); for (int x : [4,6,8,10]) { line.call(image,7,7,x,4,leafLight); put.call(image,x,4,leaf) } }
+                        break
+                    case 'dill':
+                        if (stage >= 3) { for (int y : [5,7,9]) { line.call(image,7,y,4,y-2,leafLight); line.call(image,7,y,10,y-2,leafLight); put.call(image,4,y-2,leaf); put.call(image,10,y-2,leaf) } }
+                        break
+                    case 'cilantro':
+                        if (stage >= 3) { line.call(image,7,12,4,7,leafLight); line.call(image,4,7,3,5,leaf); line.call(image,4,7,6,6,leaf); line.call(image,7,12,11,6,leafLight); line.call(image,11,6,10,4,leaf) }
+                        break
+                    case 'parsley':
+                        if (stage >= 3) { for (int[] pt : [[4,7],[6,5],[9,6],[11,8],[6,10],[9,11]] as int[][]) { put.call(image,pt[0],pt[1],leafLight); put.call(image,pt[0]+1,pt[1],leafDark) } }
+                        break
+                    case 'collard_greens':
+                        if (stage >= 3) { disc.call(image,4,9,2,3,leaf); disc.call(image,10,8,2,3,leafLight); line.call(image,4,12,6,8,leafDark); line.call(image,10,11,8,7,leafDark) }
+                        break
+                    case 'green_bean':
+                        if (stage >= 4) { line.call(image,4,12,10,6,leafLight); line.call(image,5,13,11,7,leafDark); put.call(image,6,10,accent); put.call(image,8,8,accent); put.call(image,10,6,accent) }
+                        break
+                    case 'chili_pepper':
+                        if (stage >= 5) { line.call(image,5,8,8,11,accent); line.call(image,8,11,11,12,accent); put.call(image,11,12,red); put.call(image,5,7,leaf); put.call(image,6,8,leafDark) }
+                        break
+                    case 'brussels_sprouts':
+                        if (stage >= 4) { for (int[] pt : [[4,9],[10,8],[5,12],[9,12]] as int[][]) disc.call(image,pt[0],pt[1],1,1,leafLight); put.call(image,4,8,leafDark); put.call(image,10,7,leafDark) }
+                        break
+                    case 'cauliflower':
+                        if (stage >= 5) { disc.call(image,5,7,2,2,white); disc.call(image,8,6,2,2,cream); disc.call(image,10,8,2,2,white); put.call(image,7,5,white) }
+                        break
+                    case 'bok_choy':
+                        if (stage >= 3) { line.call(image,5,14,5,8,white); line.call(image,7,14,7,7,cream); line.call(image,9,14,9,8,white); line.call(image,5,8,3,5,leaf); line.call(image,9,8,12,5,leafLight) }
+                        break
+                    case 'shallot':
+                        if (stage >= 5) { disc.call(image,7,13,2,2,purple); put.call(image,6,12,shade.call(purple,1.2d)); put.call(image,8,12,purple); line.call(image,7,11,7,8,leafLight) }
+                        break
+                    case 'ginger':
+                        if (stage >= 5) { line.call(image,4,13,6,11,cream); line.call(image,6,11,8,12,accent); line.call(image,8,12,11,10,cream); put.call(image,6,12,shade.call(accent,0.8d)); put.call(image,9,11,shade.call(accent,0.8d)) }
+                        break
+                    case 'turmeric':
+                        if (stage >= 5) { line.call(image,4,13,6,11,accent); line.call(image,6,11,8,12,shade.call(accent,0.9d)); line.call(image,8,12,11,10,accent); put.call(image,6,12,yellow); put.call(image,9,11,yellow) }
+                        break
+                    case 'black_bean':
+                        if (stage >= 4) { line.call(image,4,11,10,7,leafDark); disc.call(image,5,10,1,1,rgb.call('#453F3D')); disc.call(image,8,8,1,1,rgb.call('#453F3D')); put.call(image,5,9,cream); put.call(image,8,7,cream) }
+                        break
+                    case 'quinoa':
+                        if (stage >= 4) { for (int y : [4,6,8]) { put.call(image,6,y,accent); put.call(image,8,y-1,cream); put.call(image,9,y+1,shade.call(accent,0.8d)) } }
+                        break
+                    case 'artichoke':
+                        if (stage >= 4) { line.call(image,7,7,5,4,leafDark); line.call(image,7,7,9,4,leafDark); line.call(image,7,7,7,3,leafLight); disc.call(image,7,6,2,2,accent); put.call(image,7,4,leafLight) }
+                        break
+                }
+            }
+            image
+        }
+
         def stageTexture = { String crop, int stage, boolean pollinated ->
             BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
             int accent = rgb.call(palettes[crop].toString())
@@ -207,6 +488,7 @@ tasks.register('generateCropAssets') {
                 line.call(image, 7, 14, 4, 12, leafLight)
                 line.call(image, 7, 14, 10, 12, leafLight)
             }
+            cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)
             if (pollinated && stage >= 4) {
                 put.call(image, 4, Math.min(13, top + 5), pollen)
                 put.call(image, 11, Math.min(13, top + 6), pollen)
