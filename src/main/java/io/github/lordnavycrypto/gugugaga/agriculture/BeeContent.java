@@ -19,4 +19,7 @@ public final class BeeContent {
             "berry_bee_tag", () -> new BeeEcotypeItem("berry", new Item.Properties()));
     public static final DeferredItem<Item> LARGE_APIARY_KIT = ITEMS.register(
             "large_apiary_kit", () -> new LargeApiaryKitItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> HONEY_HARVESTER = ITEMS.register(
+            "honey_harvester", () -> new HoneyHarvesterItem(new Item.Properties()));
 }
