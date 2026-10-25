@@ -1,0 +1,516 @@
+{
+  "values": {
+    "gugugaga:corn_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:corn": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:tomato_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:tomato": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:onion_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:onion": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:rice_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:rice": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:soybean_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:soybean": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:strawberry_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:strawberry": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cucumber_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cucumber": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:blueberry_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:blueberry": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:bell_pepper_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:bell_pepper": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:garlic_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:garlic": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:barley_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:barley": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:oat_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:oat": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:rye_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:rye": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:pea_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:pea": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lettuce_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:lettuce": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cabbage_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cabbage": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:spinach_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:spinach": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:broccoli_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:broccoli": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:eggplant_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:eggplant": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cotton_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cotton": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:flax_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:flax": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:peanut_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:peanut": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sorghum_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sorghum": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sunflower_seed_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sunflower_seed": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:millet_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:millet": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:buckwheat_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:buckwheat": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:chickpea_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:chickpea": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lentil_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:lentil": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:radish_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:radish": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:turnip_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:turnip": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sweet_potato_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sweet_potato": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:kale_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:kale": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:zucchini_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:zucchini": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:raspberry_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:raspberry": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cranberry_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cranberry": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sesame_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sesame": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lavender_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:lavender": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:clover_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:clover": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:basil_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:basil": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mint_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:mint": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mustard_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:mustard": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:canola_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:canola": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:celery_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:celery": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:leek_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:leek": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:parsnip_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:parsnip": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:arugula_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:arugula": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:swiss_chard_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:swiss_chard": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:okra_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:okra": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:fennel_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:fennel": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:dill_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:dill": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cilantro_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cilantro": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:parsley_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:parsley": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:collard_greens_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:collard_greens": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:green_bean_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:green_bean": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:chili_pepper_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:chili_pepper": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:brussels_sprouts_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:brussels_sprouts": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cauliflower_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cauliflower": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:bok_choy_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:bok_choy": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:shallot_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:shallot": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:ginger_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:ginger": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:turmeric_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:turmeric": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:black_bean_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:black_bean": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:quinoa_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:quinoa": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:artichoke_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:artichoke": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    }
+  }
+}

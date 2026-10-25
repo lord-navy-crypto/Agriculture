@@ -65,3 +65,10 @@ celery, leek) extend the original 36. New drinkable honey bottles are clover,
 lavender, buckwheat and sunflower; they are classified from predominant nearby
 flowering crops only when harvesting a full smoked native hive. Mixed/uncertain
 forage still yields regular honey. See `docs/AGRICULTURE_CROPS_AND_NECTAR_V0_9.md`.
+
+
+### Agriculture native composting (v1.3)
+All 64 harvested organic crop items and 64 corresponding seeds support vanilla
+composters through NeoForge's item `neoforge:compostables` data map. Seeds have a
+30% level-up chance and harvested biomass a 65% chance; villager auto-composting
+remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
