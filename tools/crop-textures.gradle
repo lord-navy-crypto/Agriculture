@@ -163,7 +163,7 @@ tasks.register('generateCropAssets') {
         // Seed appearance is a separate botanical property: it must not be inferred from
         // the harvested organ (e.g. leafy crops still have seeds). Keep this taxonomy explicit.
         def seedFormGroups = [
-            kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa amaranth sweet_corn'.split(' '),
+            kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa amaranth sweet_corn teff'.split(' '),
             legume:'soybean black_bean chickpea lentil pea green_bean peanut'.split(' '),
             oilseed:'sunflower_seed sesame mustard canola flax'.split(' '),
             nightshade:'tomato bell_pepper chili_pepper eggplant'.split(' '),
