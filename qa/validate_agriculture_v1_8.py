@@ -76,7 +76,7 @@ def main():
         "private static Band biomeBand", 1
     )[0]
     climate_by_seed = {}
-    for match in re.finditer(r"case\\s+(.*?)\\s*->\\s*Band\\.([A-Z]+);", band_block, re.S):
+    for match in re.finditer(r"case\s+(.*?)\s*->\s*Band\.([A-Z]+);", band_block, re.S):
         for seed_name in re.findall(r'"([a-z0-9_]+_seeds)"', match.group(1)):
             assert seed_name not in climate_by_seed, seed_name
             climate_by_seed[seed_name] = match.group(2)
@@ -87,8 +87,8 @@ def main():
 
     registry_pollination = {
         crop: group for crop, group in re.findall(
-            r'crop\\("([a-z0-9_]+)_crop",\\s*"([a-z0-9_]+)_seeds",\\s*'
-            r'AgricultureCropBlock\\.PollinationGroup\\.([A-Z]+)\\)', registry
+            r'crop\("([a-z0-9_]+)_crop",\s*"([a-z0-9_]+)_seeds",\s*'
+            r'AgricultureCropBlock\.PollinationGroup\.([A-Z]+)\)', registry
         )
     }
     assert set(registry_pollination) == set(all_crops)
