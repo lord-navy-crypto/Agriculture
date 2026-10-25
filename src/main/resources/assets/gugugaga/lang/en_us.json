@@ -131,5 +131,18 @@
   "message.gugugaga.honey_harvester_not_ready": "This hive is not full yet (honey level 5 required).",
   "message.gugugaga.honey_harvester_smoke_required": "Place a lit campfire or soul campfire below the hive with a clear smoke column.",
   "message.gugugaga.honey_harvester_bottle_required": "You need an empty glass bottle in your inventory.",
-  "message.gugugaga.honey_harvester_collected": "Honey collected safely."
+  "message.gugugaga.honey_harvester_collected": "Honey collected safely.",
+  "item.gugugaga.bee_keeper_brush": "Gentle Beekeeper Brush",
+  "item.gugugaga.bumblebee_nectar": "Bumblebee Nectar Pot",
+  "item.gugugaga.mason_bee_cocoon": "Mason Bee Cocoon",
+  "item.gugugaga.squash_bee_cocoon": "Squash Bee Cocoon",
+  "item.gugugaga.leafcutter_bee_cocoon": "Leafcutter Bee Cocoon",
+  "block.gugugaga.bumblebee_nest": "Bumblebee Nest Habitat",
+  "block.gugugaga.mason_bee_house": "Mason Bee House",
+  "block.gugugaga.squash_bee_burrow": "Squash Bee Burrow Habitat",
+  "block.gugugaga.leafcutter_bee_house": "Leafcutter Bee House",
+  "message.gugugaga.gentle_honey_bottle": "Safely collected a honey bottle.",
+  "message.gugugaga.gentle_honeycomb": "Safely collected three honeycombs.",
+  "message.gugugaga.nest_progress": "Habitat progress: %s/%s. Matching bees and nearby forage are needed.",
+  "message.gugugaga.nest_collected": "Collected habitat product: %s."
 }

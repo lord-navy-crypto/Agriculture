@@ -1,0 +1,460 @@
+{
+  "warning": "Crop categories and pollination groups are gameplay abstractions informed by extension guidance. Only listed maturity ranges are real-world references; real days and temperatures are never converted to Minecraft ticks.",
+  "sources": [
+    "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+    "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+    "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management",
+    "https://ghgmitigation.irri.org/mitigation-technologies/alternate-wetting-and-drying"
+  ],
+  "crops": [
+    {
+      "crop": "corn",
+      "chinese_name": "玉米",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "tomato",
+      "chinese_name": "番茄",
+      "harvested_part": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "BUZZ",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "onion",
+      "chinese_name": "洋葱",
+      "harvested_part": "bulb",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "rice",
+      "chinese_name": "水稻",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "WET",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ],
+      "special_rule": "irrigated-lowland gameplay proxy: freshwater within three horizontal blocks at crop height or the farmland level below"
+    },
+    {
+      "crop": "soybean",
+      "chinese_name": "大豆",
+      "harvested_part": "legume",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "strawberry",
+      "chinese_name": "草莓",
+      "harvested_part": "berry",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "BERRY",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "cucumber",
+      "chinese_name": "黄瓜",
+      "harvested_part": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "CUCURBIT",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "blueberry",
+      "chinese_name": "蓝莓",
+      "harvested_part": "berry",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "BERRY",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "bell_pepper",
+      "chinese_name": "甜椒",
+      "harvested_part": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "BUZZ",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "garlic",
+      "chinese_name": "大蒜",
+      "harvested_part": "bulb",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "barley",
+      "chinese_name": "大麦",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "oat",
+      "chinese_name": "燕麦",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "rye",
+      "chinese_name": "黑麦",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "pea",
+      "chinese_name": "豌豆",
+      "harvested_part": "legume",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "lettuce",
+      "chinese_name": "莴苣",
+      "harvested_part": "leaf",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "cabbage",
+      "chinese_name": "卷心菜",
+      "harvested_part": "leaf/head",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "spinach",
+      "chinese_name": "菠菜",
+      "harvested_part": "leaf",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "broccoli",
+      "chinese_name": "西兰花",
+      "harvested_part": "flowering_head",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "eggplant",
+      "chinese_name": "茄子",
+      "harvested_part": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "BUZZ",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "cotton",
+      "chinese_name": "棉花",
+      "harvested_part": "fiber",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "flax",
+      "chinese_name": "亚麻",
+      "harvested_part": "fiber",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "peanut",
+      "chinese_name": "花生",
+      "harvested_part": "legume",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "sorghum",
+      "chinese_name": "高粱",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "DRY",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "sunflower_seed",
+      "chinese_name": "向日葵籽",
+      "harvested_part": "oilseed",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "GENERAL",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "millet",
+      "chinese_name": "小米",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "DRY",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "buckwheat",
+      "chinese_name": "荞麦",
+      "harvested_part": "grain",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "GENERAL",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "chickpea",
+      "chinese_name": "鹰嘴豆",
+      "harvested_part": "legume",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "lentil",
+      "chinese_name": "小扁豆",
+      "harvested_part": "legume",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "radish",
+      "chinese_name": "萝卜",
+      "harvested_part": "root",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ],
+      "real_maturity_days_range_reference": [
+        30,
+        60
+      ]
+    },
+    {
+      "crop": "turnip",
+      "chinese_name": "芜菁",
+      "harvested_part": "root",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ],
+      "real_maturity_days_range_reference": [
+        50,
+        60
+      ]
+    },
+    {
+      "crop": "sweet_potato",
+      "chinese_name": "红薯",
+      "harvested_part": "tuber",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ]
+    },
+    {
+      "crop": "kale",
+      "chinese_name": "羽衣甘蓝",
+      "harvested_part": "leaf",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "NONE",
+      "pollinated_harvest_bonus": "none",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.psu.edu/forage-and-food-crops/vegetables/soil-fertility-and-management"
+      ],
+      "real_maturity_days_range_reference": [
+        40,
+        65
+      ]
+    },
+    {
+      "crop": "zucchini",
+      "chinese_name": "西葫芦",
+      "harvested_part": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "CUCURBIT",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ],
+      "real_maturity_days_range_reference": [
+        50,
+        65
+      ]
+    },
+    {
+      "crop": "raspberry",
+      "chinese_name": "覆盆子",
+      "harvested_part": "berry",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_group": "BERRY",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "cranberry",
+      "chinese_name": "蔓越莓",
+      "harvested_part": "berry",
+      "growth_band_gameplay": "COOL",
+      "pollination_group": "BERRY",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "sesame",
+      "chinese_name": "芝麻",
+      "harvested_part": "oilseed",
+      "growth_band_gameplay": "WARM",
+      "pollination_group": "GENERAL",
+      "pollinated_harvest_bonus": "one_additional_produce_item",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "note": "Source-informed game abstractions. Habitat progress is proximity-based in this milestone; custom bee AI still inherits vanilla Bee movement and home-target routines.",
+  "honey_rule": "Vanilla honeybee hives/nests produce vanilla honey bottles and honeycomb. Bumblebees store nectar/pollen provisions; solitary mason, squash and leafcutter bees do not produce honeycomb. Custom habitats yield species-specific nectar/cocoon rewards instead of fictional honey.",
+  "species": [
+    {
+      "id": "bumblebee",
+      "sociality": "social colony",
+      "nesting": "sheltered cavity or underground cavity",
+      "habitat_block": "bumblebee_nest",
+      "habitat_reward": "bumblebee_nectar",
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY",
+        "CUCURBIT",
+        "BUZZ"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "id": "mason_bee",
+      "sociality": "solitary",
+      "nesting": "cavities in dead wood, hollow stems or maintained nesting blocks",
+      "habitat_block": "mason_bee_house",
+      "habitat_reward": "mason_bee_cocoon",
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources"
+      ]
+    },
+    {
+      "id": "squash_bee",
+      "sociality": "solitary",
+      "nesting": "ground burrows near cucurbit crops",
+      "habitat_block": "squash_bee_burrow",
+      "habitat_reward": "squash_bee_cocoon",
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "CUCURBIT"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "id": "leafcutter_bee",
+      "sociality": "solitary",
+      "nesting": "cavities divided into brood cells with leaf pieces",
+      "habitat_block": "leafcutter_bee_house",
+      "habitat_reward": "leafcutter_bee_cocoon",
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources",
+        "https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/alfalfa-leafcutting-bee-alcb/"
+      ]
+    },
+    {
+      "id": "carpenter_bee",
+      "sociality": "mostly solitary",
+      "nesting": "tunnels excavated in wood",
+      "habitat_block": null,
+      "habitat_reward": null,
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources"
+      ]
+    },
+    {
+      "id": "mining_bee",
+      "sociality": "mostly solitary",
+      "nesting": "ground burrows",
+      "habitat_block": null,
+      "habitat_reward": null,
+      "honeycomb_producer": false,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY"
+      ],
+      "source_urls": [
+        "https://www.xerces.org/pollinator-conservation/nesting-resources"
+      ]
+    },
+    {
+      "id": "minecraft:bee",
+      "sociality": "managed social colony",
+      "nesting": "vanilla beehive or bee nest",
+      "habitat_block": "minecraft:beehive_or_bee_nest",
+      "habitat_reward": "minecraft:honey_bottle_and_honeycomb",
+      "honeycomb_producer": true,
+      "pollination_groups": [
+        "GENERAL",
+        "BERRY",
+        "CUCURBIT"
+      ],
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    }
+  ]
+}

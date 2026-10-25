@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "PHP",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "H": {
+      "item": "minecraft:honeycomb"
+    }
+  },
+  "result": {
+    "id": "gugugaga:mason_bee_house",
+    "count": 1
+  }
+}

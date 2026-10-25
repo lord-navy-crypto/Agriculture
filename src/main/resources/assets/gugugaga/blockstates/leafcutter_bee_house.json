@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "minecraft:block/beehive"
+    },
+    "stage=1": {
+      "model": "minecraft:block/beehive"
+    },
+    "stage=2": {
+      "model": "minecraft:block/beehive"
+    },
+    "stage=3": {
+      "model": "minecraft:block/bee_nest"
+    }
+  }
+}

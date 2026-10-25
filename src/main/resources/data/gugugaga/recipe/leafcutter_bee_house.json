@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PHP",
+    "S S",
+    "PHP"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "H": {
+      "item": "minecraft:honeycomb"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "gugugaga:leafcutter_bee_house",
+    "count": 1
+  }
+}

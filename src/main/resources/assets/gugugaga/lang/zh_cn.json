@@ -131,5 +131,18 @@
   "message.gugugaga.honey_harvester_not_ready": "蜂巢尚未装满（蜂蜜等级需要达到 5）。",
   "message.gugugaga.honey_harvester_smoke_required": "请在蜂巢下方放置点燃的营火或灵魂营火，并保持烟雾通道畅通。",
   "message.gugugaga.honey_harvester_bottle_required": "你的物品栏中需要一个空玻璃瓶。",
-  "message.gugugaga.honey_harvester_collected": "已安全采集蜂蜜。"
+  "message.gugugaga.honey_harvester_collected": "已安全采集蜂蜜。",
+  "item.gugugaga.bee_keeper_brush": "温和养蜂刷",
+  "item.gugugaga.bumblebee_nectar": "熊蜂花蜜储罐",
+  "item.gugugaga.mason_bee_cocoon": "壁蜂茧",
+  "item.gugugaga.squash_bee_cocoon": "南瓜蜂茧",
+  "item.gugugaga.leafcutter_bee_cocoon": "切叶蜂茧",
+  "block.gugugaga.bumblebee_nest": "熊蜂栖息巢",
+  "block.gugugaga.mason_bee_house": "壁蜂巢箱",
+  "block.gugugaga.squash_bee_burrow": "南瓜蜂地穴栖息点",
+  "block.gugugaga.leafcutter_bee_house": "切叶蜂巢箱",
+  "message.gugugaga.gentle_honey_bottle": "已安全收集一瓶蜂蜜。",
+  "message.gugugaga.gentle_honeycomb": "已安全收集三个蜂脾。",
+  "message.gugugaga.nest_progress": "栖息点进度：%s/%s。需要附近有对应蜜蜂和花源。",
+  "message.gugugaga.nest_collected": "已收集栖息点产物：%s。"
 }
