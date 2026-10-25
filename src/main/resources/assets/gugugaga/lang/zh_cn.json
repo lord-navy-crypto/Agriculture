@@ -80,5 +80,9 @@
   "item.gugugaga.sorghum": "高粱",
   "block.gugugaga.sunflower_seed_crop": "葵花籽作物",
   "item.gugugaga.sunflower_seed_seeds": "葵花籽种子",
-  "item.gugugaga.sunflower_seed": "葵花籽"
+  "item.gugugaga.sunflower_seed": "葵花籽",
+  "entity.gugugaga.bumblebee": "熊蜂",
+  "entity.gugugaga.mason_bee": "壁蜂",
+  "entity.gugugaga.squash_bee": "南瓜蜂",
+  "entity.gugugaga.leafcutter_bee": "切叶蜂"
 }

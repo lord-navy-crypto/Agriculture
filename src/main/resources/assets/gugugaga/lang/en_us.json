@@ -80,5 +80,9 @@
   "item.gugugaga.sorghum": "Sorghum",
   "block.gugugaga.sunflower_seed_crop": "Sunflower Seed Crop",
   "item.gugugaga.sunflower_seed_seeds": "Sunflower Seed Seeds",
-  "item.gugugaga.sunflower_seed": "Sunflower Seed"
+  "item.gugugaga.sunflower_seed": "Sunflower Seed",
+  "entity.gugugaga.bumblebee": "Bumblebee",
+  "entity.gugugaga.mason_bee": "Mason Bee",
+  "entity.gugugaga.squash_bee": "Squash Bee",
+  "entity.gugugaga.leafcutter_bee": "Leafcutter Bee"
 }

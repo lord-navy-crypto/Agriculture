@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.gugugaga;
 
 import io.github.lordnavycrypto.gugugaga.agriculture.AgricultureContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.BeeContent;
+import io.github.lordnavycrypto.gugugaga.agriculture.BeeWildlife;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -15,6 +16,9 @@ public final class GuguGagaMod {
         AgricultureContent.BLOCKS.register(modBus);
         AgricultureContent.ITEMS.register(modBus);
         BeeContent.ITEMS.register(modBus);
+        BeeWildlife.ENTITIES.register(modBus);
+        modBus.addListener(BeeWildlife::onAttributes);
+        modBus.addListener(BeeWildlife::onSpawnPlacements);
         modBus.addListener(AgricultureContent::onCreativeTab);
         System.out.println("GUGUGAGA_AGRICULTURE_RUNTIME_INIT_OK");
     }

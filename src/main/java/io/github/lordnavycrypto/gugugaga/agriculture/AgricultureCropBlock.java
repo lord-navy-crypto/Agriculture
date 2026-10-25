@@ -57,7 +57,10 @@ public final class AgricultureCropBlock extends CropBlock {
         AABB searchArea = new AABB(pos).inflate(6.0D, 3.0D, 6.0D);
         for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, Bee::isAlive)) {
             String ecotype = bee.getPersistentData().getString(BeeEcotypeItem.DATA_KEY);
-            if (!isCompatible(ecotype)) {
+            String species = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE
+                    .getKey(bee.getType()).getPath();
+            if (!compatibleSpecies(species)
+                    || (species.equals("bee") && !isCompatible(ecotype))) {
                 continue;
             }
 
@@ -81,7 +84,20 @@ public final class AgricultureCropBlock extends CropBlock {
         }
     }
 
+    private boolean compatibleSpecies(String species) {
+        return switch (species) {
+            case "bumblebee" -> true;
+            case "mason_bee" -> pollinationGroup == PollinationGroup.ORCHARD
+                    || pollinationGroup == PollinationGroup.BERRY;
+            case "squash_bee" -> seedName.equals("cucumber_seeds");
+            case "leafcutter_bee" -> pollinationGroup == PollinationGroup.ORCHARD
+                    || seedName.equals("cucumber_seeds");
+            default -> true;
+        };
+    }
+
     private boolean isCompatible(String ecotype) {
+
         // Untagged vanilla bees are the general meadow pollinator.
         if (ecotype.isEmpty() || "meadow".equals(ecotype)) {
             return true;
