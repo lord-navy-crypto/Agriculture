@@ -78,6 +78,29 @@ tasks.register('generateCropAssets') {
             throw new GradleException('Crop art palette map must cover all 64 crop IDs exactly')
         }
 
+        // A crop's leaf architecture controls its silhouette, not just its color.
+        // These groups intentionally cover every registered crop exactly once.
+        def leafFormGroups = [
+            blade:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame flax leek'.split(' '),
+            rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip'.split(' '),
+            bulb:'onion garlic shallot ginger turmeric sweet_potato parsnip peanut'.split(' '),
+            vine:'cucumber zucchini strawberry pea green_bean chili_pepper okra'.split(' '),
+            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton'.split(' '),
+            fern:'fennel dill cilantro parsley'.split(' '),
+            flower:'lavender mustard canola sunflower_seed artichoke'.split(' '),
+            stalk:'celery'.split(' ')
+        ]
+        def leafFormByCrop = [:]
+        leafFormGroups.each { form, names ->
+            names.each { name ->
+                if (leafFormByCrop.containsKey(name)) throw new GradleException('Duplicate crop leaf form: ' + name)
+                leafFormByCrop[name] = form.toString()
+            }
+        }
+        if (!(cropIds as Set).equals(leafFormByCrop.keySet())) {
+            throw new GradleException('Crop leaf forms must cover the 64 crop IDs exactly')
+        }
+
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
         def shade = { int color, double factor ->
             int red = (int)Math.max(0, Math.min(255, Math.round(((color >> 16) & 255) * factor)))
@@ -413,7 +436,11 @@ tasks.register('generateCropAssets') {
             int pollen = rgb.call('#F4E6A2')
             int flowerCore = rgb.call('#F1C84A')
             String kind = categoryByCrop[crop].toString()
-            int height = (int)(3 + Math.floor(stage * 11.0d / 7.0d))
+            String leafForm = leafFormByCrop[crop].toString()
+            int maxHeight = leafForm in ['rosette', 'bulb', 'stalk'] ? 10 :
+                            leafForm in ['vine', 'fern'] ? 12 :
+                            leafForm == 'bush' ? 13 : 14
+            int height = (int)(3 + Math.floor(stage * (maxHeight - 3) / 7.0d))
             int top = 15 - height
             line.call(image, 7, 15, 7, top, stem)
             // A tiny crop-specific seed/cotyledon pixel keeps even the earliest seedling sprite unique.
@@ -426,14 +453,67 @@ tasks.register('generateCropAssets') {
             for (int node = 0; node < nodes; node++) {
                 int y = 14 - node * 2
                 if (y < top + 1) continue
-                int span = kind == 'leafy' ? Math.min(4, 1 + stage.intdiv(2)) :
-                           kind == 'grain' ? 1 : Math.min(3, 1 + stage.intdiv(3))
-                for (int d = 1; d <= span; d++) {
-                    int ly = y - (d > 1 ? 1 : 0)
-                    put.call(image, 7 - d, ly, d == span ? leafLight : leaf)
-                    put.call(image, 6 - d, ly, leafDark)
-                    put.call(image, 8 + d, ly, d == span ? leafLight : leaf)
-                    put.call(image, 9 + d, ly, leafDark)
+                int side = node % 2 == 0 ? -1 : 1
+                if (leafForm == 'blade') {
+                    int bladeLength = Math.min(4, 1 + stage.intdiv(2))
+                    int bladeTipY = Math.max(top + 1, y - 2)
+                    line.call(image, 7, y, Math.max(1, 7 - bladeLength), bladeTipY, leafLight)
+                    line.call(image, 7, y, Math.min(14, 7 + bladeLength), Math.max(top + 1, y - 1), leaf)
+                    put.call(image, Math.max(1, 7 - bladeLength), bladeTipY, leafLight)
+                    put.call(image, Math.min(14, 7 + bladeLength), Math.max(top + 1, y - 1), leafDark)
+                } else if (leafForm == 'rosette') {
+                    int rosetteSpread = Math.min(4, 1 + stage.intdiv(2))
+                    int rosetteRadius = stage >= 5 ? 2 : 1
+                    disc.call(image, Math.max(1, 7 - rosetteSpread), y, rosetteRadius, 1, leaf)
+                    disc.call(image, Math.min(14, 7 + rosetteSpread), Math.max(top + 1, y - 1), rosetteRadius, 1, leafLight)
+                    line.call(image, Math.max(1, 7 - rosetteSpread), y, 7, Math.max(top + 1, y - 1), leafDark)
+                    line.call(image, 7, Math.max(top + 1, y - 1), Math.min(14, 7 + rosetteSpread), Math.max(top + 1, y - 1), leafDark)
+                } else if (leafForm == 'bulb') {
+                    int bladeLength = Math.min(4, 1 + stage.intdiv(2))
+                    line.call(image, 7, y, Math.max(2, 7 - bladeLength), Math.max(top + 1, y - 3), leafLight)
+                    line.call(image, 7, y, Math.min(13, 7 + bladeLength), Math.max(top + 1, y - 2), leaf)
+                    put.call(image, Math.max(2, 7 - bladeLength), Math.max(top + 1, y - 3), leafDark)
+                    put.call(image, Math.min(13, 7 + bladeLength), Math.max(top + 1, y - 2), leafLight)
+                } else if (leafForm == 'vine') {
+                    int vineReach = Math.min(4, 1 + stage.intdiv(2))
+                    int vineX = Math.max(1, Math.min(14, 7 + side * vineReach))
+                    line.call(image, 7, y, vineX, Math.max(top + 1, y - 2), leafDark)
+                    disc.call(image, vineX, Math.max(top + 1, y - 2), stage >= 6 ? 2 : 1, 1, leafLight)
+                    line.call(image, vineX, Math.max(top + 1, y - 2), Math.max(1, Math.min(14, vineX - side * 2)), Math.max(top + 1, y - 3), leaf)
+                    put.call(image, Math.max(1, Math.min(14, vineX - side * 2)), Math.max(top + 1, y - 3), leafDark)
+                } else if (leafForm == 'bush') {
+                    int bushReach = Math.min(4, 1 + stage.intdiv(2))
+                    int leftX = Math.max(1, 7 - bushReach)
+                    int rightX = Math.min(14, 7 + bushReach)
+                    line.call(image, 7, y, leftX, Math.max(top + 1, y - 1), leafDark)
+                    line.call(image, 7, y, rightX, Math.max(top + 1, y - 1), leafDark)
+                    disc.call(image, leftX, Math.max(top + 1, y - 1), stage >= 5 ? 2 : 1, 1, leafLight)
+                    disc.call(image, rightX, Math.max(top + 1, y - 1), stage >= 5 ? 2 : 1, 1, leaf)
+                    put.call(image, Math.max(1, leftX - 1), Math.max(top + 1, y - 2), leafDark)
+                    put.call(image, Math.min(14, rightX + 1), Math.max(top + 1, y - 2), leafLight)
+                } else if (leafForm == 'fern') {
+                    int leafletCount = Math.min(3, 1 + stage.intdiv(3))
+                    for (int leaflet = 1; leaflet <= leafletCount; leaflet++) {
+                        int leafletY = Math.max(top + 1, y - leaflet)
+                        int leftX = Math.max(1, 7 - leaflet * 2)
+                        int rightX = Math.min(14, 7 + leaflet * 2)
+                        line.call(image, 7, y, leftX, leafletY, leafLight)
+                        line.call(image, 7, y, rightX, leafletY, leaf)
+                        put.call(image, leftX, leafletY, leafDark)
+                        put.call(image, rightX, leafletY, leafLight)
+                    }
+                } else if (leafForm == 'flower') {
+                    int flowerLeafReach = Math.min(3, 1 + stage.intdiv(3))
+                    line.call(image, 7, y, Math.max(2, 7 - flowerLeafReach), Math.max(top + 1, y - 2), leaf)
+                    line.call(image, 7, y, Math.min(13, 7 + flowerLeafReach), Math.max(top + 1, y - 1), leafLight)
+                    put.call(image, Math.max(2, 7 - flowerLeafReach), Math.max(top + 1, y - 2), leafDark)
+                    put.call(image, Math.min(13, 7 + flowerLeafReach), Math.max(top + 1, y - 1), leaf)
+                } else { // celery: ribbed, upright petioles rather than generic paired leaves
+                    int stalkReach = Math.min(3, 1 + stage.intdiv(3))
+                    line.call(image, 7, y, Math.max(4, 7 - stalkReach), Math.max(top + 1, y - 3), leafLight)
+                    line.call(image, 7, y, Math.min(10, 7 + stalkReach), Math.max(top + 1, y - 3), leafLight)
+                    put.call(image, 6, y, leafDark)
+                    put.call(image, 8, y, leafDark)
                 }
                 put.call(image, 7, y, stem)
             }
