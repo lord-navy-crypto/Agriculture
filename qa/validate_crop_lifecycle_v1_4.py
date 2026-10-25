@@ -63,6 +63,7 @@ def main():
     assert "allStageHashes.size() != 768" in generator
     assert "tasks.named('processResources')" in generator
     assert "crop-stage-contact-sheet.png" in generator
+    assert "outputs.dir(layout.buildDirectory.dir('reports/agriculture'))" in generator
     assert "produce-icon-contact-sheet.png" in generator
     assert "seed-icon-contact-sheet.png" in generator
     workflow = (ROOT / ".github/workflows/rewrite-build.yml").read_text(encoding="utf8")
