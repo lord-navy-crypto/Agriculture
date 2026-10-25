@@ -62,7 +62,7 @@ assert "below.is(Blocks.GRASS_BLOCK)" not in habitat
 assert 'id.equals("tomato_crop") || id.equals("eggplant_crop")' in habitat
 assert "hasChunkAt" in habitat and "level.getEntitiesOfClass" in habitat
 assert "new ItemStack" not in habitat and "Items.HONEY_BOTTLE" not in habitat
-assert 'if (id.equals("zucchini_crop")) return true;' in habitat
+assert 'if (id.equals("zucchini_crop") || id.equals("pumpkin_crop")) return true;' in habitat
 crop = (java / "agriculture/AgricultureCropBlock.java").read_text("utf8")
 assert 'case "squash_bee" -> seedName.equals("zucchini_seeds")' in crop
 assert 'seedName.equals("tomato_seeds") || seedName.equals("eggplant_seeds")' in crop
