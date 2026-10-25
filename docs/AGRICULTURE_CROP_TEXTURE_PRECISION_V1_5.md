@@ -8,7 +8,7 @@ This is a crop-only visual-quality pass on the existing 64 crop catalog. Bee spe
 
 The previous generator already emitted custom 16×16 PNGs, but much of the plant silhouette was shared by broad crop categories. A different palette alone is not enough to call a crop texture precise.
 
-The v1.5 pass adds explicit crop-ID-specific details to both seedling and reproductive/mature stages for all 64 crops. These details distinguish, for example:
+The v1.5 pass adds explicit crop-ID-specific details to both seedling and reproductive/mature stages for all 64 crops. The general plant silhouette also expands with age: wider foliage and progressively added side growth make ages 4–7 read as continued development rather than eight hash-distinct but visually similar sprites. These details distinguish, for example:
 
 - Grain forms: corn ears and kernels, rice panicles, barley awns, oat panicles, rye spikes, sorghum heads, millet clusters, buckwheat grains, quinoa clusters, sesame capsules and sunflower heads.
 - Fruit forms: tomato calyxes, strawberry seed marks, cucumber/zucchini stripes, blueberry and cranberry berries, pepper lobes, eggplant calyxes, raspberry drupelets, ribbed okra pods and curved chili peppers.
