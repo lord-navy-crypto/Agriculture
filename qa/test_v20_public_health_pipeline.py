@@ -65,12 +65,12 @@ class PublicHealthImportTest(unittest.TestCase):
             loader.import_country(self.raw,"Exampleland","2026-10-25",self.out)
 
     def test_missing_data_not_silently_imputed(self):
-        self.write("Exampleland,2026-09-14,100,8\\n"
-                   "Exampleland,2026-09-21,100,\\n"
-                   "Exampleland,2026-09-28,100,12\\n"
-                   "Exampleland,2026-10-05,120,12\\n"
-                   "Exampleland,2026-10-12,120,12\\n"
-                   "Exampleland,2026-10-19,120,12\\n")
+        self.write("Exampleland,2026-09-14,100,8\n"
+                   "Exampleland,2026-09-21,100,\n"
+                   "Exampleland,2026-09-28,100,12\n"
+                   "Exampleland,2026-10-05,120,12\n"
+                   "Exampleland,2026-10-12,120,12\n"
+                   "Exampleland,2026-10-19,120,12\n")
         meta=loader.import_country(self.raw,"Exampleland","2026-10-25",self.out)
         self.assertEqual(meta["excluded_missing_rows"],1)
         self.assertEqual(meta["imported_weeks"],4)
