@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:meadow",
+    "minecraft:plains",
+    "minecraft:birch_forest"
+  ],
+  "features": "gugugaga:wild_turnip",
+  "step": "vegetal_decoration"
+}
