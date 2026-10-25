@@ -3,6 +3,8 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -52,6 +54,51 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> BELL_PEPPER = food("bell_pepper", 2, 0.3F);
     public static final DeferredItem<Item> GARLIC = food("garlic", 1, 0.2F);
 
+    public static final DeferredBlock<AgricultureCropBlock> BARLEY_CROP = crop("barley_crop", "barley_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> OAT_CROP = crop("oat_crop", "oat_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> RYE_CROP = crop("rye_crop", "rye_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> PEA_CROP = crop("pea_crop", "pea_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> LETTUCE_CROP = crop("lettuce_crop", "lettuce_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> CABBAGE_CROP = crop("cabbage_crop", "cabbage_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> SPINACH_CROP = crop("spinach_crop", "spinach_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> BROCCOLI_CROP = crop("broccoli_crop", "broccoli_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> EGGPLANT_CROP = crop("eggplant_crop", "eggplant_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredBlock<AgricultureCropBlock> COTTON_CROP = crop("cotton_crop", "cotton_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> FLAX_CROP = crop("flax_crop", "flax_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> PEANUT_CROP = crop("peanut_crop", "peanut_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> SORGHUM_CROP = crop("sorghum_crop", "sorghum_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredBlock<AgricultureCropBlock> SUNFLOWER_SEED_CROP = crop("sunflower_seed_crop", "sunflower_seed_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+
+    public static final DeferredItem<Item> BARLEY_SEEDS = seed("barley_seeds", BARLEY_CROP);
+    public static final DeferredItem<Item> OAT_SEEDS = seed("oat_seeds", OAT_CROP);
+    public static final DeferredItem<Item> RYE_SEEDS = seed("rye_seeds", RYE_CROP);
+    public static final DeferredItem<Item> PEA_SEEDS = seed("pea_seeds", PEA_CROP);
+    public static final DeferredItem<Item> LETTUCE_SEEDS = seed("lettuce_seeds", LETTUCE_CROP);
+    public static final DeferredItem<Item> CABBAGE_SEEDS = seed("cabbage_seeds", CABBAGE_CROP);
+    public static final DeferredItem<Item> SPINACH_SEEDS = seed("spinach_seeds", SPINACH_CROP);
+    public static final DeferredItem<Item> BROCCOLI_SEEDS = seed("broccoli_seeds", BROCCOLI_CROP);
+    public static final DeferredItem<Item> EGGPLANT_SEEDS = seed("eggplant_seeds", EGGPLANT_CROP);
+    public static final DeferredItem<Item> COTTON_SEEDS = seed("cotton_seeds", COTTON_CROP);
+    public static final DeferredItem<Item> FLAX_SEEDS = seed("flax_seeds", FLAX_CROP);
+    public static final DeferredItem<Item> PEANUT_SEEDS = seed("peanut_seeds", PEANUT_CROP);
+    public static final DeferredItem<Item> SORGHUM_SEEDS = seed("sorghum_seeds", SORGHUM_CROP);
+    public static final DeferredItem<Item> SUNFLOWER_SEED_SEEDS = seed("sunflower_seed_seeds", SUNFLOWER_SEED_CROP);
+
+    public static final DeferredItem<Item> BARLEY = food("barley", 3, 0.4F);
+    public static final DeferredItem<Item> OAT = food("oat", 3, 0.4F);
+    public static final DeferredItem<Item> RYE = food("rye", 3, 0.4F);
+    public static final DeferredItem<Item> PEA = food("pea", 2, 0.3F);
+    public static final DeferredItem<Item> LETTUCE = food("lettuce", 2, 0.25F);
+    public static final DeferredItem<Item> CABBAGE = food("cabbage", 2, 0.25F);
+    public static final DeferredItem<Item> SPINACH = food("spinach", 2, 0.25F);
+    public static final DeferredItem<Item> BROCCOLI = food("broccoli", 2, 0.3F);
+    public static final DeferredItem<Item> EGGPLANT = food("eggplant", 2, 0.25F);
+    public static final DeferredItem<Item> COTTON = food("cotton", 1, 0.2F);
+    public static final DeferredItem<Item> FLAX = food("flax", 1, 0.2F);
+    public static final DeferredItem<Item> PEANUT = food("peanut", 2, 0.3F);
+    public static final DeferredItem<Item> SORGHUM = food("sorghum", 3, 0.4F);
+    public static final DeferredItem<Item> SUNFLOWER_SEED = food("sunflower_seed", 2, 0.3F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -69,4 +116,64 @@ public final class AgricultureContent {
                 .nutrition(nutrition).saturationModifier(saturation).build();
         return ITEMS.register(name, () -> new Item(new Item.Properties().food(properties)));
     }
+
+    public static void onCreativeTab(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(CORN_SEEDS.get());
+            event.accept(TOMATO_SEEDS.get());
+            event.accept(ONION_SEEDS.get());
+            event.accept(RICE_SEEDS.get());
+            event.accept(SOYBEAN_SEEDS.get());
+            event.accept(STRAWBERRY_SEEDS.get());
+            event.accept(CUCUMBER_SEEDS.get());
+            event.accept(BLUEBERRY_SEEDS.get());
+            event.accept(BELL_PEPPER_SEEDS.get());
+            event.accept(GARLIC_SEEDS.get());
+            event.accept(BARLEY_SEEDS.get());
+            event.accept(OAT_SEEDS.get());
+            event.accept(RYE_SEEDS.get());
+            event.accept(PEA_SEEDS.get());
+            event.accept(LETTUCE_SEEDS.get());
+            event.accept(CABBAGE_SEEDS.get());
+            event.accept(SPINACH_SEEDS.get());
+            event.accept(BROCCOLI_SEEDS.get());
+            event.accept(EGGPLANT_SEEDS.get());
+            event.accept(COTTON_SEEDS.get());
+            event.accept(FLAX_SEEDS.get());
+            event.accept(PEANUT_SEEDS.get());
+            event.accept(SORGHUM_SEEDS.get());
+            event.accept(SUNFLOWER_SEED_SEEDS.get());
+        } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            event.accept(CORN.get());
+            event.accept(TOMATO.get());
+            event.accept(ONION.get());
+            event.accept(RICE.get());
+            event.accept(SOYBEAN.get());
+            event.accept(STRAWBERRY.get());
+            event.accept(CUCUMBER.get());
+            event.accept(BLUEBERRY.get());
+            event.accept(BELL_PEPPER.get());
+            event.accept(GARLIC.get());
+            event.accept(BARLEY.get());
+            event.accept(OAT.get());
+            event.accept(RYE.get());
+            event.accept(PEA.get());
+            event.accept(LETTUCE.get());
+            event.accept(CABBAGE.get());
+            event.accept(SPINACH.get());
+            event.accept(BROCCOLI.get());
+            event.accept(EGGPLANT.get());
+            event.accept(COTTON.get());
+            event.accept(FLAX.get());
+            event.accept(PEANUT.get());
+            event.accept(SORGHUM.get());
+            event.accept(SUNFLOWER_SEED.get());
+        } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(BeeContent.MEADOW_BEE_TAG.get());
+            event.accept(BeeContent.ORCHARD_BEE_TAG.get());
+            event.accept(BeeContent.BERRY_BEE_TAG.get());
+            event.accept(BeeContent.LARGE_APIARY_KIT.get());
+        }
+    }
+
 }

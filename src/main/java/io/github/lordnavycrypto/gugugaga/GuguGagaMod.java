@@ -15,6 +15,7 @@ public final class GuguGagaMod {
         AgricultureContent.BLOCKS.register(modBus);
         AgricultureContent.ITEMS.register(modBus);
         BeeContent.ITEMS.register(modBus);
+        modBus.addListener(AgricultureContent::onCreativeTab);
         System.out.println("GUGUGAGA_AGRICULTURE_RUNTIME_INIT_OK");
     }
 }
