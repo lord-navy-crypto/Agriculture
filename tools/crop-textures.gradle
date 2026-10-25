@@ -1638,7 +1638,10 @@ tasks.register('generateCropAssets') {
             pink_tulip_honey_bottle:'#D98CAF', wither_rose_honey_bottle:'#5C3B50',
             blackberry_honey_bottle:'#8B416A', blackcurrant_honey_bottle:'#4E4D7A',
             chive_honey_bottle:'#C7BC69', pumpkin_blossom_honey_bottle:'#E9A243',
-            wildflower_honey_bottle:'#C99A36'
+            wildflower_honey_bottle:'#C99A36', cassava_blossom_honey_bottle:'#C5B18B',
+            taro_blossom_honey_bottle:'#9A86B8', yam_blossom_honey_bottle:'#9B704A',
+            watercress_honey_bottle:'#76A87C', endive_honey_bottle:'#B6C47A',
+            kohlrabi_honey_bottle:'#A9C15C', rutabaga_honey_bottle:'#C0A5A0'
         ]
         def honeyTextureHashes = [] as Set
         honeyTexturePalette.each { id, hex ->
@@ -1670,8 +1673,8 @@ tasks.register('generateCropAssets') {
             savePng.call(honeyPath, bottle)
             honeyTextureHashes.add(digest.digest(new File(outputRoot, honeyPath).bytes).encodeHex().toString())
         }
-        if (honeyTexturePalette.size() != 23 || honeyTextureHashes.size() != 23) {
-            throw new GradleException('All 23 honey variants must have unique custom bottle sprites')
+        if (honeyTexturePalette.size() != 30 || honeyTextureHashes.size() != 30) {
+            throw new GradleException('All 30 honey variants must have unique custom bottle sprites')
         }
 
         if (modelCount != 960 || blockTextureCount != 960 || itemTextureCount != 160) {
