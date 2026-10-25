@@ -74,7 +74,7 @@ def main():
         model = read(f"assets/gugugaga/models/item/{item}.json")
         assert model["textures"]["layer0"] == f"gugugaga:item/honey/{item}"
     source_block = (SRC / "NectarHoneySource.java").read_text(encoding="utf-8").split("private static final String[] SOURCES = {",1)[1].split("};",1)[0]
-    routed = set(re.findall(r'"([^"]+_crop)"', source_block))
+    routed = set(re.findall(r'"([^"]+)"', source_block))
     expected = {row["source_crop"] for row in honey["honey_variants"] if row["source_crop"] != "mixed_flower_forage"}
     assert routed == expected and len(routed) == 37
     print("AGRICULTURE_V1_9_OK: 88 crop cycles; 1056 stage/model assets; 176 crop icons; 38 honey variants / 37 forage routes")
