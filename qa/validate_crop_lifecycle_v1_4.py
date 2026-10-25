@@ -63,8 +63,11 @@ def main():
     assert "allStageHashes.size() != 768" in generator
     assert "tasks.named('processResources')" in generator
     assert "crop-stage-contact-sheet.png" in generator
+    assert "produce-icon-contact-sheet.png" in generator
+    assert "seed-icon-contact-sheet.png" in generator
     workflow = (ROOT / ".github/workflows/rewrite-build.yml").read_text(encoding="utf8")
-    assert "crop-stage-contact-sheet.png" in workflow
+    assert "agriculture-visual-proof" in workflow
+    assert "build/reports/agriculture/*.png" in workflow
     assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
     assert "int growthTipY = Math.max(1, top)" in generator
     assert "shade.call(accent, 0.72d + stage * 0.05d)" in generator
