@@ -59,7 +59,7 @@ def main():
     assert "1.0F" in bee
     for effect in ("JUMP", "NIGHT_VISION", "DAMAGE_RESISTANCE", "MOVEMENT_SPEED",
                    "SATURATION", "FIRE_RESISTANCE", "BLINDNESS", "REGENERATION",
-                   "WEAKNESS", "WITHER", "WATER_BREATHING", "HASTE", "ABSORPTION"):
+                   "WEAKNESS", "WITHER", "WATER_BREATHING", "DIG_SPEED", "ABSORPTION"):
         assert f"MobEffects.{effect}" in bee, effect
     for flower in ("dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose"):
         assert f'"minecraft:{flower}"' in nectar
