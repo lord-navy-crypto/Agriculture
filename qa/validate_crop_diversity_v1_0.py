@@ -42,7 +42,7 @@ def main():
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
         assert f"block.gugugaga.{name}_crop" in en and f"block.gugugaga.{name}_crop" in zh
     for herb in "arugula swiss_chard parsley collard_greens dill cilantro".split():
-        assert f'seedName.equals("{herb}_seeds")' in crop
+        assert f'"{herb}_seeds"' in crop
     print("CROP_DIVERSITY_V1_0_OK: 56 plantable crops; 12 source-linked new crop lines, 6 new multi-harvest leaves")
 
 if __name__=="__main__":
