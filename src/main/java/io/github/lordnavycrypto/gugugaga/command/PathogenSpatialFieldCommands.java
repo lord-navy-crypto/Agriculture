@@ -14,6 +14,7 @@ import io.github.lordnavycrypto.gugugaga.pathogens.FieldParticleSampling;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentObservation;
 import io.github.lordnavycrypto.gugugaga.pathogens.FieldEnvironmentRuntime;
 import io.github.lordnavycrypto.gugugaga.pathogens.PublicHealthSurveillance;
+import io.github.lordnavycrypto.gugugaga.pathogens.ScientificTaxonProfiles15;
 import java.io.IOException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -31,6 +32,15 @@ public final class PathogenSpatialFieldCommands{
                 .then(Commands.literal("status").executes(ctx->status(ctx.getSource())))
                 .then(Commands.literal("surveillance")
                     .executes(ctx->surveillance(ctx.getSource())))
+                .then(Commands.literal("research")
+                    .then(Commands.literal("list")
+                        .executes(ctx->researchList(ctx.getSource())))
+                    .then(Commands.argument("taxon",StringArgumentType.word())
+                        .suggests((ctx,builder)->SharedSuggestionProvider.suggest(
+                            PathogenRoster15.FIRST_FIFTEEN.stream()
+                                .map(PathogenRoster15.Entry::id).toList(),builder))
+                        .executes(ctx->research(ctx.getSource(),
+                            StringArgumentType.getString(ctx,"taxon")))))
                 .then(Commands.literal("hud")
                     .then(Commands.literal("on")
                         .executes(ctx->hud(ctx.getSource(),true)))
@@ -147,6 +157,39 @@ public final class PathogenSpatialFieldCommands{
         player.sendSystemMessage(Component.literal("Gugu-Gaga field HUD: "+
                 (on?"ON":"OFF")+" (disabled by default)"));
         return 1;
+    }
+    private static int researchList(CommandSourceStack src){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run field research list as a player."));
+            return 0;
+        }
+        player.sendSystemMessage(Component.literal(
+            "[Disease agent research] 15 sourced catalog identities (8 viruses, "
+            +"6 bacteria, 1 oomycete). NOT infection measurements."));
+        for(var profile:ScientificTaxonProfiles15.ALL)
+            player.sendSystemMessage(Component.literal(
+                profile.taxonId()+" | "+profile.healthDomain()
+                +" | visual-proxy="+profile.usesVisualProxy()));
+        return 1;
+    }
+    private static int research(CommandSourceStack src,String taxonId){
+        if(!(src.getEntity() instanceof ServerPlayer player)){
+            src.sendFailure(Component.literal("Run field research as a player."));
+            return 0;
+        }
+        try {
+            var fact=ScientificTaxonProfiles15.byId(taxonId);
+            player.sendSystemMessage(Component.literal(
+                "[Source-linked research] "+fact.description()));
+            player.sendSystemMessage(Component.literal(
+                "Source-linked identity and Minecraft visual representation, "
+                +"NOT proof of host infection, a validated transmission model, "
+                +"or an organism-specific data-driven forecast."));
+            return 1;
+        } catch(IllegalArgumentException unknown){
+            src.sendFailure(Component.literal("Unknown research taxon: "+taxonId));
+            return 0;
+        }
     }
     private static int surveillance(CommandSourceStack src){
         // Aggregated published laboratory tests: NOT actual infected people
