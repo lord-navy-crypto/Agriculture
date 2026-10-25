@@ -28,18 +28,24 @@ public final class CropClimate {
             "eggplant_seeds", 60,
             "cabbage_seeds", 40
     );
+    /**
+     * Explicit profile for every currently registered crop. These broad bands are
+     * balancing categories inspired by extension guidance, not simulated temperatures.
+     */
     private static Band cropBand(String seedName) {
         return switch (seedName) {
-            case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
-                 "lettuce_seeds", "cabbage_seeds", "spinach_seeds",
-                 "broccoli_seeds", "blueberry_seeds", "buckwheat_seeds",
-                 "radish_seeds", "turnip_seeds", "kale_seeds", "cranberry_seeds" -> Band.COOL;
+            case "onion_seeds", "strawberry_seeds", "blueberry_seeds", "garlic_seeds",
+                 "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
+                 "lettuce_seeds", "cabbage_seeds", "spinach_seeds", "broccoli_seeds",
+                 "flax_seeds", "buckwheat_seeds", "lentil_seeds", "radish_seeds",
+                 "turnip_seeds", "kale_seeds", "raspberry_seeds", "cranberry_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
-                 "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds",
-                 "peanut_seeds", "sweet_potato_seeds", "zucchini_seeds" -> Band.WARM;
+                 "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
+                 "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds" -> Band.WARM;
             case "sorghum_seeds", "millet_seeds", "sesame_seeds" -> Band.DRY;
             case "rice_seeds" -> Band.WET;
-            default -> Band.TEMPERATE;
+            case "chickpea_seeds" -> Band.TEMPERATE;
+            default -> throw new IllegalArgumentException("Unclassified crop seed: " + seedName);
         };
     }
     private static Band biomeBand(String name) {
