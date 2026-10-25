@@ -176,7 +176,7 @@ public final class BeeContent {
                     .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 80, 0), 1.0F);
             case "endive_honey_bottle" -> food.nutrition(5)
                     .saturationModifier(0.30F)
-                    .effect(() -> new MobEffectInstance(MobEffects.HASTE, 120, 0), 1.0F);
+                    .effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 120, 0), 1.0F);
             case "kohlrabi_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.25F)
                     .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 100, 0), 1.0F);
