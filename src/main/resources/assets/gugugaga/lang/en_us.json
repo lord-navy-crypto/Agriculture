@@ -315,5 +315,19 @@
   "item.gugugaga.kohlrabi_seeds": "Kohlrabi Seeds",
   "block.gugugaga.rutabaga_crop": "Rutabaga Crop",
   "item.gugugaga.rutabaga": "Rutabaga",
-  "item.gugugaga.rutabaga_seeds": "Rutabaga Seeds"
+  "item.gugugaga.rutabaga_seeds": "Rutabaga Seeds",
+  "item.gugugaga.cassava_blossom_honey_bottle": "Cassava Blossom Honey Bottle",
+  "item.gugugaga.cassava_blossom_honey_bottle.effect": "Speed I · 5 s (fantasy gameplay effect)",
+  "item.gugugaga.taro_blossom_honey_bottle": "Taro Blossom Honey Bottle",
+  "item.gugugaga.taro_blossom_honey_bottle.effect": "Water Breathing I · 6 s (fantasy gameplay effect)",
+  "item.gugugaga.yam_blossom_honey_bottle": "Yam Blossom Honey Bottle",
+  "item.gugugaga.yam_blossom_honey_bottle.effect": "Resistance I · 5 s (fantasy gameplay effect)",
+  "item.gugugaga.watercress_honey_bottle": "Watercress Honey Bottle",
+  "item.gugugaga.watercress_honey_bottle.effect": "Regeneration I · 4 s (fantasy gameplay effect)",
+  "item.gugugaga.endive_honey_bottle": "Endive Honey Bottle",
+  "item.gugugaga.endive_honey_bottle.effect": "Haste I · 6 s (fantasy gameplay effect)",
+  "item.gugugaga.kohlrabi_honey_bottle": "Kohlrabi Honey Bottle",
+  "item.gugugaga.kohlrabi_honey_bottle.effect": "Absorption I · 5 s (fantasy gameplay effect)",
+  "item.gugugaga.rutabaga_honey_bottle": "Rutabaga Honey Bottle",
+  "item.gugugaga.rutabaga_honey_bottle.effect": "Night Vision I · 8 s (fantasy gameplay effect)"
 }
