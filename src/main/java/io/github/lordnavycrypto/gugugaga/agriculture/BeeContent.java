@@ -64,6 +64,16 @@ public final class BeeContent {
     public static final DeferredItem<HoneyBottleItem> POPPY_HONEY_BOTTLE = floralHoney("poppy_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> ALLIUM_HONEY_BOTTLE = floralHoney("allium_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> CORNFLOWER_HONEY_BOTTLE = floralHoney("cornflower_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> AZURE_BLUET_HONEY_BOTTLE = floralHoney("azure_bluet_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> BLUE_ORCHID_HONEY_BOTTLE = floralHoney("blue_orchid_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> LILY_OF_THE_VALLEY_HONEY_BOTTLE = floralHoney("lily_of_the_valley_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> OXEYE_DAISY_HONEY_BOTTLE = floralHoney("oxeye_daisy_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> TORCHFLOWER_HONEY_BOTTLE = floralHoney("torchflower_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> RED_TULIP_HONEY_BOTTLE = floralHoney("red_tulip_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> ORANGE_TULIP_HONEY_BOTTLE = floralHoney("orange_tulip_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> WHITE_TULIP_HONEY_BOTTLE = floralHoney("white_tulip_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> PINK_TULIP_HONEY_BOTTLE = floralHoney("pink_tulip_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> WITHER_ROSE_HONEY_BOTTLE = floralHoney("wither_rose_honey_bottle");
 
     /**
      * Fantasy status effects follow the vanilla suspicious-stew design pattern.
@@ -87,20 +97,52 @@ public final class BeeContent {
                     .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 240, 0), 1.0F);
             case "dandelion_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.20F)
-                    .effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 240, 0), 1.0F);
-            case "poppy_honey_bottle" -> food.nutrition(5)
-                    .saturationModifier(0.30F)
-                    .effect(() -> new MobEffectInstance(MobEffects.SLOW_FALLING, 200, 0), 1.0F);
+                    .effect(() -> new MobEffectInstance(MobEffects.SATURATION, 7, 0), 1.0F);
+            case "poppy_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0), 1.0F);
             case "allium_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.20F)
-                    .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F);
+                    .effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 80, 0), 1.0F);
             case "cornflower_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.20F)
-                    .effect(() -> new MobEffectInstance(MobEffects.WATER_BREATHING, 240, 0), 1.0F);
+                    .effect(() -> new MobEffectInstance(MobEffects.JUMP, 120, 0), 1.0F);
+            case "azure_bluet_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 160, 0), 1.0F);
+            case "blue_orchid_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.SATURATION, 7, 0), 1.0F);
+            case "lily_of_the_valley_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F); // poison applied after vanilla honey's poison-clearing step
+            case "oxeye_daisy_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 160, 0), 1.0F);
+            case "torchflower_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 100, 0), 1.0F);
+            case "red_tulip_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 180, 0), 1.0F);
+            case "orange_tulip_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 180, 0), 1.0F);
+            case "white_tulip_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 180, 0), 1.0F);
+            case "pink_tulip_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 180, 0), 1.0F);
+            case "wither_rose_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.20F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WITHER, 160, 0), 1.0F);
             default -> throw new IllegalArgumentException("Unknown floral honey: " + name);
         }
-        return ITEMS.register(name, () -> new HoneyBottleItem(new Item.Properties()
-                .stacksTo(16).food(food.build())));
+        return ITEMS.register(name, () -> name.equals("lily_of_the_valley_honey_bottle")
+                ? new PoisonFlowerHoneyBottleItem(new Item.Properties()
+                        .stacksTo(16).food(food.build()))
+                : new HoneyBottleItem(new Item.Properties()
+                        .stacksTo(16).food(food.build())));
     }
 
     public static final DeferredItem<Item> HONEY_HARVESTER = ITEMS.register(

@@ -50,7 +50,7 @@ def main():
     source = read("data/gugugaga/agronomy/honey_sources_v0_9.json")
     assert source["schema_version"] == "0.9"
     ids = {row["item"] for row in source["honey_variants"]}
-    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower")}
+    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose")}
     bee = (SRC / "BeeContent.java").read_text("utf8")
     nectar = (SRC / "NectarHoneySource.java").read_text("utf8")
     harvest = (SRC / "HoneyHarvesterItem.java").read_text("utf8")
@@ -58,9 +58,10 @@ def main():
     assert "FoodProperties.Builder" in bee and "MobEffectInstance" in bee
     assert "1.0F" in bee
     for effect in ("JUMP", "NIGHT_VISION", "DAMAGE_RESISTANCE", "MOVEMENT_SPEED",
-                   "DIG_SPEED", "SLOW_FALLING", "REGENERATION", "WATER_BREATHING"):
+                   "SATURATION", "FIRE_RESISTANCE", "BLINDNESS", "REGENERATION",
+                   "WEAKNESS", "WITHER"):
         assert f"MobEffects.{effect}" in bee, effect
-    for flower in ("dandelion","poppy","allium","cornflower"):
+    for flower in ("dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose"):
         assert f'"minecraft:{flower}"' in nectar
     assert "if (!matched) otherFlowers++" in nectar
     assert "NectarHoneySource.selectHoneyBottle(level, pos)" in harvest
@@ -73,7 +74,7 @@ def main():
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
         assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == "minecraft:item/honey_bottle"
     assert len(source["references"]) >= 3
-    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, cut-and-regrow basil/mint, 8 distinct effect honeys, vanilla safeguards")
+    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, cut-and-regrow basil/mint, 18 flower-source honey variants, vanilla safeguards")
 
 if __name__ == "__main__":
     main()

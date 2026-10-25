@@ -22,7 +22,10 @@ public final class NectarHoneySource {
     // This order is intentionally stable for tie handling.
     private static final String[] SOURCES = {
             "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop",
-            "minecraft:dandelion", "minecraft:poppy", "minecraft:allium", "minecraft:cornflower"
+            "minecraft:dandelion", "minecraft:poppy", "minecraft:allium", "minecraft:cornflower",
+            "minecraft:azure_bluet", "minecraft:blue_orchid", "minecraft:lily_of_the_valley", "minecraft:oxeye_daisy",
+            "minecraft:torchflower", "minecraft:red_tulip", "minecraft:orange_tulip", "minecraft:white_tulip",
+            "minecraft:pink_tulip", "minecraft:wither_rose"
     };
 
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
@@ -98,6 +101,16 @@ public final class NectarHoneySource {
             case 5 -> BeeContent.POPPY_HONEY_BOTTLE.get();
             case 6 -> BeeContent.ALLIUM_HONEY_BOTTLE.get();
             case 7 -> BeeContent.CORNFLOWER_HONEY_BOTTLE.get();
+            case 8 -> BeeContent.AZURE_BLUET_HONEY_BOTTLE.get();
+            case 9 -> BeeContent.BLUE_ORCHID_HONEY_BOTTLE.get();
+            case 10 -> BeeContent.LILY_OF_THE_VALLEY_HONEY_BOTTLE.get();
+            case 11 -> BeeContent.OXEYE_DAISY_HONEY_BOTTLE.get();
+            case 12 -> BeeContent.TORCHFLOWER_HONEY_BOTTLE.get();
+            case 13 -> BeeContent.RED_TULIP_HONEY_BOTTLE.get();
+            case 14 -> BeeContent.ORANGE_TULIP_HONEY_BOTTLE.get();
+            case 15 -> BeeContent.WHITE_TULIP_HONEY_BOTTLE.get();
+            case 16 -> BeeContent.PINK_TULIP_HONEY_BOTTLE.get();
+            case 17 -> BeeContent.WITHER_ROSE_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);

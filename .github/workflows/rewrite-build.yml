@@ -26,6 +26,7 @@ jobs:
           python3 qa/validate_bee_nest_habitats.py
           python3 qa/validate_crop_and_nectar_expansion.py
           python3 qa/validate_crop_diversity_v1_0.py
+          python3 qa/validate_suspicious_stew_honey_parity.py
 
   neoforge:
     runs-on: ubuntu-latest

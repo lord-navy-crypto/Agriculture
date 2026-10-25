@@ -323,6 +323,16 @@ public final class AgricultureContent {
             event.accept(BeeContent.POPPY_HONEY_BOTTLE.get());
             event.accept(BeeContent.ALLIUM_HONEY_BOTTLE.get());
             event.accept(BeeContent.CORNFLOWER_HONEY_BOTTLE.get());
+            event.accept(BeeContent.AZURE_BLUET_HONEY_BOTTLE.get());
+            event.accept(BeeContent.BLUE_ORCHID_HONEY_BOTTLE.get());
+            event.accept(BeeContent.LILY_OF_THE_VALLEY_HONEY_BOTTLE.get());
+            event.accept(BeeContent.OXEYE_DAISY_HONEY_BOTTLE.get());
+            event.accept(BeeContent.TORCHFLOWER_HONEY_BOTTLE.get());
+            event.accept(BeeContent.RED_TULIP_HONEY_BOTTLE.get());
+            event.accept(BeeContent.ORANGE_TULIP_HONEY_BOTTLE.get());
+            event.accept(BeeContent.WHITE_TULIP_HONEY_BOTTLE.get());
+            event.accept(BeeContent.PINK_TULIP_HONEY_BOTTLE.get());
+            event.accept(BeeContent.WITHER_ROSE_HONEY_BOTTLE.get());
             event.accept(PARSNIP.get());
             event.accept(ARUGULA.get());
             event.accept(SWISS_CHARD.get());

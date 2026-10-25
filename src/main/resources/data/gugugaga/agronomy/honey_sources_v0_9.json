@@ -10,7 +10,8 @@
       "food_nutrition": 6,
       "saturation_modifier": 0.2,
       "gameplay_effect": "JUMP",
-      "effect_duration_ticks": 200
+      "effect_duration_ticks": 200,
+      "source_of_effect": "mod_original_custom"
     },
     {
       "item": "lavender_honey_bottle",
@@ -18,7 +19,8 @@
       "food_nutrition": 5,
       "saturation_modifier": 0.35,
       "gameplay_effect": "NIGHT_VISION",
-      "effect_duration_ticks": 300
+      "effect_duration_ticks": 300,
+      "source_of_effect": "mod_original_custom"
     },
     {
       "item": "buckwheat_honey_bottle",
@@ -26,7 +28,8 @@
       "food_nutrition": 7,
       "saturation_modifier": 0.15,
       "gameplay_effect": "DAMAGE_RESISTANCE",
-      "effect_duration_ticks": 200
+      "effect_duration_ticks": 200,
+      "source_of_effect": "mod_original_custom"
     },
     {
       "item": "sunflower_honey_bottle",
@@ -34,39 +37,134 @@
       "food_nutrition": 6,
       "saturation_modifier": 0.25,
       "gameplay_effect": "MOVEMENT_SPEED",
-      "effect_duration_ticks": 240
+      "effect_duration_ticks": 240,
+      "source_of_effect": "mod_original_custom"
     },
     {
       "item": "dandelion_honey_bottle",
       "source_crop": "minecraft:dandelion",
       "food_nutrition": 6,
       "saturation_modifier": 0.2,
-      "gameplay_effect": "DIG_SPEED",
-      "effect_duration_ticks": 240
+      "gameplay_effect": "SATURATION",
+      "effect_duration_ticks": 7,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
     },
     {
       "item": "poppy_honey_bottle",
       "source_crop": "minecraft:poppy",
       "food_nutrition": 5,
       "saturation_modifier": 0.3,
-      "gameplay_effect": "SLOW_FALLING",
-      "effect_duration_ticks": 200
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
     },
     {
       "item": "allium_honey_bottle",
       "source_crop": "minecraft:allium",
       "food_nutrition": 6,
       "saturation_modifier": 0.2,
-      "gameplay_effect": "REGENERATION",
-      "effect_duration_ticks": 100
+      "gameplay_effect": "FIRE_RESISTANCE",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
     },
     {
       "item": "cornflower_honey_bottle",
       "source_crop": "minecraft:cornflower",
       "food_nutrition": 6,
       "saturation_modifier": 0.2,
-      "gameplay_effect": "WATER_BREATHING",
-      "effect_duration_ticks": 240
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "azure_bluet_honey_bottle",
+      "source_crop": "minecraft:azure_bluet",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "BLINDNESS",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "blue_orchid_honey_bottle",
+      "source_crop": "minecraft:blue_orchid",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "SATURATION",
+      "effect_duration_ticks": 7,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "lily_of_the_valley_honey_bottle",
+      "source_crop": "minecraft:lily_of_the_valley",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "POISON",
+      "effect_duration_ticks": 240,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "oxeye_daisy_honey_bottle",
+      "source_crop": "minecraft:oxeye_daisy",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "torchflower_honey_bottle",
+      "source_crop": "minecraft:torchflower",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "red_tulip_honey_bottle",
+      "source_crop": "minecraft:red_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "orange_tulip_honey_bottle",
+      "source_crop": "minecraft:orange_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "white_tulip_honey_bottle",
+      "source_crop": "minecraft:white_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "pink_tulip_honey_bottle",
+      "source_crop": "minecraft:pink_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "wither_rose_honey_bottle",
+      "source_crop": "minecraft:wither_rose",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WITHER",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
     }
   ],
   "unknown_or_mixed_output": "minecraft:honey_bottle",
@@ -76,5 +174,7 @@
     "https://extension.arizona.edu/publication/arizona-specialty-honeys",
     "https://www.fao.org/4/x0083e/X0083E04.htm",
     "https://www.ams.usda.gov/sites/default/files/media/Comb_Honey_Inspection_Instructions%5B1%5D.pdf"
-  ]
+  ],
+  "suspicious_stew_parity": "All 14 vanilla flowers available in Java 1.21.1 produce honey with the same status effect AND duration as their suspicious stews. Poison is deliberately applied after native HoneyBottleItem removes poison; custom crop honeys retain standalone fantasy effects.",
+  "suspicious_stew_reference": "https://minecraft.wiki/w/Suspicious_stew"
 }
