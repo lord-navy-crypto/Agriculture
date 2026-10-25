@@ -129,7 +129,7 @@ tasks.register('generateCropAssets') {
             if (organ.contains('fiber') && organ.contains('seed')) return 'fiber_seed'
             if (organ.contains('spear')) return 'stalk'
             if (organ.contains('grain')) return 'grain'
-            if (organ.contains('berry')) return 'berry'
+            if (organ.contains('berry') || organ.contains('berries')) return 'berry'
             if (organ.contains('fruit pod') || organ.contains('pods') || organ.contains('pod')) return 'pod'
             if (organ.contains('fruit')) return 'fruit'
             if (organ == 'head' || organ.contains('flower head') || organ.contains('flower buds') ||
@@ -1522,8 +1522,8 @@ tasks.register('generateCropAssets') {
         def duplicateSeedIcons = seedIconNamesByHash.values().findAll { names -> names.size() > 1 }
         if (!duplicateProduceIcons.isEmpty()) throw new GradleException('Duplicate produce icon pixel hashes: ' + duplicateProduceIcons.collect { names -> names.join(' = ') }.join('; '))
         if (!duplicateSeedIcons.isEmpty()) throw new GradleException('Duplicate seed icon pixel hashes: ' + duplicateSeedIcons.collect { names -> names.join(' = ') }.join('; '))
-        if (produceIconHashes.size() != 72) throw new GradleException('All 64 produce icons must be visually distinct')
-        if (seedIconHashes.size() != 72) throw new GradleException('All 64 seed icons must be visually distinct')
+        if (produceIconHashes.size() != 72) throw new GradleException('All 72 produce icons must be visually distinct')
+        if (seedIconHashes.size() != 72) throw new GradleException('All 72 seed icons must be visually distinct')
         // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
         // This is a build report only; it is not packaged as a game texture.
         int tile = 48
