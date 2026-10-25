@@ -43,6 +43,7 @@ public final class AgricultureCropBlock extends CropBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!CropClimate.allowGrowth(seedName, level, pos, random)) return;
         super.randomTick(state, level, pos, random);
         if (pollinationGroup == PollinationGroup.NONE) {
             return;

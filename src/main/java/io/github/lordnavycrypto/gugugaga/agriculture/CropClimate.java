@@ -1,0 +1,57 @@
+package io.github.lordnavycrypto.gugugaga.agriculture;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+
+/**
+ * Real-world cool/warm season horticulture inspired BIOME ADAPTATION, not a physical
+ * temperature/rainfall model. Minecraft's biome names are game proxies only.
+ */
+public final class CropClimate {
+    private CropClimate() {}
+    private enum Band { COOL, TEMPERATE, WARM, DRY, WET }
+    private static Band cropBand(String seedName) {
+        return switch (seedName) {
+            case "barley_seeds", "oat_seeds", "rye_seeds", "pea_seeds",
+                 "lettuce_seeds", "cabbage_seeds", "spinach_seeds",
+                 "broccoli_seeds", "blueberry_seeds" -> Band.COOL;
+            case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
+                 "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds",
+                 "peanut_seeds" -> Band.WARM;
+            case "sorghum_seeds" -> Band.DRY;
+            case "rice_seeds" -> Band.WET;
+            default -> Band.TEMPERATE;
+        };
+    }
+    private static Band biomeBand(String name) {
+        if (name.contains("jungle") || name.contains("swamp") || name.equals("river")) return Band.WET;
+        if (name.contains("savanna") || name.contains("badlands") || name.equals("desert")) return Band.DRY;
+        if (name.contains("snowy") || name.contains("frozen") || name.contains("taiga")
+                || name.contains("grove") || name.contains("peaks") || name.contains("slopes")) return Band.COOL;
+        if (name.equals("plains") || name.equals("sunflower_plains") || name.equals("meadow")
+                || name.contains("forest") || name.equals("cherry_grove")) return Band.TEMPERATE;
+        return Band.TEMPERATE;
+    }
+    /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
+    public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (level.dimension() != Level.OVERWORLD) return random.nextInt(6) == 0;
+        Band crop = cropBand(seedName);
+        String name = level.getBiome(pos).unwrapKey()
+                .map(key -> key.location().getPath()).orElse("plains");
+        Band biome = biomeBand(name);
+        // Game balancing, not measured degrees C. Suitable climates keep native growth,
+        // moderately different climates get 2/3 rolls; strong mismatches get 1/4.
+        boolean suitable = crop == biome
+                || biome == Band.TEMPERATE && crop != Band.WET
+                || crop == Band.TEMPERATE && biome == Band.COOL
+                || crop == Band.WARM && biome == Band.DRY
+                || crop == Band.DRY && biome == Band.WARM
+                || crop == Band.WET && biome == Band.WARM;
+        if (suitable) return true;
+        boolean harsh = (biome == Band.COOL && (crop == Band.WARM || crop == Band.DRY))
+                || (biome == Band.DRY && (crop == Band.WET || crop == Band.COOL));
+        return random.nextInt(harsh ? 4 : 2) == 0;
+    }
+}

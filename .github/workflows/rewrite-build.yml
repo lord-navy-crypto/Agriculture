@@ -14,7 +14,10 @@ jobs:
         with:
           python-version: '3.x'
       - name: Validate crop resources, loot tables, translations, and recipes
-        run: python3 qa/validate_agriculture_assets.py
+        run: |
+          python3 qa/validate_agriculture_assets.py
+          python3 qa/validate_agriculture_expansion.py
+          python3 qa/validate_agriculture_ecology.py
 
   neoforge:
     runs-on: ubuntu-latest

@@ -99,6 +99,15 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> SORGHUM = food("sorghum", 3, 0.4F);
     public static final DeferredItem<Item> SUNFLOWER_SEED = food("sunflower_seed", 2, 0.3F);
 
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_BARLEY = BLOCKS.register("wild_barley", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_OAT = BLOCKS.register("wild_oat", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_PEA = BLOCKS.register("wild_pea", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_LETTUCE = BLOCKS.register("wild_lettuce", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_FLAX = BLOCKS.register("wild_flax", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_SUNFLOWER_SEED = BLOCKS.register("wild_sunflower_seed", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_BLUEBERRY = BLOCKS.register("wild_blueberry", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final DeferredBlock<WildSeedPlantBlock> WILD_STRAWBERRY = BLOCKS.register("wild_strawberry", () -> new WildSeedPlantBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
