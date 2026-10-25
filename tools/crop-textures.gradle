@@ -641,93 +641,416 @@ tasks.register('generateCropAssets') {
             int accent = rgb.call(palettes[crop].toString())
             int dark = shade.call(accent, 0.72d)
             int light = shade.call(accent, 1.22d)
-            int leaf = rgb.call('#4E9845')
-            int leafDark = rgb.call('#2D6B35')
-            String kind = categoryByCrop[crop].toString()
+            int green = rgb.call('#4E9845')
+            int greenDark = rgb.call('#2D6B35')
+            int greenLight = rgb.call('#82C35A')
+            int cream = rgb.call('#E7D8B8')
+            int white = rgb.call('#F3F0E5')
+            int yellow = rgb.call('#F2CF4A')
+            int red = rgb.call('#C93B43')
+            int purple = rgb.call('#76509A')
+            String organForm = organFormByCrop[crop].toString()
+
             if (seeds) {
-                int seed = shade.call(accent, 0.82d)
-                disc.call(image, 5, 6, 1, 1, seed)
-                disc.call(image, 9, 5, 1, 1, light)
-                disc.call(image, 7, 9, 1, 1, dark)
-                disc.call(image, 10, 10, 1, 1, seed)
-                disc.call(image, 4, 10, 1, 1, light)
-                put.call(image, 5, 6, light)
-            } else if (kind == 'fruit') {
-                if (['cucumber', 'zucchini', 'okra', 'chili_pepper', 'eggplant'].contains(crop)) {
-                    line.call(image, 4, 12, 10, 4, accent)
-                    line.call(image, 5, 12, 11, 4, dark)
-                    line.call(image, 4, 11, 10, 3, light)
-                    put.call(image, 10, 3, leaf)
-                    put.call(image, 11, 3, leafDark)
-                } else if (['strawberry', 'blueberry', 'raspberry', 'cranberry'].contains(crop)) {
-                    disc.call(image, 5, 8, 3, 3, accent)
-                    disc.call(image, 10, 9, 3, 3, dark)
-                    put.call(image, 5, 4, leaf)
-                    put.call(image, 4, 5, leafDark)
-                    put.call(image, 9, 5, leaf)
-                    put.call(image, 11, 6, leafDark)
-                    put.call(image, 4, 8, light)
+                // Seed icons use the crop's harvested-organ family and crop-specific seed cues.
+                if (organForm == 'grain') {
+                    for (int i = 0; i < 6; i++) {
+                        int sx = 4 + (i % 3) * 3
+                        int sy = 4 + (i.intdiv(3)) * 5
+                        line.call(image, sx, sy, sx + 1, sy + 2, shade.call(accent, 0.78d + (i % 2) * 0.2d))
+                        put.call(image, sx + 1, sy, light)
+                    }
+                } else if (organForm == 'seed') {
+                    disc.call(image, 5, 6, 2, 1, dark)
+                    disc.call(image, 10, 5, 2, 1, accent)
+                    disc.call(image, 7, 10, 2, 1, light)
+                    put.call(image, 5, 6, light)
+                    put.call(image, 10, 5, shade.call(accent, 1.15d))
+                } else if (organForm == 'pod') {
+                    disc.call(image, 5, 6, 1, 2, light)
+                    disc.call(image, 8, 8, 1, 2, accent)
+                    disc.call(image, 11, 5, 1, 2, dark)
+                    put.call(image, 5, 5, shade.call(accent, 1.2d))
+                    put.call(image, 8, 7, light)
+                } else if (organForm == 'fiber') {
+                    disc.call(image, 5, 6, 1, 1, dark)
+                    disc.call(image, 10, 5, 1, 1, accent)
+                    disc.call(image, 7, 10, 1, 1, light)
+                    put.call(image, 6, 6, cream)
+                    put.call(image, 11, 5, cream)
+                } else if (organForm == 'leaf' || organForm == 'head' || organForm == 'flower') {
+                    disc.call(image, 5, 6, 1, 1, shade.call(accent, 0.85d))
+                    disc.call(image, 9, 5, 1, 1, light)
+                    disc.call(image, 7, 9, 1, 1, accent)
+                    disc.call(image, 11, 10, 1, 1, dark)
+                    put.call(image, 5, 5, light)
                 } else {
+                    disc.call(image, 5, 6, 1, 1, dark)
+                    disc.call(image, 9, 5, 1, 1, light)
+                    disc.call(image, 7, 9, 1, 1, accent)
+                    disc.call(image, 10, 10, 1, 1, shade.call(accent, 0.9d))
+                    put.call(image, 5, 6, light)
+                }
+                if (crop == 'sunflower_seed') {
+                    disc.call(image, 5, 5, 1, 2, rgb.call('#3C3831'))
+                    disc.call(image, 9, 7, 1, 2, rgb.call('#3C3831'))
+                    put.call(image, 5, 5, cream)
+                    put.call(image, 9, 7, cream)
+                } else if (crop == 'black_bean') {
+                    disc.call(image, 5, 6, 2, 1, rgb.call('#252525'))
+                    disc.call(image, 10, 9, 2, 1, rgb.call('#252525'))
+                    put.call(image, 4, 6, rgb.call('#88847C'))
+                } else if (crop == 'sesame' || crop == 'mustard' || crop == 'canola') {
+                    for (int[] pt : [[4,5],[7,4],[10,6],[5,10],[9,11]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 1, 1, crop == 'mustard' || crop == 'canola' ? yellow : cream)
+                    }
+                } else if (crop == 'pea' || crop == 'green_bean' || crop == 'soybean') {
+                    disc.call(image, 5, 6, 2, 1, crop == 'soybean' ? rgb.call('#8CA45A') : greenLight)
+                    disc.call(image, 10, 9, 2, 1, crop == 'soybean' ? rgb.call('#8CA45A') : green)
+                    put.call(image, 5, 6, cream)
+                }
+            } else if (organForm == 'grain') {
+                if (crop == 'corn') {
+                    line.call(image, 5, 3, 10, 12, greenDark)
+                    line.call(image, 6, 3, 11, 12, green)
+                    line.call(image, 6, 4, 10, 11, yellow)
+                    for (int y = 5; y <= 10; y++) {
+                        put.call(image, 7 + (y % 2), y, shade.call(yellow, 0.9d))
+                        put.call(image, 8 + (y % 2), y + 1, yellow)
+                    }
+                    line.call(image, 5, 10, 3, 13, green)
+                    line.call(image, 9, 11, 13, 13, greenLight)
+                } else {
+                    line.call(image, 8, 14, 8, 3, greenDark)
+                    for (int y = 4; y <= 11; y += 2) {
+                        put.call(image, 6, y, accent)
+                        put.call(image, 7, y - 1, light)
+                        put.call(image, 9, y + 1, dark)
+                    }
+                    if (crop == 'rice') {
+                        line.call(image, 8, 5, 11, 8, accent)
+                        line.call(image, 11, 8, 12, 11, light)
+                        put.call(image, 12, 11, cream)
+                    } else if (crop == 'barley') {
+                        for (int y = 4; y <= 9; y++) {
+                            line.call(image, 8, y, 5, y - 2, light)
+                            line.call(image, 8, y, 11, y - 2, accent)
+                        }
+                    } else if (crop == 'oat') {
+                        line.call(image, 8, 6, 5, 4, accent)
+                        line.call(image, 8, 7, 11, 4, accent)
+                        put.call(image, 5, 4, cream)
+                        put.call(image, 11, 4, cream)
+                    } else if (crop == 'rye') {
+                        for (int y = 4; y <= 10; y++) {
+                            put.call(image, 7, y, accent)
+                            put.call(image, 9, y, dark)
+                        }
+                    } else if (crop == 'sorghum' || crop == 'millet') {
+                        disc.call(image, 8, 5, crop == 'sorghum' ? 3 : 2, crop == 'sorghum' ? 3 : 2, accent)
+                        for (int[] pt : [[6,4],[8,3],[10,5],[7,6],[9,7],[6,6]] as int[][]) put.call(image, pt[0], pt[1], light)
+                    } else if (crop == 'buckwheat') {
+                        put.call(image, 6, 5, dark); put.call(image, 8, 4, accent); put.call(image, 9, 6, light)
+                        put.call(image, 6, 8, accent); put.call(image, 9, 9, dark)
+                    } else if (crop == 'quinoa') {
+                        for (int[] pt : [[6,4],[8,4],[10,5],[6,6],[8,7],[10,8],[7,9],[9,10]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, accent)
+                    }
+                }
+            } else if (organForm == 'fruit') {
+                if (crop == 'cucumber') {
+                    line.call(image, 4, 13, 10, 3, rgb.call('#2E743A'))
+                    line.call(image, 5, 13, 11, 3, accent)
+                    line.call(image, 6, 12, 12, 2, light)
+                    for (int y in [5,8,11]) put.call(image, 6 + (y % 2), y, greenDark)
+                    put.call(image, 10, 3, green)
+                } else if (crop == 'zucchini') {
+                    line.call(image, 3, 12, 11, 4, dark)
+                    line.call(image, 4, 12, 12, 4, accent)
+                    line.call(image, 5, 11, 13, 3, light)
+                    put.call(image, 6, 9, greenLight); put.call(image, 8, 7, greenLight); put.call(image, 10, 5, greenLight)
+                } else if (crop == 'eggplant') {
+                    line.call(image, 5, 13, 10, 5, purple)
+                    line.call(image, 6, 13, 11, 5, accent)
+                    line.call(image, 7, 12, 12, 4, light)
+                    line.call(image, 9, 5, 12, 3, green)
+                    put.call(image, 8, 5, greenDark); put.call(image, 10, 4, greenLight)
+                } else if (crop == 'chili_pepper') {
+                    line.call(image, 4, 5, 7, 8, accent)
+                    line.call(image, 7, 8, 11, 12, red)
+                    line.call(image, 5, 5, 8, 8, light)
+                    put.call(image, 4, 4, green); put.call(image, 5, 5, greenDark)
+                } else if (crop == 'bell_pepper') {
+                    disc.call(image, 8, 9, 4, 4, accent)
+                    disc.call(image, 5, 8, 2, 3, light)
+                    disc.call(image, 11, 8, 2, 3, dark)
+                    line.call(image, 8, 5, 8, 2, greenDark)
+                    line.call(image, 8, 5, 5, 4, green)
+                    line.call(image, 8, 5, 11, 4, greenLight)
+                } else { // tomato
                     disc.call(image, 8, 8, 4, 4, accent)
-                    put.call(image, 7, 4, leaf)
-                    put.call(image, 8, 3, leafDark)
-                    put.call(image, 6, 7, light)
-                    put.call(image, 9, 10, dark)
+                    put.call(image, 6, 6, light); put.call(image, 10, 10, dark)
+                    line.call(image, 8, 5, 8, 3, greenDark)
+                    line.call(image, 8, 5, 5, 4, green)
+                    line.call(image, 8, 5, 11, 4, greenLight)
+                    put.call(image, 7, 5, greenDark); put.call(image, 9, 5, greenDark)
                 }
-            } else if (kind == 'root') {
-                if (crop in ['ginger', 'turmeric']) {
-                    line.call(image, 4, 9, 7, 7, accent)
-                    line.call(image, 7, 7, 11, 9, dark)
-                    line.call(image, 6, 10, 10, 12, accent)
-                    put.call(image, 6, 8, light)
-                    put.call(image, 8, 6, leaf)
+            } else if (organForm == 'berry') {
+                if (crop == 'strawberry') {
+                    disc.call(image, 8, 8, 3, 3, accent)
+                    line.call(image, 5, 8, 8, 13, accent)
+                    line.call(image, 11, 8, 8, 13, dark)
+                    for (int[] pt : [[6,7],[9,7],[7,9],[9,10],[8,12]] as int[][]) put.call(image, pt[0], pt[1], cream)
+                    line.call(image, 8, 5, 5, 4, green)
+                    line.call(image, 8, 5, 11, 4, greenLight)
+                    put.call(image, 8, 4, greenDark)
+                } else if (crop == 'blueberry') {
+                    for (int[] pt : [[5,8],[9,6],[10,10]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 2, 2, accent)
+                        put.call(image, pt[0], pt[1] - 1, light)
+                        put.call(image, pt[0] + 1, pt[1], dark)
+                    }
+                    put.call(image, 5, 7, cream); put.call(image, 9, 5, cream); put.call(image, 10, 9, cream)
+                } else if (crop == 'raspberry') {
+                    for (int[] pt : [[6,6],[8,5],[10,7],[6,9],[8,9],[10,10],[8,12]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, accent)
+                    put.call(image, 8, 4, green); put.call(image, 7, 5, greenLight)
+                } else { // cranberry
+                    disc.call(image, 5, 9, 2, 2, accent)
+                    disc.call(image, 10, 7, 2, 2, dark)
+                    disc.call(image, 9, 11, 2, 2, accent)
+                    put.call(image, 5, 8, light); put.call(image, 10, 6, light); put.call(image, 9, 10, light)
+                }
+            } else if (organForm == 'bulb') {
+                if (crop == 'garlic') {
+                    disc.call(image, 8, 9, 3, 4, white)
+                    line.call(image, 8, 5, 8, 13, cream)
+                    line.call(image, 6, 7, 6, 11, cream)
+                    line.call(image, 10, 7, 10, 11, cream)
+                    line.call(image, 8, 5, 8, 2, green)
+                } else if (crop == 'shallot') {
+                    disc.call(image, 8, 9, 3, 4, purple)
+                    line.call(image, 8, 5, 8, 13, dark)
+                    put.call(image, 6, 8, light); put.call(image, 7, 12, dark)
+                    line.call(image, 8, 5, 8, 2, green)
+                } else if (crop == 'fennel') {
+                    disc.call(image, 8, 10, 4, 3, white)
+                    line.call(image, 6, 9, 5, 3, greenLight)
+                    line.call(image, 8, 8, 8, 2, green)
+                    line.call(image, 10, 9, 12, 3, greenLight)
+                    line.call(image, 7, 11, 7, 13, cream)
                 } else {
-                    disc.call(image, 8, 9, 4, 3, accent)
-                    line.call(image, 8, 6, 8, 3, leaf)
-                    put.call(image, 7, 4, leafDark)
-                    put.call(image, 6, 10, light)
+                    disc.call(image, 8, 9, 3, 4, accent)
+                    line.call(image, 8, 5, 8, 13, dark)
+                    put.call(image, 6, 8, light); put.call(image, 10, 10, dark)
+                    line.call(image, 8, 5, 8, 2, green)
                 }
-            } else if (kind == 'leafy' || kind == 'herb') {
-                line.call(image, 8, 14, 8, 5, leafDark)
-                line.call(image, 8, 11, 4, 7, leaf)
-                line.call(image, 8, 9, 12, 5, leaf)
-                line.call(image, 8, 7, 5, 3, light)
-                line.call(image, 8, 13, 12, 10, leaf)
-                put.call(image, 4, 7, leafDark)
-                put.call(image, 11, 5, leafDark)
-                put.call(image, 5, 3, leaf)
-            } else if (kind == 'pod') {
-                line.call(image, 3, 11, 12, 5, accent)
-                line.call(image, 4, 12, 13, 6, dark)
-                line.call(image, 4, 10, 11, 4, light)
-                put.call(image, 6, 9, leaf)
-                put.call(image, 9, 7, leaf)
-            } else if (kind == 'grain') {
-                line.call(image, 8, 14, 8, 3, leafDark)
-                for (int y = 4; y <= 11; y += 2) {
-                    put.call(image, 6, y, accent)
-                    put.call(image, 7, y - 1, light)
-                    put.call(image, 9, y + 1, dark)
+            } else if (organForm == 'rhizome') {
+                line.call(image, 3, 9, 6, 7, accent)
+                line.call(image, 6, 7, 9, 9, accent)
+                line.call(image, 9, 9, 12, 7, accent)
+                line.call(image, 5, 11, 8, 10, dark)
+                line.call(image, 8, 10, 11, 12, dark)
+                put.call(image, 5, 8, light); put.call(image, 7, 7, light); put.call(image, 10, 8, light)
+                if (crop == 'turmeric') {
+                    line.call(image, 4, 9, 7, 8, yellow)
+                    line.call(image, 8, 10, 11, 9, yellow)
+                    put.call(image, 7, 10, yellow)
+                } else {
+                    put.call(image, 6, 9, cream); put.call(image, 9, 10, cream)
                 }
-                line.call(image, 8, 12, 4, 8, leaf)
-                line.call(image, 8, 10, 12, 6, leaf)
-            } else if (kind == 'flower') {
-                line.call(image, 8, 14, 8, 7, leafDark)
-                disc.call(image, 8, 5, 3, 3, accent)
-                put.call(image, 8, 5, rgb.call('#F3CF4E'))
-                put.call(image, 5, 5, light)
-                put.call(image, 11, 5, light)
-                line.call(image, 8, 11, 5, 9, leaf)
-            } else if (kind == 'fiber') {
-                line.call(image, 8, 14, 8, 5, leafDark)
+            } else if (organForm == 'root') {
+                if (crop == 'radish') {
+                    disc.call(image, 8, 8, 3, 3, red)
+                    line.call(image, 7, 10, 8, 14, white)
+                    line.call(image, 9, 10, 8, 14, white)
+                    line.call(image, 7, 6, 5, 3, green)
+                } else if (crop == 'turnip') {
+                    disc.call(image, 8, 8, 3, 3, white)
+                    disc.call(image, 8, 6, 3, 2, purple)
+                    line.call(image, 8, 10, 8, 14, cream)
+                    line.call(image, 7, 5, 5, 2, green)
+                } else if (crop == 'sweet_potato') {
+                    line.call(image, 4, 11, 7, 7, accent)
+                    line.call(image, 7, 7, 12, 6, accent)
+                    line.call(image, 4, 12, 9, 9, dark)
+                    line.call(image, 5, 10, 6, 8, light)
+                    put.call(image, 12, 6, dark)
+                } else {
+                    line.call(image, 8, 3, 5, 11, accent)
+                    line.call(image, 8, 3, 11, 11, accent)
+                    line.call(image, 5, 11, 8, 14, light)
+                    line.call(image, 11, 11, 8, 14, dark)
+                    put.call(image, 8, 4, cream)
+                }
+            } else if (organForm == 'seed') {
+                if (crop == 'sunflower_seed') {
+                    disc.call(image, 8, 8, 3, 4, rgb.call('#3C3831'))
+                    for (int y = 5; y <= 10; y += 2) put.call(image, 8, y, cream)
+                    put.call(image, 6, 7, light); put.call(image, 10, 9, light)
+                } else if (crop == 'black_bean') {
+                    disc.call(image, 6, 8, 3, 2, rgb.call('#252525'))
+                    disc.call(image, 10, 10, 3, 2, rgb.call('#252525'))
+                    put.call(image, 4, 7, rgb.call('#88847C'))
+                    put.call(image, 8, 9, rgb.call('#88847C'))
+                } else if (crop == 'sesame' || crop == 'mustard' || crop == 'canola') {
+                    for (int[] pt : [[5,5],[8,4],[11,6],[4,9],[7,10],[10,11]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, crop == 'mustard' || crop == 'canola' ? yellow : cream)
+                } else {
+                    disc.call(image, 5, 7, 2, 2, accent)
+                    disc.call(image, 10, 9, 2, 2, dark)
+                    put.call(image, 5, 6, light); put.call(image, 10, 8, light)
+                }
+            } else if (organForm == 'pod') {
+                if (crop == 'peanut') {
+                    disc.call(image, 6, 8, 2, 4, cream)
+                    disc.call(image, 10, 8, 2, 4, accent)
+                    line.call(image, 8, 5, 8, 12, dark)
+                    put.call(image, 5, 5, light); put.call(image, 11, 11, dark)
+                } else if (crop == 'okra') {
+                    line.call(image, 5, 13, 9, 4, greenDark)
+                    line.call(image, 6, 13, 10, 4, green)
+                    line.call(image, 7, 12, 11, 3, greenLight)
+                    for (int y = 6; y <= 11; y += 2) put.call(image, 7 + (y % 2), y, dark)
+                    put.call(image, 10, 3, greenDark)
+                } else {
+                    line.call(image, 3, 10, 12, 5, green)
+                    line.call(image, 4, 11, 13, 6, greenLight)
+                    line.call(image, 4, 9, 12, 4, greenDark)
+                    for (int x in [5,7,9,11]) disc.call(image, x, 7 + (x % 2), 1, 1, crop == 'pea' ? greenLight : accent)
+                    put.call(image, 3, 10, greenDark); put.call(image, 12, 5, greenDark)
+                }
+            } else if (organForm == 'leaf') {
+                if (crop == 'swiss_chard') {
+                    line.call(image, 8, 14, 8, 4, red)
+                    disc.call(image, 5, 6, 3, 2, green)
+                    disc.call(image, 11, 7, 3, 2, greenLight)
+                    line.call(image, 8, 9, 5, 6, white)
+                    line.call(image, 8, 10, 11, 7, white)
+                } else if (crop == 'bok_choy') {
+                    line.call(image, 5, 14, 5, 6, white)
+                    line.call(image, 8, 14, 8, 4, cream)
+                    line.call(image, 11, 14, 11, 6, white)
+                    disc.call(image, 5, 5, 2, 2, green)
+                    disc.call(image, 8, 4, 2, 2, greenLight)
+                    disc.call(image, 11, 5, 2, 2, green)
+                } else if (crop == 'dill') {
+                    line.call(image, 8, 14, 8, 4, greenDark)
+                    for (int y in [5,7,9,11]) {
+                        line.call(image, 8, y, 4, y - 2, greenLight)
+                        line.call(image, 8, y, 12, y - 2, green)
+                        put.call(image, 4, y - 2, greenDark); put.call(image, 12, y - 2, greenDark)
+                    }
+                } else if (crop == 'cilantro' || crop == 'parsley' || crop == 'arugula') {
+                    line.call(image, 8, 13, 8, 7, greenDark)
+                    for (int[] pt : [[5,7],[6,5],[10,6],[11,8],[5,10],[10,11]] as int[][]) {
+                        put.call(image, pt[0], pt[1], crop == 'arugula' ? greenDark : greenLight)
+                        put.call(image, pt[0] + 1, pt[1], green)
+                    }
+                    line.call(image, 8, 9, 5, 6, greenDark)
+                    line.call(image, 8, 9, 11, 7, greenDark)
+                } else if (crop == 'mint' || crop == 'basil') {
+                    line.call(image, 8, 14, 8, 4, greenDark)
+                    disc.call(image, 5, 7, 2, 3, green)
+                    disc.call(image, 11, 6, 2, 3, greenLight)
+                    disc.call(image, 5, 11, 2, 2, greenLight)
+                    disc.call(image, 11, 10, 2, 2, green)
+                    line.call(image, 5, 7, 8, 9, greenDark)
+                    line.call(image, 11, 6, 8, 9, greenDark)
+                } else if (crop == 'spinach') {
+                    line.call(image, 4, 12, 8, 3, green)
+                    line.call(image, 8, 3, 12, 12, greenLight)
+                    line.call(image, 4, 12, 12, 12, greenDark)
+                    line.call(image, 8, 3, 8, 13, greenDark)
+                } else if (crop == 'kale') {
+                    disc.call(image, 5, 7, 3, 3, green)
+                    disc.call(image, 10, 6, 3, 3, greenLight)
+                    put.call(image, 4, 5, greenDark); put.call(image, 11, 4, greenDark)
+                    put.call(image, 5, 10, greenDark); put.call(image, 10, 9, greenDark)
+                } else if (crop == 'lettuce') {
+                    disc.call(image, 8, 8, 4, 3, greenLight)
+                    disc.call(image, 5, 10, 3, 2, green)
+                    disc.call(image, 11, 10, 3, 2, green)
+                    line.call(image, 8, 5, 8, 12, greenDark)
+                    line.call(image, 8, 8, 5, 10, greenDark)
+                    line.call(image, 8, 8, 11, 10, greenDark)
+                } else {
+                    line.call(image, 8, 14, 8, 4, greenDark)
+                    disc.call(image, 5, 7, 2, 3, green)
+                    disc.call(image, 11, 6, 2, 3, greenLight)
+                    line.call(image, 8, 9, 5, 7, greenDark)
+                    line.call(image, 8, 8, 11, 6, greenDark)
+                }
+            } else if (organForm == 'head') {
+                if (crop == 'broccoli') {
+                    line.call(image, 8, 14, 8, 8, greenDark)
+                    disc.call(image, 5, 6, 3, 3, green)
+                    disc.call(image, 8, 4, 3, 3, greenLight)
+                    disc.call(image, 11, 6, 3, 3, green)
+                    put.call(image, 8, 3, greenDark); put.call(image, 5, 5, greenDark)
+                } else if (crop == 'cauliflower') {
+                    disc.call(image, 5, 7, 3, 3, white)
+                    disc.call(image, 8, 5, 3, 3, cream)
+                    disc.call(image, 11, 7, 3, 3, white)
+                    line.call(image, 8, 10, 8, 14, green)
+                } else if (crop == 'brussels_sprouts') {
+                    for (int[] pt : [[5,6],[9,5],[7,9],[11,9]] as int[][]) {
+                        disc.call(image, pt[0], pt[1], 2, 2, green)
+                        put.call(image, pt[0], pt[1] - 1, greenLight)
+                    }
+                } else if (crop == 'artichoke') {
+                    line.call(image, 8, 14, 8, 8, greenDark)
+                    disc.call(image, 8, 6, 3, 4, green)
+                    for (int y in [4,6,8]) { put.call(image, 6, y, greenLight); put.call(image, 10, y, greenDark) }
+                    put.call(image, 8, 2, greenLight)
+                } else { // cabbage
+                    disc.call(image, 8, 8, 4, 4, green)
+                    disc.call(image, 8, 8, 3, 3, greenLight)
+                    line.call(image, 8, 5, 8, 12, cream)
+                    line.call(image, 5, 8, 11, 8, greenDark)
+                    line.call(image, 6, 6, 10, 10, greenDark)
+                }
+            } else if (organForm == 'fiber') {
                 if (crop == 'cotton') {
-                    disc.call(image, 6, 5, 3, 3, rgb.call('#F0EFE5'))
-                    disc.call(image, 10, 6, 3, 3, rgb.call('#FFFFFF'))
-                    put.call(image, 6, 4, rgb.call('#E1E1D8'))
-                } else {
-                    disc.call(image, 6, 5, 2, 2, rgb.call('#779ED6'))
-                    disc.call(image, 10, 7, 2, 2, rgb.call('#779ED6'))
-                    line.call(image, 8, 12, 5, 9, leaf)
+                    line.call(image, 8, 14, 8, 8, greenDark)
+                    disc.call(image, 5, 6, 3, 3, white)
+                    disc.call(image, 10, 6, 3, 3, white)
+                    disc.call(image, 8, 4, 3, 3, cream)
+                    put.call(image, 5, 6, rgb.call('#B6A58B'))
+                    put.call(image, 10, 6, rgb.call('#B6A58B'))
+                } else { // flax fiber with its distinctive blue flowers/capsules
+                    line.call(image, 8, 14, 8, 4, greenDark)
+                    disc.call(image, 5, 5, 2, 2, rgb.call('#79A9E4'))
+                    disc.call(image, 10, 6, 2, 2, rgb.call('#79A9E4'))
+                    put.call(image, 5, 4, white); put.call(image, 10, 5, white)
+                    line.call(image, 8, 11, 5, 9, green)
+                }
+            } else if (organForm == 'flower') {
+                if (crop == 'lavender') {
+                    line.call(image, 8, 14, 8, 2, greenDark)
+                    for (int y in [3,5,7,9]) {
+                        put.call(image, 6, y, purple); put.call(image, 8, y, accent); put.call(image, 10, y, purple)
+                    }
+                    put.call(image, 7, 2, light); put.call(image, 9, 4, light)
+                } else { // clover flower and three leaflets
+                    line.call(image, 8, 14, 8, 7, greenDark)
+                    disc.call(image, 5, 9, 2, 2, green)
+                    disc.call(image, 10, 9, 2, 2, greenLight)
+                    disc.call(image, 8, 6, 2, 2, green)
+                    disc.call(image, 7, 3, 2, 2, rgb.call('#D9B7C9'))
+                    disc.call(image, 9, 3, 2, 2, rgb.call('#F0DDE8'))
+                    put.call(image, 8, 3, yellow)
+                }
+            } else if (organForm == 'stalk') {
+                if (crop == 'celery') {
+                    line.call(image, 4, 14, 5, 4, cream)
+                    line.call(image, 7, 14, 7, 2, greenLight)
+                    line.call(image, 10, 14, 11, 4, cream)
+                    line.call(image, 5, 7, 3, 3, green)
+                    line.call(image, 11, 7, 13, 3, green)
+                } else { // leek
+                    line.call(image, 5, 14, 5, 4, white)
+                    line.call(image, 8, 14, 8, 2, greenLight)
+                    line.call(image, 11, 14, 11, 4, green)
+                    line.call(image, 5, 5, 4, 2, greenDark)
+                    line.call(image, 8, 4, 8, 1, greenDark)
                 }
             }
             image
