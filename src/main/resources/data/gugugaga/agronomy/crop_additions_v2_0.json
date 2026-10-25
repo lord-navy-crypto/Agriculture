@@ -1,0 +1,118 @@
+{
+  "schema_version": "2.0",
+  "note": "Eight additional crop lines add a cut-and-regrow green, cool-season roots and brassicas, and warm/temperate perennial crops represented as compact Minecraft crop cycles. Growth bands and repeated harvest are gameplay abstractions.",
+  "crops": [
+    {
+      "crop": "celeriac",
+      "chinese_name": "根芹",
+      "english_name": "Celeriac",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "storage root",
+      "botanical_note": "A celery cultivar grown for its enlarged storage root; the crop block compresses its longer root-development cycle into the standard growth stages.",
+      "source_urls": [
+        "https://extensionpubs.unl.edu/publication/g2089/na/pdf/view"
+      ]
+    },
+    {
+      "crop": "purslane",
+      "chinese_name": "马齿苋",
+      "english_name": "Purslane",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A warm-season succulent green. The game uses repeat-cut leaf harvesting to represent the plant's ability to regrow after careful cutting.",
+      "source_urls": [
+        "https://hort.extension.wisc.edu/articles/common-purslane-portulaca-oleracea/"
+      ]
+    },
+    {
+      "crop": "chayote",
+      "chinese_name": "佛手瓜",
+      "english_name": "Chayote",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "fruit",
+      "botanical_note": "A climbing cucurbit whose vines need support and whose fruit develops after pollination; the crop block simplifies the trellis and perennial vine into one plantable block.",
+      "source_urls": [
+        "https://gardeningsolutions.ifas.ufl.edu/plants/edibles/vegetables/chayote/"
+      ]
+    },
+    {
+      "crop": "grape",
+      "chinese_name": "葡萄",
+      "english_name": "Grape",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "BERRY",
+      "harvested_organ": "berries",
+      "botanical_note": "A woody perennial vine that bears true berries on fruiting canes; the game compresses pruning, cane age and seasonal fruit development into a repeat-harvest cycle.",
+      "source_urls": [
+        "https://extension.umd.edu/resource/growing-grapes-home-garden"
+      ]
+    },
+    {
+      "crop": "tea",
+      "chinese_name": "茶叶",
+      "english_name": "Tea Leaves",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "Tea is made from young leaves and buds of Camellia sinensis. The crop uses repeat-cut leaf harvest and does not claim to simulate tea processing.",
+      "source_urls": [
+        "https://plants.ces.ncsu.edu/plants/camellia-sinensis/",
+        "https://vegetables.wsu.edu/tea-plant-propagation/"
+      ]
+    },
+    {
+      "crop": "coffee",
+      "chinese_name": "咖啡豆",
+      "english_name": "Coffee Beans",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "seeds",
+      "botanical_note": "Coffee beans are the seeds inside coffee fruits. The item represents the harvested beans, while the compact crop cycle omits the multi-year shrub and post-harvest processing.",
+      "source_urls": [
+        "https://ask.ifas.ufl.edu/publication/FP135",
+        "https://plants.ces.ncsu.edu/plants/coffea-arabica/common-name/coffee-plant/"
+      ]
+    },
+    {
+      "crop": "rapini",
+      "chinese_name": "西兰花苗",
+      "english_name": "Rapini",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "flower buds",
+      "botanical_note": "A cool-season brassica harvested for tender shoots and unopened flower buds; careful cutting can allow additional shoots to develop.",
+      "source_urls": [
+        "https://ucanr.edu/site/mg-sonoma/rapini-broccoli-raab",
+        "https://plants.ces.ncsu.edu/plants/brassica-rapa-ruvo-group/common-name/rapini/"
+      ]
+    },
+    {
+      "crop": "napa_cabbage",
+      "chinese_name": "大白菜",
+      "english_name": "Napa Cabbage",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "head",
+      "botanical_note": "A cool-season leafy brassica that forms a compact head; the game represents heading and harvest with the standard eight-stage crop cycle.",
+      "source_urls": [
+        "https://extension.oregonstate.edu/catalog/pnw-548-winter-vegetable-production-small-farms-gardens-west-cascades"
+      ]
+    }
+  ],
+  "references": [
+    "https://extensionpubs.unl.edu/publication/g2089/na/pdf/view",
+    "https://hort.extension.wisc.edu/articles/common-purslane-portulaca-oleracea/",
+    "https://gardeningsolutions.ifas.ufl.edu/plants/edibles/vegetables/chayote/",
+    "https://extension.umd.edu/resource/growing-grapes-home-garden",
+    "https://plants.ces.ncsu.edu/plants/camellia-sinensis/",
+    "https://vegetables.wsu.edu/tea-plant-propagation/",
+    "https://ask.ifas.ufl.edu/publication/FP135",
+    "https://plants.ces.ncsu.edu/plants/coffea-arabica/common-name/coffee-plant/",
+    "https://ucanr.edu/site/mg-sonoma/rapini-broccoli-raab",
+    "https://plants.ces.ncsu.edu/plants/brassica-rapa-ruvo-group/common-name/rapini/",
+    "https://extension.oregonstate.edu/catalog/pnw-548-winter-vegetable-production-small-farms-gardens-west-cascades"
+  ]
+}
