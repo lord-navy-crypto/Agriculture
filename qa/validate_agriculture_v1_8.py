@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Contract checks for the eight v1.8 crop lines and the 80-crop asset pipeline."""
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,9 +64,43 @@ def main():
         "crop_additions_v1_0.json", "crop_additions_v1_3.json",
         "crop_additions_v1_7.json", "crop_additions_v1_8.json",
     ]
-    all_crops = [row["crop"] for name in profile_files
-                 for row in read("data/gugugaga/agronomy/" + name)["crops"]]
+    all_profile_rows = [row for name in profile_files
+                        for row in read("data/gugugaga/agronomy/" + name)["crops"]]
+    all_crops = [row["crop"] for row in all_profile_rows]
     assert len(all_crops) == 80 and len(set(all_crops)) == 80
+
+    # Keep the runtime climate switch and crop registry in lockstep with the
+    # authoritative profile metadata. A missing band otherwise fails during a
+    # crop's random tick, long after resource-only validation has passed.
+    band_block = climate.split("private static Band cropBand(String seedName)", 1)[1].split(
+        "private static Band biomeBand", 1
+    )[0]
+    climate_by_seed = {}
+    for match in re.finditer(r"case\\s+(.*?)\\s*->\\s*Band\\.([A-Z]+);", band_block, re.S):
+        for seed_name in re.findall(r'"([a-z0-9_]+_seeds)"', match.group(1)):
+            assert seed_name not in climate_by_seed, seed_name
+            climate_by_seed[seed_name] = match.group(2)
+    assert set(climate_by_seed) == {f"{crop}_seeds" for crop in all_crops}
+    for row in all_profile_rows:
+        crop = row["crop"]
+        assert climate_by_seed[f"{crop}_seeds"] == row["growth_band_gameplay"], crop
+
+    registry_pollination = {
+        crop: group for crop, group in re.findall(
+            r'crop\\("([a-z0-9_]+)_crop",\\s*"([a-z0-9_]+)_seeds",\\s*'
+            r'AgricultureCropBlock\\.PollinationGroup\\.([A-Z]+)\\)', registry
+        )
+    }
+    assert set(registry_pollination) == set(all_crops)
+    for row in all_profile_rows:
+        assert registry_pollination[row["crop"]] == row["pollination_gameplay"], row["crop"]
+
+    harvest_block = crop_java.split("private HarvestMode harvestMode()", 1)[0]
+    repeated_harvest = set(re.findall(r'"([a-z0-9_]+_seeds)"', harvest_block))
+    assert {"endive_seeds", "watercress_seeds"} <= repeated_harvest
+    for crop in ("cassava", "taro", "yam", "teff", "kohlrabi", "rutabaga"):
+        assert f'"{crop}_seeds"' not in repeated_harvest, crop
+
     assert "crop_additions_v1_8.json" in generator
     assert "cropIds.size() != 80" in generator
     assert "modelCount != 960 || blockTextureCount != 960 || itemTextureCount != 160" in generator
