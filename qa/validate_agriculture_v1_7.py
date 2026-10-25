@@ -43,13 +43,13 @@ def main():
     assert '"pumpkin_seeds", "blackberry_seeds", "blackcurrant_seeds"' in crop_java and '"chives_seeds"' in crop_java
     honey_data=read("data/gugugaga/agronomy/honey_sources_v0_9.json")
     honey_ids={row["item"] for row in honey_data["honey_variants"]}
-    assert HONEY <= honey_ids and len(honey_ids)==23
+    assert HONEY <= honey_ids and len(honey_ids)==30
     for item in honey_ids:
         model=read(f"assets/gugugaga/models/item/{item}.json")
         assert model["textures"]["layer0"]==f"gugugaga:item/honey/{item}"
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
     assert "otherFlowerKinds" in nectar and "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar
     assert "WILDFLOWER_HONEY_BOTTLE" in nectar and "wildflower_honey_bottle" in bee
-    assert "honeyTexturePalette.size() != 23" in generator and "honeyTextureHashes.size() != 23" in generator
-    print("AGRICULTURE_V1_7_OK: 72 crops; 8 new crop cycles; 23 source-specific honey bottles; mixed-forage wildflower blend")
+    assert "honeyTexturePalette.size() != 30" in generator and "honeyTextureHashes.size() != 30" in generator
+    print("AGRICULTURE_V1_8_OK: 80 crops; 8 new crop cycles; 29 source-specific honey bottles; mixed-forage wildflower blend")
 if __name__ == "__main__": main()
