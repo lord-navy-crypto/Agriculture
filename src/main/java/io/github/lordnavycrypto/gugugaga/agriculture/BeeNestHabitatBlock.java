@@ -70,6 +70,13 @@ public final class BeeNestHabitatBlock extends Block {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // The activity gauge represents a recent habitat observation, not permanent occupancy.
         // One in four random ticks checks nearby bees; absent bees slowly reduce the gauge.
+        // USDA ARS reports squash bees forage especially early in the morning.
+        // The activity gauge is a recent observation: pausing outside this window
+        // avoids treating the species' normal afternoon/night inactivity as failure.
+        // Day ticks 0..5999 span dawn to before midday in the Minecraft day cycle.
+        if (beeSpecies.equals("squash_bee") && level.getDayTime() % 24000L >= 6000L) {
+            return;
+        }
         if (random.nextInt(4) != 0) return;
         int activity = state.getValue(ACTIVITY);
         boolean active = hasMatchingBee(level, pos) && hasForage(level, pos);

@@ -34,6 +34,8 @@ for id in names:
     assert f'"{id}"' in registry, id
 assert "randomTick" in habitat and "hasMatchingBee" in habitat and "hasForage" in habitat
 assert "activity - 1" in habitat and "activity + 1" in habitat
+assert 'beeSpecies.equals("squash_bee") && level.getDayTime() % 24000L >= 6000L' in habitat
+assert habitat.index('level.getDayTime()') < habitat.index("if (random.nextInt(4) != 0)")
 assert "direction == Direction.DOWN && !canSurvive(state, level, pos)" in habitat
 assert "below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)" in habitat
 assert "below.is(Blocks.GRASS_BLOCK)" not in habitat

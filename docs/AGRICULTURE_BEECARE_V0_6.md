@@ -51,3 +51,15 @@ the native `Bee` class. No registry ID changed, and no crop was added.
   https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/squash-pollination/
 - NeoForge 1.21.1 Bee API (hive and reproduction virtual methods):
   https://aldak.netlify.app/javadoc/1.21.1-21.1.x/net/minecraft/world/entity/animal/bee
+
+
+## v0.8.1 squash bee morning activity
+
+In addition to hive separation and species-preserving reproduction, the existing
+squash-bee habitat observation now runs only during Minecraft day ticks
+`0..5999` (dawn through late morning); outside that interval its activity
+gauge does not decay. This is a **day-cycle gameplay proxy**, not an exact
+biological clock or a guaranteed crop visitation. Other habitat species keep
+their existing scanning cadence. No additional entities or crops are registered.
+
+USDA ARS: https://www.ars.usda.gov/pacific-west-area/logan-ut/pollinating-insect-biology-management-systematics-research/docs/cucurbita/squash-bee-overview/
