@@ -1310,12 +1310,16 @@ tasks.register('generateCropAssets') {
                     disc.call(image, 8, 4, 3, 3, cream)
                     put.call(image, 5, 6, rgb.call('#B6A58B'))
                     put.call(image, 10, 6, rgb.call('#B6A58B'))
-                } else { // flax fiber with its distinctive blue flowers/capsules
-                    line.call(image, 8, 14, 8, 4, greenDark)
-                    disc.call(image, 5, 5, 2, 2, rgb.call('#79A9E4'))
-                    disc.call(image, 10, 6, 2, 2, rgb.call('#79A9E4'))
-                    put.call(image, 5, 4, white); put.call(image, 10, 5, white)
-                    line.call(image, 8, 11, 5, 9, green)
+                } else { // flax fiber and seed: bundled stems with ripe seed capsules
+                    line.call(image, 4, 14, 5, 4, rgb.call('#A6A06D'))
+                    line.call(image, 7, 14, 8, 3, rgb.call('#8D9561'))
+                    line.call(image, 10, 14, 11, 5, rgb.call('#B5AA78'))
+                    line.call(image, 5, 8, 3, 6, green)
+                    line.call(image, 8, 9, 11, 7, greenLight)
+                    disc.call(image, 5, 4, 1, 1, rgb.call('#9C8050'))
+                    disc.call(image, 8, 3, 1, 1, rgb.call('#A98B58'))
+                    disc.call(image, 11, 5, 1, 1, rgb.call('#8E7247'))
+                    put.call(image, 5, 3, cream); put.call(image, 8, 2, cream); put.call(image, 11, 4, cream)
                 }
             } else if (organForm == 'flower') {
                 if (crop == 'lavender') {
