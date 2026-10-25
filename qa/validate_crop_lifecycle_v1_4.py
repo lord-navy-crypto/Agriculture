@@ -60,6 +60,10 @@ def main():
     assert "seedForm == 'legume'" in generator
     assert "seedForm == 'oilseed'" in generator
     assert "seedForm == 'brassica'" in generator
+    assert "if (crop == 'radish')" in generator
+    assert "if (crop == 'turnip')" in generator
+    assert "produceIconHashes.size() != 64" in generator
+    assert "seedIconHashes.size() != 64" in generator
     assert "organForm == 'fiber' || organForm == 'fiber_seed'" in generator
     assert "leafForm == 'rosette'" in generator
     assert "leafForm == 'vine'" in generator
