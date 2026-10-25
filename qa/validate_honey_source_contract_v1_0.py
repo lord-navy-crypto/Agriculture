@@ -14,7 +14,7 @@ def read_resource(path):
 
 
 def main():
-    data = read_resource("data/gugugaga/agronomy/honey_sources_v0_9.json")
+    data = read_resource("data/gugugaga/agronomy/honey_sources_v1_0.json")
     bee = (SRC / "BeeContent.java").read_text(encoding="utf-8")
     source_java = (SRC / "NectarHoneySource.java").read_text(encoding="utf-8")
     poison_java = (SRC / "PoisonFlowerHoneyBottleItem.java").read_text(encoding="utf-8")
@@ -24,7 +24,7 @@ def main():
 
     variants = data["honey_variants"]
     items = [row["item"] for row in variants]
-    assert len(items) == 30 and len(set(items)) == 30
+    assert len(items) == 38 and len(set(items)) == 38
 
     switch_body = bee.split('private static DeferredItem<HoneyBottleItem> floralHoney(String name)', 1)[1]
     switch_body = switch_body.split("return ITEMS.register(name", 1)[0]
@@ -80,7 +80,7 @@ def main():
         if row["source_crop"] != "mixed_flower_forage"
     }
     assert routed_sources == expected_sources
-    assert len(routed_sources) == 29
+    assert len(routed_sources) == 37
 
     # Every item needs an explicit route from the dominant source or mixed-forage branch.
     for item in items:
@@ -99,7 +99,7 @@ def main():
         if row["source_of_effect"] == "minecraft_java_1_21_1_suspicious_stew"
     }
     assert vanilla_stew_items == vanilla_flower_items
-    print("HONEY_SOURCE_CONTRACT_OK: 30 variants; food metadata/effects match code; 29 forage routes; 14 vanilla flower stew effects preserved")
+    print("HONEY_SOURCE_CONTRACT_OK: 38 variants; food metadata/effects match code; 37 forage routes; 14 vanilla flower stew effects preserved")
 
 
 if __name__ == "__main__":

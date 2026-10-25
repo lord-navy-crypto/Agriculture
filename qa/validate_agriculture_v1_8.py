@@ -62,12 +62,12 @@ def main():
     profile_files = [
         "crop_profiles_v0_4.json", "crop_additions_v0_9.json",
         "crop_additions_v1_0.json", "crop_additions_v1_3.json",
-        "crop_additions_v1_7.json", "crop_additions_v1_8.json",
+        "crop_additions_v1_7.json", "crop_additions_v1_8.json", "crop_additions_v1_9.json",
     ]
     all_profile_rows = [row for name in profile_files
                         for row in read("data/gugugaga/agronomy/" + name)["crops"]]
     all_crops = [row["crop"] for row in all_profile_rows]
-    assert len(all_crops) == 80 and len(set(all_crops)) == 80
+    assert len(all_crops) == 88 and len(set(all_crops)) == 88
 
     # Keep the runtime climate switch and crop registry in lockstep with the
     # authoritative profile metadata. A missing band otherwise fails during a
@@ -102,17 +102,17 @@ def main():
         assert f'"{crop}_seeds"' not in repeated_harvest, crop
 
     assert "crop_additions_v1_8.json" in generator
-    assert "cropIds.size() != 80" in generator
-    assert "modelCount != 960 || blockTextureCount != 960 || itemTextureCount != 160" in generator
-    assert "matureTextureHashes.size() != 80" in generator
-    assert "allStageHashes.size() != 960" in generator
-    assert "produceIconHashes.size() != 80" in generator and "seedIconHashes.size() != 80" in generator
+    assert "cropIds.size() != 88" in generator
+    assert "modelCount != 1056 || blockTextureCount != 1056 || itemTextureCount != 176" in generator
+    assert "matureTextureHashes.size() != 88" in generator
+    assert "allStageHashes.size() != 1056" in generator
+    assert "produceIconHashes.size() != 88" in generator and "seedIconHashes.size() != 88" in generator
     assert '"endive_seeds", "watercress_seeds"' in crop_java
     assert "hasNearbyFreshWater(level, pos, 2, -1, 1)" in climate
     assert '"taro_seeds".equals(seedName) || "watercress_seeds".equals(seedName)' in climate
     assert "propagule:'cassava taro yam'.split(' ')" in generator
     assert "organ.contains('corm')" in generator and "organ.contains('tuber')" in generator
-    print("AGRICULTURE_V1_8_OK: 80 crops; eight new complete crop cycles; 960 stage models/textures; 160 custom produce and seed icons")
+    print("AGRICULTURE_V1_9_OK: 88 crops; eight v1.9 additions; 1056 stage models/textures; 176 custom produce and seed icons")
 
 if __name__ == "__main__":
     main()
