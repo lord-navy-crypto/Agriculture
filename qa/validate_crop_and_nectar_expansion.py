@@ -76,7 +76,7 @@ def main():
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
         assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == f"gugugaga:item/honey/{id}"
     assert len(source["references"]) >= 3
-    print("AGRICULTURE_HONEY_INTEGRATION_OK: 80 crops, 30 honey variants, seven new blossom routes, mixed-forage blend, vanilla safeguards")
+    print("AGRICULTURE_HONEY_INTEGRATION_OK: v0.9 legacy contract preserved; current catalog has 96 crops and 46 honey variants; mixed-forage blend and vanilla safeguards")
 
 if __name__ == "__main__":
     main()
