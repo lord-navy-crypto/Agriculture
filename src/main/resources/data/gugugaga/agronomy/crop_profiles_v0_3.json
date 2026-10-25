@@ -1,0 +1,159 @@
+{
+  "warning": "Real figures are published days-to-maturity ranges for outdoor varieties; gameplay growth uses no numeric conversion from days or Fahrenheit. Every biome mapping and bonus probability is game design, not a measured ecological model.",
+  "crops": [
+    {
+      "crop": "millet",
+      "chinese_name": "小米",
+      "harvested_organ": "grain",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "NONE",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "buckwheat",
+      "chinese_name": "荞麦",
+      "harvested_organ": "grain",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "ORCHARD",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "chickpea",
+      "chinese_name": "鹰嘴豆",
+      "harvested_organ": "legume",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "lentil",
+      "chinese_name": "小扁豆",
+      "harvested_organ": "legume",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "radish",
+      "chinese_name": "萝卜",
+      "harvested_organ": "root",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "real_maturity_days_range_reference": [
+        30,
+        60
+      ],
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+      ]
+    },
+    {
+      "crop": "turnip",
+      "chinese_name": "芜菁",
+      "harvested_organ": "root",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "real_maturity_days_range_reference": [
+        50,
+        60
+      ],
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+      ]
+    },
+    {
+      "crop": "sweet_potato",
+      "chinese_name": "红薯",
+      "harvested_organ": "tuber",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "kale",
+      "chinese_name": "羽衣甘蓝",
+      "harvested_organ": "leaf",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "real_maturity_days_range_reference": [
+        40,
+        65
+      ],
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+      ]
+    },
+    {
+      "crop": "zucchini",
+      "chinese_name": "西葫芦",
+      "harvested_organ": "fruit",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "real_maturity_days_range_reference": [
+        50,
+        65
+      ],
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota"
+      ]
+    },
+    {
+      "crop": "raspberry",
+      "chinese_name": "覆盆子",
+      "harvested_organ": "berry",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "BERRY",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "cranberry",
+      "chinese_name": "蔓越莓",
+      "harvested_organ": "berry",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "BERRY",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    },
+    {
+      "crop": "sesame",
+      "chinese_name": "芝麻",
+      "harvested_organ": "oilseed",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "ORCHARD",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf"
+      ]
+    }
+  ],
+  "sources": [
+    "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+    "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/climate-resilience-resources-for-vegetable-growers-in-minnesota",
+    "https://www.nrcs.usda.gov/sites/default/files/2024-04/19-038_02_HAG_Yard-Park-Garden.pdf",
+    "https://www.xerces.org/blog/why-do-some-bees-dig"
+  ]
+}

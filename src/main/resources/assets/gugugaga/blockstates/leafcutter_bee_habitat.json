@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "activity=0": {
+      "model": "gugugaga:block/leafcutter_bee_habitat"
+    },
+    "activity=1": {
+      "model": "gugugaga:block/leafcutter_bee_habitat"
+    },
+    "activity=2": {
+      "model": "gugugaga:block/leafcutter_bee_habitat"
+    },
+    "activity=3": {
+      "model": "gugugaga:block/leafcutter_bee_habitat_active"
+    }
+  }
+}

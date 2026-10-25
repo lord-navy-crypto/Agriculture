@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:beetroot_seeds"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garlic_seeds",
+    "count": 2
+  }
+}

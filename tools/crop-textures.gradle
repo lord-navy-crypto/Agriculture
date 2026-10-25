@@ -1,0 +1,367 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+import java.security.MessageDigest
+
+/*
+ * Deterministic crop pixel-art generator. Emits 16x16 transparent PNGs,
+ * eight distinct growth stages, pollination-marked reproductive stages,
+ * produce/seed icons and the matching Minecraft crop models.
+ */
+def cropGeneratedResources = layout.buildDirectory.dir('generated/resources/cropAssets')
+sourceSets.main.resources.srcDir(cropGeneratedResources)
+
+tasks.register('generateCropAssets') {
+    inputs.files(
+        file('src/main/resources/data/gugugaga/agronomy/crop_profiles_v0_4.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v0_9.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_0.json'),
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_3.json')
+    )
+    outputs.dir(cropGeneratedResources)
+    doLast {
+        File outputRoot = cropGeneratedResources.get().asFile
+        project.delete(outputRoot)
+        outputRoot.mkdirs()
+        def slurper = new JsonSlurper()
+        def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json']
+        def cropIds = profileNames.collectMany { name ->
+            slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops.collect { it.crop.toString() }
+        }.unique().sort()
+        if (cropIds.size() != 64) throw new GradleException('Expected exactly 64 unique crop profiles, found ' + cropIds.size())
+
+        def palettes = [
+            corn:'#E8B932', tomato:'#D9473E', onion:'#CDB7D9', rice:'#D8C98B',
+            soybean:'#91A95C', strawberry:'#D92F55', cucumber:'#4C9B4B', blueberry:'#526BC2',
+            bell_pepper:'#D94A3E', garlic:'#E8E0CD', barley:'#C7A65D', oat:'#C4B37C',
+            rye:'#B58D4B', pea:'#72B64D', lettuce:'#6DBB55', cabbage:'#5B9849',
+            spinach:'#2D8047', broccoli:'#327D45', eggplant:'#79509B', cotton:'#EDECE2',
+            flax:'#6498D1', peanut:'#B98957', sorghum:'#A9623D', sunflower_seed:'#E0B431',
+            millet:'#C9A35B', buckwheat:'#A75C5A', chickpea:'#C5B58B', lentil:'#899B56',
+            radish:'#D74F69', turnip:'#CDB6D9', sweet_potato:'#C67B4A', kale:'#478748',
+            zucchini:'#4D9D43', raspberry:'#C83E68', cranberry:'#B82F4D', sesame:'#C6B17A',
+            lavender:'#9473BD', clover:'#75A64C', basil:'#3C9755', mint:'#63B98A',
+            mustard:'#D6B63B', canola:'#E5C23C', celery:'#8EBF62', leek:'#74A66C',
+            parsnip:'#D8BE8A', arugula:'#4A954F', swiss_chard:'#679D50', okra:'#5C9A43',
+            fennel:'#70B16B', dill:'#6AA65B', cilantro:'#4B9049', parsley:'#318847',
+            collard_greens:'#4E8644', green_bean:'#5B9B45', chili_pepper:'#D73C30',
+            brussels_sprouts:'#5A8D4A', cauliflower:'#D9D7C7', bok_choy:'#75B88A',
+            shallot:'#A47CA5', ginger:'#C6A56C', turmeric:'#D99B22', black_bean:'#453F3D',
+            quinoa:'#C5AB76', artichoke:'#678E49'
+        ]
+        def categoryGroups = [
+            grain:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame sunflower_seed'.split(' '),
+            fruit:'tomato strawberry cucumber blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper'.split(' '),
+            root:'onion garlic peanut radish turnip sweet_potato parsnip shallot ginger turmeric fennel'.split(' '),
+            leafy:'lettuce cabbage spinach broccoli kale celery leek arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy'.split(' '),
+            pod:'soybean pea chickpea lentil green_bean black_bean'.split(' '),
+            flower:'lavender clover mustard canola artichoke'.split(' '),
+            herb:'basil mint dill cilantro parsley'.split(' '),
+            fiber:'cotton flax'.split(' ')
+        ]
+        def categoryByCrop = [:]
+        categoryGroups.each { category, names ->
+            names.each { name ->
+                if (categoryByCrop.containsKey(name)) throw new GradleException('Duplicate crop art category: ' + name)
+                categoryByCrop[name] = category.toString()
+            }
+        }
+        if (!(cropIds as Set).equals(categoryByCrop.keySet())) {
+            throw new GradleException('Crop art categories do not match the 64 crop profiles')
+        }
+        if (!(cropIds as Set).equals(palettes.keySet())) {
+            throw new GradleException('Crop art palette map must cover all 64 crop IDs exactly')
+        }
+
+        def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
+        def shade = { int color, double factor ->
+            int red = (int)Math.max(0, Math.min(255, Math.round(((color >> 16) & 255) * factor)))
+            int green = (int)Math.max(0, Math.min(255, Math.round(((color >> 8) & 255) * factor)))
+            int blue = (int)Math.max(0, Math.min(255, Math.round((color & 255) * factor)))
+            (red << 16) | (green << 8) | blue
+        }
+        def put = { BufferedImage image, int x, int y, int color ->
+            if (x >= 0 && x < 16 && y >= 0 && y < 16) image.setRGB(x, y, (int)(0xFF000000L | (color & 0x00FFFFFF)))
+        }
+        def line = { BufferedImage image, int x0, int y0, int x1, int y1, int color ->
+            int dx = Math.abs(x1 - x0)
+            int sx = x0 < x1 ? 1 : -1
+            int dy = -Math.abs(y1 - y0)
+            int sy = y0 < y1 ? 1 : -1
+            int err = dx + dy
+            while (true) {
+                put.call(image, x0, y0, color)
+                if (x0 == x1 && y0 == y1) break
+                int e2 = 2 * err
+                if (e2 >= dy) { err += dy; x0 += sx }
+                if (e2 <= dx) { err += dx; y0 += sy }
+            }
+        }
+        def disc = { BufferedImage image, int cx, int cy, int rx, int ry, int color ->
+            for (int y = cy - ry; y <= cy + ry; y++) {
+                for (int x = cx - rx; x <= cx + rx; x++) {
+                    double dx = (x - cx) / (double)Math.max(1, rx)
+                    double dy = (y - cy) / (double)Math.max(1, ry)
+                    if (dx * dx + dy * dy <= 1.05d) put.call(image, x, y, color)
+                }
+            }
+        }
+        def savePng = { String relativePath, BufferedImage image ->
+            File target = new File(outputRoot, relativePath)
+            target.parentFile.mkdirs()
+            if (!ImageIO.write(image, 'png', target)) throw new GradleException('Unable to encode PNG: ' + relativePath)
+        }
+        def saveJson = { String relativePath, Object value ->
+            File target = new File(outputRoot, relativePath)
+            target.parentFile.mkdirs()
+            target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
+        }
+
+        def stageTexture = { String crop, int stage, boolean pollinated ->
+            BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+            int accent = rgb.call(palettes[crop].toString())
+            int stem = rgb.call('#36763A')
+            int leaf = rgb.call('#4E9845')
+            int leafDark = rgb.call('#2D6B35')
+            int leafLight = rgb.call('#82C35A')
+            int pollen = rgb.call('#F4E6A2')
+            int flowerCore = rgb.call('#F1C84A')
+            String kind = categoryByCrop[crop].toString()
+            int height = (int)(3 + Math.floor(stage * 11.0d / 7.0d))
+            int top = 15 - height
+            line.call(image, 7, 15, 7, top, stem)
+            // A tiny crop-specific seed/cotyledon pixel keeps even the earliest seedling sprite unique.
+            put.call(image, 5, 15, shade.call(accent, 0.72d))
+            if (stage >= 3 && (kind == 'leafy' || kind == 'herb' || kind == 'fiber')) {
+                line.call(image, 7, 13, 5, Math.max(top + 2, 7), stem)
+                line.call(image, 7, 13, 10, Math.max(top + 3, 8), stem)
+            }
+            int nodes = Math.min(5, stage + 1)
+            for (int node = 0; node < nodes; node++) {
+                int y = 14 - node * 2
+                if (y < top + 1) continue
+                int span = kind == 'leafy' ? Math.min(3, 1 + stage.intdiv(3)) :
+                           kind == 'grain' ? 1 : Math.min(2, 1 + stage.intdiv(4))
+                for (int d = 1; d <= span; d++) {
+                    int ly = y - (d > 1 ? 1 : 0)
+                    put.call(image, 7 - d, ly, d == span ? leafLight : leaf)
+                    put.call(image, 6 - d, ly, leafDark)
+                    put.call(image, 8 + d, ly, d == span ? leafLight : leaf)
+                    put.call(image, 9 + d, ly, leafDark)
+                }
+                put.call(image, 7, y, stem)
+            }
+            if (kind == 'grain' && stage >= 4) {
+                for (int row = 0; row < Math.min(5, stage - 2); row++) {
+                    put.call(image, 6, top + row, shade.call(accent, 0.82d))
+                    put.call(image, 8, top + row, accent)
+                    if (row < stage - 3) put.call(image, 7, top + row, shade.call(accent, 1.08d))
+                }
+            }
+            if (kind == 'fruit' && stage >= 5) {
+                if (['cucumber', 'zucchini', 'okra', 'chili_pepper', 'eggplant'].contains(crop)) {
+                    line.call(image, 4, 10, 5, 13, accent)
+                    line.call(image, 10, 8, 11, 11, shade.call(accent, 0.9d))
+                    put.call(image, 4, 11, shade.call(accent, 1.18d))
+                    put.call(image, 10, 9, shade.call(accent, 1.18d))
+                } else if (['strawberry', 'blueberry', 'raspberry', 'cranberry'].contains(crop)) {
+                    disc.call(image, 4, 11, 2, 2, accent)
+                    disc.call(image, 10, 10, 2, 2, shade.call(accent, 0.88d))
+                    put.call(image, 4, 9, leaf)
+                    put.call(image, 10, 8, leaf)
+                    put.call(image, 3, 11, shade.call(accent, 1.2d))
+                } else {
+                    disc.call(image, 4, 10, 2, 2, accent)
+                    disc.call(image, 10, 10, 2, 2, shade.call(accent, 0.9d))
+                    put.call(image, 4, 8, leaf)
+                    put.call(image, 10, 8, leaf)
+                    put.call(image, 5, 10, shade.call(accent, 1.2d))
+                }
+            }
+            if (kind == 'pod' && stage >= 4) {
+                int podColor = crop in ['pea', 'green_bean'] ? leafLight : accent
+                line.call(image, 4, 10, 6, 7, podColor)
+                line.call(image, 9, 12, 11, 9, podColor)
+                put.call(image, 5, 9, shade.call(podColor, 1.15d))
+                put.call(image, 10, 11, shade.call(podColor, 1.15d))
+            }
+            if (kind == 'flower' && stage >= 3) {
+                int fy = Math.max(1, top + 1)
+                disc.call(image, 7, fy, 2, 2, accent)
+                put.call(image, 7, fy, flowerCore)
+                put.call(image, 5, fy, shade.call(accent, 1.15d))
+                put.call(image, 9, fy, shade.call(accent, 1.15d))
+                if (stage >= 5) { put.call(image, 6, fy - 1, accent); put.call(image, 8, fy - 1, accent) }
+            }
+            if (kind == 'fiber' && stage >= 5) {
+                if (crop == 'cotton') {
+                    disc.call(image, 6, top + 3, 2, 2, rgb.call('#F1F0E7'))
+                    disc.call(image, 9, top + 4, 2, 2, rgb.call('#FFFFFF'))
+                } else {
+                    disc.call(image, 6, top + 2, 1, 1, rgb.call('#79A9E4'))
+                    disc.call(image, 9, top + 3, 1, 1, rgb.call('#79A9E4'))
+                }
+            }
+            if (kind == 'root' && stage >= 5) {
+                line.call(image, 7, 14, 4, 12, leafLight)
+                line.call(image, 7, 14, 10, 12, leafLight)
+            }
+            if (pollinated && stage >= 4) {
+                put.call(image, 4, Math.min(13, top + 5), pollen)
+                put.call(image, 11, Math.min(13, top + 6), pollen)
+                put.call(image, 5, Math.min(14, top + 6), flowerCore)
+            }
+            image
+        }
+
+        def itemTexture = { String crop, boolean seeds ->
+            BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+            int accent = rgb.call(palettes[crop].toString())
+            int dark = shade.call(accent, 0.72d)
+            int light = shade.call(accent, 1.22d)
+            int leaf = rgb.call('#4E9845')
+            int leafDark = rgb.call('#2D6B35')
+            String kind = categoryByCrop[crop].toString()
+            if (seeds) {
+                int seed = shade.call(accent, 0.82d)
+                disc.call(image, 5, 6, 1, 1, seed)
+                disc.call(image, 9, 5, 1, 1, light)
+                disc.call(image, 7, 9, 1, 1, dark)
+                disc.call(image, 10, 10, 1, 1, seed)
+                disc.call(image, 4, 10, 1, 1, light)
+                put.call(image, 5, 6, light)
+            } else if (kind == 'fruit') {
+                if (['cucumber', 'zucchini', 'okra', 'chili_pepper', 'eggplant'].contains(crop)) {
+                    line.call(image, 4, 12, 10, 4, accent)
+                    line.call(image, 5, 12, 11, 4, dark)
+                    line.call(image, 4, 11, 10, 3, light)
+                    put.call(image, 10, 3, leaf)
+                    put.call(image, 11, 3, leafDark)
+                } else if (['strawberry', 'blueberry', 'raspberry', 'cranberry'].contains(crop)) {
+                    disc.call(image, 5, 8, 3, 3, accent)
+                    disc.call(image, 10, 9, 3, 3, dark)
+                    put.call(image, 5, 4, leaf)
+                    put.call(image, 4, 5, leafDark)
+                    put.call(image, 9, 5, leaf)
+                    put.call(image, 11, 6, leafDark)
+                    put.call(image, 4, 8, light)
+                } else {
+                    disc.call(image, 8, 8, 4, 4, accent)
+                    put.call(image, 7, 4, leaf)
+                    put.call(image, 8, 3, leafDark)
+                    put.call(image, 6, 7, light)
+                    put.call(image, 9, 10, dark)
+                }
+            } else if (kind == 'root') {
+                if (crop in ['ginger', 'turmeric']) {
+                    line.call(image, 4, 9, 7, 7, accent)
+                    line.call(image, 7, 7, 11, 9, dark)
+                    line.call(image, 6, 10, 10, 12, accent)
+                    put.call(image, 6, 8, light)
+                    put.call(image, 8, 6, leaf)
+                } else {
+                    disc.call(image, 8, 9, 4, 3, accent)
+                    line.call(image, 8, 6, 8, 3, leaf)
+                    put.call(image, 7, 4, leafDark)
+                    put.call(image, 6, 10, light)
+                }
+            } else if (kind == 'leafy' || kind == 'herb') {
+                line.call(image, 8, 14, 8, 5, leafDark)
+                line.call(image, 8, 11, 4, 7, leaf)
+                line.call(image, 8, 9, 12, 5, leaf)
+                line.call(image, 8, 7, 5, 3, light)
+                line.call(image, 8, 13, 12, 10, leaf)
+                put.call(image, 4, 7, leafDark)
+                put.call(image, 11, 5, leafDark)
+                put.call(image, 5, 3, leaf)
+            } else if (kind == 'pod') {
+                line.call(image, 3, 11, 12, 5, accent)
+                line.call(image, 4, 12, 13, 6, dark)
+                line.call(image, 4, 10, 11, 4, light)
+                put.call(image, 6, 9, leaf)
+                put.call(image, 9, 7, leaf)
+            } else if (kind == 'grain') {
+                line.call(image, 8, 14, 8, 3, leafDark)
+                for (int y = 4; y <= 11; y += 2) {
+                    put.call(image, 6, y, accent)
+                    put.call(image, 7, y - 1, light)
+                    put.call(image, 9, y + 1, dark)
+                }
+                line.call(image, 8, 12, 4, 8, leaf)
+                line.call(image, 8, 10, 12, 6, leaf)
+            } else if (kind == 'flower') {
+                line.call(image, 8, 14, 8, 7, leafDark)
+                disc.call(image, 8, 5, 3, 3, accent)
+                put.call(image, 8, 5, rgb.call('#F3CF4E'))
+                put.call(image, 5, 5, light)
+                put.call(image, 11, 5, light)
+                line.call(image, 8, 11, 5, 9, leaf)
+            } else if (kind == 'fiber') {
+                line.call(image, 8, 14, 8, 5, leafDark)
+                if (crop == 'cotton') {
+                    disc.call(image, 6, 5, 3, 3, rgb.call('#F0EFE5'))
+                    disc.call(image, 10, 6, 3, 3, rgb.call('#FFFFFF'))
+                    put.call(image, 6, 4, rgb.call('#E1E1D8'))
+                } else {
+                    disc.call(image, 6, 5, 2, 2, rgb.call('#779ED6'))
+                    disc.call(image, 10, 7, 2, 2, rgb.call('#779ED6'))
+                    line.call(image, 8, 12, 5, 9, leaf)
+                }
+            }
+            image
+        }
+
+        int modelCount = 0
+        int blockTextureCount = 0
+        int itemTextureCount = 0
+        def matureTextureHashes = [] as Set
+        def allStageHashes = [] as Set
+        def digest = MessageDigest.getInstance('SHA-256')
+        cropIds.each { crop ->
+            def thisCropStageHashes = [] as Set
+            (0..7).each { age ->
+                BufferedImage image = stageTexture.call(crop, age, false)
+                String modelName = crop + '_stage' + age
+                String texturePath = 'assets/gugugaga/textures/block/crops/' + modelName + '.png'
+                savePng.call(texturePath, image)
+                blockTextureCount++
+                String signature = digest.digest(new File(outputRoot, texturePath).bytes).encodeHex().toString()
+                thisCropStageHashes.add(signature)
+                allStageHashes.add(signature)
+                if (age == 7) matureTextureHashes.add(signature)
+                saveJson.call('assets/gugugaga/models/block/crops/' + modelName + '.json', [
+                    parent:'minecraft:block/crop', textures:[crop:'gugugaga:block/crops/' + modelName]
+                ])
+                modelCount++
+                if (age >= 4) {
+                    String pollenModel = modelName + '_pollinated'
+                    String pollenPath = 'assets/gugugaga/textures/block/crops/' + pollenModel + '.png'
+                    savePng.call(pollenPath, stageTexture.call(crop, age, true))
+                    blockTextureCount++
+                    String pollenSignature = digest.digest(new File(outputRoot, pollenPath).bytes).encodeHex().toString()
+                    if (pollenSignature == signature) throw new GradleException('Pollinated stage must have a distinct texture: ' + modelName)
+                    allStageHashes.add(pollenSignature)
+                    saveJson.call('assets/gugugaga/models/block/crops/' + pollenModel + '.json', [
+                        parent:'minecraft:block/crop', textures:[crop:'gugugaga:block/crops/' + pollenModel]
+                    ])
+                    modelCount++
+                }
+            }
+            if (thisCropStageHashes.size() != 8) throw new GradleException('Growth stages must all have distinct sprites: ' + crop)
+            savePng.call('assets/gugugaga/textures/item/crops/' + crop + '.png', itemTexture.call(crop, false))
+            itemTextureCount++
+            savePng.call('assets/gugugaga/textures/item/crops/' + crop + '_seeds.png', itemTexture.call(crop, true))
+            itemTextureCount++
+        }
+        if (modelCount != 768 || blockTextureCount != 768 || itemTextureCount != 128) {
+            throw new GradleException('Unexpected crop asset count: models=' + modelCount + ', block textures=' + blockTextureCount + ', item textures=' + itemTextureCount)
+        }
+        if (matureTextureHashes.size() != 64) throw new GradleException('Every crop must have a unique mature texture')
+        if (allStageHashes.size() != 768) throw new GradleException('Crop growth/pollination stage textures must be unique')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 64 crops; 8 unique stages each; 4 pollen-marked stages per crop; 128 item icons; 768 crop models.')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateCropAssets')
+}

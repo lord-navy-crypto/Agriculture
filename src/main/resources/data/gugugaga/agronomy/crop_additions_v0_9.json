@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.9",
+  "description": "Eight new playable crops added to the existing 36; broad climate bands and single-harvest eight-age behavior are Minecraft gameplay approximations, not measured degrees or perennial growth simulation.",
+  "crops": [
+    {
+      "crop": "lavender",
+      "chinese_name": "薰衣草",
+      "harvested_organ": "flowering aromatic shoots",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Bee nectar source; the harvested flowering shoots do not require pollination",
+      "seed_recipe_gameplay": "minecraft:wheat_seeds",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs"
+      ]
+    },
+    {
+      "crop": "clover",
+      "chinese_name": "三叶草",
+      "harvested_organ": "forage cover crop flowers and foliage",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Nectar-bearing cover crop; harvested leaves are not dependent on bee pollination",
+      "seed_recipe_gameplay": "minecraft:wheat_seeds",
+      "source_urls": [
+        "https://www.ams.usda.gov/sites/default/files/media/Comb_Honey_Inspection_Instructions%5B1%5D.pdf"
+      ]
+    },
+    {
+      "crop": "basil",
+      "chinese_name": "罗勒",
+      "harvested_organ": "aromatic leaves",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Leaves harvested before seed production; bees are not required for leafy harvest",
+      "seed_recipe_gameplay": "minecraft:wheat_seeds",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs"
+      ]
+    },
+    {
+      "crop": "mint",
+      "chinese_name": "薄荷",
+      "harvested_organ": "aromatic leaves",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Vegetative leaf crop; pollination is not required to harvest foliage",
+      "seed_recipe_gameplay": "minecraft:wheat_seeds",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs"
+      ]
+    },
+    {
+      "crop": "mustard",
+      "chinese_name": "芥菜",
+      "harvested_organ": "seed crop (simplified)",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "ORCHARD",
+      "pollination_mode_real_world": "Can flower and be visited by bees; seed-set bonus is optional, never a prerequisite",
+      "seed_recipe_gameplay": "minecraft:beetroot_seeds",
+      "source_urls": [
+        "https://extension.rutgers.edu/fs1222"
+      ]
+    },
+    {
+      "crop": "canola",
+      "chinese_name": "油菜",
+      "harvested_organ": "oilseed crop (simplified)",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "ORCHARD",
+      "pollination_mode_real_world": "Rapeseed flowers offer insect forage; gameplay allows a modest pollination seed bonus",
+      "seed_recipe_gameplay": "minecraft:beetroot_seeds",
+      "source_urls": [
+        "https://www.clemson.edu/extension/apiculture-pollinators/apiculture/land-use-forages.html"
+      ]
+    },
+    {
+      "crop": "celery",
+      "chinese_name": "芹菜",
+      "harvested_organ": "leaf stalks",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Stalks harvested before flowering; no bee dependence",
+      "seed_recipe_gameplay": "minecraft:beetroot_seeds",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden"
+      ]
+    },
+    {
+      "crop": "leek",
+      "chinese_name": "韭葱",
+      "harvested_organ": "leaf sheaths/pseudostem",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "pollination_mode_real_world": "Leaf sheaths harvested before flowering; seed pollination not required for food harvest",
+      "seed_recipe_gameplay": "minecraft:beetroot_seeds",
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/starting-seeds-indoors",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-onions"
+      ]
+    }
+  ]
+}

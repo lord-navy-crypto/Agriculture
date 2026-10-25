@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "count": 12,
+  "caveat": "Growth-band and individual plant seed crafting are Minecraft approximations. Each crop now has custom generated pixel-art inventory icons and eight distinct growth-stage textures; tick duration remains a gameplay abstraction.",
+  "crops": [
+    {
+      "crop": "parsnip",
+      "chinese_name": "欧防风",
+      "english_name": "Parsnip",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "root",
+      "pollination_mode_real_world": "root harvested before bolting",
+      "food_nutrition_gameplay": 3,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "arugula",
+      "chinese_name": "芝麻菜",
+      "english_name": "Arugula",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "pollination_mode_real_world": "leaf harvest; seeds need pollination only if grown to flower",
+      "food_nutrition_gameplay": 1,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "swiss_chard",
+      "chinese_name": "莙荙菜",
+      "english_name": "Swiss Chard",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves and petioles",
+      "pollination_mode_real_world": "vegetative leaf harvest independent of pollination",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "okra",
+      "chinese_name": "秋葵",
+      "english_name": "Okra",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "fruit pod",
+      "pollination_mode_real_world": "generally self-compatible; bee visits can improve optional fruit set",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "fennel",
+      "chinese_name": "茴香",
+      "english_name": "Fennel",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "bulb-like leaf base",
+      "pollination_mode_real_world": "leaf base harvested before flowering; not seed production",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/living-soil-healthy-garden"
+      ]
+    },
+    {
+      "crop": "dill",
+      "chinese_name": "莳萝",
+      "english_name": "Dill",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "aromatic leaves",
+      "pollination_mode_real_world": "leaf picking occurs before seed production; flowers feed bees when allowed to bloom",
+      "food_nutrition_gameplay": 1,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/living-soil-healthy-garden"
+      ]
+    },
+    {
+      "crop": "cilantro",
+      "chinese_name": "香菜",
+      "english_name": "Cilantro",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "aromatic leaves",
+      "pollination_mode_real_world": "cool-season leaf harvest not dependent on bee visitation",
+      "food_nutrition_gameplay": 1,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/living-soil-healthy-garden"
+      ]
+    },
+    {
+      "crop": "parsley",
+      "chinese_name": "欧芹",
+      "english_name": "Parsley",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "pollination_mode_real_world": "multiple vegetative leaf pickings; flower seed production separate",
+      "food_nutrition_gameplay": 1,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/growing-herbs",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/living-soil-healthy-garden"
+      ]
+    },
+    {
+      "crop": "collard_greens",
+      "chinese_name": "羽衣甘蓝菜",
+      "english_name": "Collard Greens",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "pollination_mode_real_world": "repeated leaf picking; harvested before reproductive stage",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "green_bean",
+      "chinese_name": "四季豆",
+      "english_name": "Green Bean",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "immature pods",
+      "pollination_mode_real_world": "many common beans are self-pollinating; bee visits not essential for pods",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "chili_pepper",
+      "chinese_name": "辣椒",
+      "english_name": "Chili Pepper",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "fruit",
+      "pollination_mode_real_world": "self-compatible flower; pollinator visitors may improve optional fruit set",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    },
+    {
+      "crop": "brussels_sprouts",
+      "chinese_name": "抱子甘蓝",
+      "english_name": "Brussels Sprouts",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "lateral leaf buds",
+      "pollination_mode_real_world": "vegetative buds harvested before flowering",
+      "food_nutrition_gameplay": 2,
+      "source_urls": [
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden",
+        "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-vegetables-in-midsummer-for-fall-harvest"
+      ]
+    }
+  ]
+}

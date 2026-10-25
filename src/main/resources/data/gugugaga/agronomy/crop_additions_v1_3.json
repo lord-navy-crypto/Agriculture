@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.3",
+  "note": "8 crop lines; seed crafting and annual growth are Minecraft abstractions, not actual rhizome propagation.",
+  "crops": [
+    {
+      "crop": "cauliflower",
+      "chinese_name": "花椰菜",
+      "english_name": "Cauliflower",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "unopened flower curd",
+      "botanical_note": "flower buds harvested before opening",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "bok_choy",
+      "chinese_name": "小白菜",
+      "english_name": "Bok Choy",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "vegetative leaves",
+      "botanical_note": "leafy foliage; supports repeat harvest",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "shallot",
+      "chinese_name": "红葱头",
+      "english_name": "Shallot",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "bulbs",
+      "botanical_note": "real cultivation often uses bulbs; game seed recipe is simplified",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "ginger",
+      "chinese_name": "生姜",
+      "english_name": "Ginger",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "rhizome",
+      "botanical_note": "real propagation by rhizomes; seed items are gameplay",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "turmeric",
+      "chinese_name": "姜黄",
+      "english_name": "Turmeric",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "rhizome",
+      "botanical_note": "real propagation by rhizomes; seed items are gameplay",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "black_bean",
+      "chinese_name": "黑豆",
+      "english_name": "Black Bean",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "mature seeds",
+      "botanical_note": "mostly self-pollinating common bean",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "quinoa",
+      "chinese_name": "藜麦",
+      "english_name": "Quinoa",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "grain-like seed",
+      "botanical_note": "variety-specific cold and drought tolerance simplified",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "artichoke",
+      "chinese_name": "洋蓟",
+      "english_name": "Artichoke",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "immature flower head",
+      "botanical_note": "perennial thistle buds harvested before opening; annual Minecraft proxy",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    }
+  ]
+}
