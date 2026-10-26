@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "gugugaga:swiss_chard"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_pie",
+    "count": 1
+  }
+}

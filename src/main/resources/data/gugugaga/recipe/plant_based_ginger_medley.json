@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "gugugaga:rapini"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:blackcurrant_oat_crumble",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chicory"
+    },
+    {
+      "item": "gugugaga:spinach"
+    },
+    {
+      "item": "minecraft:glow_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:taro_dumplings",
+    "count": 1
+  }
+}

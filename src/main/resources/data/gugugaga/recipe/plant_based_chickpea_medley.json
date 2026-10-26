@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chickpea"
+    },
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herbal_tea",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chili_pepper"
+    },
+    {
+      "item": "gugugaga:water_spinach"
+    },
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rapini_garlic_saute",
+    "count": 1
+  }
+}

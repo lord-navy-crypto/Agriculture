@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:celeriac"
+    },
+    {
+      "item": "gugugaga:peanut"
+    },
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:peanut_sauce",
+    "count": 1
+  }
+}

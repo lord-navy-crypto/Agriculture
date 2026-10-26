@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin"
+    },
+    {
+      "item": "gugugaga:corn"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:crop_stir_fry",
+    "count": 1
+  }
+}

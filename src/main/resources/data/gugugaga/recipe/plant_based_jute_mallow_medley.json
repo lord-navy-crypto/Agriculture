@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:jute_mallow"
+    },
+    {
+      "item": "gugugaga:sweet_potato"
+    },
+    {
+      "item": "minecraft:glow_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_rice",
+    "count": 1
+  }
+}

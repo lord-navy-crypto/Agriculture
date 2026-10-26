@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chives"
+    },
+    {
+      "item": "gugugaga:strawberry"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:stuffed_pepper",
+    "count": 1
+  }
+}

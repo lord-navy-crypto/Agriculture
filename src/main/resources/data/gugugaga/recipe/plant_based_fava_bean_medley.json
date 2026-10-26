@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fava_bean"
+    },
+    {
+      "item": "gugugaga:turnip"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:basil_tomato_flatbread",
+    "count": 1
+  }
+}

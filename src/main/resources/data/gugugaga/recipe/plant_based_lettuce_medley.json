@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:lettuce"
+    },
+    {
+      "item": "gugugaga:dill"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cabbage_rolls",
+    "count": 1
+  }
+}

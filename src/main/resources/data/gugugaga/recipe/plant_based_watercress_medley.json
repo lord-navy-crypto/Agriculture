@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:watercress"
+    },
+    {
+      "item": "gugugaga:bell_pepper"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_pie",
+    "count": 1
+  }
+}

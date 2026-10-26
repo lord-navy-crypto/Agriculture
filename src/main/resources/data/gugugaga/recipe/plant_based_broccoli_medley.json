@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:broccoli"
+    },
+    {
+      "item": "gugugaga:collard_greens"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sweet_potato_roast",
+    "count": 1
+  }
+}

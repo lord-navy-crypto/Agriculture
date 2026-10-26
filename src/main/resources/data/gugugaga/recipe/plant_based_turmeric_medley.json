@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:turmeric"
+    },
+    {
+      "item": "gugugaga:napa_cabbage"
+    },
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:baked_taro",
+    "count": 1
+  }
+}

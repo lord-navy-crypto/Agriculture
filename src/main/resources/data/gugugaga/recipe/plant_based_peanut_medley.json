@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:peanut"
+    },
+    {
+      "item": "gugugaga:chili_pepper"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:taro_dumplings",
+    "count": 1
+  }
+}

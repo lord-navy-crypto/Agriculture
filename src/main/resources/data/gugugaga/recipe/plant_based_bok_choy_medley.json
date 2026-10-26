@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:bok_choy"
+    },
+    {
+      "item": "gugugaga:chayote"
+    },
+    {
+      "item": "minecraft:glow_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cucumber_mint_salad",
+    "count": 1
+  }
+}

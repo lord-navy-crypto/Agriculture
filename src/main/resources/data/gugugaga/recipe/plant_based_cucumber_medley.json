@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cucumber"
+    },
+    {
+      "item": "gugugaga:mint"
+    },
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rice_vegetable_bowl",
+    "count": 1
+  }
+}

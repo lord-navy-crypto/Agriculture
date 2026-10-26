@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:turnip"
+    },
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "minecraft:glow_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:quinoa_salad",
+    "count": 1
+  }
+}

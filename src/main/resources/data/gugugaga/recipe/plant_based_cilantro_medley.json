@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cilantro"
+    },
+    {
+      "item": "gugugaga:mung_bean"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garlic_water_spinach",
+    "count": 1
+  }
+}

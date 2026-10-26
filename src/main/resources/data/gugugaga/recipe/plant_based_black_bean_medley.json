@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:black_bean"
+    },
+    {
+      "item": "gugugaga:melon"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_yam",
+    "count": 1
+  }
+}

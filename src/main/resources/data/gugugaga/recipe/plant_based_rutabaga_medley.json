@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rutabaga"
+    },
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cabbage_rolls",
+    "count": 1
+  }
+}

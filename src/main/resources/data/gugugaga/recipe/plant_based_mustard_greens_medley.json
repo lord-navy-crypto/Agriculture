@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:mustard_greens"
+    },
+    {
+      "item": "gugugaga:broccoli"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:yam_cakes",
+    "count": 1
+  }
+}

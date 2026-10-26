@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:tomato"
+    },
+    {
+      "item": "gugugaga:zucchini"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:vegetable_stew",
+    "count": 1
+  }
+}

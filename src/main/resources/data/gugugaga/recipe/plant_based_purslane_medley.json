@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:purslane"
+    },
+    {
+      "item": "gugugaga:sorghum"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_seed_mix",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "gugugaga:watermelon"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garden_salad",
+    "count": 1
+  }
+}

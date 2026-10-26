@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cranberry"
+    },
+    {
+      "item": "gugugaga:blackberry"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chili_bean_chili",
+    "count": 1
+  }
+}

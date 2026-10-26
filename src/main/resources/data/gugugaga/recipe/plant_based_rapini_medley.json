@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rapini"
+    },
+    {
+      "item": "gugugaga:buckwheat"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:buckwheat_pancakes",
+    "count": 1
+  }
+}

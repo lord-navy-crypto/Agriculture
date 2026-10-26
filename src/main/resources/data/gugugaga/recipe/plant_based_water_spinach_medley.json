@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:water_spinach"
+    },
+    {
+      "item": "gugugaga:eggplant"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chickpea_hummus",
+    "count": 1
+  }
+}

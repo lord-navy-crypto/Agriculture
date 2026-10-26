@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sunflower_seed"
+    },
+    {
+      "item": "gugugaga:cauliflower"
+    },
+    {
+      "item": "minecraft:glow_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chickpea_hummus",
+    "count": 1
+  }
+}

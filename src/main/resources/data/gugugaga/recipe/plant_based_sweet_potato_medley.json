@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sweet_potato"
+    },
+    {
+      "item": "gugugaga:artichoke"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:lentil_curry",
+    "count": 1
+  }
+}

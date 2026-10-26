@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:asparagus"
+    },
+    {
+      "item": "gugugaga:jute_mallow"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_root_vegetables",
+    "count": 1
+  }
+}

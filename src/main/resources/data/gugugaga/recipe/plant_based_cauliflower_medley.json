@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cauliflower"
+    },
+    {
+      "item": "gugugaga:purslane"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:millet_fennel_pilaf",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:dill"
+    },
+    {
+      "item": "gugugaga:adzuki_bean"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:napa_cabbage_braise",
+    "count": 1
+  }
+}

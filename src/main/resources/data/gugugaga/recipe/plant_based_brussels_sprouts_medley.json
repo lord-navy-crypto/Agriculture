@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:brussels_sprouts"
+    },
+    {
+      "item": "gugugaga:celeriac"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:root_vegetable_hash",
+    "count": 1
+  }
+}

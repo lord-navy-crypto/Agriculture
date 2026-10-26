@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:swiss_chard"
+    },
+    {
+      "item": "gugugaga:kohlrabi"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:baked_sweet_corn",
+    "count": 1
+  }
+}
