@@ -25,9 +25,7 @@ public final class GuguGagaMod {
         BeeWildlife.ENTITIES.register(modBus);
         modBus.addListener(BeeWildlife::onAttributes);
         modBus.addListener(BeeWildlife::onSpawnPlacements);
-        modBus.addListener(AgricultureContent::onCreativeTab);
-        modBus.addListener(AgricultureCuisineContent::onCreativeTab);
-        modBus.addListener(MarineFungiContent::onCreativeTab);
+        GuguGagaCreativeTabs.TABS.register(modBus);
         System.out.println("GUGUGAGA_AGRICULTURE_RUNTIME_INIT_OK");
         System.out.println("GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK");
         System.out.println("GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK");
