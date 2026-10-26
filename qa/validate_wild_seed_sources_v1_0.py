@@ -145,7 +145,7 @@ def main():
 
     agriculture_java = (AGRI / "AgricultureContent.java").read_text(encoding="utf-8")
     wild_java = (AGRI / "WildSeedPlantBlock.java").read_text(encoding="utf-8")
-    wild_registered = set(re.findall(r'BLOCKS\\.register\\("wild_([a-z0-9_]+)"', agriculture_java))
+    wild_registered = set(re.findall(r'BLOCKS\.register\\("wild_([a-z0-9_]+)"', agriculture_java))
     assert wild_registered == set(crop_ids), f"wild block registration mismatch; missing={sorted(set(crop_ids)-wild_registered)}, extra={sorted(wild_registered-set(crop_ids))}"
     for constant in BLOCK_CONSTANTS:
         assert f"Blocks.{constant}" in wild_java, f"wild plants do not support {constant}"
