@@ -50,9 +50,9 @@ def main():
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
     assert "otherFlowerKinds" in nectar and "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar
     assert "WILDFLOWER_HONEY_BOTTLE" in nectar and "wildflower_honey_bottle" in bee
-    assert "honeyTexturePalette.size() != 46" in generator and "honeyTextureHashes.size() != 46" in generator
-    current_honey = read("data/gugugaga/agronomy/honey_sources_v1_1.json")
-    assert len(current_honey["honey_variants"]) == 46
-    assert "cropIds.size() != 96" in generator
-    print("AGRICULTURE_V1_7_OK: eight v1.7 crop cycles preserved; current generator covers 96 crops and 46 honey variants")
+    assert "honeyTexturePalette.size() != 50" in generator and "honeyTextureHashes.size() != 50" in generator
+    current_honey = read("data/gugugaga/agronomy/honey_sources_v1_2.json")
+    assert len(current_honey["honey_variants"]) == 50
+    assert "cropIds.size() != 100" in generator
+    print("AGRICULTURE_V1_7_OK: eight v1.7 crop cycles preserved; current generator covers 100 crops and 50 honey variants")
 if __name__ == "__main__": main()

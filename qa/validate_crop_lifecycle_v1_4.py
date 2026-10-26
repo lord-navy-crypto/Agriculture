@@ -17,10 +17,11 @@ def main():
         load("data/gugugaga/agronomy/crop_additions_v1_8.json")["crops"],
         load("data/gugugaga/agronomy/crop_additions_v1_9.json")["crops"],
         load("data/gugugaga/agronomy/crop_additions_v2_0.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v2_1.json")["crops"],
     ]
     profile_rows = [row for group in profiles for row in group]
     crops = [row["crop"] for row in profile_rows]
-    assert len(crops) == 96 and len(set(crops)) == 96
+    assert len(crops) == 100 and len(set(crops)) == 100
     assert all(isinstance(row.get("harvested_organ"), str) and row["harvested_organ"].strip() for row in profile_rows)
     en, zh = load("assets/gugugaga/lang/en_us.json"), load("assets/gugugaga/lang/zh_cn.json")
     reg = (SRC / "AgricultureContent.java").read_text("utf8")
@@ -69,19 +70,19 @@ def main():
     assert "seedForm == 'brassica'" in generator
     assert "if (crop == 'radish')" in generator
     assert "if (crop == 'turnip')" in generator
-    assert "produceIconHashes.size() != 96" in generator
-    assert "seedIconHashes.size() != 96" in generator
+    assert "produceIconHashes.size() != 100" in generator
+    assert "seedIconHashes.size() != 100" in generator
     assert "organForm == 'fiber' || organForm == 'fiber_seed'" in generator
     assert "leafForm == 'rosette'" in generator
     assert "leafForm == 'vine'" in generator
     assert "leafForm == 'fern'" in generator
     assert "leafForm == 'bulb'" in generator
-    assert "cropIds.size() != 96" in generator
+    assert "cropIds.size() != 100" in generator
     assert "thisCropStageHashes.size() != 8" in generator
-    assert "matureTextureHashes.size() != 96" in generator
-    assert "allStageHashes.size() != 1152" in generator
-    assert "produceIconHashes.size() != 96" in generator
-    assert "seedIconHashes.size() != 96" in generator
+    assert "matureTextureHashes.size() != 100" in generator
+    assert "allStageHashes.size() != 1200" in generator
+    assert "produceIconHashes.size() != 100" in generator
+    assert "seedIconHashes.size() != 100" in generator
     assert "tasks.named('processResources')" in generator
     assert "crop-stage-contact-sheet.png" in generator
     assert "outputs.dir(layout.buildDirectory.dir('reports/agriculture'))" in generator
@@ -108,6 +109,6 @@ def main():
         assert f'"{name}_seeds"' in crop_java, name
     assert "level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3)" in crop_java
     assert "REPEATED_SPEAR_HARVEST" in crop_java and '"asparagus_seeds"' in crop_java
-    print("CROP_LIFECYCLE_V2_0_OK: 96 crops; 96 explicit seedling/mature morphology pairs; 8 stage models each; pollen variants; 192 custom item icons; seeds/loot/recipes/translations/compost validated")
+    print("CROP_LIFECYCLE_V2_0_OK: 100 crops; 100 explicit seedling/mature morphology pairs; 8 stage models each; pollen variants; 200 custom item icons; seeds/loot/recipes/translations/compost validated")
 if __name__ == "__main__":
     main()

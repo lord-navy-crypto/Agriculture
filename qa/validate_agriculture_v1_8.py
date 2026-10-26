@@ -62,12 +62,12 @@ def main():
     profile_files = [
         "crop_profiles_v0_4.json", "crop_additions_v0_9.json",
         "crop_additions_v1_0.json", "crop_additions_v1_3.json",
-        "crop_additions_v1_7.json", "crop_additions_v1_8.json", "crop_additions_v1_9.json", "crop_additions_v2_0.json",
+        "crop_additions_v1_7.json", "crop_additions_v1_8.json", "crop_additions_v1_9.json", "crop_additions_v2_0.json", "crop_additions_v2_1.json",
     ]
     all_profile_rows = [row for name in profile_files
                         for row in read("data/gugugaga/agronomy/" + name)["crops"]]
     all_crops = [row["crop"] for row in all_profile_rows]
-    assert len(all_crops) == 96 and len(set(all_crops)) == 96
+    assert len(all_crops) == 100 and len(set(all_crops)) == 100
 
     # Keep the runtime climate switch and crop registry in lockstep with the
     # authoritative profile metadata. A missing band otherwise fails during a
@@ -102,17 +102,17 @@ def main():
         assert f'"{crop}_seeds"' not in repeated_harvest, crop
 
     assert "crop_additions_v1_8.json" in generator
-    assert "cropIds.size() != 96" in generator
-    assert "modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192" in generator
-    assert "matureTextureHashes.size() != 96" in generator
-    assert "allStageHashes.size() != 1152" in generator
-    assert "produceIconHashes.size() != 96" in generator and "seedIconHashes.size() != 96" in generator
+    assert "cropIds.size() != 100" in generator
+    assert "modelCount != 1200 || blockTextureCount != 1200 || itemTextureCount != 200" in generator
+    assert "matureTextureHashes.size() != 100" in generator
+    assert "allStageHashes.size() != 1200" in generator
+    assert "produceIconHashes.size() != 100" in generator and "seedIconHashes.size() != 100" in generator
     assert '"endive_seeds", "watercress_seeds"' in crop_java
     assert "hasNearbyFreshWater(level, pos, 2, -1, 1)" in climate
     assert '"taro_seeds".equals(seedName) || "watercress_seeds".equals(seedName)' in climate
     assert "propagule:'cassava taro yam chayote'.split(' ')" in generator
     assert "organ.contains('corm')" in generator and "organ.contains('tuber')" in generator
-    print("AGRICULTURE_V1_8_OK: v1.8 crop cycle verified; global catalog 96 crops; 1152 stage models/textures; 192 custom produce and seed icons")
+    print("AGRICULTURE_V1_8_OK: v1.8 crop cycle verified; global catalog 100 crops; 1200 stage models/textures; 200 custom produce and seed icons")
 
 if __name__ == "__main__":
     main()

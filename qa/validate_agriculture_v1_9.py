@@ -56,18 +56,18 @@ def main():
     profile_files = [
         "crop_profiles_v0_4.json", "crop_additions_v0_9.json", "crop_additions_v1_0.json",
         "crop_additions_v1_3.json", "crop_additions_v1_7.json", "crop_additions_v1_8.json",
-        "crop_additions_v1_9.json", "crop_additions_v2_0.json",
+        "crop_additions_v1_9.json", "crop_additions_v2_0.json", "crop_additions_v2_1.json",
     ]
     all_crops = [row["crop"] for name in profile_files for row in read("data/gugugaga/agronomy/" + name)["crops"]]
-    assert len(all_crops) == 96 and len(set(all_crops)) == 96
-    assert "cropIds.size() != 96" in generator
-    assert "modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192" in generator
-    assert "matureTextureHashes.size() != 96" in generator and "allStageHashes.size() != 1152" in generator
-    assert "produceIconHashes.size() != 96" in generator and "seedIconHashes.size() != 96" in generator
+    assert len(all_crops) == 100 and len(set(all_crops)) == 100
+    assert "cropIds.size() != 100" in generator
+    assert "modelCount != 1200 || blockTextureCount != 1200 || itemTextureCount != 200" in generator
+    assert "matureTextureHashes.size() != 100" in generator and "allStageHashes.size() != 1200" in generator
+    assert "produceIconHashes.size() != 100" in generator and "seedIconHashes.size() != 100" in generator
     assert '"mustard_greens_seeds", "water_spinach_seeds"' in crop_java
-    honey = read("data/gugugaga/agronomy/honey_sources_v1_1.json")
-    assert len(honey["honey_variants"]) == 46
-    assert len({row["item"] for row in honey["honey_variants"]}) == 46
+    honey = read("data/gugugaga/agronomy/honey_sources_v1_2.json")
+    assert len(honey["honey_variants"]) == 50
+    assert len({row["item"] for row in honey["honey_variants"]}) == 50
     for row in honey["honey_variants"]:
         item = row["item"]
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
@@ -77,7 +77,7 @@ def main():
     routed = set(re.findall(r'"([^"]+)"', source_block))
     routed = {route.removeprefix("gugugaga:") for route in routed}
     expected = {row["source_crop"] for row in honey["honey_variants"] if row["source_crop"] != "mixed_flower_forage"}
-    assert routed == expected and len(routed) == 45
-    print("AGRICULTURE_CATALOG_V2_0_OK: 96 crop cycles; 1152 stage/model assets; 192 crop icons; 46 honey variants / 45 forage routes")
+    assert routed == expected and len(routed) == 49
+    print("AGRICULTURE_CATALOG_V2_0_OK: 100 crop cycles; 1200 stage/model assets; 200 crop icons; 50 honey variants / 49 forage routes")
 if __name__ == "__main__":
     main()

@@ -7,10 +7,10 @@ def read(path):
     return json.loads((ROOT/path).read_text("utf8"))
 def main():
     profiles=["crop_profiles_v0_4.json","crop_additions_v0_9.json",
-              "crop_additions_v1_0.json","crop_additions_v1_3.json","crop_additions_v1_7.json","crop_additions_v1_8.json","crop_additions_v1_9.json","crop_additions_v2_0.json"]
+              "crop_additions_v1_0.json","crop_additions_v1_3.json","crop_additions_v1_7.json","crop_additions_v1_8.json","crop_additions_v1_9.json","crop_additions_v2_0.json","crop_additions_v2_1.json"]
     crops={p["crop"] for fname in profiles
            for p in read("data/gugugaga/agronomy/"+fname)["crops"]}
-    assert len(crops)==96
+    assert len(crops)==100
     records=read("data/neoforge/data_maps/item/compostables.json")["values"]
     expected={f"gugugaga:{name}{suffix}" for name in crops for suffix in ("","_seeds")}
     assert set(records)==expected,(len(records),len(expected))
@@ -18,6 +18,6 @@ def main():
         assert set(obj)=={"chance","can_villager_compost"},id
         assert obj["chance"]==(0.30 if id.endswith("_seeds") else 0.65),id
         assert obj["can_villager_compost"] is False,id
-    print("COMPOSTABLE_CROPS_OK: 96 produce items + 96 seeds, native NeoForge 1.21.1 data map")
+    print("COMPOSTABLE_CROPS_OK: 100 produce items + 100 seeds, native NeoForge 1.21.1 data map")
 if __name__=="__main__":
     main()

@@ -83,14 +83,14 @@ def main():
     assert "List<ItemStack> drops = super.getDrops(state, builder);" in crop_java
     assert "new ArrayList<>(super.getDrops(state, builder))" not in crop_java
     assert "for (int ring = 0; ring <= radius; ring++)" in climate
-    assert "cropIds.size() != 96" in generator
-    assert "modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192" in generator
-    assert "matureTextureHashes.size() != 96" in generator and "allStageHashes.size() != 1152" in generator
-    assert "produceIconHashes.size() != 96" in generator and "seedIconHashes.size() != 96" in generator
-    assert "honeyTexturePalette.size() != 46 || honeyTextureHashes.size() != 46" in generator
+    assert "cropIds.size() != 100" in generator
+    assert "modelCount != 1200 || blockTextureCount != 1200 || itemTextureCount != 200" in generator
+    assert "matureTextureHashes.size() != 100" in generator and "allStageHashes.size() != 1200" in generator
+    assert "produceIconHashes.size() != 100" in generator and "seedIconHashes.size() != 100" in generator
+    assert "honeyTexturePalette.size() != 50 || honeyTextureHashes.size() != 50" in generator
 
-    honey = read("data/gugugaga/agronomy/honey_sources_v1_1.json")
-    assert honey["schema_version"] == "1.1" and len(honey["honey_variants"]) == 46
+    honey = read("data/gugugaga/agronomy/honey_sources_v1_2.json")
+    assert honey["schema_version"] == "1.2" and len(honey["honey_variants"]) == 50
     rows = {row["item"]: row for row in honey["honey_variants"]}
     source_block = nectar_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
     routes = set(re.findall(r'"([^"]+)"', source_block))
@@ -108,13 +108,13 @@ def main():
             switch_block,
         )
     }
-    assert set(switch_routes) == set(range(45))
+    assert set(switch_routes) == set(range(49))
     for index, route in enumerate(re.findall(r'"([^"]+)"', source_block)):
         normalized = route.removeprefix("gugugaga:")
         expected_item = route_to_item[normalized]
         expected_constant = expected_item.removesuffix("_honey_bottle").upper() + "_HONEY_BOTTLE"
         assert switch_routes[index] == expected_constant, (index, route, expected_item)
-    assert len(routes) == 45
+    assert len(routes) == 49
     for crop, item in HONEY_ITEMS.items():
         row = rows[item]
         assert row["source_crop"] == f"{crop}_crop"
@@ -125,7 +125,7 @@ def main():
         assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
         model = read(f"assets/gugugaga/models/item/{item}.json")
         assert model["textures"]["layer0"] == f"gugugaga:item/honey/{item}"
-    print("AGRICULTURE_V2_0_OK: eight crop cycles; climate/pollination/harvest mappings; 96-crop asset contract; eight blossom honey variants; 46 bottles and 45 source routes")
+    print("AGRICULTURE_V2_0_OK: eight crop cycles; climate/pollination/harvest mappings; 100-crop asset contract; four v2.1 crop/honey additions; 50 bottles and 49 source routes")
 
 if __name__ == "__main__":
     main()
