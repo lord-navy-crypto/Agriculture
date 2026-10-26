@@ -164,7 +164,7 @@ tasks.register('generateMarineFungiAssets') {
             BufferedImage sourceImage = ImageIO.read(new File(root, path))
             for (int y = 0; y < tile; y++) {
                 for (int x = 0; x < tile; x++) {
-                    itemSheet.setRGB(labelWidth + x, row * tile + y, sourceImage.getRGB(x / 3, y / 3))
+                    itemSheet.setRGB(labelWidth + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
                 }
             }
         }
@@ -179,7 +179,7 @@ tasks.register('generateMarineFungiAssets') {
                 BufferedImage sourceImage = ImageIO.read(new File(root, stagePath))
                 for (int y = 0; y < tile; y++) {
                     for (int x = 0; x < tile; x++) {
-                        cultureSheet.setRGB(labelWidth + age * tile + x, row * tile + y, sourceImage.getRGB(x / 3, y / 3))
+                        cultureSheet.setRGB(labelWidth + age * tile + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
                     }
                 }
             }
