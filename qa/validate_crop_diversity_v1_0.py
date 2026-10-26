@@ -20,6 +20,8 @@ def main():
     reg=(SRC/"AgricultureContent.java").read_text("utf8")
     climate=(SRC/"CropClimate.java").read_text("utf8")
     crop=(SRC/"AgricultureCropBlock.java").read_text("utf8")
+    tabs=(SRC.parent/"GuguGagaCreativeTabs.java").read_text("utf8")
+    assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in tabs
     en=load("assets/gugugaga/lang/en_us.json")
     zh=load("assets/gugugaga/lang/zh_cn.json")
     for entry in extra["crops"]:
@@ -28,8 +30,7 @@ def main():
         assert f'crop("{name}_crop", "{name}_seeds", AgricultureCropBlock.PollinationGroup.{entry["pollination_gameplay"]})' in reg, name
         assert f'"{name}_seeds"' in climate, name
         assert f'{name.upper()}_SEEDS = seed(' in reg
-        assert f'event.accept({name.upper()}_SEEDS.get())' in reg
-        assert f'event.accept({name.upper()}.get())' in reg
+        # Creative inventory now enumerates the full agriculture registry once;\n        # do not reintroduce legacy per-item insertion into vanilla tabs.\n        assert "onCreativeTab" not in reg and "BuildCreativeModeTabContentsEvent" not in reg
         assert set(load(f"assets/gugugaga/blockstates/{name}_crop.json")["variants"])=={f"age={i},pollinated={p}" for i in range(8) for p in ("false","true")}
         pools=load(f"data/gugugaga/loot_table/blocks/{name}_crop.json")["pools"]
         assert len(pools)==2 and pools[0]["entries"][0]["name"]==f"gugugaga:{name}_seeds"
