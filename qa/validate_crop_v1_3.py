@@ -23,8 +23,8 @@ def main():
         assert row["source_urls"] and all(u.startswith("https://") for u in row["source_urls"]),c
         assert f'crop("{c}_crop", "{c}_seeds", AgricultureCropBlock.PollinationGroup.NONE)' in reg,c
         assert f'"{c}_seeds"' in climate,c
-        assert f'event.accept({c.upper()}_SEEDS.get())' in reg,c
-        assert f'event.accept({c.upper()}.get())' in reg,c
+        assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
+        assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         states=load(f"assets/gugugaga/blockstates/{c}_crop.json")["variants"]
         assert set(states)=={f"age={i},pollinated={p}" for i in range(8) for p in ("false","true")},c
         loot=load(f"data/gugugaga/loot_table/blocks/{c}_crop.json")["pools"]
