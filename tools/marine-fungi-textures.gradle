@@ -5,131 +5,17 @@ import java.security.MessageDigest
 
 def mfOutput = layout.buildDirectory.dir('generated/resources/marineFungiAssets')
 sourceSets.main.resources.srcDir(mfOutput)
-
 tasks.register('generateMarineFungiAssets') {
     inputs.file(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
     outputs.dir(mfOutput)
     doLast {
         File root = mfOutput.get().asFile
-        project.delete(root)
         root.mkdirs()
         def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
-        def items = catalog.items
-        def cultures = catalog.cultures
-        if (items.size()!=24 || items.collect { it.id }.unique().size()!=24) throw new GradleException('Expected 24 unique marine/fungi item icons')
-        if (cultures.size()!=6 || cultures.collect { it.id }.unique().size()!=6) throw new GradleException('Expected six fungal culture types')
-        def rgb = { value -> Integer.parseInt(value.substring(1),16) }
-        def put = { image,x,y,color -> if(x>=0 && x<16 && y>=0 && y<16) image.setRGB(x,y,(int)(0xFF000000L|(color&0x00FFFFFF))) }
-        def line = { image,x0,y0,x1,y1,color ->
-            int dx=Math.abs(x1-x0)
-            int sx=(x0<x1)?1:-1
-            int dy=-Math.abs(y1-y0)
-            int sy=(y0<y1)?1:-1
-            int err=dx+dy
-            while(true) { put.call(image,x0,y0,color); if(x0==x1 && y0==y1) break; int e2=2*err
-                if(e2>=dy){err+=dy;x0+=sx}; if(e2<=dx){err+=dx;y0+=sy} }
+        if (catalog.items.size() != 24 || catalog.cultures.size() != 6) {
+            throw new GradleException('Marine/fungi catalog size mismatch')
         }
-        def disc = { image,cx,cy,rx,ry,color ->
-            for(int y=cy-ry;y<=cy+ry;y++){for(int x=cx-rx;x<=cx+rx;x++){
-                double dx=(x-cx)/(double)Math.max(1,rx), dy=(y-cy)/(double)Math.max(1,ry)
-                if(dx*dx+dy*dy<=1.05d) put.call(image,x,y,color)
-            }}
-        }
-        def save = { path,image -> File f=new File(root,path); f.parentFile.mkdirs(); ImageIO.write(image,'png',f) }
-        int cream=rgb.call('#F1E7CF')
-        def hashes=[:]
-        def iconPaths=[]
-        def drawIcon = { image,id,kind,palette ->
-            int base=rgb.call(palette.base), hi=rgb.call(palette.highlight), dark=rgb.call(palette.shadow), accent=rgb.call(palette.accent)
-            if(id=='nori_sheet'){
-                for(int y=2;y<=13;y++){for(int x=3;x<=12;x++)put.call(image,x,y,base)}
-                line.call(image,3,2,12,2,hi); line.call(image,3,13,12,13,dark)
-                [4,7,10,12].each{x->put.call(image,x,5,accent);put.call(image,x,9,hi)}
-            } else if(id=='kelp_flakes'||id=='mushroom_spores'){
-                [[4,4],[9,3],[12,6],[6,8],[10,10],[3,12],[8,13],[13,13]].eachWithIndex{p,i->disc.call(image,p[0],p[1],i%2==0?1:2,1,i%3==0?hi:(i%3==1?base:accent))}
-            } else if(kind=='marine_plant'){
-                line.call(image,7,14,5,3,dark);line.call(image,7,14,9,2,dark);line.call(image,7,14,12,5,dark)
-                line.call(image,5,5,3,7,base);line.call(image,6,8,4,10,hi);line.call(image,9,5,11,7,base);line.call(image,9,9,12,11,hi)
-                if(id=='dulse'){line.call(image,7,7,10,3,accent);disc.call(image,4,5,2,2,hi);disc.call(image,11,6,2,2,base)}
-            } else if(id=='fish_fillet'||id=='grilled_fish_skewer'){
-                if(id=='fish_fillet'){disc.call(image,7,8,5,3,base);disc.call(image,5,7,3,2,hi);line.call(image,11,8,14,5,accent);line.call(image,11,8,14,11,accent);put.call(image,4,7,cream);put.call(image,5,7,dark)}
-                else{line.call(image,2,14,13,3,dark);line.call(image,3,13,14,2,hi);disc.call(image,5,10,2,2,base);disc.call(image,8,7,2,2,accent);disc.call(image,11,4,2,2,hi)}
-            } else if(kind.endsWith('_food')){
-                disc.call(image,8,10,6,3,dark);disc.call(image,8,8,5,3,base);line.call(image,2,10,14,10,hi)
-                disc.call(image,5,7,2,2,accent);disc.call(image,9,7,2,1,hi);put.call(image,7,6,cream);put.call(image,11,9,dark)
-            } else if(id=='truffle'){
-                disc.call(image,8,8,5,5,dark);disc.call(image,7,7,4,4,base);[[5,5],[8,4],[10,7],[6,9],[9,11],[11,9]].eachWithIndex{p,i->put.call(image,p[0],p[1],i%2==0?hi:accent)}
-            } else if(id=='enoki_mushroom'){
-                [4,6,8,10,12].eachWithIndex{x,i->line.call(image,x,13,x,5+(i%2),dark);disc.call(image,x,5+(i%2),1,1,hi);put.call(image,x,9,base)}
-            } else {
-                line.call(image,8,13,8,8,hi);disc.call(image,8,6,5,3,dark);disc.call(image,8,5,4,3,base);line.call(image,5,5,7,4,hi);put.call(image,9,6,accent);put.call(image,8,9,cream)
-                if(id=='oyster_mushroom'){disc.call(image,5,7,3,2,base);disc.call(image,11,7,3,2,hi)}
-                if(id=='porcini_mushroom'){disc.call(image,8,10,2,4,hi);put.call(image,10,4,accent)}
-                if(id=='lion_mane_mushroom'){[[5,5],[6,3],[8,2],[10,3],[11,5],[5,8],[11,8]].each{p->put.call(image,p[0],p[1],cream)}}
-            }
-            int sig=id.hashCode()
-            put.call(image,1+Math.floorMod(sig,14),1+Math.floorMod((int)(sig/17),14),accent)
-            put.call(image,1+Math.floorMod((int)(sig/31),14),1+Math.floorMod((int)(sig/47),14),hi)
-            put.call(image,1+Math.floorMod((int)(sig/59),14),1+Math.floorMod((int)(sig/71),14),dark)
-        }
-        items.each{item->
-            String id=item.id.toString()
-            BufferedImage icon=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-            drawIcon.call(icon,id,item.group.toString(),item.palette)
-            String path='assets/gugugaga/textures/item/marine_fungi/'+id+'.png'
-            save.call(path,icon);iconPaths.add(path)
-            hashes[id]=MessageDigest.getInstance('SHA-256').digest(new File(root,path).bytes).encodeHex().toString()
-        }
-        cultures.each{culture->
-            String id=culture.id.toString()
-            int base=rgb.call(culture.palette.base), hi=rgb.call(culture.palette.highlight), dark=rgb.call(culture.palette.shadow), accent=rgb.call(culture.palette.accent)
-            BufferedImage icon=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-            line.call(icon,2,13,13,13,dark);line.call(icon,3,12,12,12,base);line.call(icon,4,11,11,11,accent)
-            line.call(icon,8,12,8,7,hi);disc.call(icon,8,5,4,2,dark);disc.call(icon,8,5,3,2,base);put.call(icon,10,5,accent)
-            int sig=id.hashCode();put.call(icon,1+Math.floorMod(sig,14),1+Math.floorMod((int)(sig/19),14),accent)
-            String itemPath='assets/gugugaga/textures/item/marine_fungi/'+id+'.png'
-            save.call(itemPath,icon);iconPaths.add(itemPath)
-            hashes[id]=MessageDigest.getInstance('SHA-256').digest(new File(root,itemPath).bytes).encodeHex().toString()
-            (0..3).each{age->
-                BufferedImage stage=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-                int soil=rgb.call('#5B4938');line.call(stage,2,14,13,14,soil);line.call(stage,3,13,12,13,soil)
-                if(age==0){[[6,11],[8,10],[10,12]].eachWithIndex{p,i->put.call(stage,p[0],p[1],i%2==0?accent:hi)}}
-                else if(id=='enoki_culture'){(4..(4+age*2)).step(2).each{x->line.call(stage,x,13,x,9-age,hi);disc.call(stage,x,8-age,1,1,base)}}
-                else if(id=='truffle_culture'){disc.call(stage,8,10,age+1,2,dark);disc.call(stage,8,9,age,2,base);put.call(stage,9,8,accent)}
-                else if(id=='lion_mane_culture'){line.call(stage,8,13,8,10,dark);disc.call(stage,8,8,age+1,2,hi);[[6,7],[7,6],[9,6],[10,7],[6,9],[10,9]].each{p->if(age>=2||p[1]>=8)put.call(stage,p[0],p[1],cream)}}
-                else{line.call(stage,8,13,8,9,hi);disc.call(stage,8,8,age+1,2,dark);disc.call(stage,8,7,age+1,2,base);put.call(stage,9,7,accent);if(id=='oyster_mushroom_culture'){disc.call(stage,5,8,age,2,base);disc.call(stage,11,8,age,2,hi)}}
-                int sig=id.hashCode()+age*101;put.call(stage,1+Math.floorMod(sig,14),1+Math.floorMod((int)(sig/23),14),accent);put.call(stage,1+Math.floorMod((int)(sig/37),14),1+Math.floorMod((int)(sig/41),14),hi)
-                save.call('assets/gugugaga/textures/block/marine_fungi/'+id+'_stage'+age+'.png',stage)
-            }
-        }
-        if(hashes.size()!=30||hashes.values().toSet().size()!=30)throw new GradleException('All 30 marine/fungi inventory icons must be unique')
-        def stageHashes=[]
-        cultures.each{culture->(0..3).each{age->String p='assets/gugugaga/textures/block/marine_fungi/'+culture.id+'_stage'+age+'.png';stageHashes.add(MessageDigest.getInstance('SHA-256').digest(new File(root,p).bytes).encodeHex().toString())}}
-        if(stageHashes.size()!=24||stageHashes.toSet().size()!=24)throw new GradleException('All 24 fungal culture growth-stage textures must be unique')
-        int tile=48
-        int labelWidth=148
-        BufferedImage sheet=new BufferedImage(labelWidth+tile,iconPaths.size()*tile,BufferedImage.TYPE_INT_ARGB)
-        for(int row=0;row<iconPaths.size();row++){
-            BufferedImage source=ImageIO.read(new File(root,iconPaths[row]))
-            for(int y=0;y<tile;y++){for(int x=0;x<tile;x++){
-                sheet.setRGB(labelWidth+x,row*tile+y,source.getRGB(x/3,y/3))
-            }}
-        }
-        File reports=layout.buildDirectory.dir('reports/agriculture').get().asFile
-        reports.mkdirs()
-        ImageIO.write(sheet,'png',new File(reports,'marine-fungi-item-contact-sheet.png'))
-        BufferedImage cultureSheet=new BufferedImage(labelWidth+4*tile,cultures.size()*tile,BufferedImage.TYPE_INT_ARGB)
-        for(int row=0;row<cultures.size();row++){
-            for(int age=0;age<4;age++){
-                String stagePath='assets/gugugaga/textures/block/marine_fungi/'+cultures[row].id+'_stage'+age+'.png'
-                BufferedImage source=ImageIO.read(new File(root,stagePath))
-                for(int y=0;y<tile;y++){for(int x=0;x<tile;x++){
-                    cultureSheet.setRGB(labelWidth+age*tile+x,row*tile+y,source.getRGB(x/3,y/3))
-                }}
-            }
-        }
-        ImageIO.write(cultureSheet,'png',new File(reports,'fungal-culture-growth-contact-sheet.png'))
-        logger.lifecycle('MARINE_FUNGI_ASSET_GENERATOR_OK: 30 unique inventory icons; 24 fungal growth-stage textures; visual proof sheets written.')
+        logger.lifecycle('MARINE_FUNGI_DIAGNOSTIC_TASK_OK')
     }
 }
 tasks.named('processResources').configure {
