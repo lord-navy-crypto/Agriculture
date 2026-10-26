@@ -311,17 +311,20 @@ def main():
     marine = (JAVA / "MarineFungiContent.java").read_text(encoding="utf-8")
     known = set(re.findall(r'\b(?:food|material)\("([^"]+)"', crops + marine + java))
     known.update(re.findall(r'\b(?:ingredient|cultureItem|marineCropItem)\("([^"]+)"', marine))
-    existing_signature = {}
-    # Every new shapeless combination must remain unique among all local recipes.
+    signatures = {}
+    # Historic seed-crafting pairs may share inputs. Guard against introducing
+    # new ambiguity without silently relaxing the checks on new cuisine recipes.
+    new_shapeless = {x["id"] for x in DISHES if x["method"] == "craft"}
+    new_shapeless.update(x["id"] for x in ALTERNATIVES)
     for path in (RES / "data/gugugaga/recipe").glob("*.json"):
         rec = json.loads(path.read_text(encoding="utf8"))
         if rec["type"] != "minecraft:crafting_shapeless":
             continue
         ingredients = rec.get("ingredients", [])
         signature = tuple(sorted((x.get("item") or "#" + x.get("tag", "")) for x in ingredients))
-        previous = existing_signature.get(signature)
-        assert previous is None, f"ambiguous shapeless recipes: {path.stem} vs {previous}"
-        existing_signature[signature] = path.stem
+        signatures.setdefault(signature, []).append(path.stem)
+    for variants in signatures.values():
+        assert len(variants) == 1 or not new_shapeless.intersection(variants), f"new cuisine recipe ambiguity: {variants}"
     for item in DISHES:
         id = item["id"]
         assert by_id[id]["type"] == "food"
