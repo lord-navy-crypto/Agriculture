@@ -29,7 +29,7 @@ def main():
     generator = (ROOT / "tools/crop-textures.gradle").read_text(encoding="utf-8")
     assert "MarineFungiContent.BLOCKS.register(modBus)" in main_java
     assert "MarineFungiContent.ITEMS.register(modBus)" in main_java
-    assert "MarineFungiContent::onCreativeTab" in main_java
+    assert "GuguGagaCreativeTabs.TABS.register(modBus);" in main_java
     assert "GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK" in main_java
     smoke = (ROOT / "qa/smoke_rewrite_server.py").read_text(encoding="utf-8")
     assert "MARINE_INIT in current" in smoke
@@ -102,7 +102,7 @@ def main():
         assert item_model["textures"]["cross"] == f"gugugaga:block/marine_plants/{crop_id}_stage0"
         compost_entry = compost[f"gugugaga:{crop_id}"]
         assert compost_entry["chance"] == 0.3 and compost_entry["can_villager_compost"] is False
-        assert f"event.accept({constant}_ITEM.get())" in registry
+        assert "MarineFungiContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
     seen_recipe_ids, produced = set(), set()
     for row in recipes:
         recipe_id = row["id"]

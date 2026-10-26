@@ -541,5 +541,9 @@
   "item.gugugaga.seaweed_potato_chowder": "Seaweed Potato Chowder",
   "item.gugugaga.blackcurrant_oat_crumble": "Blackcurrant Oat Crumble",
   "item.gugugaga.baked_taro": "Baked Taro",
-  "item.gugugaga.roasted_yam": "Roasted Yam"
+  "item.gugugaga.roasted_yam": "Roasted Yam",
+  "itemGroup.gugugaga.agriculture": "Gugu Gaga: Crops & Seeds",
+  "itemGroup.gugugaga.beekeeping": "Gugu Gaga: Honey & Pollinators",
+  "itemGroup.gugugaga.cuisine": "Gugu Gaga: Cuisine",
+  "itemGroup.gugugaga.marine_fungi": "Gugu Gaga: Marine & Fungi"
 }

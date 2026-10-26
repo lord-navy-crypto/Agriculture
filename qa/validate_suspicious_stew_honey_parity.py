@@ -28,7 +28,7 @@ def main():
         assert entry["item"] == name+"_honey_bottle"
         assert f'"minecraft:{name}"' in nectar
         assert f'floralHoney("{name}_honey_bottle")' in bee
-        assert f'event.accept(BeeContent.{name.upper()}_HONEY_BOTTLE.get())' in agriculture
+        assert "BeeContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         if name == "lily_of_the_valley":
             assert "PoisonFlowerHoneyBottleItem" in bee
             assert "super.finishUsingItem(stack, level, consumer)" in poison

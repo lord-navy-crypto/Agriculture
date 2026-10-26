@@ -331,7 +331,7 @@ def main():
         assert by_id[id]["nutrition"] == item["nutrition"]
         assert by_id[id]["saturation_modifier"] == item["saturation_modifier"]
         assert f'food("{id}", {item["nutrition"]}, {item["saturation_modifier"]:.2f}F)' in java
-        assert f"event.accept({id.upper()}.get())" in java
+        assert "AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         assert en.get(f"item.gugugaga.{id}") and zh.get(f"item.gugugaga.{id}")
         model = load(f"assets/gugugaga/models/item/{id}.json")
         assert model["textures"]["layer0"] == f"gugugaga:item/crop_cuisine/{id}"

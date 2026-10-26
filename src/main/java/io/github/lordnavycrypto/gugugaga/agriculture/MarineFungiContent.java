@@ -3,13 +3,11 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -97,45 +95,5 @@ public final class MarineFungiContent {
 
     private static DeferredItem<BlockItem> cultureItem(String name, DeferredBlock<? extends Block> block) {
         return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
-    }
-
-    public static void onCreativeTab(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(KELP_FLAKES.get());
-            event.accept(MUSHROOM_SPORES.get());
-            event.accept(SEA_LETTUCE_CROP_ITEM.get());
-            event.accept(WAKAME_CROP_ITEM.get());
-            event.accept(NORI_CROP_ITEM.get());
-            event.accept(DULSE_CROP_ITEM.get());
-            event.accept(SHIITAKE_CULTURE_ITEM.get());
-            event.accept(OYSTER_MUSHROOM_CULTURE_ITEM.get());
-            event.accept(ENOKI_CULTURE_ITEM.get());
-            event.accept(PORCINI_CULTURE_ITEM.get());
-            event.accept(LION_MANE_CULTURE_ITEM.get());
-            event.accept(TRUFFLE_CULTURE_ITEM.get());
-        } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
-            event.accept(SEA_LETTUCE.get());
-            event.accept(WAKAME.get());
-            event.accept(NORI_SHEET.get());
-            event.accept(DULSE.get());
-            event.accept(FISH_FILLET.get());
-            event.accept(SEAFOOD_BROTH.get());
-            event.accept(SEAWEED_SALAD.get());
-            event.accept(NORI_RICE_ROLL.get());
-            event.accept(SEAFOOD_RICE_BOWL.get());
-            event.accept(GRILLED_FISH_SKEWER.get());
-            event.accept(SHIITAKE_MUSHROOM.get());
-            event.accept(OYSTER_MUSHROOM.get());
-            event.accept(ENOKI_MUSHROOM.get());
-            event.accept(PORCINI_MUSHROOM.get());
-            event.accept(LION_MANE_MUSHROOM.get());
-            event.accept(TRUFFLE.get());
-            event.accept(MUSHROOM_MEDLEY.get());
-            event.accept(MUSHROOM_RICE_BOWL.get());
-            event.accept(ENOKI_SOUP.get());
-            event.accept(TRUFFLE_PASTA.get());
-            event.accept(LION_MANE_STEAK.get());
-            event.accept(MUSHROOM_SAUCE.get());
-        }
     }
 }

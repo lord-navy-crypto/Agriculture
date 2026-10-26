@@ -26,7 +26,7 @@ def main():
         assert row["source_urls"] and all(u.startswith("https://") for u in row["source_urls"])
         assert f'crop("{crop}_crop", "{crop}_seeds", AgricultureCropBlock.PollinationGroup.{row["pollination_gameplay"]})' in reg
         assert f'"{crop}_seeds"' in climate
-        assert f'event.accept({crop.upper()}_SEEDS.get())' in reg and f'event.accept({crop.upper()}.get())' in reg
+        assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         for item in (crop,crop+"_seeds"):
             model=read(f"assets/gugugaga/models/item/{item}.json")
             assert model["textures"]["layer0"] == f"gugugaga:item/crops/{item}"

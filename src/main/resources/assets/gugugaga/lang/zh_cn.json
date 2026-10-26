@@ -541,5 +541,9 @@
   "item.gugugaga.seaweed_potato_chowder": "海藻土豆浓汤",
   "item.gugugaga.blackcurrant_oat_crumble": "黑加仑燕麦酥",
   "item.gugugaga.baked_taro": "烤芋头",
-  "item.gugugaga.roasted_yam": "烤山药"
+  "item.gugugaga.roasted_yam": "烤山药",
+  "itemGroup.gugugaga.agriculture": "咕咕嘎嘎：农作物与种子",
+  "itemGroup.gugugaga.beekeeping": "咕咕嘎嘎：蜂蜜与授粉",
+  "itemGroup.gugugaga.cuisine": "咕咕嘎嘎：料理",
+  "itemGroup.gugugaga.marine_fungi": "咕咕嘎嘎：海洋与真菌"
 }

@@ -70,7 +70,7 @@ def main():
         assert model["parent"] == "minecraft:item/generated", item
         assert model["textures"]["layer0"] == f"gugugaga:item/honey/{item}", item
         constant = item.removesuffix("_honey_bottle").upper() + "_HONEY_BOTTLE"
-        assert f"event.accept(BeeContent.{constant}.get())" in agriculture_content, item
+        assert "BeeContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
 
     # Source identifiers in data must match the exact identifiers scanned at harvest.
     source_block = source_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]

@@ -123,7 +123,7 @@ def main():
     assert "gugugaga:cotton" not in all_food_values
     assert "gugugaga:flax" not in all_food_values
     assert "AgricultureCuisineContent.ITEMS.register(modBus)" in main_java
-    assert "AgricultureCuisineContent::onCreativeTab" in main_java
+    assert "GuguGagaCreativeTabs.TABS.register(modBus);" in main_java
     assert "GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK" in main_java
     assert "tools/crop-cuisine-textures.gradle" in build_gradle
     assert "generateCropCuisineAssets" in texture_gradle
