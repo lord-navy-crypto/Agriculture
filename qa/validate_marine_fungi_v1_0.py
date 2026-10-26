@@ -76,7 +76,8 @@ def main():
     for row in marine_crops:
         crop_id = row["id"]
         constant = crop_id.upper()
-        assert f'{constant} = marineCrop("{crop_id}", "{row["harvest_item"]}")' in registry
+        assert f'{constant} = marineCrop("{crop_id}")' in registry
+        assert f'case "{crop_id}" -> "{row["harvest_item"]}"' in marine_java
         assert f'{constant}_ITEM = marineCropItem("{crop_id}", {constant})' in registry
         assert row["harvest_item"] in item_ids
         assert f"block.gugugaga.{crop_id}" in en and f"block.gugugaga.{crop_id}" in zh

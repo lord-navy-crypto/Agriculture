@@ -35,11 +35,8 @@ public final class MarinePlantCropBlock extends BushBlock implements SimpleWater
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private final String harvestItemName;
-
-    public MarinePlantCropBlock(BlockBehaviour.Properties properties, String harvestItemName) {
+    public MarinePlantCropBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.harvestItemName = harvestItemName;
         registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(WATERLOGGED, true));
     }
 
@@ -88,10 +85,20 @@ public final class MarinePlantCropBlock extends BushBlock implements SimpleWater
             return InteractionResult.PASS;
         }
         if (!level.isClientSide) {
-            Item harvestItem = BuiltInRegistries.ITEM.get(
-                    ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, harvestItemName));
-            if (harvestItem != Items.AIR) {
-                Block.popResource(level, pos, new ItemStack(harvestItem, 1 + level.getRandom().nextInt(2)));
+            String cropName = BuiltInRegistries.BLOCK.getKey(this).getPath();
+            String harvestItemName = switch (cropName) {
+                case "sea_lettuce_crop" -> "sea_lettuce";
+                case "wakame_crop" -> "wakame";
+                case "nori_crop" -> "nori_sheet";
+                case "dulse_crop" -> "dulse";
+                default -> "";
+            };
+            if (!harvestItemName.isEmpty()) {
+                Item harvestItem = BuiltInRegistries.ITEM.get(
+                        ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, harvestItemName));
+                if (harvestItem != Items.AIR) {
+                    Block.popResource(level, pos, new ItemStack(harvestItem, 1 + level.getRandom().nextInt(2)));
+                }
             }
             level.setBlock(pos, state.setValue(AGE, 1), 3);
         }

@@ -33,10 +33,10 @@ public final class MarineFungiContent {
     public static final DeferredItem<Item> SEAFOOD_RICE_BOWL = food("seafood_rice_bowl", 8, 0.85F);
     public static final DeferredItem<Item> GRILLED_FISH_SKEWER = food("grilled_fish_skewer", 7, 0.75F);
 
-    public static final DeferredBlock<MarinePlantCropBlock> SEA_LETTUCE_CROP = marineCrop("sea_lettuce_crop", "sea_lettuce");
-    public static final DeferredBlock<MarinePlantCropBlock> WAKAME_CROP = marineCrop("wakame_crop", "wakame");
-    public static final DeferredBlock<MarinePlantCropBlock> NORI_CROP = marineCrop("nori_crop", "nori_sheet");
-    public static final DeferredBlock<MarinePlantCropBlock> DULSE_CROP = marineCrop("dulse_crop", "dulse");
+    public static final DeferredBlock<MarinePlantCropBlock> SEA_LETTUCE_CROP = marineCrop("sea_lettuce_crop");
+    public static final DeferredBlock<MarinePlantCropBlock> WAKAME_CROP = marineCrop("wakame_crop");
+    public static final DeferredBlock<MarinePlantCropBlock> NORI_CROP = marineCrop("nori_crop");
+    public static final DeferredBlock<MarinePlantCropBlock> DULSE_CROP = marineCrop("dulse_crop");
     public static final DeferredItem<BlockItem> SEA_LETTUCE_CROP_ITEM = marineCropItem("sea_lettuce_crop", SEA_LETTUCE_CROP);
     public static final DeferredItem<BlockItem> WAKAME_CROP_ITEM = marineCropItem("wakame_crop", WAKAME_CROP);
     public static final DeferredItem<BlockItem> NORI_CROP_ITEM = marineCropItem("nori_crop", NORI_CROP);
@@ -79,11 +79,10 @@ public final class MarineFungiContent {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
-    private static DeferredBlock<MarinePlantCropBlock> marineCrop(String name, String harvestItemName) {
+    private static DeferredBlock<MarinePlantCropBlock> marineCrop(String name) {
         return BLOCKS.register(name, () -> new MarinePlantCropBlock(
                 BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
-                        .noCollission().randomTicks().instabreak().sound(SoundType.CROP),
-                harvestItemName));
+                        .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
     }
 
     private static DeferredItem<BlockItem> marineCropItem(String name, DeferredBlock<? extends Block> block) {
