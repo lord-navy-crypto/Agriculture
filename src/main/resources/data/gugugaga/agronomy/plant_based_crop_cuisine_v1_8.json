@@ -1182,7 +1182,7 @@
       "ingredients": [
         "minecraft:potato",
         "minecraft:carrot",
-        "minecraft:beetroot"
+        "minecraft:bread"
       ],
       "output": "gugugaga:root_vegetable_hash",
       "count": 1
@@ -1203,7 +1203,7 @@
       "group": "vanilla_plant_only",
       "ingredients": [
         "minecraft:sweet_berries",
-        "minecraft:wheat",
+        "minecraft:bread",
         "minecraft:sugar"
       ],
       "output": "gugugaga:berry_pie",

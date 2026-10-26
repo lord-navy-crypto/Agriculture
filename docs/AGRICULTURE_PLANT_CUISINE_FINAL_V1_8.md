@@ -119,9 +119,9 @@ The v1.8 validator checks all 100 crop blockstates, seed/produce item models, bi
 
 | Recipe ID | Ingredients | Output dish |
 |---|---|---|
-| `vanilla_plant_root_hash` | `minecraft:potato` + `minecraft:carrot` + `minecraft:beetroot` | `root_vegetable_hash` |
+| `vanilla_plant_root_hash` | `minecraft:potato` + `minecraft:carrot` + `minecraft:bread` | `root_vegetable_hash` |
 | `vanilla_plant_fruit_salad` | `minecraft:apple` + `minecraft:sweet_berries` + `minecraft:melon_slice` | `fruit_salad` |
-| `vanilla_plant_berry_pie` | `minecraft:sweet_berries` + `minecraft:wheat` + `minecraft:sugar` | `berry_pie` |
+| `vanilla_plant_berry_pie` | `minecraft:sweet_berries` + `minecraft:bread` + `minecraft:sugar` | `berry_pie` |
 | `vanilla_plant_kelp_stir_fry` | `minecraft:kelp` + `minecraft:carrot` + `minecraft:potato` | `crop_stir_fry` |
 | `vanilla_plant_apple_porridge` | `minecraft:apple` + `minecraft:wheat` + `minecraft:sugar` | `grain_porridge` |
 | `vanilla_plant_herb_bread` | `minecraft:wheat` + `minecraft:kelp` + `minecraft:sugar` | `herb_bread` |
