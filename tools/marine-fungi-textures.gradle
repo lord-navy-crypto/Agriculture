@@ -60,13 +60,13 @@ tasks.register('generateMarineFungiAssets') {
                         } else if (((x + y * 2 + signature) % 7) == 0) {
                             color = shadow
                         }
-                        image.setRGB(x, y, 0xFF000000 | color)
+                        image.setRGB(x, y, (int)(0xFF000000L | color))
                     }
                 }
             }
             for (int bit = 0; bit < 12; bit++) {
                 int color = ((signature >> bit) & 1) == 1 ? accent : highlight
-                image.setRGB(2 + bit, 1, 0xFF000000 | color)
+                image.setRGB(2 + bit, 1, (int)(0xFF000000L | color))
             }
             return image
         }
@@ -101,13 +101,13 @@ tasks.register('generateMarineFungiAssets') {
             for (int age = 0; age < 4; age++) {
                 BufferedImage stage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
                 for (int x = 2; x < 14; x++) {
-                    stage.setRGB(x, 14, 0xFF000000 | shadow)
-                    if (x >= 3 && x <= 12) stage.setRGB(x, 13, 0xFF000000 | base)
+                    stage.setRGB(x, 14, (int)(0xFF000000L | shadow))
+                    if (x >= 3 && x <= 12) stage.setRGB(x, 13, (int)(0xFF000000L | base))
                 }
                 if (age == 0) {
-                    stage.setRGB(6, 11, 0xFF000000 | accent)
-                    stage.setRGB(8, 10, 0xFF000000 | highlight)
-                    stage.setRGB(10, 11, 0xFF000000 | accent)
+                    stage.setRGB(6, 11, (int)(0xFF000000L | accent))
+                    stage.setRGB(8, 10, (int)(0xFF000000L | highlight))
+                    stage.setRGB(10, 11, (int)(0xFF000000L | accent))
                 } else {
                     int capWidth = age + 2
                     int capTop = 8 - age
@@ -115,35 +115,35 @@ tasks.register('generateMarineFungiAssets') {
                         for (int x = 8 - capWidth; x <= 8 + capWidth; x++) {
                             if (x >= 2 && x <= 13) {
                                 int color = ((x + y + signature) % 5 == 0) ? highlight : base
-                                stage.setRGB(x, y, 0xFF000000 | color)
+                                stage.setRGB(x, y, (int)(0xFF000000L | color))
                             }
                         }
                     }
                     for (int y = 9; y <= 12; y++) {
-                        stage.setRGB(7, y, 0xFF000000 | highlight)
-                        stage.setRGB(8, y, 0xFF000000 | highlight)
+                        stage.setRGB(7, y, (int)(0xFF000000L | highlight))
+                        stage.setRGB(8, y, (int)(0xFF000000L | highlight))
                     }
                     if (id == 'enoki_culture') {
                         for (int stem = 0; stem < age + 1; stem++) {
                             int x = 4 + stem * 2
-                            for (int y = 7; y <= 12; y++) stage.setRGB(x, y, 0xFF000000 | highlight)
-                            stage.setRGB(x, 6, 0xFF000000 | base)
+                            for (int y = 7; y <= 12; y++) stage.setRGB(x, y, (int)(0xFF000000L | highlight))
+                            stage.setRGB(x, 6, (int)(0xFF000000L | base))
                         }
                     } else if (id == 'lion_mane_culture') {
                         for (int x = 5; x <= 11; x++) {
-                            if (x % 2 == 0) stage.setRGB(x, 7, 0xFF000000 | accent)
+                            if (x % 2 == 0) stage.setRGB(x, 7, (int)(0xFF000000L | accent))
                         }
                     } else if (id == 'truffle_culture') {
-                        stage.setRGB(6, 9, 0xFF000000 | shadow)
-                        stage.setRGB(10, 10, 0xFF000000 | accent)
+                        stage.setRGB(6, 9, (int)(0xFF000000L | shadow))
+                        stage.setRGB(10, 10, (int)(0xFF000000L | accent))
                     }
                 }
                 for (int bit = 0; bit < 10; bit++) {
                     int color = ((signature >> bit) & 1) == 1 ? accent : highlight
-                    stage.setRGB(2 + bit, 1, 0xFF000000 | color)
+                    stage.setRGB(2 + bit, 1, (int)(0xFF000000L | color))
                 }
-                stage.setRGB(13, 2, 0xFF000000 | ((age & 1) == 1 ? accent : base))
-                stage.setRGB(12, 2, 0xFF000000 | ((age & 2) == 2 ? highlight : shadow))
+                stage.setRGB(13, 2, (int)(0xFF000000L | ((age & 1) == 1 ? accent : base)))
+                stage.setRGB(12, 2, (int)(0xFF000000L | ((age & 2) == 2 ? highlight : shadow)))
 
                 String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + id + '_stage' + age + '.png'
                 File stageTarget = new File(root, stagePath)
