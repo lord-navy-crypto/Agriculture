@@ -64,9 +64,17 @@ tasks.register('generateMarineFungiAssets') {
                     }
                 }
             }
+            def opaquePixels = []
+            for (int y = 2; y < 14; y++) {
+                for (int x = 2; x < 14; x++) {
+                    if (((image.getRGB(x, y) >>> 24) & 255) != 0) opaquePixels.add([x, y])
+                }
+            }
+            if (opaquePixels.size() < 12) throw new GradleException('Inventory icon has too few visible pixels: ' + id)
             for (int bit = 0; bit < 12; bit++) {
+                def point = opaquePixels.get(Math.floorDiv(bit * opaquePixels.size(), 12))
                 int color = ((signature >> bit) & 1) == 1 ? accent : highlight
-                image.setRGB(2 + bit, 1, (int)(0xFF000000L | color))
+                image.setRGB(point[0], point[1], (int)(0xFF000000L | color))
             }
             return image
         }
@@ -138,12 +146,18 @@ tasks.register('generateMarineFungiAssets') {
                         stage.setRGB(10, 10, (int)(0xFF000000L | accent))
                     }
                 }
-                for (int bit = 0; bit < 10; bit++) {
-                    int color = ((signature >> bit) & 1) == 1 ? accent : highlight
-                    stage.setRGB(2 + bit, 1, (int)(0xFF000000L | color))
+                def stageOpaquePixels = []
+                for (int y = 6; y < 15; y++) {
+                    for (int x = 2; x < 14; x++) {
+                        if (((stage.getRGB(x, y) >>> 24) & 255) != 0) stageOpaquePixels.add([x, y])
+                    }
                 }
-                stage.setRGB(13, 2, (int)(0xFF000000L | ((age & 1) == 1 ? accent : base)))
-                stage.setRGB(12, 2, (int)(0xFF000000L | ((age & 2) == 2 ? highlight : shadow)))
+                if (stageOpaquePixels.size() < 10) throw new GradleException('Growth stage has too few visible pixels: ' + id)
+                for (int bit = 0; bit < 10; bit++) {
+                    def point = stageOpaquePixels.get(Math.floorDiv(bit * stageOpaquePixels.size(), 10))
+                    int color = ((signature >> bit) & 1) == 1 ? accent : highlight
+                    stage.setRGB(point[0], point[1], (int)(0xFF000000L | color))
+                }
 
                 String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + id + '_stage' + age + '.png'
                 File stageTarget = new File(root, stagePath)
@@ -155,31 +169,46 @@ tasks.register('generateMarineFungiAssets') {
         }
 
         int tile = 48
-        int labelWidth = 148
+        int background = (int)(0xFF000000L | 0x1D241F)
         def iconPaths = []
         items.each { item -> iconPaths.add('assets/gugugaga/textures/item/marine_fungi/' + item.id + '.png') }
         cultures.each { culture -> iconPaths.add('assets/gugugaga/textures/item/marine_fungi/' + culture.id + '.png') }
-        BufferedImage itemSheet = new BufferedImage(labelWidth + tile, iconPaths.size() * tile, BufferedImage.TYPE_INT_ARGB)
-        iconPaths.eachWithIndex { path, row ->
+
+        int itemColumns = 5
+        int itemRows = Math.floorDiv(iconPaths.size() + itemColumns - 1, itemColumns)
+        BufferedImage itemSheet = new BufferedImage(itemColumns * tile, itemRows * tile, BufferedImage.TYPE_INT_ARGB)
+        for (int y = 0; y < itemSheet.height; y++) {
+            for (int x = 0; x < itemSheet.width; x++) itemSheet.setRGB(x, y, background)
+        }
+        iconPaths.eachWithIndex { path, index ->
             BufferedImage sourceImage = ImageIO.read(new File(root, path))
+            int originX = (index % itemColumns) * tile
+            int originY = Math.floorDiv(index, itemColumns) * tile
             for (int y = 0; y < tile; y++) {
                 for (int x = 0; x < tile; x++) {
-                    itemSheet.setRGB(labelWidth + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
+                    int pixel = sourceImage.getRGB(x.intdiv(3), y.intdiv(3))
+                    if (((pixel >>> 24) & 255) != 0) itemSheet.setRGB(originX + x, originY + y, pixel)
                 }
             }
         }
+
         File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
         reportRoot.mkdirs()
         ImageIO.write(itemSheet, 'png', new File(reportRoot, 'marine-fungi-item-contact-sheet.png'))
 
-        BufferedImage cultureSheet = new BufferedImage(labelWidth + 4 * tile, cultures.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        int stageColumns = 4
+        BufferedImage cultureSheet = new BufferedImage(stageColumns * tile, cultures.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        for (int y = 0; y < cultureSheet.height; y++) {
+            for (int x = 0; x < cultureSheet.width; x++) cultureSheet.setRGB(x, y, background)
+        }
         cultures.eachWithIndex { culture, row ->
             for (int age = 0; age < 4; age++) {
                 String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
                 BufferedImage sourceImage = ImageIO.read(new File(root, stagePath))
                 for (int y = 0; y < tile; y++) {
                     for (int x = 0; x < tile; x++) {
-                        cultureSheet.setRGB(labelWidth + age * tile + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
+                        int pixel = sourceImage.getRGB(x.intdiv(3), y.intdiv(3))
+                        if (((pixel >>> 24) & 255) != 0) cultureSheet.setRGB(age * tile + x, row * tile + y, pixel)
                     }
                 }
             }
