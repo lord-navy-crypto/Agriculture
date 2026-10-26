@@ -161,7 +161,8 @@ tasks.register('generateCropCuisineAssets') {
             int originX = (index % columns) * tile
             int originY = Math.floorDiv(index, columns) * tile
             for (int y = 0; y < tile; y++) for (int x = 0; x < tile; x++) {
-                sheet.setRGB(originX + x, originY + y, icon.getRGB(x.intdiv(3), y.intdiv(3)))
+                int pixel = icon.getRGB(x.intdiv(3), y.intdiv(3))
+                if (((pixel >>> 24) & 255) != 0) sheet.setRGB(originX + x, originY + y, pixel)
             }
         }
 
