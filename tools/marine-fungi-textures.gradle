@@ -45,6 +45,9 @@ tasks.register('generateMarineFungiAssets') {
                     } else if (kind == 'fungal_material') {
                         inside = ((x == 4 || x == 8 || x == 12) && (y == 5 || y == 10))
                                 || (x == 6 && y == 7) || (x == 10 && y == 12)
+                                || (x == 3 && y == 8) || (x == 13 && y == 7)
+                                || (x == 9 && y == 4) || (x == 5 && y == 12)
+                                || (x == 11 && y == 6)
                     } else if (kind == 'fungus' || kind == 'fungal_culture') {
                         inside = (y >= 8 && x >= 6 && x <= 9) || (y >= 4 && y <= 7 && Math.abs(x - 8) <= (y <= 5 ? 3 : 4))
                     } else {
