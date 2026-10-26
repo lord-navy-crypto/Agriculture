@@ -799,6 +799,126 @@
     "gugugaga:jute_mallow_seeds": {
       "chance": 0.3,
       "can_villager_compost": false
+    },
+    "gugugaga:sea_lettuce": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:wakame": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:nori_sheet": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:dulse": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:kelp_flakes": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:fish_fillet": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:seafood_broth": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:seaweed_salad": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:nori_rice_roll": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:seafood_rice_bowl": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:grilled_fish_skewer": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mushroom_spores": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:shiitake_mushroom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:oyster_mushroom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:enoki_mushroom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:porcini_mushroom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lion_mane_mushroom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:truffle": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mushroom_medley": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mushroom_rice_bowl": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:enoki_soup": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:truffle_pasta": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lion_mane_steak": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:mushroom_sauce": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:shiitake_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:oyster_mushroom_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:enoki_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:porcini_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:lion_mane_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:truffle_culture": {
+      "chance": 0.3,
+      "can_villager_compost": false
     }
   }
 }

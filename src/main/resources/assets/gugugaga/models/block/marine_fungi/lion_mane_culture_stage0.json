@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/marine_fungi/lion_mane_culture_stage0"
+  }
+}
