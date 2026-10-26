@@ -42,7 +42,7 @@ def main():
     bee_java = (AGRI / "BeeContent.java").read_text(encoding="utf-8")
     nectar_java = (AGRI / "NectarHoneySource.java").read_text(encoding="utf-8")
     harvester_java = (AGRI / "HoneyHarvesterItem.java").read_text(encoding="utf-8")
-    mod_metadata = (RES / "META-INF/neoforge.mods.toml").read_text(encoding="utf-8")
+    mod_metadata = (ROOT / "src/main/templates/META-INF/neoforge.mods.toml").read_text(encoding="utf-8")
     assert "100 plantable crop lines" in mod_metadata and "50 source-sensitive honey variants" in mod_metadata
     assert "ten plantable crops" not in mod_metadata, "mod metadata description is stale"
 
