@@ -18,7 +18,7 @@ Recipe-only completion pass: 88 dedicated crop-hybrid plant-based recipe variant
 
 ## Asset verification
 
-The existing Gradle asset pipeline generates and checks 100 unique crop produce icons, 100 unique seed icons, 1,200 growth/pollination textures, 1,200 crop models, 50 distinct floral-honey bottle sprites, 68 distinct cuisine icons and a review contact sheet. The existing marine/fungi generator validates 24 unique inventory icons and its culture/marine-crop assets.
+The existing Gradle asset pipeline generates and checks 100 unique crop produce icons, 100 unique seed icons, 1,200 growth/pollination textures, 1,200 crop models, 50 distinct floral-honey bottle sprites, 68 distinct cuisine icons and a review contact sheet. The existing marine/fungi generator validates 30 unique inventory icons, 24 fungal growth-stage textures, and 16 marine-plant growth-stage textures.
 
 The v1.8 validator checks all 100 crop blockstates, seed/produce item models, bilingual item/block names, loot-table references, seed recipes, ingredient registration, all output dish model references, and shapeless-recipe collisions. CI also runs generated-art checks, NeoForge compilation/package, and a fresh real NeoForge 1.21.1 server boot test.
 
