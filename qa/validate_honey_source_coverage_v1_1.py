@@ -34,7 +34,8 @@ def main():
     assert specific_sources <= crop_blocks
     assert non_nectar <= crop_blocks
     assert not (specific_sources & non_nectar)
-    assert "if (!matched && isOtherNectarCrop(cropId))" in source
+    assert "SOURCE_INDEX.get(cropResource.toString())" in source
+    assert "else if (isOtherNectarCrop(cropId))" in source
     assert "return !NON_NECTAR_CROPS.contains(cropId);" in source
 
     # The seven new insect-pollinated crop lines now have dedicated honey variants.
