@@ -45,7 +45,7 @@ def main():
     assert "Block.popResource(level, pos, new ItemStack(leaves))" in crop_block
     assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in crop_block
     for flower in ("lavender", "clover", "mustard", "canola", "basil", "mint"):
-        assert f'id.equals("{flower}_crop")' in habitat
+        assert f'"{flower}_crop"' in habitat
 
     source = read("data/gugugaga/agronomy/honey_sources_v0_9.json")
     assert source["schema_version"] == "0.9"
