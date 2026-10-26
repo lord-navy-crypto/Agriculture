@@ -6,14 +6,14 @@
       "item": "gugugaga:jute_mallow"
     },
     {
-      "item": "gugugaga:sweet_potato"
+      "item": "gugugaga:mint"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:bread"
     }
   ],
   "result": {
-    "id": "gugugaga:pumpkin_rice",
+    "id": "gugugaga:barley_vegetable_soup",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:watermelon"
     },
     {
-      "item": "gugugaga:radish"
+      "item": "gugugaga:raspberry"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:sweet_berries"
     }
   ],
   "result": {
-    "id": "gugugaga:sweet_corn_fritters",
+    "id": "gugugaga:berry_pie",
     "count": 1
   }
 }

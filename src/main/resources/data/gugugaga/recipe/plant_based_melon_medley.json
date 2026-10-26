@@ -6,14 +6,14 @@
       "item": "gugugaga:melon"
     },
     {
-      "item": "gugugaga:lentil"
+      "item": "gugugaga:blueberry"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:apple"
     }
   ],
   "result": {
-    "id": "gugugaga:lentil_curry",
+    "id": "gugugaga:fruit_salad",
     "count": 1
   }
 }

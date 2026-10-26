@@ -6,14 +6,14 @@
       "item": "gugugaga:napa_cabbage"
     },
     {
-      "item": "gugugaga:chickpea"
+      "item": "gugugaga:basil"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:kelp"
     }
   ],
   "result": {
-    "id": "gugugaga:quinoa_salad",
+    "id": "gugugaga:crop_stir_fry",
     "count": 1
   }
 }

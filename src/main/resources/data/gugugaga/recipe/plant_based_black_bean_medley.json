@@ -6,14 +6,14 @@
       "item": "gugugaga:black_bean"
     },
     {
-      "item": "gugugaga:melon"
+      "item": "gugugaga:cowpea"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:roasted_yam",
+    "id": "gugugaga:mung_bean_congee",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:sunflower_seed"
     },
     {
-      "item": "gugugaga:cauliflower"
+      "item": "gugugaga:sesame"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:wheat"
     }
   ],
   "result": {
-    "id": "gugugaga:chickpea_hummus",
+    "id": "gugugaga:roasted_seed_mix",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:teff"
     },
     {
-      "item": "gugugaga:blueberry"
+      "item": "gugugaga:rye"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:apple"
     }
   ],
   "result": {
-    "id": "gugugaga:pumpkin_soup",
+    "id": "gugugaga:cornbread",
     "count": 1
   }
 }

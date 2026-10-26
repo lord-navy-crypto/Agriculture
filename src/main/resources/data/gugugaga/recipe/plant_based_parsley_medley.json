@@ -6,14 +6,14 @@
       "item": "gugugaga:parsley"
     },
     {
-      "item": "gugugaga:cowpea"
+      "item": "gugugaga:endive"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:tomato_okra_stew",
+    "id": "gugugaga:cucumber_mint_salad",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:peanut"
     },
     {
-      "item": "gugugaga:chili_pepper"
+      "item": "gugugaga:green_bean"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:taro_dumplings",
+    "id": "gugugaga:chickpea_hummus",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:adzuki_bean"
     },
     {
-      "item": "gugugaga:pea"
+      "item": "gugugaga:fava_bean"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:herb_bread",
+    "id": "gugugaga:chili_bean_chili",
     "count": 1
   }
 }

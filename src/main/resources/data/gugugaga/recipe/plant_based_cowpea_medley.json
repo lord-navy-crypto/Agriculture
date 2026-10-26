@@ -6,14 +6,14 @@
       "item": "gugugaga:cowpea"
     },
     {
-      "item": "gugugaga:cabbage"
+      "item": "gugugaga:pea"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:cassava_flatbread",
+    "id": "gugugaga:lentil_curry",
     "count": 1
   }
 }

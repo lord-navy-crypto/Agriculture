@@ -6,14 +6,14 @@
       "item": "gugugaga:lentil"
     },
     {
-      "item": "gugugaga:turmeric"
+      "item": "gugugaga:adzuki_bean"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:farmers_skillet",
+    "id": "gugugaga:roasted_chickpeas",
     "count": 1
   }
 }

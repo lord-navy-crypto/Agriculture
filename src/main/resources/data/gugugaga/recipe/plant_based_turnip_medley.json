@@ -6,14 +6,14 @@
       "item": "gugugaga:turnip"
     },
     {
-      "item": "gugugaga:quinoa"
+      "item": "gugugaga:ginger"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:quinoa_salad",
+    "id": "gugugaga:beetroot_soup",
     "count": 1
   }
 }

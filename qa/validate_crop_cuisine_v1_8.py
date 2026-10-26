@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate final plant-based cuisine coverage, recipes, and crop item resources."""
+"""Validate plant-only cuisine coverage, crop resources, and shapeless recipe uniqueness."""
 import json
 import re
 from pathlib import Path
@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "src/main/resources"
 RECIPES = RES / "data/gugugaga/recipe"
 VANILLA_PLANTS = ["minecraft:apple","minecraft:beetroot","minecraft:bread","minecraft:baked_potato","minecraft:carrot","minecraft:cocoa_beans","minecraft:cookie","minecraft:dried_kelp","minecraft:glow_berries","minecraft:kelp","minecraft:melon_slice","minecraft:potato","minecraft:pumpkin","minecraft:sugar","minecraft:sweet_berries","minecraft:wheat"]
-PLANT_DISHES = ["garden_salad","vegetable_stew","roasted_root_vegetables","crop_stir_fry","grain_porridge","barley_vegetable_soup","rice_vegetable_bowl","bean_stew","stuffed_pepper","eggplant_curry","pumpkin_soup","berry_pie","fruit_salad","cornbread","cabbage_rolls","tomato_sauce","herb_bread","sweet_potato_roast","cassava_flatbread","taro_dumplings","yam_cakes","chickpea_hummus","peanut_sauce","roasted_seed_mix","herbal_tea","farmers_skillet","buckwheat_pancakes","quinoa_salad","lentil_curry","sweet_corn_fritters","basil_tomato_flatbread","pumpkin_rice","chili_bean_chili","sesame_noodles","garlic_roasted_potatoes","beetroot_soup","fava_bean_soup","chayote_stir_fry","soybean_patties","roasted_chickpeas","baked_sweet_corn","adzuki_bean_sweet_soup","mung_bean_congee","napa_cabbage_braise","garlic_water_spinach","tomato_okra_stew","jute_mallow_soup","grape_berry_compote","rapini_garlic_saute","root_vegetable_hash","millet_fennel_pilaf","cucumber_mint_salad","seaweed_potato_chowder","blackcurrant_oat_crumble","baked_taro","roasted_yam"]
+PLANT_DISHES = ["grain_porridge","rice_vegetable_bowl","quinoa_salad","millet_fennel_pilaf","cornbread","sweet_corn_fritters","buckwheat_pancakes","bean_stew","lentil_curry","chickpea_hummus","soybean_patties","roasted_chickpeas","adzuki_bean_sweet_soup","mung_bean_congee","chili_bean_chili","fruit_salad","berry_pie","grape_berry_compote","blackcurrant_oat_crumble","root_vegetable_hash","roasted_root_vegetables","vegetable_stew","beetroot_soup","garlic_roasted_potatoes","crop_stir_fry","garden_salad","barley_vegetable_soup","herb_bread","cucumber_mint_salad","jute_mallow_soup","rapini_garlic_saute","eggplant_curry","pumpkin_soup","tomato_sauce","stuffed_pepper","chayote_stir_fry","tomato_okra_stew","roasted_seed_mix","peanut_sauce"]
 ALLOWED_GROUPS = {"crop_hybrid_plant_based", "vanilla_plant_only"}
 
 def load(path):
@@ -26,34 +26,37 @@ def main():
     other_java = "\n".join((java_dir / name).read_text(encoding="utf-8") for name in
         ("MarineFungiContent.java", "BeeContent.java"))
     crop_foods = set(re.findall(r'= food\("([^"]+)",\s*\d+,\s*[0-9.]+F?\);', crop_java))
-    crop_blocks = set(re.findall(r'= crop\("([^"]+)"', crop_java))
+    crop_block_ids = set(re.findall(r'= crop\("([^"]+)"', crop_java))
+    crop_names = {block[:-5] for block in crop_block_ids if block.endswith("_crop")}
     dish_ids = set(re.findall(r'food\("([^"]+)"', cuisine_java))
     known = set(re.findall(r'\b(?:food|material|ingredient|culture|marineCrop|floralHoney)\("([^"]+)"', crop_java + cuisine_java + other_java))
     known.update(["kelp_flakes", "mushroom_spores"])
     assert len(crop_foods) == 88, f"expected 88 edible crop foods, found {len(crop_foods)}"
-    assert len(crop_blocks) == 100, f"expected 100 registered crop blocks, found {len(crop_blocks)}"
+    assert len(crop_block_ids) == 100 and len(crop_names) == 100, f"expected 100 registered crop blocks, found {len(crop_block_ids)}"
+    assert all(block.endswith("_crop") for block in crop_block_ids), "unexpected crop block ID"
     assert set(PLANT_DISHES).issubset(dish_ids), "plant recipe output is not registered"
 
     en = load(RES / "assets/gugugaga/lang/en_us.json")
     zh = load(RES / "assets/gugugaga/lang/zh_cn.json")
-    for crop in crop_blocks:
-        blockstate = load(RES / f"assets/gugugaga/blockstates/{crop}_crop.json")
+    for crop in crop_names:
+        block_id = crop + "_crop"
+        blockstate = load(RES / f"assets/gugugaga/blockstates/{block_id}.json")
         variants = blockstate["variants"]
-        assert len(variants) == 16, f"{crop}: expected 16 growth/pollination variants"
+        assert len(variants) == 16, f"{block_id}: expected 16 growth/pollination variants"
         for age in range(8):
             base = f"gugugaga:block/crops/{crop}_stage{age}"
-            assert variants[f"age={age},pollinated=false"]["model"] == base, crop
+            assert variants[f"age={age},pollinated=false"]["model"] == base, block_id
             expected = base + ("_pollinated" if age >= 4 else "")
-            assert variants[f"age={age},pollinated=true"]["model"] == expected, crop
-        loot = load(RES / f"data/gugugaga/loot_table/blocks/{crop}_crop.json")
-        assert len(loot["pools"]) >= 2, f"{crop}: seed and produce drops are required"
+            assert variants[f"age={age},pollinated=true"]["model"] == expected, block_id
+        loot = load(RES / f"data/gugugaga/loot_table/blocks/{block_id}.json")
+        assert len(loot["pools"]) >= 2, f"{block_id}: seed and produce drops are required"
         for item, texture in ((crop, f"gugugaga:item/crops/{crop}"),
                               (crop + "_seeds", f"gugugaga:item/crops/{crop}_seeds")):
             model = load(RES / f"assets/gugugaga/models/item/{item}.json")
             assert model["parent"] == "minecraft:item/generated", item
             assert model["textures"]["layer0"] == texture, item
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh, item
-        assert f"block.gugugaga.{crop}_crop" in en and f"block.gugugaga.{crop}_crop" in zh, crop
+        assert f"block.gugugaga.{block_id}" in en and f"block.gugugaga.{block_id}" in zh, block_id
         seed_recipe = load(RECIPES / f"{crop}_seeds.json")
         assert seed_recipe["result"]["id"] == f"gugugaga:{crop}_seeds", crop
 
@@ -117,6 +120,7 @@ def main():
             assert f"gugugaga:{target}" in ingredients, f"target crop not used: {recipe_id}"
             assert len(mod_ingredients) == 2 and all(item.split(":", 1)[1] in crop_foods for item in mod_ingredients), recipe_id
             assert sum(item.startswith("minecraft:") for item in ingredients) == 1, recipe_id
+            assert row.get("category") in {"grains","legumes","fruits","roots","leafy","vegetables","seeds"}, recipe_id
         else:
             assert "target_crop" not in row, recipe_id
             assert not mod_ingredients and all(item in VANILLA_PLANTS for item in ingredients), recipe_id

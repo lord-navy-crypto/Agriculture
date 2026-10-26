@@ -6,14 +6,14 @@
       "item": "gugugaga:pea"
     },
     {
-      "item": "gugugaga:fennel"
+      "item": "gugugaga:lentil"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:cornbread",
+    "id": "gugugaga:lentil_curry",
     "count": 1
   }
 }

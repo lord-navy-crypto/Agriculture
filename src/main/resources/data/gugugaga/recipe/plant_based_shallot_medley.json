@@ -6,14 +6,14 @@
       "item": "gugugaga:shallot"
     },
     {
-      "item": "gugugaga:grape"
+      "item": "gugugaga:jicama"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:seaweed_potato_chowder",
+    "id": "gugugaga:roasted_root_vegetables",
     "count": 1
   }
 }

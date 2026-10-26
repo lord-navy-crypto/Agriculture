@@ -6,14 +6,14 @@
       "item": "gugugaga:soybean"
     },
     {
-      "item": "gugugaga:sesame"
+      "item": "gugugaga:chickpea"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:grain_porridge",
+    "id": "gugugaga:bean_stew",
     "count": 1
   }
 }

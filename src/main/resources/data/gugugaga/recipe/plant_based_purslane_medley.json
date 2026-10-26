@@ -6,14 +6,14 @@
       "item": "gugugaga:purslane"
     },
     {
-      "item": "gugugaga:sorghum"
+      "item": "gugugaga:broccoli"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:roasted_seed_mix",
+    "id": "gugugaga:garden_salad",
     "count": 1
   }
 }

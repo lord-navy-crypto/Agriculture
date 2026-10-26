@@ -6,14 +6,14 @@
       "item": "gugugaga:mung_bean"
     },
     {
-      "item": "gugugaga:lettuce"
+      "item": "gugugaga:soybean"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:sweet_potato_roast",
+    "id": "gugugaga:bean_stew",
     "count": 1
   }
 }

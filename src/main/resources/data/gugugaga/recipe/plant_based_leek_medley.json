@@ -6,14 +6,14 @@
       "item": "gugugaga:leek"
     },
     {
-      "item": "gugugaga:teff"
+      "item": "gugugaga:rutabaga"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:chayote_stir_fry",
+    "id": "gugugaga:root_vegetable_hash",
     "count": 1
   }
 }

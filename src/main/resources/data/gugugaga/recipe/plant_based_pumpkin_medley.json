@@ -6,14 +6,14 @@
       "item": "gugugaga:pumpkin"
     },
     {
-      "item": "gugugaga:corn"
+      "item": "gugugaga:cucumber"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:crop_stir_fry",
+    "id": "gugugaga:vegetable_stew",
     "count": 1
   }
 }

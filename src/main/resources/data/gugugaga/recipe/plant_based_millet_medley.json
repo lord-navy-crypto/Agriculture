@@ -6,14 +6,14 @@
       "item": "gugugaga:millet"
     },
     {
-      "item": "gugugaga:bok_choy"
+      "item": "gugugaga:teff"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:peanut_sauce",
+    "id": "gugugaga:buckwheat_pancakes",
     "count": 1
   }
 }

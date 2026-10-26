@@ -6,14 +6,14 @@
       "item": "gugugaga:swiss_chard"
     },
     {
-      "item": "gugugaga:kohlrabi"
+      "item": "gugugaga:cauliflower"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:baked_sweet_corn",
+    "id": "gugugaga:vegetable_stew",
     "count": 1
   }
 }

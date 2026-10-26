@@ -6,14 +6,14 @@
       "item": "gugugaga:kale"
     },
     {
-      "item": "gugugaga:asparagus"
+      "item": "gugugaga:dill"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:sweet_corn_fritters",
+    "id": "gugugaga:herb_bread",
     "count": 1
   }
 }

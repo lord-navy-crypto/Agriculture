@@ -6,14 +6,14 @@
       "item": "gugugaga:chayote"
     },
     {
-      "item": "gugugaga:sunflower_seed"
+      "item": "gugugaga:bell_pepper"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:herbal_tea",
+    "id": "gugugaga:eggplant_curry",
     "count": 1
   }
 }

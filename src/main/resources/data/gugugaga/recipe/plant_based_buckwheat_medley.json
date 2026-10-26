@@ -6,14 +6,14 @@
       "item": "gugugaga:buckwheat"
     },
     {
-      "item": "gugugaga:shallot"
+      "item": "gugugaga:corn"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:roasted_seed_mix",
+    "id": "gugugaga:grain_porridge",
     "count": 1
   }
 }

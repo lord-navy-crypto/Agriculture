@@ -6,14 +6,14 @@
       "item": "gugugaga:cucumber"
     },
     {
-      "item": "gugugaga:mint"
+      "item": "gugugaga:zucchini"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:rice_vegetable_bowl",
+    "id": "gugugaga:vegetable_stew",
     "count": 1
   }
 }

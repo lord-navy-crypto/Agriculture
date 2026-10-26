@@ -6,14 +6,14 @@
       "item": "gugugaga:eggplant"
     },
     {
-      "item": "gugugaga:green_bean"
+      "item": "gugugaga:chili_pepper"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:kelp"
     }
   ],
   "result": {
-    "id": "gugugaga:cassava_flatbread",
+    "id": "gugugaga:pumpkin_soup",
     "count": 1
   }
 }

@@ -6,14 +6,14 @@
       "item": "gugugaga:lettuce"
     },
     {
-      "item": "gugugaga:dill"
+      "item": "gugugaga:celery"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:cabbage_rolls",
+    "id": "gugugaga:garden_salad",
     "count": 1
   }
 }

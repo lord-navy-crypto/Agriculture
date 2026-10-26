@@ -6,14 +6,14 @@
       "item": "gugugaga:broccoli"
     },
     {
-      "item": "gugugaga:collard_greens"
+      "item": "gugugaga:fennel"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:bread"
     }
   ],
   "result": {
-    "id": "gugugaga:sweet_potato_roast",
+    "id": "gugugaga:barley_vegetable_soup",
     "count": 1
   }
 }

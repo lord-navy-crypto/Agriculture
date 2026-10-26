@@ -6,14 +6,14 @@
       "item": "gugugaga:sesame"
     },
     {
-      "item": "gugugaga:blackcurrant"
+      "item": "gugugaga:sunflower_seed"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:cocoa_beans"
     }
   ],
   "result": {
-    "id": "gugugaga:sesame_noodles",
+    "id": "gugugaga:peanut_sauce",
     "count": 1
   }
 }

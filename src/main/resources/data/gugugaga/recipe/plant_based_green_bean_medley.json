@@ -6,14 +6,14 @@
       "item": "gugugaga:green_bean"
     },
     {
-      "item": "gugugaga:mustard_greens"
+      "item": "gugugaga:mung_bean"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:grape_berry_compote",
+    "id": "gugugaga:adzuki_bean_sweet_soup",
     "count": 1
   }
 }

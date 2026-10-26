@@ -1,13 +1,13 @@
 {
   "schema_version": "1.8",
   "title": "Plant-Based Crop Cuisine Completion",
-  "design_note": "Recipe-only completion pass. Every registered edible agriculture crop has a dedicated plant-only recipe variant; vanilla-only plant recipes are also provided. No new food items, item registrations, or food balance changes are introduced.",
+  "design_note": "Recipe-only completion pass. Every edible agriculture crop has a dedicated plant-only recipe combining two registered mod crops with one vanilla plant-derived ingredient. Additional recipes use vanilla plant-derived ingredients only. No new food items, item registrations, or food balance changes are introduced.",
   "coverage": {
     "edible_crop_foods": 88,
     "dedicated_crop_hybrid_recipes": 88,
     "vanilla_only_recipes": 12,
     "total_new_recipes": 100,
-    "plantable_crop_profiles": 100,
+    "registered_crop_blocks_audited": 100,
     "unique_crop_produce_and_seed_icons": 200,
     "unique_crop_growth_and_pollination_textures": 1200,
     "unique_crop_models": 1200,
@@ -36,754 +36,115 @@
       "id": "plant_based_corn_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "corn",
+      "category": "grains",
       "ingredients": [
         "gugugaga:corn",
-        "gugugaga:kale",
-        "minecraft:cookie"
+        "gugugaga:sorghum",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:garden_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_tomato_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "tomato",
-      "ingredients": [
-        "gugugaga:tomato",
-        "gugugaga:zucchini",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:vegetable_stew",
-      "count": 1
-    },
-    {
-      "id": "plant_based_onion_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "onion",
-      "ingredients": [
-        "gugugaga:onion",
-        "gugugaga:raspberry",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:roasted_root_vegetables",
+      "output": "gugugaga:grain_porridge",
       "count": 1
     },
     {
       "id": "plant_based_rice_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "rice",
+      "category": "grains",
       "ingredients": [
         "gugugaga:rice",
-        "gugugaga:cranberry",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:crop_stir_fry",
-      "count": 1
-    },
-    {
-      "id": "plant_based_soybean_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "soybean",
-      "ingredients": [
-        "gugugaga:soybean",
-        "gugugaga:sesame",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:grain_porridge",
-      "count": 1
-    },
-    {
-      "id": "plant_based_strawberry_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "strawberry",
-      "ingredients": [
-        "gugugaga:strawberry",
-        "gugugaga:basil",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:barley_vegetable_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_cucumber_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "cucumber",
-      "ingredients": [
-        "gugugaga:cucumber",
-        "gugugaga:mint",
-        "minecraft:cookie"
+        "gugugaga:millet",
+        "minecraft:potato"
       ],
       "output": "gugugaga:rice_vegetable_bowl",
-      "count": 1
-    },
-    {
-      "id": "plant_based_blueberry_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "blueberry",
-      "ingredients": [
-        "gugugaga:blueberry",
-        "gugugaga:celery",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:bean_stew",
-      "count": 1
-    },
-    {
-      "id": "plant_based_bell_pepper_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "bell_pepper",
-      "ingredients": [
-        "gugugaga:bell_pepper",
-        "gugugaga:leek",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:stuffed_pepper",
-      "count": 1
-    },
-    {
-      "id": "plant_based_garlic_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "garlic",
-      "ingredients": [
-        "gugugaga:garlic",
-        "gugugaga:parsnip",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:eggplant_curry",
       "count": 1
     },
     {
       "id": "plant_based_barley_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "barley",
+      "category": "grains",
       "ingredients": [
         "gugugaga:barley",
-        "gugugaga:arugula",
-        "minecraft:dried_kelp"
+        "gugugaga:buckwheat",
+        "minecraft:apple"
       ],
-      "output": "gugugaga:pumpkin_soup",
+      "output": "gugugaga:quinoa_salad",
       "count": 1
     },
     {
       "id": "plant_based_oat_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "oat",
+      "category": "grains",
       "ingredients": [
         "gugugaga:oat",
-        "gugugaga:swiss_chard",
-        "minecraft:cocoa_beans"
+        "gugugaga:quinoa",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:berry_pie",
+      "output": "gugugaga:millet_fennel_pilaf",
       "count": 1
     },
     {
       "id": "plant_based_rye_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "rye",
+      "category": "grains",
       "ingredients": [
         "gugugaga:rye",
-        "gugugaga:okra",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:fruit_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_pea_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "pea",
-      "ingredients": [
-        "gugugaga:pea",
-        "gugugaga:fennel",
-        "minecraft:bread"
+        "gugugaga:amaranth",
+        "minecraft:potato"
       ],
       "output": "gugugaga:cornbread",
-      "count": 1
-    },
-    {
-      "id": "plant_based_lettuce_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "lettuce",
-      "ingredients": [
-        "gugugaga:lettuce",
-        "gugugaga:dill",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:cabbage_rolls",
-      "count": 1
-    },
-    {
-      "id": "plant_based_cabbage_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "cabbage",
-      "ingredients": [
-        "gugugaga:cabbage",
-        "gugugaga:cilantro",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:tomato_sauce",
-      "count": 1
-    },
-    {
-      "id": "plant_based_spinach_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "spinach",
-      "ingredients": [
-        "gugugaga:spinach",
-        "gugugaga:parsley",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:herb_bread",
-      "count": 1
-    },
-    {
-      "id": "plant_based_broccoli_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "broccoli",
-      "ingredients": [
-        "gugugaga:broccoli",
-        "gugugaga:collard_greens",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:sweet_potato_roast",
-      "count": 1
-    },
-    {
-      "id": "plant_based_eggplant_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "eggplant",
-      "ingredients": [
-        "gugugaga:eggplant",
-        "gugugaga:green_bean",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:cassava_flatbread",
-      "count": 1
-    },
-    {
-      "id": "plant_based_peanut_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "peanut",
-      "ingredients": [
-        "gugugaga:peanut",
-        "gugugaga:chili_pepper",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:taro_dumplings",
       "count": 1
     },
     {
       "id": "plant_based_sorghum_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "sorghum",
+      "category": "grains",
       "ingredients": [
         "gugugaga:sorghum",
-        "gugugaga:brussels_sprouts",
-        "minecraft:baked_potato"
+        "gugugaga:sweet_corn",
+        "minecraft:apple"
       ],
-      "output": "gugugaga:yam_cakes",
-      "count": 1
-    },
-    {
-      "id": "plant_based_sunflower_seed_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "sunflower_seed",
-      "ingredients": [
-        "gugugaga:sunflower_seed",
-        "gugugaga:cauliflower",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:chickpea_hummus",
+      "output": "gugugaga:sweet_corn_fritters",
       "count": 1
     },
     {
       "id": "plant_based_millet_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "millet",
+      "category": "grains",
       "ingredients": [
         "gugugaga:millet",
-        "gugugaga:bok_choy",
-        "minecraft:dried_kelp"
+        "gugugaga:teff",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:peanut_sauce",
+      "output": "gugugaga:buckwheat_pancakes",
       "count": 1
     },
     {
       "id": "plant_based_buckwheat_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "buckwheat",
+      "category": "grains",
       "ingredients": [
         "gugugaga:buckwheat",
-        "gugugaga:shallot",
-        "minecraft:cocoa_beans"
+        "gugugaga:corn",
+        "minecraft:potato"
       ],
-      "output": "gugugaga:roasted_seed_mix",
-      "count": 1
-    },
-    {
-      "id": "plant_based_chickpea_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "chickpea",
-      "ingredients": [
-        "gugugaga:chickpea",
-        "gugugaga:ginger",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:herbal_tea",
-      "count": 1
-    },
-    {
-      "id": "plant_based_lentil_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "lentil",
-      "ingredients": [
-        "gugugaga:lentil",
-        "gugugaga:turmeric",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:farmers_skillet",
-      "count": 1
-    },
-    {
-      "id": "plant_based_radish_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "radish",
-      "ingredients": [
-        "gugugaga:radish",
-        "gugugaga:black_bean",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:buckwheat_pancakes",
-      "count": 1
-    },
-    {
-      "id": "plant_based_turnip_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "turnip",
-      "ingredients": [
-        "gugugaga:turnip",
-        "gugugaga:quinoa",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:quinoa_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_sweet_potato_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "sweet_potato",
-      "ingredients": [
-        "gugugaga:sweet_potato",
-        "gugugaga:artichoke",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:lentil_curry",
-      "count": 1
-    },
-    {
-      "id": "plant_based_kale_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "kale",
-      "ingredients": [
-        "gugugaga:kale",
-        "gugugaga:asparagus",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:sweet_corn_fritters",
-      "count": 1
-    },
-    {
-      "id": "plant_based_zucchini_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "zucchini",
-      "ingredients": [
-        "gugugaga:zucchini",
-        "gugugaga:pumpkin",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:basil_tomato_flatbread",
-      "count": 1
-    },
-    {
-      "id": "plant_based_raspberry_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "raspberry",
-      "ingredients": [
-        "gugugaga:raspberry",
-        "gugugaga:pineapple",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:pumpkin_rice",
-      "count": 1
-    },
-    {
-      "id": "plant_based_cranberry_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "cranberry",
-      "ingredients": [
-        "gugugaga:cranberry",
-        "gugugaga:blackberry",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:chili_bean_chili",
-      "count": 1
-    },
-    {
-      "id": "plant_based_sesame_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "sesame",
-      "ingredients": [
-        "gugugaga:sesame",
-        "gugugaga:blackcurrant",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:sesame_noodles",
-      "count": 1
-    },
-    {
-      "id": "plant_based_basil_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "basil",
-      "ingredients": [
-        "gugugaga:basil",
-        "gugugaga:amaranth",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:garlic_roasted_potatoes",
-      "count": 1
-    },
-    {
-      "id": "plant_based_mint_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "mint",
-      "ingredients": [
-        "gugugaga:mint",
-        "gugugaga:chives",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:beetroot_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_celery_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "celery",
-      "ingredients": [
-        "gugugaga:celery",
-        "gugugaga:sweet_corn",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:fava_bean_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_leek_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "leek",
-      "ingredients": [
-        "gugugaga:leek",
-        "gugugaga:teff",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:chayote_stir_fry",
-      "count": 1
-    },
-    {
-      "id": "plant_based_parsnip_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "parsnip",
-      "ingredients": [
-        "gugugaga:parsnip",
-        "gugugaga:watercress",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:soybean_patties",
-      "count": 1
-    },
-    {
-      "id": "plant_based_arugula_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "arugula",
-      "ingredients": [
-        "gugugaga:arugula",
-        "gugugaga:endive",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:roasted_chickpeas",
-      "count": 1
-    },
-    {
-      "id": "plant_based_swiss_chard_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "swiss_chard",
-      "ingredients": [
-        "gugugaga:swiss_chard",
-        "gugugaga:kohlrabi",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:baked_sweet_corn",
-      "count": 1
-    },
-    {
-      "id": "plant_based_okra_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "okra",
-      "ingredients": [
-        "gugugaga:okra",
-        "gugugaga:rutabaga",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:adzuki_bean_sweet_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_fennel_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "fennel",
-      "ingredients": [
-        "gugugaga:fennel",
-        "gugugaga:jicama",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:mung_bean_congee",
-      "count": 1
-    },
-    {
-      "id": "plant_based_dill_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "dill",
-      "ingredients": [
-        "gugugaga:dill",
-        "gugugaga:adzuki_bean",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:napa_cabbage_braise",
-      "count": 1
-    },
-    {
-      "id": "plant_based_cilantro_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "cilantro",
-      "ingredients": [
-        "gugugaga:cilantro",
-        "gugugaga:mung_bean",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:garlic_water_spinach",
-      "count": 1
-    },
-    {
-      "id": "plant_based_parsley_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "parsley",
-      "ingredients": [
-        "gugugaga:parsley",
-        "gugugaga:cowpea",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:tomato_okra_stew",
-      "count": 1
-    },
-    {
-      "id": "plant_based_collard_greens_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "collard_greens",
-      "ingredients": [
-        "gugugaga:collard_greens",
-        "gugugaga:chicory",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:jute_mallow_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_green_bean_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "green_bean",
-      "ingredients": [
-        "gugugaga:green_bean",
-        "gugugaga:mustard_greens",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:grape_berry_compote",
-      "count": 1
-    },
-    {
-      "id": "plant_based_chili_pepper_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "chili_pepper",
-      "ingredients": [
-        "gugugaga:chili_pepper",
-        "gugugaga:water_spinach",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:rapini_garlic_saute",
-      "count": 1
-    },
-    {
-      "id": "plant_based_brussels_sprouts_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "brussels_sprouts",
-      "ingredients": [
-        "gugugaga:brussels_sprouts",
-        "gugugaga:celeriac",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:root_vegetable_hash",
-      "count": 1
-    },
-    {
-      "id": "plant_based_cauliflower_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "cauliflower",
-      "ingredients": [
-        "gugugaga:cauliflower",
-        "gugugaga:purslane",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:millet_fennel_pilaf",
-      "count": 1
-    },
-    {
-      "id": "plant_based_bok_choy_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "bok_choy",
-      "ingredients": [
-        "gugugaga:bok_choy",
-        "gugugaga:chayote",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:cucumber_mint_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_shallot_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "shallot",
-      "ingredients": [
-        "gugugaga:shallot",
-        "gugugaga:grape",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:seaweed_potato_chowder",
-      "count": 1
-    },
-    {
-      "id": "plant_based_ginger_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "ginger",
-      "ingredients": [
-        "gugugaga:ginger",
-        "gugugaga:rapini",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:blackcurrant_oat_crumble",
-      "count": 1
-    },
-    {
-      "id": "plant_based_turmeric_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "turmeric",
-      "ingredients": [
-        "gugugaga:turmeric",
-        "gugugaga:napa_cabbage",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:baked_taro",
-      "count": 1
-    },
-    {
-      "id": "plant_based_black_bean_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "black_bean",
-      "ingredients": [
-        "gugugaga:black_bean",
-        "gugugaga:melon",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:roasted_yam",
+      "output": "gugugaga:grain_porridge",
       "count": 1
     },
     {
       "id": "plant_based_quinoa_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "quinoa",
+      "category": "grains",
       "ingredients": [
         "gugugaga:quinoa",
-        "gugugaga:watermelon",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:garden_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_artichoke_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "artichoke",
-      "ingredients": [
-        "gugugaga:artichoke",
-        "gugugaga:fava_bean",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:vegetable_stew",
-      "count": 1
-    },
-    {
-      "id": "plant_based_asparagus_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "asparagus",
-      "ingredients": [
-        "gugugaga:asparagus",
-        "gugugaga:jute_mallow",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:roasted_root_vegetables",
-      "count": 1
-    },
-    {
-      "id": "plant_based_pumpkin_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "pumpkin",
-      "ingredients": [
-        "gugugaga:pumpkin",
-        "gugugaga:corn",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:crop_stir_fry",
-      "count": 1
-    },
-    {
-      "id": "plant_based_pineapple_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "pineapple",
-      "ingredients": [
-        "gugugaga:pineapple",
-        "gugugaga:tomato",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:grain_porridge",
-      "count": 1
-    },
-    {
-      "id": "plant_based_blackberry_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "blackberry",
-      "ingredients": [
-        "gugugaga:blackberry",
-        "gugugaga:onion",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:barley_vegetable_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_blackcurrant_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "blackcurrant",
-      "ingredients": [
-        "gugugaga:blackcurrant",
         "gugugaga:rice",
-        "minecraft:baked_potato"
+        "minecraft:apple"
       ],
       "output": "gugugaga:rice_vegetable_bowl",
       "count": 1
@@ -792,300 +153,1027 @@
       "id": "plant_based_amaranth_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "amaranth",
+      "category": "grains",
       "ingredients": [
         "gugugaga:amaranth",
-        "gugugaga:soybean",
-        "minecraft:glow_berries"
+        "gugugaga:barley",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:bean_stew",
-      "count": 1
-    },
-    {
-      "id": "plant_based_chives_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "chives",
-      "ingredients": [
-        "gugugaga:chives",
-        "gugugaga:strawberry",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:stuffed_pepper",
+      "output": "gugugaga:quinoa_salad",
       "count": 1
     },
     {
       "id": "plant_based_sweet_corn_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "sweet_corn",
+      "category": "grains",
       "ingredients": [
         "gugugaga:sweet_corn",
-        "gugugaga:cucumber",
-        "minecraft:cocoa_beans"
+        "gugugaga:oat",
+        "minecraft:potato"
       ],
-      "output": "gugugaga:eggplant_curry",
+      "output": "gugugaga:millet_fennel_pilaf",
       "count": 1
     },
     {
       "id": "plant_based_teff_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "teff",
+      "category": "grains",
       "ingredients": [
         "gugugaga:teff",
-        "gugugaga:blueberry",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:pumpkin_soup",
-      "count": 1
-    },
-    {
-      "id": "plant_based_watercress_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "watercress",
-      "ingredients": [
-        "gugugaga:watercress",
-        "gugugaga:bell_pepper",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:berry_pie",
-      "count": 1
-    },
-    {
-      "id": "plant_based_endive_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "endive",
-      "ingredients": [
-        "gugugaga:endive",
-        "gugugaga:garlic",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:fruit_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_kohlrabi_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "kohlrabi",
-      "ingredients": [
-        "gugugaga:kohlrabi",
-        "gugugaga:barley",
-        "minecraft:glow_berries"
+        "gugugaga:rye",
+        "minecraft:apple"
       ],
       "output": "gugugaga:cornbread",
       "count": 1
     },
     {
-      "id": "plant_based_rutabaga_medley",
+      "id": "plant_based_soybean_medley",
       "group": "crop_hybrid_plant_based",
-      "target_crop": "rutabaga",
+      "target_crop": "soybean",
+      "category": "legumes",
       "ingredients": [
-        "gugugaga:rutabaga",
-        "gugugaga:oat",
-        "minecraft:dried_kelp"
+        "gugugaga:soybean",
+        "gugugaga:chickpea",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:cabbage_rolls",
+      "output": "gugugaga:bean_stew",
       "count": 1
     },
     {
-      "id": "plant_based_jicama_medley",
+      "id": "plant_based_pea_medley",
       "group": "crop_hybrid_plant_based",
-      "target_crop": "jicama",
+      "target_crop": "pea",
+      "category": "legumes",
       "ingredients": [
-        "gugugaga:jicama",
-        "gugugaga:rye",
-        "minecraft:cocoa_beans"
+        "gugugaga:pea",
+        "gugugaga:lentil",
+        "minecraft:potato"
       ],
-      "output": "gugugaga:tomato_sauce",
+      "output": "gugugaga:lentil_curry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_peanut_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "peanut",
+      "category": "legumes",
+      "ingredients": [
+        "gugugaga:peanut",
+        "gugugaga:green_bean",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:chickpea_hummus",
+      "count": 1
+    },
+    {
+      "id": "plant_based_chickpea_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "chickpea",
+      "category": "legumes",
+      "ingredients": [
+        "gugugaga:chickpea",
+        "gugugaga:black_bean",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:soybean_patties",
+      "count": 1
+    },
+    {
+      "id": "plant_based_lentil_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "lentil",
+      "category": "legumes",
+      "ingredients": [
+        "gugugaga:lentil",
+        "gugugaga:adzuki_bean",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:roasted_chickpeas",
+      "count": 1
+    },
+    {
+      "id": "plant_based_green_bean_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "green_bean",
+      "category": "legumes",
+      "ingredients": [
+        "gugugaga:green_bean",
+        "gugugaga:mung_bean",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:adzuki_bean_sweet_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_black_bean_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "black_bean",
+      "category": "legumes",
+      "ingredients": [
+        "gugugaga:black_bean",
+        "gugugaga:cowpea",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:mung_bean_congee",
       "count": 1
     },
     {
       "id": "plant_based_adzuki_bean_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "adzuki_bean",
+      "category": "legumes",
       "ingredients": [
         "gugugaga:adzuki_bean",
-        "gugugaga:pea",
-        "minecraft:cookie"
+        "gugugaga:fava_bean",
+        "minecraft:potato"
       ],
-      "output": "gugugaga:herb_bread",
+      "output": "gugugaga:chili_bean_chili",
       "count": 1
     },
     {
       "id": "plant_based_mung_bean_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "mung_bean",
+      "category": "legumes",
       "ingredients": [
         "gugugaga:mung_bean",
-        "gugugaga:lettuce",
-        "minecraft:bread"
+        "gugugaga:soybean",
+        "minecraft:beetroot"
       ],
-      "output": "gugugaga:sweet_potato_roast",
+      "output": "gugugaga:bean_stew",
       "count": 1
     },
     {
       "id": "plant_based_cowpea_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "cowpea",
+      "category": "legumes",
       "ingredients": [
         "gugugaga:cowpea",
-        "gugugaga:cabbage",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:cassava_flatbread",
-      "count": 1
-    },
-    {
-      "id": "plant_based_chicory_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "chicory",
-      "ingredients": [
-        "gugugaga:chicory",
-        "gugugaga:spinach",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:taro_dumplings",
-      "count": 1
-    },
-    {
-      "id": "plant_based_mustard_greens_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "mustard_greens",
-      "ingredients": [
-        "gugugaga:mustard_greens",
-        "gugugaga:broccoli",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:yam_cakes",
-      "count": 1
-    },
-    {
-      "id": "plant_based_water_spinach_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "water_spinach",
-      "ingredients": [
-        "gugugaga:water_spinach",
-        "gugugaga:eggplant",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:chickpea_hummus",
-      "count": 1
-    },
-    {
-      "id": "plant_based_celeriac_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "celeriac",
-      "ingredients": [
-        "gugugaga:celeriac",
-        "gugugaga:peanut",
-        "minecraft:cookie"
-      ],
-      "output": "gugugaga:peanut_sauce",
-      "count": 1
-    },
-    {
-      "id": "plant_based_purslane_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "purslane",
-      "ingredients": [
-        "gugugaga:purslane",
-        "gugugaga:sorghum",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:roasted_seed_mix",
-      "count": 1
-    },
-    {
-      "id": "plant_based_chayote_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "chayote",
-      "ingredients": [
-        "gugugaga:chayote",
-        "gugugaga:sunflower_seed",
-        "minecraft:baked_potato"
-      ],
-      "output": "gugugaga:herbal_tea",
-      "count": 1
-    },
-    {
-      "id": "plant_based_grape_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "grape",
-      "ingredients": [
-        "gugugaga:grape",
-        "gugugaga:millet",
-        "minecraft:glow_berries"
-      ],
-      "output": "gugugaga:farmers_skillet",
-      "count": 1
-    },
-    {
-      "id": "plant_based_rapini_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "rapini",
-      "ingredients": [
-        "gugugaga:rapini",
-        "gugugaga:buckwheat",
-        "minecraft:dried_kelp"
-      ],
-      "output": "gugugaga:buckwheat_pancakes",
-      "count": 1
-    },
-    {
-      "id": "plant_based_napa_cabbage_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "napa_cabbage",
-      "ingredients": [
-        "gugugaga:napa_cabbage",
-        "gugugaga:chickpea",
-        "minecraft:cocoa_beans"
-      ],
-      "output": "gugugaga:quinoa_salad",
-      "count": 1
-    },
-    {
-      "id": "plant_based_melon_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "melon",
-      "ingredients": [
-        "gugugaga:melon",
-        "gugugaga:lentil",
-        "minecraft:cookie"
+        "gugugaga:pea",
+        "minecraft:carrot"
       ],
       "output": "gugugaga:lentil_curry",
-      "count": 1
-    },
-    {
-      "id": "plant_based_watermelon_medley",
-      "group": "crop_hybrid_plant_based",
-      "target_crop": "watermelon",
-      "ingredients": [
-        "gugugaga:watermelon",
-        "gugugaga:radish",
-        "minecraft:bread"
-      ],
-      "output": "gugugaga:sweet_corn_fritters",
       "count": 1
     },
     {
       "id": "plant_based_fava_bean_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "fava_bean",
+      "category": "legumes",
       "ingredients": [
         "gugugaga:fava_bean",
-        "gugugaga:turnip",
-        "minecraft:baked_potato"
+        "gugugaga:peanut",
+        "minecraft:potato"
       ],
-      "output": "gugugaga:basil_tomato_flatbread",
+      "output": "gugugaga:chickpea_hummus",
+      "count": 1
+    },
+    {
+      "id": "plant_based_strawberry_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "strawberry",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:strawberry",
+        "gugugaga:cranberry",
+        "minecraft:apple"
+      ],
+      "output": "gugugaga:fruit_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_blueberry_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "blueberry",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:blueberry",
+        "gugugaga:blackberry",
+        "minecraft:sweet_berries"
+      ],
+      "output": "gugugaga:berry_pie",
+      "count": 1
+    },
+    {
+      "id": "plant_based_raspberry_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "raspberry",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:raspberry",
+        "gugugaga:blackcurrant",
+        "minecraft:glow_berries"
+      ],
+      "output": "gugugaga:grape_berry_compote",
+      "count": 1
+    },
+    {
+      "id": "plant_based_cranberry_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "cranberry",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:cranberry",
+        "gugugaga:pineapple",
+        "minecraft:melon_slice"
+      ],
+      "output": "gugugaga:blackcurrant_oat_crumble",
+      "count": 1
+    },
+    {
+      "id": "plant_based_blackberry_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "blackberry",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:blackberry",
+        "gugugaga:grape",
+        "minecraft:apple"
+      ],
+      "output": "gugugaga:fruit_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_blackcurrant_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "blackcurrant",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:blackcurrant",
+        "gugugaga:melon",
+        "minecraft:sweet_berries"
+      ],
+      "output": "gugugaga:berry_pie",
+      "count": 1
+    },
+    {
+      "id": "plant_based_pineapple_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "pineapple",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:pineapple",
+        "gugugaga:watermelon",
+        "minecraft:glow_berries"
+      ],
+      "output": "gugugaga:grape_berry_compote",
+      "count": 1
+    },
+    {
+      "id": "plant_based_grape_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "grape",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:grape",
+        "gugugaga:strawberry",
+        "minecraft:melon_slice"
+      ],
+      "output": "gugugaga:blackcurrant_oat_crumble",
+      "count": 1
+    },
+    {
+      "id": "plant_based_melon_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "melon",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:melon",
+        "gugugaga:blueberry",
+        "minecraft:apple"
+      ],
+      "output": "gugugaga:fruit_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_watermelon_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "watermelon",
+      "category": "fruits",
+      "ingredients": [
+        "gugugaga:watermelon",
+        "gugugaga:raspberry",
+        "minecraft:sweet_berries"
+      ],
+      "output": "gugugaga:berry_pie",
+      "count": 1
+    },
+    {
+      "id": "plant_based_onion_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "onion",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:onion",
+        "gugugaga:parsnip",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:root_vegetable_hash",
+      "count": 1
+    },
+    {
+      "id": "plant_based_garlic_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "garlic",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:garlic",
+        "gugugaga:leek",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:roasted_root_vegetables",
+      "count": 1
+    },
+    {
+      "id": "plant_based_radish_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "radish",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:radish",
+        "gugugaga:shallot",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_turnip_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "turnip",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:turnip",
+        "gugugaga:ginger",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:beetroot_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_sweet_potato_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "sweet_potato",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:sweet_potato",
+        "gugugaga:turmeric",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:garlic_roasted_potatoes",
+      "count": 1
+    },
+    {
+      "id": "plant_based_parsnip_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "parsnip",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:parsnip",
+        "gugugaga:kohlrabi",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_leek_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "leek",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:leek",
+        "gugugaga:rutabaga",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:root_vegetable_hash",
+      "count": 1
+    },
+    {
+      "id": "plant_based_shallot_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "shallot",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:shallot",
+        "gugugaga:jicama",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:roasted_root_vegetables",
+      "count": 1
+    },
+    {
+      "id": "plant_based_ginger_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "ginger",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:ginger",
+        "gugugaga:celeriac",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_turmeric_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "turmeric",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:turmeric",
+        "gugugaga:onion",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:beetroot_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_kohlrabi_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "kohlrabi",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:kohlrabi",
+        "gugugaga:garlic",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:garlic_roasted_potatoes",
+      "count": 1
+    },
+    {
+      "id": "plant_based_rutabaga_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "rutabaga",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:rutabaga",
+        "gugugaga:radish",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_jicama_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "jicama",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:jicama",
+        "gugugaga:turnip",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:root_vegetable_hash",
+      "count": 1
+    },
+    {
+      "id": "plant_based_celeriac_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "celeriac",
+      "category": "roots",
+      "ingredients": [
+        "gugugaga:celeriac",
+        "gugugaga:sweet_potato",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:roasted_root_vegetables",
+      "count": 1
+    },
+    {
+      "id": "plant_based_lettuce_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "lettuce",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:lettuce",
+        "gugugaga:celery",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:garden_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_cabbage_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "cabbage",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:cabbage",
+        "gugugaga:arugula",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_spinach_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "spinach",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:spinach",
+        "gugugaga:swiss_chard",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_broccoli_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "broccoli",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:broccoli",
+        "gugugaga:fennel",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:barley_vegetable_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_kale_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "kale",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:kale",
+        "gugugaga:dill",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:herb_bread",
+      "count": 1
+    },
+    {
+      "id": "plant_based_basil_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "basil",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:basil",
+        "gugugaga:cilantro",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:cucumber_mint_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_mint_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "mint",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:mint",
+        "gugugaga:parsley",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:jute_mallow_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_celery_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "celery",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:celery",
+        "gugugaga:collard_greens",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:rapini_garlic_saute",
+      "count": 1
+    },
+    {
+      "id": "plant_based_arugula_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "arugula",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:arugula",
+        "gugugaga:brussels_sprouts",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:garden_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_swiss_chard_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "swiss_chard",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:swiss_chard",
+        "gugugaga:cauliflower",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_fennel_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "fennel",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:fennel",
+        "gugugaga:bok_choy",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_dill_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "dill",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:dill",
+        "gugugaga:chives",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:barley_vegetable_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_cilantro_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "cilantro",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:cilantro",
+        "gugugaga:watercress",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:herb_bread",
+      "count": 1
+    },
+    {
+      "id": "plant_based_parsley_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "parsley",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:parsley",
+        "gugugaga:endive",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:cucumber_mint_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_collard_greens_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "collard_greens",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:collard_greens",
+        "gugugaga:chicory",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:jute_mallow_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_brussels_sprouts_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "brussels_sprouts",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:brussels_sprouts",
+        "gugugaga:mustard_greens",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:rapini_garlic_saute",
+      "count": 1
+    },
+    {
+      "id": "plant_based_cauliflower_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "cauliflower",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:cauliflower",
+        "gugugaga:water_spinach",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:garden_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_bok_choy_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "bok_choy",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:bok_choy",
+        "gugugaga:purslane",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_chives_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "chives",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:chives",
+        "gugugaga:rapini",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_watercress_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "watercress",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:watercress",
+        "gugugaga:napa_cabbage",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:barley_vegetable_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_endive_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "endive",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:endive",
+        "gugugaga:jute_mallow",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:herb_bread",
+      "count": 1
+    },
+    {
+      "id": "plant_based_chicory_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "chicory",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:chicory",
+        "gugugaga:lettuce",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:cucumber_mint_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_mustard_greens_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "mustard_greens",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:mustard_greens",
+        "gugugaga:cabbage",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:jute_mallow_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_water_spinach_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "water_spinach",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:water_spinach",
+        "gugugaga:spinach",
+        "minecraft:bread"
+      ],
+      "output": "gugugaga:rapini_garlic_saute",
+      "count": 1
+    },
+    {
+      "id": "plant_based_purslane_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "purslane",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:purslane",
+        "gugugaga:broccoli",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:garden_salad",
+      "count": 1
+    },
+    {
+      "id": "plant_based_rapini_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "rapini",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:rapini",
+        "gugugaga:kale",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_napa_cabbage_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "napa_cabbage",
+      "category": "leafy",
+      "ingredients": [
+        "gugugaga:napa_cabbage",
+        "gugugaga:basil",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:crop_stir_fry",
       "count": 1
     },
     {
       "id": "plant_based_jute_mallow_medley",
       "group": "crop_hybrid_plant_based",
       "target_crop": "jute_mallow",
+      "category": "leafy",
       "ingredients": [
         "gugugaga:jute_mallow",
-        "gugugaga:sweet_potato",
-        "minecraft:glow_berries"
+        "gugugaga:mint",
+        "minecraft:bread"
       ],
-      "output": "gugugaga:pumpkin_rice",
+      "output": "gugugaga:barley_vegetable_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_tomato_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "tomato",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:tomato",
+        "gugugaga:eggplant",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_cucumber_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "cucumber",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:cucumber",
+        "gugugaga:zucchini",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_bell_pepper_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "bell_pepper",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:bell_pepper",
+        "gugugaga:okra",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:eggplant_curry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_eggplant_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "eggplant",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:eggplant",
+        "gugugaga:chili_pepper",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:pumpkin_soup",
+      "count": 1
+    },
+    {
+      "id": "plant_based_zucchini_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "zucchini",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:zucchini",
+        "gugugaga:artichoke",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:tomato_sauce",
+      "count": 1
+    },
+    {
+      "id": "plant_based_okra_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "okra",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:okra",
+        "gugugaga:asparagus",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:stuffed_pepper",
+      "count": 1
+    },
+    {
+      "id": "plant_based_chili_pepper_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "chili_pepper",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:chili_pepper",
+        "gugugaga:pumpkin",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:chayote_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_artichoke_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "artichoke",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:artichoke",
+        "gugugaga:chayote",
+        "minecraft:kelp"
+      ],
+      "output": "gugugaga:tomato_okra_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_asparagus_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "asparagus",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:asparagus",
+        "gugugaga:tomato",
+        "minecraft:carrot"
+      ],
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_pumpkin_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "pumpkin",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:pumpkin",
+        "gugugaga:cucumber",
+        "minecraft:potato"
+      ],
+      "output": "gugugaga:vegetable_stew",
+      "count": 1
+    },
+    {
+      "id": "plant_based_chayote_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "chayote",
+      "category": "vegetables",
+      "ingredients": [
+        "gugugaga:chayote",
+        "gugugaga:bell_pepper",
+        "minecraft:beetroot"
+      ],
+      "output": "gugugaga:eggplant_curry",
+      "count": 1
+    },
+    {
+      "id": "plant_based_sunflower_seed_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "sunflower_seed",
+      "category": "seeds",
+      "ingredients": [
+        "gugugaga:sunflower_seed",
+        "gugugaga:sesame",
+        "minecraft:wheat"
+      ],
+      "output": "gugugaga:roasted_seed_mix",
+      "count": 1
+    },
+    {
+      "id": "plant_based_sesame_medley",
+      "group": "crop_hybrid_plant_based",
+      "target_crop": "sesame",
+      "category": "seeds",
+      "ingredients": [
+        "gugugaga:sesame",
+        "gugugaga:sunflower_seed",
+        "minecraft:cocoa_beans"
+      ],
+      "output": "gugugaga:peanut_sauce",
       "count": 1
     },
     {
@@ -1111,14 +1199,14 @@
       "count": 1
     },
     {
-      "id": "vanilla_plant_berry_crumble",
+      "id": "vanilla_plant_berry_pie",
       "group": "vanilla_plant_only",
       "ingredients": [
         "minecraft:sweet_berries",
         "minecraft:wheat",
         "minecraft:sugar"
       ],
-      "output": "gugugaga:blackcurrant_oat_crumble",
+      "output": "gugugaga:berry_pie",
       "count": 1
     },
     {
@@ -1138,17 +1226,17 @@
       "ingredients": [
         "minecraft:apple",
         "minecraft:wheat",
-        "minecraft:baked_potato"
+        "minecraft:sugar"
       ],
       "output": "gugugaga:grain_porridge",
       "count": 1
     },
     {
-      "id": "vanilla_plant_cocoa_bread",
+      "id": "vanilla_plant_herb_bread",
       "group": "vanilla_plant_only",
       "ingredients": [
         "minecraft:wheat",
-        "minecraft:cocoa_beans",
+        "minecraft:kelp",
         "minecraft:sugar"
       ],
       "output": "gugugaga:herb_bread",
@@ -1177,14 +1265,14 @@
       "count": 1
     },
     {
-      "id": "vanilla_plant_dried_kelp_crisp",
+      "id": "vanilla_plant_dried_kelp_chowder",
       "group": "vanilla_plant_only",
       "ingredients": [
         "minecraft:dried_kelp",
-        "minecraft:wheat",
-        "minecraft:cookie"
+        "minecraft:potato",
+        "minecraft:carrot"
       ],
-      "output": "gugugaga:roasted_seed_mix",
+      "output": "gugugaga:seaweed_potato_chowder",
       "count": 1
     },
     {

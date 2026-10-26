@@ -6,14 +6,14 @@
       "item": "gugugaga:rutabaga"
     },
     {
-      "item": "gugugaga:oat"
+      "item": "gugugaga:radish"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:cabbage_rolls",
+    "id": "gugugaga:crop_stir_fry",
     "count": 1
   }
 }

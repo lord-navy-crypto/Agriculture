@@ -6,14 +6,14 @@
       "item": "gugugaga:corn"
     },
     {
-      "item": "gugugaga:kale"
+      "item": "gugugaga:sorghum"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:garden_salad",
+    "id": "gugugaga:grain_porridge",
     "count": 1
   }
 }

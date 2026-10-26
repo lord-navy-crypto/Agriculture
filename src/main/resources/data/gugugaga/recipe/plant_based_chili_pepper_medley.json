@@ -6,14 +6,14 @@
       "item": "gugugaga:chili_pepper"
     },
     {
-      "item": "gugugaga:water_spinach"
+      "item": "gugugaga:pumpkin"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:rapini_garlic_saute",
+    "id": "gugugaga:chayote_stir_fry",
     "count": 1
   }
 }

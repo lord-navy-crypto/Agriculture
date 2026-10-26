@@ -6,14 +6,14 @@
       "item": "gugugaga:water_spinach"
     },
     {
-      "item": "gugugaga:eggplant"
+      "item": "gugugaga:spinach"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:bread"
     }
   ],
   "result": {
-    "id": "gugugaga:chickpea_hummus",
+    "id": "gugugaga:rapini_garlic_saute",
     "count": 1
   }
 }

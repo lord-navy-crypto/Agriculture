@@ -6,14 +6,14 @@
       "item": "gugugaga:parsnip"
     },
     {
-      "item": "gugugaga:watercress"
+      "item": "gugugaga:kohlrabi"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:beetroot"
     }
   ],
   "result": {
-    "id": "gugugaga:soybean_patties",
+    "id": "gugugaga:crop_stir_fry",
     "count": 1
   }
 }

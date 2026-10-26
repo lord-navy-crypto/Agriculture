@@ -6,14 +6,14 @@
       "item": "gugugaga:garlic"
     },
     {
-      "item": "gugugaga:parsnip"
+      "item": "gugugaga:leek"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:eggplant_curry",
+    "id": "gugugaga:roasted_root_vegetables",
     "count": 1
   }
 }

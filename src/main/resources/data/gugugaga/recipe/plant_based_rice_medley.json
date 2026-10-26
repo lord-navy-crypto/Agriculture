@@ -6,14 +6,14 @@
       "item": "gugugaga:rice"
     },
     {
-      "item": "gugugaga:cranberry"
+      "item": "gugugaga:millet"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:crop_stir_fry",
+    "id": "gugugaga:rice_vegetable_bowl",
     "count": 1
   }
 }

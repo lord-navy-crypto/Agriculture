@@ -6,14 +6,14 @@
       "item": "gugugaga:chickpea"
     },
     {
-      "item": "gugugaga:ginger"
+      "item": "gugugaga:black_bean"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:herbal_tea",
+    "id": "gugugaga:soybean_patties",
     "count": 1
   }
 }

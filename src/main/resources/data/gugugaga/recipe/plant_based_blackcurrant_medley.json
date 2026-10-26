@@ -6,14 +6,14 @@
       "item": "gugugaga:blackcurrant"
     },
     {
-      "item": "gugugaga:rice"
+      "item": "gugugaga:melon"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:sweet_berries"
     }
   ],
   "result": {
-    "id": "gugugaga:rice_vegetable_bowl",
+    "id": "gugugaga:berry_pie",
     "count": 1
   }
 }

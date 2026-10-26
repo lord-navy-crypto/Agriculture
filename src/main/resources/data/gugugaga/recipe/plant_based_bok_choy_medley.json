@@ -6,14 +6,14 @@
       "item": "gugugaga:bok_choy"
     },
     {
-      "item": "gugugaga:chayote"
+      "item": "gugugaga:purslane"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:cucumber_mint_salad",
+    "id": "gugugaga:vegetable_stew",
     "count": 1
   }
 }

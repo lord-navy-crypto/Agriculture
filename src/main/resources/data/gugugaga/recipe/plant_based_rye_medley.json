@@ -6,14 +6,14 @@
       "item": "gugugaga:rye"
     },
     {
-      "item": "gugugaga:okra"
+      "item": "gugugaga:amaranth"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:potato"
     }
   ],
   "result": {
-    "id": "gugugaga:fruit_salad",
+    "id": "gugugaga:cornbread",
     "count": 1
   }
 }

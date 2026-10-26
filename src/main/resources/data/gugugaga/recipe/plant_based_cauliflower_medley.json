@@ -6,14 +6,14 @@
       "item": "gugugaga:cauliflower"
     },
     {
-      "item": "gugugaga:purslane"
+      "item": "gugugaga:water_spinach"
     },
     {
-      "item": "minecraft:baked_potato"
+      "item": "minecraft:carrot"
     }
   ],
   "result": {
-    "id": "gugugaga:millet_fennel_pilaf",
+    "id": "gugugaga:garden_salad",
     "count": 1
   }
 }

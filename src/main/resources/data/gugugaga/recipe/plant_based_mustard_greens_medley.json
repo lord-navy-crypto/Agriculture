@@ -6,14 +6,14 @@
       "item": "gugugaga:mustard_greens"
     },
     {
-      "item": "gugugaga:broccoli"
+      "item": "gugugaga:cabbage"
     },
     {
-      "item": "minecraft:dried_kelp"
+      "item": "minecraft:kelp"
     }
   ],
   "result": {
-    "id": "gugugaga:yam_cakes",
+    "id": "gugugaga:jute_mallow_soup",
     "count": 1
   }
 }

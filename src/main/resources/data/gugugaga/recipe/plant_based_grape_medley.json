@@ -6,14 +6,14 @@
       "item": "gugugaga:grape"
     },
     {
-      "item": "gugugaga:millet"
+      "item": "gugugaga:strawberry"
     },
     {
-      "item": "minecraft:glow_berries"
+      "item": "minecraft:melon_slice"
     }
   ],
   "result": {
-    "id": "gugugaga:farmers_skillet",
+    "id": "gugugaga:blackcurrant_oat_crumble",
     "count": 1
   }
 }

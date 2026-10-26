@@ -6,14 +6,14 @@
       "item": "gugugaga:fennel"
     },
     {
-      "item": "gugugaga:jicama"
+      "item": "gugugaga:bok_choy"
     },
     {
-      "item": "minecraft:cookie"
+      "item": "minecraft:kelp"
     }
   ],
   "result": {
-    "id": "gugugaga:mung_bean_congee",
+    "id": "gugugaga:crop_stir_fry",
     "count": 1
   }
 }
