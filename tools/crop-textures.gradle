@@ -952,6 +952,12 @@ tasks.register('generateCropAssets') {
                         disc.call(image, 5, 6, 2, 1, cream)
                         disc.call(image, 10, 9, 2, 1, light)
                         put.call(image, 4, 6, greenDark); put.call(image, 9, 9, greenDark)
+                    } else if (crop == 'fava_bean') {
+                        // Broad, flattened seeds with a distinct hilum mark; not the soybean icon.
+                        disc.call(image, 5, 7, 3, 2, accent)
+                        disc.call(image, 10, 9, 3, 2, shade.call(accent, 0.72d))
+                        line.call(image, 3, 7, 4, 8, greenDark); line.call(image, 8, 9, 9, 10, greenDark)
+                        put.call(image, 5, 7, cream); put.call(image, 10, 9, cream); put.call(image, 6, 6, light)
                     } else { // soybean
                         disc.call(image, 5, 7, 2, 2, rgb.call('#9FAF62'))
                         disc.call(image, 10, 9, 2, 2, rgb.call('#B7C77A'))
@@ -1171,6 +1177,10 @@ tasks.register('generateCropAssets') {
                             put.call(image, pt[0] + 1, pt[1], light)
                         }
                     }
+                } else if (seedForm == 'capsule' && crop == 'jute_mallow') {
+                    // Jute-mallow seed is a tight cluster of tiny dark seeds, unlike the round okra seed pod.
+                    for (int[] pt : [[5,5],[8,4],[11,5],[4,8],[7,7],[10,8],[5,11],[8,10],[11,11]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#292923'))
+                    put.call(image, 6, 5, cream); put.call(image, 9, 8, shade.call(accent, 0.75d)); put.call(image, 8, 11, cream)
                 } else { // okra: many dark seeds from a ribbed capsule
                     disc.call(image, 8, 7, 3, 3, greenDark)
                     for (int[] pt : [[6,5],[8,4],[10,5],[6,8],[8,7],[10,8],[7,10],[9,10]] as int[][]) disc.call(image, pt[0], pt[1], 1, 1, rgb.call('#37352F'))
