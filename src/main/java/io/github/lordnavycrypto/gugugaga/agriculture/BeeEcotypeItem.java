@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public final class BeeEcotypeItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player,
                                                    LivingEntity target, InteractionHand hand) {
-        if (!(target instanceof Bee bee)) {
+        if (!(target instanceof Bee bee) || bee.getType() != EntityType.BEE) {
             return InteractionResult.PASS;
         }
         if (player.level().isClientSide) {
