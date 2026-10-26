@@ -44,7 +44,7 @@ def main():
     harvester_java = (AGRI / "HoneyHarvesterItem.java").read_text(encoding="utf-8")
 
     registrations = {
-        match.group(1): (match.group(2), match.group(3))
+        match.group(1): (match.group(2) + "_seeds", match.group(3))
         for match in re.finditer(
             r'crop\("([a-z0-9_]+)_crop",\s*"([a-z0-9_]+)_seeds",\s*AgricultureCropBlock\.PollinationGroup\.([A-Z]+)\)',
             agriculture_java,
