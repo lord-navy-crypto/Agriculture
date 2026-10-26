@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.3",
+  "description": "20 existing-food recipe variants using currently registered crops, vanilla ingredients, marine foods and distinctive floral honeys",
+  "alternates": [
+    {
+      "id": "sweet_potato_roast_with_clover_honey",
+      "output": "gugugaga:sweet_potato_roast",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sweet_potato",
+        "gugugaga:clover_honey_bottle",
+        "gugugaga:canola_oil"
+      ]
+    },
+    {
+      "id": "honey_berry_toast_with_blackberry_honey",
+      "output": "gugugaga:honey_berry_toast",
+      "count": 1,
+      "ingredients": [
+        "minecraft:bread",
+        "gugugaga:strawberry",
+        "gugugaga:blackberry_honey_bottle"
+      ]
+    },
+    {
+      "id": "buckwheat_pancakes_with_flower_honey",
+      "output": "gugugaga:buckwheat_pancakes",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:buckwheat",
+        "minecraft:wheat",
+        "gugugaga:buckwheat_honey_bottle"
+      ]
+    },
+    {
+      "id": "bread_from_quinoa",
+      "output": "minecraft:bread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:quinoa",
+        "gugugaga:quinoa",
+        "gugugaga:quinoa"
+      ]
+    },
+    {
+      "id": "amaranth_cookies",
+      "output": "minecraft:cookie",
+      "count": 4,
+      "ingredients": [
+        "gugugaga:amaranth",
+        "minecraft:cocoa_beans",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "pumpkin_pie_with_honey",
+      "output": "minecraft:pumpkin_pie",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:pumpkin",
+        "minecraft:egg",
+        "minecraft:honey_bottle"
+      ]
+    },
+    {
+      "id": "napa_cabbage_braise_with_bok_choy",
+      "output": "gugugaga:napa_cabbage_braise",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:napa_cabbage",
+        "gugugaga:ginger",
+        "gugugaga:bok_choy"
+      ]
+    },
+    {
+      "id": "mung_bean_congee_with_teff",
+      "output": "gugugaga:mung_bean_congee",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mung_bean",
+        "gugugaga:teff",
+        "minecraft:bowl"
+      ]
+    },
+    {
+      "id": "adzuki_soup_with_sorghum",
+      "output": "gugugaga:adzuki_bean_sweet_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:adzuki_bean",
+        "gugugaga:sorghum",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "blackcurrant_crumble_with_blueberry",
+      "output": "gugugaga:blackcurrant_oat_crumble",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:blueberry",
+        "gugugaga:oat",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "okra_stew_with_kale",
+      "output": "gugugaga:tomato_okra_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:okra",
+        "gugugaga:tomato",
+        "gugugaga:kale"
+      ]
+    },
+    {
+      "id": "seaweed_chowder_with_wakame",
+      "output": "gugugaga:seaweed_potato_chowder",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:wakame",
+        "minecraft:potato",
+        "gugugaga:oyster_mushroom"
+      ]
+    },
+    {
+      "id": "jute_mallow_soup_with_leek",
+      "output": "gugugaga:jute_mallow_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:jute_mallow",
+        "gugugaga:leek",
+        "minecraft:bowl"
+      ]
+    },
+    {
+      "id": "mushroom_barley_risotto_with_oyster",
+      "output": "gugugaga:mushroom_barley_risotto",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:barley",
+        "gugugaga:oyster_mushroom",
+        "minecraft:milk_bucket"
+      ]
+    },
+    {
+      "id": "cucumber_mint_salad_with_jicama",
+      "output": "gugugaga:cucumber_mint_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cucumber",
+        "gugugaga:mint",
+        "gugugaga:jicama"
+      ]
+    },
+    {
+      "id": "root_hash_with_kohlrabi",
+      "output": "gugugaga:root_vegetable_hash",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:kohlrabi",
+        "gugugaga:celeriac",
+        "minecraft:baked_potato"
+      ]
+    },
+    {
+      "id": "cornbread_from_millet",
+      "output": "gugugaga:cornbread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:millet",
+        "minecraft:wheat",
+        "minecraft:egg"
+      ]
+    },
+    {
+      "id": "fruit_salad_with_melon_apple",
+      "output": "gugugaga:fruit_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:melon",
+        "minecraft:apple",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "lentil_curry_with_turmeric",
+      "output": "gugugaga:lentil_curry",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lentil",
+        "gugugaga:turmeric",
+        "gugugaga:onion"
+      ]
+    },
+    {
+      "id": "rapini_saute_with_spinach",
+      "output": "gugugaga:rapini_garlic_saute",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:spinach",
+        "gugugaga:garlic",
+        "gugugaga:safflower_oil"
+      ]
+    }
+  ]
+}

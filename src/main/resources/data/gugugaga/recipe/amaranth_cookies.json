@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "cookie",
+  "ingredients": [
+    {
+      "item": "gugugaga:amaranth"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "minecraft:cookie",
+    "count": 4
+  }
+}

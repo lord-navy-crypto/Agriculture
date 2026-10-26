@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "bread",
+  "ingredients": [
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "gugugaga:quinoa"
+    }
+  ],
+  "result": {
+    "id": "minecraft:bread",
+    "count": 1
+  }
+}

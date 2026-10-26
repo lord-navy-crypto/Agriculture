@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "sweet_potato_roast",
+  "ingredients": [
+    {
+      "item": "gugugaga:sweet_potato"
+    },
+    {
+      "item": "gugugaga:clover_honey_bottle"
+    },
+    {
+      "item": "gugugaga:canola_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sweet_potato_roast",
+    "count": 1
+  }
+}

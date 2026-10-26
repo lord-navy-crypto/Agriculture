@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "jute_mallow_soup",
+  "ingredients": [
+    {
+      "item": "gugugaga:jute_mallow"
+    },
+    {
+      "item": "gugugaga:leek"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:jute_mallow_soup",
+    "count": 1
+  }
+}

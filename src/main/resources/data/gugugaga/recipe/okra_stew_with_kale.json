@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "tomato_okra_stew",
+  "ingredients": [
+    {
+      "item": "gugugaga:okra"
+    },
+    {
+      "item": "gugugaga:tomato"
+    },
+    {
+      "item": "gugugaga:kale"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_okra_stew",
+    "count": 1
+  }
+}

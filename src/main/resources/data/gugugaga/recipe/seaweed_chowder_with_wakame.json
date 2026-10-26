@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "seaweed_potato_chowder",
+  "ingredients": [
+    {
+      "item": "gugugaga:wakame"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "gugugaga:oyster_mushroom"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seaweed_potato_chowder",
+    "count": 1
+  }
+}

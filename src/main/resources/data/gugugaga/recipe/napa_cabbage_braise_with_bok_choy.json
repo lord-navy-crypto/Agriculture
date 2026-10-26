@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "napa_cabbage_braise",
+  "ingredients": [
+    {
+      "item": "gugugaga:napa_cabbage"
+    },
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "gugugaga:bok_choy"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:napa_cabbage_braise",
+    "count": 1
+  }
+}
