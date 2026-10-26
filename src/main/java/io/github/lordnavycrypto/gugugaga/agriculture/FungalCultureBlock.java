@@ -1,5 +1,6 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
+import com.mojang.serialization.MapCodec;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,14 +28,18 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /** Four-stage renewable mushroom culture harvested by hand without consuming its culture block. */
 public final class FungalCultureBlock extends BushBlock {
+    public static final MapCodec<FungalCultureBlock> CODEC = simpleCodec(FungalCultureBlock::new);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
     private static final VoxelShape SHAPE = Shapes.box(0.12D, 0.0D, 0.12D, 0.88D, 0.52D, 0.88D);
-    private final String harvestItemName;
 
-    public FungalCultureBlock(BlockBehaviour.Properties properties, String harvestItemName) {
+    public FungalCultureBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.harvestItemName = harvestItemName;
         registerDefaultState(stateDefinition.any().setValue(AGE, 0));
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -68,9 +73,21 @@ public final class FungalCultureBlock extends BushBlock {
                                             Player player, BlockHitResult hit) {
         if (state.getValue(AGE) < 3) return InteractionResult.PASS;
         if (!level.isClientSide) {
-            Item harvestItem = BuiltInRegistries.ITEM.get(
-                    ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, harvestItemName));
-            if (harvestItem != Items.AIR) Block.popResource(level, pos, new ItemStack(harvestItem, 1));
+            String cultureName = BuiltInRegistries.BLOCK.getKey(this).getPath();
+            String harvestItemName = switch (cultureName) {
+                case "shiitake_culture" -> "shiitake_mushroom";
+                case "oyster_mushroom_culture" -> "oyster_mushroom";
+                case "enoki_culture" -> "enoki_mushroom";
+                case "porcini_culture" -> "porcini_mushroom";
+                case "lion_mane_culture" -> "lion_mane_mushroom";
+                case "truffle_culture" -> "truffle";
+                default -> "";
+            };
+            if (!harvestItemName.isEmpty()) {
+                Item harvestItem = BuiltInRegistries.ITEM.get(
+                        ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, harvestItemName));
+                if (harvestItem != Items.AIR) Block.popResource(level, pos, new ItemStack(harvestItem, 1));
+            }
             level.setBlock(pos, state.setValue(AGE, 1), 3);
         }
         return InteractionResult.SUCCESS;

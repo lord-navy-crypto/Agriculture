@@ -47,17 +47,17 @@ public final class MarineFungiContent {
     public static final DeferredItem<Item> LION_MANE_STEAK = food("lion_mane_steak", 8, 0.90F);
     public static final DeferredItem<Item> MUSHROOM_SAUCE = food("mushroom_sauce", 4, 0.50F);
 
-    public static final DeferredBlock<FungalCultureBlock> SHIITAKE_CULTURE = culture("shiitake_culture", "shiitake_mushroom");
+    public static final DeferredBlock<FungalCultureBlock> SHIITAKE_CULTURE = culture("shiitake_culture");
     public static final DeferredItem<BlockItem> SHIITAKE_CULTURE_ITEM = cultureItem("shiitake_culture", SHIITAKE_CULTURE);
-    public static final DeferredBlock<FungalCultureBlock> OYSTER_MUSHROOM_CULTURE = culture("oyster_mushroom_culture", "oyster_mushroom");
+    public static final DeferredBlock<FungalCultureBlock> OYSTER_MUSHROOM_CULTURE = culture("oyster_mushroom_culture");
     public static final DeferredItem<BlockItem> OYSTER_MUSHROOM_CULTURE_ITEM = cultureItem("oyster_mushroom_culture", OYSTER_MUSHROOM_CULTURE);
-    public static final DeferredBlock<FungalCultureBlock> ENOKI_CULTURE = culture("enoki_culture", "enoki_mushroom");
+    public static final DeferredBlock<FungalCultureBlock> ENOKI_CULTURE = culture("enoki_culture");
     public static final DeferredItem<BlockItem> ENOKI_CULTURE_ITEM = cultureItem("enoki_culture", ENOKI_CULTURE);
-    public static final DeferredBlock<FungalCultureBlock> PORCINI_CULTURE = culture("porcini_culture", "porcini_mushroom");
+    public static final DeferredBlock<FungalCultureBlock> PORCINI_CULTURE = culture("porcini_culture");
     public static final DeferredItem<BlockItem> PORCINI_CULTURE_ITEM = cultureItem("porcini_culture", PORCINI_CULTURE);
-    public static final DeferredBlock<FungalCultureBlock> LION_MANE_CULTURE = culture("lion_mane_culture", "lion_mane_mushroom");
+    public static final DeferredBlock<FungalCultureBlock> LION_MANE_CULTURE = culture("lion_mane_culture");
     public static final DeferredItem<BlockItem> LION_MANE_CULTURE_ITEM = cultureItem("lion_mane_culture", LION_MANE_CULTURE);
-    public static final DeferredBlock<FungalCultureBlock> TRUFFLE_CULTURE = culture("truffle_culture", "truffle");
+    public static final DeferredBlock<FungalCultureBlock> TRUFFLE_CULTURE = culture("truffle_culture");
     public static final DeferredItem<BlockItem> TRUFFLE_CULTURE_ITEM = cultureItem("truffle_culture", TRUFFLE_CULTURE);
 
     private static DeferredItem<Item> food(String name, int nutrition, float saturation) {
@@ -70,11 +70,10 @@ public final class MarineFungiContent {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
-    private static DeferredBlock<FungalCultureBlock> culture(String name, String harvestItem) {
+    private static DeferredBlock<FungalCultureBlock> culture(String name) {
         return BLOCKS.register(name, () -> new FungalCultureBlock(
                 BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
-                        .noCollission().randomTicks().instabreak().sound(SoundType.CROP),
-                harvestItem));
+                        .noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
     }
 
     private static DeferredItem<BlockItem> cultureItem(String name, DeferredBlock<? extends Block> block) {

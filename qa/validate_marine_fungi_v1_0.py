@@ -44,7 +44,8 @@ def main():
     for row in cultures:
         culture_id = row["id"]
         constant = culture_id.upper()
-        assert f'{constant} = culture("{culture_id}", "{row["harvest_item"]}")' in registry
+        assert f'{constant} = culture("{culture_id}")' in registry
+        assert f'case "{culture_id}" -> "{row["harvest_item"]}"' in culture_java
         assert f"public static final DeferredItem<BlockItem> {constant}_ITEM" in registry
         assert f"block.gugugaga.{culture_id}" in en and f"block.gugugaga.{culture_id}" in zh
         assert f"item.gugugaga.{culture_id}" in en and f"item.gugugaga.{culture_id}" in zh
