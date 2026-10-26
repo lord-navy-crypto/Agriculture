@@ -27,7 +27,7 @@ def main():
 
     source = SOURCE.read_text(encoding="utf-8")
     sources_block = source.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
-    specific_sources = set(re.findall(r'"([a-z0-9_]+_crop)"', sources_block))
+    specific_sources = set(re.findall(r'"(?:gugugaga:)?([a-z0-9_]+_crop)"', sources_block))
     exclusions_block = source.split("private static final Set<String> NON_NECTAR_CROPS = Set.of(", 1)[1].split(");", 1)[0]
     non_nectar = set(re.findall(r'"([a-z0-9_]+_crop)"', exclusions_block))
 

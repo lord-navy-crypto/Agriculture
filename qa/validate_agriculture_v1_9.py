@@ -75,6 +75,7 @@ def main():
         assert model["textures"]["layer0"] == f"gugugaga:item/honey/{item}"
     source_block = (SRC / "NectarHoneySource.java").read_text(encoding="utf-8").split("private static final String[] SOURCES = {",1)[1].split("};",1)[0]
     routed = set(re.findall(r'"([^"]+)"', source_block))
+    routed = {route.removeprefix("gugugaga:") for route in routed}
     expected = {row["source_crop"] for row in honey["honey_variants"] if row["source_crop"] != "mixed_flower_forage"}
     assert routed == expected and len(routed) == 45
     print("AGRICULTURE_CATALOG_V2_0_OK: 96 crop cycles; 1152 stage/model assets; 192 crop icons; 46 honey variants / 45 forage routes")

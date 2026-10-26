@@ -75,6 +75,7 @@ def main():
     # Source identifiers in data must match the exact identifiers scanned at harvest.
     source_block = source_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
     routed_sources = set(re.findall(r'"([^"]+)"', source_block))
+    routed_sources = {route.removeprefix("gugugaga:") for route in routed_sources}
     expected_sources = {
         row["source_crop"] for row in variants
         if row["source_crop"] != "mixed_flower_forage"

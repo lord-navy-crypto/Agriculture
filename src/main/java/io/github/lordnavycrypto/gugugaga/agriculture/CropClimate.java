@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 public final class CropClimate {
     private CropClimate() {}
     private enum Band { COOL, TEMPERATE, WARM, DRY, WET }
+    private static final int[] WATER_CHECK_DY_ORDER = {0, -1, 1};
 
     /** Published minimum seed-germination soil temperatures, Fahrenheit, where available. */
     private static final Map<String, Integer> MIN_GERMINATION_F = Map.of(
@@ -106,21 +107,35 @@ public final class CropClimate {
      */
     private static boolean hasNearbyFreshWater(ServerLevel level, BlockPos cropPos,
                                                int radius, int minDy, int maxDy) {
-        // Reuse one mutable coordinate rather than allocating a BlockPos for every sample.
+        // Probe the center and nearby columns first: normal irrigated plots usually
+        // find water quickly. Each x/z column shares the same chunk-loaded result.
+        // The square and vertical bounds are unchanged; this only changes probe order.
         BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
-        for (int dx = -radius; dx <= radius; dx++) {
-            for (int dz = -radius; dz <= radius; dz++) {
-                for (int dy = minDy; dy <= maxDy; dy++) {
-                    candidate.set(cropPos.getX() + dx,
-                            cropPos.getY() + dy, cropPos.getZ() + dz);
-                    if (level.hasChunkAt(candidate)
-                            && level.getFluidState(candidate).is(FluidTags.WATER)) {
-                        return true;
+        for (int ring = 0; ring <= radius; ring++) {
+            for (int dx = -ring; dx <= ring; dx++) {
+                for (int dz = -ring; dz <= ring; dz++) {
+                    if (ring != 0 && dx != -ring && dx != ring
+                            && dz != -ring && dz != ring) {
+                        continue;
+                    }
+                    int x = cropPos.getX() + dx;
+                    int z = cropPos.getZ() + dz;
+                    candidate.set(x, cropPos.getY(), z);
+                    if (!level.hasChunkAt(candidate)) {
+                        continue;
+                    }
+                    for (int dy : WATER_CHECK_DY_ORDER) {
+                        if (dy < minDy || dy > maxDy) {
+                            continue;
+                        }
+                        candidate.set(x, cropPos.getY() + dy, z);
+                        if (level.getFluidState(candidate).is(FluidTags.WATER)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
         return false;
     }
-
 }

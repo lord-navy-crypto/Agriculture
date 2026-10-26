@@ -74,23 +74,18 @@ public final class AgricultureCropBlock extends CropBlock {
             return;
         }
         boolean growthAllowed = CropClimate.allowGrowth(seedName, level, pos, random);
-
-        BlockState current = level.getBlockState(pos);
         if (pollinationGroup != PollinationGroup.NONE
-                && !current.getValue(POLLINATED)
-                && current.getValue(AGE) >= 4
-                && current.getValue(AGE) < getMaxAge()
+                && !state.getValue(POLLINATED)
+                && state.getValue(AGE) >= 4
+                && state.getValue(AGE) < getMaxAge()
                 && random.nextInt(3) == 0) {
             // The crop is queried only during flowering/reproductive stages and only
             // until pollinated. This avoids a per-tick entity scan or background task.
             AABB searchArea = new AABB(pos).inflate(6.0D, 3.0D, 6.0D);
-            for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, Bee::isAlive)) {
+            for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, bee -> bee.isAlive() && bee.hasNectar())) {
                 // Recent flower foraging is necessary; mere nearby bees do not
                 // grant pollination. Vanilla nectar is a pollen-carrying proxy,
                 // not evidence of a visit to the exact crop species.
-                if (!bee.hasNectar()) {
-                    continue;
-                }
                 String ecotype = bee.getPersistentData().getString(BeeEcotypeItem.DATA_KEY);
                 String species = BuiltInRegistries.ENTITY_TYPE.getKey(bee.getType()).getPath();
                 if (!compatibleSpecies(species, ecotype)) {
@@ -180,7 +175,7 @@ public final class AgricultureCropBlock extends CropBlock {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        List<ItemStack> drops = new ArrayList<>(super.getDrops(state, builder));
+        List<ItemStack> drops = super.getDrops(state, builder);
         if (pollinationGroup != PollinationGroup.NONE
                 && state.getValue(AGE) == getMaxAge()
                 && state.getValue(POLLINATED)) {
@@ -189,6 +184,7 @@ public final class AgricultureCropBlock extends CropBlock {
                     ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, produceName));
             ItemStack bonusProduce = new ItemStack(produce);
             if (!bonusProduce.isEmpty()) {
+                drops = new ArrayList<>(drops);
                 drops.add(bonusProduce);
             }
         }

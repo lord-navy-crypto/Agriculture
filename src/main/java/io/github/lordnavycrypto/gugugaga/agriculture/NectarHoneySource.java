@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,25 +33,37 @@ public final class NectarHoneySource {
 
     // This order is intentionally stable for tie handling.
     private static final String[] SOURCES = {
-            "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop",
+            "gugugaga:clover_crop", "gugugaga:lavender_crop", "gugugaga:buckwheat_crop", "gugugaga:sunflower_seed_crop",
             "minecraft:dandelion", "minecraft:poppy", "minecraft:allium", "minecraft:cornflower",
             "minecraft:azure_bluet", "minecraft:blue_orchid", "minecraft:lily_of_the_valley", "minecraft:oxeye_daisy",
             "minecraft:torchflower", "minecraft:red_tulip", "minecraft:orange_tulip", "minecraft:white_tulip",
             "minecraft:pink_tulip", "minecraft:wither_rose",
-            "blackberry_crop", "blackcurrant_crop", "chives_crop", "pumpkin_crop",
-            "cassava_crop", "taro_crop", "yam_crop", "watercress_crop", "endive_crop",
-            "kohlrabi_crop", "rutabaga_crop",
-            "jicama_crop",
-            "adzuki_bean_crop",
-            "mung_bean_crop",
-            "cowpea_crop",
-            "safflower_crop",
-            "chicory_crop",
-            "mustard_greens_crop",
-            "water_spinach_crop", "celeriac_crop", "purslane_crop", "chayote_crop",
-            "grape_crop", "tea_crop", "coffee_crop", "rapini_crop", "napa_cabbage_crop"
+            "gugugaga:blackberry_crop", "gugugaga:blackcurrant_crop", "gugugaga:chives_crop", "gugugaga:pumpkin_crop",
+            "gugugaga:cassava_crop", "gugugaga:taro_crop", "gugugaga:yam_crop", "gugugaga:watercress_crop", "gugugaga:endive_crop",
+            "gugugaga:kohlrabi_crop", "gugugaga:rutabaga_crop",
+            "gugugaga:jicama_crop",
+            "gugugaga:adzuki_bean_crop",
+            "gugugaga:mung_bean_crop",
+            "gugugaga:cowpea_crop",
+            "gugugaga:safflower_crop",
+            "gugugaga:chicory_crop",
+            "gugugaga:mustard_greens_crop",
+            "gugugaga:water_spinach_crop", "gugugaga:celeriac_crop", "gugugaga:purslane_crop", "gugugaga:chayote_crop",
+            "gugugaga:grape_crop", "gugugaga:tea_crop", "gugugaga:coffee_crop", "gugugaga:rapini_crop", "gugugaga:napa_cabbage_crop"
     };
 
+
+    private static final Map<String, Integer> SOURCE_INDEX = createSourceIndex();
+
+    private static Map<String, Integer> createSourceIndex() {
+        Map<String, Integer> index = new HashMap<>(SOURCES.length * 2);
+        for (int i = 0; i < SOURCES.length; i++) {
+            if (index.put(SOURCES[i], i) != null) {
+                throw new IllegalStateException("Duplicate floral honey source: " + SOURCES[i]);
+            }
+        }
+        return Map.copyOf(index);
+    }
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
         int[] sourceCounts = new int[SOURCES.length];
         int otherFlowers = 0;
@@ -69,18 +83,14 @@ public final class NectarHoneySource {
                         // Late crop stages stand in for flowering only; the selected source
                         // can be overridden by the surrounding mixed nectar forage.
                         if (state.getValue(AgricultureCropBlock.AGE) < 5) continue;
-                        String cropId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath();
-                        boolean matched = false;
-                        for (int i = 0; i < SOURCES.length; i++) {
-                            if (SOURCES[i].equals(cropId)) {
-                                sourceCounts[i]++;
-                                matched = true;
-                                break;
-                            }
-                        }
-                        if (!matched && isOtherNectarCrop(cropId)) {
+                        var cropResource = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+                        String cropId = cropResource.getPath();
+                        Integer sourceIndex = SOURCE_INDEX.get(cropResource.toString());
+                        if (sourceIndex != null) {
+                            sourceCounts[sourceIndex]++;
+                        } else if (isOtherNectarCrop(cropId)) {
                             otherFlowers++;
-                            otherFlowerKinds.add(cropId);
+                            otherFlowerKinds.add(cropResource.toString());
                         }
                     } else if (state.is(BlockTags.FLOWERS)) {
                         // Vanilla flowers can now produce distinct honey types too.
@@ -88,16 +98,13 @@ public final class NectarHoneySource {
                         // a Minecraft vanilla flower.
                         var flowerId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
                         String identifier = flowerId.toString();
-                        boolean matched = false;
-                        for (int i = 0; i < SOURCES.length; i++) {
-                            if (SOURCES[i].equals(identifier)) {
-                                sourceCounts[i]++;
-                                matched = true;
-                                break;
-                            }
+                        Integer sourceIndex = SOURCE_INDEX.get(identifier);
+                        if (sourceIndex != null) {
+                            sourceCounts[sourceIndex]++;
+                        } else {
+                            otherFlowers++;
+                            otherFlowerKinds.add(identifier);
                         }
-                        if (!matched) otherFlowers++;
-                        if (!matched) otherFlowerKinds.add(identifier);
                     }
                 }
             }

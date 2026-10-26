@@ -77,6 +77,13 @@ def main():
     assert '"chayote_seeds", "grape_seeds"' in fruit_block
     assert "crop_additions_v2_0.json" in generator
     assert "honey_sources_v1_1.json" in generator
+    assert "SOURCE_INDEX.get(cropResource.toString())" in nectar_java
+    assert "SOURCE_INDEX.get(identifier)" in nectar_java
+    assert not re.search(r'"[a-z0-9_]+_crop"', source_block)
+    assert "bee -> bee.isAlive() && bee.hasNectar()" in crop_java
+    assert "List<ItemStack> drops = super.getDrops(state, builder);" in crop_java
+    assert "new ArrayList<>(super.getDrops(state, builder))" not in crop_java
+    assert "for (int ring = 0; ring <= radius; ring++)" in climate
     assert "cropIds.size() != 96" in generator
     assert "modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192" in generator
     assert "matureTextureHashes.size() != 96" in generator and "allStageHashes.size() != 1152" in generator
@@ -92,7 +99,7 @@ def main():
     for crop, item in HONEY_ITEMS.items():
         row = rows[item]
         assert row["source_crop"] == f"{crop}_crop"
-        assert f'"{crop}_crop"' in source_block
+        assert f'"gugugaga:{crop}_crop"' in source_block
         assert f'floralHoney("{item}")' in bee_java
         assert f'case "{item}" ->' in bee_java
         assert f"BeeContent.{item.removesuffix('_honey_bottle').upper()}_HONEY_BOTTLE.get()" in nectar_java
