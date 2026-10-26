@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sea_lettuce"
+    },
+    {
+      "item": "gugugaga:nori_sheet"
+    },
+    {
+      "item": "gugugaga:dulse"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seaweed_salad",
+    "count": 2
+  }
+}

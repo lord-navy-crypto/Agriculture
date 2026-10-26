@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "gugugaga:cooking/culinary_herbs"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "gugugaga:garlic"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herb_bread",
+    "count": 1
+  }
+}

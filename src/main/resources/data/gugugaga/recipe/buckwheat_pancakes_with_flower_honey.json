@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "buckwheat_pancakes",
+  "ingredients": [
+    {
+      "item": "gugugaga:buckwheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "gugugaga:buckwheat_honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:buckwheat_pancakes",
+    "count": 1
+  }
+}

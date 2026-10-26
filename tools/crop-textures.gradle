@@ -1807,6 +1807,7 @@ tasks.register('generateCropAssets') {
             throw new GradleException('All 50 honey variants must have unique custom bottle sprites')
         }
 
+
         if (modelCount != 1200 || blockTextureCount != 1200 || itemTextureCount != 200) {
             throw new GradleException('Unexpected crop asset count: models=' + modelCount + ', block textures=' + blockTextureCount + ', item textures=' + itemTextureCount)
         }
@@ -1873,7 +1874,7 @@ tasks.register('generateCropAssets') {
         }
         writeItemContactSheet.call(false)
         writeItemContactSheet.call(true)
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 96 crops; 8 unique stages each; 4 pollen-marked stages per crop; 192 organ-specific item icons; 1152 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 100 crops; 8 unique stages each; 4 pollen-marked stages per crop; 200 organ-specific item icons; 1200 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
     }
 }
 tasks.named('processResources').configure {

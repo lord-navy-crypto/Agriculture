@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:safflower"
+    },
+    {
+      "item": "gugugaga:safflower"
+    },
+    {
+      "item": "gugugaga:safflower"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:safflower_oil",
+    "count": 1
+  }
+}

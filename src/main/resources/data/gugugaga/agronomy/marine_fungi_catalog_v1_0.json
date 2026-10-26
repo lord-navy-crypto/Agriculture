@@ -1,0 +1,846 @@
+{
+  "schema_version": "1.0",
+  "design_note": "First gameplay pass for renewable marine plant processing, fish-based meals, and regrowable fungal culture blocks. Recipes are gameplay abstractions, not claims that one species naturally turns into another.",
+  "items": [
+    {
+      "id": "sea_lettuce",
+      "english_name": "Sea Lettuce",
+      "chinese_name": "海生莴苣藻",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25,
+      "group": "marine_plant",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_plant gameplay system.",
+      "palette": {
+        "base": "#3C9C6B",
+        "highlight": "#73C995",
+        "shadow": "#205D4C",
+        "accent": "#D2E5A6"
+      }
+    },
+    {
+      "id": "wakame",
+      "english_name": "Wakame",
+      "chinese_name": "裙带菜",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25,
+      "group": "marine_plant",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_plant gameplay system.",
+      "palette": {
+        "base": "#4E7653",
+        "highlight": "#8FA76A",
+        "shadow": "#293F38",
+        "accent": "#D3B85D"
+      }
+    },
+    {
+      "id": "nori_sheet",
+      "english_name": "Nori Sheet",
+      "chinese_name": "紫菜片",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.3,
+      "group": "marine_plant",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_plant gameplay system.",
+      "palette": {
+        "base": "#234C3A",
+        "highlight": "#3F7753",
+        "shadow": "#142C26",
+        "accent": "#9CB56A"
+      }
+    },
+    {
+      "id": "dulse",
+      "english_name": "Dulse",
+      "chinese_name": "掌状红皮藻",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25,
+      "group": "marine_plant",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_plant gameplay system.",
+      "palette": {
+        "base": "#9A3F63",
+        "highlight": "#D36D84",
+        "shadow": "#51273F",
+        "accent": "#F1B4A6"
+      }
+    },
+    {
+      "id": "kelp_flakes",
+      "english_name": "Kelp Flakes",
+      "chinese_name": "海带碎",
+      "food": false,
+      "nutrition": 0,
+      "saturation_modifier": 0,
+      "group": "marine_plant",
+      "acquisition_note": "Non-food ingredient used to prepare marine or fungal foods.",
+      "palette": {
+        "base": "#4A6B35",
+        "highlight": "#8BA34A",
+        "shadow": "#253C28",
+        "accent": "#D4C76A"
+      }
+    },
+    {
+      "id": "fish_fillet",
+      "english_name": "Fish Fillet",
+      "chinese_name": "鱼柳",
+      "food": true,
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "seafood",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the seafood gameplay system.",
+      "palette": {
+        "base": "#D77D72",
+        "highlight": "#F2B6A2",
+        "shadow": "#854A50",
+        "accent": "#F3D3B5"
+      }
+    },
+    {
+      "id": "seafood_broth",
+      "english_name": "Seafood Broth",
+      "chinese_name": "海鲜汤底",
+      "food": true,
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "seafood_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the seafood_food gameplay system.",
+      "palette": {
+        "base": "#B26C43",
+        "highlight": "#E5B26A",
+        "shadow": "#5E4938",
+        "accent": "#F4D9A2"
+      }
+    },
+    {
+      "id": "seaweed_salad",
+      "english_name": "Seaweed Salad",
+      "chinese_name": "海藻沙拉",
+      "food": true,
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "marine_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_food gameplay system.",
+      "palette": {
+        "base": "#397A4F",
+        "highlight": "#7DB96D",
+        "shadow": "#204836",
+        "accent": "#D7C66E"
+      }
+    },
+    {
+      "id": "nori_rice_roll",
+      "english_name": "Nori Rice Roll",
+      "chinese_name": "紫菜饭卷",
+      "food": true,
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "marine_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_food gameplay system.",
+      "palette": {
+        "base": "#2B4A35",
+        "highlight": "#F1E8C9",
+        "shadow": "#173027",
+        "accent": "#E17C55"
+      }
+    },
+    {
+      "id": "seafood_rice_bowl",
+      "english_name": "Seafood Rice Bowl",
+      "chinese_name": "海鲜盖饭",
+      "food": true,
+      "nutrition": 8,
+      "saturation_modifier": 0.85,
+      "group": "marine_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the marine_food gameplay system.",
+      "palette": {
+        "base": "#C49C58",
+        "highlight": "#F0D88C",
+        "shadow": "#6B4D38",
+        "accent": "#D86F5D"
+      }
+    },
+    {
+      "id": "grilled_fish_skewer",
+      "english_name": "Grilled Fish Skewer",
+      "chinese_name": "烤鱼串",
+      "food": true,
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "seafood",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the seafood gameplay system.",
+      "palette": {
+        "base": "#B96C45",
+        "highlight": "#E8B278",
+        "shadow": "#70402D",
+        "accent": "#8A4E33"
+      }
+    },
+    {
+      "id": "mushroom_spores",
+      "english_name": "Mushroom Spores",
+      "chinese_name": "蘑菇孢子",
+      "food": false,
+      "nutrition": 0,
+      "saturation_modifier": 0,
+      "group": "fungal_material",
+      "acquisition_note": "Non-food ingredient used to prepare marine or fungal foods.",
+      "palette": {
+        "base": "#9B8869",
+        "highlight": "#E0D2B2",
+        "shadow": "#4D473B",
+        "accent": "#A5B86D"
+      }
+    },
+    {
+      "id": "shiitake_mushroom",
+      "english_name": "Shiitake Mushroom",
+      "chinese_name": "香菇",
+      "food": true,
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#9A6547",
+        "highlight": "#D0A77D",
+        "shadow": "#4B3429",
+        "accent": "#E8D2B3"
+      }
+    },
+    {
+      "id": "oyster_mushroom",
+      "english_name": "Oyster Mushroom",
+      "chinese_name": "平菇",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.3,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#D2C7B3",
+        "highlight": "#F3E8D5",
+        "shadow": "#7A6C5C",
+        "accent": "#A2B78D"
+      }
+    },
+    {
+      "id": "enoki_mushroom",
+      "english_name": "Enoki Mushroom",
+      "chinese_name": "金针菇",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#F1E5C9",
+        "highlight": "#FFF7E5",
+        "shadow": "#A7A08C",
+        "accent": "#C8B56A"
+      }
+    },
+    {
+      "id": "porcini_mushroom",
+      "english_name": "Porcini Mushroom",
+      "chinese_name": "牛肝菌",
+      "food": true,
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#9A6A46",
+        "highlight": "#D3A878",
+        "shadow": "#4B3529",
+        "accent": "#E8D8A6"
+      }
+    },
+    {
+      "id": "lion_mane_mushroom",
+      "english_name": "Lion's Mane Mushroom",
+      "chinese_name": "猴头菇",
+      "food": true,
+      "nutrition": 3,
+      "saturation_modifier": 0.4,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#E7D8B6",
+        "highlight": "#FFF2D5",
+        "shadow": "#9B896A",
+        "accent": "#D7B65A"
+      }
+    },
+    {
+      "id": "truffle",
+      "english_name": "Truffle",
+      "chinese_name": "松露",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25,
+      "group": "fungus",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungus gameplay system.",
+      "palette": {
+        "base": "#4D4038",
+        "highlight": "#8B7562",
+        "shadow": "#282320",
+        "accent": "#C0A06A"
+      }
+    },
+    {
+      "id": "mushroom_medley",
+      "english_name": "Wild Mushroom Medley",
+      "chinese_name": "杂菌拼盘",
+      "food": true,
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#92704D",
+        "highlight": "#D6B38A",
+        "shadow": "#4C3A2B",
+        "accent": "#A9B96A"
+      }
+    },
+    {
+      "id": "mushroom_rice_bowl",
+      "english_name": "Mushroom Rice Bowl",
+      "chinese_name": "蘑菇饭",
+      "food": true,
+      "nutrition": 7,
+      "saturation_modifier": 0.8,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#A48B66",
+        "highlight": "#E4D3A8",
+        "shadow": "#5C4A39",
+        "accent": "#8EA95E"
+      }
+    },
+    {
+      "id": "enoki_soup",
+      "english_name": "Enoki Soup",
+      "chinese_name": "金针菇汤",
+      "food": true,
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#E8DCC4",
+        "highlight": "#FFF5DF",
+        "shadow": "#A69A83",
+        "accent": "#D8B45A"
+      }
+    },
+    {
+      "id": "truffle_pasta",
+      "english_name": "Truffle Pasta",
+      "chinese_name": "松露意面",
+      "food": true,
+      "nutrition": 8,
+      "saturation_modifier": 0.9,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#B78B50",
+        "highlight": "#E8C77A",
+        "shadow": "#69452F",
+        "accent": "#554033"
+      }
+    },
+    {
+      "id": "lion_mane_steak",
+      "english_name": "Lion's Mane Steak",
+      "chinese_name": "猴头菇排",
+      "food": true,
+      "nutrition": 8,
+      "saturation_modifier": 0.9,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#B86D47",
+        "highlight": "#E8A56D",
+        "shadow": "#6A3D2D",
+        "accent": "#F2D0A0"
+      }
+    },
+    {
+      "id": "mushroom_sauce",
+      "english_name": "Porcini Mushroom Sauce",
+      "chinese_name": "牛肝菌酱",
+      "food": true,
+      "nutrition": 4,
+      "saturation_modifier": 0.5,
+      "group": "fungal_food",
+      "acquisition_note": "Craftable or harvestable renewable food ingredient in the fungal_food gameplay system.",
+      "palette": {
+        "base": "#9B6A49",
+        "highlight": "#D4A879",
+        "shadow": "#4B3529",
+        "accent": "#F1D7A2"
+      }
+    }
+  ],
+  "cultures": [
+    {
+      "id": "shiitake_culture",
+      "english_name": "Shiitake Culture",
+      "chinese_name": "香菇菌床",
+      "harvest_item": "shiitake_mushroom",
+      "substrate": "oak_log",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#8B5B3C",
+        "highlight": "#D3A878",
+        "shadow": "#3F2E25",
+        "accent": "#F0D9B3"
+      }
+    },
+    {
+      "id": "oyster_mushroom_culture",
+      "english_name": "Oyster Mushroom Culture",
+      "chinese_name": "平菇菌床",
+      "harvest_item": "oyster_mushroom",
+      "substrate": "birch_log",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#C8BDA8",
+        "highlight": "#F4E9D5",
+        "shadow": "#74695C",
+        "accent": "#A4B78B"
+      }
+    },
+    {
+      "id": "enoki_culture",
+      "english_name": "Enoki Culture",
+      "chinese_name": "金针菇菌床",
+      "harvest_item": "enoki_mushroom",
+      "substrate": "spruce_log",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#E9DCC0",
+        "highlight": "#FFF7E5",
+        "shadow": "#A79A80",
+        "accent": "#C9B46B"
+      }
+    },
+    {
+      "id": "porcini_culture",
+      "english_name": "Porcini Culture",
+      "chinese_name": "牛肝菌菌床",
+      "harvest_item": "porcini_mushroom",
+      "substrate": "podzol",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#986742",
+        "highlight": "#D4A879",
+        "shadow": "#4B3428",
+        "accent": "#E8D8A6"
+      }
+    },
+    {
+      "id": "lion_mane_culture",
+      "english_name": "Lion's Mane Culture",
+      "chinese_name": "猴头菇菌床",
+      "harvest_item": "lion_mane_mushroom",
+      "substrate": "bone_meal",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#E4D5B5",
+        "highlight": "#FFF3D8",
+        "shadow": "#98866A",
+        "accent": "#D6B65B"
+      }
+    },
+    {
+      "id": "truffle_culture",
+      "english_name": "Truffle Culture",
+      "chinese_name": "松露菌床",
+      "harvest_item": "truffle",
+      "substrate": "rooted_dirt",
+      "growth_stages": 4,
+      "harvest_resets_to_age": 1,
+      "palette": {
+        "base": "#514238",
+        "highlight": "#947A64",
+        "shadow": "#28221E",
+        "accent": "#C4A06A"
+      }
+    }
+  ],
+  "recipes": [
+    {
+      "id": "sea_lettuce",
+      "output_item": "sea_lettuce",
+      "count": 1,
+      "ingredients": [
+        "minecraft:seagrass",
+        "minecraft:kelp"
+      ]
+    },
+    {
+      "id": "wakame",
+      "output_item": "wakame",
+      "count": 2,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:kelp",
+        "minecraft:seagrass"
+      ]
+    },
+    {
+      "id": "nori_sheet",
+      "output_item": "nori_sheet",
+      "count": 2,
+      "ingredients": [
+        "minecraft:dried_kelp",
+        "minecraft:paper"
+      ]
+    },
+    {
+      "id": "dulse",
+      "output_item": "dulse",
+      "count": 2,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:red_dye"
+      ]
+    },
+    {
+      "id": "kelp_flakes",
+      "output_item": "kelp_flakes",
+      "count": 2,
+      "ingredients": [
+        "minecraft:dried_kelp"
+      ]
+    },
+    {
+      "id": "fish_fillet_from_cod",
+      "output_item": "fish_fillet",
+      "count": 2,
+      "ingredients": [
+        "minecraft:cod"
+      ]
+    },
+    {
+      "id": "fish_fillet_from_salmon",
+      "output_item": "fish_fillet",
+      "count": 2,
+      "ingredients": [
+        "minecraft:salmon"
+      ]
+    },
+    {
+      "id": "seafood_broth",
+      "output_item": "seafood_broth",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:kelp_flakes",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "seaweed_salad",
+      "output_item": "seaweed_salad",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:sea_lettuce",
+        "gugugaga:wakame",
+        "gugugaga:dulse"
+      ]
+    },
+    {
+      "id": "nori_rice_roll",
+      "output_item": "nori_rice_roll",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:nori_sheet",
+        "gugugaga:rice",
+        "gugugaga:fish_fillet"
+      ]
+    },
+    {
+      "id": "seafood_rice_bowl",
+      "output_item": "seafood_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "minecraft:cooked_cod",
+        "gugugaga:rice"
+      ]
+    },
+    {
+      "id": "grilled_fish_skewer",
+      "output_item": "grilled_fish_skewer",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "minecraft:stick"
+      ]
+    },
+    {
+      "id": "mushroom_spores",
+      "output_item": "mushroom_spores",
+      "count": 2,
+      "ingredients": [
+        "minecraft:brown_mushroom",
+        "minecraft:wheat_seeds"
+      ]
+    },
+    {
+      "id": "shiitake_culture",
+      "output_item": "shiitake_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:oak_log"
+      ]
+    },
+    {
+      "id": "oyster_mushroom_culture",
+      "output_item": "oyster_mushroom_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:birch_log"
+      ]
+    },
+    {
+      "id": "enoki_culture",
+      "output_item": "enoki_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:spruce_log"
+      ]
+    },
+    {
+      "id": "porcini_culture",
+      "output_item": "porcini_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:podzol"
+      ]
+    },
+    {
+      "id": "lion_mane_culture",
+      "output_item": "lion_mane_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:bone_meal"
+      ]
+    },
+    {
+      "id": "truffle_culture",
+      "output_item": "truffle_culture",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mushroom_spores",
+        "minecraft:rooted_dirt"
+      ]
+    },
+    {
+      "id": "mushroom_medley",
+      "output_item": "mushroom_medley",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:oyster_mushroom",
+        "gugugaga:enoki_mushroom"
+      ]
+    },
+    {
+      "id": "mushroom_rice_bowl",
+      "output_item": "mushroom_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:rice",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "enoki_soup",
+      "output_item": "enoki_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:enoki_mushroom",
+        "minecraft:carrot",
+        "minecraft:wheat"
+      ]
+    },
+    {
+      "id": "truffle_pasta",
+      "output_item": "truffle_pasta",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:truffle",
+        "minecraft:wheat",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "lion_mane_steak",
+      "output_item": "lion_mane_steak",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lion_mane_mushroom",
+        "minecraft:beetroot",
+        "minecraft:wheat"
+      ]
+    },
+    {
+      "id": "mushroom_sauce",
+      "output_item": "mushroom_sauce",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:porcini_mushroom",
+        "minecraft:brown_mushroom",
+        "minecraft:wheat"
+      ]
+    },
+    {
+      "id": "sea_lettuce_crop",
+      "output_item": "sea_lettuce_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:seagrass",
+        "minecraft:kelp",
+        "minecraft:sand"
+      ]
+    },
+    {
+      "id": "wakame_crop",
+      "output_item": "wakame_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:dried_kelp",
+        "minecraft:sand"
+      ]
+    },
+    {
+      "id": "nori_crop",
+      "output_item": "nori_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:dried_kelp",
+        "minecraft:paper",
+        "minecraft:clay_ball"
+      ]
+    },
+    {
+      "id": "dulse_crop",
+      "output_item": "dulse_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:red_dye",
+        "minecraft:gravel"
+      ]
+    }
+  ],
+  "item_count": 24,
+  "culture_count": 6,
+  "recipe_count": 29,
+  "marine_crops": [
+    {
+      "id": "sea_lettuce_crop",
+      "english_name": "Sea Lettuce Bed",
+      "chinese_name": "海莴苣藻苗床",
+      "harvest_item": "sea_lettuce",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "sea_lettuce_crop",
+      "palette": {
+        "base": "#3C9C6B",
+        "highlight": "#73C995",
+        "shadow": "#205D4C",
+        "accent": "#D2E5A6"
+      }
+    },
+    {
+      "id": "wakame_crop",
+      "english_name": "Wakame Bed",
+      "chinese_name": "裙带菜苗床",
+      "harvest_item": "wakame",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "wakame_crop",
+      "palette": {
+        "base": "#4E7653",
+        "highlight": "#8FA76A",
+        "shadow": "#293F38",
+        "accent": "#D3B85D"
+      }
+    },
+    {
+      "id": "nori_crop",
+      "english_name": "Nori Bed",
+      "chinese_name": "紫菜苗床",
+      "harvest_item": "nori_sheet",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "nori_crop",
+      "palette": {
+        "base": "#234C3A",
+        "highlight": "#3F7753",
+        "shadow": "#142C26",
+        "accent": "#9CB56A"
+      }
+    },
+    {
+      "id": "dulse_crop",
+      "english_name": "Dulse Bed",
+      "chinese_name": "掌状红皮藻苗床",
+      "harvest_item": "dulse",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "dulse_crop",
+      "palette": {
+        "base": "#9A3F63",
+        "highlight": "#D36D84",
+        "shadow": "#51273F",
+        "accent": "#F1B4A6"
+      }
+    }
+  ]
+}

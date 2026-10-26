@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:tomato"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "gugugaga:chives"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_egg_stir_fry",
+    "count": 1
+  }
+}

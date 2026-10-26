@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "honey_berry_toast",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "gugugaga:strawberry"
+    },
+    {
+      "item": "gugugaga:blackberry_honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:honey_berry_toast",
+    "count": 1
+  }
+}

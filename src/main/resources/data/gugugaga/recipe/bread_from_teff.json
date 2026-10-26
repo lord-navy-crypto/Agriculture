@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:teff"
+    },
+    {
+      "item": "gugugaga:teff"
+    },
+    {
+      "item": "gugugaga:teff"
+    }
+  ],
+  "result": {
+    "id": "minecraft:bread",
+    "count": 1
+  }
+}

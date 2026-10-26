@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:canola"
+    },
+    {
+      "item": "gugugaga:canola"
+    },
+    {
+      "item": "gugugaga:canola"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:canola_oil",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "mushroom_barley_risotto",
+  "ingredients": [
+    {
+      "item": "gugugaga:barley"
+    },
+    {
+      "item": "gugugaga:oyster_mushroom"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_barley_risotto",
+    "count": 1
+  }
+}

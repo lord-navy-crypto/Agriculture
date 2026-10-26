@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chayote"
+    },
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "gugugaga:safflower_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chayote_stir_fry",
+    "count": 1
+  }
+}

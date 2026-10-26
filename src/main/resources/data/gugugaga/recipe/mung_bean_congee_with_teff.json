@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "mung_bean_congee",
+  "ingredients": [
+    {
+      "item": "gugugaga:mung_bean"
+    },
+    {
+      "item": "gugugaga:teff"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mung_bean_congee",
+    "count": 1
+  }
+}

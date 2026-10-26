@@ -48,3 +48,5 @@ tasks.withType(JavaCompile).configureEach {
 
 // Generate and package crop-specific growth-stage and inventory sprites.
 apply from: 'tools/crop-textures.gradle'
+apply from: 'tools/marine-fungi-textures.gradle'
+apply from: 'tools/crop-cuisine-textures.gradle'

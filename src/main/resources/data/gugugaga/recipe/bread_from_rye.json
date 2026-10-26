@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rye"
+    },
+    {
+      "item": "gugugaga:rye"
+    },
+    {
+      "item": "gugugaga:rye"
+    }
+  ],
+  "result": {
+    "id": "minecraft:bread",
+    "count": 1
+  }
+}

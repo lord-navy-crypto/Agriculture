@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "gugugaga:sesame"
+    },
+    {
+      "item": "gugugaga:peanut_sauce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sesame_noodles",
+    "count": 1
+  }
+}

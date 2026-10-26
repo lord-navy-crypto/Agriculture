@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:eggplant"
+    },
+    {
+      "item": "gugugaga:chili_pepper"
+    },
+    {
+      "item": "gugugaga:safflower_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:eggplant_curry",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:mushroom_spores"
+    },
+    {
+      "item": "minecraft:birch_log"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:oyster_mushroom_culture",
+    "count": 1
+  }
+}

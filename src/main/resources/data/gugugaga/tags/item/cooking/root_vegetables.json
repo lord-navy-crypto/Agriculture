@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "gugugaga:onion",
+    "gugugaga:garlic",
+    "gugugaga:shallot",
+    "gugugaga:radish",
+    "gugugaga:turnip",
+    "gugugaga:sweet_potato",
+    "gugugaga:parsnip",
+    "gugugaga:ginger",
+    "gugugaga:turmeric",
+    "gugugaga:kohlrabi",
+    "gugugaga:rutabaga",
+    "gugugaga:jicama",
+    "gugugaga:celeriac",
+    "gugugaga:cassava",
+    "gugugaga:taro",
+    "gugugaga:yam",
+    "minecraft:beetroot"
+  ]
+}

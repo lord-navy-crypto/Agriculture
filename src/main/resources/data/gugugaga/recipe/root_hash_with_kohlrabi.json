@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "root_vegetable_hash",
+  "ingredients": [
+    {
+      "item": "gugugaga:kohlrabi"
+    },
+    {
+      "item": "gugugaga:celeriac"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:root_vegetable_hash",
+    "count": 1
+  }
+}

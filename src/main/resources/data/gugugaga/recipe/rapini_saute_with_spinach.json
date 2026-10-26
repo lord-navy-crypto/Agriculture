@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "rapini_garlic_saute",
+  "ingredients": [
+    {
+      "item": "gugugaga:spinach"
+    },
+    {
+      "item": "gugugaga:garlic"
+    },
+    {
+      "item": "gugugaga:safflower_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rapini_garlic_saute",
+    "count": 1
+  }
+}
