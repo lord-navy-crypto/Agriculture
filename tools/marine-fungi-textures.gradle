@@ -1,8 +1,7 @@
-import groovy.json.*
-import java.awt.*
-import java.awt.image.*
-import javax.imageio.*
-import java.security.*
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+import java.security.MessageDigest
 
 def mfOutput = layout.buildDirectory.dir('generated/resources/marineFungiAssets')
 sourceSets.main.resources.srcDir(mfOutput)
@@ -107,15 +106,29 @@ tasks.register('generateMarineFungiAssets') {
         def stageHashes=[]
         cultures.each{culture->(0..3).each{age->String p='assets/gugugaga/textures/block/marine_fungi/'+culture.id+'_stage'+age+'.png';stageHashes.add(MessageDigest.getInstance('SHA-256').digest(new File(root,p).bytes).encodeHex().toString())}}
         if(stageHashes.size()!=24||stageHashes.toSet().size()!=24)throw new GradleException('All 24 fungal culture growth-stage textures must be unique')
-        int tile=48,labelWidth=148
+        int tile=48
+        int labelWidth=148
         BufferedImage sheet=new BufferedImage(labelWidth+tile,iconPaths.size()*tile,BufferedImage.TYPE_INT_ARGB)
-        Graphics2D g=sheet.createGraphics();g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);g.setColor(new Color(29,34,30,255));g.fillRect(0,0,sheet.width,sheet.height);g.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
-        iconPaths.eachWithIndex{p,row->g.setColor(new Color(238,240,232,255));g.drawString(p.substring(p.lastIndexOf('/')+1,p.length()-4),4,row*tile+28);g.drawImage(ImageIO.read(new File(root,p)),labelWidth,row*tile,tile,tile,null)}
-        g.dispose();File reports=layout.buildDirectory.dir('reports/agriculture').get().asFile;reports.mkdirs();ImageIO.write(sheet,'png',new File(reports,'marine-fungi-item-contact-sheet.png'))
+        for(int row=0;row<iconPaths.size();row++){
+            BufferedImage source=ImageIO.read(new File(root,iconPaths[row]))
+            for(int y=0;y<tile;y++){for(int x=0;x<tile;x++){
+                sheet.setRGB(labelWidth+x,row*tile+y,source.getRGB(x/3,y/3))
+            }}
+        }
+        File reports=layout.buildDirectory.dir('reports/agriculture').get().asFile
+        reports.mkdirs()
+        ImageIO.write(sheet,'png',new File(reports,'marine-fungi-item-contact-sheet.png'))
         BufferedImage cultureSheet=new BufferedImage(labelWidth+4*tile,cultures.size()*tile,BufferedImage.TYPE_INT_ARGB)
-        Graphics2D cg=cultureSheet.createGraphics();cg.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);cg.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF);cg.setColor(new Color(29,34,30,255));cg.fillRect(0,0,cultureSheet.width,cultureSheet.height);cg.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
-        cultures.eachWithIndex{culture,row->cg.setColor(new Color(238,240,232,255));cg.drawString(culture.id.toString(),4,row*tile+28);(0..3).each{age->String p='assets/gugugaga/textures/block/marine_fungi/'+culture.id+'_stage'+age+'.png';cg.drawImage(ImageIO.read(new File(root,p)),labelWidth+age*tile,row*tile,tile,tile,null)}}
-        cg.dispose();ImageIO.write(cultureSheet,'png',new File(reports,'fungal-culture-growth-contact-sheet.png'))
+        for(int row=0;row<cultures.size();row++){
+            for(int age=0;age<4;age++){
+                String stagePath='assets/gugugaga/textures/block/marine_fungi/'+cultures[row].id+'_stage'+age+'.png'
+                BufferedImage source=ImageIO.read(new File(root,stagePath))
+                for(int y=0;y<tile;y++){for(int x=0;x<tile;x++){
+                    cultureSheet.setRGB(labelWidth+age*tile+x,row*tile+y,source.getRGB(x/3,y/3))
+                }}
+            }
+        }
+        ImageIO.write(cultureSheet,'png',new File(reports,'fungal-culture-growth-contact-sheet.png'))
         logger.lifecycle('MARINE_FUNGI_ASSET_GENERATOR_OK: 30 unique inventory icons; 24 fungal growth-stage textures; visual proof sheets written.')
     }
 }
