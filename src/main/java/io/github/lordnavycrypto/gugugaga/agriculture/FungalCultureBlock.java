@@ -49,10 +49,24 @@ public final class FungalCultureBlock extends BushBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL)
+        boolean commonSoil = state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL)
                 || state.is(Blocks.MOSS_BLOCK) || state.is(Blocks.DIRT)
                 || state.is(Blocks.COARSE_DIRT) || state.is(Blocks.ROOTED_DIRT)
                 || state.is(Blocks.FARMLAND);
+        if (commonSoil) return true;
+
+        String cultureName = BuiltInRegistries.BLOCK.getKey(this).getPath();
+        return switch (cultureName) {
+            case "shiitake_culture", "lion_mane_culture" ->
+                    state.is(Blocks.OAK_LOG) || state.is(Blocks.STRIPPED_OAK_LOG);
+            case "oyster_mushroom_culture" ->
+                    state.is(Blocks.BIRCH_LOG) || state.is(Blocks.STRIPPED_BIRCH_LOG);
+            case "enoki_culture" ->
+                    state.is(Blocks.SPRUCE_LOG) || state.is(Blocks.STRIPPED_SPRUCE_LOG);
+            case "porcini_culture" -> state.is(Blocks.PODZOL) || state.is(Blocks.MYCELIUM);
+            case "truffle_culture" -> state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.PODZOL);
+            default -> false;
+        };
     }
 
     @Override

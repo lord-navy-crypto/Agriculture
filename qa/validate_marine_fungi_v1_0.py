@@ -29,6 +29,9 @@ def main():
     assert "GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK" in main_java
     assert "randomTick" in culture_java and "useWithoutItem" in culture_java
     assert "Blocks.MYCELIUM" in culture_java and "Blocks.PODZOL" in culture_java
+    assert "Blocks.OAK_LOG" in culture_java and "Blocks.STRIPPED_OAK_LOG" in culture_java
+    assert "Blocks.BIRCH_LOG" in culture_java and "Blocks.STRIPPED_BIRCH_LOG" in culture_java
+    assert "Blocks.SPRUCE_LOG" in culture_java and "Blocks.STRIPPED_SPRUCE_LOG" in culture_java
     for row in items:
         item_id = row["id"]
         constant = item_id.upper()

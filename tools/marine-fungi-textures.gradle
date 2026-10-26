@@ -24,7 +24,7 @@ tasks.register('generateMarineFungiAssets') {
             throw new GradleException('Expected six unique fungal culture IDs')
         }
 
-        def drawInventoryIcon = { String id, String kind, def palette ->
+        def drawInventoryIcon = { id, kind, palette ->
             BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
             int base = Integer.parseInt(palette.base.substring(1), 16)
             int highlight = Integer.parseInt(palette.highlight.substring(1), 16)
