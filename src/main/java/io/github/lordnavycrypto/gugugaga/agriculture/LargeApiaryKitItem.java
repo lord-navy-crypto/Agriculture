@@ -34,21 +34,41 @@ public final class LargeApiaryKitItem extends Item {
                 anchor, anchor.east(), anchor.south(), anchor.east().south()
         };
 
-        for (BlockPos pos : positions) {
-            if (!level.getBlockState(pos).canBeReplaced() || level.getBlockEntity(pos) != null) {
+        BlockState[] originalStates = new BlockState[positions.length];
+        for (int i = 0; i < positions.length; i++) {
+            BlockPos pos = positions[i];
+            // Do not query or place into a neighboring chunk that is not already loaded.
+            if (!level.hasChunkAt(pos)) {
                 if (player != null) {
                     player.displayClientMessage(
                             Component.translatable("message.gugugaga.apiary_space_needed"), true);
                 }
                 return InteractionResult.FAIL;
             }
+            BlockState existing = level.getBlockState(pos);
+            if (!existing.canBeReplaced() || level.getBlockEntity(pos) != null) {
+                if (player != null) {
+                    player.displayClientMessage(
+                            Component.translatable("message.gugugaga.apiary_space_needed"), true);
+                }
+                return InteractionResult.FAIL;
+            }
+            originalStates[i] = existing;
         }
 
         Direction facing = player == null ? Direction.NORTH : player.getDirection().getOpposite();
         BlockState hive = Blocks.BEEHIVE.defaultBlockState()
                 .setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        for (BlockPos pos : positions) {
-            if (!level.setBlock(pos, hive, 3)) {
+        for (int i = 0; i < positions.length; i++) {
+            if (!level.setBlock(positions[i], hive, 3)) {
+                // Avoid leaving a partial 2x2 apiary if a placement is rejected midway.
+                for (int rollback = i - 1; rollback >= 0; rollback--) {
+                    level.setBlock(positions[rollback], originalStates[rollback], 3);
+                }
+                if (player != null) {
+                    player.displayClientMessage(
+                            Component.translatable("message.gugugaga.apiary_space_needed"), true);
+                }
                 return InteractionResult.FAIL;
             }
         }

@@ -35,7 +35,9 @@ def main():
             assert "consumer.addEffect(new MobEffectInstance(MobEffects.POISON, 240, 0))" in poison
         else:
             assert (f'new MobEffectInstance(MobEffects.{effect}, {ticks}, 0)' in bee), name
-    assert "if (!matched) otherFlowers++" in nectar
+    assert "SOURCE_INDEX.get(identifier)" in nectar
+    assert "otherFlowers++" in nectar
+    assert "otherFlowerKinds.add(identifier)" in nectar
     assert "dominantCount < 6" in nectar
     print(f"STEW_HONEY_PARITY_OK: {len(VANILLA)} exact vanilla flowers, correct effect durations and poison handling")
 

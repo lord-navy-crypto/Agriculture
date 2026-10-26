@@ -45,12 +45,12 @@ def main():
     assert "Block.popResource(level, pos, new ItemStack(leaves))" in crop_block
     assert "state.setValue(AGE, 4).setValue(POLLINATED, false)" in crop_block
     for flower in ("lavender", "clover", "mustard", "canola", "basil", "mint"):
-        assert f'id.equals("{flower}_crop")' in habitat
+        assert f'"{flower}_crop"' in habitat
 
     source = read("data/gugugaga/agronomy/honey_sources_v0_9.json")
     assert source["schema_version"] == "0.9"
     ids = {row["item"] for row in source["honey_variants"]}
-    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose")}
+    assert ids == {x+"_honey_bottle" for x in ("clover","lavender","buckwheat","sunflower","dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose","blackberry","blackcurrant","chive","pumpkin_blossom","cassava_blossom","taro_blossom","yam_blossom","watercress","endive","kohlrabi","rutabaga","wildflower")}
     bee = (SRC / "BeeContent.java").read_text("utf8")
     nectar = (SRC / "NectarHoneySource.java").read_text("utf8")
     harvest = (SRC / "HoneyHarvesterItem.java").read_text("utf8")
@@ -59,22 +59,26 @@ def main():
     assert "1.0F" in bee
     for effect in ("JUMP", "NIGHT_VISION", "DAMAGE_RESISTANCE", "MOVEMENT_SPEED",
                    "SATURATION", "FIRE_RESISTANCE", "BLINDNESS", "REGENERATION",
-                   "WEAKNESS", "WITHER"):
+                   "WEAKNESS", "WITHER", "WATER_BREATHING", "DIG_SPEED", "ABSORPTION"):
         assert f"MobEffects.{effect}" in bee, effect
     for flower in ("dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose"):
         assert f'"minecraft:{flower}"' in nectar
-    assert "if (!matched) otherFlowers++" in nectar
+    assert "SOURCE_INDEX.get(cropResource.toString())" in nectar
+    assert "SOURCE_INDEX.get(identifier)" in nectar
+    assert "otherFlowerKinds.add(identifier)" in nectar
     assert "NectarHoneySource.selectHoneyBottle(level, pos)" in harvest
     assert "CampfireBlock.isSmokeyPos(level, hivePos)" in harvest
     assert "hasChunkAt(sample)" in nectar and "dominantCount < 6" in nectar
     assert "dominantCount * 3 < totalFlowers * 2" in nectar
+    assert "otherFlowerKinds" in nectar and "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar
+    assert "WILDFLOWER_HONEY_BOTTLE" in nectar
     assert "new ItemStack(Items.HONEY_BOTTLE)" in nectar
     for id in ids:
         assert f'floralHoney("{id}")' in bee
         assert f"item.gugugaga.{id}" in en and f"item.gugugaga.{id}" in zh
-        assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == "minecraft:item/honey_bottle"
+        assert read(f"assets/gugugaga/models/item/{id}.json")["textures"]["layer0"] == f"gugugaga:item/honey/{id}"
     assert len(source["references"]) >= 3
-    print("CROPS_AND_NECTAR_V0_9_OK: 44 crops, cut-and-regrow basil/mint, 18 flower-source honey variants, vanilla safeguards")
+    print("AGRICULTURE_HONEY_INTEGRATION_OK: v0.9 legacy contract preserved; current catalog has 100 crops and 50 honey variants; mixed-forage blend and vanilla safeguards")
 
 if __name__ == "__main__":
     main()

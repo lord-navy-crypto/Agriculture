@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 public final class CropClimate {
     private CropClimate() {}
     private enum Band { COOL, TEMPERATE, WARM, DRY, WET }
+    private static final int[] WATER_CHECK_DY_ORDER = {0, -1, 1};
 
     /** Published minimum seed-germination soil temperatures, Fahrenheit, where available. */
     private static final Map<String, Integer> MIN_GERMINATION_F = Map.of(
@@ -43,15 +44,18 @@ public final class CropClimate {
                  "parsnip_seeds", "arugula_seeds", "swiss_chard_seeds",
                  "fennel_seeds", "dill_seeds", "cilantro_seeds", "parsley_seeds",
                  "collard_greens_seeds", "brussels_sprouts_seeds", "cauliflower_seeds",
-                 "bok_choy_seeds", "shallot_seeds", "quinoa_seeds" -> Band.COOL;
+                 "bok_choy_seeds", "shallot_seeds", "quinoa_seeds", "asparagus_seeds", "blackcurrant_seeds", "chives_seeds",
+                 "endive_seeds", "kohlrabi_seeds", "rutabaga_seeds", "chicory_seeds", "mustard_greens_seeds",
+                 "celeriac_seeds", "rapini_seeds", "napa_cabbage_seeds", "fava_bean_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
                  "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds",
                  "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds",
-                 "black_bean_seeds" -> Band.WARM;
-            case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds" -> Band.DRY;
-            case "rice_seeds", "ginger_seeds", "turmeric_seeds" -> Band.WET;
-            case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds" -> Band.TEMPERATE;
+                 "black_bean_seeds", "pumpkin_seeds", "sweet_corn_seeds", "cassava_seeds", "yam_seeds", "jicama_seeds", "adzuki_bean_seeds", "mung_bean_seeds", "cowpea_seeds",
+                 "purslane_seeds", "chayote_seeds", "coffee_seeds", "melon_seeds", "watermelon_seeds", "jute_mallow_seeds" -> Band.WARM;
+            case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds", "amaranth_seeds", "teff_seeds", "safflower_seeds" -> Band.DRY;
+            case "rice_seeds", "ginger_seeds", "turmeric_seeds", "pineapple_seeds", "taro_seeds", "watercress_seeds", "water_spinach_seeds" -> Band.WET;
+            case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds", "blackberry_seeds", "grape_seeds", "tea_seeds" -> Band.TEMPERATE;
             default -> throw new IllegalArgumentException("Unclassified crop seed: " + seedName);
         };
     }
@@ -67,8 +71,11 @@ public final class CropClimate {
     }
     /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
     public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
-        // This models irrigated lowland rice; it does not claim every rice system needs flooding.
-        if ("rice_seeds".equals(seedName) && !hasPaddyWater(level, pos)) return false;
+        // Rice, taro and watercress use bounded freshwater checks as gameplay proxies;
+        // these are not claims that every real cultivation system requires flooding.
+        if ("rice_seeds".equals(seedName) && !hasNearbyFreshWater(level, pos, 3, -1, 0)) return false;
+        if (("taro_seeds".equals(seedName) || "watercress_seeds".equals(seedName))
+                && !hasNearbyFreshWater(level, pos, 2, -1, 1)) return false;
         if (level.dimension() != Level.OVERWORLD) return random.nextInt(6) == 0;
         Band crop = cropBand(seedName);
         String name = level.getBiome(pos).unwrapKey()
@@ -95,26 +102,40 @@ public final class CropClimate {
         return random.nextInt(harsh ? 4 : 2) == 0;
     }
     /**
-     * Finds freshwater near the crop without forcing neighboring chunks to load.
-     * The vertical offsets cover water at crop height or the farmland level below.
+     * Finds nearby freshwater without forcing neighboring chunks to load.
+     * Rice uses a wider irrigation radius; taro and watercress use a compact wet-bed radius.
      */
-    private static boolean hasPaddyWater(ServerLevel level, BlockPos cropPos) {
-        // Reuse one mutable coordinate rather than allocating up to 98 BlockPos
-        // objects for every growing rice plant's random tick.
+    private static boolean hasNearbyFreshWater(ServerLevel level, BlockPos cropPos,
+                                               int radius, int minDy, int maxDy) {
+        // Probe the center and nearby columns first: normal irrigated plots usually
+        // find water quickly. Each x/z column shares the same chunk-loaded result.
+        // The square and vertical bounds are unchanged; this only changes probe order.
         BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
-        for (int dx = -3; dx <= 3; dx++) {
-            for (int dz = -3; dz <= 3; dz++) {
-                for (int dy = -1; dy <= 0; dy++) {
-                    candidate.set(cropPos.getX() + dx,
-                            cropPos.getY() + dy, cropPos.getZ() + dz);
-                    if (level.hasChunkAt(candidate)
-                            && level.getFluidState(candidate).is(FluidTags.WATER)) {
-                        return true;
+        for (int ring = 0; ring <= radius; ring++) {
+            for (int dx = -ring; dx <= ring; dx++) {
+                for (int dz = -ring; dz <= ring; dz++) {
+                    if (ring != 0 && dx != -ring && dx != ring
+                            && dz != -ring && dz != ring) {
+                        continue;
+                    }
+                    int x = cropPos.getX() + dx;
+                    int z = cropPos.getZ() + dz;
+                    candidate.set(x, cropPos.getY(), z);
+                    if (!level.hasChunkAt(candidate)) {
+                        continue;
+                    }
+                    for (int dy : WATER_CHECK_DY_ORDER) {
+                        if (dy < minDy || dy > maxDy) {
+                            continue;
+                        }
+                        candidate.set(x, cropPos.getY() + dy, z);
+                        if (level.getFluidState(candidate).is(FluidTags.WATER)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
         return false;
     }
-
 }

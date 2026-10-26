@@ -1,5 +1,9 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.BlockTags;
@@ -19,18 +23,52 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class NectarHoneySource {
     private NectarHoneySource() {}
 
+    // These mature crops are wind/self-pollinated in this gameplay model and do not
+    // count as nectar forage. New insect-pollinated crop lines are included by default,
+    // so adding a crop does not silently make nearby floral honey too easy to obtain.
+    private static final Set<String> NON_NECTAR_CROPS = Set.of(
+            "corn_crop", "sweet_corn_crop", "rice_crop", "barley_crop", "oat_crop",
+            "rye_crop", "sorghum_crop", "millet_crop", "teff_crop", "quinoa_crop",
+            "amaranth_crop");
+
     // This order is intentionally stable for tie handling.
     private static final String[] SOURCES = {
-            "clover_crop", "lavender_crop", "buckwheat_crop", "sunflower_seed_crop",
+            "gugugaga:clover_crop", "gugugaga:lavender_crop", "gugugaga:buckwheat_crop", "gugugaga:sunflower_seed_crop",
             "minecraft:dandelion", "minecraft:poppy", "minecraft:allium", "minecraft:cornflower",
             "minecraft:azure_bluet", "minecraft:blue_orchid", "minecraft:lily_of_the_valley", "minecraft:oxeye_daisy",
             "minecraft:torchflower", "minecraft:red_tulip", "minecraft:orange_tulip", "minecraft:white_tulip",
-            "minecraft:pink_tulip", "minecraft:wither_rose"
+            "minecraft:pink_tulip", "minecraft:wither_rose",
+            "gugugaga:blackberry_crop", "gugugaga:blackcurrant_crop", "gugugaga:chives_crop", "gugugaga:pumpkin_crop",
+            "gugugaga:cassava_crop", "gugugaga:taro_crop", "gugugaga:yam_crop", "gugugaga:watercress_crop", "gugugaga:endive_crop",
+            "gugugaga:kohlrabi_crop", "gugugaga:rutabaga_crop",
+            "gugugaga:jicama_crop",
+            "gugugaga:adzuki_bean_crop",
+            "gugugaga:mung_bean_crop",
+            "gugugaga:cowpea_crop",
+            "gugugaga:safflower_crop",
+            "gugugaga:chicory_crop",
+            "gugugaga:mustard_greens_crop",
+            "gugugaga:water_spinach_crop", "gugugaga:celeriac_crop", "gugugaga:purslane_crop", "gugugaga:chayote_crop",
+            "gugugaga:grape_crop", "gugugaga:tea_crop", "gugugaga:coffee_crop", "gugugaga:rapini_crop", "gugugaga:napa_cabbage_crop",
+            "gugugaga:melon_crop", "gugugaga:watermelon_crop", "gugugaga:fava_bean_crop", "gugugaga:jute_mallow_crop"
     };
 
+
+    private static final Map<String, Integer> SOURCE_INDEX = createSourceIndex();
+
+    private static Map<String, Integer> createSourceIndex() {
+        Map<String, Integer> index = new HashMap<>(SOURCES.length * 2);
+        for (int i = 0; i < SOURCES.length; i++) {
+            if (index.put(SOURCES[i], i) != null) {
+                throw new IllegalStateException("Duplicate floral honey source: " + SOURCES[i]);
+            }
+        }
+        return Map.copyOf(index);
+    }
     public static ItemStack selectHoneyBottle(Level level, BlockPos hivePos) {
         int[] sourceCounts = new int[SOURCES.length];
         int otherFlowers = 0;
+        Set<String> otherFlowerKinds = new HashSet<>();
         BlockPos.MutableBlockPos sample = new BlockPos.MutableBlockPos();
 
         // Radius five represents nearby accessible plots, not bees' actual flight radius.
@@ -46,31 +84,28 @@ public final class NectarHoneySource {
                         // Late crop stages stand in for flowering only; the selected source
                         // can be overridden by the surrounding mixed nectar forage.
                         if (state.getValue(AgricultureCropBlock.AGE) < 5) continue;
-                        String cropId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath();
-                        boolean matched = false;
-                        for (int i = 0; i < SOURCES.length; i++) {
-                            if (SOURCES[i].equals(cropId)) {
-                                sourceCounts[i]++;
-                                matched = true;
-                                break;
-                            }
+                        var cropResource = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+                        String cropId = cropResource.getPath();
+                        Integer sourceIndex = SOURCE_INDEX.get(cropResource.toString());
+                        if (sourceIndex != null) {
+                            sourceCounts[sourceIndex]++;
+                        } else if (isOtherNectarCrop(cropId)) {
+                            otherFlowers++;
+                            otherFlowerKinds.add(cropResource.toString());
                         }
-                        if (!matched && isOtherNectarCrop(cropId)) otherFlowers++;
                     } else if (state.is(BlockTags.FLOWERS)) {
                         // Vanilla flowers can now produce distinct honey types too.
                         // A modded bloom with a matching path must not impersonate
                         // a Minecraft vanilla flower.
                         var flowerId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
                         String identifier = flowerId.toString();
-                        boolean matched = false;
-                        for (int i = 0; i < SOURCES.length; i++) {
-                            if (SOURCES[i].equals(identifier)) {
-                                sourceCounts[i]++;
-                                matched = true;
-                                break;
-                            }
+                        Integer sourceIndex = SOURCE_INDEX.get(identifier);
+                        if (sourceIndex != null) {
+                            sourceCounts[sourceIndex]++;
+                        } else {
+                            otherFlowers++;
+                            otherFlowerKinds.add(identifier);
                         }
-                        if (!matched) otherFlowers++;
                     }
                 }
             }
@@ -78,8 +113,10 @@ public final class NectarHoneySource {
 
         int dominantIndex = -1;
         int dominantCount = 0;
+        int distinctSourceKinds = otherFlowerKinds.size();
         int totalFlowers = otherFlowers;
         for (int i = 0; i < sourceCounts.length; i++) {
+            if (sourceCounts[i] > 0) distinctSourceKinds++;
             totalFlowers += sourceCounts[i];
             if (sourceCounts[i] > dominantCount) {
                 dominantCount = sourceCounts[i];
@@ -90,6 +127,11 @@ public final class NectarHoneySource {
         // Require a sizable, >=two-thirds dominant local floral resource.
         // Otherwise preserve normal vanilla honey output (mixed or unknown source).
         if (dominantCount < 6 || dominantCount * 3 < totalFlowers * 2) {
+            // A genuinely mixed local forage patch earns a neutral wildflower blend;
+            // sparse or single-source unknown forage keeps the vanilla fallback.
+            if (totalFlowers >= 12 && distinctSourceKinds >= 3) {
+                return new ItemStack(BeeContent.WILDFLOWER_HONEY_BOTTLE.get());
+            }
             return new ItemStack(Items.HONEY_BOTTLE);
         }
         Item chosen = switch (dominantIndex) {
@@ -111,20 +153,47 @@ public final class NectarHoneySource {
             case 15 -> BeeContent.WHITE_TULIP_HONEY_BOTTLE.get();
             case 16 -> BeeContent.PINK_TULIP_HONEY_BOTTLE.get();
             case 17 -> BeeContent.WITHER_ROSE_HONEY_BOTTLE.get();
+            case 18 -> BeeContent.BLACKBERRY_HONEY_BOTTLE.get();
+            case 19 -> BeeContent.BLACKCURRANT_HONEY_BOTTLE.get();
+            case 20 -> BeeContent.CHIVE_HONEY_BOTTLE.get();
+            case 21 -> BeeContent.PUMPKIN_BLOSSOM_HONEY_BOTTLE.get();
+            case 22 -> BeeContent.CASSAVA_BLOSSOM_HONEY_BOTTLE.get();
+            case 23 -> BeeContent.TARO_BLOSSOM_HONEY_BOTTLE.get();
+            case 24 -> BeeContent.YAM_BLOSSOM_HONEY_BOTTLE.get();
+            case 25 -> BeeContent.WATERCRESS_HONEY_BOTTLE.get();
+            case 26 -> BeeContent.ENDIVE_HONEY_BOTTLE.get();
+            case 27 -> BeeContent.KOHLRABI_HONEY_BOTTLE.get();
+            case 28 -> BeeContent.RUTABAGA_HONEY_BOTTLE.get();
+            case 29 -> BeeContent.JICAMA_BLOSSOM_HONEY_BOTTLE.get();
+            case 30 -> BeeContent.ADZUKI_BEAN_BLOSSOM_HONEY_BOTTLE.get();
+            case 31 -> BeeContent.MUNG_BEAN_BLOSSOM_HONEY_BOTTLE.get();
+            case 32 -> BeeContent.COWPEA_BLOSSOM_HONEY_BOTTLE.get();
+            case 33 -> BeeContent.SAFFLOWER_HONEY_BOTTLE.get();
+            case 34 -> BeeContent.CHICORY_BLOSSOM_HONEY_BOTTLE.get();
+            case 35 -> BeeContent.MUSTARD_GREENS_HONEY_BOTTLE.get();
+            case 36 -> BeeContent.WATER_SPINACH_HONEY_BOTTLE.get();
+            case 37 -> BeeContent.CELERIAC_BLOSSOM_HONEY_BOTTLE.get();
+            case 38 -> BeeContent.PURSLANE_BLOSSOM_HONEY_BOTTLE.get();
+            case 39 -> BeeContent.CHAYOTE_BLOSSOM_HONEY_BOTTLE.get();
+            case 40 -> BeeContent.GRAPE_BLOSSOM_HONEY_BOTTLE.get();
+            case 41 -> BeeContent.TEA_BLOSSOM_HONEY_BOTTLE.get();
+            case 42 -> BeeContent.COFFEE_BLOSSOM_HONEY_BOTTLE.get();
+            case 43 -> BeeContent.RAPINI_BLOSSOM_HONEY_BOTTLE.get();
+            case 44 -> BeeContent.NAPA_CABBAGE_BLOSSOM_HONEY_BOTTLE.get();
+            case 45 -> BeeContent.MELON_BLOSSOM_HONEY_BOTTLE.get();
+            case 46 -> BeeContent.WATERMELON_BLOSSOM_HONEY_BOTTLE.get();
+            case 47 -> BeeContent.FAVA_BEAN_BLOSSOM_HONEY_BOTTLE.get();
+            case 48 -> BeeContent.JUTE_MALLOW_BLOSSOM_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);
     }
 
     private static boolean isOtherNectarCrop(String cropId) {
-        // These currently grow in the mod and may compete as nectar sources.
-        return switch (cropId) {
-            case "canola_crop", "mustard_crop", "basil_crop", "mint_crop",
-                    "cucumber_crop", "zucchini_crop", "blueberry_crop",
-                    "raspberry_crop", "strawberry_crop", "cranberry_crop",
-                    "sunflower_crop", "sesame_crop", "okra_crop",
-                    "chili_pepper_crop", "dill_crop", "cilantro_crop" -> true;
-            default -> false;
-        };
+        // Only crops explicitly modeled as wind/self-pollinated are excluded.
+        // Every other mature AgricultureCropBlock is a potential nectar source.
+        // This default keeps new crop additions participating in honey mixing without
+        // requiring a second hand-maintained whitelist.
+        return !NON_NECTAR_CROPS.contains(cropId);
     }
 }

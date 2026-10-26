@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
+import java.util.Set;
 import net.minecraft.world.phys.BlockHitResult;
 
 /**
@@ -40,6 +42,18 @@ public final class BeeNestHabitatBlock extends Block {
     private static final VoxelShape MASON_HOTEL = Block.box(1, 0, 2, 15, 16, 15);
     private static final VoxelShape SQUASH_BURROW = Block.box(0, 0, 0, 16, 3, 16);
     private static final VoxelShape LEAFCUTTER_TUBES = Block.box(1, 0, 2, 15, 15, 14);
+
+    private static final Set<String> SQUASH_FORAGE_CROPS =
+            Set.of("zucchini_crop", "pumpkin_crop");
+    private static final Set<String> BUMBLEBEE_SOLANACEOUS_CROPS =
+            Set.of("tomato_crop", "eggplant_crop");
+    private static final Set<String> GENERAL_FORAGE_CROPS = Set.of(
+            "strawberry_crop", "blueberry_crop", "raspberry_crop", "cranberry_crop",
+            "sunflower_seed_crop", "buckwheat_crop", "cucumber_crop", "zucchini_crop",
+            "lavender_crop", "clover_crop", "canola_crop", "mustard_crop", "basil_crop",
+            "mint_crop", "asparagus_crop", "pumpkin_crop", "pineapple_crop",
+            "blackberry_crop", "blackcurrant_crop", "amaranth_crop", "chives_crop",
+            "sweet_corn_crop");
 
 
     private final String beeSpecies;
@@ -147,39 +161,57 @@ public final class BeeNestHabitatBlock extends Block {
     }
 
     private int countMatchingBees(ServerLevel level, BlockPos pos) {
+        EntityType<?> expectedType = BuiltInRegistries.ENTITY_TYPE.get(
+                ResourceLocation.fromNamespaceAndPath("gugugaga", beeSpecies));
+        AABB searchArea = new AABB(pos).inflate(8.0D);
         int count = 0;
-        for (Bee bee : level.getEntitiesOfClass(Bee.class, new AABB(pos).inflate(8.0D), Bee::isAlive)) {
-            var key = BuiltInRegistries.ENTITY_TYPE.getKey(bee.getType());
-            if (key != null && key.getNamespace().equals("gugugaga")
-                    && key.getPath().equals(beeSpecies)) count++;
+        // Filter to this habitat's species during the entity query so unrelated
+        // vanilla bees do not allocate list entries or require registry-key lookups.
+        for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea,
+                candidate -> candidate.isAlive() && candidate.getType() == expectedType)) {
+            count++;
         }
         return count;
     }
 
     private boolean hasForage(ServerLevel level, BlockPos pos) {
-        for (BlockPos p : BlockPos.betweenClosed(pos.offset(-4, -1, -4), pos.offset(4, 2, 4))) {
-            if (!level.hasChunkAt(p)) continue;
-            BlockState nearby = level.getBlockState(p);
-            if (!beeSpecies.equals("squash_bee") && nearby.is(BlockTags.FLOWERS)) return true;
-            if (nearby.getBlock() instanceof AgricultureCropBlock crop
-                    && nearby.getValue(AgricultureCropBlock.AGE) >= 4) {
-                String id = BuiltInRegistries.BLOCK.getKey(crop).getPath();
-                if (beeSpecies.equals("squash_bee")) {
-                    // Cucurbita specialist: zucchini is Cucurbita pepo; cucumber is Cucumis.
-                    if (id.equals("zucchini_crop")) return true;
-                } else if (beeSpecies.equals("bumblebee")
-                        && (id.equals("tomato_crop") || id.equals("eggplant_crop"))) {
-                    // Bumblebees can buzz-pollinate these solanaceous flowers.
-                    return true;
-                } else if (id.equals("strawberry_crop")
-                        || id.equals("blueberry_crop") || id.equals("raspberry_crop")
-                        || id.equals("cranberry_crop") || id.equals("sunflower_seed_crop")
-                        || id.equals("buckwheat_crop") || id.equals("cucumber_crop")
-                        || id.equals("zucchini_crop")
-                        || id.equals("lavender_crop") || id.equals("clover_crop")
-                        || id.equals("canola_crop") || id.equals("mustard_crop")
-                        || id.equals("basil_crop") || id.equals("mint_crop")) {
-                    return true;
+        BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos();
+        // Search the same 9x9x4 volume from the nearest columns outward. Check
+        // chunk availability once per x/z column; never force-load adjacent terrain.
+        for (int ring = 0; ring <= 4; ring++) {
+            for (int dx = -ring; dx <= ring; dx++) {
+                for (int dz = -ring; dz <= ring; dz++) {
+                    if (ring != 0 && dx != -ring && dx != ring
+                            && dz != -ring && dz != ring) {
+                        continue;
+                    }
+                    int x = pos.getX() + dx;
+                    int z = pos.getZ() + dz;
+                    candidate.set(x, pos.getY(), z);
+                    if (!level.hasChunkAt(candidate)) {
+                        continue;
+                    }
+                    for (int dy = -1; dy <= 2; dy++) {
+                        candidate.set(x, pos.getY() + dy, z);
+                        BlockState nearby = level.getBlockState(candidate);
+                        if (!beeSpecies.equals("squash_bee") && nearby.is(BlockTags.FLOWERS)) {
+                            return true;
+                        }
+                        if (nearby.getBlock() instanceof AgricultureCropBlock crop
+                                && nearby.getValue(AgricultureCropBlock.AGE) >= 4) {
+                            String id = BuiltInRegistries.BLOCK.getKey(crop).getPath();
+                            if (beeSpecies.equals("squash_bee")) {
+                                // Cucurbita specialist: zucchini and pumpkin only.
+                                if (SQUASH_FORAGE_CROPS.contains(id)) return true;
+                            } else if (beeSpecies.equals("bumblebee")
+                                    && BUMBLEBEE_SOLANACEOUS_CROPS.contains(id)) {
+                                // Bumblebees can buzz-pollinate tomato and eggplant flowers.
+                                return true;
+                            } else if (GENERAL_FORAGE_CROPS.contains(id)) {
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }

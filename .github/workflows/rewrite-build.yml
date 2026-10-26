@@ -5,6 +5,12 @@ on:
       - 'feat/agriculture/**'
   pull_request:
 
+# Supersede stale asset-by-asset runs with the latest branch validation.
+# Push and pull-request events for the same head branch share one concurrency group.
+concurrency:
+  group: agriculture-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   validate-assets:
     runs-on: ubuntu-latest
@@ -30,6 +36,13 @@ jobs:
           python3 qa/validate_crop_v1_3.py
           python3 qa/validate_crop_lifecycle_v1_4.py
           python3 qa/validate_agriculture_compost_v1_3.py
+          python3 qa/validate_agriculture_v1_7.py
+          python3 qa/validate_agriculture_v1_8.py
+          python3 qa/validate_agriculture_v1_9.py
+          python3 qa/validate_agriculture_v2_0.py
+          python3 qa/validate_agriculture_v2_1.py
+          python3 qa/validate_honey_source_contract_v1_0.py
+          python3 qa/validate_honey_source_coverage_v1_1.py
 
   neoforge:
     runs-on: ubuntu-latest
@@ -45,10 +58,18 @@ jobs:
           gradle-version: '9.2.1'
       - name: Compile and package agriculture mod
         run: gradle --no-daemon --stacktrace build
+      - name: Validate generated honey bottle sprites
+        run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
       - uses: actions/upload-artifact@v4
         with:
           name: gugu-gaga-agriculture
           path: build/libs/*.jar
+          if-no-files-found: error
+      - name: Upload agriculture visual proof sheets
+        uses: actions/upload-artifact@v4
+        with:
+          name: agriculture-visual-proof
+          path: build/reports/agriculture/*.png
           if-no-files-found: error
 
   real-server-boot:

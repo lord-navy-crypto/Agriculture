@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.9",
+  "note": "Eight additional crop lines emphasizing pulses, dryland oilseed, root crops and repeat-cut greens. Growth bands are gameplay proxies, not literal climate simulation.",
+  "crops": [
+    {
+      "crop": "jicama",
+      "chinese_name": "豆薯",
+      "english_name": "Jicama",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "storage root",
+      "botanical_note": "A warm-season legume grown for its crisp, starchy storage root; the Minecraft crop cycle compresses the long root-development period.",
+      "source_urls": [
+        "https://postharvest.ucdavis.edu/produce-facts-sheets/jicama"
+      ]
+    },
+    {
+      "crop": "adzuki_bean",
+      "chinese_name": "赤小豆",
+      "english_name": "Adzuki Bean",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "dry bean seeds",
+      "botanical_note": "A warm-season pulse harvested for dry seeds; the crop block simplifies pod maturation and drying into one harvest stage.",
+      "source_urls": [
+        "https://corn.agronomy.wisc.edu/Crops/AdzukiBean.aspx"
+      ]
+    },
+    {
+      "crop": "mung_bean",
+      "chinese_name": "绿豆",
+      "english_name": "Mung Bean",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "dry bean seeds",
+      "botanical_note": "A warm-season legume harvested for dry seeds. Its extended and uneven pod maturity is compressed into the standard Minecraft growth cycle.",
+      "source_urls": [
+        "https://corn.agronomy.wisc.edu/crops/mungbean.aspx"
+      ]
+    },
+    {
+      "crop": "cowpea",
+      "chinese_name": "豇豆",
+      "english_name": "Cowpea",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "pods and seeds",
+      "botanical_note": "A heat-adapted legume whose immature pods and dry seeds are both useful; this item represents a general edible cowpea harvest.",
+      "source_urls": [
+        "https://corn.agronomy.wisc.edu/Crops/Cowpea.aspx",
+        "https://sarep.ucdavis.edu/covercrop/cowpea"
+      ]
+    },
+    {
+      "crop": "safflower",
+      "chinese_name": "红花籽",
+      "english_name": "Safflower",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "oilseed",
+      "botanical_note": "A drought-tolerant oilseed crop with orange-yellow flower heads; the harvested item represents the seed crop rather than the petals.",
+      "source_urls": [
+        "https://extension.usu.edu/crops/research/safflower-in-utah",
+        "https://corn.agronomy.wisc.edu/Crops/Safflower.aspx"
+      ]
+    },
+    {
+      "crop": "chicory",
+      "chinese_name": "菊苣",
+      "english_name": "Chicory",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "taproot",
+      "botanical_note": "A cool-season crop with a deep taproot; cultivated forms may be grown for roots or leafy heads. This line represents the root-harvest form.",
+      "source_urls": [
+        "https://extension.usu.edu/yardandgarden/research/chicory-in-the-garden",
+        "https://extension.umd.edu/resource/chicory"
+      ]
+    },
+    {
+      "crop": "mustard_greens",
+      "chinese_name": "芥菜叶",
+      "english_name": "Mustard Greens",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A fast-growing cool-season leafy brassica. Harvesting outer leaves permits regrowth, represented by the repeat-cut harvest behavior.",
+      "source_urls": [
+        "https://accessibility.extension.msstate.edu/lawn-and-garden/vegetable-gardens/mustard-greens",
+        "https://extension.umd.edu/resource/growing-leafy-greens-home-garden"
+      ]
+    },
+    {
+      "crop": "water_spinach",
+      "chinese_name": "空心菜",
+      "english_name": "Water Spinach",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A heat-tolerant tropical leafy green that grows rapidly in moist conditions. Nearby-water growth checks and repeat-cut harvest are simplified gameplay rules.",
+      "source_urls": [
+        "https://extension.umd.edu/resource/growing-spinach-home-garden"
+      ]
+    }
+  ],
+  "references": [
+    "https://postharvest.ucdavis.edu/produce-facts-sheets/jicama",
+    "https://corn.agronomy.wisc.edu/Crops/AdzukiBean.aspx",
+    "https://corn.agronomy.wisc.edu/crops/mungbean.aspx",
+    "https://corn.agronomy.wisc.edu/Crops/Cowpea.aspx",
+    "https://sarep.ucdavis.edu/covercrop/cowpea",
+    "https://extension.usu.edu/crops/research/safflower-in-utah",
+    "https://corn.agronomy.wisc.edu/Crops/Safflower.aspx",
+    "https://extension.usu.edu/yardandgarden/research/chicory-in-the-garden",
+    "https://extension.umd.edu/resource/chicory",
+    "https://accessibility.extension.msstate.edu/lawn-and-garden/vegetable-gardens/mustard-greens",
+    "https://extension.umd.edu/resource/growing-leafy-greens-home-garden",
+    "https://extension.umd.edu/resource/growing-spinach-home-garden"
+  ]
+}

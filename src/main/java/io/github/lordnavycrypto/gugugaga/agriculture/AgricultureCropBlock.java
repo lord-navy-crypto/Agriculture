@@ -74,23 +74,18 @@ public final class AgricultureCropBlock extends CropBlock {
             return;
         }
         boolean growthAllowed = CropClimate.allowGrowth(seedName, level, pos, random);
-
-        BlockState current = level.getBlockState(pos);
         if (pollinationGroup != PollinationGroup.NONE
-                && !current.getValue(POLLINATED)
-                && current.getValue(AGE) >= 4
-                && current.getValue(AGE) < getMaxAge()
+                && !state.getValue(POLLINATED)
+                && state.getValue(AGE) >= 4
+                && state.getValue(AGE) < getMaxAge()
                 && random.nextInt(3) == 0) {
             // The crop is queried only during flowering/reproductive stages and only
             // until pollinated. This avoids a per-tick entity scan or background task.
             AABB searchArea = new AABB(pos).inflate(6.0D, 3.0D, 6.0D);
-            for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, Bee::isAlive)) {
+            for (Bee bee : level.getEntitiesOfClass(Bee.class, searchArea, bee -> bee.isAlive() && bee.hasNectar())) {
                 // Recent flower foraging is necessary; mere nearby bees do not
                 // grant pollination. Vanilla nectar is a pollen-carrying proxy,
                 // not evidence of a visit to the exact crop species.
-                if (!bee.hasNectar()) {
-                    continue;
-                }
                 String ecotype = bee.getPersistentData().getString(BeeEcotypeItem.DATA_KEY);
                 String species = BuiltInRegistries.ENTITY_TYPE.getKey(bee.getType()).getPath();
                 if (!compatibleSpecies(species, ecotype)) {
@@ -126,25 +121,29 @@ public final class AgricultureCropBlock extends CropBlock {
         }
     }
 
-    private enum HarvestMode { SINGLE_HARVEST, FRUIT, LEAVES, FLOWERS }
+    private enum HarvestMode { SINGLE_HARVEST, FRUIT, LEAVES, FLOWERS, SPEARS }
 
     private static final Set<String> REPEATED_FRUIT_HARVEST = Set.of(
             "tomato_seeds", "cucumber_seeds", "strawberry_seeds", "blueberry_seeds",
             "bell_pepper_seeds", "eggplant_seeds", "zucchini_seeds", "raspberry_seeds",
             "cranberry_seeds", "okra_seeds", "chili_pepper_seeds", "green_bean_seeds",
-            "pea_seeds", "broccoli_seeds", "brussels_sprouts_seeds", "cotton_seeds");
+            "pea_seeds", "broccoli_seeds", "brussels_sprouts_seeds", "cotton_seeds",
+            "pumpkin_seeds", "blackberry_seeds", "blackcurrant_seeds", "chayote_seeds", "grape_seeds", "melon_seeds", "watermelon_seeds");
     private static final Set<String> REPEATED_LEAF_HARVEST = Set.of(
             "basil_seeds", "mint_seeds", "arugula_seeds", "swiss_chard_seeds",
             "parsley_seeds", "collard_greens_seeds", "dill_seeds", "cilantro_seeds",
             "bok_choy_seeds", "lettuce_seeds", "spinach_seeds", "kale_seeds",
-            "celery_seeds");
+            "celery_seeds", "chives_seeds", "endive_seeds", "watercress_seeds", "mustard_greens_seeds", "water_spinach_seeds",
+            "purslane_seeds", "tea_seeds", "rapini_seeds", "jute_mallow_seeds");
     private static final Set<String> REPEATED_FLOWER_HARVEST = Set.of(
             "lavender_seeds", "clover_seeds", "artichoke_seeds");
+    private static final Set<String> REPEATED_SPEAR_HARVEST = Set.of("asparagus_seeds");
 
     private HarvestMode harvestMode() {
         if (REPEATED_FRUIT_HARVEST.contains(seedName)) return HarvestMode.FRUIT;
         if (REPEATED_LEAF_HARVEST.contains(seedName)) return HarvestMode.LEAVES;
         if (REPEATED_FLOWER_HARVEST.contains(seedName)) return HarvestMode.FLOWERS;
+        if (REPEATED_SPEAR_HARVEST.contains(seedName)) return HarvestMode.SPEARS;
         return HarvestMode.SINGLE_HARVEST;
     }
 
@@ -176,7 +175,7 @@ public final class AgricultureCropBlock extends CropBlock {
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        List<ItemStack> drops = new ArrayList<>(super.getDrops(state, builder));
+        List<ItemStack> drops = super.getDrops(state, builder);
         if (pollinationGroup != PollinationGroup.NONE
                 && state.getValue(AGE) == getMaxAge()
                 && state.getValue(POLLINATED)) {
@@ -185,6 +184,7 @@ public final class AgricultureCropBlock extends CropBlock {
                     ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, produceName));
             ItemStack bonusProduce = new ItemStack(produce);
             if (!bonusProduce.isEmpty()) {
+                drops = new ArrayList<>(drops);
                 drops.add(bonusProduce);
             }
         }
@@ -203,7 +203,7 @@ public final class AgricultureCropBlock extends CropBlock {
             case "bumblebee" -> true;
             case "mason_bee" -> pollinationGroup == PollinationGroup.ORCHARD
                     || pollinationGroup == PollinationGroup.BERRY;
-            case "squash_bee" -> seedName.equals("zucchini_seeds");
+            case "squash_bee" -> seedName.equals("zucchini_seeds") || seedName.equals("pumpkin_seeds");
             case "leafcutter_bee" -> pollinationGroup == PollinationGroup.BERRY
                     || seedName.equals("buckwheat_seeds")
                     || seedName.equals("sunflower_seed_seeds");

@@ -1,6 +1,6 @@
 {
   "schema_version": "0.9",
-  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at honey harvest; real monofloral honey needs time-resolved nectar analysis and botanical authentication. Vanilla flower sources may also count when present. All potion effects are explicitly fantasy gameplay, not medical effects.",
+  "description": "Honey source is a 5-block-radius Minecraft local forage proxy chosen at harvest. Dominant sources yield their own bottle; sufficiently diverse mixed forage yields wildflower honey. Mature mod crops count as potential nectar forage by default except explicitly modeled wind/self-pollinated grains (corn, rice, barley, oat, rye, sorghum, millet, teff, quinoa, amaranth). These are gameplay proxies, not botanical purity tests.",
   "nectar_flower_minimum": 6,
   "dominant_share_at_least": 0.6666666666666666,
   "honey_variants": [
@@ -52,8 +52,8 @@
     {
       "item": "poppy_honey_bottle",
       "source_crop": "minecraft:poppy",
-      "food_nutrition": 5,
-      "saturation_modifier": 0.3,
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
       "gameplay_effect": "NIGHT_VISION",
       "effect_duration_ticks": 100,
       "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
@@ -165,6 +165,114 @@
       "gameplay_effect": "WITHER",
       "effect_duration_ticks": 160,
       "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "blackberry_honey_bottle",
+      "source_crop": "blackberry_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "blackcurrant_honey_bottle",
+      "source_crop": "blackcurrant_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "chive_honey_bottle",
+      "source_crop": "chives_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "pumpkin_blossom_honey_bottle",
+      "source_crop": "pumpkin_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "cassava_blossom_honey_bottle",
+      "source_crop": "cassava_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "taro_blossom_honey_bottle",
+      "source_crop": "taro_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "WATER_BREATHING",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "yam_blossom_honey_bottle",
+      "source_crop": "yam_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "watercress_honey_bottle",
+      "source_crop": "watercress_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "endive_honey_bottle",
+      "source_crop": "endive_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "kohlrabi_honey_bottle",
+      "source_crop": "kohlrabi_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "ABSORPTION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "rutabaga_honey_bottle",
+      "source_crop": "rutabaga_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "wildflower_honey_bottle",
+      "source_crop": "mixed_flower_forage",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NONE",
+      "effect_duration_ticks": 0,
+      "source_of_effect": "mod_original_custom"
     }
   ],
   "unknown_or_mixed_output": "minecraft:honey_bottle",
@@ -175,6 +283,8 @@
     "https://www.fao.org/4/x0083e/X0083E04.htm",
     "https://www.ams.usda.gov/sites/default/files/media/Comb_Honey_Inspection_Instructions%5B1%5D.pdf"
   ],
-  "suspicious_stew_parity": "All 14 vanilla flowers available in Java 1.21.1 produce honey with the same status effect AND duration as their suspicious stews. Poison is deliberately applied after native HoneyBottleItem removes poison; custom crop honeys retain standalone fantasy effects.",
-  "suspicious_stew_reference": "https://minecraft.wiki/w/Suspicious_stew"
+  "suspicious_stew_parity": "All 14 vanilla flowers available in Java 1.21.1 retain the same status effect and duration as their suspicious stews. New crop-source honeys are short fantasy gameplay effects. Mixed-flower wildflower honey has no bonus effect.",
+  "suspicious_stew_reference": "https://minecraft.wiki/w/Suspicious_stew",
+  "mixed_flower_output": "gugugaga:wildflower_honey_bottle",
+  "mixed_flower_rule": "At least 12 nearby nectar-source flowers from at least 3 distinct source kinds, with no source meeting the 2/3 dominance threshold, produce wildflower honey. Sparse, unknown, or single-source forage keeps vanilla honey."
 }

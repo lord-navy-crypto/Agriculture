@@ -1,0 +1,458 @@
+{
+  "schema_version": "1.2",
+  "description": "Honey source is a bounded local forage proxy chosen when a fully stocked, safely smoked hive is harvested. A dominant recognized source yields its source-specific bottle; sufficiently diverse mixed forage yields neutral wildflower honey. Mature mod crops count as potential nectar forage by default except explicitly modeled wind/self-pollinated grains. These are gameplay proxies, not botanical purity tests. The current catalog contains 50 bottle types and 49 explicit forage routes.",
+  "nectar_flower_minimum": 6,
+  "dominant_share_at_least": 0.6666666666666666,
+  "honey_variants": [
+    {
+      "item": "clover_honey_bottle",
+      "source_crop": "clover_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 200,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "lavender_honey_bottle",
+      "source_crop": "lavender_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 300,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "buckwheat_honey_bottle",
+      "source_crop": "buckwheat_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.15,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 200,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "sunflower_honey_bottle",
+      "source_crop": "sunflower_seed_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 240,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "dandelion_honey_bottle",
+      "source_crop": "minecraft:dandelion",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "SATURATION",
+      "effect_duration_ticks": 7,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "poppy_honey_bottle",
+      "source_crop": "minecraft:poppy",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "allium_honey_bottle",
+      "source_crop": "minecraft:allium",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "FIRE_RESISTANCE",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "cornflower_honey_bottle",
+      "source_crop": "minecraft:cornflower",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "azure_bluet_honey_bottle",
+      "source_crop": "minecraft:azure_bluet",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "BLINDNESS",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "blue_orchid_honey_bottle",
+      "source_crop": "minecraft:blue_orchid",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "SATURATION",
+      "effect_duration_ticks": 7,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "lily_of_the_valley_honey_bottle",
+      "source_crop": "minecraft:lily_of_the_valley",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "POISON",
+      "effect_duration_ticks": 240,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "oxeye_daisy_honey_bottle",
+      "source_crop": "minecraft:oxeye_daisy",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "torchflower_honey_bottle",
+      "source_crop": "minecraft:torchflower",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "red_tulip_honey_bottle",
+      "source_crop": "minecraft:red_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "orange_tulip_honey_bottle",
+      "source_crop": "minecraft:orange_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "white_tulip_honey_bottle",
+      "source_crop": "minecraft:white_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "pink_tulip_honey_bottle",
+      "source_crop": "minecraft:pink_tulip",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WEAKNESS",
+      "effect_duration_ticks": 180,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "wither_rose_honey_bottle",
+      "source_crop": "minecraft:wither_rose",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "WITHER",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "minecraft_java_1_21_1_suspicious_stew"
+    },
+    {
+      "item": "blackberry_honey_bottle",
+      "source_crop": "blackberry_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "blackcurrant_honey_bottle",
+      "source_crop": "blackcurrant_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "chive_honey_bottle",
+      "source_crop": "chives_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "pumpkin_blossom_honey_bottle",
+      "source_crop": "pumpkin_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "cassava_blossom_honey_bottle",
+      "source_crop": "cassava_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "taro_blossom_honey_bottle",
+      "source_crop": "taro_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "WATER_BREATHING",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "yam_blossom_honey_bottle",
+      "source_crop": "yam_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "watercress_honey_bottle",
+      "source_crop": "watercress_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "endive_honey_bottle",
+      "source_crop": "endive_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "kohlrabi_honey_bottle",
+      "source_crop": "kohlrabi_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "ABSORPTION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "rutabaga_honey_bottle",
+      "source_crop": "rutabaga_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "jicama_blossom_honey_bottle",
+      "source_crop": "jicama_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "adzuki_bean_blossom_honey_bottle",
+      "source_crop": "adzuki_bean_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "mung_bean_blossom_honey_bottle",
+      "source_crop": "mung_bean_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "cowpea_blossom_honey_bottle",
+      "source_crop": "cowpea_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.2,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "safflower_honey_bottle",
+      "source_crop": "safflower_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "FIRE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "chicory_blossom_honey_bottle",
+      "source_crop": "chicory_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "mustard_greens_honey_bottle",
+      "source_crop": "mustard_greens_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "water_spinach_honey_bottle",
+      "source_crop": "water_spinach_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "WATER_BREATHING",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "wildflower_honey_bottle",
+      "source_crop": "mixed_flower_forage",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NONE",
+      "effect_duration_ticks": 0,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "celeriac_blossom_honey_bottle",
+      "source_crop": "celeriac_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "purslane_blossom_honey_bottle",
+      "source_crop": "purslane_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "chayote_blossom_honey_bottle",
+      "source_crop": "chayote_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "grape_blossom_honey_bottle",
+      "source_crop": "grape_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "JUMP",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "tea_blossom_honey_bottle",
+      "source_crop": "tea_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "NIGHT_VISION",
+      "effect_duration_ticks": 160,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "coffee_blossom_honey_bottle",
+      "source_crop": "coffee_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DIG_SPEED",
+      "effect_duration_ticks": 120,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "rapini_blossom_honey_bottle",
+      "source_crop": "rapini_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "DAMAGE_RESISTANCE",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "napa_cabbage_blossom_honey_bottle",
+      "source_crop": "napa_cabbage_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "ABSORPTION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "melon_blossom_honey_bottle",
+      "source_crop": "melon_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.3,
+      "gameplay_effect": "MOVEMENT_SPEED",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "watermelon_blossom_honey_bottle",
+      "source_crop": "watermelon_crop",
+      "food_nutrition": 6,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "WATER_BREATHING",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "fava_bean_blossom_honey_bottle",
+      "source_crop": "fava_bean_crop",
+      "food_nutrition": 7,
+      "saturation_modifier": 0.25,
+      "gameplay_effect": "ABSORPTION",
+      "effect_duration_ticks": 100,
+      "source_of_effect": "mod_original_custom"
+    },
+    {
+      "item": "jute_mallow_blossom_honey_bottle",
+      "source_crop": "jute_mallow_crop",
+      "food_nutrition": 5,
+      "saturation_modifier": 0.35,
+      "gameplay_effect": "REGENERATION",
+      "effect_duration_ticks": 80,
+      "source_of_effect": "mod_original_custom"
+    }
+  ]
+}

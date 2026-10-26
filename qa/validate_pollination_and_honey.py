@@ -20,6 +20,7 @@ def read_json(path):
 def main():
     crop_source = (JAVA / "AgricultureCropBlock.java").read_text(encoding="utf8")
     bee_source = (JAVA / "BeeContent.java").read_text(encoding="utf8")
+    bee_tag_source = (JAVA / "BeeEcotypeItem.java").read_text(encoding="utf8")
     harvester_source = (JAVA / "HoneyHarvesterItem.java").read_text(encoding="utf8")
     en = read_json(RES / "assets/gugugaga/lang/en_us.json")
     zh = read_json(RES / "assets/gugugaga/lang/zh_cn.json")
@@ -27,6 +28,7 @@ def main():
     assert "POLLINATED" in crop_source
     assert "getDrops(BlockState state, LootParams.Builder builder)" in crop_source
     assert "HONEY_HARVESTER" in bee_source
+    assert "bee.getType() != EntityType.BEE" in bee_tag_source
     assert "BeehiveBlock.HONEY_LEVEL" in harvester_source
     assert "Items.GLASS_BOTTLE" in harvester_source
     assert "Items.SHEARS" in harvester_source and "Items.HONEYCOMB, 3" in harvester_source
@@ -34,7 +36,8 @@ def main():
     assert 'combMode ? SoundEvents.BEEHIVE_SHEAR : SoundEvents.BOTTLE_FILL' in harvester_source
     assert "boolean growthAllowed = CropClimate.allowGrowth" in crop_source
     assert "if (state.getValue(AGE) >= getMaxAge())" in crop_source
-    assert "if (!bee.hasNectar())" in crop_source
+    assert "bee -> bee.isAlive() && bee.hasNectar()" in crop_source
+    assert "if (!bee.hasNectar())" not in crop_source
     assert "BlockPos.MutableBlockPos candidate = new BlockPos.MutableBlockPos()" in (JAVA / "CropClimate.java").read_text(encoding="utf8")
     assert "if (growthAllowed)" in crop_source
     assert "message.gugugaga.honey_harvester_combs_collected" in en

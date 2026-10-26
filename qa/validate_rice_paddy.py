@@ -16,8 +16,8 @@ assert RULE["horizontal_radius_blocks"] == 3
 assert RULE["vertical_offsets_from_crop"] == [-1, 0]
 assert RULE["searches_only_loaded_chunks"] is True
 assert RULE["not_a_universal_rice_rule"] is True
-assert '"rice_seeds".equals(seedName) && !hasPaddyWater(level, pos)' in SOURCE
-assert "private static boolean hasPaddyWater(ServerLevel level, BlockPos cropPos)" in SOURCE
+assert '"rice_seeds".equals(seedName) && !hasNearbyFreshWater(level, pos, 3, -1, 0)' in SOURCE
+assert "private static boolean hasNearbyFreshWater(ServerLevel level, BlockPos cropPos," in SOURCE
 assert "level.hasChunkAt(candidate)" in SOURCE
 assert "FluidTags.WATER" in SOURCE
 assert all(url.startswith("https://") for url in RULE["research_sources"])

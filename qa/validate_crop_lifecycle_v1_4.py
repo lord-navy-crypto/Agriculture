@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Whole-catalog crop-cycle contract for all 64 crop lines."""
+"""Whole-catalog crop-cycle contract for all 96 crop lines."""
 import json
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,9 +13,16 @@ def main():
         load("data/gugugaga/agronomy/crop_additions_v0_9.json")["crops"],
         load("data/gugugaga/agronomy/crop_additions_v1_0.json")["crops"],
         load("data/gugugaga/agronomy/crop_additions_v1_3.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v1_7.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v1_8.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v1_9.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v2_0.json")["crops"],
+        load("data/gugugaga/agronomy/crop_additions_v2_1.json")["crops"],
     ]
-    crops = [row["crop"] for group in profiles for row in group]
-    assert len(crops) == 64 and len(set(crops)) == 64
+    profile_rows = [row for group in profiles for row in group]
+    crops = [row["crop"] for row in profile_rows]
+    assert len(crops) == 100 and len(set(crops)) == 100
+    assert all(isinstance(row.get("harvested_organ"), str) and row["harvested_organ"].strip() for row in profile_rows)
     en, zh = load("assets/gugugaga/lang/en_us.json"), load("assets/gugugaga/lang/zh_cn.json")
     reg = (SRC / "AgricultureContent.java").read_text("utf8")
     climate = (SRC / "CropClimate.java").read_text("utf8")
@@ -44,18 +51,64 @@ def main():
         assert loot[1]["entries"][0]["name"] == f"gugugaga:{crop}"
         assert f"block.gugugaga.{crop}_crop" in en and f"block.gugugaga.{crop}_crop" in zh
     assert "palettes = [" in generator and "categoryGroups = [" in generator
-    assert "cropIds.size() != 64" in generator
+    assert "leafFormGroups = [" in generator
+    assert "leafFormByCrop.keySet()" in generator
+    assert "organFormFromProfile = {" in generator
+    assert "harvestedOrganByCrop" in generator
+    assert "organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])" in generator
+    assert "No harvested-organ icon mapping for profile value:" in generator
+    assert "organFormByCrop.keySet()" in generator
+    assert "seedFormGroups = [" in generator
+    assert "seedFormByCrop.keySet()" in generator
+    # Seed-icon rendering has its own local palette; foliage-only variables must not leak into it.
+    assert "put.call(image,pt[0]-1,pt[1],leafLight)" not in generator
+    assert "put.call(image,pt[0]-1,pt[1],light)" in generator
+    assert "String seedForm = seedFormByCrop[crop].toString()" in generator
+    assert "seedForm == 'kernel'" in generator
+    assert "seedForm == 'legume'" in generator
+    assert "seedForm == 'oilseed'" in generator
+    assert "seedForm == 'brassica'" in generator
+    assert "if (crop == 'radish')" in generator
+    assert "if (crop == 'turnip')" in generator
+    assert "produceIconHashes.size() != 100" in generator
+    assert "seedIconHashes.size() != 100" in generator
+    assert "organForm == 'fiber' || organForm == 'fiber_seed'" in generator
+    assert "leafForm == 'rosette'" in generator
+    assert "leafForm == 'vine'" in generator
+    assert "leafForm == 'fern'" in generator
+    assert "leafForm == 'bulb'" in generator
+    assert "cropIds.size() != 100" in generator
     assert "thisCropStageHashes.size() != 8" in generator
-    assert "matureTextureHashes.size() != 64" in generator
-    assert "allStageHashes.size() != 768" in generator
+    assert "matureTextureHashes.size() != 100" in generator
+    assert "allStageHashes.size() != 1200" in generator
+    assert "produceIconHashes.size() != 100" in generator
+    assert "seedIconHashes.size() != 100" in generator
     assert "tasks.named('processResources')" in generator
-    for name in "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea broccoli brussels_sprouts cotton".split():
+    assert "crop-stage-contact-sheet.png" in generator
+    assert "outputs.dir(layout.buildDirectory.dir('reports/agriculture'))" in generator
+    assert "produce-icon-contact-sheet.png" in generator
+    assert "seed-icon-contact-sheet.png" in generator
+    workflow = (ROOT / ".github/workflows/rewrite-build.yml").read_text(encoding="utf8")
+    assert "agriculture-visual-proof" in workflow
+    assert "build/reports/agriculture/*.png" in workflow
+    assert "cropSpecificStageDetail.call(image, crop, stage, top, accent, leaf, leafDark, leafLight)" in generator
+    assert "int growthTipY = Math.max(1, top)" in generator
+    assert "shade.call(accent, 0.72d + stage * 0.05d)" in generator
+    assert "int branchCount = stage - 3" in generator
+    assert "Math.min(4, 1 + stage.intdiv(2))" in generator
+    detail = generator.split("def cropSpecificStageDetail = {", 1)[1].split("def stageTexture = {", 1)[0]
+    # Each of the 96 crops must have both a seedling-specific mark and a mature-form
+    # detail branch. Palette-only variation is not accepted as crop-specific artwork.
+    for crop in crops:
+        assert detail.count(f"case '{crop}':") >= 2, (crop, "missing seedling or mature morphology")
+    for name in "tomato cucumber strawberry blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper green_bean pea broccoli brussels_sprouts cotton pumpkin blackberry blackcurrant".split():
         assert f'"{name}_seeds"' in crop_java, name
-    for name in "basil mint arugula swiss_chard parsley collard_greens dill cilantro bok_choy lettuce spinach kale celery".split():
+    for name in "basil mint arugula swiss_chard parsley collard_greens dill cilantro bok_choy lettuce spinach kale celery chives endive watercress".split():
         assert f'"{name}_seeds"' in crop_java, name
     for name in "lavender clover artichoke".split():
         assert f'"{name}_seeds"' in crop_java, name
     assert "level.setBlock(pos, state.setValue(AGE, 4).setValue(POLLINATED, false), 3)" in crop_java
-    print("CROP_LIFECYCLE_V1_4_OK: 64 crops; 8 stage models each; pollen variants; 128 custom item icons; seeds/loot/recipes/translations/compost validated")
+    assert "REPEATED_SPEAR_HARVEST" in crop_java and '"asparagus_seeds"' in crop_java
+    print("CROP_LIFECYCLE_V2_0_OK: 100 crops; 100 explicit seedling/mature morphology pairs; 8 stage models each; pollen variants; 200 custom item icons; seeds/loot/recipes/translations/compost validated")
 if __name__ == "__main__":
     main()
