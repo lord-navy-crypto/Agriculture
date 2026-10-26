@@ -63,7 +63,9 @@ def main():
         assert f"MobEffects.{effect}" in bee, effect
     for flower in ("dandelion","poppy","allium","cornflower","azure_bluet","blue_orchid","lily_of_the_valley","oxeye_daisy","torchflower","red_tulip","orange_tulip","white_tulip","pink_tulip","wither_rose"):
         assert f'"minecraft:{flower}"' in nectar
-    assert "if (!matched) otherFlowers++" in nectar
+    assert "SOURCE_INDEX.get(cropResource.toString())" in nectar
+    assert "SOURCE_INDEX.get(identifier)" in nectar
+    assert "otherFlowerKinds.add(identifier)" in nectar
     assert "NectarHoneySource.selectHoneyBottle(level, pos)" in harvest
     assert "CampfireBlock.isSmokeyPos(level, hivePos)" in harvest
     assert "hasChunkAt(sample)" in nectar and "dominantCount < 6" in nectar
