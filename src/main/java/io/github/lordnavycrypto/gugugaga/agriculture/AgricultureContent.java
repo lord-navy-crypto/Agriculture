@@ -354,6 +354,20 @@ public final class AgricultureContent {
     public static final DeferredItem<Item> NAPA_CABBAGE_SEEDS = seed("napa_cabbage_seeds", NAPA_CABBAGE_CROP);
     public static final DeferredItem<Item> NAPA_CABBAGE = food("napa_cabbage", 2, 0.25F);
 
+    /** v2.1: cucurbit fruits, a cool-season pulse, and a repeat-cut leafy vegetable. */
+    public static final DeferredBlock<AgricultureCropBlock> MELON_CROP = crop("melon_crop", "melon_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> MELON_SEEDS = seed("melon_seeds", MELON_CROP);
+    public static final DeferredItem<Item> MELON = food("melon", 3, 0.30F);
+    public static final DeferredBlock<AgricultureCropBlock> WATERMELON_CROP = crop("watermelon_crop", "watermelon_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> WATERMELON_SEEDS = seed("watermelon_seeds", WATERMELON_CROP);
+    public static final DeferredItem<Item> WATERMELON = food("watermelon", 3, 0.30F);
+    public static final DeferredBlock<AgricultureCropBlock> FAVA_BEAN_CROP = crop("fava_bean_crop", "fava_bean_seeds", AgricultureCropBlock.PollinationGroup.ORCHARD);
+    public static final DeferredItem<Item> FAVA_BEAN_SEEDS = seed("fava_bean_seeds", FAVA_BEAN_CROP);
+    public static final DeferredItem<Item> FAVA_BEAN = food("fava_bean", 3, 0.35F);
+    public static final DeferredBlock<AgricultureCropBlock> JUTE_MALLOW_CROP = crop("jute_mallow_crop", "jute_mallow_seeds", AgricultureCropBlock.PollinationGroup.NONE);
+    public static final DeferredItem<Item> JUTE_MALLOW_SEEDS = seed("jute_mallow_seeds", JUTE_MALLOW_CROP);
+    public static final DeferredItem<Item> JUTE_MALLOW = food("jute_mallow", 2, 0.25F);
+
     private static DeferredBlock<AgricultureCropBlock> crop(
             String name, String seedName, AgricultureCropBlock.PollinationGroup group) {
         return BLOCKS.register(name, () -> new AgricultureCropBlock(
@@ -480,6 +494,10 @@ public final class AgricultureContent {
             event.accept(COFFEE_SEEDS.get());
             event.accept(RAPINI_SEEDS.get());
             event.accept(NAPA_CABBAGE_SEEDS.get());
+            event.accept(MELON_SEEDS.get());
+            event.accept(WATERMELON_SEEDS.get());
+            event.accept(FAVA_BEAN_SEEDS.get());
+            event.accept(JUTE_MALLOW_SEEDS.get());
             event.accept(TEA.get());
             event.accept(COFFEE.get());
         } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
@@ -533,6 +551,10 @@ public final class AgricultureContent {
             event.accept(BeeContent.COFFEE_BLOSSOM_HONEY_BOTTLE.get());
             event.accept(BeeContent.RAPINI_BLOSSOM_HONEY_BOTTLE.get());
             event.accept(BeeContent.NAPA_CABBAGE_BLOSSOM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.MELON_BLOSSOM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.WATERMELON_BLOSSOM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.FAVA_BEAN_BLOSSOM_HONEY_BOTTLE.get());
+            event.accept(BeeContent.JUTE_MALLOW_BLOSSOM_HONEY_BOTTLE.get());
             event.accept(PARSNIP.get());
             event.accept(ARUGULA.get());
             event.accept(SWISS_CHARD.get());
@@ -617,6 +639,10 @@ public final class AgricultureContent {
             event.accept(GRAPE.get());
             event.accept(RAPINI.get());
             event.accept(NAPA_CABBAGE.get());
+            event.accept(MELON.get());
+            event.accept(WATERMELON.get());
+            event.accept(FAVA_BEAN.get());
+            event.accept(JUTE_MALLOW.get());
         } else if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BeeContent.MEADOW_BEE_TAG.get());
             event.accept(BeeContent.ORCHARD_BEE_TAG.get());

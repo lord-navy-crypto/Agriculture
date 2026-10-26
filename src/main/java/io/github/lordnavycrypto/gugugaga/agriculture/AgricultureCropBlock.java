@@ -128,13 +128,13 @@ public final class AgricultureCropBlock extends CropBlock {
             "bell_pepper_seeds", "eggplant_seeds", "zucchini_seeds", "raspberry_seeds",
             "cranberry_seeds", "okra_seeds", "chili_pepper_seeds", "green_bean_seeds",
             "pea_seeds", "broccoli_seeds", "brussels_sprouts_seeds", "cotton_seeds",
-            "pumpkin_seeds", "blackberry_seeds", "blackcurrant_seeds", "chayote_seeds", "grape_seeds");
+            "pumpkin_seeds", "blackberry_seeds", "blackcurrant_seeds", "chayote_seeds", "grape_seeds", "melon_seeds", "watermelon_seeds");
     private static final Set<String> REPEATED_LEAF_HARVEST = Set.of(
             "basil_seeds", "mint_seeds", "arugula_seeds", "swiss_chard_seeds",
             "parsley_seeds", "collard_greens_seeds", "dill_seeds", "cilantro_seeds",
             "bok_choy_seeds", "lettuce_seeds", "spinach_seeds", "kale_seeds",
             "celery_seeds", "chives_seeds", "endive_seeds", "watercress_seeds", "mustard_greens_seeds", "water_spinach_seeds",
-            "purslane_seeds", "tea_seeds", "rapini_seeds");
+            "purslane_seeds", "tea_seeds", "rapini_seeds", "jute_mallow_seeds");
     private static final Set<String> REPEATED_FLOWER_HARVEST = Set.of(
             "lavender_seeds", "clover_seeds", "artichoke_seeds");
     private static final Set<String> REPEATED_SPEAR_HARVEST = Set.of("asparagus_seeds");

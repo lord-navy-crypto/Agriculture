@@ -767,6 +767,38 @@
     "gugugaga:napa_cabbage": {
       "chance": 0.65,
       "can_villager_compost": false
+    },
+    "gugugaga:melon": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:melon_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:watermelon": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:watermelon_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:fava_bean": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:fava_bean_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:jute_mallow": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:jute_mallow_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
     }
   }
 }

@@ -26,7 +26,9 @@ tasks.register('generateCropAssets') {
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_8.json'),
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v1_9.json'),
         file('src/main/resources/data/gugugaga/agronomy/crop_additions_v2_0.json'),
-        file('src/main/resources/data/gugugaga/agronomy/honey_sources_v1_1.json')
+        file('src/main/resources/data/gugugaga/agronomy/crop_additions_v2_1.json'),
+        file('src/main/resources/data/gugugaga/agronomy/honey_sources_v1_1.json'),
+        file('src/main/resources/data/gugugaga/agronomy/honey_sources_v1_2.json')
     )
     outputs.dir(cropGeneratedResources)
     outputs.dir(layout.buildDirectory.dir('reports/agriculture'))
@@ -35,12 +37,12 @@ tasks.register('generateCropAssets') {
         project.delete(outputRoot)
         outputRoot.mkdirs()
         def slurper = new JsonSlurper()
-        def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json','crop_additions_v1_7.json','crop_additions_v1_8.json','crop_additions_v1_9.json','crop_additions_v2_0.json']
+        def profileNames = ['crop_profiles_v0_4.json','crop_additions_v0_9.json','crop_additions_v1_0.json','crop_additions_v1_3.json','crop_additions_v1_7.json','crop_additions_v1_8.json','crop_additions_v1_9.json','crop_additions_v2_0.json','crop_additions_v2_1.json']
         def cropProfiles = profileNames.collectMany { name ->
             slurper.parse(file('src/main/resources/data/gugugaga/agronomy/' + name)).crops
         }
         def cropIds = cropProfiles.collect { it.crop.toString() }.unique().sort()
-        if (cropIds.size() != 96) throw new GradleException('Expected exactly 96 unique crop profiles, found ' + cropIds.size())
+        if (cropIds.size() != 100) throw new GradleException('Expected exactly 100 unique crop profiles, found ' + cropIds.size())
         def harvestedOrganByCrop = [:]
         cropProfiles.each { profile ->
             String crop = profile.crop.toString()
@@ -79,14 +81,15 @@ tasks.register('generateCropAssets') {
             mung_bean:'#8FA85A', cowpea:'#B79B68', safflower:'#D9A64C', chicory:'#8E6B49',
             mustard_greens:'#6F9D47', water_spinach:'#3D8C68', celeriac:'#BCA783',
             purslane:'#6E9C53', chayote:'#8AB65B', grape:'#75509A', tea:'#3F7650',
-            coffee:'#8A5739', rapini:'#739A4D', napa_cabbage:'#78B76D'
+            coffee:'#8A5739', rapini:'#739A4D', napa_cabbage:'#78B76D',
+            melon:'#EAA85A', watermelon:'#367C47', fava_bean:'#A4B77A', jute_mallow:'#4D8C6B'
         ]
         def categoryGroups = [
             grain:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame sunflower_seed amaranth sweet_corn teff'.split(' '),
-            fruit:'tomato strawberry cucumber blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper pumpkin pineapple blackberry blackcurrant chayote grape coffee'.split(' '),
+            fruit:'tomato strawberry cucumber blueberry bell_pepper eggplant zucchini raspberry cranberry okra chili_pepper pumpkin pineapple blackberry blackcurrant chayote grape coffee melon watermelon'.split(' '),
             root:'onion garlic peanut radish turnip sweet_potato parsnip shallot ginger turmeric fennel cassava taro yam kohlrabi rutabaga jicama chicory celeriac'.split(' '),
-            leafy:'lettuce cabbage spinach broccoli kale celery leek arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy asparagus watercress endive mustard_greens water_spinach purslane rapini napa_cabbage'.split(' '),
-            pod:'soybean pea chickpea lentil green_bean black_bean adzuki_bean mung_bean cowpea'.split(' '),
+            leafy:'lettuce cabbage spinach broccoli kale celery leek arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy asparagus watercress endive mustard_greens water_spinach purslane rapini napa_cabbage jute_mallow'.split(' '),
+            pod:'soybean pea chickpea lentil green_bean black_bean adzuki_bean mung_bean cowpea fava_bean'.split(' '),
             flower:'lavender clover mustard canola artichoke safflower'.split(' '),
             herb:'basil mint dill cilantro parsley chives tea'.split(' '),
             fiber:'cotton flax'.split(' ')
@@ -99,10 +102,10 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(categoryByCrop.keySet())) {
-            throw new GradleException('Crop art categories do not match the 96 crop profiles')
+            throw new GradleException('Crop art categories do not match the 100 crop profiles')
         }
         if (!(cropIds as Set).equals(palettes.keySet())) {
-            throw new GradleException('Crop art palette map must cover all 96 crop IDs exactly')
+            throw new GradleException('Crop art palette map must cover all 100 crop IDs exactly')
         }
 
         // A crop's leaf architecture controls its silhouette, not just its color.
@@ -111,8 +114,8 @@ tasks.register('generateCropAssets') {
             blade:'corn rice barley oat rye sorghum millet buckwheat quinoa sesame flax leek amaranth sweet_corn chives teff'.split(' '),
             rosette:'lettuce cabbage spinach broccoli kale arugula swiss_chard collard_greens brussels_sprouts cauliflower bok_choy radish turnip strawberry pineapple taro endive kohlrabi rutabaga chicory mustard_greens purslane napa_cabbage'.split(' '),
             bulb:'onion garlic shallot ginger turmeric parsnip celeriac'.split(' '),
-            vine:'cucumber zucchini pea green_bean sweet_potato pumpkin yam water_spinach chayote grape'.split(' '),
-            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra blackberry blackcurrant cassava jicama adzuki_bean mung_bean cowpea tea coffee'.split(' '),
+            vine:'cucumber zucchini pea green_bean sweet_potato pumpkin yam water_spinach chayote grape melon watermelon'.split(' '),
+            bush:'tomato bell_pepper eggplant blueberry raspberry cranberry soybean black_bean chickpea lentil basil mint clover cotton peanut chili_pepper okra blackberry blackcurrant cassava jicama adzuki_bean mung_bean cowpea tea coffee fava_bean jute_mallow'.split(' '),
             fern:'fennel dill cilantro parsley watercress'.split(' '),
             flower:'lavender mustard canola sunflower_seed artichoke safflower'.split(' '),
             stalk:'celery asparagus rapini'.split(' ')
@@ -125,7 +128,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(leafFormByCrop.keySet())) {
-            throw new GradleException('Crop leaf forms must cover the 96 crop IDs exactly')
+            throw new GradleException('Crop leaf forms must cover the 100 crop IDs exactly')
         }
 
         // Derive the produce icon family from the actual harvested-organ text in the data profile.
@@ -165,17 +168,17 @@ tasks.register('generateCropAssets') {
             organFormByCrop[crop] = organFormFromProfile.call(harvestedOrganByCrop[crop])
         }
         if (!(cropIds as Set).equals(organFormByCrop.keySet())) {
-            throw new GradleException('Harvested-organ icon mapping must cover the 96 crop IDs exactly')
+            throw new GradleException('Harvested-organ icon mapping must cover the 100 crop IDs exactly')
         }
 
         // Seed appearance is a separate botanical property: it must not be inferred from
         // the harvested organ (e.g. leafy crops still have seeds). Keep this taxonomy explicit.
         def seedFormGroups = [
             kernel:'corn rice barley oat rye sorghum millet buckwheat quinoa amaranth sweet_corn teff coffee'.split(' '),
-            legume:'soybean black_bean chickpea lentil pea green_bean peanut adzuki_bean mung_bean cowpea'.split(' '),
+            legume:'soybean black_bean chickpea lentil pea green_bean peanut adzuki_bean mung_bean cowpea fava_bean'.split(' '),
             oilseed:'sunflower_seed sesame mustard canola flax safflower'.split(' '),
             nightshade:'tomato bell_pepper chili_pepper eggplant'.split(' '),
-            cucurbit:'cucumber zucchini pumpkin'.split(' '),
+            cucurbit:'cucumber zucchini pumpkin melon watermelon'.split(' '),
             berry:'strawberry blueberry raspberry cranberry pineapple blackberry blackcurrant grape'.split(' '),
             brassica:'cabbage broccoli kale brussels_sprouts cauliflower bok_choy collard_greens arugula kohlrabi rutabaga rapini napa_cabbage'.split(' '),
             allium:'onion garlic shallot leek chives'.split(' '),
@@ -187,7 +190,7 @@ tasks.register('generateCropAssets') {
             stalk:['celery', 'asparagus'],
             leafy:'lettuce spinach swiss_chard endive watercress mustard_greens water_spinach'.split(' '),
             propagule:'cassava taro yam chayote'.split(' '),
-            capsule:['okra']
+            capsule:'okra jute_mallow'.split(' ')
         ]
         def seedFormByCrop = [:]
         seedFormGroups.each { form, names ->
@@ -197,7 +200,7 @@ tasks.register('generateCropAssets') {
             }
         }
         if (!(cropIds as Set).equals(seedFormByCrop.keySet())) {
-            throw new GradleException('Seed icon forms must cover the 96 crop IDs exactly')
+            throw new GradleException('Seed icon forms must cover the 100 crop IDs exactly')
         }
 
         def rgb = { String value -> Integer.parseInt(value.substring(1), 16) }
@@ -356,6 +359,10 @@ tasks.register('generateCropAssets') {
                     case 'coffee': put.call(image, 5, 13, accent); put.call(image, 9, 13, cream); break
                     case 'rapini': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leaf); break
                     case 'napa_cabbage': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, cream); break
+                    case 'melon': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, accent); break
+                    case 'watermelon': put.call(image, 5, 13, leaf); put.call(image, 9, 13, shade.call(accent, 0.8d)); break
+                    case 'fava_bean': put.call(image, 5, 13, cream); put.call(image, 9, 13, leafLight); break
+                    case 'jute_mallow': put.call(image, 5, 13, leafLight); put.call(image, 9, 13, leafDark); break
                 }
             } else {
                 switch (crop) {
@@ -613,6 +620,10 @@ tasks.register('generateCropAssets') {
                     case 'coffee': if (stage >= 3) { line.call(image,7,14,7,6,leafDark); for (int[] pt : [[4,7],[10,7],[5,10],[9,11],[7,5]] as int[][]) { line.call(image,7,10,pt[0],pt[1],leaf); disc.call(image,pt[0],pt[1],1,1,leafLight) }; if (stage >= 5) { disc.call(image,5,12,1,1,red); disc.call(image,8,11,1,1,red); disc.call(image,10,12,1,1,red) } }; break
                     case 'rapini': if (stage >= 3) { line.call(image,7,14,7,5,leafDark); line.call(image,7,9,4,7,leaf); line.call(image,7,8,10,6,leafLight); line.call(image,7,7,5,5,leaf); if (stage >= 5) { disc.call(image,5,4,1,1,yellow); disc.call(image,7,3,1,1,yellow); disc.call(image,9,4,1,1,yellow); disc.call(image,11,5,1,1,accent) } }; break
                     case 'napa_cabbage': if (stage >= 3) { line.call(image,7,14,7,8,leafDark); disc.call(image,5,8,3,3,leafLight); disc.call(image,9,8,3,3,leaf); disc.call(image,7,6,3,3,cream); line.call(image,7,8,7,13,white); if (stage >= 6) { line.call(image,7,6,7,3,leafDark); put.call(image,7,2,yellow) } }; break
+                    case 'melon': if (stage >= 3) { line.call(image,7,14,7,7,leafDark); line.call(image,7,10,4,7,leaf); line.call(image,7,9,11,6,leafLight); if (stage >= 5) { disc.call(image,10,11,3,3,accent); line.call(image,10,8,11,7,leafDark); put.call(image,9,10,light); if (stage >= 6) line.call(image,8,11,12,10,shade.call(accent,0.7d)) } }; break
+                    case 'watermelon': if (stage >= 3) { line.call(image,7,14,7,7,leafDark); line.call(image,7,10,4,7,leaf); line.call(image,7,9,11,6,leafLight); if (stage >= 5) { disc.call(image,10,11,3,3,accent); line.call(image,8,9,9,13,shade.call(accent,0.7d)); line.call(image,10,8,11,13,leafDark); put.call(image,9,10,light) } }; break
+                    case 'fava_bean': if (stage >= 3) { line.call(image,7,14,7,6,leafDark); line.call(image,7,9,4,6,leaf); line.call(image,7,8,11,5,leafLight); if (stage >= 5) { line.call(image,5,8,4,12,accent); line.call(image,8,8,9,12,shade.call(accent,0.8d)); disc.call(image,5,10,1,1,cream); disc.call(image,8,10,1,1,cream) } }; break
+                    case 'jute_mallow': if (stage >= 3) { line.call(image,7,14,7,5,leafDark); for (int[] pt : [[4,8],[10,7],[5,11],[11,10]] as int[][]) { line.call(image,7,10,pt[0],pt[1],leaf); disc.call(image,pt[0],pt[1],2,2,leafLight) }; if (stage >= 6) { put.call(image,6,4,yellow); put.call(image,8,3,yellow); put.call(image,9,5,cream) } }; break
                     case 'artichoke':
                         if (stage >= 4) { line.call(image,7,7,5,4,leafDark); line.call(image,7,7,9,4,leafDark); line.call(image,7,7,7,3,leafLight); disc.call(image,7,6,2,2,accent); put.call(image,7,4,leafLight) }
                         break
@@ -1217,7 +1228,9 @@ tasks.register('generateCropAssets') {
                     }
                 }
             } else if (organForm == 'fruit') {
-                if (crop == 'chayote') {
+                if (crop == 'melon') { disc.call(image,8,8,4,4,accent); line.call(image,5,6,6,11,dark); line.call(image,7,4,7,12,light); line.call(image,9,4,9,12,dark); line.call(image,11,6,10,11,light); put.call(image,8,3,greenDark) }
+                else if (crop == 'watermelon') { disc.call(image,8,8,4,4,green); line.call(image,5,5,5,11,greenDark); line.call(image,7,4,7,12,accent); line.call(image,9,4,9,12,greenLight); line.call(image,11,5,11,11,greenDark); put.call(image,8,3,greenDark) }
+                else if (crop == 'chayote') {
                     disc.call(image,8,9,3,4,accent); line.call(image,8,5,8,3,greenDark); line.call(image,6,8,10,11,shade.call(accent,0.82d)); put.call(image,7,8,light)
                 } else if (crop == 'pumpkin') {
                     disc.call(image, 8, 9, 4, 4, accent); line.call(image, 8, 5, 8, 13, dark); put.call(image, 7, 5, green); put.call(image, 8, 4, greenDark); put.call(image, 10, 8, light)
@@ -1428,7 +1441,8 @@ tasks.register('generateCropAssets') {
                     put.call(image, 5, 6, light); put.call(image, 10, 8, light)
                 }
             } else if (organForm == 'pod') {
-                if (crop == 'cowpea') { line.call(image,3,6,12,11,accent); line.call(image,4,7,13,12,shade.call(accent,0.8d)); for (int[] pt : [[5,7],[8,9],[11,10]] as int[][]) put.call(image,pt[0],pt[1],cream) }
+                if (crop == 'fava_bean') { line.call(image,4,5,11,11,greenDark); line.call(image,3,7,10,13,green); line.call(image,4,8,11,14,greenLight); for (int[] pt : [[5,8],[7,10],[9,12]] as int[][]) disc.call(image,pt[0],pt[1],1,1,accent) }
+                else if (crop == 'cowpea') { line.call(image,3,6,12,11,accent); line.call(image,4,7,13,12,shade.call(accent,0.8d)); for (int[] pt : [[5,7],[8,9],[11,10]] as int[][]) put.call(image,pt[0],pt[1],cream) }
                 else if (crop == 'peanut') {
                     disc.call(image, 6, 8, 2, 4, cream)
                     disc.call(image, 10, 8, 2, 4, accent)
@@ -1448,7 +1462,8 @@ tasks.register('generateCropAssets') {
                     put.call(image, 3, 10, greenDark); put.call(image, 12, 5, greenDark)
                 }
             } else if (organForm == 'leaf') {
-                if (crop == 'purslane') {
+                if (crop == 'jute_mallow') { line.call(image,8,14,8,6,greenDark); for (int[] pt : [[5,6],[10,5],[4,9],[11,9],[6,11]] as int[][]) { line.call(image,8,10,pt[0],pt[1],greenDark); disc.call(image,pt[0],pt[1],2,2,greenLight); put.call(image,pt[0],pt[1],accent) } }
+                else if (crop == 'purslane') {
                     line.call(image,8,14,5,10,accent); line.call(image,8,13,12,9,accent); line.call(image,8,12,8,7,greenDark)
                     for (int[] pt : [[4,10],[6,8],[9,9],[12,8],[7,11]] as int[][]) disc.call(image,pt[0],pt[1],2,1,greenLight)
                     put.call(image,5,9,greenDark); put.call(image,10,8,accent)
@@ -1726,6 +1741,8 @@ tasks.register('generateCropAssets') {
             chayote_blossom_honey_bottle:'#91B85C', grape_blossom_honey_bottle:'#8161A8',
             tea_blossom_honey_bottle:'#56815A', coffee_blossom_honey_bottle:'#9B6947',
             rapini_blossom_honey_bottle:'#8DA85D', napa_cabbage_blossom_honey_bottle:'#A8C57C',
+            melon_blossom_honey_bottle:'#D9A75D', watermelon_blossom_honey_bottle:'#C85A4C',
+            fava_bean_blossom_honey_bottle:'#B6A96D', jute_mallow_blossom_honey_bottle:'#6F9A52',
             clover_honey_bottle:'#B8A84B', lavender_honey_bottle:'#A48BCB',
             buckwheat_honey_bottle:'#98612D', sunflower_honey_bottle:'#E8C24A',
             dandelion_honey_bottle:'#DDB72E', poppy_honey_bottle:'#CB5558',
@@ -1776,21 +1793,21 @@ tasks.register('generateCropAssets') {
             savePng.call(honeyPath, bottle)
             honeyTextureHashes.add(digest.digest(new File(outputRoot, honeyPath).bytes).encodeHex().toString())
         }
-        if (honeyTexturePalette.size() != 46 || honeyTextureHashes.size() != 46) {
-            throw new GradleException('All 46 honey variants must have unique custom bottle sprites')
+        if (honeyTexturePalette.size() != 50 || honeyTextureHashes.size() != 50) {
+            throw new GradleException('All 50 honey variants must have unique custom bottle sprites')
         }
 
-        if (modelCount != 1152 || blockTextureCount != 1152 || itemTextureCount != 192) {
+        if (modelCount != 1200 || blockTextureCount != 1200 || itemTextureCount != 200) {
             throw new GradleException('Unexpected crop asset count: models=' + modelCount + ', block textures=' + blockTextureCount + ', item textures=' + itemTextureCount)
         }
-        if (matureTextureHashes.size() != 96) throw new GradleException('Every crop must have a unique mature texture')
-        if (allStageHashes.size() != 1152) throw new GradleException('Crop growth/pollination stage textures must be unique')
+        if (matureTextureHashes.size() != 100) throw new GradleException('Every crop must have a unique mature texture')
+        if (allStageHashes.size() != 1200) throw new GradleException('Crop growth/pollination stage textures must be unique')
         def duplicateProduceIcons = produceIconNamesByHash.values().findAll { names -> names.size() > 1 }
         def duplicateSeedIcons = seedIconNamesByHash.values().findAll { names -> names.size() > 1 }
         if (!duplicateProduceIcons.isEmpty()) throw new GradleException('Duplicate produce icon pixel hashes: ' + duplicateProduceIcons.collect { names -> names.join(' = ') }.join('; '))
         if (!duplicateSeedIcons.isEmpty()) throw new GradleException('Duplicate seed icon pixel hashes: ' + duplicateSeedIcons.collect { names -> names.join(' = ') }.join('; '))
-        if (produceIconHashes.size() != 96) throw new GradleException('All 96 produce icons must be visually distinct')
-        if (seedIconHashes.size() != 96) throw new GradleException('All 96 seed icons must be visually distinct')
+        if (produceIconHashes.size() != 100) throw new GradleException('All 100 produce icons must be visually distinct')
+        if (seedIconHashes.size() != 100) throw new GradleException('All 100 seed icons must be visually distinct')
         // Produce a reviewable visual proof sheet for all crop ages and pollen variants.
         // This is a build report only; it is not packaged as a game texture.
         int tile = 48

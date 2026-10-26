@@ -102,6 +102,10 @@ public final class BeeContent {
     public static final DeferredItem<HoneyBottleItem> COFFEE_BLOSSOM_HONEY_BOTTLE = floralHoney("coffee_blossom_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> RAPINI_BLOSSOM_HONEY_BOTTLE = floralHoney("rapini_blossom_honey_bottle");
     public static final DeferredItem<HoneyBottleItem> NAPA_CABBAGE_BLOSSOM_HONEY_BOTTLE = floralHoney("napa_cabbage_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> MELON_BLOSSOM_HONEY_BOTTLE = floralHoney("melon_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> WATERMELON_BLOSSOM_HONEY_BOTTLE = floralHoney("watermelon_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> FAVA_BEAN_BLOSSOM_HONEY_BOTTLE = floralHoney("fava_bean_blossom_honey_bottle");
+    public static final DeferredItem<HoneyBottleItem> JUTE_MALLOW_BLOSSOM_HONEY_BOTTLE = floralHoney("jute_mallow_blossom_honey_bottle");
 
     /**
      * Fantasy status effects follow the vanilla suspicious-stew design pattern.
@@ -247,6 +251,18 @@ public final class BeeContent {
             case "napa_cabbage_blossom_honey_bottle" -> food.nutrition(6)
                     .saturationModifier(0.30F)
                     .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 100, 0), 1.0F);
+            case "melon_blossom_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.30F)
+                    .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 100, 0), 1.0F);
+            case "watermelon_blossom_honey_bottle" -> food.nutrition(6)
+                    .saturationModifier(0.35F)
+                    .effect(() -> new MobEffectInstance(MobEffects.WATER_BREATHING, 100, 0), 1.0F);
+            case "fava_bean_blossom_honey_bottle" -> food.nutrition(7)
+                    .saturationModifier(0.25F)
+                    .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 100, 0), 1.0F);
+            case "jute_mallow_blossom_honey_bottle" -> food.nutrition(5)
+                    .saturationModifier(0.35F)
+                    .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 80, 0), 1.0F);
             default -> throw new IllegalArgumentException("Unknown floral honey: " + name);
         }
         return ITEMS.register(name, () -> name.equals("lily_of_the_valley_honey_bottle")

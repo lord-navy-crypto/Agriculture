@@ -49,7 +49,8 @@ public final class NectarHoneySource {
             "gugugaga:chicory_crop",
             "gugugaga:mustard_greens_crop",
             "gugugaga:water_spinach_crop", "gugugaga:celeriac_crop", "gugugaga:purslane_crop", "gugugaga:chayote_crop",
-            "gugugaga:grape_crop", "gugugaga:tea_crop", "gugugaga:coffee_crop", "gugugaga:rapini_crop", "gugugaga:napa_cabbage_crop"
+            "gugugaga:grape_crop", "gugugaga:tea_crop", "gugugaga:coffee_crop", "gugugaga:rapini_crop", "gugugaga:napa_cabbage_crop",
+            "gugugaga:melon_crop", "gugugaga:watermelon_crop", "gugugaga:fava_bean_crop", "gugugaga:jute_mallow_crop"
     };
 
 
@@ -179,6 +180,10 @@ public final class NectarHoneySource {
             case 42 -> BeeContent.COFFEE_BLOSSOM_HONEY_BOTTLE.get();
             case 43 -> BeeContent.RAPINI_BLOSSOM_HONEY_BOTTLE.get();
             case 44 -> BeeContent.NAPA_CABBAGE_BLOSSOM_HONEY_BOTTLE.get();
+            case 45 -> BeeContent.MELON_BLOSSOM_HONEY_BOTTLE.get();
+            case 46 -> BeeContent.WATERMELON_BLOSSOM_HONEY_BOTTLE.get();
+            case 47 -> BeeContent.FAVA_BEAN_BLOSSOM_HONEY_BOTTLE.get();
+            case 48 -> BeeContent.JUTE_MALLOW_BLOSSOM_HONEY_BOTTLE.get();
             default -> Items.HONEY_BOTTLE;
         };
         return new ItemStack(chosen);

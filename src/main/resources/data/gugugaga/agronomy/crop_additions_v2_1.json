@@ -1,0 +1,60 @@
+{
+  "schema_version": "2.1",
+  "note": "Four additional land crops bring the catalog to 100: two warm-season cucurbit fruits, a cool-season pulse, and a warm-climate repeat-cut leafy vegetable. Growth bands and compact crop cycles are gameplay abstractions.",
+  "crops": [
+    {
+      "crop": "melon",
+      "chinese_name": "甜瓜",
+      "english_name": "Melon",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "fruit",
+      "botanical_note": "A warm-season Cucumis crop with male and female flowers in many varieties; the game compresses vine growth and fruit maturation into the standard eight-stage cycle.",
+      "source_urls": [
+        "https://extension.usu.edu/yardandgarden/research/honeydew-and-other-melons-in-the-garden"
+      ]
+    },
+    {
+      "crop": "watermelon",
+      "chinese_name": "西瓜",
+      "english_name": "Watermelon",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "fruit",
+      "botanical_note": "A warm-season vining crop whose fruit set depends on successful flowering and pollination; the game represents vine spread and fruit development with a compact crop block.",
+      "source_urls": [
+        "https://edis.ifas.ufl.edu/publication/SS735"
+      ]
+    },
+    {
+      "crop": "fava_bean",
+      "chinese_name": "蚕豆",
+      "english_name": "Fava Beans",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "pods and seeds",
+      "botanical_note": "A cool-season legume harvested for its edible seeds and pods. Bee visits can contribute to pollination in the gameplay model, while the crop uses the standard mature-harvest cycle.",
+      "source_urls": [
+        "https://www.rhs.org.uk/vegetables/broad-beans/grow-your-own"
+      ]
+    },
+    {
+      "crop": "jute_mallow",
+      "chinese_name": "黄麻叶",
+      "english_name": "Jute Mallow",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A warm-climate leafy vegetable used in several regional cuisines. Repeated cutting represents harvesting young leaves while allowing the plant to regrow.",
+      "source_urls": [
+        "https://www.worldveg.org/new-manual-for-agroecological-production-of-vegetables-in-kenya/"
+      ]
+    }
+  ],
+  "references": [
+    "https://extension.usu.edu/yardandgarden/research/honeydew-and-other-melons-in-the-garden",
+    "https://edis.ifas.ufl.edu/publication/SS735",
+    "https://www.rhs.org.uk/vegetables/broad-beans/grow-your-own",
+    "https://www.worldveg.org/new-manual-for-agroecological-production-of-vegetables-in-kenya/"
+  ]
+}
