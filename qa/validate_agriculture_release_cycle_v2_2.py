@@ -172,7 +172,7 @@ def main():
     assert "dominantCount < 6" in nectar_java and "dominantCount * 3 < totalFlowers * 2" in nectar_java
     assert "totalFlowers >= 12 && distinctSourceKinds >= 3" in nectar_java
     assert "if (!level.hasChunkAt(sample)) continue;" in nectar_java
-    assert "level.getValue(BeehiveBlock.HONEY_LEVEL) < 5" in harvester_java
+    assert "state.getValue(BeehiveBlock.HONEY_LEVEL) < 5" in harvester_java
     assert "CampfireBlock.isSmokeyPos(level, hivePos)" in harvester_java
     assert "Items.GLASS_BOTTLE" in harvester_java and "Items.SHEARS" in harvester_java
     assert "new ItemStack(Items.HONEYCOMB, 3)" in harvester_java
