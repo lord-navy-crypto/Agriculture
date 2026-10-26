@@ -17,7 +17,7 @@ Extend existing dishes with crop-specific alternatives, prioritizing legumes, le
 - `fruit_salad_with_cranberry_melon` → `gugugaga:fruit_salad` (gugugaga:cranberry + gugugaga:melon + minecraft:apple)
 - `vegetable_stew_with_chayote_purslane` → `gugugaga:vegetable_stew` (gugugaga:chayote + gugugaga:purslane + minecraft:beetroot)
 - `stuffed_pepper_with_zucchini_and_onion` → `gugugaga:stuffed_pepper` (gugugaga:bell_pepper + gugugaga:zucchini + gugugaga:onion)
-- `cornbread_with_sweet_corn` → `gugugaga:cornbread` (gugugaga:sweet_corn + minecraft:wheat + minecraft:egg)
+- `cornbread_with_sweet_corn` → `gugugaga:cornbread` (gugugaga:sweet_corn + minecraft:wheat + minecraft:milk_bucket)
 - `cabbage_rolls_with_quinoa_and_chard` → `gugugaga:cabbage_rolls` (gugugaga:cabbage + gugugaga:quinoa + gugugaga:swiss_chard)
 - `quinoa_salad_with_arugula` → `gugugaga:quinoa_salad` (gugugaga:quinoa + gugugaga:arugula + gugugaga:cucumber)
 - `herb_bread_with_parsley_dill` → `gugugaga:herb_bread` (gugugaga:parsley + gugugaga:dill + minecraft:wheat)
