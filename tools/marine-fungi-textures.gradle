@@ -212,6 +212,7 @@ tasks.register('generateMarineFungiAssets') {
                                     || (y >= top + 1 && y <= 13 && (y - top) % 2 == 0 && Math.abs(x - 8) <= spread)
                                     || (y >= top + 1 && y <= 13 && (y - top) % 2 == 1
                                         && (Math.abs(x - 8) == spread || Math.abs(x - 8) == spread - 1))
+                                    || (y == 14 && Math.abs(x - 8) <= 1)
                         } else if (id == 'wakame_crop') {
                             int bladeWidth = Math.min(4, spread)
                             inside = y >= top && y <= 14 && Math.abs(x - 8) <= bladeWidth
@@ -226,7 +227,8 @@ tasks.register('generateMarineFungiAssets') {
                                     && !((x == 8 - halfWidth || x == 8 + halfWidth)
                                         && (y == sheetTop || y == sheetBottom))
                         } else if (id == 'dulse_crop') {
-                            inside = x == 8 && y >= top && y <= 14
+                            inside = (x == 8 && y >= top && y <= 14)
+                                    || (y >= 13 && y <= 14 && Math.abs(x - 8) == 1)
                             for (int branch = 0; branch <= age; branch++) {
                                 int branchY = 12 - 2 * branch
                                 int branchReach = branch + 1
