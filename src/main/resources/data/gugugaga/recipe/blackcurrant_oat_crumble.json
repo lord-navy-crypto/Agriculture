@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "gugugaga:blackcurrant"
+    },
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:blackcurrant_oat_crumble",
+    "count": 1
+  }
+}

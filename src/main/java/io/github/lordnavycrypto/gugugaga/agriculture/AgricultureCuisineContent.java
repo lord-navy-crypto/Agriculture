@@ -63,6 +63,23 @@ public final class AgricultureCuisineContent {
     public static final DeferredItem<Item> SOYBEAN_PATTIES = food("soybean_patties", 7, 0.75F);
     public static final DeferredItem<Item> ROASTED_CHICKPEAS = food("roasted_chickpeas", 5, 0.60F);
     public static final DeferredItem<Item> BAKED_SWEET_CORN = food("baked_sweet_corn", 5, 0.60F);
+    public static final DeferredItem<Item> ADZUKI_BEAN_SWEET_SOUP = food("adzuki_bean_sweet_soup", 6, 0.65F);
+    public static final DeferredItem<Item> MUNG_BEAN_CONGEE = food("mung_bean_congee", 6, 0.65F);
+    public static final DeferredItem<Item> NAPA_CABBAGE_BRAISE = food("napa_cabbage_braise", 6, 0.65F);
+    public static final DeferredItem<Item> GARLIC_WATER_SPINACH = food("garlic_water_spinach", 6, 0.65F);
+    public static final DeferredItem<Item> TOMATO_OKRA_STEW = food("tomato_okra_stew", 6, 0.65F);
+    public static final DeferredItem<Item> JUTE_MALLOW_SOUP = food("jute_mallow_soup", 6, 0.65F);
+    public static final DeferredItem<Item> PINEAPPLE_TART = food("pineapple_tart", 6, 0.65F);
+    public static final DeferredItem<Item> GRAPE_BERRY_COMPOTE = food("grape_berry_compote", 5, 0.55F);
+    public static final DeferredItem<Item> RAPINI_GARLIC_SAUTE = food("rapini_garlic_saute", 6, 0.65F);
+    public static final DeferredItem<Item> ROOT_VEGETABLE_HASH = food("root_vegetable_hash", 7, 0.75F);
+    public static final DeferredItem<Item> MILLET_FENNEL_PILAF = food("millet_fennel_pilaf", 7, 0.75F);
+    public static final DeferredItem<Item> MUSHROOM_BARLEY_RISOTTO = food("mushroom_barley_risotto", 7, 0.75F);
+    public static final DeferredItem<Item> CUCUMBER_MINT_SALAD = food("cucumber_mint_salad", 5, 0.55F);
+    public static final DeferredItem<Item> SEAWEED_POTATO_CHOWDER = food("seaweed_potato_chowder", 7, 0.75F);
+    public static final DeferredItem<Item> BLACKCURRANT_OAT_CRUMBLE = food("blackcurrant_oat_crumble", 6, 0.65F);
+    public static final DeferredItem<Item> BAKED_TARO = food("baked_taro", 5, 0.60F);
+    public static final DeferredItem<Item> ROASTED_YAM = food("roasted_yam", 5, 0.60F);
     public static final DeferredItem<Item> CANOLA_OIL = material("canola_oil");
     public static final DeferredItem<Item> SAFFLOWER_OIL = material("safflower_oil");
 
@@ -127,6 +144,23 @@ public final class AgricultureCuisineContent {
             event.accept(SOYBEAN_PATTIES.get());
             event.accept(ROASTED_CHICKPEAS.get());
             event.accept(BAKED_SWEET_CORN.get());
+            event.accept(ADZUKI_BEAN_SWEET_SOUP.get());
+            event.accept(MUNG_BEAN_CONGEE.get());
+            event.accept(NAPA_CABBAGE_BRAISE.get());
+            event.accept(GARLIC_WATER_SPINACH.get());
+            event.accept(TOMATO_OKRA_STEW.get());
+            event.accept(JUTE_MALLOW_SOUP.get());
+            event.accept(PINEAPPLE_TART.get());
+            event.accept(GRAPE_BERRY_COMPOTE.get());
+            event.accept(RAPINI_GARLIC_SAUTE.get());
+            event.accept(ROOT_VEGETABLE_HASH.get());
+            event.accept(MILLET_FENNEL_PILAF.get());
+            event.accept(MUSHROOM_BARLEY_RISOTTO.get());
+            event.accept(CUCUMBER_MINT_SALAD.get());
+            event.accept(SEAWEED_POTATO_CHOWDER.get());
+            event.accept(BLACKCURRANT_OAT_CRUMBLE.get());
+            event.accept(BAKED_TARO.get());
+            event.accept(ROASTED_YAM.get());
         } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(CANOLA_OIL.get());
             event.accept(SAFFLOWER_OIL.get());

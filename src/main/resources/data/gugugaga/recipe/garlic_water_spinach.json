@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "gugugaga:water_spinach"
+    },
+    {
+      "item": "gugugaga:garlic"
+    },
+    {
+      "item": "gugugaga:canola_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garlic_water_spinach",
+    "count": 1
+  }
+}

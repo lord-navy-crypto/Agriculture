@@ -762,6 +762,261 @@
         "shadow": "#7A5529",
         "accent": "#EABA5A"
       }
+    },
+    {
+      "id": "adzuki_bean_sweet_soup",
+      "english_name": "Sweet Adzuki Bean Soup",
+      "chinese_name": "红豆甜汤",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A65B40",
+        "highlight": "#E6AE73",
+        "shadow": "#593B35",
+        "accent": "#D9C063"
+      }
+    },
+    {
+      "id": "mung_bean_congee",
+      "english_name": "Mung Bean Congee",
+      "chinese_name": "绿豆粥",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#8A9B55",
+        "highlight": "#D8D9A6",
+        "shadow": "#434C39",
+        "accent": "#F0CB76"
+      }
+    },
+    {
+      "id": "napa_cabbage_braise",
+      "english_name": "Ginger Napa Cabbage",
+      "chinese_name": "姜香大白菜",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#4F864F",
+        "highlight": "#B6D67E",
+        "shadow": "#304931",
+        "accent": "#CFAC62"
+      }
+    },
+    {
+      "id": "garlic_water_spinach",
+      "english_name": "Garlic Water Spinach",
+      "chinese_name": "蒜蓉空心菜",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#41824B",
+        "highlight": "#8ECB77",
+        "shadow": "#31553B",
+        "accent": "#E8CE6B"
+      }
+    },
+    {
+      "id": "tomato_okra_stew",
+      "english_name": "Tomato Okra Stew",
+      "chinese_name": "番茄秋葵炖菜",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A65A39",
+        "highlight": "#DCA66B",
+        "shadow": "#5B3730",
+        "accent": "#86A153"
+      }
+    },
+    {
+      "id": "jute_mallow_soup",
+      "english_name": "Jute Mallow Soup",
+      "chinese_name": "黄麻叶汤",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#63934F",
+        "highlight": "#BCD484",
+        "shadow": "#3C5437",
+        "accent": "#E4B975"
+      }
+    },
+    {
+      "id": "pineapple_tart",
+      "english_name": "Pineapple Tart",
+      "chinese_name": "菠萝挞",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#CF913F",
+        "highlight": "#F3CB79",
+        "shadow": "#805139",
+        "accent": "#DE8052"
+      }
+    },
+    {
+      "id": "grape_berry_compote",
+      "english_name": "Grape and Berry Compote",
+      "chinese_name": "葡萄浆果果酱",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#805087",
+        "highlight": "#C98FB4",
+        "shadow": "#4F3256",
+        "accent": "#ECC47A"
+      }
+    },
+    {
+      "id": "rapini_garlic_saute",
+      "english_name": "Garlicky Rapini",
+      "chinese_name": "蒜香西兰花苗",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#61974E",
+        "highlight": "#D1B65C",
+        "shadow": "#3B5234",
+        "accent": "#E3D6A0"
+      }
+    },
+    {
+      "id": "root_vegetable_hash",
+      "english_name": "Root Vegetable Hash",
+      "chinese_name": "根菜杂烩",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A4764D",
+        "highlight": "#D8BA87",
+        "shadow": "#5F4739",
+        "accent": "#9C733F"
+      }
+    },
+    {
+      "id": "millet_fennel_pilaf",
+      "english_name": "Millet and Fennel Pilaf",
+      "chinese_name": "茴香小米焖饭",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C49D62",
+        "highlight": "#F1D69A",
+        "shadow": "#70553F",
+        "accent": "#8DAF65"
+      }
+    },
+    {
+      "id": "mushroom_barley_risotto",
+      "english_name": "Mushroom Barley Risotto",
+      "chinese_name": "菌菇大麦烩饭",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A8845B",
+        "highlight": "#F1E0B4",
+        "shadow": "#62503A",
+        "accent": "#B49F5A"
+      }
+    },
+    {
+      "id": "cucumber_mint_salad",
+      "english_name": "Cucumber Mint Salad",
+      "chinese_name": "黄瓜薄荷沙拉",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#4F986E",
+        "highlight": "#9AD5A6",
+        "shadow": "#306247",
+        "accent": "#D1AC70"
+      }
+    },
+    {
+      "id": "seaweed_potato_chowder",
+      "english_name": "Seaweed Potato Chowder",
+      "chinese_name": "海藻土豆浓汤",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#7A9A73",
+        "highlight": "#D7E4B2",
+        "shadow": "#526349",
+        "accent": "#CCA868"
+      }
+    },
+    {
+      "id": "blackcurrant_oat_crumble",
+      "english_name": "Blackcurrant Oat Crumble",
+      "chinese_name": "黑加仑燕麦酥",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#7D465F",
+        "highlight": "#C7829C",
+        "shadow": "#51364A",
+        "accent": "#E8BD7D"
+      }
+    },
+    {
+      "id": "baked_taro",
+      "english_name": "Baked Taro",
+      "chinese_name": "烤芋头",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#96765A",
+        "highlight": "#E1C7A4",
+        "shadow": "#615046",
+        "accent": "#9DB16B"
+      }
+    },
+    {
+      "id": "roasted_yam",
+      "english_name": "Roasted Yam",
+      "chinese_name": "烤山药",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B98B58",
+        "highlight": "#F0D9A0",
+        "shadow": "#6B4A3A",
+        "accent": "#D1A574"
+      }
     }
   ]
 }

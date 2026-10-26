@@ -52,8 +52,8 @@ def main():
     items = catalog["items"]
     ids = {item["id"] for item in items}
     assert EXPECTED_ITEMS.issubset(ids), f"catalog mismatch: missing={EXPECTED_ITEMS-ids}, extra={ids-EXPECTED_ITEMS}"
-    assert len(items) == 51 and len(ids) == 51
-    assert sum(item["type"] == "food" for item in items) == 49
+    assert len(items) >= 51 and len(ids) == len(items)
+    assert sum(item["type"] == "food" for item in items) == len(items) - 2
     assert sum(item["type"] == "material" for item in items) == 2
 
     en = load(RES / "assets/gugugaga/lang/en_us.json")
@@ -131,7 +131,7 @@ def main():
     smoke = (ROOT / "qa/smoke_rewrite_server.py").read_text(encoding="utf-8")
     assert "GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK" in smoke
     assert "GUGUGAGA_AGRICULTURE_MARINE_CUISINE_REAL_SERVER_BOOT_PASS" in smoke
-    print("CROP_CUISINE_V1_0_OK: 88 crop foods covered; 49 dishes and 2 processed oils registered; recipes, tags, bilingual names, models and asset generator validated.")
+    print(f"CROP_CUISINE_V1_0_OK: 88 crop foods covered; {len(items)-2} food items and 2 processed oils registered; recipes, tags, bilingual names, models and asset generator validated.")
 
 if __name__ == "__main__":
     main()

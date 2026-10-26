@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pineapple"
+    },
+    {
+      "item": "gugugaga:grape"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:fruit_salad",
+    "count": 1
+  }
+}

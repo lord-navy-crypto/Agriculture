@@ -15,8 +15,8 @@ tasks.register('generateCropCuisineAssets') {
         root.mkdirs()
         def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json'))
         def items = catalog.items
-        if (items.size() != 51 || items.collect { it.id }.unique().size() != 51) {
-            throw new GradleException('Expected 51 unique crop-cuisine item icons')
+        if (items.size() != 68 || items.collect { it.id }.unique().size() != 68) {
+            throw new GradleException('Expected 68 unique crop-cuisine item icons')
         }
 
         def put = { BufferedImage image, int x, int y, int rgb ->
@@ -177,7 +177,7 @@ tasks.register('generateCropCuisineAssets') {
         File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
         reportRoot.mkdirs()
         ImageIO.write(sheet, 'png', new File(reportRoot, 'crop-cuisine-item-contact-sheet.png'))
-        logger.lifecycle('CROP_CUISINE_ASSET_GENERATOR_OK: 51 distinct 16x16 icons and crop-cuisine contact sheet generated.')
+        logger.lifecycle('CROP_CUISINE_ASSET_GENERATOR_OK: 68 distinct 16x16 icons and crop-cuisine contact sheet generated.')
     }
 }
 tasks.named('processResources').configure {

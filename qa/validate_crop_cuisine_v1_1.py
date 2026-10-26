@@ -12,7 +12,7 @@ ALTERNATIVES=[{"id":"bread_from_barley","result":"minecraft:bread","ingredients"
 def main():
     catalog=read("data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json")["items"]
     catalog_by_id={x["id"]:x for x in catalog}
-    assert len(catalog)==51 and len(catalog_by_id)==51
+    assert len(catalog)>=51 and len(catalog_by_id)==len(catalog)
     java=(ROOT/"src/main/java/io/github/lordnavycrypto/gugugaga/agriculture/AgricultureCuisineContent.java").read_text("utf8")
     generator=(ROOT/"tools/crop-cuisine-textures.gradle").read_text("utf8")
     arts=(ROOT/"qa/validate_generated_crop_cuisine_art.py").read_text("utf8")
@@ -48,10 +48,10 @@ def main():
         assert rec["type"]=="minecraft:crafting_shapeless"
         assert rec["result"]["id"]==row["result"]
         assert [x["item"] for x in rec["ingredients"]]==row["ingredients"]
-    assert "51 unique crop-cuisine item icons" in generator
-    assert "51 distinct 16x16 icons" in generator
+    assert "68 unique crop-cuisine item icons" in generator
+    assert "68 distinct 16x16 icons" in generator
     assert "(288, 432)" in arts
     assert len(NEW_DISHES)==16 and len(ALTERNATIVES)==15
-    print("CROP_CUISINE_V1_1_OK: 16 added dishes, 15 alternate recipes, 4 cooking variants, 51 cuisine items")
+    print(f"CROP_CUISINE_V1_1_OK: 16 v1.1 dishes, 15 alternate recipes, 4 cooking variants, {len(catalog)} total cuisine items")
 if __name__=="__main__":
     main()

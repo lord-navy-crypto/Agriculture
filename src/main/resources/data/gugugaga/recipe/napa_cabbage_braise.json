@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "gugugaga:napa_cabbage"
+    },
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:napa_cabbage_braise",
+    "count": 1
+  }
+}

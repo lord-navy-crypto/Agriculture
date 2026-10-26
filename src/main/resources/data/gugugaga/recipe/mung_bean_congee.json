@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    {
+      "item": "gugugaga:mung_bean"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "minecraft:bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mung_bean_congee",
+    "count": 1
+  }
+}
