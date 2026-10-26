@@ -315,14 +315,14 @@ tasks.register('generateMarineFungiAssets') {
         }
         ImageIO.write(cultureSheet, 'png', new File(reportRoot, 'fungal-culture-growth-contact-sheet.png'))
 
-        BufferedImage marineCropSheet = new BufferedImage(labelWidth + 4 * tile, marineCrops.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        BufferedImage marineCropSheet = new BufferedImage(stageColumns * tile, marineCrops.size() * tile, BufferedImage.TYPE_INT_ARGB)
         marineCrops.eachWithIndex { crop, row ->
             for (int age = 0; age < 4; age++) {
                 String stagePath = 'assets/gugugaga/textures/block/marine_plants/' + crop.id + '_stage' + age + '.png'
                 BufferedImage sourceImage = ImageIO.read(new File(root, stagePath))
                 for (int y = 0; y < tile; y++) {
                     for (int x = 0; x < tile; x++) {
-                        marineCropSheet.setRGB(labelWidth + age * tile + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
+                        marineCropSheet.setRGB(age * tile + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
                     }
                 }
             }
