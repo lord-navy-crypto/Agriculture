@@ -96,8 +96,8 @@
       "count": 1,
       "ingredients": [
         "gugugaga:fish_fillet",
-        "gugugaga:kelp_flakes",
-        "gugugaga:enoki_mushroom"
+        "gugugaga:enoki_mushroom",
+        "gugugaga:watercress"
       ],
       "group": "marine"
     },
@@ -128,9 +128,9 @@
       "output": "gugugaga:mushroom_medley",
       "count": 2,
       "ingredients": [
-        "gugugaga:shiitake_mushroom",
         "gugugaga:oyster_mushroom",
-        "gugugaga:truffle"
+        "gugugaga:truffle",
+        "gugugaga:watercress"
       ],
       "group": "fungal"
     },
@@ -251,7 +251,7 @@
       "ingredients": [
         "gugugaga:mustard",
         "gugugaga:clover_honey_bottle",
-        "minecraft:sugar"
+        "gugugaga:garlic"
       ],
       "group": "floral_honey"
     },

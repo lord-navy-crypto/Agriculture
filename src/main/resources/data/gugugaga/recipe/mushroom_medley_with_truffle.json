@@ -3,13 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "gugugaga:shiitake_mushroom"
-    },
-    {
       "item": "gugugaga:oyster_mushroom"
     },
     {
       "item": "gugugaga:truffle"
+    },
+    {
+      "item": "gugugaga:watercress"
     }
   ],
   "result": {

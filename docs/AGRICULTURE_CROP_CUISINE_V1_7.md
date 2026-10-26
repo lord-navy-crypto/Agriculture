@@ -12,10 +12,10 @@ Expand practical uses for the existing crop catalog by connecting marine plants,
 - `seafood_broth_with_pumpkin` → `gugugaga:seafood_broth` × 1 — gugugaga:fish_fillet + gugugaga:kelp_flakes + gugugaga:pumpkin
 - `grilled_fish_skewer_with_chili_pepper` → `gugugaga:grilled_fish_skewer` × 1 — gugugaga:fish_fillet + minecraft:stick + gugugaga:chili_pepper
 - `seafood_rice_bowl_with_water_spinach` → `gugugaga:seafood_rice_bowl` × 1 — gugugaga:fish_fillet + gugugaga:rice + gugugaga:water_spinach
-- `seafood_broth_with_enoki` → `gugugaga:seafood_broth` × 1 — gugugaga:fish_fillet + gugugaga:kelp_flakes + gugugaga:enoki_mushroom
+- `seafood_broth_with_enoki` → `gugugaga:seafood_broth` × 1 — gugugaga:fish_fillet + gugugaga:enoki_mushroom + gugugaga:watercress
 - `mushroom_rice_bowl_with_swiss_chard` → `gugugaga:mushroom_rice_bowl` × 1 — gugugaga:shiitake_mushroom + gugugaga:rice + gugugaga:swiss_chard
 - `mushroom_barley_risotto_with_enoki` → `gugugaga:mushroom_barley_risotto` × 1 — gugugaga:barley + gugugaga:enoki_mushroom + minecraft:milk_bucket
-- `mushroom_medley_with_truffle` → `gugugaga:mushroom_medley` × 2 — gugugaga:shiitake_mushroom + gugugaga:oyster_mushroom + gugugaga:truffle
+- `mushroom_medley_with_truffle` → `gugugaga:mushroom_medley` × 2 — gugugaga:oyster_mushroom + gugugaga:truffle + gugugaga:watercress
 - `truffle_pasta_with_basil` → `gugugaga:truffle_pasta` × 1 — gugugaga:truffle + minecraft:wheat + gugugaga:basil
 - `lion_mane_steak_with_sweet_potato` → `gugugaga:lion_mane_steak` × 1 — gugugaga:lion_mane_mushroom + gugugaga:sweet_potato + minecraft:wheat
 - `enoki_soup_with_watercress` → `gugugaga:enoki_soup` × 1 — gugugaga:enoki_mushroom + gugugaga:watercress + minecraft:carrot
@@ -26,7 +26,7 @@ Expand practical uses for the existing crop catalog by connecting marine plants,
 - `fruit_salad_with_blackcurrant_honey` → `gugugaga:fruit_salad` × 1 — gugugaga:grape + gugugaga:strawberry + gugugaga:blackcurrant_honey_bottle
 - `herbal_tea_with_wildflower_honey` → `gugugaga:herbal_tea` × 1 — gugugaga:mint + gugugaga:wildflower_honey_bottle + minecraft:sugar
 - `grain_porridge_with_buckwheat_honey` → `gugugaga:grain_porridge` × 1 — gugugaga:oat + gugugaga:buckwheat_honey_bottle + minecraft:milk_bucket
-- `honey_mustard_dressing_with_clover_honey` → `gugugaga:honey_mustard_dressing` × 1 — gugugaga:mustard + gugugaga:clover_honey_bottle + minecraft:sugar
+- `honey_mustard_dressing_with_clover_honey` → `gugugaga:honey_mustard_dressing` × 1 — gugugaga:mustard + gugugaga:clover_honey_bottle + gugugaga:garlic
 - `sweet_potato_roast_with_safflower_honey` → `gugugaga:sweet_potato_roast` × 1 — gugugaga:sweet_potato + gugugaga:safflower_honey_bottle + gugugaga:canola_oil
 
 ## Coverage
