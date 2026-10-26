@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:lentil"
+    },
+    {
+      "item": "gugugaga:adzuki_bean"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_chickpeas",
+    "count": 1
+  }
+}

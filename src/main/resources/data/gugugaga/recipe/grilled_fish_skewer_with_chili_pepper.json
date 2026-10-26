@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fish_fillet"
+    },
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "gugugaga:chili_pepper"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:grilled_fish_skewer",
+    "count": 1
+  }
+}

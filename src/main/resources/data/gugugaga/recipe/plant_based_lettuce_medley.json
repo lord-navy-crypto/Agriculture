@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:lettuce"
+    },
+    {
+      "item": "gugugaga:celery"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garden_salad",
+    "count": 1
+  }
+}

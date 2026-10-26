@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sweet_corn"
+    },
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:millet_fennel_pilaf",
+    "count": 1
+  }
+}

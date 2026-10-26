@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:green_bean"
+    },
+    {
+      "item": "gugugaga:mung_bean"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:adzuki_bean_sweet_soup",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:endive"
+    },
+    {
+      "item": "gugugaga:jute_mallow"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herb_bread",
+    "count": 1
+  }
+}

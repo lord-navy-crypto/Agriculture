@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:ginger"
+    },
+    {
+      "item": "gugugaga:celeriac"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:vegetable_stew",
+    "count": 1
+  }
+}

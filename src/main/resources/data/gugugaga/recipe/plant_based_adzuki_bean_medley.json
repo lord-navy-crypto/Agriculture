@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:adzuki_bean"
+    },
+    {
+      "item": "gugugaga:fava_bean"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chili_bean_chili",
+    "count": 1
+  }
+}

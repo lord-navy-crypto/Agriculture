@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:celery_seeds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:celery",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:celery_crop",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

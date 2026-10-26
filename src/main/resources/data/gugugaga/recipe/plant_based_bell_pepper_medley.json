@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:bell_pepper"
+    },
+    {
+      "item": "gugugaga:okra"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:eggplant_curry",
+    "count": 1
+  }
+}

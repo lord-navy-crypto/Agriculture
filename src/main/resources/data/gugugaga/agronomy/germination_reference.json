@@ -1,0 +1,59 @@
+{
+  "description": "Published soil germination minima are real-world reference data. Minecraft biomes are non-calibrated category approximations, not weather data.",
+  "sources": [
+    "https://extension.psu.edu/seed-and-seedling-biology",
+    "https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/yard-and-garden-problems/how-to-prevent-seedling-damping-off"
+  ],
+  "data": [
+    {
+      "crop": "corn",
+      "minimum_soil_germination_F": 50,
+      "reference": "University of Minnesota Extension"
+    },
+    {
+      "crop": "pea",
+      "minimum_soil_germination_F": 40,
+      "reference": "University of Minnesota Extension"
+    },
+    {
+      "crop": "onion",
+      "minimum_soil_germination_F": 35,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "lettuce",
+      "minimum_soil_germination_F": 35,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "spinach",
+      "minimum_soil_germination_F": 35,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "tomato",
+      "minimum_soil_germination_F": 50,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "bell_pepper",
+      "minimum_soil_germination_F": 60,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "cucumber",
+      "minimum_soil_germination_F": 60,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "eggplant",
+      "minimum_soil_germination_F": 60,
+      "reference": "Penn State Extension"
+    },
+    {
+      "crop": "cabbage",
+      "minimum_soil_germination_F": 40,
+      "reference": "Penn State Extension"
+    }
+  ]
+}

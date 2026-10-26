@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:collard_greens"
+    },
+    {
+      "item": "gugugaga:chicory"
+    },
+    {
+      "item": "minecraft:kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:jute_mallow_soup",
+    "count": 1
+  }
+}

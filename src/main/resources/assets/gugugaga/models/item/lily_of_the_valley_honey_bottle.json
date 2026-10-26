@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gugugaga:item/honey/lily_of_the_valley_honey_bottle"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "gugugaga:onion"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_soup",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "gugugaga:strawberry",
+    "gugugaga:blueberry",
+    "gugugaga:raspberry",
+    "gugugaga:cranberry",
+    "gugugaga:blackberry",
+    "gugugaga:blackcurrant",
+    "minecraft:sweet_berries",
+    "minecraft:glow_berries"
+  ]
+}

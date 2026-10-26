@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:chickpea"
+    },
+    {
+      "item": "gugugaga:sesame"
+    },
+    {
+      "item": "gugugaga:garlic"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chickpea_hummus",
+    "count": 1
+  }
+}

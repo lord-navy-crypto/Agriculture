@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/marine_fungi/porcini_culture_stage1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:artichoke"
+    },
+    {
+      "item": "gugugaga:chayote"
+    },
+    {
+      "item": "minecraft:kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_okra_stew",
+    "count": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "blackcurrant_oat_crumble",
+  "ingredients": [
+    {
+      "item": "gugugaga:blueberry"
+    },
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:blackcurrant_oat_crumble",
+    "count": 1
+  }
+}

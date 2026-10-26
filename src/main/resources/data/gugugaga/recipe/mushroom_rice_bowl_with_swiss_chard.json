@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:shiitake_mushroom"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "gugugaga:swiss_chard"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_rice_bowl",
+    "count": 1
+  }
+}

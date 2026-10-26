@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:brussels_sprouts"
+    },
+    {
+      "item": "gugugaga:mustard_greens"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rapini_garlic_saute",
+    "count": 1
+  }
+}

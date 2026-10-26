@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:leek"
+    },
+    {
+      "item": "gugugaga:rutabaga"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:root_vegetable_hash",
+    "count": 1
+  }
+}

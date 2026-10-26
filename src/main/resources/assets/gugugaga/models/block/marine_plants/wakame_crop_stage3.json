@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/marine_plants/wakame_crop_stage3"
+  }
+}

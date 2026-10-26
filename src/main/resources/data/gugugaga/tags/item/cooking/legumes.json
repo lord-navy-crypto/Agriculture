@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "gugugaga:soybean",
+    "gugugaga:pea",
+    "gugugaga:peanut",
+    "gugugaga:chickpea",
+    "gugugaga:lentil",
+    "gugugaga:black_bean",
+    "gugugaga:green_bean",
+    "gugugaga:adzuki_bean",
+    "gugugaga:mung_bean",
+    "gugugaga:cowpea",
+    "gugugaga:fava_bean"
+  ]
+}

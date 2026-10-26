@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:mung_bean"
+    },
+    {
+      "item": "gugugaga:soybean"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:bean_stew",
+    "count": 1
+  }
+}

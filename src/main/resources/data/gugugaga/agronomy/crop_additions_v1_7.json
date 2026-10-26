@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.7",
+  "note": "Eight additional crop lines. Climate bands are gameplay categories, not simulated weather; perennial propagation and large plant architecture are intentionally simplified.",
+  "crops": [
+    {
+      "crop": "asparagus",
+      "chinese_name": "芦笋",
+      "english_name": "Asparagus",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "young spears",
+      "botanical_note": "Perennial crowns are simplified as a repeat-harvest annual crop in Minecraft.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/growing-asparagus",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "pumpkin",
+      "chinese_name": "南瓜",
+      "english_name": "Pumpkin",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "ORCHARD",
+      "harvested_organ": "mature fruit",
+      "botanical_note": "Insect-pollinated blossoms; the crop block abstracts sprawling vines into one plant.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/pumpkins-and-winter-squash",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "pineapple",
+      "chinese_name": "菠萝",
+      "english_name": "Pineapple",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "fruit",
+      "botanical_note": "Commercial propagation is commonly vegetative; the seed recipe is a gameplay abstraction.",
+      "source_urls": [
+        "https://www.ctahr.hawaii.edu/oc/freepubs/pdf/F_N-24.pdf",
+        "https://extension.umn.edu/vegetables"
+      ]
+    },
+    {
+      "crop": "blackberry",
+      "chinese_name": "黑莓",
+      "english_name": "Blackberry",
+      "growth_band_gameplay": "TEMPERATE",
+      "pollination_gameplay": "BERRY",
+      "harvested_organ": "berries",
+      "botanical_note": "Aggregate berries form after flower pollination; represented as a repeat-harvest bush crop.",
+      "source_urls": [
+        "https://extension.umn.edu/fruit/growing-blackberries",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "blackcurrant",
+      "chinese_name": "黑加仑",
+      "english_name": "Blackcurrant",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "BERRY",
+      "harvested_organ": "berries",
+      "botanical_note": "A cool-season currant crop; flowering and fruit set are simplified into the shared berry pollination mechanic.",
+      "source_urls": [
+        "https://extension.umn.edu/fruit/growing-currants-and-gooseberries",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "amaranth",
+      "chinese_name": "苋米",
+      "english_name": "Amaranth",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "grain-like seeds",
+      "botanical_note": "Small grain-like seeds are harvested from flower clusters; most cultivated types do not need a bee bonus.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables",
+        "https://www.fao.org/4/x5037e/x5037e00.htm"
+      ]
+    },
+    {
+      "crop": "chives",
+      "chinese_name": "韭菜",
+      "english_name": "Chives",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "Perennial leaves can be cut repeatedly; blossoms may contribute to nearby forage late in the growth cycle.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/growing-herbs",
+        "https://extension.umn.edu/agriculture/specialty-crops/pollination/requirements"
+      ]
+    },
+    {
+      "crop": "sweet_corn",
+      "chinese_name": "甜玉米",
+      "english_name": "Sweet Corn",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "grain",
+      "botanical_note": "Wind pollination is represented without a bee-yield bonus; the ear is simplified as one harvested item.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/growing-sweet-corn",
+        "https://www.ars.usda.gov/arsuserfiles/20220500/onlinepollinationhandbook.pdf"
+      ]
+    }
+  ]
+}

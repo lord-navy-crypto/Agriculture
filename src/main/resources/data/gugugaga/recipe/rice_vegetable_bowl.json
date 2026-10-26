@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "tag": "gugugaga:cooking/vegetables"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rice_vegetable_bowl",
+    "count": 1
+  }
+}

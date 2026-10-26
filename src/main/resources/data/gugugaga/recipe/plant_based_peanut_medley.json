@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:peanut"
+    },
+    {
+      "item": "gugugaga:green_bean"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chickpea_hummus",
+    "count": 1
+  }
+}

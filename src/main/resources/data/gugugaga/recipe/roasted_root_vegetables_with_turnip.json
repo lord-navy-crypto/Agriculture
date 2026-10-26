@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:turnip"
+    },
+    {
+      "item": "gugugaga:radish"
+    },
+    {
+      "item": "gugugaga:parsnip"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_root_vegetables",
+    "count": 1
+  }
+}

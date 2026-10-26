@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gugugaga:item/honey/wither_rose_honey_bottle"
+  }
+}

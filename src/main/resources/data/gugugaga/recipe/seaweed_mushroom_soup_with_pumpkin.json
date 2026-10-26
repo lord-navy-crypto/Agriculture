@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:kelp_flakes"
+    },
+    {
+      "item": "gugugaga:shiitake_mushroom"
+    },
+    {
+      "item": "gugugaga:pumpkin"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seaweed_mushroom_soup",
+    "count": 1
+  }
+}

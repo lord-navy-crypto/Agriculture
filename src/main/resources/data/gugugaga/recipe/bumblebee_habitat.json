@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "M": {
+      "item": "minecraft:honeycomb_block"
+    }
+  },
+  "result": {
+    "id": "gugugaga:bumblebee_habitat",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "gugugaga:blackcurrant"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:oat_berry_porridge",
+    "count": 1
+  }
+}

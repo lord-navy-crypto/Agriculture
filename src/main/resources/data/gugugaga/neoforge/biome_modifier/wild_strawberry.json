@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:meadow"
+  ],
+  "features": "gugugaga:wild_strawberry",
+  "step": "vegetal_decoration"
+}

@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.8",
+  "note": "Eight additional crop lines. Propagule items, accelerated growth and climate/wet-bed rules are Minecraft gameplay abstractions.",
+  "crops": [
+    {
+      "crop": "cassava",
+      "chinese_name": "木薯",
+      "english_name": "Cassava",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "storage root",
+      "botanical_note": "Harvested for starchy storage roots. The planting item represents stem cuttings as a gameplay abstraction.",
+      "source_urls": [
+        "https://gardeningsolutions.ifas.ufl.edu/plants/edibles/vegetables/cassava/",
+        "https://ask.ifas.ufl.edu/publication/CV300"
+      ]
+    },
+    {
+      "crop": "taro",
+      "chinese_name": "芋头",
+      "english_name": "Taro",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "corm",
+      "botanical_note": "The harvested organ is a corm. Nearby freshwater is a simplified wet-bed gameplay requirement, not a claim that all taro systems remain flooded.",
+      "source_urls": [
+        "https://ask.ifas.ufl.edu/publication/CV300",
+        "https://trec.ifas.ufl.edu/media/trecifasufledu/tuber-crops-pest-managemem.pdf"
+      ]
+    },
+    {
+      "crop": "yam",
+      "chinese_name": "山药",
+      "english_name": "Yam",
+      "growth_band_gameplay": "WARM",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "tubers",
+      "botanical_note": "Harvested for underground tubers; the planting item represents a seed tuber rather than botanical seed.",
+      "source_urls": [
+        "https://ask.ifas.ufl.edu/publication/CV300",
+        "https://trec.ifas.ufl.edu/media/trecifasufledu/tuber-crops-pest-managemem.pdf"
+      ]
+    },
+    {
+      "crop": "teff",
+      "chinese_name": "苔麸",
+      "english_name": "Teff",
+      "growth_band_gameplay": "DRY",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "grain",
+      "botanical_note": "A fine-seeded cereal grass with its own grain and seedling silhouettes.",
+      "source_urls": [
+        "https://extension.umn.edu/agriculture/crop-production/forages/sorghum-sudangrass-and-teff-as-summer-forages-for-livestock-systems",
+        "https://extension.umn.edu/agriculture/crop-production/forages/alternative-annual-forages-warm-season-grasses"
+      ]
+    },
+    {
+      "crop": "watercress",
+      "chinese_name": "西洋菜",
+      "english_name": "Watercress",
+      "growth_band_gameplay": "WET",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A water-loving leafy crop; nearby water and repeat-cut regrowth are simplified gameplay rules.",
+      "source_urls": [
+        "https://extension.usu.edu/yardandgarden/research/watercress-in-the-garden",
+        "https://ask.ifas.ufl.edu/publication/EP525"
+      ]
+    },
+    {
+      "crop": "endive",
+      "chinese_name": "苦苣",
+      "english_name": "Endive",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "leaves",
+      "botanical_note": "A cool-season leafy crop represented with a compact rosette and repeat leaf harvest.",
+      "source_urls": [
+        "https://www.udel.edu/academics/colleges/canr/cooperative-extension/sustainable-production/commercial-crops/vegetable-crops/midatlantic-vegetable-recommendations/",
+        "https://extension.umd.edu/resource/when-plant-vegetables"
+      ]
+    },
+    {
+      "crop": "kohlrabi",
+      "chinese_name": "球茎甘蓝",
+      "english_name": "Kohlrabi",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "swollen stem bulb",
+      "botanical_note": "The edible enlarged stem is represented as a bulb-like produce item; the crop's full biennial cycle is simplified.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/growing-kohlrabi",
+        "https://extension.umd.edu/resource/when-plant-vegetables"
+      ]
+    },
+    {
+      "crop": "rutabaga",
+      "chinese_name": "芜菁甘蓝",
+      "english_name": "Rutabaga",
+      "growth_band_gameplay": "COOL",
+      "pollination_gameplay": "NONE",
+      "harvested_organ": "storage root",
+      "botanical_note": "A cool-season storage-root crop distinct from turnip; growth duration is compressed for Minecraft gameplay.",
+      "source_urls": [
+        "https://extension.umn.edu/vegetables/turnips-and-rutabagas",
+        "https://extension.umd.edu/resource/when-plant-vegetables"
+      ]
+    }
+  ],
+  "references": [
+    "https://gardeningsolutions.ifas.ufl.edu/plants/edibles/vegetables/cassava/",
+    "https://ask.ifas.ufl.edu/publication/CV300",
+    "https://trec.ifas.ufl.edu/media/trecifasufledu/tuber-crops-pest-managemem.pdf",
+    "https://extension.umn.edu/agriculture/crop-production/forages/sorghum-sudangrass-and-teff-as-summer-forages-for-livestock-systems",
+    "https://extension.umn.edu/agriculture/crop-production/forages/alternative-annual-forages-warm-season-grasses",
+    "https://extension.usu.edu/yardandgarden/research/watercress-in-the-garden",
+    "https://ask.ifas.ufl.edu/publication/EP525",
+    "https://www.udel.edu/academics/colleges/canr/cooperative-extension/sustainable-production/commercial-crops/vegetable-crops/midatlantic-vegetable-recommendations/",
+    "https://extension.umd.edu/resource/when-plant-vegetables",
+    "https://extension.umn.edu/vegetables/growing-kohlrabi",
+    "https://extension.umn.edu/vegetables/turnips-and-rutabagas"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:tea"
+    },
+    {
+      "item": "gugugaga:lavender"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tea_cup",
+    "count": 1
+  }
+}

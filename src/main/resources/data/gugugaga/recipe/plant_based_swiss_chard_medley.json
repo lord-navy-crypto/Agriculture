@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:swiss_chard"
+    },
+    {
+      "item": "gugugaga:cauliflower"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:vegetable_stew",
+    "count": 1
+  }
+}

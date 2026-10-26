@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:parsnip"
+    },
+    {
+      "item": "gugugaga:kohlrabi"
+    },
+    {
+      "item": "minecraft:beetroot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:crop_stir_fry",
+    "count": 1
+  }
+}

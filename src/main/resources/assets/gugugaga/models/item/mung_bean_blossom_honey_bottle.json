@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "gugugaga:item/honey/mung_bean_blossom_honey_bottle"
+  }
+}

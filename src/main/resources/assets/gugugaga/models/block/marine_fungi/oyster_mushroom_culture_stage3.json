@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/marine_fungi/oyster_mushroom_culture_stage3"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:barley"
+    },
+    {
+      "item": "gugugaga:buckwheat"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:quinoa_salad",
+    "count": 1
+  }
+}

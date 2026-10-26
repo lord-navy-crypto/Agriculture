@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:lentil"
+    },
+    {
+      "item": "gugugaga:spinach"
+    },
+    {
+      "item": "gugugaga:garlic"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:lentil_curry",
+    "count": 1
+  }
+}

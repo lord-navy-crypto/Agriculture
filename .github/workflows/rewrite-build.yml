@@ -1,0 +1,109 @@
+name: Agriculture & Apiaries (NeoForge 1.21.1)
+on:
+  push:
+    branches:
+      - 'feat/agriculture/**'
+  pull_request:
+
+# Supersede stale asset-by-asset runs with the latest branch validation.
+# Push and pull-request events for the same head branch share one concurrency group.
+concurrency:
+  group: agriculture-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  validate-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate crop resources, loot tables, translations, and recipes
+        run: |
+          python3 qa/validate_agriculture_assets.py
+          python3 qa/validate_agriculture_expansion.py
+          python3 qa/validate_agriculture_ecology.py
+          python3 qa/validate_bee_biodiversity.py
+          python3 qa/validate_agronomic_sources.py
+          python3 qa/validate_agriculture_v0_3.py
+          python3 qa/validate_rice_paddy.py
+          python3 qa/validate_pollination_and_honey.py
+          python3 qa/validate_bee_nest_habitats.py
+          python3 qa/validate_crop_and_nectar_expansion.py
+          python3 qa/validate_crop_diversity_v1_0.py
+          python3 qa/validate_suspicious_stew_honey_parity.py
+          python3 qa/validate_crop_v1_3.py
+          python3 qa/validate_crop_lifecycle_v1_4.py
+          python3 qa/validate_agriculture_compost_v1_3.py
+          python3 qa/validate_agriculture_v1_7.py
+          python3 qa/validate_agriculture_v1_8.py
+          python3 qa/validate_agriculture_v1_9.py
+          python3 qa/validate_agriculture_v2_0.py
+          python3 qa/validate_agriculture_v2_1.py
+          python3 qa/validate_marine_fungi_v1_0.py
+          python3 qa/validate_crop_cuisine_v1_0.py
+          python3 qa/validate_crop_cuisine_v1_1.py
+          python3 qa/validate_crop_cuisine_v1_2.py
+          python3 qa/validate_crop_cuisine_v1_3.py
+          python3 qa/validate_crop_cuisine_v1_4.py
+          python3 qa/validate_crop_cuisine_v1_5.py
+          python3 qa/validate_crop_cuisine_v1_6.py
+          python3 qa/validate_crop_cuisine_v1_7.py
+          python3 qa/validate_crop_cuisine_v1_8.py
+          python3 qa/validate_honey_source_contract_v1_0.py
+          python3 qa/validate_honey_source_coverage_v1_1.py
+
+  neoforge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Compile and package agriculture mod
+        run: gradle --no-daemon --stacktrace build
+      - name: Validate generated honey bottle sprites
+        run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
+      - name: Validate generated marine and fungal pixel art
+        run: python3 qa/validate_generated_marine_fungi_art.py build/generated/resources/marineFungiAssets
+      - name: Validate generated crop-cuisine pixel art
+        run: python3 qa/validate_generated_crop_cuisine_art.py build/generated/resources/cropCuisineAssets build/reports/agriculture/crop-cuisine-item-contact-sheet.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gugu-gaga-agriculture
+          path: build/libs/*.jar
+          if-no-files-found: error
+      - name: Upload agriculture visual proof sheets
+        uses: actions/upload-artifact@v4
+        with:
+          name: agriculture-visual-proof
+          path: build/reports/agriculture/*.png
+          if-no-files-found: error
+
+  real-server-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+      - name: Launch fresh real NeoForge 1.21.1 server
+        run: python3 qa/smoke_rewrite_server.py
+      - name: Upload launch logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agriculture-server-launch-log
+          path: build/agriculture-server-boot.log
+          if-no-files-found: warn

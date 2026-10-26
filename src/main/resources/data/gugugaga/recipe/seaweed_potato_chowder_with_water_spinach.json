@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:kelp_flakes"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "gugugaga:water_spinach"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seaweed_potato_chowder",
+    "count": 1
+  }
+}

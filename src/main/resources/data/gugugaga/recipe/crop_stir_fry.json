@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "gugugaga:cooking/vegetables"
+    },
+    {
+      "item": "gugugaga:garlic"
+    },
+    {
+      "item": "gugugaga:canola_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:crop_stir_fry",
+    "count": 1
+  }
+}

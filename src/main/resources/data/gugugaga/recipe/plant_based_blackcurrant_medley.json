@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:blackcurrant"
+    },
+    {
+      "item": "gugugaga:melon"
+    },
+    {
+      "item": "minecraft:sweet_berries"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_pie",
+    "count": 1
+  }
+}

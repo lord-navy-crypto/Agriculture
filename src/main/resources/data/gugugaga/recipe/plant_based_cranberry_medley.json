@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cranberry"
+    },
+    {
+      "item": "gugugaga:pineapple"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:blackcurrant_oat_crumble",
+    "count": 1
+  }
+}

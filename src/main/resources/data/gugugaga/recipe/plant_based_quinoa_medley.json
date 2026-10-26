@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rice_vegetable_bowl",
+    "count": 1
+  }
+}

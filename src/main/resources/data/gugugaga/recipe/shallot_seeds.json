@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:beetroot_seeds"
+    },
+    {
+      "item": "gugugaga:onion"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:shallot_seeds",
+    "count": 1
+  }
+}

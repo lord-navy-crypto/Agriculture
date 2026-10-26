@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:meadow",
+    "minecraft:taiga"
+  ],
+  "features": "gugugaga:wild_oat",
+  "step": "vegetal_decoration"
+}

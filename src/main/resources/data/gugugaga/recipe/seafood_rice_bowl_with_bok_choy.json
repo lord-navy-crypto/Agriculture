@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fish_fillet"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "gugugaga:bok_choy"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seafood_rice_bowl",
+    "count": 1
+  }
+}

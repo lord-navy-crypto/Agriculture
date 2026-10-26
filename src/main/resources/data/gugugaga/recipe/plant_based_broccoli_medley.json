@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:broccoli"
+    },
+    {
+      "item": "gugugaga:fennel"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:barley_vegetable_soup",
+    "count": 1
+  }
+}

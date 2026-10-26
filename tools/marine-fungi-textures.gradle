@@ -1,0 +1,336 @@
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+def mfOutput = layout.buildDirectory.dir('generated/resources/marineFungiAssets')
+sourceSets.main.resources.srcDir(mfOutput)
+
+tasks.register('generateMarineFungiAssets') {
+    inputs.file(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
+    outputs.dir(mfOutput)
+    outputs.dir(layout.buildDirectory.dir('reports/agriculture'))
+    doLast {
+        File root = mfOutput.get().asFile
+        project.delete(root)
+        root.mkdirs()
+
+        def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
+        def items = catalog.items
+        def cultures = catalog.cultures
+        def marineCrops = catalog.marine_crops
+        if (items.size() != 24 || items.collect { it.id }.unique().size() != 24) {
+            throw new GradleException('Expected 24 unique marine and fungal item IDs')
+        }
+        if (cultures.size() != 6 || cultures.collect { it.id }.unique().size() != 6) {
+            throw new GradleException('Expected six unique fungal culture IDs')
+        }
+        if (marineCrops.size() != 4 || marineCrops.collect { it.id }.unique().size() != 4) {
+            throw new GradleException('Expected four unique marine crop IDs')
+        }
+
+        def drawInventoryIcon = { id, kind, palette ->
+            BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+            int base = Integer.parseInt(palette.base.substring(1), 16)
+            int highlight = Integer.parseInt(palette.highlight.substring(1), 16)
+            int shadow = Integer.parseInt(palette.shadow.substring(1), 16)
+            int accent = Integer.parseInt(palette.accent.substring(1), 16)
+            int signature = id.hashCode()
+
+            for (int y = 2; y < 14; y++) {
+                for (int x = 2; x < 14; x++) {
+                    boolean inside = false
+                    if (id == 'nori_sheet') {
+                        inside = x >= 4 && x <= 11 && y >= 3 && y <= 12
+                    } else if (id == 'kelp_flakes') {
+                        inside = ((x == 3 || x == 6 || x == 9 || x == 12) && (y == 4 || y == 8 || y == 12))
+                                || ((x == 4 || x == 8 || x == 11) && (y == 6 || y == 10))
+                    } else if (id == 'grilled_fish_skewer') {
+                        inside = Math.abs((x + y) - 15) <= 1
+                                || (x >= 4 && x <= 6 && y >= 9 && y <= 11)
+                                || (x >= 7 && x <= 9 && y >= 6 && y <= 8)
+                                || (x >= 10 && x <= 12 && y >= 3 && y <= 5)
+                    } else if (id == 'nori_rice_roll') {
+                        inside = (Math.abs(x - 5) <= 1 || Math.abs(x - 8) <= 1 || Math.abs(x - 11) <= 1)
+                                && y >= 5 && y <= 11
+                    } else if (id == 'lion_mane_steak') {
+                        inside = x >= 4 && x <= 11 && y >= 5 && y <= 11
+                                && (y >= 7 || (x >= 6 && x <= 9))
+                    } else if (kind == 'marine_plant') {
+                        inside = (x == 7 || x == 8 || (y < 8 && x == 5) || (y < 7 && x == 10)
+                                || (y > 7 && x == 11) || (y > 9 && x == 4))
+                    } else if (kind == 'seafood') {
+                        double dx = (x - 7) / 5.0d
+                        double dy = (y - 8) / 3.0d
+                        inside = (dx * dx + dy * dy <= 1.0d) || (x >= 11 && Math.abs(y - 8) <= (x - 10))
+                    } else if (kind == 'fungal_material') {
+                        inside = ((x == 4 || x == 8 || x == 12) && (y == 5 || y == 10))
+                                || (x == 6 && y == 7) || (x == 10 && y == 12)
+                                || (x == 3 && y == 8) || (x == 13 && y == 7)
+                                || (x == 9 && y == 4) || (x == 5 && y == 12)
+                                || (x == 11 && y == 6)
+                    } else if (kind == 'fungus' || kind == 'fungal_culture') {
+                        inside = (y >= 8 && x >= 6 && x <= 9) || (y >= 4 && y <= 7 && Math.abs(x - 8) <= (y <= 5 ? 3 : 4))
+                    } else {
+                        inside = (y >= 8 && x >= 3 && x <= 12 && (y < 12 || x >= 5 && x <= 10))
+                                || (y >= 5 && y <= 8 && (x == 5 || x == 9 || x == 10))
+                    }
+                    if (inside) {
+                        int color = base
+                        if (((x * 7 + y * 3 + signature) % 11) == 0) {
+                            color = accent
+                        } else if (((x * 5 + y + signature) % 4) == 0) {
+                            color = highlight
+                        } else if (((x + y * 2 + signature) % 7) == 0) {
+                            color = shadow
+                        }
+                        image.setRGB(x, y, (int)(0xFF000000L | color))
+                    }
+                }
+            }
+            def opaquePixels = []
+            for (int y = 2; y < 14; y++) {
+                for (int x = 2; x < 14; x++) {
+                    if (((image.getRGB(x, y) >>> 24) & 255) != 0) opaquePixels.add([x, y])
+                }
+            }
+            if (opaquePixels.size() < 12) throw new GradleException('Inventory icon has too few visible pixels: ' + id)
+            for (int bit = 0; bit < 12; bit++) {
+                def point = opaquePixels.get(Math.floorDiv(bit * opaquePixels.size(), 12))
+                int color = ((signature >> bit) & 1) == 1 ? accent : highlight
+                image.setRGB(point[0], point[1], (int)(0xFF000000L | color))
+            }
+            return image
+        }
+
+        items.each { item ->
+            String id = item.id.toString()
+            BufferedImage icon = drawInventoryIcon.call(id, item.group.toString(), item.palette)
+            String path = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
+            File target = new File(root, path)
+            target.parentFile.mkdirs()
+            if (!ImageIO.write(icon, 'png', target)) {
+                throw new GradleException('Could not write inventory icon ' + path)
+            }
+        }
+
+        cultures.each { culture ->
+            String id = culture.id.toString()
+            BufferedImage icon = drawInventoryIcon.call(id, 'fungal_culture', culture.palette)
+            String itemPath = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
+            File itemTarget = new File(root, itemPath)
+            itemTarget.parentFile.mkdirs()
+            if (!ImageIO.write(icon, 'png', itemTarget)) {
+                throw new GradleException('Could not write fungal culture icon ' + itemPath)
+            }
+
+            int base = Integer.parseInt(culture.palette.base.substring(1), 16)
+            int highlight = Integer.parseInt(culture.palette.highlight.substring(1), 16)
+            int shadow = Integer.parseInt(culture.palette.shadow.substring(1), 16)
+            int accent = Integer.parseInt(culture.palette.accent.substring(1), 16)
+            int signature = id.hashCode()
+
+            for (int age = 0; age < 4; age++) {
+                BufferedImage stage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+                for (int x = 2; x < 14; x++) {
+                    stage.setRGB(x, 14, (int)(0xFF000000L | shadow))
+                    if (x >= 3 && x <= 12) stage.setRGB(x, 13, (int)(0xFF000000L | base))
+                }
+                if (age == 0) {
+                    stage.setRGB(6, 11, (int)(0xFF000000L | accent))
+                    stage.setRGB(8, 10, (int)(0xFF000000L | highlight))
+                    stage.setRGB(10, 11, (int)(0xFF000000L | accent))
+                } else {
+                    int capWidth = age + 2
+                    int capTop = 8 - age
+                    for (int y = capTop; y <= 8; y++) {
+                        for (int x = 8 - capWidth; x <= 8 + capWidth; x++) {
+                            if (x >= 2 && x <= 13) {
+                                int color = ((x + y + signature) % 5 == 0) ? highlight : base
+                                stage.setRGB(x, y, (int)(0xFF000000L | color))
+                            }
+                        }
+                    }
+                    for (int y = 9; y <= 12; y++) {
+                        stage.setRGB(7, y, (int)(0xFF000000L | highlight))
+                        stage.setRGB(8, y, (int)(0xFF000000L | highlight))
+                    }
+                    if (id == 'enoki_culture') {
+                        for (int stem = 0; stem < age + 1; stem++) {
+                            int x = 4 + stem * 2
+                            for (int y = 7; y <= 12; y++) stage.setRGB(x, y, (int)(0xFF000000L | highlight))
+                            stage.setRGB(x, 6, (int)(0xFF000000L | base))
+                        }
+                    } else if (id == 'lion_mane_culture') {
+                        for (int x = 5; x <= 11; x++) {
+                            if (x % 2 == 0) stage.setRGB(x, 7, (int)(0xFF000000L | accent))
+                        }
+                    } else if (id == 'truffle_culture') {
+                        stage.setRGB(6, 9, (int)(0xFF000000L | shadow))
+                        stage.setRGB(10, 10, (int)(0xFF000000L | accent))
+                    }
+                }
+                def stageOpaquePixels = []
+                for (int y = 6; y < 15; y++) {
+                    for (int x = 2; x < 14; x++) {
+                        if (((stage.getRGB(x, y) >>> 24) & 255) != 0) stageOpaquePixels.add([x, y])
+                    }
+                }
+                if (stageOpaquePixels.size() < 10) throw new GradleException('Growth stage has too few visible pixels: ' + id)
+                for (int bit = 0; bit < 10; bit++) {
+                    def point = stageOpaquePixels.get(Math.floorDiv(bit * stageOpaquePixels.size(), 10))
+                    int color = ((signature >> bit) & 1) == 1 ? accent : highlight
+                    stage.setRGB(point[0], point[1], (int)(0xFF000000L | color))
+                }
+
+                String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + id + '_stage' + age + '.png'
+                File stageTarget = new File(root, stagePath)
+                stageTarget.parentFile.mkdirs()
+                if (!ImageIO.write(stage, 'png', stageTarget)) {
+                    throw new GradleException('Could not write fungal growth texture ' + stagePath)
+                }
+            }
+        }
+
+
+        marineCrops.each { crop ->
+            String id = crop.id.toString()
+            int base = Integer.parseInt(crop.palette.base.substring(1), 16)
+            int highlight = Integer.parseInt(crop.palette.highlight.substring(1), 16)
+            int shadow = Integer.parseInt(crop.palette.shadow.substring(1), 16)
+            int accent = Integer.parseInt(crop.palette.accent.substring(1), 16)
+            int signature = id.hashCode()
+
+            for (int age = 0; age < 4; age++) {
+                BufferedImage stage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+                int top = 13 - 2 * (age + 1)
+                int spread = age + 1
+                for (int y = 2; y < 15; y++) {
+                    for (int x = 2; x < 14; x++) {
+                        boolean inside = false
+                        if (id == 'sea_lettuce_crop') {
+                            inside = (x == 8 && y >= top && y <= 14)
+                                    || (y >= top + 1 && y <= 13 && (y - top) % 2 == 0 && Math.abs(x - 8) <= spread)
+                                    || (y >= top + 1 && y <= 13 && (y - top) % 2 == 1
+                                        && (Math.abs(x - 8) == spread || Math.abs(x - 8) == spread - 1))
+                                    || (y == 14 && Math.abs(x - 8) <= 1)
+                        } else if (id == 'wakame_crop') {
+                            int bladeWidth = Math.min(4, spread)
+                            inside = y >= top && y <= 14 && Math.abs(x - 8) <= bladeWidth
+                                    && (y != top || Math.abs(x - 8) <= 1)
+                        } else if (id == 'nori_crop') {
+                            int halfWidth = 2 + age
+                            int sheetHeight = 3 + 2 * age
+                            int sheetTop = Math.max(2, 10 - sheetHeight.intdiv(2))
+                            int sheetBottom = Math.min(14, 10 + (sheetHeight + 1).intdiv(2))
+                            inside = x >= 8 - halfWidth && x <= 8 + halfWidth
+                                    && y >= sheetTop && y <= sheetBottom
+                                    && !((x == 8 - halfWidth || x == 8 + halfWidth)
+                                        && (y == sheetTop || y == sheetBottom))
+                        } else if (id == 'dulse_crop') {
+                            inside = (x == 8 && y >= top && y <= 14)
+                                    || (y >= 13 && y <= 14 && Math.abs(x - 8) == 1)
+                            for (int branch = 0; branch <= age; branch++) {
+                                int branchY = 12 - 2 * branch
+                                int branchReach = branch + 1
+                                if (y == branchY && Math.abs(x - 8) <= branchReach) inside = true
+                                if (y == branchY - 1 && Math.abs(x - 8) == branchReach) inside = true
+                            }
+                        }
+
+                        if (inside) {
+                            int color = base
+                            if ((x * 7 + y * 3 + signature + age) % 13 == 0) {
+                                color = accent
+                            } else if ((x * 5 + y + signature + age) % 4 == 0) {
+                                color = highlight
+                            } else if ((x + y * 2 + signature) % 7 == 0) {
+                                color = shadow
+                            }
+                            stage.setRGB(x, y, (int)(0xFF000000L | color))
+                        }
+                    }
+                }
+                int visiblePixels = 0
+                for (int y = 2; y < 15; y++) {
+                    for (int x = 2; x < 14; x++) {
+                        if (((stage.getRGB(x, y) >>> 24) & 255) != 0) visiblePixels++
+                    }
+                }
+                if (visiblePixels < 10) {
+                    throw new GradleException('Marine crop stage has too few visible pixels: ' + id + ' age=' + age)
+                }
+                String stagePath = 'assets/gugugaga/textures/block/marine_plants/' + id + '_stage' + age + '.png'
+                File stageTarget = new File(root, stagePath)
+                stageTarget.parentFile.mkdirs()
+                if (!ImageIO.write(stage, 'png', stageTarget)) {
+                    throw new GradleException('Could not write marine crop texture ' + stagePath)
+                }
+            }
+        }
+
+        int tile = 48
+        int background = (int)(0xFF000000L | 0x1D241F)
+        def iconPaths = []
+        items.each { item -> iconPaths.add('assets/gugugaga/textures/item/marine_fungi/' + item.id + '.png') }
+        cultures.each { culture -> iconPaths.add('assets/gugugaga/textures/item/marine_fungi/' + culture.id + '.png') }
+
+        int itemColumns = 5
+        int itemRows = Math.floorDiv(iconPaths.size() + itemColumns - 1, itemColumns)
+        BufferedImage itemSheet = new BufferedImage(itemColumns * tile, itemRows * tile, BufferedImage.TYPE_INT_ARGB)
+        for (int y = 0; y < itemSheet.height; y++) {
+            for (int x = 0; x < itemSheet.width; x++) itemSheet.setRGB(x, y, background)
+        }
+        iconPaths.eachWithIndex { path, index ->
+            BufferedImage sourceImage = ImageIO.read(new File(root, path))
+            int originX = (index % itemColumns) * tile
+            int originY = Math.floorDiv(index, itemColumns) * tile
+            for (int y = 0; y < tile; y++) {
+                for (int x = 0; x < tile; x++) {
+                    int pixel = sourceImage.getRGB(x.intdiv(3), y.intdiv(3))
+                    if (((pixel >>> 24) & 255) != 0) itemSheet.setRGB(originX + x, originY + y, pixel)
+                }
+            }
+        }
+
+        File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
+        reportRoot.mkdirs()
+        ImageIO.write(itemSheet, 'png', new File(reportRoot, 'marine-fungi-item-contact-sheet.png'))
+
+        int stageColumns = 4
+        BufferedImage cultureSheet = new BufferedImage(stageColumns * tile, cultures.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        for (int y = 0; y < cultureSheet.height; y++) {
+            for (int x = 0; x < cultureSheet.width; x++) cultureSheet.setRGB(x, y, background)
+        }
+        cultures.eachWithIndex { culture, row ->
+            for (int age = 0; age < 4; age++) {
+                String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
+                BufferedImage sourceImage = ImageIO.read(new File(root, stagePath))
+                for (int y = 0; y < tile; y++) {
+                    for (int x = 0; x < tile; x++) {
+                        int pixel = sourceImage.getRGB(x.intdiv(3), y.intdiv(3))
+                        if (((pixel >>> 24) & 255) != 0) cultureSheet.setRGB(age * tile + x, row * tile + y, pixel)
+                    }
+                }
+            }
+        }
+        ImageIO.write(cultureSheet, 'png', new File(reportRoot, 'fungal-culture-growth-contact-sheet.png'))
+
+        BufferedImage marineCropSheet = new BufferedImage(stageColumns * tile, marineCrops.size() * tile, BufferedImage.TYPE_INT_ARGB)
+        marineCrops.eachWithIndex { crop, row ->
+            for (int age = 0; age < 4; age++) {
+                String stagePath = 'assets/gugugaga/textures/block/marine_plants/' + crop.id + '_stage' + age + '.png'
+                BufferedImage sourceImage = ImageIO.read(new File(root, stagePath))
+                for (int y = 0; y < tile; y++) {
+                    for (int x = 0; x < tile; x++) {
+                        marineCropSheet.setRGB(age * tile + x, row * tile + y, sourceImage.getRGB(x.intdiv(3), y.intdiv(3)))
+                    }
+                }
+            }
+        }
+        ImageIO.write(marineCropSheet, 'png', new File(reportRoot, 'marine-plant-growth-contact-sheet.png'))
+        logger.lifecycle('MARINE_FUNGI_ASSET_GENERATOR_OK: 30 unique inventory icons; 24 fungal growth-stage textures; 16 marine plant growth-stage textures; visual proof sheets written.')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateMarineFungiAssets')
+}

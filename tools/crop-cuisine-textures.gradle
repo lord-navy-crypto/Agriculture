@@ -1,0 +1,185 @@
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+def cuisineOutput = layout.buildDirectory.dir('generated/resources/cropCuisineAssets')
+sourceSets.main.resources.srcDir(cuisineOutput)
+
+tasks.register('generateCropCuisineAssets') {
+    inputs.file(file('src/main/resources/data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json'))
+    outputs.dir(cuisineOutput)
+    outputs.dir(layout.buildDirectory.dir('reports/agriculture'))
+    doLast {
+        File root = cuisineOutput.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json'))
+        def items = catalog.items
+        if (items.size() != 68 || items.collect { it.id }.unique().size() != 68) {
+            throw new GradleException('Expected 68 unique crop-cuisine item icons')
+        }
+
+        def put = { BufferedImage image, int x, int y, int rgb ->
+            if (x >= 0 && x < 16 && y >= 0 && y < 16) image.setRGB(x, y, (int)(0xFF000000L | (rgb & 0xFFFFFF)))
+        }
+        def rect = { BufferedImage image, int x1, int y1, int x2, int y2, int rgb ->
+            for (int y = y1; y <= y2; y++) for (int x = x1; x <= x2; x++) put.call(image, x, y, rgb)
+        }
+        def drawIcon = { item ->
+            BufferedImage image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+            int base = Integer.parseInt(item.palette.base.substring(1), 16)
+            int light = Integer.parseInt(item.palette.highlight.substring(1), 16)
+            int dark = Integer.parseInt(item.palette.shadow.substring(1), 16)
+            int accent = Integer.parseInt(item.palette.accent.substring(1), 16)
+            String id = item.id.toString()
+            int signature = id.hashCode()
+
+            if (item.type == 'material') {
+                rect.call(image, 6, 1, 9, 2, dark)
+                rect.call(image, 6, 3, 9, 5, light)
+                rect.call(image, 4, 5, 11, 13, dark)
+                rect.call(image, 5, 6, 10, 12, base)
+                rect.call(image, 6, 6, 7, 11, light)
+                rect.call(image, 8, 9, 9, 11, accent)
+                rect.call(image, 4, 13, 11, 14, dark)
+            } else if (id in ['herbal_tea', 'tea_cup', 'coffee_cup']) {
+                rect.call(image, 4, 5, 10, 12, dark)
+                rect.call(image, 5, 5, 9, 11, base)
+                rect.call(image, 5, 5, 9, 6, light)
+                rect.call(image, 10, 6, 12, 9, dark)
+                put.call(image, 11, 6, accent)
+                rect.call(image, 3, 12, 11, 13, dark)
+                put.call(image, 6, 3, light)
+                put.call(image, 8, 2, accent)
+                put.call(image, 9, 4, light)
+            } else if (id == 'roasted_chickpeas' || id == 'baked_sweet_corn') {
+                rect.call(image, 3, 11, 12, 13, dark)
+                for (int i=0; i<8; i++) {
+                    int x=4 + Math.floorMod(i*3 + signature, 8)
+                    int y=5 + Math.floorMod(i*5 + signature.intdiv(7), 6)
+                    rect.call(image, x, y, x+1, y+1, i%3==0?light:(i%3==1?base:accent))
+                }
+                rect.call(image, 6, 12, 10, 12, light)
+            } else if (id == 'berry_pie') {
+                rect.call(image, 2, 12, 13, 14, dark)
+                rect.call(image, 3, 11, 12, 12, light)
+                for (int y = 5; y <= 10; y++) {
+                    int half = y < 7 ? 3 + (y - 5) : 5 - (y - 7)
+                    for (int x = 8 - half; x <= 8 + half; x++) put.call(image, x, y, base)
+                }
+                for (int x = 5; x <= 10; x += 2) {
+                    put.call(image, x, 6, light)
+                    put.call(image, x, 8, accent)
+                }
+                put.call(image, 6, 9, light)
+                put.call(image, 9, 7, light)
+            } else if (id in ['cornbread', 'herb_bread', 'cassava_flatbread', 'buckwheat_pancakes', 'yam_cakes', 'sweet_corn_fritters']) {
+                rect.call(image, 3, 10, 12, 13, dark)
+                rect.call(image, 4, 8, 11, 11, base)
+                rect.call(image, 5, 7, 10, 10, light)
+                put.call(image, 6, 8, accent)
+                put.call(image, 9, 9, dark)
+                put.call(image, 7, 10, light)
+                put.call(image, 10, 8, accent)
+                if (id in ['herb_bread', 'sweet_corn_fritters']) {
+                    put.call(image, 5, 9, accent)
+                    put.call(image, 8, 7, dark)
+                }
+            } else if (id == 'stuffed_pepper') {
+                rect.call(image, 7, 2, 8, 4, dark)
+                rect.call(image, 5, 4, 10, 11, base)
+                rect.call(image, 4, 6, 5, 9, accent)
+                rect.call(image, 10, 6, 11, 9, accent)
+                rect.call(image, 6, 5, 9, 8, light)
+                put.call(image, 7, 6, dark)
+                put.call(image, 8, 7, accent)
+                rect.call(image, 5, 11, 10, 12, dark)
+            } else {
+                rect.call(image, 2, 11, 13, 13, dark)
+                rect.call(image, 3, 10, 12, 11, light)
+                rect.call(image, 4, 12, 11, 12, base)
+                rect.call(image, 5, 13, 10, 13, dark)
+                for (int y = 5; y <= 9; y++) {
+                    int half = (y == 5 || y == 9) ? 2 : 4
+                    for (int x = 8 - half; x <= 8 + half; x++) {
+                        int color = ((x + y + signature) % 7 == 0) ? accent :
+                                    ((x * 3 + y + signature) % 4 == 0) ? light : base
+                        put.call(image, x, y, color)
+                    }
+                }
+                if (id.contains('salad')) {
+                    [[5,7],[6,5],[7,6],[8,4],[9,6],[10,5],[11,7],[6,8],[9,8]].eachWithIndex { p, i ->
+                        put.call(image, p[0], p[1], i % 3 == 0 ? light : (i % 3 == 1 ? accent : dark))
+                    }
+                } else if (id.contains('soup') || id.contains('stew') || id.contains('porridge') || id.contains('curry')) {
+                    rect.call(image, 4, 7, 11, 8, light)
+                    [[5,7],[7,6],[9,8],[10,6],[6,9]].eachWithIndex { p, i ->
+                        put.call(image, p[0], p[1], i % 2 == 0 ? accent : dark)
+                    }
+                } else if (id.contains('sauce') || id.contains('dressing') || id.contains('hummus')) {
+                    rect.call(image, 4, 7, 11, 8, light)
+                    put.call(image, 6, 7, accent)
+                    put.call(image, 8, 8, dark)
+                    put.call(image, 10, 7, accent)
+                } else if (id.contains('rolls') || id.contains('dumplings')) {
+                    [[5,7],[8,6],[10,8],[6,9],[9,9]].eachWithIndex { p, i ->
+                        rect.call(image, p[0], p[1], p[0]+1, p[1]+1, i % 2 == 0 ? light : accent)
+                    }
+                } else if (id.contains('seed_mix')) {
+                    for (int i = 0; i < 9; i++) {
+                        int x = 4 + Math.floorMod(signature + i * 3, 8)
+                        int y = 5 + Math.floorMod(signature.intdiv(7) + i * 5, 5)
+                        put.call(image, x, y, i % 3 == 0 ? light : (i % 3 == 1 ? accent : dark))
+                    }
+                } else {
+                    for (int bit = 0; bit < 8; bit++) {
+                        int x = 4 + Math.floorMod(signature >> (bit % 5), 8)
+                        int y = 5 + Math.floorMod((signature >> ((bit + 2) % 7)) + bit * 3, 5)
+                        put.call(image, x, y, bit % 3 == 0 ? light : (bit % 3 == 1 ? accent : dark))
+                    }
+                }
+                if (id.contains('pumpkin')) { put.call(image, 7, 5, accent); put.call(image, 8, 6, light) }
+                if (id.contains('rice')) { rect.call(image, 6, 5, 9, 6, light); put.call(image, 10, 7, accent) }
+                if (id.contains('bean') || id.contains('lentil') || id.contains('chickpea')) {
+                    [[5,7],[7,8],[9,6],[10,8]].each { p -> put.call(image,p[0],p[1],dark) }
+                }
+            }
+
+            int opaque = 0
+            for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++) {
+                if (((image.getRGB(x, y) >>> 24) & 255) != 0) opaque++
+            }
+            if (opaque < 24) throw new GradleException('Crop cuisine icon has too few visible pixels: ' + id)
+            return image
+        }
+
+        int columns = 6
+        int tile = 48
+        int rows = Math.floorDiv(items.size() + columns - 1, columns)
+        int background = (int)(0xFF000000L | 0x1D241F)
+        BufferedImage sheet = new BufferedImage(columns * tile, rows * tile, BufferedImage.TYPE_INT_ARGB)
+        for (int y = 0; y < sheet.height; y++) for (int x = 0; x < sheet.width; x++) sheet.setRGB(x, y, background)
+
+        items.eachWithIndex { item, index ->
+            BufferedImage icon = drawIcon.call(item)
+            String texturePath = 'assets/gugugaga/textures/item/crop_cuisine/' + item.id + '.png'
+            File texture = new File(root, texturePath)
+            texture.parentFile.mkdirs()
+            if (!ImageIO.write(icon, 'png', texture)) throw new GradleException('Could not write crop cuisine icon: ' + texturePath)
+            int originX = (index % columns) * tile
+            int originY = Math.floorDiv(index, columns) * tile
+            for (int y = 0; y < tile; y++) for (int x = 0; x < tile; x++) {
+                int pixel = icon.getRGB(x.intdiv(3), y.intdiv(3))
+                if (((pixel >>> 24) & 255) != 0) sheet.setRGB(originX + x, originY + y, pixel)
+            }
+        }
+
+        File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
+        reportRoot.mkdirs()
+        ImageIO.write(sheet, 'png', new File(reportRoot, 'crop-cuisine-item-contact-sheet.png'))
+        logger.lifecycle('CROP_CUISINE_ASSET_GENERATOR_OK: 68 distinct 16x16 icons and crop-cuisine contact sheet generated.')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateCropCuisineAssets')
+}

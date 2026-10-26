@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:barley"
+    },
+    {
+      "item": "gugugaga:barley"
+    },
+    {
+      "item": "gugugaga:barley"
+    }
+  ],
+  "result": {
+    "id": "minecraft:bread",
+    "count": 1
+  }
+}

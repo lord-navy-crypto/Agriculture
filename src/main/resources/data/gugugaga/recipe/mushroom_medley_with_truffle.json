@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:oyster_mushroom"
+    },
+    {
+      "item": "gugugaga:truffle"
+    },
+    {
+      "item": "gugugaga:watercress"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_medley",
+    "count": 2
+  }
+}

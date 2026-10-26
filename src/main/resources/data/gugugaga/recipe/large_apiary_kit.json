@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HH",
+    "HH",
+    "PP"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:beehive"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "id": "gugugaga:large_apiary_kit",
+    "count": 1
+  }
+}

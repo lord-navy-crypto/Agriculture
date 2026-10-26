@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:tomato"
+    },
+    {
+      "item": "gugugaga:shallot"
+    },
+    {
+      "item": "gugugaga:basil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_sauce",
+    "count": 1
+  }
+}

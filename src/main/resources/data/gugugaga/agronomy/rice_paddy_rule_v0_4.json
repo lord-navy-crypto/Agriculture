@@ -1,0 +1,17 @@
+{
+  "model": "irrigated_lowland_rice_gameplay_proxy",
+  "requires_normal_farmland": true,
+  "growth_requires_freshwater": true,
+  "horizontal_radius_blocks": 3,
+  "vertical_offsets_from_crop": [
+    -1,
+    0
+  ],
+  "searches_only_loaded_chunks": true,
+  "not_a_universal_rice_rule": true,
+  "research_sources": [
+    "https://ghgmitigation.irri.org/mitigation-technologies/alternate-wetting-and-drying",
+    "https://books.irri.org/RT8_3_content.pdf"
+  ],
+  "design_note": "The game requires nearby water for rice growth to make an irrigated lowland/paddy playstyle. Real rice systems also include alternate wetting and drying and aerobic rice; the game rule is a simplification."
+}

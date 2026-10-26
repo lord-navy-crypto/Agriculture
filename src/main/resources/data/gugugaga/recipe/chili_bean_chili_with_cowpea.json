@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cowpea"
+    },
+    {
+      "item": "gugugaga:chili_pepper"
+    },
+    {
+      "item": "gugugaga:tomato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chili_bean_chili",
+    "count": 1
+  }
+}

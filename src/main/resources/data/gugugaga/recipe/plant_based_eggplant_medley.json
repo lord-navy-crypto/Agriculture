@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:eggplant"
+    },
+    {
+      "item": "gugugaga:chili_pepper"
+    },
+    {
+      "item": "minecraft:kelp"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_soup",
+    "count": 1
+  }
+}

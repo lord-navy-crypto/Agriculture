@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.6",
+  "intent": "Expand practical cooking uses for existing crop foods through alternate recipes. No item registrations or hunger/saturation values are changed.",
+  "alternates": [
+    {
+      "id": "soybean_patties_with_peanut",
+      "output": "gugugaga:soybean_patties",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:soybean",
+        "gugugaga:peanut",
+        "minecraft:egg"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "lentil_curry_with_spinach",
+      "output": "gugugaga:lentil_curry",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lentil",
+        "gugugaga:spinach",
+        "gugugaga:garlic"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "eggplant_curry_with_bell_pepper",
+      "output": "gugugaga:eggplant_curry",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:eggplant",
+        "gugugaga:bell_pepper",
+        "gugugaga:tomato"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "roasted_root_vegetables_with_turnip",
+      "output": "gugugaga:roasted_root_vegetables",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:turnip",
+        "gugugaga:radish",
+        "gugugaga:parsnip"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "rice_vegetable_bowl_with_green_bean",
+      "output": "gugugaga:rice_vegetable_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:rice",
+        "gugugaga:green_bean",
+        "gugugaga:pea"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "garden_salad_with_celery_lettuce",
+      "output": "gugugaga:garden_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:celery",
+        "gugugaga:lettuce",
+        "minecraft:beetroot"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "berry_pie_with_strawberry_blackberry",
+      "output": "gugugaga:berry_pie",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:strawberry",
+        "gugugaga:blackberry",
+        "minecraft:sugar"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "grain_porridge_with_teff_amaranth",
+      "output": "gugugaga:grain_porridge",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:teff",
+        "gugugaga:amaranth",
+        "minecraft:milk_bucket"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "farmers_skillet_with_broccoli_pea",
+      "output": "gugugaga:farmers_skillet",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:broccoli",
+        "gugugaga:pea",
+        "minecraft:potato"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "pumpkin_soup_with_celeriac",
+      "output": "gugugaga:pumpkin_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:celeriac",
+        "gugugaga:pumpkin",
+        "gugugaga:garlic"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "fruit_salad_with_cranberry_melon",
+      "output": "gugugaga:fruit_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cranberry",
+        "gugugaga:melon",
+        "minecraft:apple"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "vegetable_stew_with_chayote_purslane",
+      "output": "gugugaga:vegetable_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:chayote",
+        "gugugaga:purslane",
+        "minecraft:beetroot"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "stuffed_pepper_with_zucchini_and_onion",
+      "output": "gugugaga:stuffed_pepper",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:bell_pepper",
+        "gugugaga:zucchini",
+        "gugugaga:onion"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "cornbread_with_sweet_corn",
+      "output": "gugugaga:cornbread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sweet_corn",
+        "minecraft:wheat",
+        "minecraft:milk_bucket"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "cabbage_rolls_with_quinoa_and_chard",
+      "output": "gugugaga:cabbage_rolls",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cabbage",
+        "gugugaga:quinoa",
+        "gugugaga:swiss_chard"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "quinoa_salad_with_arugula",
+      "output": "gugugaga:quinoa_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:quinoa",
+        "gugugaga:arugula",
+        "gugugaga:cucumber"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "herb_bread_with_parsley_dill",
+      "output": "gugugaga:herb_bread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:parsley",
+        "gugugaga:dill",
+        "minecraft:wheat"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "tomato_sauce_with_shallot_basil",
+      "output": "gugugaga:tomato_sauce",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:tomato",
+        "gugugaga:shallot",
+        "gugugaga:basil"
+      ],
+      "group": "vegetables"
+    }
+  ]
+}

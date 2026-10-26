@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:sunflower_plains",
+    "minecraft:plains",
+    "minecraft:savanna"
+  ],
+  "features": "gugugaga:wild_sunflower_seed",
+  "step": "vegetal_decoration"
+}

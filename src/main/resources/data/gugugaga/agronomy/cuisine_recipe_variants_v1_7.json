@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.7",
+  "intent": "Expand existing agriculture dishes with marine crop, seafood, fungal, leafy-green, and floral-honey variants. No item registrations or food values are changed.",
+  "alternates": [
+    {
+      "id": "seafood_rice_bowl_with_bok_choy",
+      "output": "gugugaga:seafood_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:rice",
+        "gugugaga:bok_choy"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "nori_rice_roll_with_spinach",
+      "output": "gugugaga:nori_rice_roll",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:nori_sheet",
+        "gugugaga:rice",
+        "gugugaga:spinach"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seaweed_salad_with_sesame",
+      "output": "gugugaga:seaweed_salad",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:sea_lettuce",
+        "gugugaga:wakame",
+        "gugugaga:sesame"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seaweed_potato_chowder_with_kale",
+      "output": "gugugaga:seaweed_potato_chowder",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sea_lettuce",
+        "minecraft:potato",
+        "gugugaga:kale"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seafood_broth_with_watercress",
+      "output": "gugugaga:seafood_broth",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:kelp_flakes",
+        "gugugaga:watercress"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seafood_broth_with_pumpkin",
+      "output": "gugugaga:seafood_broth",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:kelp_flakes",
+        "gugugaga:pumpkin"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "grilled_fish_skewer_with_chili_pepper",
+      "output": "gugugaga:grilled_fish_skewer",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "minecraft:stick",
+        "gugugaga:chili_pepper"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seafood_rice_bowl_with_water_spinach",
+      "output": "gugugaga:seafood_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:rice",
+        "gugugaga:water_spinach"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "seafood_broth_with_enoki",
+      "output": "gugugaga:seafood_broth",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:enoki_mushroom",
+        "gugugaga:watercress"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "mushroom_rice_bowl_with_swiss_chard",
+      "output": "gugugaga:mushroom_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:rice",
+        "gugugaga:swiss_chard"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "mushroom_barley_risotto_with_enoki",
+      "output": "gugugaga:mushroom_barley_risotto",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:barley",
+        "gugugaga:enoki_mushroom",
+        "minecraft:milk_bucket"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "mushroom_medley_with_truffle",
+      "output": "gugugaga:mushroom_medley",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:oyster_mushroom",
+        "gugugaga:truffle",
+        "gugugaga:watercress"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "truffle_pasta_with_basil",
+      "output": "gugugaga:truffle_pasta",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:truffle",
+        "minecraft:wheat",
+        "gugugaga:basil"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "lion_mane_steak_with_sweet_potato",
+      "output": "gugugaga:lion_mane_steak",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lion_mane_mushroom",
+        "gugugaga:sweet_potato",
+        "minecraft:wheat"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "enoki_soup_with_watercress",
+      "output": "gugugaga:enoki_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:enoki_mushroom",
+        "gugugaga:watercress",
+        "minecraft:carrot"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "mushroom_sauce_with_garlic",
+      "output": "gugugaga:mushroom_sauce",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:porcini_mushroom",
+        "minecraft:brown_mushroom",
+        "gugugaga:garlic"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "mushroom_rice_bowl_with_wakame",
+      "output": "gugugaga:mushroom_rice_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:rice",
+        "gugugaga:wakame"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "seaweed_mushroom_soup_with_pumpkin",
+      "output": "gugugaga:seaweed_mushroom_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:kelp_flakes",
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:pumpkin"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "pumpkin_pie_with_lavender_honey",
+      "output": "minecraft:pumpkin_pie",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:pumpkin",
+        "minecraft:egg",
+        "gugugaga:lavender_honey_bottle"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "fruit_salad_with_blackcurrant_honey",
+      "output": "gugugaga:fruit_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:grape",
+        "gugugaga:strawberry",
+        "gugugaga:blackcurrant_honey_bottle"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "herbal_tea_with_wildflower_honey",
+      "output": "gugugaga:herbal_tea",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mint",
+        "gugugaga:wildflower_honey_bottle",
+        "minecraft:sugar"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "grain_porridge_with_buckwheat_honey",
+      "output": "gugugaga:grain_porridge",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:oat",
+        "gugugaga:buckwheat_honey_bottle",
+        "minecraft:milk_bucket"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "honey_mustard_dressing_with_clover_honey",
+      "output": "gugugaga:honey_mustard_dressing",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mustard",
+        "gugugaga:clover_honey_bottle",
+        "gugugaga:garlic"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "sweet_potato_roast_with_safflower_honey",
+      "output": "gugugaga:sweet_potato_roast",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sweet_potato",
+        "gugugaga:safflower_honey_bottle",
+        "gugugaga:canola_oil"
+      ],
+      "group": "floral_honey"
+    }
+  ]
+}

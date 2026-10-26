@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sunflower_seed"
+    },
+    {
+      "item": "gugugaga:sesame"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_seed_mix",
+    "count": 1
+  }
+}
