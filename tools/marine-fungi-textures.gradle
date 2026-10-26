@@ -220,8 +220,8 @@ tasks.register('generateMarineFungiAssets') {
                         } else if (id == 'nori_crop') {
                             int halfWidth = 2 + age
                             int sheetHeight = 3 + 2 * age
-                            int sheetTop = Math.max(2, 10 - sheetHeight / 2)
-                            int sheetBottom = Math.min(14, 10 + (sheetHeight + 1) / 2)
+                            int sheetTop = Math.max(2, 10 - sheetHeight.intdiv(2))
+                            int sheetBottom = Math.min(14, 10 + (sheetHeight + 1).intdiv(2))
                             inside = x >= 8 - halfWidth && x <= 8 + halfWidth
                                     && y >= sheetTop && y <= sheetBottom
                                     && !((x == 8 - halfWidth || x == 8 + halfWidth)
