@@ -56,6 +56,10 @@ assert "activity - 1" in habitat and "activity + 1" in habitat
 assert 'beeSpecies.equals("squash_bee") && level.getDayTime() % 24000L >= 6000L' in habitat
 assert habitat.index('level.getDayTime()') < habitat.index("if (random.nextInt(4) != 0)")
 assert "direction == Direction.DOWN && !canSurvive(state, level, pos)" in habitat
+apiary = (java / "agriculture/LargeApiaryKitItem.java").read_text("utf8")
+assert "if (!level.hasChunkAt(pos))" in apiary
+assert "BlockState[] originalStates = new BlockState[positions.length]" in apiary
+assert "level.setBlock(positions[rollback], originalStates[rollback], 3)" in apiary
 assert "isFaceSturdy(level, footing, Direction.UP)" in habitat
 assert "below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)" in habitat
 assert "below.is(Blocks.GRASS_BLOCK)" not in habitat

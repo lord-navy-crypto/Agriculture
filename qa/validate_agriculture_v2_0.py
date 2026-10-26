@@ -95,6 +95,25 @@ def main():
     source_block = nectar_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
     routes = set(re.findall(r'"([^"]+)"', source_block))
     assert not re.search(r'"[a-z0-9_]+_crop"', source_block)
+    route_to_item = {
+        row["source_crop"]: row["item"]
+        for row in honey["honey_variants"]
+        if row["source_crop"] != "mixed_flower_forage"
+    }
+    switch_block = nectar_java.split("Item chosen = switch (dominantIndex) {", 1)[1].split("};", 1)[0]
+    switch_routes = {
+        int(index): constant
+        for index, constant in re.findall(
+            r"case\\s+(\\d+)\\s*->\\s*BeeContent\\.([A-Z0-9_]+)\\.get\\(\\);",
+            switch_block,
+        )
+    }
+    assert set(switch_routes) == set(range(45))
+    for index, route in enumerate(re.findall(r'"([^"]+)"', source_block)):
+        normalized = route.removeprefix("gugugaga:")
+        expected_item = route_to_item[normalized]
+        expected_constant = expected_item.removesuffix("_honey_bottle").upper() + "_HONEY_BOTTLE"
+        assert switch_routes[index] == expected_constant, (index, route, expected_item)
     assert len(routes) == 45
     for crop, item in HONEY_ITEMS.items():
         row = rows[item]
