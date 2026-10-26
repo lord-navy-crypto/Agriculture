@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "minecraft:block/sunflower_front"
+    "cross": "gugugaga:block/crops/sunflower_seed_stage4"
   }
 }

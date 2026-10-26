@@ -1,13 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:beetroot_seeds"
+      "item": "gugugaga:mustard"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:mustard_seeds",
-    "count": 1
+    "count": 2
   }
 }

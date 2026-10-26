@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/crops/fava_bean_stage4"
+  }
+}

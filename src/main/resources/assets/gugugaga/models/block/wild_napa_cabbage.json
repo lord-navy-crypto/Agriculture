@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "gugugaga:block/crops/napa_cabbage_stage4"
+  }
+}

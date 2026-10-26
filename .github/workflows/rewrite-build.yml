@@ -23,6 +23,7 @@ jobs:
         run: |
           python3 qa/validate_agriculture_assets.py
           python3 qa/validate_agriculture_release_cycle_v2_2.py
+          python3 qa/validate_wild_seed_sources_v1_0.py
           python3 qa/validate_agriculture_expansion.py
           python3 qa/validate_agriculture_ecology.py
           python3 qa/validate_bee_biodiversity.py

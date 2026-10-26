@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:desert",
+    "minecraft:windswept_savanna"
+  ],
+  "features": "gugugaga:wild_dry_crops",
+  "step": "vegetal_decoration"
+}

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:carrot"
+      "item": "gugugaga:jicama"
     },
     {
       "item": "minecraft:wheat_seeds"

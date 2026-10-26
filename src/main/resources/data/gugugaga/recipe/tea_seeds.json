@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:green_dye"
+      "item": "gugugaga:tea"
     },
     {
       "item": "minecraft:wheat_seeds"
@@ -11,6 +10,6 @@
   ],
   "result": {
     "id": "gugugaga:tea_seeds",
-    "count": 1
+    "count": 2
   }
 }

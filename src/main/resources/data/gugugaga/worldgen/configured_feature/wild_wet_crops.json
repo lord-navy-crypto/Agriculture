@@ -1,0 +1,97 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 40,
+    "xz_spread": 5,
+    "y_spread": 2,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "gugugaga:wild_rice"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_ginger"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_turmeric"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_pineapple"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_taro"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_watercress"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_water_spinach"
+                },
+                "weight": 1
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:grass_block",
+                  "minecraft:dirt",
+                  "minecraft:podzol",
+                  "minecraft:coarse_dirt",
+                  "minecraft:moss_block",
+                  "minecraft:rooted_dirt",
+                  "minecraft:mud",
+                  "minecraft:sand",
+                  "minecraft:red_sand",
+                  "minecraft:gravel",
+                  "minecraft:clay"
+                ],
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

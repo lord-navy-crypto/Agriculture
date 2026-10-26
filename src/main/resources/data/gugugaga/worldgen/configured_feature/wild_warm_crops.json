@@ -1,0 +1,229 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 40,
+    "xz_spread": 5,
+    "y_spread": 2,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "gugugaga:wild_corn"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_tomato"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_soybean"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cucumber"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_bell_pepper"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_eggplant"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cotton"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_peanut"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_sweet_potato"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_zucchini"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_basil"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_okra"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_green_bean"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_chili_pepper"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_black_bean"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_pumpkin"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_sweet_corn"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cassava"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_yam"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_jicama"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_adzuki_bean"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_mung_bean"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cowpea"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_purslane"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_chayote"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_coffee"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_melon"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_watermelon"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_jute_mallow"
+                },
+                "weight": 1
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:grass_block",
+                  "minecraft:dirt",
+                  "minecraft:podzol",
+                  "minecraft:coarse_dirt",
+                  "minecraft:moss_block",
+                  "minecraft:rooted_dirt",
+                  "minecraft:mud",
+                  "minecraft:sand",
+                  "minecraft:red_sand",
+                  "minecraft:gravel",
+                  "minecraft:clay"
+                ],
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

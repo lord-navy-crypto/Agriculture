@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:melon_seeds"
+      "item": "gugugaga:mung_bean"
     },
     {
       "item": "minecraft:wheat_seeds"

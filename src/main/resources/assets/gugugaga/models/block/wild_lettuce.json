@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "minecraft:block/fern"
+    "cross": "gugugaga:block/crops/lettuce_stage4"
   }
 }

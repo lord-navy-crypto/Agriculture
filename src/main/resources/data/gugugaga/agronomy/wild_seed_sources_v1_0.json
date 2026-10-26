@@ -1,0 +1,1847 @@
+{
+  "schema_version": "1.0",
+  "note": "Biome assignments are game-world habitat analogues. Wild source plants are the primary seed source; seed crafting recipes are optional propagation recipes.",
+  "seed_recipe_policy": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "gugugaga:<crop>",
+      "minecraft:wheat_seeds"
+    ],
+    "output": "gugugaga:<crop>_seeds",
+    "count": 2,
+    "uniqueness": "The crop-specific produce item makes each seed recipe unique."
+  },
+  "support_blocks": [
+    "minecraft:grass_block",
+    "minecraft:dirt",
+    "minecraft:podzol",
+    "minecraft:coarse_dirt",
+    "minecraft:moss_block",
+    "minecraft:rooted_dirt",
+    "minecraft:mud",
+    "minecraft:sand",
+    "minecraft:red_sand",
+    "minecraft:gravel",
+    "minecraft:clay"
+  ],
+  "legacy_individual_sources": {
+    "barley": {
+      "feature": "gugugaga:wild_barley",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:windswept_hills"
+      ],
+      "rarity_one_in": 16
+    },
+    "blueberry": {
+      "feature": "gugugaga:wild_blueberry",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:forest"
+      ],
+      "rarity_one_in": 16
+    },
+    "flax": {
+      "feature": "gugugaga:wild_flax",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:forest"
+      ],
+      "rarity_one_in": 16
+    },
+    "lettuce": {
+      "feature": "gugugaga:wild_lettuce",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:meadow",
+        "minecraft:river"
+      ],
+      "rarity_one_in": 16
+    },
+    "millet": {
+      "feature": "gugugaga:wild_millet",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:savanna",
+        "minecraft:savanna_plateau"
+      ],
+      "rarity_one_in": 16
+    },
+    "oat": {
+      "feature": "gugugaga:wild_oat",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:taiga"
+      ],
+      "rarity_one_in": 16
+    },
+    "pea": {
+      "feature": "gugugaga:wild_pea",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:meadow"
+      ],
+      "rarity_one_in": 16
+    },
+    "radish": {
+      "feature": "gugugaga:wild_radish",
+      "biomes": [
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:forest"
+      ],
+      "rarity_one_in": 16
+    },
+    "raspberry": {
+      "feature": "gugugaga:wild_raspberry",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:taiga"
+      ],
+      "rarity_one_in": 16
+    },
+    "sesame": {
+      "feature": "gugugaga:wild_sesame",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:plains"
+      ],
+      "rarity_one_in": 16
+    },
+    "strawberry": {
+      "feature": "gugugaga:wild_strawberry",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:meadow"
+      ],
+      "rarity_one_in": 16
+    },
+    "sunflower_seed": {
+      "feature": "gugugaga:wild_sunflower_seed",
+      "biomes": [
+        "minecraft:sunflower_plains",
+        "minecraft:plains",
+        "minecraft:savanna"
+      ],
+      "rarity_one_in": 16
+    }
+  },
+  "worldgen_groups": {
+    "COOL": {
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ],
+      "rarity_one_in": 5,
+      "tries": 40,
+      "crops": [
+        "onion",
+        "garlic",
+        "rye",
+        "cabbage",
+        "spinach",
+        "broccoli",
+        "buckwheat",
+        "lentil",
+        "turnip",
+        "kale",
+        "cranberry",
+        "mustard",
+        "canola",
+        "celery",
+        "leek",
+        "parsnip",
+        "arugula",
+        "swiss_chard",
+        "fennel",
+        "dill",
+        "cilantro",
+        "parsley",
+        "collard_greens",
+        "brussels_sprouts",
+        "cauliflower",
+        "bok_choy",
+        "shallot",
+        "quinoa",
+        "asparagus",
+        "blackcurrant",
+        "chives",
+        "endive",
+        "kohlrabi",
+        "rutabaga",
+        "chicory",
+        "mustard_greens",
+        "celeriac",
+        "rapini",
+        "napa_cabbage",
+        "fava_bean"
+      ]
+    },
+    "TEMPERATE": {
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ],
+      "rarity_one_in": 5,
+      "tries": 40,
+      "crops": [
+        "chickpea",
+        "clover",
+        "mint",
+        "artichoke",
+        "blackberry",
+        "grape",
+        "tea"
+      ]
+    },
+    "WARM": {
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ],
+      "rarity_one_in": 5,
+      "tries": 40,
+      "crops": [
+        "corn",
+        "tomato",
+        "soybean",
+        "cucumber",
+        "bell_pepper",
+        "eggplant",
+        "cotton",
+        "peanut",
+        "sweet_potato",
+        "zucchini",
+        "basil",
+        "okra",
+        "green_bean",
+        "chili_pepper",
+        "black_bean",
+        "pumpkin",
+        "sweet_corn",
+        "cassava",
+        "yam",
+        "jicama",
+        "adzuki_bean",
+        "mung_bean",
+        "cowpea",
+        "purslane",
+        "chayote",
+        "coffee",
+        "melon",
+        "watermelon",
+        "jute_mallow"
+      ]
+    },
+    "DRY": {
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ],
+      "rarity_one_in": 5,
+      "tries": 40,
+      "crops": [
+        "sorghum",
+        "lavender",
+        "amaranth",
+        "teff",
+        "safflower"
+      ]
+    },
+    "WET": {
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ],
+      "rarity_one_in": 5,
+      "tries": 40,
+      "crops": [
+        "rice",
+        "ginger",
+        "turmeric",
+        "pineapple",
+        "taro",
+        "watercress",
+        "water_spinach"
+      ]
+    }
+  },
+  "wild_sources": [
+    {
+      "crop": "corn",
+      "seed_item": "gugugaga:corn_seeds",
+      "wild_block": "gugugaga:wild_corn",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "tomato",
+      "seed_item": "gugugaga:tomato_seeds",
+      "wild_block": "gugugaga:wild_tomato",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "onion",
+      "seed_item": "gugugaga:onion_seeds",
+      "wild_block": "gugugaga:wild_onion",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "rice",
+      "seed_item": "gugugaga:rice_seeds",
+      "wild_block": "gugugaga:wild_rice",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "soybean",
+      "seed_item": "gugugaga:soybean_seeds",
+      "wild_block": "gugugaga:wild_soybean",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "strawberry",
+      "seed_item": "gugugaga:strawberry_seeds",
+      "wild_block": "gugugaga:wild_strawberry",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_strawberry",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:meadow"
+      ]
+    },
+    {
+      "crop": "cucumber",
+      "seed_item": "gugugaga:cucumber_seeds",
+      "wild_block": "gugugaga:wild_cucumber",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "blueberry",
+      "seed_item": "gugugaga:blueberry_seeds",
+      "wild_block": "gugugaga:wild_blueberry",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_blueberry",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:forest"
+      ]
+    },
+    {
+      "crop": "bell_pepper",
+      "seed_item": "gugugaga:bell_pepper_seeds",
+      "wild_block": "gugugaga:wild_bell_pepper",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "garlic",
+      "seed_item": "gugugaga:garlic_seeds",
+      "wild_block": "gugugaga:wild_garlic",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "barley",
+      "seed_item": "gugugaga:barley_seeds",
+      "wild_block": "gugugaga:wild_barley",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_barley",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:windswept_hills"
+      ]
+    },
+    {
+      "crop": "oat",
+      "seed_item": "gugugaga:oat_seeds",
+      "wild_block": "gugugaga:wild_oat",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_oat",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:taiga"
+      ]
+    },
+    {
+      "crop": "rye",
+      "seed_item": "gugugaga:rye_seeds",
+      "wild_block": "gugugaga:wild_rye",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "pea",
+      "seed_item": "gugugaga:pea_seeds",
+      "wild_block": "gugugaga:wild_pea",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_pea",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:meadow"
+      ]
+    },
+    {
+      "crop": "lettuce",
+      "seed_item": "gugugaga:lettuce_seeds",
+      "wild_block": "gugugaga:wild_lettuce",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_lettuce",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:meadow",
+        "minecraft:river"
+      ]
+    },
+    {
+      "crop": "cabbage",
+      "seed_item": "gugugaga:cabbage_seeds",
+      "wild_block": "gugugaga:wild_cabbage",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "spinach",
+      "seed_item": "gugugaga:spinach_seeds",
+      "wild_block": "gugugaga:wild_spinach",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "broccoli",
+      "seed_item": "gugugaga:broccoli_seeds",
+      "wild_block": "gugugaga:wild_broccoli",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "eggplant",
+      "seed_item": "gugugaga:eggplant_seeds",
+      "wild_block": "gugugaga:wild_eggplant",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "cotton",
+      "seed_item": "gugugaga:cotton_seeds",
+      "wild_block": "gugugaga:wild_cotton",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "flax",
+      "seed_item": "gugugaga:flax_seeds",
+      "wild_block": "gugugaga:wild_flax",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_flax",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:forest"
+      ]
+    },
+    {
+      "crop": "peanut",
+      "seed_item": "gugugaga:peanut_seeds",
+      "wild_block": "gugugaga:wild_peanut",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "sorghum",
+      "seed_item": "gugugaga:sorghum_seeds",
+      "wild_block": "gugugaga:wild_sorghum",
+      "growth_band": "DRY",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ]
+    },
+    {
+      "crop": "sunflower_seed",
+      "seed_item": "gugugaga:sunflower_seed_seeds",
+      "wild_block": "gugugaga:wild_sunflower_seed",
+      "growth_band": "WARM",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_sunflower_seed",
+      "biomes": [
+        "minecraft:sunflower_plains",
+        "minecraft:plains",
+        "minecraft:savanna"
+      ]
+    },
+    {
+      "crop": "millet",
+      "seed_item": "gugugaga:millet_seeds",
+      "wild_block": "gugugaga:wild_millet",
+      "growth_band": "DRY",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_millet",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:savanna",
+        "minecraft:savanna_plateau"
+      ]
+    },
+    {
+      "crop": "buckwheat",
+      "seed_item": "gugugaga:buckwheat_seeds",
+      "wild_block": "gugugaga:wild_buckwheat",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "chickpea",
+      "seed_item": "gugugaga:chickpea_seeds",
+      "wild_block": "gugugaga:wild_chickpea",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "lentil",
+      "seed_item": "gugugaga:lentil_seeds",
+      "wild_block": "gugugaga:wild_lentil",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "radish",
+      "seed_item": "gugugaga:radish_seeds",
+      "wild_block": "gugugaga:wild_radish",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_radish",
+      "biomes": [
+        "minecraft:meadow",
+        "minecraft:plains",
+        "minecraft:forest"
+      ]
+    },
+    {
+      "crop": "turnip",
+      "seed_item": "gugugaga:turnip_seeds",
+      "wild_block": "gugugaga:wild_turnip",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "sweet_potato",
+      "seed_item": "gugugaga:sweet_potato_seeds",
+      "wild_block": "gugugaga:wild_sweet_potato",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "kale",
+      "seed_item": "gugugaga:kale_seeds",
+      "wild_block": "gugugaga:wild_kale",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "zucchini",
+      "seed_item": "gugugaga:zucchini_seeds",
+      "wild_block": "gugugaga:wild_zucchini",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "raspberry",
+      "seed_item": "gugugaga:raspberry_seeds",
+      "wild_block": "gugugaga:wild_raspberry",
+      "growth_band": "COOL",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_raspberry",
+      "biomes": [
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:taiga"
+      ]
+    },
+    {
+      "crop": "cranberry",
+      "seed_item": "gugugaga:cranberry_seeds",
+      "wild_block": "gugugaga:wild_cranberry",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "sesame",
+      "seed_item": "gugugaga:sesame_seeds",
+      "wild_block": "gugugaga:wild_sesame",
+      "growth_band": "DRY",
+      "source_kind": "individual_feature",
+      "feature": "gugugaga:wild_sesame",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:plains"
+      ]
+    },
+    {
+      "crop": "lavender",
+      "seed_item": "gugugaga:lavender_seeds",
+      "wild_block": "gugugaga:wild_lavender",
+      "growth_band": "DRY",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ]
+    },
+    {
+      "crop": "clover",
+      "seed_item": "gugugaga:clover_seeds",
+      "wild_block": "gugugaga:wild_clover",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "basil",
+      "seed_item": "gugugaga:basil_seeds",
+      "wild_block": "gugugaga:wild_basil",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "mint",
+      "seed_item": "gugugaga:mint_seeds",
+      "wild_block": "gugugaga:wild_mint",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "mustard",
+      "seed_item": "gugugaga:mustard_seeds",
+      "wild_block": "gugugaga:wild_mustard",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "canola",
+      "seed_item": "gugugaga:canola_seeds",
+      "wild_block": "gugugaga:wild_canola",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "celery",
+      "seed_item": "gugugaga:celery_seeds",
+      "wild_block": "gugugaga:wild_celery",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "leek",
+      "seed_item": "gugugaga:leek_seeds",
+      "wild_block": "gugugaga:wild_leek",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "parsnip",
+      "seed_item": "gugugaga:parsnip_seeds",
+      "wild_block": "gugugaga:wild_parsnip",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "arugula",
+      "seed_item": "gugugaga:arugula_seeds",
+      "wild_block": "gugugaga:wild_arugula",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "swiss_chard",
+      "seed_item": "gugugaga:swiss_chard_seeds",
+      "wild_block": "gugugaga:wild_swiss_chard",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "okra",
+      "seed_item": "gugugaga:okra_seeds",
+      "wild_block": "gugugaga:wild_okra",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "fennel",
+      "seed_item": "gugugaga:fennel_seeds",
+      "wild_block": "gugugaga:wild_fennel",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "dill",
+      "seed_item": "gugugaga:dill_seeds",
+      "wild_block": "gugugaga:wild_dill",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "cilantro",
+      "seed_item": "gugugaga:cilantro_seeds",
+      "wild_block": "gugugaga:wild_cilantro",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "parsley",
+      "seed_item": "gugugaga:parsley_seeds",
+      "wild_block": "gugugaga:wild_parsley",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "collard_greens",
+      "seed_item": "gugugaga:collard_greens_seeds",
+      "wild_block": "gugugaga:wild_collard_greens",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "green_bean",
+      "seed_item": "gugugaga:green_bean_seeds",
+      "wild_block": "gugugaga:wild_green_bean",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "chili_pepper",
+      "seed_item": "gugugaga:chili_pepper_seeds",
+      "wild_block": "gugugaga:wild_chili_pepper",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "brussels_sprouts",
+      "seed_item": "gugugaga:brussels_sprouts_seeds",
+      "wild_block": "gugugaga:wild_brussels_sprouts",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "cauliflower",
+      "seed_item": "gugugaga:cauliflower_seeds",
+      "wild_block": "gugugaga:wild_cauliflower",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "bok_choy",
+      "seed_item": "gugugaga:bok_choy_seeds",
+      "wild_block": "gugugaga:wild_bok_choy",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "shallot",
+      "seed_item": "gugugaga:shallot_seeds",
+      "wild_block": "gugugaga:wild_shallot",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "ginger",
+      "seed_item": "gugugaga:ginger_seeds",
+      "wild_block": "gugugaga:wild_ginger",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "turmeric",
+      "seed_item": "gugugaga:turmeric_seeds",
+      "wild_block": "gugugaga:wild_turmeric",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "black_bean",
+      "seed_item": "gugugaga:black_bean_seeds",
+      "wild_block": "gugugaga:wild_black_bean",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "quinoa",
+      "seed_item": "gugugaga:quinoa_seeds",
+      "wild_block": "gugugaga:wild_quinoa",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "artichoke",
+      "seed_item": "gugugaga:artichoke_seeds",
+      "wild_block": "gugugaga:wild_artichoke",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "asparagus",
+      "seed_item": "gugugaga:asparagus_seeds",
+      "wild_block": "gugugaga:wild_asparagus",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "pumpkin",
+      "seed_item": "gugugaga:pumpkin_seeds",
+      "wild_block": "gugugaga:wild_pumpkin",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "pineapple",
+      "seed_item": "gugugaga:pineapple_seeds",
+      "wild_block": "gugugaga:wild_pineapple",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "blackberry",
+      "seed_item": "gugugaga:blackberry_seeds",
+      "wild_block": "gugugaga:wild_blackberry",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "blackcurrant",
+      "seed_item": "gugugaga:blackcurrant_seeds",
+      "wild_block": "gugugaga:wild_blackcurrant",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "amaranth",
+      "seed_item": "gugugaga:amaranth_seeds",
+      "wild_block": "gugugaga:wild_amaranth",
+      "growth_band": "DRY",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ]
+    },
+    {
+      "crop": "chives",
+      "seed_item": "gugugaga:chives_seeds",
+      "wild_block": "gugugaga:wild_chives",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "sweet_corn",
+      "seed_item": "gugugaga:sweet_corn_seeds",
+      "wild_block": "gugugaga:wild_sweet_corn",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "cassava",
+      "seed_item": "gugugaga:cassava_seeds",
+      "wild_block": "gugugaga:wild_cassava",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "taro",
+      "seed_item": "gugugaga:taro_seeds",
+      "wild_block": "gugugaga:wild_taro",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "yam",
+      "seed_item": "gugugaga:yam_seeds",
+      "wild_block": "gugugaga:wild_yam",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "teff",
+      "seed_item": "gugugaga:teff_seeds",
+      "wild_block": "gugugaga:wild_teff",
+      "growth_band": "DRY",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ]
+    },
+    {
+      "crop": "watercress",
+      "seed_item": "gugugaga:watercress_seeds",
+      "wild_block": "gugugaga:wild_watercress",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "endive",
+      "seed_item": "gugugaga:endive_seeds",
+      "wild_block": "gugugaga:wild_endive",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "kohlrabi",
+      "seed_item": "gugugaga:kohlrabi_seeds",
+      "wild_block": "gugugaga:wild_kohlrabi",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "rutabaga",
+      "seed_item": "gugugaga:rutabaga_seeds",
+      "wild_block": "gugugaga:wild_rutabaga",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "jicama",
+      "seed_item": "gugugaga:jicama_seeds",
+      "wild_block": "gugugaga:wild_jicama",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "adzuki_bean",
+      "seed_item": "gugugaga:adzuki_bean_seeds",
+      "wild_block": "gugugaga:wild_adzuki_bean",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "mung_bean",
+      "seed_item": "gugugaga:mung_bean_seeds",
+      "wild_block": "gugugaga:wild_mung_bean",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "cowpea",
+      "seed_item": "gugugaga:cowpea_seeds",
+      "wild_block": "gugugaga:wild_cowpea",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "safflower",
+      "seed_item": "gugugaga:safflower_seeds",
+      "wild_block": "gugugaga:wild_safflower",
+      "growth_band": "DRY",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_dry_crops",
+      "biomes": [
+        "minecraft:desert",
+        "minecraft:windswept_savanna"
+      ]
+    },
+    {
+      "crop": "chicory",
+      "seed_item": "gugugaga:chicory_seeds",
+      "wild_block": "gugugaga:wild_chicory",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "mustard_greens",
+      "seed_item": "gugugaga:mustard_greens_seeds",
+      "wild_block": "gugugaga:wild_mustard_greens",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "water_spinach",
+      "seed_item": "gugugaga:water_spinach_seeds",
+      "wild_block": "gugugaga:wild_water_spinach",
+      "growth_band": "WET",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_wet_crops",
+      "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp",
+        "minecraft:river",
+        "minecraft:beach",
+        "minecraft:stony_shore"
+      ]
+    },
+    {
+      "crop": "celeriac",
+      "seed_item": "gugugaga:celeriac_seeds",
+      "wild_block": "gugugaga:wild_celeriac",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "purslane",
+      "seed_item": "gugugaga:purslane_seeds",
+      "wild_block": "gugugaga:wild_purslane",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "chayote",
+      "seed_item": "gugugaga:chayote_seeds",
+      "wild_block": "gugugaga:wild_chayote",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "grape",
+      "seed_item": "gugugaga:grape_seeds",
+      "wild_block": "gugugaga:wild_grape",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "tea",
+      "seed_item": "gugugaga:tea_seeds",
+      "wild_block": "gugugaga:wild_tea",
+      "growth_band": "TEMPERATE",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_temperate_crops",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:forest",
+        "minecraft:birch_forest",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:flower_forest",
+        "minecraft:sunflower_plains"
+      ]
+    },
+    {
+      "crop": "coffee",
+      "seed_item": "gugugaga:coffee_seeds",
+      "wild_block": "gugugaga:wild_coffee",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "rapini",
+      "seed_item": "gugugaga:rapini_seeds",
+      "wild_block": "gugugaga:wild_rapini",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "napa_cabbage",
+      "seed_item": "gugugaga:napa_cabbage_seeds",
+      "wild_block": "gugugaga:wild_napa_cabbage",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "melon",
+      "seed_item": "gugugaga:melon_seeds",
+      "wild_block": "gugugaga:wild_melon",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "watermelon",
+      "seed_item": "gugugaga:watermelon_seeds",
+      "wild_block": "gugugaga:wild_watermelon",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    },
+    {
+      "crop": "fava_bean",
+      "seed_item": "gugugaga:fava_bean_seeds",
+      "wild_block": "gugugaga:wild_fava_bean",
+      "growth_band": "COOL",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_cool_crops",
+      "biomes": [
+        "minecraft:taiga",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:meadow",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_forest",
+        "minecraft:grove"
+      ]
+    },
+    {
+      "crop": "jute_mallow",
+      "seed_item": "gugugaga:jute_mallow_seeds",
+      "wild_block": "gugugaga:wild_jute_mallow",
+      "growth_band": "WARM",
+      "source_kind": "weighted_group",
+      "feature": "gugugaga:wild_warm_crops",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ]
+    }
+  ]
+}

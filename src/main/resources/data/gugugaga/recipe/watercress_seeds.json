@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:kelp"
+      "item": "gugugaga:watercress"
     },
     {
       "item": "minecraft:wheat_seeds"

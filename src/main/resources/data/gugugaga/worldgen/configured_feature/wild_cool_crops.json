@@ -1,0 +1,295 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 40,
+    "xz_spread": 5,
+    "y_spread": 2,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "gugugaga:wild_onion"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_garlic"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_rye"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cabbage"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_spinach"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_broccoli"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_buckwheat"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_lentil"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_turnip"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_kale"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cranberry"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_mustard"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_canola"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_celery"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_leek"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_parsnip"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_arugula"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_swiss_chard"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_fennel"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_dill"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cilantro"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_parsley"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_collard_greens"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_brussels_sprouts"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_cauliflower"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_bok_choy"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_shallot"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_quinoa"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_asparagus"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_blackcurrant"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_chives"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_endive"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_kohlrabi"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_rutabaga"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_chicory"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_mustard_greens"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_celeriac"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_rapini"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_napa_cabbage"
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "gugugaga:wild_fava_bean"
+                },
+                "weight": 1
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:grass_block",
+                  "minecraft:dirt",
+                  "minecraft:podzol",
+                  "minecraft:coarse_dirt",
+                  "minecraft:moss_block",
+                  "minecraft:rooted_dirt",
+                  "minecraft:mud",
+                  "minecraft:sand",
+                  "minecraft:red_sand",
+                  "minecraft:gravel",
+                  "minecraft:clay"
+                ],
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,13 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
+    {
+      "item": "gugugaga:lavender"
+    },
     {
       "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:lavender_seeds",
-    "count": 1
+    "count": 2
   }
 }

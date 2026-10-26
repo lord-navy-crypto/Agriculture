@@ -1,16 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:wheat_seeds"
+      "item": "gugugaga:quinoa"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:quinoa_seeds",
-    "count": 1
+    "count": 2
   }
 }

@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:kelp"
+      "item": "gugugaga:napa_cabbage"
     },
     {
       "item": "minecraft:wheat_seeds"
