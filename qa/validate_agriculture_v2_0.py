@@ -104,7 +104,7 @@ def main():
     switch_routes = {
         int(index): constant
         for index, constant in re.findall(
-            r"case\\s+(\\d+)\\s*->\\s*BeeContent\\.([A-Z0-9_]+)\\.get\\(\\);",
+            r"case\s+(\d+)\s*->\s*BeeContent\.([A-Z0-9_]+)\.get\(\);",
             switch_block,
         )
     }
