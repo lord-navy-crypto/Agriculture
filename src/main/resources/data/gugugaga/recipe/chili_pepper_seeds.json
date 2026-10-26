@@ -1,16 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "gugugaga:chili_pepper"
     },
     {
-      "item": "minecraft:red_dye"
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:chili_pepper_seeds",
-    "count": 1
+    "count": 2
   }
 }

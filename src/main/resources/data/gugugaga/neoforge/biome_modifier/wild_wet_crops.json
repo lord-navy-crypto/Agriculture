@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp",
+    "minecraft:river",
+    "minecraft:beach",
+    "minecraft:stony_shore"
+  ],
+  "features": "gugugaga:wild_wet_crops",
+  "step": "vegetal_decoration"
+}

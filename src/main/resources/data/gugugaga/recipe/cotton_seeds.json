@@ -1,13 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:string"
+      "item": "gugugaga:cotton"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:cotton_seeds",
-    "count": 1
+    "count": 2
   }
 }

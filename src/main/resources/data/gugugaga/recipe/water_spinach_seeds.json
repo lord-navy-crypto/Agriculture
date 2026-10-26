@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:kelp"
+      "item": "gugugaga:water_spinach"
     },
     {
       "item": "minecraft:wheat_seeds"

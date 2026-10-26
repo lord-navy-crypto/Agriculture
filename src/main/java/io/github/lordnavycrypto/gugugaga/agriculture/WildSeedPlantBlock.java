@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-/** Harvestable wild relative / seed source on undisturbed natural terrain (not a planted farm crop). */
+/** Harvestable wild seed source on natural terrain; breaking it yields the crop's propagule. */
 public final class WildSeedPlantBlock extends BushBlock {
     public static final MapCodec<WildSeedPlantBlock> CODEC = simpleCodec(WildSeedPlantBlock::new);
 
@@ -21,6 +21,9 @@ public final class WildSeedPlantBlock extends BushBlock {
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT)
                 || state.is(Blocks.PODZOL) || state.is(Blocks.COARSE_DIRT)
-                || state.is(Blocks.MOSS_BLOCK);
+                || state.is(Blocks.MOSS_BLOCK) || state.is(Blocks.ROOTED_DIRT)
+                || state.is(Blocks.MUD) || state.is(Blocks.SAND)
+                || state.is(Blocks.RED_SAND) || state.is(Blocks.GRAVEL)
+                || state.is(Blocks.CLAY);
     }
 }

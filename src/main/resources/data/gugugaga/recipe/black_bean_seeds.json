@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "gugugaga:black_bean"
     },
     {
       "item": "minecraft:wheat_seeds"
@@ -11,6 +10,6 @@
   ],
   "result": {
     "id": "gugugaga:black_bean_seeds",
-    "count": 1
+    "count": 2
   }
 }

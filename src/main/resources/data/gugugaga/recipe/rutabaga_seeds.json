@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:beetroot"
+      "item": "gugugaga:rutabaga"
     },
     {
       "item": "minecraft:wheat_seeds"

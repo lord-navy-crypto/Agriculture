@@ -1,16 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:wheat_seeds"
+      "item": "gugugaga:okra"
     },
     {
-      "item": "minecraft:cactus"
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:okra_seeds",
-    "count": 1
+    "count": 2
   }
 }

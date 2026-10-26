@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "gugugaga:cowpea"
     },
     {
       "item": "minecraft:wheat_seeds"

@@ -1,16 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:beetroot_seeds"
+      "item": "gugugaga:cauliflower"
     },
     {
-      "item": "minecraft:bone_meal"
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:cauliflower_seeds",
-    "count": 1
+    "count": 2
   }
 }

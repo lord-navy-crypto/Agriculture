@@ -1,13 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "gugugaga:eggplant"
+    },
+    {
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:eggplant_seeds",
-    "count": 1
+    "count": 2
   }
 }

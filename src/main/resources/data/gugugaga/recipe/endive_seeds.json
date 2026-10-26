@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "gugugaga:lettuce"
+      "item": "gugugaga:endive"
     },
     {
       "item": "minecraft:wheat_seeds"

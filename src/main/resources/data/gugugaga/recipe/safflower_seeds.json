@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:sunflower"
+      "item": "gugugaga:safflower"
     },
     {
       "item": "minecraft:wheat_seeds"

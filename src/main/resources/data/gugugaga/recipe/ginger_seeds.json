@@ -1,16 +1,15 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:potato"
+      "item": "gugugaga:ginger"
     },
     {
-      "item": "minecraft:bamboo"
+      "item": "minecraft:wheat_seeds"
     }
   ],
   "result": {
     "id": "gugugaga:ginger_seeds",
-    "count": 1
+    "count": 2
   }
 }

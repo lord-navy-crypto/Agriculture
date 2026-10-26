@@ -4,18 +4,10 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / "src/main/resources"
-CROPS = {
-    "corn": ("wheat", "wheat_seeds", "wheat", "minecraft:wheat_seeds", "minecraft:hay_block"),
-    "tomato": ("carrots", "pumpkin_seeds", "sweet_berries", "minecraft:pumpkin_seeds", "minecraft:beetroot"),
-    "onion": ("beetroots", "beetroot_seeds", "carrot", "minecraft:beetroot_seeds", "minecraft:carrot"),
-    "rice": ("wheat", "wheat_seeds", "wheat", "minecraft:wheat_seeds", "minecraft:kelp"),
-    "soybean": ("carrots", "beetroot_seeds", "cocoa_beans", "minecraft:wheat_seeds", "minecraft:cocoa_beans"),
-    "strawberry": ("sweet_berry_bush", "beetroot_seeds", "sweet_berries", "minecraft:beetroot_seeds", "minecraft:sweet_berries"),
-    "cucumber": ("potatoes", "pumpkin_seeds", "melon_slice", "minecraft:pumpkin_seeds", "minecraft:melon_slice"),
-    "blueberry": ("sweet_berry_bush", "beetroot_seeds", "sweet_berries", "minecraft:blue_dye", "minecraft:sweet_berries"),
-    "bell_pepper": ("carrots", "pumpkin_seeds", "carrot", "minecraft:pumpkin_seeds", "minecraft:carrot"),
-    "garlic": ("beetroots", "beetroot_seeds", "beetroot", "minecraft:beetroot_seeds", "minecraft:potato"),
-}
+CROPS = (
+    "corn", "tomato", "onion", "rice", "soybean",
+    "strawberry", "cucumber", "blueberry", "bell_pepper", "garlic",
+)
 BEE_ITEMS = ("meadow_bee_tag", "orchard_bee_tag", "berry_bee_tag", "large_apiary_kit")
 
 def read_json(path):
@@ -30,7 +22,7 @@ def main():
 
     en = read_json(ROOT / "assets/gugugaga/lang/en_us.json")
     zh = read_json(ROOT / "assets/gugugaga/lang/zh_cn.json")
-    for crop, (block_texture, seed_texture, produce_texture, seed_input_a, seed_input_b) in CROPS.items():
+    for crop in CROPS:
         blockstate = read_json(ROOT / f"assets/gugugaga/blockstates/{crop}_crop.json")
         assert len(blockstate["variants"]) == 16, f"{crop}: expected 16 age/pollination variants"
         for age in range(8):

@@ -1,9 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:beetroot_seeds"
+      "item": "gugugaga:purslane"
     },
     {
       "item": "minecraft:wheat_seeds"
