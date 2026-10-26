@@ -1809,182 +1809,134 @@ tasks.register('generateCropAssets') {
         }
 
 
-        // Marine foods use hand-drawn pixel icons; fungal cultures get four visible growth stages.
-        def marineFungiCatalog = slurper.parse(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
-        def marineFungiItems = marineFungiCatalog.items
-        def fungalCultures = marineFungiCatalog.cultures
-        if (marineFungiItems.size() != 24 || marineFungiItems.collect { it.id }.unique().size() != 24) {
-            throw new GradleException('Marine/fungi catalog must contain 24 unique food and ingredient IDs')
+        // Marine foods use dedicated pixel icons; fungal cultures receive four visible growth stages.
+        def mfCatalog = slurper.parse(file('src/main/resources/data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json'))
+        def mfItems = mfCatalog.items
+        def mfCultures = mfCatalog.cultures
+        if (mfItems.size() != 24 || mfItems.collect { it.id }.unique().size() != 24) {
+            throw new GradleException('Marine/fungi catalog must contain 24 unique ingredient and food IDs')
         }
-        if (fungalCultures.size() != 6 || fungalCultures.collect { it.id }.unique().size() != 6) {
+        if (mfCultures.size() != 6 || mfCultures.collect { it.id }.unique().size() != 6) {
             throw new GradleException('Fungal culture catalog must contain six unique culture IDs')
         }
         int mfCream = rgb.call('#F1E7CF')
-        def mfIconHashesById = [:]
+        def mfIconHashes = [:]
         def mfIconPaths = []
-        def drawMarineFungiIcon = { BufferedImage image, String id, int base, int highlight, int shadow, int accent ->
-            switch (id) {
-                case 'sea_lettuce':
-                    line.call(image,7,14,5,3,shadow); line.call(image,7,14,9,2,shadow); line.call(image,7,14,12,5,shadow)
-                    line.call(image,5,5,3,7,base); line.call(image,6,8,4,10,highlight); line.call(image,9,5,11,7,base)
-                    line.call(image,9,9,12,11,highlight); line.call(image,7,11,6,13,accent); break
-                case 'wakame':
-                    line.call(image,8,14,5,2,shadow); line.call(image,8,14,10,3,shadow); line.call(image,8,14,13,7,shadow)
-                    disc.call(image,5,5,2,3,base); disc.call(image,10,6,2,3,highlight); disc.call(image,12,9,2,2,base)
-                    line.call(image,6,8,4,11,accent); line.call(image,9,9,11,12,highlight); break
-                case 'nori_sheet':
-                    for (int y=2;y<=13;y++) for(int x=3;x<=12;x++) put.call(image,x,y,base)
-                    for (int x : [4,7,10,12]) { put.call(image,x,4,highlight); put.call(image,x-1,8,shadow); put.call(image,x,11,accent) }
-                    line.call(image,3,2,12,2,highlight); line.call(image,3,13,12,13,shadow); break
-                case 'dulse':
-                    line.call(image,8,14,7,4,shadow); line.call(image,7,8,4,5,base); line.call(image,7,10,11,6,highlight)
-                    line.call(image,7,6,10,3,base); line.call(image,6,11,3,9,highlight); line.call(image,8,12,12,10,accent)
-                    disc.call(image,4,5,2,2,base); disc.call(image,11,6,2,2,highlight); put.call(image,7,3,accent); break
-                case 'kelp_flakes':
-                    [[4,4],[9,3],[12,6],[6,8],[10,10],[3,12],[8,13],[13,13]].eachWithIndex { pt,j -> disc.call(image,pt[0],pt[1],j%2==0?1:2,1,j%3==0?highlight:(j%3==1?base:accent)) }; break
-                case 'fish_fillet':
-                    disc.call(image,7,8,5,3,base); disc.call(image,5,7,3,2,highlight); line.call(image,11,8,14,5,accent); line.call(image,11,8,14,11,accent)
-                    line.call(image,3,8,1,6,shadow); put.call(image,4,7,mfCream); put.call(image,5,7,shadow); line.call(image,7,6,9,10,highlight); break
-                case 'seafood_broth':
-                    disc.call(image,8,9,6,4,shadow); disc.call(image,8,8,5,3,base); line.call(image,3,10,13,10,highlight)
-                    disc.call(image,6,7,2,1,accent); disc.call(image,10,8,2,1,mfCream); put.call(image,8,6,highlight); break
-                case 'seaweed_salad':
-                    disc.call(image,8,10,6,3,shadow); disc.call(image,8,9,5,2,base); line.call(image,4,9,6,6,highlight)
-                    line.call(image,7,9,8,5,accent); line.call(image,9,9,12,6,highlight); line.call(image,6,10,4,8,accent); put.call(image,10,9,mfCream); break
-                case 'nori_rice_roll':
-                    disc.call(image,8,8,4,6,shadow); disc.call(image,8,8,3,5,base); disc.call(image,8,8,2,4,mfCream)
-                    disc.call(image,8,8,1,2,accent); put.call(image,7,6,highlight); put.call(image,9,10,highlight); break
-                case 'seafood_rice_bowl':
-                    disc.call(image,8,10,6,3,shadow); disc.call(image,8,8,5,3,mfCream); line.call(image,2,10,14,10,highlight)
-                    disc.call(image,5,7,2,2,accent); disc.call(image,9,7,2,2,base); disc.call(image,11,9,1,1,shadow); put.call(image,7,5,highlight); break
-                case 'grilled_fish_skewer':
+        def drawMfIcon = { BufferedImage image, String id, String group, int base, int highlight, int shadow, int accent ->
+            if (id == 'nori_sheet') {
+                for (int y=2; y<=13; y++) { for (int x=3; x<=12; x++) { put.call(image,x,y,base) } }
+                line.call(image,3,2,12,2,highlight); line.call(image,3,13,12,13,shadow)
+                [4,7,10,12].each { x -> put.call(image,x,5,accent); put.call(image,x,9,highlight) }
+            } else if (id == 'kelp_flakes' || id == 'mushroom_spores') {
+                [[4,4],[9,3],[12,6],[6,8],[10,10],[3,12],[8,13],[13,13]].eachWithIndex { pt,j ->
+                    disc.call(image,pt[0],pt[1],j%2==0?1:2,1,j%3==0?highlight:(j%3==1?base:accent))
+                }
+            } else if (group == 'marine_plant') {
+                line.call(image,7,14,5,3,shadow); line.call(image,7,14,9,2,shadow); line.call(image,7,14,12,5,shadow)
+                line.call(image,5,5,3,7,base); line.call(image,6,8,4,10,highlight); line.call(image,9,5,11,7,base)
+                line.call(image,9,9,12,11,highlight); line.call(image,7,11,6,13,accent)
+                if (id == 'dulse') { line.call(image,7,7,10,3,accent); disc.call(image,4,5,2,2,highlight); disc.call(image,11,6,2,2,base) }
+            } else if (id == 'fish_fillet' || id == 'grilled_fish_skewer') {
+                if (id == 'fish_fillet') {
+                    disc.call(image,7,8,5,3,base); disc.call(image,5,7,3,2,highlight)
+                    line.call(image,11,8,14,5,accent); line.call(image,11,8,14,11,accent)
+                    put.call(image,4,7,mfCream); put.call(image,5,7,shadow); line.call(image,7,6,9,10,highlight)
+                } else {
                     line.call(image,2,14,13,3,shadow); line.call(image,3,13,14,2,highlight)
                     disc.call(image,5,10,2,2,base); disc.call(image,8,7,2,2,accent); disc.call(image,11,4,2,2,highlight)
-                    put.call(image,5,9,mfCream); put.call(image,8,6,mfCream); break
-                case 'mushroom_spores':
-                    [[4,5],[7,3],[10,5],[12,8],[8,8],[4,10],[10,12],[6,13]].eachWithIndex { pt,j -> disc.call(image,pt[0],pt[1],j%2==0?1:2,1,j%2==0?highlight:base) }
-                    put.call(image,7,6,accent); put.call(image,11,10,shadow); break
-                case 'shiitake_mushroom':
-                    line.call(image,8,13,8,8,highlight); disc.call(image,8,6,5,3,shadow); disc.call(image,8,5,4,3,base)
-                    line.call(image,5,5,7,4,highlight); put.call(image,9,6,accent); put.call(image,8,9,mfCream); break
-                case 'oyster_mushroom':
-                    line.call(image,8,14,8,9,shadow); disc.call(image,5,7,3,3,base); disc.call(image,9,6,4,3,highlight)
-                    disc.call(image,12,8,2,2,base); line.call(image,6,7,10,5,mfCream); put.call(image,8,10,accent); break
-                case 'enoki_mushroom':
-                    [4,6,8,10,12].eachWithIndex { x,j -> line.call(image,x,13,x,5+(j%2),shadow); disc.call(image,x,5+(j%2),1,1,highlight); put.call(image,x,9,base) }; break
-                case 'porcini_mushroom':
-                    disc.call(image,8,5,4,3,shadow); disc.call(image,8,5,3,2,base); disc.call(image,8,10,2,4,highlight)
-                    line.call(image,7,8,7,12,mfCream); put.call(image,10,4,accent); break
-                case 'lion_mane_mushroom':
-                    line.call(image,8,14,8,9,shadow); disc.call(image,8,6,4,4,highlight)
-                    [[5,5],[6,3],[8,2],[10,3],[11,5],[5,8],[11,8],[7,9],[9,9]].each { pt -> put.call(image,pt[0],pt[1],mfCream) }
-                    put.call(image,8,6,accent); break
-                case 'truffle':
-                    disc.call(image,8,8,5,5,shadow); disc.call(image,7,7,4,4,base)
-                    [[5,5],[8,4],[10,7],[6,9],[9,11],[11,9]].eachWithIndex { pt,j -> put.call(image,pt[0],pt[1],j%2==0?highlight:accent) }; break
-                case 'mushroom_medley':
-                    line.call(image,5,13,5,8,highlight); disc.call(image,5,6,3,2,shadow); disc.call(image,5,5,2,2,base)
-                    line.call(image,10,13,10,8,highlight); disc.call(image,10,6,3,2,accent); disc.call(image,10,5,2,2,base)
-                    line.call(image,8,13,8,9,shadow); disc.call(image,8,8,2,2,highlight); break
-                case 'mushroom_rice_bowl':
-                    disc.call(image,8,10,6,3,shadow); disc.call(image,8,8,5,3,mfCream); line.call(image,3,10,13,10,highlight)
-                    disc.call(image,6,7,2,2,base); disc.call(image,10,8,2,1,accent); put.call(image,8,6,highlight); break
-                case 'enoki_soup':
-                    disc.call(image,8,10,6,3,shadow); disc.call(image,8,9,5,2,base); line.call(image,6,9,6,5,mfCream)
-                    line.call(image,8,9,8,4,highlight); line.call(image,10,9,10,5,mfCream); disc.call(image,8,4,1,1,accent); break
-                case 'truffle_pasta':
-                    line.call(image,4,5,12,12,highlight); line.call(image,4,8,11,4,base); line.call(image,5,12,13,7,accent)
-                    disc.call(image,8,8,2,2,shadow); disc.call(image,9,7,1,1,highlight); put.call(image,5,6,mfCream); break
-                case 'lion_mane_steak':
-                    disc.call(image,8,8,5,4,shadow); disc.call(image,8,7,4,3,base); line.call(image,5,5,11,5,highlight)
-                    [[5,7],[7,6],[9,8],[11,7],[7,10],[10,10]].each { pt -> put.call(image,pt[0],pt[1],accent) }; break
-                case 'mushroom_sauce':
-                    disc.call(image,8,9,6,4,shadow); disc.call(image,8,8,5,3,base); line.call(image,3,10,13,10,highlight)
-                    disc.call(image,6,7,2,1,accent); put.call(image,10,8,mfCream); put.call(image,8,6,highlight); break
-                default: throw new GradleException('No marine/fungi icon art for ' + id)
+                    put.call(image,5,9,mfCream); put.call(image,8,6,mfCream)
+                }
+            } else if (group.endsWith('_food')) {
+                disc.call(image,8,10,6,3,shadow); disc.call(image,8,8,5,3,base)
+                line.call(image,2,10,14,10,highlight)
+                disc.call(image,5,7,2,2,accent); disc.call(image,9,7,2,1,highlight)
+                put.call(image,7,6,mfCream); put.call(image,11,9,shadow)
+            } else if (id == 'truffle') {
+                disc.call(image,8,8,5,5,shadow); disc.call(image,7,7,4,4,base)
+                [[5,5],[8,4],[10,7],[6,9],[9,11],[11,9]].eachWithIndex { pt,j -> put.call(image,pt[0],pt[1],j%2==0?highlight:accent) }
+            } else if (id == 'enoki_mushroom') {
+                [4,6,8,10,12].eachWithIndex { x,j -> line.call(image,x,13,x,5+(j%2),shadow); disc.call(image,x,5+(j%2),1,1,highlight); put.call(image,x,9,base) }
+            } else if (id == 'lion_mane_mushroom') {
+                line.call(image,8,14,8,9,shadow); disc.call(image,8,6,4,4,highlight)
+                [[5,5],[6,3],[8,2],[10,3],[11,5],[5,8],[11,8],[7,9],[9,9]].each { pt -> put.call(image,pt[0],pt[1],mfCream) }
+                put.call(image,8,6,accent)
+            } else {
+                line.call(image,8,13,8,8,highlight); disc.call(image,8,6,5,3,shadow); disc.call(image,8,5,4,3,base)
+                line.call(image,5,5,7,4,highlight); put.call(image,9,6,accent); put.call(image,8,9,mfCream)
+                if (id == 'oyster_mushroom') { disc.call(image,5,7,3,2,base); disc.call(image,11,7,3,2,highlight) }
+                if (id == 'porcini_mushroom') { disc.call(image,8,10,2,4,highlight); put.call(image,10,4,accent) }
+                if (id == 'mushroom_spores') { put.call(image,7,6,accent); put.call(image,11,10,shadow) }
             }
             int sig = id.hashCode()
-            put.call(image,1 + Math.floorMod(sig,14),1 + Math.floorMod((int)(sig / 17),14),accent)
-            put.call(image,1 + Math.floorMod((int)(sig / 31),14),1 + Math.floorMod((int)(sig / 47),14),highlight)
+            put.call(image,1 + Math.floorMod(sig,14),1 + Math.floorMod((int)(sig/17),14),accent)
+            put.call(image,1 + Math.floorMod((int)(sig/31),14),1 + Math.floorMod((int)(sig/47),14),highlight)
+            put.call(image,1 + Math.floorMod((int)(sig/59),14),1 + Math.floorMod((int)(sig/71),14),shadow)
         }
-        marineFungiItems.each { item ->
+        mfItems.each { item ->
             String id = item.id.toString()
             BufferedImage icon = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-            drawMarineFungiIcon.call(icon,id,rgb.call(item.palette.base),rgb.call(item.palette.highlight),rgb.call(item.palette.shadow),rgb.call(item.palette.accent))
-            String path = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
-            savePng.call(path,icon)
-            mfIconPaths.add(path)
-            mfIconHashesById[id] = MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,path).bytes).encodeHex().toString()
+            drawMfIcon.call(icon,id,item.group.toString(),rgb.call(item.palette.base),rgb.call(item.palette.highlight),rgb.call(item.palette.shadow),rgb.call(item.palette.accent))
+            String iconPath = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
+            savePng.call(iconPath,icon)
+            mfIconPaths.add(iconPath)
+            mfIconHashes[id] = MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,iconPath).bytes).encodeHex().toString()
         }
-        fungalCultures.each { culture ->
+        mfCultures.each { culture ->
             String id = culture.id.toString()
-            def palette = culture.palette
-            int base = rgb.call(palette.base), highlight = rgb.call(palette.highlight), shadow = rgb.call(palette.shadow), accent = rgb.call(palette.accent)
+            int base = rgb.call(culture.palette.base)
+            int highlight = rgb.call(culture.palette.highlight)
+            int shadow = rgb.call(culture.palette.shadow)
+            int accent = rgb.call(culture.palette.accent)
             BufferedImage icon = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
             line.call(icon,2,13,13,13,shadow); line.call(icon,3,12,12,12,base); line.call(icon,4,11,11,11,accent)
-            switch (id) {
-                case 'shiitake_culture':
-                    line.call(icon,8,12,8,7,highlight); disc.call(icon,8,5,4,2,shadow); disc.call(icon,8,5,3,2,base); put.call(icon,10,5,accent); break
-                case 'oyster_mushroom_culture':
-                    line.call(icon,8,12,8,8,highlight); disc.call(icon,5,7,3,2,base); disc.call(icon,9,6,4,2,highlight); disc.call(icon,12,8,2,1,accent); break
-                case 'enoki_culture':
-                    [5,7,9,11].eachWithIndex { x,j -> line.call(icon,x,12,x,6+(j%2),highlight); disc.call(icon,x,5+(j%2),1,1,base) }; break
-                case 'porcini_culture':
-                    line.call(icon,8,12,8,8,highlight); disc.call(icon,8,6,4,2,shadow); disc.call(icon,8,5,3,2,base); put.call(icon,10,5,accent); break
-                case 'lion_mane_culture':
-                    line.call(icon,8,12,8,9,shadow); disc.call(icon,8,7,3,3,highlight); [[6,5],[7,4],[9,4],[10,5],[6,8],[10,8]].each { pt -> put.call(icon,pt[0],pt[1],mfCream) }; break
-                case 'truffle_culture':
-                    disc.call(icon,8,8,4,3,shadow); disc.call(icon,8,7,3,2,base); put.call(icon,6,6,accent); put.call(icon,10,8,highlight); break
-                default: throw new GradleException('No fungal culture inventory art for ' + id)
-            }
+            line.call(icon,8,12,8,7,highlight); disc.call(icon,8,5,4,2,shadow); disc.call(icon,8,5,3,2,base)
+            put.call(icon,10,5,accent)
             int sig = id.hashCode()
-            put.call(icon,1 + Math.floorMod(sig,14),1 + Math.floorMod((int)(sig / 19),14),accent)
-            String path = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
-            savePng.call(path,icon)
-            mfIconPaths.add(path)
-            mfIconHashesById[id] = MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,path).bytes).encodeHex().toString()
+            put.call(icon,1 + Math.floorMod(sig,14),1 + Math.floorMod((int)(sig/19),14),accent)
+            String iconPath = 'assets/gugugaga/textures/item/marine_fungi/' + id + '.png'
+            savePng.call(iconPath,icon)
+            mfIconPaths.add(iconPath)
+            mfIconHashes[id] = MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,iconPath).bytes).encodeHex().toString()
 
             (0..3).each { age ->
                 BufferedImage stage = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
                 int soil = rgb.call('#5B4938')
                 line.call(stage,2,14,13,14,soil); line.call(stage,3,13,12,13,shade.call(soil,0.8d))
-                if (age >= 1) {
-                    switch (id) {
-                        case 'shiitake_culture':
-                            line.call(stage,8,13,8,9,highlight); disc.call(stage,8,8,age+1,1,shadow); disc.call(stage,8,7,age+1,2,base); put.call(stage,9,7,accent); break
-                        case 'oyster_mushroom_culture':
-                            line.call(stage,8,13,8,9,highlight); disc.call(stage,6,8,age,2,base); disc.call(stage,9,7,age+1,2,highlight); disc.call(stage,12,9,1,1,accent); break
-                        case 'enoki_culture':
-                            (4..(4+age*2)).step(2).each { x -> line.call(stage,x,13,x,9-age,highlight); disc.call(stage,x,8-age,1,1,base) }; break
-                        case 'porcini_culture':
-                            line.call(stage,8,13,8,9,highlight); disc.call(stage,8,8,age+1,2,shadow); disc.call(stage,8,7,age+1,2,base); put.call(stage,10,7,accent); break
-                        case 'lion_mane_culture':
-                            line.call(stage,8,13,8,10,shadow); disc.call(stage,8,8,age+1,2,highlight)
-                            [[6,7],[7,6],[9,6],[10,7],[6,9],[10,9],[8,10]].each { pt -> if(age>=2 || pt[1]>=8) put.call(stage,pt[0],pt[1],mfCream) }; break
-                        case 'truffle_culture':
-                            disc.call(stage,8,10,age+1,2,shadow); disc.call(stage,8,9,age,2,base); put.call(stage,9,8,accent); break
-                    }
-                } else {
+                if (age == 0) {
                     [[6,11],[8,10],[10,12]].eachWithIndex { pt,j -> put.call(stage,pt[0],pt[1],j%2==0?accent:highlight) }
+                } else if (id == 'enoki_culture') {
+                    (4..(4+age*2)).step(2).each { x -> line.call(stage,x,13,x,9-age,highlight); disc.call(stage,x,8-age,1,1,base) }
+                } else if (id == 'truffle_culture') {
+                    disc.call(stage,8,10,age+1,2,shadow); disc.call(stage,8,9,age,2,base); put.call(stage,9,8,accent)
+                } else if (id == 'lion_mane_culture') {
+                    line.call(stage,8,13,8,10,shadow); disc.call(stage,8,8,age+1,2,highlight)
+                    [[6,7],[7,6],[9,6],[10,7],[6,9],[10,9],[8,10]].each { pt -> if(age>=2 || pt[1]>=8) put.call(stage,pt[0],pt[1],mfCream) }
+                } else {
+                    line.call(stage,8,13,8,9,highlight)
+                    disc.call(stage,8,8,age+1,2,shadow)
+                    disc.call(stage,8,7,age+1,2,base)
+                    put.call(stage,9,7,accent)
+                    if (id == 'oyster_mushroom_culture') { disc.call(stage,5,8,age,2,base); disc.call(stage,11,8,age,2,highlight) }
                 }
                 int sig = id.hashCode() + age * 101
                 put.call(stage,1 + Math.floorMod(sig,14),1 + Math.floorMod((int)(sig/23),14),accent)
+                put.call(stage,1 + Math.floorMod((int)(sig/37),14),1 + Math.floorMod((int)(sig/41),14),highlight)
                 String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + id + '_stage' + age + '.png'
                 savePng.call(stagePath,stage)
             }
         }
-        if (mfIconHashesById.size() != 30 || mfIconHashesById.values().toSet().size() != 30) {
-            throw new GradleException('All 30 marine/fungi and fungal-culture inventory icons must be unique')
+        if (mfIconHashes.size() != 30 || mfIconHashes.values().toSet().size() != 30) {
+            throw new GradleException('All 30 marine/fungi inventory icons must be unique')
         }
         def cultureStageHashes = []
-        fungalCultures.each { culture ->
+        mfCultures.each { culture ->
             (0..3).each { age ->
-                String path = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
-                cultureStageHashes.add(MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,path).bytes).encodeHex().toString())
+                String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
+                cultureStageHashes.add(MessageDigest.getInstance('SHA-256').digest(new File(outputRoot,stagePath).bytes).encodeHex().toString())
             }
         }
         if (cultureStageHashes.size() != 24 || cultureStageHashes.toSet().size() != 24) {
-            throw new GradleException('All 24 fungal culture growth-stage textures must be visually distinct')
+            throw new GradleException('All 24 fungal culture growth-stage textures must be unique')
         }
         int mfTile = 48
         int mfLabelWidth = 148
@@ -1994,26 +1946,26 @@ tasks.register('generateCropAssets') {
         mfGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
         mfGraphics.setColor(new Color(29,34,30,255)); mfGraphics.fillRect(0,0,mfSheet.width,mfSheet.height)
         mfGraphics.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
-        mfIconPaths.eachWithIndex { path,row ->
+        mfIconPaths.eachWithIndex { iconPath,row ->
             mfGraphics.setColor(new Color(238,240,232,255))
-            mfGraphics.drawString(path.substring(path.lastIndexOf('/')+1,path.length()-4),4,row*mfTile+28)
-            mfGraphics.drawImage(ImageIO.read(new File(outputRoot,path)),mfLabelWidth,row*mfTile,mfTile,mfTile,null)
+            mfGraphics.drawString(iconPath.substring(iconPath.lastIndexOf('/')+1,iconPath.length()-4),4,row*mfTile+28)
+            mfGraphics.drawImage(ImageIO.read(new File(outputRoot,iconPath)),mfLabelWidth,row*mfTile,mfTile,mfTile,null)
         }
         mfGraphics.dispose()
         File mfReportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
         mfReportRoot.mkdirs()
         ImageIO.write(mfSheet,'png',new File(mfReportRoot,'marine-fungi-item-contact-sheet.png'))
-        BufferedImage cultureSheet = new BufferedImage(mfLabelWidth + 4*mfTile, fungalCultures.size()*mfTile, BufferedImage.TYPE_INT_ARGB)
+        BufferedImage cultureSheet = new BufferedImage(mfLabelWidth + 4*mfTile, mfCultures.size()*mfTile, BufferedImage.TYPE_INT_ARGB)
         Graphics2D cultureGraphics = cultureSheet.createGraphics()
         cultureGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
         cultureGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF)
         cultureGraphics.setColor(new Color(29,34,30,255)); cultureGraphics.fillRect(0,0,cultureSheet.width,cultureSheet.height)
         cultureGraphics.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
-        fungalCultures.eachWithIndex { culture,row ->
+        mfCultures.eachWithIndex { culture,row ->
             cultureGraphics.setColor(new Color(238,240,232,255)); cultureGraphics.drawString(culture.id.toString(),4,row*mfTile+28)
             (0..3).each { age ->
-                String path = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
-                cultureGraphics.drawImage(ImageIO.read(new File(outputRoot,path)),mfLabelWidth+age*mfTile,row*mfTile,mfTile,mfTile,null)
+                String stagePath = 'assets/gugugaga/textures/block/marine_fungi/' + culture.id + '_stage' + age + '.png'
+                cultureGraphics.drawImage(ImageIO.read(new File(outputRoot,stagePath)),mfLabelWidth+age*mfTile,row*mfTile,mfTile,mfTile,null)
             }
         }
         cultureGraphics.dispose()
