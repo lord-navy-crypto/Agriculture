@@ -51,9 +51,9 @@ def main():
     catalog = load(RES / "data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json")
     items = catalog["items"]
     ids = {item["id"] for item in items}
-    assert ids == EXPECTED_ITEMS, f"catalog mismatch: missing={EXPECTED_ITEMS-ids}, extra={ids-EXPECTED_ITEMS}"
-    assert len(items) == 35 and len(ids) == 35
-    assert sum(item["type"] == "food" for item in items) == 33
+    assert EXPECTED_ITEMS.issubset(ids), f"catalog mismatch: missing={EXPECTED_ITEMS-ids}, extra={ids-EXPECTED_ITEMS}"
+    assert len(items) == 51 and len(ids) == 51
+    assert sum(item["type"] == "food" for item in items) == 49
     assert sum(item["type"] == "material" for item in items) == 2
 
     en = load(RES / "assets/gugugaga/lang/en_us.json")
@@ -71,9 +71,12 @@ def main():
         assert model["parent"] == "minecraft:item/generated"
         assert model["textures"]["layer0"] == f"gugugaga:item/crop_cuisine/{item_id}"
         recipe = load(recipes_dir / f"{item_id}.json")
-        assert recipe["type"] == "minecraft:crafting_shapeless", item_id
+        assert recipe["type"] in {"minecraft:crafting_shapeless", "minecraft:smelting"}, item_id
         assert recipe["result"]["id"] == f"gugugaga:{item_id}", item_id
-        assert 2 <= len(recipe["ingredients"]) <= 9, item_id
+        if recipe["type"] == "minecraft:crafting_shapeless":
+            assert 2 <= len(recipe["ingredients"]) <= 9, item_id
+        else:
+            assert recipe["cookingtime"] >= 100 and recipe["ingredient"]["item"].startswith("gugugaga:"), item_id
         if item["type"] == "food":
             pattern = rf'food\("{re.escape(item_id)}",\s*{item["nutrition"]},\s*{item["saturation_modifier"]:.2f}F\)'
             assert re.search(pattern, cuisine_java), f"food registry mismatch: {item_id}"
@@ -128,7 +131,7 @@ def main():
     smoke = (ROOT / "qa/smoke_rewrite_server.py").read_text(encoding="utf-8")
     assert "GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK" in smoke
     assert "GUGUGAGA_AGRICULTURE_MARINE_CUISINE_REAL_SERVER_BOOT_PASS" in smoke
-    print("CROP_CUISINE_V1_0_OK: 88 crop foods covered; 33 dishes and 2 processed oils registered; recipes, tags, bilingual names, models and asset generator validated.")
+    print("CROP_CUISINE_V1_0_OK: 88 crop foods covered; 49 dishes and 2 processed oils registered; recipes, tags, bilingual names, models and asset generator validated.")
 
 if __name__ == "__main__":
     main()

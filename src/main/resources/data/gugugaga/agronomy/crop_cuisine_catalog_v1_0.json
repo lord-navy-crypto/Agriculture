@@ -522,6 +522,246 @@
         "shadow": "#6E3F24",
         "accent": "#F5D69B"
       }
+    },
+    {
+      "id": "tomato_egg_stir_fry",
+      "english_name": "Tomato and Egg Stir-Fry",
+      "chinese_name": "番茄炒蛋",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#C95137",
+        "highlight": "#F2B65C",
+        "shadow": "#703F2B",
+        "accent": "#7A9C49"
+      }
+    },
+    {
+      "id": "basil_tomato_flatbread",
+      "english_name": "Basil Tomato Flatbread",
+      "chinese_name": "罗勒番茄薄饼",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#BD7443",
+        "highlight": "#E4C28D",
+        "shadow": "#6D452D",
+        "accent": "#558844"
+      }
+    },
+    {
+      "id": "pumpkin_rice",
+      "english_name": "Pumpkin Rice",
+      "chinese_name": "南瓜焖饭",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "palette": {
+        "base": "#CD893A",
+        "highlight": "#EDC06F",
+        "shadow": "#76472B",
+        "accent": "#94AC58"
+      }
+    },
+    {
+      "id": "spinach_omelette",
+      "english_name": "Spinach Omelette",
+      "chinese_name": "菠菜煎蛋",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#6C994D",
+        "highlight": "#E4CB78",
+        "shadow": "#3F5436",
+        "accent": "#D69B4F"
+      }
+    },
+    {
+      "id": "oat_berry_porridge",
+      "english_name": "Oat and Berry Porridge",
+      "chinese_name": "燕麦浆果粥",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#BD9865",
+        "highlight": "#E8D3A4",
+        "shadow": "#65513C",
+        "accent": "#AD5372"
+      }
+    },
+    {
+      "id": "chili_bean_chili",
+      "english_name": "Spicy Bean Chili",
+      "chinese_name": "辣豆炖菜",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "palette": {
+        "base": "#963C35",
+        "highlight": "#D57E45",
+        "shadow": "#4C3029",
+        "accent": "#E0A95A"
+      }
+    },
+    {
+      "id": "sesame_noodles",
+      "english_name": "Sesame Noodles",
+      "chinese_name": "芝麻拌面",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "palette": {
+        "base": "#AE8850",
+        "highlight": "#E2C88B",
+        "shadow": "#604B30",
+        "accent": "#B76543"
+      }
+    },
+    {
+      "id": "garlic_roasted_potatoes",
+      "english_name": "Garlic Herb Potatoes",
+      "chinese_name": "蒜香香草土豆",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#B98445",
+        "highlight": "#EDC579",
+        "shadow": "#66503A",
+        "accent": "#69904B"
+      }
+    },
+    {
+      "id": "beetroot_soup",
+      "english_name": "Beetroot and Leek Soup",
+      "chinese_name": "甜菜根韭葱汤",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#913C56",
+        "highlight": "#D47A85",
+        "shadow": "#4F2D3D",
+        "accent": "#8FAA63"
+      }
+    },
+    {
+      "id": "seaweed_mushroom_soup",
+      "english_name": "Seaweed and Mushroom Soup",
+      "chinese_name": "海带菌菇汤",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#637C4A",
+        "highlight": "#ABB77A",
+        "shadow": "#384C38",
+        "accent": "#D8C398"
+      }
+    },
+    {
+      "id": "fava_bean_soup",
+      "english_name": "Fava Bean Soup",
+      "chinese_name": "蚕豆汤",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#8FA457",
+        "highlight": "#D4C783",
+        "shadow": "#4E5C34",
+        "accent": "#AF8952"
+      }
+    },
+    {
+      "id": "chayote_stir_fry",
+      "english_name": "Ginger Chayote Stir-Fry",
+      "chinese_name": "姜香佛手瓜",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#78A64C",
+        "highlight": "#C6DB83",
+        "shadow": "#42613B",
+        "accent": "#CEA45B"
+      }
+    },
+    {
+      "id": "honey_berry_toast",
+      "english_name": "Honey Berry Toast",
+      "chinese_name": "蜂蜜浆果吐司",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "palette": {
+        "base": "#AA6A49",
+        "highlight": "#E4C58C",
+        "shadow": "#623F34",
+        "accent": "#BB6180"
+      }
+    },
+    {
+      "id": "soybean_patties",
+      "english_name": "Soybean Patties",
+      "chinese_name": "黄豆饼",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "palette": {
+        "base": "#A9934A",
+        "highlight": "#DDC885",
+        "shadow": "#5C512F",
+        "accent": "#78945C"
+      }
+    },
+    {
+      "id": "roasted_chickpeas",
+      "english_name": "Roasted Chickpeas",
+      "chinese_name": "烤鹰嘴豆",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "palette": {
+        "base": "#AC753F",
+        "highlight": "#DBA962",
+        "shadow": "#5D432D",
+        "accent": "#E3C98B"
+      }
+    },
+    {
+      "id": "baked_sweet_corn",
+      "english_name": "Baked Sweet Corn",
+      "chinese_name": "烤甜玉米",
+      "type": "food",
+      "group": "crop_cuisine",
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "palette": {
+        "base": "#CA972F",
+        "highlight": "#F3D06A",
+        "shadow": "#7A5529",
+        "accent": "#EABA5A"
+      }
     }
   ]
 }

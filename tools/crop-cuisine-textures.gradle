@@ -15,8 +15,8 @@ tasks.register('generateCropCuisineAssets') {
         root.mkdirs()
         def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/crop_cuisine_catalog_v1_0.json'))
         def items = catalog.items
-        if (items.size() != 35 || items.collect { it.id }.unique().size() != 35) {
-            throw new GradleException('Expected 35 unique crop-cuisine item icons')
+        if (items.size() != 51 || items.collect { it.id }.unique().size() != 51) {
+            throw new GradleException('Expected 51 unique crop-cuisine item icons')
         }
 
         def put = { BufferedImage image, int x, int y, int rgb ->
@@ -52,6 +52,14 @@ tasks.register('generateCropCuisineAssets') {
                 put.call(image, 6, 3, light)
                 put.call(image, 8, 2, accent)
                 put.call(image, 9, 4, light)
+            } else if (id == 'roasted_chickpeas' || id == 'baked_sweet_corn') {
+                rect.call(image, 3, 11, 12, 13, dark)
+                for (int i=0; i<8; i++) {
+                    int x=4 + Math.floorMod(i*3 + signature, 8)
+                    int y=5 + Math.floorMod(i*5 + signature.intdiv(7), 6)
+                    rect.call(image, x, y, x+1, y+1, i%3==0?light:(i%3==1?base:accent))
+                }
+                rect.call(image, 6, 12, 10, 12, light)
             } else if (id == 'berry_pie') {
                 rect.call(image, 2, 12, 13, 14, dark)
                 rect.call(image, 3, 11, 12, 12, light)
@@ -169,7 +177,7 @@ tasks.register('generateCropCuisineAssets') {
         File reportRoot = layout.buildDirectory.dir('reports/agriculture').get().asFile
         reportRoot.mkdirs()
         ImageIO.write(sheet, 'png', new File(reportRoot, 'crop-cuisine-item-contact-sheet.png'))
-        logger.lifecycle('CROP_CUISINE_ASSET_GENERATOR_OK: 35 distinct 16x16 icons and crop-cuisine contact sheet generated.')
+        logger.lifecycle('CROP_CUISINE_ASSET_GENERATOR_OK: 51 distinct 16x16 icons and crop-cuisine contact sheet generated.')
     }
 }
 tasks.named('processResources').configure {

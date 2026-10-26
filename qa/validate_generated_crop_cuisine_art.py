@@ -84,7 +84,7 @@ def main():
     assert len(hashes) == len(ids), "duplicate crop-cuisine icons detected"
     assert sheet.is_file(), "missing crop-cuisine contact sheet"
     width, height, _, visible = read_png(sheet)
-    assert (width, height) == (288, 288), (width, height)
+    assert (width, height) == (288, 432), (width, height)
     assert visible, "empty crop-cuisine contact sheet"
     print(f"CROP_CUISINE_ART_PASS: {len(ids)} unique 16x16 RGBA icons and visual contact sheet verified.")
 

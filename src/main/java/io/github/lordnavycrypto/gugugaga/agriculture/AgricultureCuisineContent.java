@@ -47,6 +47,22 @@ public final class AgricultureCuisineContent {
     public static final DeferredItem<Item> QUINOA_SALAD = food("quinoa_salad", 6, 0.65F);
     public static final DeferredItem<Item> LENTIL_CURRY = food("lentil_curry", 7, 0.75F);
     public static final DeferredItem<Item> SWEET_CORN_FRITTERS = food("sweet_corn_fritters", 6, 0.65F);
+    public static final DeferredItem<Item> TOMATO_EGG_STIR_FRY = food("tomato_egg_stir_fry", 6, 0.65F);
+    public static final DeferredItem<Item> BASIL_TOMATO_FLATBREAD = food("basil_tomato_flatbread", 6, 0.65F);
+    public static final DeferredItem<Item> PUMPKIN_RICE = food("pumpkin_rice", 7, 0.75F);
+    public static final DeferredItem<Item> SPINACH_OMELETTE = food("spinach_omelette", 6, 0.65F);
+    public static final DeferredItem<Item> OAT_BERRY_PORRIDGE = food("oat_berry_porridge", 6, 0.65F);
+    public static final DeferredItem<Item> CHILI_BEAN_CHILI = food("chili_bean_chili", 7, 0.75F);
+    public static final DeferredItem<Item> SESAME_NOODLES = food("sesame_noodles", 7, 0.75F);
+    public static final DeferredItem<Item> GARLIC_ROASTED_POTATOES = food("garlic_roasted_potatoes", 6, 0.65F);
+    public static final DeferredItem<Item> BEETROOT_SOUP = food("beetroot_soup", 6, 0.65F);
+    public static final DeferredItem<Item> SEAWEED_MUSHROOM_SOUP = food("seaweed_mushroom_soup", 6, 0.65F);
+    public static final DeferredItem<Item> FAVA_BEAN_SOUP = food("fava_bean_soup", 6, 0.65F);
+    public static final DeferredItem<Item> CHAYOTE_STIR_FRY = food("chayote_stir_fry", 6, 0.65F);
+    public static final DeferredItem<Item> HONEY_BERRY_TOAST = food("honey_berry_toast", 6, 0.65F);
+    public static final DeferredItem<Item> SOYBEAN_PATTIES = food("soybean_patties", 7, 0.75F);
+    public static final DeferredItem<Item> ROASTED_CHICKPEAS = food("roasted_chickpeas", 5, 0.60F);
+    public static final DeferredItem<Item> BAKED_SWEET_CORN = food("baked_sweet_corn", 5, 0.60F);
     public static final DeferredItem<Item> CANOLA_OIL = material("canola_oil");
     public static final DeferredItem<Item> SAFFLOWER_OIL = material("safflower_oil");
 
@@ -95,6 +111,22 @@ public final class AgricultureCuisineContent {
             event.accept(QUINOA_SALAD.get());
             event.accept(LENTIL_CURRY.get());
             event.accept(SWEET_CORN_FRITTERS.get());
+            event.accept(TOMATO_EGG_STIR_FRY.get());
+            event.accept(BASIL_TOMATO_FLATBREAD.get());
+            event.accept(PUMPKIN_RICE.get());
+            event.accept(SPINACH_OMELETTE.get());
+            event.accept(OAT_BERRY_PORRIDGE.get());
+            event.accept(CHILI_BEAN_CHILI.get());
+            event.accept(SESAME_NOODLES.get());
+            event.accept(GARLIC_ROASTED_POTATOES.get());
+            event.accept(BEETROOT_SOUP.get());
+            event.accept(SEAWEED_MUSHROOM_SOUP.get());
+            event.accept(FAVA_BEAN_SOUP.get());
+            event.accept(CHAYOTE_STIR_FRY.get());
+            event.accept(HONEY_BERRY_TOAST.get());
+            event.accept(SOYBEAN_PATTIES.get());
+            event.accept(ROASTED_CHICKPEAS.get());
+            event.accept(BAKED_SWEET_CORN.get());
         } else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(CANOLA_OIL.get());
             event.accept(SAFFLOWER_OIL.get());
