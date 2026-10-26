@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:parsley"
+    },
+    {
+      "item": "gugugaga:dill"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herb_bread",
+    "count": 1
+  }
+}

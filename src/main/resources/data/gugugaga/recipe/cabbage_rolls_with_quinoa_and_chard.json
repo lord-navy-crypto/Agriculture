@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cabbage"
+    },
+    {
+      "item": "gugugaga:quinoa"
+    },
+    {
+      "item": "gugugaga:swiss_chard"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cabbage_rolls",
+    "count": 1
+  }
+}

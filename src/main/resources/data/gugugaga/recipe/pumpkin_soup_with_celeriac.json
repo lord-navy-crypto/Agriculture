@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:celeriac"
+    },
+    {
+      "item": "gugugaga:pumpkin"
+    },
+    {
+      "item": "gugugaga:garlic"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_soup",
+    "count": 1
+  }
+}
