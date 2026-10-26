@@ -59,14 +59,14 @@ assert "direction == Direction.DOWN && !canSurvive(state, level, pos)" in habita
 assert "isFaceSturdy(level, footing, Direction.UP)" in habitat
 assert "below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)" in habitat
 assert "below.is(Blocks.GRASS_BLOCK)" not in habitat
-assert 'id.equals("tomato_crop") || id.equals("eggplant_crop")' in habitat
+assert 'Set.of("tomato_crop", "eggplant_crop")' in habitat or "BUMBLEBEE_SOLANACEOUS_CROPS" in habitat
 assert "hasChunkAt" in habitat and "level.getEntitiesOfClass" in habitat
 assert "candidate -> candidate.isAlive() && candidate.getType() == expectedType" in habitat
 assert "for (int ring = 0; ring <= 4; ring++)" in habitat
 assert "GENERAL_FORAGE_CROPS.contains(id)" in habitat
 assert "BlockPos.betweenClosed" not in habitat
 assert "new ItemStack" not in habitat and "Items.HONEY_BOTTLE" not in habitat
-assert 'if (id.equals("zucchini_crop") || id.equals("pumpkin_crop")) return true;' in habitat
+assert "SQUASH_FORAGE_CROPS.contains(id)" in habitat
 crop = (java / "agriculture/AgricultureCropBlock.java").read_text("utf8")
 assert 'case "squash_bee" -> seedName.equals("zucchini_seeds")' in crop
 assert 'seedName.equals("tomato_seeds") || seedName.equals("eggplant_seeds")' in crop
