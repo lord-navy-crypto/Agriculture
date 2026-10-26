@@ -36,9 +36,12 @@ def main():
     assert "Blocks.OAK_LOG" in culture_java and "Blocks.STRIPPED_OAK_LOG" in culture_java
     assert "Blocks.BIRCH_LOG" in culture_java and "Blocks.STRIPPED_BIRCH_LOG" in culture_java
     assert "Blocks.SPRUCE_LOG" in culture_java and "Blocks.STRIPPED_SPRUCE_LOG" in culture_java
-    assert "SimpleWaterloggedBlock" in marine_java and "WATERLOGGED" in marine_java
-    assert "Fluids.WATER.getSource(false)" in marine_java
+    assert "SimpleWaterloggedBlock" in marine_java and "BonemealableBlock" in marine_java
+    assert "WATERLOGGED" in marine_java and "Fluids.WATER.getSource(false)" in marine_java
+    assert "isValidBonemealTarget" in marine_java and "isBonemealSuccess" in marine_java
+    assert "performBonemeal" in marine_java and "Math.min(3, state.getValue(AGE)" in marine_java
     assert "randomTick" in marine_java and "useWithoutItem" in marine_java
+    assert "level.setBlock(pos, state.setValue(AGE, 1), 3)" in marine_java
     assert all(substrate in marine_java for substrate in ("Blocks.SAND", "Blocks.GRAVEL", "Blocks.CLAY", "Blocks.MUD"))
     assert "MarineFungiContent.BLOCKS.register(modBus)" in main_java
     for row in items:
@@ -94,6 +97,9 @@ def main():
         item_model = read(f"assets/gugugaga/models/item/{crop_id}.json")
         assert item_model["parent"] == "minecraft:block/cross"
         assert item_model["textures"]["cross"] == f"gugugaga:block/marine_plants/{crop_id}_stage0"
+        compost_entry = compost[f"gugugaga:{crop_id}"]
+        assert compost_entry["chance"] == 0.3 and compost_entry["can_villager_compost"] is False
+        assert f"event.accept({constant}_ITEM.get())" in registry
     seen_recipe_ids, produced = set(), set()
     for row in recipes:
         recipe_id = row["id"]

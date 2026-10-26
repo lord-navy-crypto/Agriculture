@@ -15,8 +15,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -30,7 +32,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 /** Four-stage, waterlogged marine crop harvested by hand and regrown in place. */
-public final class MarinePlantCropBlock extends BushBlock implements SimpleWaterloggedBlock {
+public final class MarinePlantCropBlock extends BushBlock implements SimpleWaterloggedBlock, BonemealableBlock {
     public static final MapCodec<MarinePlantCropBlock> CODEC = simpleCodec(MarinePlantCropBlock::new);
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 3);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -76,6 +78,24 @@ public final class MarinePlantCropBlock extends BushBlock implements SimpleWater
         if (state.getValue(WATERLOGGED) && age < 3 && random.nextInt(4) == 0) {
             level.setBlock(pos, state.setValue(AGE, age + 1), 3);
         }
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return state.getValue(WATERLOGGED)
+                && level.getFluidState(pos).is(Fluids.WATER)
+                && state.getValue(AGE) < 3;
+    }
+
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+        return random.nextFloat() < 0.45F;
+    }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        int nextAge = Math.min(3, state.getValue(AGE) + 1 + random.nextInt(2));
+        level.setBlock(pos, state.setValue(AGE, nextAge), 3);
     }
 
     @Override

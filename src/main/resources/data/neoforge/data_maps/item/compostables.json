@@ -919,6 +919,22 @@
     "gugugaga:truffle_culture": {
       "chance": 0.3,
       "can_villager_compost": false
+    },
+    "gugugaga:sea_lettuce_crop": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:wakame_crop": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:nori_crop": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:dulse_crop": {
+      "chance": 0.3,
+      "can_villager_compost": false
     }
   }
 }
