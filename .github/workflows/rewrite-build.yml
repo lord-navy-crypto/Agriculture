@@ -62,7 +62,7 @@ jobs:
       - name: Validate generated honey bottle sprites
         run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
       - name: Validate generated marine and fungal pixel art
-        run: python3 qa/validate_generated_marine_fungi_art.py build/generated/resources/cropAssets
+        run: python3 qa/validate_generated_marine_fungi_art.py build/generated/resources/marineFungiAssets
       - uses: actions/upload-artifact@v4
         with:
           name: gugu-gaga-agriculture
