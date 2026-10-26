@@ -1,0 +1,358 @@
+{
+  "schema_version": "1.4",
+  "intent": "Broaden existing crop, vanilla, floral-honey, marine and fungal cuisine without creating new items or changing established nutrition values.",
+  "alternates": [
+    {
+      "id": "bread_from_rice",
+      "output": "minecraft:bread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:rice",
+        "gugugaga:rice",
+        "gugugaga:rice"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "bread_from_buckwheat",
+      "output": "minecraft:bread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:buckwheat",
+        "gugugaga:buckwheat",
+        "gugugaga:buckwheat"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "cookies_from_sorghum",
+      "output": "minecraft:cookie",
+      "count": 4,
+      "ingredients": [
+        "gugugaga:sorghum",
+        "minecraft:cocoa_beans",
+        "minecraft:sugar"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "cookies_from_buckwheat",
+      "output": "minecraft:cookie",
+      "count": 4,
+      "ingredients": [
+        "gugugaga:buckwheat",
+        "minecraft:cocoa_beans",
+        "minecraft:sugar"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "pumpkin_pie_with_clover_honey",
+      "output": "minecraft:pumpkin_pie",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:pumpkin",
+        "minecraft:egg",
+        "gugugaga:clover_honey_bottle"
+      ],
+      "group": "vanilla_and_honey"
+    },
+    {
+      "id": "vegetable_stew_with_beetroot",
+      "output": "gugugaga:vegetable_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cabbage",
+        "minecraft:beetroot",
+        "minecraft:carrot"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "vegetable_stew_with_rapini",
+      "output": "gugugaga:vegetable_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:rapini",
+        "minecraft:potato",
+        "minecraft:beetroot"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "garden_salad_with_purslane_beetroot",
+      "output": "gugugaga:garden_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:purslane",
+        "gugugaga:tomato",
+        "minecraft:beetroot"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "garden_salad_with_watercress_apple",
+      "output": "gugugaga:garden_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:watercress",
+        "gugugaga:tomato",
+        "minecraft:apple"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "roasted_root_vegetables_with_beetroot",
+      "output": "gugugaga:roasted_root_vegetables",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:parsnip",
+        "minecraft:beetroot",
+        "gugugaga:canola_oil"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "crop_stir_fry_with_ginger",
+      "output": "gugugaga:crop_stir_fry",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:kale",
+        "gugugaga:ginger",
+        "gugugaga:canola_oil"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "grain_porridge_with_lavender_honey",
+      "output": "gugugaga:grain_porridge",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:oat",
+        "gugugaga:lavender_honey_bottle",
+        "minecraft:milk_bucket"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "rice_vegetable_bowl_with_beetroot",
+      "output": "gugugaga:rice_vegetable_bowl",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:rice",
+        "gugugaga:broccoli",
+        "minecraft:beetroot"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "bean_stew_with_garlic",
+      "output": "gugugaga:bean_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lentil",
+        "gugugaga:garlic",
+        "minecraft:carrot"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "fruit_salad_with_flower_honey",
+      "output": "gugugaga:fruit_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:grape",
+        "gugugaga:strawberry",
+        "gugugaga:clover_honey_bottle"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "seaweed_salad_with_nori",
+      "output": "gugugaga:seaweed_salad",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:sea_lettuce",
+        "gugugaga:nori_sheet",
+        "gugugaga:dulse"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "nori_rice_roll_with_carrot",
+      "output": "gugugaga:nori_rice_roll",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:nori_sheet",
+        "gugugaga:rice",
+        "minecraft:carrot"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "mushroom_medley_with_porcini",
+      "output": "gugugaga:mushroom_medley",
+      "count": 2,
+      "ingredients": [
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:oyster_mushroom",
+        "gugugaga:porcini_mushroom"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "truffle_pasta_with_spinach",
+      "output": "gugugaga:truffle_pasta",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:truffle",
+        "minecraft:wheat",
+        "gugugaga:spinach"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "lion_mane_steak_with_potato",
+      "output": "gugugaga:lion_mane_steak",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:lion_mane_mushroom",
+        "minecraft:potato",
+        "minecraft:wheat"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "seafood_broth_with_wakame",
+      "output": "gugugaga:seafood_broth",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fish_fillet",
+        "gugugaga:wakame",
+        "minecraft:carrot"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "taro_dumplings_with_rice",
+      "output": "gugugaga:taro_dumplings",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:taro",
+        "gugugaga:rice",
+        "minecraft:wheat"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "cassava_flatbread_with_corn",
+      "output": "gugugaga:cassava_flatbread",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cassava",
+        "minecraft:wheat",
+        "gugugaga:corn"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "yam_cakes_with_millet",
+      "output": "gugugaga:yam_cakes",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:yam",
+        "gugugaga:millet",
+        "minecraft:sugar"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "sweet_potato_roast_with_buckwheat_honey",
+      "output": "gugugaga:sweet_potato_roast",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sweet_potato",
+        "gugugaga:buckwheat_honey_bottle",
+        "gugugaga:canola_oil"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "herbal_tea_with_lavender_honey",
+      "output": "gugugaga:herbal_tea",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mint",
+        "gugugaga:lavender_honey_bottle",
+        "minecraft:sugar"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "honey_mustard_dressing_with_sunflower_honey",
+      "output": "gugugaga:honey_mustard_dressing",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mustard",
+        "gugugaga:sunflower_honey_bottle",
+        "minecraft:sugar"
+      ],
+      "group": "floral_honey"
+    },
+    {
+      "id": "roasted_seed_mix_with_pumpkin",
+      "output": "gugugaga:roasted_seed_mix",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sunflower_seed",
+        "gugugaga:sesame",
+        "minecraft:pumpkin_seeds"
+      ],
+      "group": "seeds"
+    },
+    {
+      "id": "honey_berry_toast_with_raspberry",
+      "output": "gugugaga:honey_berry_toast",
+      "count": 1,
+      "ingredients": [
+        "minecraft:bread",
+        "gugugaga:raspberry",
+        "minecraft:honey_bottle"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "barley_vegetable_soup_with_leek",
+      "output": "gugugaga:barley_vegetable_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:barley",
+        "minecraft:carrot",
+        "gugugaga:leek"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "quinoa_salad_with_beetroot",
+      "output": "gugugaga:quinoa_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:quinoa",
+        "gugugaga:tomato",
+        "minecraft:beetroot"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "chickpea_hummus_with_ginger",
+      "output": "gugugaga:chickpea_hummus",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:chickpea",
+        "gugugaga:sesame",
+        "gugugaga:ginger"
+      ],
+      "group": "legumes"
+    }
+  ]
+}

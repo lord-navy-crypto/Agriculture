@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:parsnip"
+    },
+    {
+      "item": "minecraft:beetroot"
+    },
+    {
+      "item": "gugugaga:canola_oil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:roasted_root_vegetables",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:shiitake_mushroom"
+    },
+    {
+      "item": "gugugaga:oyster_mushroom"
+    },
+    {
+      "item": "gugugaga:porcini_mushroom"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_medley",
+    "count": 2
+  }
+}
