@@ -1,0 +1,527 @@
+{
+  "schema_version": "1.0",
+  "design_note": "Crop-cuisine bridge: every registered edible agriculture crop is accepted by the farmer's skillet recipe, while focused dishes highlight grain, legume, root, leafy, fruit, herb, and seed crops. Cotton and flax remain fiber materials rather than food.",
+  "items": [
+    {
+      "id": "garden_salad",
+      "english_name": "Garden Salad",
+      "chinese_name": "田园沙拉",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.5,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#3F8F52",
+        "highlight": "#7BCB6A",
+        "shadow": "#244A34",
+        "accent": "#E2D26D"
+      }
+    },
+    {
+      "id": "vegetable_stew",
+      "english_name": "Farmhouse Vegetable Stew",
+      "chinese_name": "农家蔬菜炖菜",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B86B38",
+        "highlight": "#E8A45A",
+        "shadow": "#613B2B",
+        "accent": "#6E9A4A"
+      }
+    },
+    {
+      "id": "roasted_root_vegetables",
+      "english_name": "Roasted Root Vegetables",
+      "chinese_name": "烤根茎拼盘",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C88645",
+        "highlight": "#F0B968",
+        "shadow": "#6B4331",
+        "accent": "#7D9C4D"
+      }
+    },
+    {
+      "id": "crop_stir_fry",
+      "english_name": "Garden Stir-Fry",
+      "chinese_name": "田园炒时蔬",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#4F8C48",
+        "highlight": "#F0B65A",
+        "shadow": "#3D3B2D",
+        "accent": "#D85845"
+      }
+    },
+    {
+      "id": "grain_porridge",
+      "english_name": "Mixed-Grain Porridge",
+      "chinese_name": "杂粮粥",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C6A46B",
+        "highlight": "#E7D8A4",
+        "shadow": "#6B5038",
+        "accent": "#F5E9C7"
+      }
+    },
+    {
+      "id": "barley_vegetable_soup",
+      "english_name": "Barley Vegetable Soup",
+      "chinese_name": "大麦蔬菜汤",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A96D45",
+        "highlight": "#DDA35D",
+        "shadow": "#563B2D",
+        "accent": "#B4C86A"
+      }
+    },
+    {
+      "id": "rice_vegetable_bowl",
+      "english_name": "Rice and Vegetable Bowl",
+      "chinese_name": "蔬菜盖饭",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C6A05D",
+        "highlight": "#F2E4BC",
+        "shadow": "#604934",
+        "accent": "#66A45A"
+      }
+    },
+    {
+      "id": "bean_stew",
+      "english_name": "Hearty Bean Stew",
+      "chinese_name": "浓香豆类炖菜",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#8D4D35",
+        "highlight": "#C37A46",
+        "shadow": "#4B3028",
+        "accent": "#D3A65C"
+      }
+    },
+    {
+      "id": "stuffed_pepper",
+      "english_name": "Rice-Stuffed Pepper",
+      "chinese_name": "米饭酿甜椒",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#D94B3F",
+        "highlight": "#F08A4F",
+        "shadow": "#4E743A",
+        "accent": "#E6D4A0"
+      }
+    },
+    {
+      "id": "eggplant_curry",
+      "english_name": "Eggplant Curry",
+      "chinese_name": "茄子咖喱",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#80509A",
+        "highlight": "#C78D43",
+        "shadow": "#3D2D49",
+        "accent": "#6C9A4D"
+      }
+    },
+    {
+      "id": "pumpkin_soup",
+      "english_name": "Pumpkin Soup",
+      "chinese_name": "南瓜汤",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#D97B27",
+        "highlight": "#F2B64C",
+        "shadow": "#71412C",
+        "accent": "#E6C67A"
+      }
+    },
+    {
+      "id": "berry_pie",
+      "english_name": "Mixed-Berry Pie",
+      "chinese_name": "混合浆果派",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#7E3E73",
+        "highlight": "#C46B8A",
+        "shadow": "#513329",
+        "accent": "#E7C88A"
+      }
+    },
+    {
+      "id": "fruit_salad",
+      "english_name": "Fresh Fruit Salad",
+      "chinese_name": "鲜果沙拉",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.6,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C85A57",
+        "highlight": "#EAA75B",
+        "shadow": "#75413D",
+        "accent": "#7BB65B"
+      }
+    },
+    {
+      "id": "cornbread",
+      "english_name": "Cornbread",
+      "chinese_name": "玉米面包",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C28A3C",
+        "highlight": "#F0C56D",
+        "shadow": "#68462C",
+        "accent": "#E5A75A"
+      }
+    },
+    {
+      "id": "cabbage_rolls",
+      "english_name": "Cabbage Rolls",
+      "chinese_name": "白菜卷",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#4D8C4B",
+        "highlight": "#9FCB69",
+        "shadow": "#2E5537",
+        "accent": "#D7B66A"
+      }
+    },
+    {
+      "id": "tomato_sauce",
+      "english_name": "Tomato Sauce",
+      "chinese_name": "番茄酱",
+      "type": "food",
+      "nutrition": 4,
+      "saturation_modifier": 0.45,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B94C37",
+        "highlight": "#E8784B",
+        "shadow": "#63352C",
+        "accent": "#E5C16D"
+      }
+    },
+    {
+      "id": "herb_bread",
+      "english_name": "Herb Bread",
+      "chinese_name": "香草面包",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B9864B",
+        "highlight": "#E6C88A",
+        "shadow": "#68452F",
+        "accent": "#5A8D4A"
+      }
+    },
+    {
+      "id": "sweet_potato_roast",
+      "english_name": "Honey-Roasted Sweet Potato",
+      "chinese_name": "蜜烤红薯",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#D47C36",
+        "highlight": "#F1B35B",
+        "shadow": "#70442D",
+        "accent": "#E4D27B"
+      }
+    },
+    {
+      "id": "cassava_flatbread",
+      "english_name": "Cassava Flatbread",
+      "chinese_name": "木薯薄饼",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#BCA071",
+        "highlight": "#E6D7B4",
+        "shadow": "#756044",
+        "accent": "#9C8B5B"
+      }
+    },
+    {
+      "id": "taro_dumplings",
+      "english_name": "Taro Dumplings",
+      "chinese_name": "芋头团子",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#9B78A8",
+        "highlight": "#D6B7D9",
+        "shadow": "#584361",
+        "accent": "#E9D9B6"
+      }
+    },
+    {
+      "id": "yam_cakes",
+      "english_name": "Yam Cakes",
+      "chinese_name": "山药糕",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A56B50",
+        "highlight": "#DFA76A",
+        "shadow": "#573B31",
+        "accent": "#E8C98C"
+      }
+    },
+    {
+      "id": "chickpea_hummus",
+      "english_name": "Chickpea Hummus",
+      "chinese_name": "鹰嘴豆泥",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C49B54",
+        "highlight": "#F0D58B",
+        "shadow": "#6E5230",
+        "accent": "#78934D"
+      }
+    },
+    {
+      "id": "peanut_sauce",
+      "english_name": "Peanut Sauce",
+      "chinese_name": "花生酱汁",
+      "type": "food",
+      "nutrition": 4,
+      "saturation_modifier": 0.45,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#9C5D35",
+        "highlight": "#D49A56",
+        "shadow": "#4D3427",
+        "accent": "#E5C77B"
+      }
+    },
+    {
+      "id": "roasted_seed_mix",
+      "english_name": "Roasted Seed Mix",
+      "chinese_name": "烘烤种子拼盘",
+      "type": "food",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#9A7643",
+        "highlight": "#D2B16A",
+        "shadow": "#51402A",
+        "accent": "#E7D79A"
+      }
+    },
+    {
+      "id": "herbal_tea",
+      "english_name": "Garden Herbal Tea",
+      "chinese_name": "田园花草茶",
+      "type": "food",
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#8D9C5A",
+        "highlight": "#C6D58A",
+        "shadow": "#46513A",
+        "accent": "#E8C96A"
+      }
+    },
+    {
+      "id": "tea_cup",
+      "english_name": "Honey-Sweetened Tea",
+      "chinese_name": "蜂蜜茶",
+      "type": "food",
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#8C5A37",
+        "highlight": "#C58A50",
+        "shadow": "#4B3025",
+        "accent": "#E8D2A1"
+      }
+    },
+    {
+      "id": "coffee_cup",
+      "english_name": "Farmhouse Coffee",
+      "chinese_name": "农家牛奶咖啡",
+      "type": "food",
+      "nutrition": 4,
+      "saturation_modifier": 0.45,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#4A3028",
+        "highlight": "#8B5A3D",
+        "shadow": "#2A211D",
+        "accent": "#D7B58A"
+      }
+    },
+    {
+      "id": "honey_mustard_dressing",
+      "english_name": "Honey Mustard Dressing",
+      "chinese_name": "蜂蜜芥末酱",
+      "type": "food",
+      "nutrition": 3,
+      "saturation_modifier": 0.35,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#C7A52D",
+        "highlight": "#F2D86B",
+        "shadow": "#6B5420",
+        "accent": "#B97B3E"
+      }
+    },
+    {
+      "id": "farmers_skillet",
+      "english_name": "Farmer's Skillet",
+      "chinese_name": "农夫铁锅杂烩",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#6F8443",
+        "highlight": "#D39A4D",
+        "shadow": "#3F392A",
+        "accent": "#D85E42"
+      }
+    },
+    {
+      "id": "buckwheat_pancakes",
+      "english_name": "Buckwheat Pancakes",
+      "chinese_name": "荞麦煎饼",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B88C53",
+        "highlight": "#E8C98C",
+        "shadow": "#6B4B30",
+        "accent": "#9A6B3B"
+      }
+    },
+    {
+      "id": "quinoa_salad",
+      "english_name": "Quinoa Salad",
+      "chinese_name": "藜麦沙拉",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#A88A43",
+        "highlight": "#E0C96B",
+        "shadow": "#55462D",
+        "accent": "#6FA35A"
+      }
+    },
+    {
+      "id": "lentil_curry",
+      "english_name": "Lentil Curry",
+      "chinese_name": "扁豆咖喱",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#B56C39",
+        "highlight": "#E2A14F",
+        "shadow": "#603C2A",
+        "accent": "#7FA24E"
+      }
+    },
+    {
+      "id": "sweet_corn_fritters",
+      "english_name": "Sweet-Corn Fritters",
+      "chinese_name": "甜玉米饼",
+      "type": "food",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "group": "crop_cuisine",
+      "palette": {
+        "base": "#D49B3C",
+        "highlight": "#F2D16A",
+        "shadow": "#72502B",
+        "accent": "#6B9A42"
+      }
+    },
+    {
+      "id": "canola_oil",
+      "english_name": "Canola Oil",
+      "chinese_name": "菜籽油",
+      "type": "material",
+      "group": "cooking_oil",
+      "palette": {
+        "base": "#C89D2D",
+        "highlight": "#F2D36A",
+        "shadow": "#70521D",
+        "accent": "#FFF1B4"
+      }
+    },
+    {
+      "id": "safflower_oil",
+      "english_name": "Safflower Oil",
+      "chinese_name": "红花籽油",
+      "type": "material",
+      "group": "cooking_oil",
+      "palette": {
+        "base": "#C57A32",
+        "highlight": "#E6A54E",
+        "shadow": "#6E3F24",
+        "accent": "#F5D69B"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "gugugaga:tomato",
+    "gugugaga:cucumber",
+    "gugugaga:bell_pepper",
+    "gugugaga:eggplant",
+    "gugugaga:zucchini",
+    "gugugaga:artichoke",
+    "gugugaga:asparagus",
+    "gugugaga:pumpkin",
+    "gugugaga:pineapple",
+    "gugugaga:chayote",
+    "gugugaga:grape",
+    "gugugaga:melon",
+    "gugugaga:watermelon",
+    "gugugaga:okra",
+    "gugugaga:chili_pepper",
+    "minecraft:apple",
+    "minecraft:melon_slice"
+  ]
+}

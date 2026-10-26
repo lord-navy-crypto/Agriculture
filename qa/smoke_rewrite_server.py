@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOG = ROOT / "build/agriculture-server-boot.log"
 INIT = "GUGUGAGA_AGRICULTURE_RUNTIME_INIT_OK"
 MARINE_INIT = "GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK"
+CUISINE_INIT = "GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK"
 READY = re.compile(r"Done \([0-9.,]+s\)! For help, type", re.I)
 LIMIT = int(os.environ.get("GUGUGAGA_SERVER_BOOT_TIMEOUT", "420"))
 
@@ -30,8 +31,8 @@ def run():
             while time.monotonic() < deadline:
                 time.sleep(2)
                 current = LOG.read_text(encoding="utf-8", errors="replace")
-                if INIT in current and MARINE_INIT in current and READY.search(current):
-                    print("GUGUGAGA_AGRICULTURE_AND_MARINE_REAL_SERVER_BOOT_PASS", flush=True)
+                if INIT in current and MARINE_INIT in current and CUISINE_INIT in current and READY.search(current):
+                    print("GUGUGAGA_AGRICULTURE_MARINE_CUISINE_REAL_SERVER_BOOT_PASS", flush=True)
                     return 0
                 if process.poll() is not None:
                     print("FAIL: server exited before ready", flush=True)

@@ -42,6 +42,7 @@ jobs:
           python3 qa/validate_agriculture_v2_0.py
           python3 qa/validate_agriculture_v2_1.py
           python3 qa/validate_marine_fungi_v1_0.py
+          python3 qa/validate_crop_cuisine_v1_0.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
 
@@ -63,6 +64,8 @@ jobs:
         run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
       - name: Validate generated marine and fungal pixel art
         run: python3 qa/validate_generated_marine_fungi_art.py build/generated/resources/marineFungiAssets
+      - name: Validate generated crop-cuisine pixel art
+        run: python3 qa/validate_generated_crop_cuisine_art.py build/generated/resources/cropCuisineAssets build/reports/agriculture/crop-cuisine-item-contact-sheet.png
       - uses: actions/upload-artifact@v4
         with:
           name: gugu-gaga-agriculture

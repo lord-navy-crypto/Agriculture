@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "gugugaga:corn",
+    "gugugaga:rice",
+    "gugugaga:barley",
+    "gugugaga:oat",
+    "gugugaga:rye",
+    "gugugaga:sorghum",
+    "gugugaga:sunflower_seed",
+    "gugugaga:millet",
+    "gugugaga:buckwheat",
+    "gugugaga:quinoa",
+    "gugugaga:amaranth",
+    "gugugaga:sweet_corn",
+    "gugugaga:teff",
+    "minecraft:wheat"
+  ]
+}
