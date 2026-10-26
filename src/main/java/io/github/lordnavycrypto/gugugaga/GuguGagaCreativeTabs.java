@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
@@ -21,8 +22,7 @@ public final class GuguGagaCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GuguGagaMod.MOD_ID);
 
-}
-    public static final net.neoforged.neoforge.registries.DeferredHolder<CreativeModeTab, CreativeModeTab> AGRICULTURE =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> AGRICULTURE =
             TABS.register("agriculture", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.gugugaga.agriculture"))
                     .icon(() -> new ItemStack(AgricultureContent.CORN_SEEDS.get()))
@@ -30,7 +30,7 @@ public final class GuguGagaCreativeTabs {
                             AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                     .build());
 
-    public static final net.neoforged.neoforge.registries.DeferredHolder<CreativeModeTab, CreativeModeTab> BEEKEEPING =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BEEKEEPING =
             TABS.register("beekeeping", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.gugugaga.beekeeping"))
                     .icon(() -> new ItemStack(BeeContent.CLOVER_HONEY_BOTTLE.get()))
@@ -38,7 +38,7 @@ public final class GuguGagaCreativeTabs {
                             BeeContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                     .build());
 
-    public static final net.neoforged.neoforge.registries.DeferredHolder<CreativeModeTab, CreativeModeTab> CUISINE =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CUISINE =
             TABS.register("cuisine", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.gugugaga.cuisine"))
                     .icon(() -> new ItemStack(AgricultureCuisineContent.GRAIN_PORRIDGE.get()))
@@ -46,7 +46,7 @@ public final class GuguGagaCreativeTabs {
                             AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
                     .build());
 
-    public static final net.neoforged.neoforge.registries.DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =
             TABS.register("marine_fungi", () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup.gugugaga.marine_fungi"))
                     .icon(() -> new ItemStack(MarineFungiContent.SEA_LETTUCE.get()))
