@@ -48,7 +48,7 @@ def main():
         assert row["source_urls"] and all(url.startswith("https://") for url in row["source_urls"])
         assert f'crop("{crop}_crop", "{crop}_seeds", AgricultureCropBlock.PollinationGroup.{row["pollination_gameplay"]})' in registry
         assert f'"{crop}_seeds"' in climate
-        assert f'event.accept({crop.upper()}_SEEDS.get())' in registry and f'event.accept({crop.upper()}.get())' in registry
+        assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         for item in (crop, crop + "_seeds"):
             assert f"item.gugugaga.{item}" in en and f"item.gugugaga.{item}" in zh
             assert f"gugugaga:{item}" in compost
