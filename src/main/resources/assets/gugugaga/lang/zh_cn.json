@@ -465,5 +465,13 @@
   "block.gugugaga.lion_mane_culture": "猴头菇菌床",
   "item.gugugaga.lion_mane_culture": "猴头菇菌床",
   "block.gugugaga.truffle_culture": "松露菌床",
-  "item.gugugaga.truffle_culture": "松露菌床"
+  "item.gugugaga.truffle_culture": "松露菌床",
+  "block.gugugaga.sea_lettuce_crop": "海莴苣藻苗床",
+  "item.gugugaga.sea_lettuce_crop": "海莴苣藻苗床",
+  "block.gugugaga.wakame_crop": "裙带菜苗床",
+  "item.gugugaga.wakame_crop": "裙带菜苗床",
+  "block.gugugaga.nori_crop": "紫菜苗床",
+  "item.gugugaga.nori_crop": "紫菜苗床",
+  "block.gugugaga.dulse_crop": "掌状红皮藻苗床",
+  "item.gugugaga.dulse_crop": "掌状红皮藻苗床"
 }

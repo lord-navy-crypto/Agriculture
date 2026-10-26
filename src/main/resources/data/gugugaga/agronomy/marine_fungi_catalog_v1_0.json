@@ -712,9 +712,135 @@
         "minecraft:brown_mushroom",
         "minecraft:wheat"
       ]
+    },
+    {
+      "id": "sea_lettuce_crop",
+      "output_item": "sea_lettuce_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:seagrass",
+        "minecraft:kelp",
+        "minecraft:sand"
+      ]
+    },
+    {
+      "id": "wakame_crop",
+      "output_item": "wakame_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:dried_kelp",
+        "minecraft:sand"
+      ]
+    },
+    {
+      "id": "nori_crop",
+      "output_item": "nori_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:dried_kelp",
+        "minecraft:paper",
+        "minecraft:clay_ball"
+      ]
+    },
+    {
+      "id": "dulse_crop",
+      "output_item": "dulse_crop",
+      "count": 1,
+      "ingredients": [
+        "minecraft:kelp",
+        "minecraft:red_dye",
+        "minecraft:gravel"
+      ]
     }
   ],
   "item_count": 24,
   "culture_count": 6,
-  "recipe_count": 25
+  "recipe_count": 29,
+  "marine_crops": [
+    {
+      "id": "sea_lettuce_crop",
+      "english_name": "Sea Lettuce Bed",
+      "chinese_name": "海莴苣藻苗床",
+      "harvest_item": "sea_lettuce",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "sea_lettuce_crop",
+      "palette": {
+        "base": "#3C9C6B",
+        "highlight": "#73C995",
+        "shadow": "#205D4C",
+        "accent": "#D2E5A6"
+      }
+    },
+    {
+      "id": "wakame_crop",
+      "english_name": "Wakame Bed",
+      "chinese_name": "裙带菜苗床",
+      "harvest_item": "wakame",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "wakame_crop",
+      "palette": {
+        "base": "#4E7653",
+        "highlight": "#8FA76A",
+        "shadow": "#293F38",
+        "accent": "#D3B85D"
+      }
+    },
+    {
+      "id": "nori_crop",
+      "english_name": "Nori Bed",
+      "chinese_name": "紫菜苗床",
+      "harvest_item": "nori_sheet",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "nori_crop",
+      "palette": {
+        "base": "#234C3A",
+        "highlight": "#3F7753",
+        "shadow": "#142C26",
+        "accent": "#9CB56A"
+      }
+    },
+    {
+      "id": "dulse_crop",
+      "english_name": "Dulse Bed",
+      "chinese_name": "掌状红皮藻苗床",
+      "harvest_item": "dulse",
+      "growth_stages": 4,
+      "substrates": [
+        "sand",
+        "gravel",
+        "clay",
+        "mud",
+        "dirt"
+      ],
+      "recipe_id": "dulse_crop",
+      "palette": {
+        "base": "#9A3F63",
+        "highlight": "#D36D84",
+        "shadow": "#51273F",
+        "accent": "#F1B4A6"
+      }
+    }
+  ]
 }

@@ -33,6 +33,15 @@ public final class MarineFungiContent {
     public static final DeferredItem<Item> SEAFOOD_RICE_BOWL = food("seafood_rice_bowl", 8, 0.85F);
     public static final DeferredItem<Item> GRILLED_FISH_SKEWER = food("grilled_fish_skewer", 7, 0.75F);
 
+    public static final DeferredBlock<MarinePlantCropBlock> SEA_LETTUCE_CROP = marineCrop("sea_lettuce_crop", "sea_lettuce");
+    public static final DeferredBlock<MarinePlantCropBlock> WAKAME_CROP = marineCrop("wakame_crop", "wakame");
+    public static final DeferredBlock<MarinePlantCropBlock> NORI_CROP = marineCrop("nori_crop", "nori_sheet");
+    public static final DeferredBlock<MarinePlantCropBlock> DULSE_CROP = marineCrop("dulse_crop", "dulse");
+    public static final DeferredItem<BlockItem> SEA_LETTUCE_CROP_ITEM = marineCropItem("sea_lettuce_crop", SEA_LETTUCE_CROP);
+    public static final DeferredItem<BlockItem> WAKAME_CROP_ITEM = marineCropItem("wakame_crop", WAKAME_CROP);
+    public static final DeferredItem<BlockItem> NORI_CROP_ITEM = marineCropItem("nori_crop", NORI_CROP);
+    public static final DeferredItem<BlockItem> DULSE_CROP_ITEM = marineCropItem("dulse_crop", DULSE_CROP);
+
     public static final DeferredItem<Item> MUSHROOM_SPORES = ingredient("mushroom_spores");
     public static final DeferredItem<Item> SHIITAKE_MUSHROOM = food("shiitake_mushroom", 3, 0.35F);
     public static final DeferredItem<Item> OYSTER_MUSHROOM = food("oyster_mushroom", 2, 0.30F);
@@ -70,6 +79,17 @@ public final class MarineFungiContent {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
+    private static DeferredBlock<MarinePlantCropBlock> marineCrop(String name, String harvestItemName) {
+        return BLOCKS.register(name, () -> new MarinePlantCropBlock(
+                BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
+                        .noCollission().randomTicks().instabreak().sound(SoundType.CROP),
+                harvestItemName));
+    }
+
+    private static DeferredItem<BlockItem> marineCropItem(String name, DeferredBlock<? extends Block> block) {
+        return ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+    }
+
     private static DeferredBlock<FungalCultureBlock> culture(String name) {
         return BLOCKS.register(name, () -> new FungalCultureBlock(
                 BlockBehaviour.Properties.of().mapColor(MapColor.PLANT)
@@ -84,6 +104,10 @@ public final class MarineFungiContent {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(KELP_FLAKES.get());
             event.accept(MUSHROOM_SPORES.get());
+            event.accept(SEA_LETTUCE_CROP_ITEM.get());
+            event.accept(WAKAME_CROP_ITEM.get());
+            event.accept(NORI_CROP_ITEM.get());
+            event.accept(DULSE_CROP_ITEM.get());
             event.accept(SHIITAKE_CULTURE_ITEM.get());
             event.accept(OYSTER_MUSHROOM_CULTURE_ITEM.get());
             event.accept(ENOKI_CULTURE_ITEM.get());
