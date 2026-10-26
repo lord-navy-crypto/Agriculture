@@ -19,6 +19,8 @@ def main():
     assert len(baseline["crops"])+len(old["crops"])+len(extra["crops"])==56
     reg=(SRC/"AgricultureContent.java").read_text("utf8")
     climate=(SRC/"CropClimate.java").read_text("utf8")
+    tabs=(ROOT/"src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
+    mod=(ROOT/"src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaMod.java").read_text("utf8")
     crop=(SRC/"AgricultureCropBlock.java").read_text("utf8")
     tabs=(SRC.parent/"GuguGagaCreativeTabs.java").read_text("utf8")
     assert "AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in tabs
