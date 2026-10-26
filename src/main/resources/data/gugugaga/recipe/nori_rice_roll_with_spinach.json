@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:nori_sheet"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "gugugaga:spinach"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:nori_rice_roll",
+    "count": 2
+  }
+}

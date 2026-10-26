@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:truffle"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "gugugaga:basil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:truffle_pasta",
+    "count": 1
+  }
+}

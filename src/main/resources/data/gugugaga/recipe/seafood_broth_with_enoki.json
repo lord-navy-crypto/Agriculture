@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fish_fillet"
+    },
+    {
+      "item": "gugugaga:kelp_flakes"
+    },
+    {
+      "item": "gugugaga:enoki_mushroom"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seafood_broth",
+    "count": 1
+  }
+}
