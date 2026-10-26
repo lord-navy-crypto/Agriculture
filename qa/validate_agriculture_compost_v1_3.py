@@ -26,6 +26,10 @@ def main():
         item_id=f"gugugaga:{row['id']}"
         expected.add(item_id)
         expected_chance[item_id]=0.30
+    for row in catalog.get("marine_crops", []):
+        item_id=f"gugugaga:{row['id']}"
+        expected.add(item_id)
+        expected_chance[item_id]=0.30
     assert set(records)==expected,(len(records),len(expected),sorted(set(records)-expected),sorted(expected-set(records)))
     for item_id, obj in records.items():
         assert set(obj)=={"chance","can_villager_compost"},item_id
