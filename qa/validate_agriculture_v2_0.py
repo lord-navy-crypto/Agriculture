@@ -79,7 +79,6 @@ def main():
     assert "honey_sources_v1_1.json" in generator
     assert "SOURCE_INDEX.get(cropResource.toString())" in nectar_java
     assert "SOURCE_INDEX.get(identifier)" in nectar_java
-    assert not re.search(r'"[a-z0-9_]+_crop"', source_block)
     assert "bee -> bee.isAlive() && bee.hasNectar()" in crop_java
     assert "List<ItemStack> drops = super.getDrops(state, builder);" in crop_java
     assert "new ArrayList<>(super.getDrops(state, builder))" not in crop_java
@@ -95,6 +94,7 @@ def main():
     rows = {row["item"]: row for row in honey["honey_variants"]}
     source_block = nectar_java.split("private static final String[] SOURCES = {", 1)[1].split("};", 1)[0]
     routes = set(re.findall(r'"([^"]+)"', source_block))
+    assert not re.search(r'"[a-z0-9_]+_crop"', source_block)
     assert len(routes) == 45
     for crop, item in HONEY_ITEMS.items():
         row = rows[item]
