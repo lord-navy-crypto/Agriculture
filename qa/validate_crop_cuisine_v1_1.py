@@ -24,7 +24,7 @@ def main():
         item=catalog_by_id[id]
         assert item["type"]=="food"
         assert f'food("{id}",' in java
-        assert f"event.accept({id.upper()}.get())" in java
+        assert "AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()))" in (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/GuguGagaCreativeTabs.java").read_text("utf8")
         assert en[f"item.gugugaga.{id}"] and zh[f"item.gugugaga.{id}"]
         model=read(f"assets/gugugaga/models/item/{id}.json")
         assert model["textures"]["layer0"]==f"gugugaga:item/crop_cuisine/{id}"
