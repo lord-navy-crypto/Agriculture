@@ -33,7 +33,7 @@ def main():
     assert "GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK" in main_java
     smoke = (ROOT / "qa/smoke_rewrite_server.py").read_text(encoding="utf-8")
     assert "MARINE_INIT in current" in smoke
-    assert "GUGUGAGA_AGRICULTURE_AND_MARINE_REAL_SERVER_BOOT_PASS" in smoke
+    assert "GUGUGAGA_AGRICULTURE_MARINE_CUISINE_REAL_SERVER_BOOT_PASS" in smoke
     assert "randomTick" in culture_java and "useWithoutItem" in culture_java
     assert "Blocks.MYCELIUM" in culture_java and "Blocks.PODZOL" in culture_java
     assert "Blocks.OAK_LOG" in culture_java and "Blocks.STRIPPED_OAK_LOG" in culture_java
