@@ -97,6 +97,7 @@ def main():
             previous.append((path.stem, recipe["ingredients"]))
 
     seen_targets = set()
+    collisions = []
     for row in rows:
         recipe_id = row["id"]
         assert row["group"] in ALLOWED_GROUPS, recipe_id
@@ -128,7 +129,8 @@ def main():
         for other_id, existing in previous:
             if other_id == recipe_id:
                 continue
-            assert not overlap(existing, ingredients), f"recipe {recipe_id} duplicates the ingredient pattern of {other_id}"
+            if overlap(existing, ingredients):
+                collisions.append(f"{recipe_id} duplicates the ingredient pattern of {other_id}")
 
         dish = row["output"].split(":", 1)[1]
         model = load(RES / f"assets/gugugaga/models/item/{dish}.json")
@@ -136,6 +138,7 @@ def main():
         assert model["textures"]["layer0"] == f"gugugaga:item/crop_cuisine/{dish}", dish
         assert f"item.gugugaga.{dish}" in en and f"item.gugugaga.{dish}" in zh, dish
 
+    assert not collisions, "shapeless recipe collisions:\\n  " + "\\n  ".join(collisions)
     assert seen_targets == crop_foods, f"crop recipe coverage mismatch: missing={sorted(crop_foods-seen_targets)}, extra={sorted(seen_targets-crop_foods)}"
     assert sum(row["group"] == "crop_hybrid_plant_based" for row in rows) == 88
     assert sum(row["group"] == "vanilla_plant_only" for row in rows) == 12
