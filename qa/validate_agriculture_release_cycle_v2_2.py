@@ -77,6 +77,8 @@ def main():
         rel = path.relative_to(tag_root).with_suffix("")
         custom_tags.add("gugugaga:" + str(rel).replace("\\", "/"))
 
+    seed_recipe_signatures = {}
+
     for row in profiles:
         crop = row["crop"]
         seed = crop + "_seeds"
@@ -110,6 +112,22 @@ def main():
             else:
                 raise AssertionError(f"{crop}: malformed seed ingredient {ingredient}")
 
+        if recipe["type"] == "minecraft:crafting_shapeless":
+            normalized = []
+            for ingredient in recipe["ingredients"]:
+                if "item" in ingredient:
+                    normalized.append(("item", ingredient["item"]))
+                else:
+                    normalized.append(("tag", ingredient["tag"]))
+            signature = ("shapeless", tuple(sorted(normalized)))
+        else:
+            normalized_key = tuple(sorted(
+                (symbol, value.get("item", "tag:" + value.get("tag", "")))
+                for symbol, value in recipe.get("key", {}).items()
+            ))
+            signature = ("shaped", tuple(recipe.get("pattern", [])), normalized_key)
+        seed_recipe_signatures.setdefault(signature, []).append(crop)
+
         for item in (crop, seed):
             model = read(RES / f"assets/gugugaga/models/item/{item}.json")
             assert model.get("parent") == "minecraft:item/generated", f"{item}: wrong item model parent"
@@ -140,6 +158,14 @@ def main():
             for condition in produce_entry.get("conditions", [])
         ), f"{block_id}: produce must require maturity"
         assert generator.count(f"case '{crop}':") >= 2, f"{crop}: crop-specific growth/stage art mapping incomplete"
+
+    duplicate_seed_recipes = [
+        {"signature": repr(signature), "crops": crops}
+        for signature, crops in seed_recipe_signatures.items() if len(crops) > 1
+    ]
+    if duplicate_seed_recipes:
+        print("SEED_RECIPE_COLLISIONS: " + json.dumps(duplicate_seed_recipes, ensure_ascii=False, sort_keys=True))
+    assert not duplicate_seed_recipes, "seed recipes must have unique crafting inputs so each crop seed can be crafted deterministically"
 
     # Harvest cycle: every repeat-harvest ID must belong to the 100-crop catalog.
     harvest_sets = {}
