@@ -10,8 +10,9 @@ displayName="${mod_name}"
 displayURL="https://github.com/lord-navy-crypto/Gugu-Gaga-horror"
 authors="Gugu-Gaga Agriculture contributors"
 description='''
-A source-informed Minecraft agriculture expansion with ten plantable crops,
-pollination-aware growth, bee ecotype tags, and a four-hive apiary placement kit.
+A source-informed Minecraft 1.21.1 agriculture expansion with 100 plantable crop lines,
+crop-specific seed recipes and harvest cycles, pollination-aware growth, 50 source-sensitive honey variants,
+plant-based cuisine, marine plants, and fungal foods.
 '''
 
 [[dependencies.${mod_id}]]
