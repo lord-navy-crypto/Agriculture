@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.5",
+  "intent": "Add crop-specific alternate recipes to existing dishes so the broader agriculture catalog has practical, varied uses without adding new item registrations or changing food balance.",
+  "alternates": [
+    {
+      "id": "tomato_egg_stir_fry_with_chives",
+      "output": "gugugaga:tomato_egg_stir_fry",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:tomato",
+        "minecraft:egg",
+        "gugugaga:chives"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "pumpkin_rice_with_fava_bean",
+      "output": "gugugaga:pumpkin_rice",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:pumpkin",
+        "gugugaga:rice",
+        "gugugaga:fava_bean"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "spinach_omelette_with_leek",
+      "output": "gugugaga:spinach_omelette",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:spinach",
+        "minecraft:egg",
+        "gugugaga:leek"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "oat_berry_porridge_with_blackcurrant",
+      "output": "gugugaga:oat_berry_porridge",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:oat",
+        "gugugaga:blackcurrant",
+        "minecraft:milk_bucket"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "chili_bean_chili_with_cowpea",
+      "output": "gugugaga:chili_bean_chili",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cowpea",
+        "gugugaga:chili_pepper",
+        "gugugaga:tomato"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "sesame_noodles_with_cucumber",
+      "output": "gugugaga:sesame_noodles",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:sesame",
+        "minecraft:wheat",
+        "gugugaga:cucumber"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "garlic_roasted_potatoes_with_parsnip",
+      "output": "gugugaga:garlic_roasted_potatoes",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:garlic",
+        "minecraft:potato",
+        "gugugaga:parsnip"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "beetroot_soup_with_jute_mallow",
+      "output": "gugugaga:beetroot_soup",
+      "count": 1,
+      "ingredients": [
+        "minecraft:beetroot",
+        "gugugaga:jute_mallow",
+        "minecraft:carrot"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "seaweed_mushroom_soup_with_kale",
+      "output": "gugugaga:seaweed_mushroom_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:kelp_flakes",
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:kale"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "fava_bean_soup_with_chicory",
+      "output": "gugugaga:fava_bean_soup",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:fava_bean",
+        "gugugaga:chicory",
+        "minecraft:carrot"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "tomato_okra_stew_with_sorghum",
+      "output": "gugugaga:tomato_okra_stew",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:tomato",
+        "gugugaga:okra",
+        "gugugaga:sorghum"
+      ],
+      "group": "vegetables"
+    },
+    {
+      "id": "pineapple_tart_with_grape",
+      "output": "gugugaga:pineapple_tart",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:pineapple",
+        "gugugaga:grape",
+        "minecraft:wheat"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "grape_berry_compote_with_blackcurrant",
+      "output": "gugugaga:grape_berry_compote",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:grape",
+        "gugugaga:blackcurrant",
+        "minecraft:honey_bottle"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "rapini_garlic_saute_with_sesame",
+      "output": "gugugaga:rapini_garlic_saute",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:rapini",
+        "gugugaga:garlic",
+        "gugugaga:sesame"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "root_vegetable_hash_with_jicama",
+      "output": "gugugaga:root_vegetable_hash",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:jicama",
+        "gugugaga:parsnip",
+        "gugugaga:canola_oil"
+      ],
+      "group": "root_crops"
+    },
+    {
+      "id": "millet_fennel_pilaf_with_chickpea",
+      "output": "gugugaga:millet_fennel_pilaf",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:millet",
+        "gugugaga:fennel",
+        "gugugaga:chickpea"
+      ],
+      "group": "grains"
+    },
+    {
+      "id": "mushroom_barley_risotto_with_watercress",
+      "output": "gugugaga:mushroom_barley_risotto",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:barley",
+        "gugugaga:shiitake_mushroom",
+        "gugugaga:watercress"
+      ],
+      "group": "fungal"
+    },
+    {
+      "id": "cucumber_mint_salad_with_grape",
+      "output": "gugugaga:cucumber_mint_salad",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:cucumber",
+        "gugugaga:mint",
+        "gugugaga:grape"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "seaweed_potato_chowder_with_water_spinach",
+      "output": "gugugaga:seaweed_potato_chowder",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:kelp_flakes",
+        "minecraft:potato",
+        "gugugaga:water_spinach"
+      ],
+      "group": "marine"
+    },
+    {
+      "id": "blackcurrant_oat_crumble_with_raspberry",
+      "output": "gugugaga:blackcurrant_oat_crumble",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:blackcurrant",
+        "gugugaga:oat",
+        "gugugaga:raspberry"
+      ],
+      "group": "fruit"
+    },
+    {
+      "id": "mung_bean_congee_with_sweet_potato",
+      "output": "gugugaga:mung_bean_congee",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:mung_bean",
+        "gugugaga:rice",
+        "gugugaga:sweet_potato"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "napa_cabbage_braise_with_water_spinach",
+      "output": "gugugaga:napa_cabbage_braise",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:napa_cabbage",
+        "gugugaga:water_spinach",
+        "gugugaga:garlic"
+      ],
+      "group": "leafy_greens"
+    },
+    {
+      "id": "chickpea_hummus_with_cilantro",
+      "output": "gugugaga:chickpea_hummus",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:chickpea",
+        "gugugaga:sesame",
+        "gugugaga:cilantro"
+      ],
+      "group": "legumes"
+    },
+    {
+      "id": "buckwheat_pancakes_with_blueberry",
+      "output": "gugugaga:buckwheat_pancakes",
+      "count": 1,
+      "ingredients": [
+        "gugugaga:buckwheat",
+        "gugugaga:blueberry",
+        "minecraft:egg"
+      ],
+      "group": "grains"
+    }
+  ]
+}

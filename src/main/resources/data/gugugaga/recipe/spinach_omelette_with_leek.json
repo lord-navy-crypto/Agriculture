@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:spinach"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "gugugaga:leek"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:spinach_omelette",
+    "count": 1
+  }
+}

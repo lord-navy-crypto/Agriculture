@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:grape"
+    },
+    {
+      "item": "gugugaga:blackcurrant"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:grape_berry_compote",
+    "count": 1
+  }
+}

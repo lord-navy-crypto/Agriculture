@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:garlic"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "gugugaga:parsnip"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garlic_roasted_potatoes",
+    "count": 1
+  }
+}
