@@ -41,6 +41,7 @@ jobs:
           python3 qa/validate_agriculture_v1_9.py
           python3 qa/validate_agriculture_v2_0.py
           python3 qa/validate_agriculture_v2_1.py
+          python3 qa/validate_marine_fungi_v1_0.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
 
@@ -60,6 +61,8 @@ jobs:
         run: gradle --no-daemon --stacktrace build
       - name: Validate generated honey bottle sprites
         run: python3 qa/validate_generated_honey_art.py build/generated/resources/cropAssets
+      - name: Validate generated marine and fungal pixel art
+        run: python3 qa/validate_generated_marine_fungi_art.py build/generated/resources/cropAssets
       - uses: actions/upload-artifact@v4
         with:
           name: gugu-gaga-agriculture
