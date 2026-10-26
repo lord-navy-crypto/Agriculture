@@ -35,7 +35,23 @@ tasks.register('generateMarineFungiAssets') {
             for (int y = 2; y < 14; y++) {
                 for (int x = 2; x < 14; x++) {
                     boolean inside = false
-                    if (kind == 'marine_plant') {
+                    if (id == 'nori_sheet') {
+                        inside = x >= 4 && x <= 11 && y >= 3 && y <= 12
+                    } else if (id == 'kelp_flakes') {
+                        inside = ((x == 3 || x == 6 || x == 9 || x == 12) && (y == 4 || y == 8 || y == 12))
+                                || ((x == 4 || x == 8 || x == 11) && (y == 6 || y == 10))
+                    } else if (id == 'grilled_fish_skewer') {
+                        inside = Math.abs((x + y) - 15) <= 1
+                                || (x >= 4 && x <= 6 && y >= 9 && y <= 11)
+                                || (x >= 7 && x <= 9 && y >= 6 && y <= 8)
+                                || (x >= 10 && x <= 12 && y >= 3 && y <= 5)
+                    } else if (id == 'nori_rice_roll') {
+                        inside = (Math.abs(x - 5) <= 1 || Math.abs(x - 8) <= 1 || Math.abs(x - 11) <= 1)
+                                && y >= 5 && y <= 11
+                    } else if (id == 'lion_mane_steak') {
+                        inside = x >= 4 && x <= 11 && y >= 5 && y <= 11
+                                && (y >= 7 || (x >= 6 && x <= 9))
+                    } else if (kind == 'marine_plant') {
                         inside = (x == 7 || x == 8 || (y < 8 && x == 5) || (y < 7 && x == 10)
                                 || (y > 7 && x == 11) || (y > 9 && x == 4))
                     } else if (kind == 'seafood') {
