@@ -70,6 +70,8 @@ jobs:
           gradle-version: '9.2.1'
       - name: Compile and package agriculture mod
         run: gradle --no-daemon --stacktrace build
+      - name: Validate crop item icon polish and review sheets
+        run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Resolve optional Fusion 1.21.1 development dependency
         run: gradle --no-daemon -PenableFusionDev=true dependencies --configuration runtimeClasspath
       - name: Validate optional Fusion pack resources
@@ -95,6 +97,12 @@ jobs:
         with:
           name: agriculture-visual-proof
           path: build/reports/agriculture/*.png
+          if-no-files-found: error
+      - name: Upload crop item visual audit CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: crop-item-icon-audit-v2.5
+          path: build/reports/agriculture/crop-item-icon-audit.csv
           if-no-files-found: error
 
   real-server-boot:
