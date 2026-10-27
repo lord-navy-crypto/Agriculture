@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.7.0-rc.1 — Packaged-art validation hardening
+
+- Added CI that compares the distributable mod JAR and optional Fusion resource pack at individual pixel level for 1,240 crop, fungal, and marine growth-stage atlases.
+- Checks all four 16x16 variants of every atlas for correct mirroring, tone, transparency, and uniqueness; catches mismatched release artifacts without changing visuals or gameplay.
+
 ## v2.7 — Fusion marine and fungal visual variation
 
 - Extended the optional Fusion pack to 24 fungal culture growth textures and 16 marine plant growth textures.
