@@ -2,7 +2,7 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v2.7 release candidate)
+## Current content (v2.7.0-rc.2 single-JAR release candidate)
 
 - **100 plantable crops**, each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
 - Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
@@ -18,13 +18,13 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 
 The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
 
-A separate optional Fusion resource pack adds random texture variations to crop-field growth stages, bee habitats, marine plants, and fungi. Its 1,240 stage-model overrides use the Fusion base loader while preserving the original crop/plant model geometry. The regular mod JAR keeps its vanilla-compatible models. It requires [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 on the client.
+The **single Agriculture JAR** now embeds its entire Fusion visual pack as `resourcepacks/gugugaga_fusion/`, including all 1,240 stage-model overrides. Those models preserve the original crop/plant geometry and textures and are **only activated when compatible Fusion is installed** on the client. Without Fusion, the standard Minecraft models are used.
 
-1. Install the regular Gugu Gaga Agriculture JAR in `mods`.
-2. Optionally install the compatible Fusion mod in the client's `mods` folder.
-3. Optionally put the generated `gugugaga-fusion-visuals-v2.7.zip` in the client's `resourcepacks` folder and enable it.
+1. Install `gugugaga-2.7.0-rc.2.jar` in the client's `mods` folder (and on the server if applicable).
+2. Optional: install compatible [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 in the client's `mods` folder. The bundled graphics automatically activate.
+3. **No extra resource pack ZIP or manual selection is needed.**
 
-The optional Fusion ZIP is generated under `build/distributions/`. Fusion's own mod JAR is never redistributed by this repository.
+The developer build still exports `build/distributions/gugugaga-fusion-visuals-v2.7.zip` for independent pack testing; players do not install it. Fusion itself is never redistributed in our JAR, and remains an optional client-only dependency.
 
 ## Build and validation
 
@@ -35,7 +35,7 @@ gradle --no-daemon --stacktrace build
 python3 qa/validate_release_metadata_v2_7.py build/libs
 ```
 
-GitHub Actions additionally checks agricultural resources, crop/seed visual audits, Fusion model and atlas consistency, and real NeoForge dedicated-server startup. The visual contact sheets are uploaded as CI artifacts.
+GitHub Actions additionally checks agricultural resources, crop/seed visual audits, exact embedded Fusion pack/JAR content, Fusion model and atlas consistency, and real NeoForge dedicated-server startup. The visual contact sheets are uploaded as CI artifacts.
 
 **Development status:** v2.7 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
 
