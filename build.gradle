@@ -53,6 +53,16 @@ apply from: 'tools/crop-cuisine-textures.gradle'
 apply from: 'tools/fusion-visuals.gradle'
 
 
+// The generated Fusion pack is EMBEDDED as a nested built-in resource pack.
+ // It is deliberately NOT overlaid on the root mod resources: the Fusion model
+ // loader must not be read unless the Fusion client mod is installed.
+tasks.named('processResources', ProcessResources).configure {
+    dependsOn tasks.named('generateFusionVisualPack')
+    from(fusionPackRoot) {
+        into 'resourcepacks/gugugaga_fusion'
+    }
+}
+
 // Fusion is an OPTIONAL developer/runtime dependency. The core JAR remains standalone.
 // Use -PenableFusionDev=true for the client development run; the companion resource pack
 // requires Fusion on the client's machine but never on the dedicated server.
