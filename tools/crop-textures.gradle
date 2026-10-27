@@ -2011,7 +2011,7 @@ tasks.register('generateCropAssets') {
             }
         }
         new File(reportRoot, 'crop-item-icon-audit.csv').setText(iconAudit.toString(), 'UTF-8')
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 100 crops; 8 unique stages each; 4 pollen-marked stages per crop; 200 organ-specific item icons; 1200 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
+        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 100 crops; 8 unique stages each; 4 pollen-marked stages per crop; 200 organ-specific item icons; 1200 crop models; crop-stage, produce-icon, seed-icon and paired item contact sheets written; icon coverage audit written.')
     }
 }
 tasks.named('processResources').configure {
