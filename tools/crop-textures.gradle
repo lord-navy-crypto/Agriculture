@@ -1927,20 +1927,27 @@ tasks.register('generateCropAssets') {
                 'Rows are crop IDs in alphabetical order. Columns 1-8 are ages 0-7; columns 9-12 are pollinated ages 4-7. Sprites are enlarged with nearest-neighbor scaling.\\n',
                 'UTF-8')
         def writeItemContactSheet = { boolean seeds ->
-            BufferedImage sheet = new BufferedImage(labelWidth + tile, cropIds.size() * tile, BufferedImage.TYPE_INT_ARGB)
+            int gridColumns = 5
+            int cellWidth = 144
+            int cellHeight = 82
+            int gridRows = (int)Math.ceil(cropIds.size() / (double)gridColumns)
+            BufferedImage sheet = new BufferedImage(gridColumns * cellWidth, gridRows * cellHeight, BufferedImage.TYPE_INT_ARGB)
             Graphics2D sheetGraphics = sheet.createGraphics()
             sheetGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
             sheetGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
             sheetGraphics.setColor(new Color(29, 34, 30, 255))
             sheetGraphics.fillRect(0, 0, sheet.width, sheet.height)
             sheetGraphics.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10))
-            cropIds.eachWithIndex { crop, row ->
-                int y = row * tile
+            cropIds.eachWithIndex { crop, index ->
+                int col = index % gridColumns
+                int row = (int)(index / gridColumns)
+                int x = col * cellWidth
+                int y = row * cellHeight
                 sheetGraphics.setColor(new Color(238, 240, 232, 255))
-                sheetGraphics.drawString(crop.toString(), 4, y + 28)
+                sheetGraphics.drawString(crop.toString(), x + 4, y + 12)
                 String iconName = crop.toString() + (seeds ? '_seeds.png' : '.png')
                 File iconFile = new File(outputRoot, 'assets/gugugaga/textures/item/crops/' + iconName)
-                sheetGraphics.drawImage(ImageIO.read(iconFile), labelWidth, y, tile, tile, null)
+                sheetGraphics.drawImage(ImageIO.read(iconFile), x + 48, y + 18, 48, 48, null)
             }
             sheetGraphics.dispose()
             String sheetName = seeds ? 'seed-icon-contact-sheet.png' : 'produce-icon-contact-sheet.png'
@@ -1948,7 +1955,62 @@ tasks.register('generateCropAssets') {
         }
         writeItemContactSheet.call(false)
         writeItemContactSheet.call(true)
-        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 100 crops; 8 unique stages each; 4 pollen-marked stages per crop; 200 organ-specific item icons; 1200 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
+
+        // Side-by-side produce/seed review makes accidental visual near-duplicates easier to spot.
+        int pairColumns = 5
+        int pairCellWidth = 184
+        int pairCellHeight = 88
+        int pairRows = (int)Math.ceil(cropIds.size() / (double)pairColumns)
+        BufferedImage pairSheet = new BufferedImage(pairColumns * pairCellWidth, pairRows * pairCellHeight, BufferedImage.TYPE_INT_ARGB)
+        Graphics2D pairGraphics = pairSheet.createGraphics()
+        pairGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
+        pairGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
+        pairGraphics.setColor(new Color(29, 34, 30, 255))
+        pairGraphics.fillRect(0, 0, pairSheet.width, pairSheet.height)
+        pairGraphics.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10))
+        cropIds.eachWithIndex { crop, index ->
+            int col = index % pairColumns
+            int row = (int)(index / pairColumns)
+            int x = col * pairCellWidth
+            int y = row * pairCellHeight
+            pairGraphics.setColor(new Color(238, 240, 232, 255))
+            pairGraphics.drawString(crop.toString(), x + 4, y + 12)
+            File produceFile = new File(outputRoot, 'assets/gugugaga/textures/item/crops/' + crop + '.png')
+            File seedFile = new File(outputRoot, 'assets/gugugaga/textures/item/crops/' + crop + '_seeds.png')
+            pairGraphics.drawImage(ImageIO.read(produceFile), x + 28, y + 16, 48, 48, null)
+            pairGraphics.drawImage(ImageIO.read(seedFile), x + 108, y + 16, 48, 48, null)
+            pairGraphics.setColor(new Color(175, 186, 172, 255))
+            pairGraphics.drawString('Produce', x + 32, y + 77)
+            pairGraphics.drawString('Seed', x + 118, y + 77)
+        }
+        pairGraphics.dispose()
+        ImageIO.write(pairSheet, 'png', new File(reportRoot, 'crop-item-pair-contact-sheet.png'))
+
+        // Machine-readable visual audit for every generated produce/seed icon.
+        StringBuilder iconAudit = new StringBuilder('crop,kind,opaque_pixels,min_x,min_y,max_x,max_y,unique_rgb_colors\\n')
+        cropIds.each { crop ->
+            [['produce',crop.toString()+'.png'],['seed',crop.toString()+'_seeds.png']].each { entry ->
+                BufferedImage icon = ImageIO.read(new File(outputRoot, 'assets/gugugaga/textures/item/crops/' + entry[1]))
+                int count = 0, minX = 16, minY = 16, maxX = -1, maxY = -1
+                Set<Integer> colors = [] as Set
+                for (int py=0;py<16;py++) for (int px=0;px<16;px++) {
+                    int argb=icon.getRGB(px,py)
+                    if (((argb >>> 24) & 255) != 0) {
+                        count++
+                        minX=Math.min(minX,px); minY=Math.min(minY,py)
+                        maxX=Math.max(maxX,px); maxY=Math.max(maxY,py)
+                        colors.add(argb & 0x00FFFFFF)
+                    }
+                }
+                if (count < 5 || count > 220 || maxX < minX || maxY < minY) {
+                    throw new GradleException('Crop item icon coverage out of bounds: ' + crop + ' ' + entry[0] + ' pixels=' + count)
+                }
+                iconAudit.append(crop).append(',').append(entry[0]).append(',').append(count).append(',')
+                    .append(minX).append(',').append(minY).append(',').append(maxX).append(',').append(maxY).append(',')
+                    .append(colors.size()).append('\\n')
+            }
+        }
+        new File(reportRoot, 'crop-item-icon-audit.csv').setText(iconAudit.toString(), 'UTF-8')        logger.lifecycle('CROP_ASSET_GENERATOR_OK: 100 crops; 8 unique stages each; 4 pollen-marked stages per crop; 200 organ-specific item icons; 1200 crop models; crop-stage, produce-icon and seed-icon contact sheets written.')
     }
 }
 tasks.named('processResources').configure {
