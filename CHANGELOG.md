@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.7.0-rc.2 — Single-JAR integrated visuals
+
+- Embedded the complete optional Fusion resource pack inside the agriculture mod JAR.
+- Registered the built-in client resource pack automatically and only when Fusion is installed; removed the need to place or enable a separate ZIP.
+- Kept vanilla-compatible base models at the JAR resource root for installations without Fusion and for dedicated servers.
+- Added CI byte-level checks for all embedded resource-pack entries, 1,240 model overrides and 1,248 randomized texture atlas families, plus the existing pixel QA and server startup.
+- Continued shipping the standalone Fusion ZIP only as a developer test artifact. Real Minecraft client rendering acceptance is still required.
+
+
 ## v2.7.0-rc.1 — Optional Fusion stage-model linkage hardening
 
 - Added the missing 1,200 crop and 40 marine/fungal `fusion:base` model overrides to the **optional** companion resource pack.
