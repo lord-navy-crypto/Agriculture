@@ -42,9 +42,11 @@ def main():
         files=set(z.namelist())
         assert 'pack.mcmeta' in files
         assert 'pack.png' in files, 'missing companion pack icon'
-        assert z.read('pack.png')[:8]==b'\\x89PNG\\r\\n\\x1a\\n', 'pack icon is not a PNG'
+        assert z.read('pack.png')[:8]==b'\x89PNG\r\n\x1a\n', 'pack icon is not a PNG'
         for kind in KINDS:
-            assert f'assets/gugugaga/models/block/{kind if kind != "bumblebee" else "bumblebee"}_bee_habitat.json' in files if kind!='bumblebee' else 'assets/gugugaga/models/block/bumblebee_habitat.json' in files
+            habitat = 'bumblebee_habitat' if kind == 'bumblebee' else kind + '_bee_habitat'
+            assert f'assets/gugugaga/models/block/{habitat}.json' in files
+            assert f'assets/gugugaga/models/block/{habitat}_active.json' in files
             for surface in ['side','roof']:
                 assert f'assets/gugugaga/textures/block/fusion/{kind}_{surface}.png.mcmeta' in files
     print('FUSION_VISUAL_PACK_PASS: 8 Fusion models, 8 distinct 32x32 random atlases, correct optional ZIP and fallback-preserving block geometry.')
