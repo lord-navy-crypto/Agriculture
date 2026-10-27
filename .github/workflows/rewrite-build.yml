@@ -96,7 +96,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: agriculture-visual-proof
-          path: build/reports/agriculture/*
+          path: build/reports/agriculture/*.png
+          if-no-files-found: error
+      - name: Upload crop item visual audit CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: crop-item-icon-audit-v2.5
+          path: build/reports/agriculture/crop-item-icon-audit.csv
           if-no-files-found: error
 
   real-server-boot:
