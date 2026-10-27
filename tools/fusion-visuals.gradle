@@ -350,6 +350,16 @@ tasks.register('packageFusionVisualPack', Zip) {
     destinationDirectory.set(layout.buildDirectory.dir('distributions'))
     archiveFileName.set('gugugaga-fusion-visuals-v2.7.zip')
 }
+// Ship the same optional Fusion pack *inside* the primary mod JAR. Because the
+// pack has its own pack.mcmeta under resourcepacks/, the Fusion-only models
+// never override normal mod assets unless NeoForge explicitly mounts this pack.
+// The external ZIP remains available for existing installations/testing.
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateFusionVisualPack')
+    from(fusionPackRoot) {
+        into 'resourcepacks/fusion'
+    }
+}
 tasks.named('assemble').configure {
     dependsOn tasks.named('packageFusionVisualPack')
 }

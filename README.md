@@ -18,13 +18,13 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 
 The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
 
-A separate optional Fusion resource pack adds random texture variations to crop-field growth stages, bee habitats, marine plants, and fungi. Its 1,240 stage-model overrides use the Fusion base loader while preserving the original crop/plant model geometry. The regular mod JAR keeps its vanilla-compatible models. It requires [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 on the client.
+**One downloadable Gugu Gaga JAR includes both standard art and the full enhanced Fusion pack.** Its 1,240 stage-model overrides retain original crop/plant model geometry and are kept under the embedded `resourcepacks/fusion/` directory, separate from the default vanilla-compatible assets.
 
-1. Install the regular Gugu Gaga Agriculture JAR in `mods`.
-2. Optionally install the compatible Fusion mod in the client's `mods` folder.
-3. Optionally put the generated `gugugaga-fusion-visuals-v2.7.zip` in the client's `resourcepacks` folder and enable it.
+1. Install **only the Gugu Gaga Agriculture JAR** in `mods` for all standard visuals and gameplay.
+2. **Optional:** install [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 in the client's `mods` folder. When Fusion is present, the already-bundled enhanced visuals automatically activate. There is no second Agriculture resource pack to install or enable.
+3. Without Fusion, the advanced pack is never registered, so all original vanilla-compatible models and textures are used.
 
-The optional Fusion ZIP is generated under `build/distributions/`. Fusion's own mod JAR is never redistributed by this repository.
+The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated artifact for legacy/manual testing, **not required** for regular installation. Do **not** enable that standalone ZIP at the same time as the automatically enabled built-in pack. Fusion itself is third-party, remains optional and is never redistributed. This is not a claim of completed in-game visual acceptance; see Issue #61.
 
 ## Build and validation
 
