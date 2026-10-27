@@ -72,6 +72,8 @@ jobs:
         run: gradle --no-daemon --stacktrace build
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
+      - name: Validate v2.7 release metadata in packaged mod JAR
+        run: python3 qa/validate_release_metadata_v2_7.py build/libs
       - name: Resolve optional Fusion 1.21.1 development dependency
         run: gradle --no-daemon -PenableFusionDev=true dependencies --configuration runtimeClasspath
       - name: Validate optional Fusion v2.7 crop, marine, fungal and habitat resources
