@@ -1799,6 +1799,42 @@ tasks.register('generateCropAssets') {
             put.call(bottle, 6, 6, glassLight)
             put.call(bottle, 6, 8, honeyLight)
             put.call(bottle, 9, 10, honeyDark)
+            // v2.4: wax-capped glass and botanical source emblem, not just tinted liquid.
+            // The emblem is a visual category plus a stable per-source variation.
+            int wax = rgb.call('#D8B15C')
+            int label = rgb.call('#F1DFC1')
+            int ink = rgb.call('#55402B')
+            for (int x = 6; x <= 9; x++) {
+                put.call(bottle, x, 1, ink)
+                put.call(bottle, x, 2, wax)
+                if (x==6 || x==9) put.call(bottle, x, 3, ink)
+            }
+            for (int y=8;y<=11;y++) for(int x=6;x<=9;x++) {
+                put.call(bottle,x,y,(x==6||x==9||y==8||y==11)?wax:label)
+            }
+            int emblem = Math.floorMod(id.hashCode(), 5)
+            if (id.contains('berry') || id.contains('currant') || id.contains('grape')) {
+                put.call(bottle,7,9,honeyDark)
+                put.call(bottle,8,10,honey)
+                put.call(bottle,8,9,honeyDark)
+            } else if (id.contains('wildflower')) {
+                put.call(bottle,7,9,ink)
+                put.call(bottle,8,9,wax)
+                put.call(bottle,7,10,honey)
+            } else if (id.contains('clover') || id.contains('leaf') ||
+                       id.contains('greens') || id.contains('spinach')) {
+                put.call(bottle,7,9,glassDark)
+                put.call(bottle,8,9,honeyDark)
+                put.call(bottle,7,10,honeyDark)
+            } else {
+                // Small individual sigils allow different blossom types to be spotted.
+                put.call(bottle,7,9,honeyDark)
+                put.call(bottle,8,9,emblem%2==0?honey:glassDark)
+                put.call(bottle,7,10,emblem%3==0?ink:honey)
+                put.call(bottle,8,10,emblem%2==1?ink:honeyDark)
+            }
+            put.call(bottle, 5, 7, glassLight)
+            put.call(bottle, 10, 6, glass)
             String honeyPath = 'assets/gugugaga/textures/item/honey/' + id + '.png'
             savePng.call(honeyPath, bottle)
             honeyTextureHashes.add(digest.digest(new File(outputRoot, honeyPath).bytes).encodeHex().toString())
