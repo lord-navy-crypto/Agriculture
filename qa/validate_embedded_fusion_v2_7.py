@@ -37,9 +37,12 @@ def main():
         assert jar.testzip() is None, "mod jar corrupt"
         assert pack.testzip() is None, "standalone pack corrupt"
         jar_names = set(jar.namelist())
-        names = set(pack.namelist())
+        names = {n for n in pack.namelist() if not n.endswith("/")}
         assert "pack.mcmeta" in names and "pack.png" in names
-        bundled_names = {x[len(PREFIX):] for x in jar_names if x.startswith(PREFIX)}
+        bundled_names = {
+            x[len(PREFIX):] for x in jar_names
+            if x.startswith(PREFIX) and x != PREFIX and not x.endswith("/")
+        }
         assert bundled_names == names, (
             f"Missing/extra embedded pack files: missing={list(names-bundled_names)[:5]}, "
             f"extra={list(bundled_names-names)[:5]}"
