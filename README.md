@@ -1,100 +1,47 @@
-# Gugu-Gaga Agriculture & Apiaries — development branch
+# Gugu Gaga Agriculture & Apiaries
 
-A source-informed Minecraft **1.21.1 / NeoForge 21.1.259 / Java 21** expansion. This remains experimental branch work, not a released mod.
+A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Working content
+## Current content (v2.7 release candidate)
 
-- **96 plantable crops** across grains, legumes, leafy vegetables, roots/tubers, berries, oilseeds and fiber crops.
-- Crop seeds, eight visually distinct growth stages per crop, crop-specific pixel-art sprites, pollination-stage overlays, harvested items, loot tables, seed recipes and bilingual English/Chinese names.
-- **12 wild forage/seed-source plants** distributed across selected vanilla biomes. They are gameplay proxies for wild relatives, not claims that modern crop cultivars grow wild unchanged.
-- **Six custom bee entity IDs**: bumblebee, mason bee, squash bee, leafcutter bee, carpenter bee and mining bee. They have separate spawn registrations and habitat profiles; they still use vanilla Bee AI, model, hive behavior and breeding.
-- Crop-aware pollination marks persist through maturity and provide a bounded harvest-yield bonus. Pollination is checked separately from biome/irrigation growth rolls; meadow/orchard/berry tags remain available for vanilla bees.
-- A **2×2 apiary kit** placing four separate functional vanilla beehives; it does not enlarge a single hive.
-- Biome-based crop-growth suitability using published seed-germination references as relative sensitivity categories. Real measurements are not converted into Minecraft ticks.
-- **Freshwater crop rules:** rice requires nearby freshwater within a wider radius, while taro and watercress use a compact wet-bed check. These checks inspect only loaded chunks and are gameplay proxies, not universal claims about real cultivation systems.
+- **100 plantable crops**, each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
+- Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
+- **100 wild seed sources** that spawn naturally in compatible Overworld biomes.
+- **50 honey varieties** with distinct floral sources and custom bottle graphics.
+- **68 crop-cuisine items** with recipes and tailored, reproducible icons.
+- Marine farming, edible sea plants, and fungal cultures with dedicated textures and growth-stage visuals.
+- Distinct pollinator and beekeeping content, including four placeable bee habitat designs.
+- Four organized Creative Mode tabs: Agriculture, Beekeeping, Cuisine, and Marine & Fungi.
+- English and Chinese item names.
 
-## Build and QA
+## Optional Fusion visual enhancement
 
-Target Java 21, Minecraft 1.21.1 and NeoForge 21.1.259.
+The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
+
+A separate optional Fusion resource pack adds random texture variations to crop-field growth stages, bee habitats, marine plants, and fungi. It requires [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 on the client.
+
+1. Install the regular Gugu Gaga Agriculture JAR in `mods`.
+2. Optionally install the compatible Fusion mod in the client's `mods` folder.
+3. Optionally put the generated `gugugaga-fusion-visuals-v2.7.zip` in the client's `resourcepacks` folder and enable it.
+
+The optional Fusion ZIP is generated under `build/distributions/`. Fusion's own mod JAR is never redistributed by this repository.
+
+## Build and validation
+
+Run with Java 21:
 
 ```sh
 gradle --no-daemon --stacktrace build
-python3 qa/validate_agriculture_assets.py
-python3 qa/validate_agriculture_expansion.py
-python3 qa/validate_agriculture_ecology.py
-python3 qa/validate_bee_biodiversity.py
-python3 qa/validate_agronomic_sources.py
-python3 qa/validate_agriculture_v0_3.py
-python3 qa/validate_rice_paddy.py
-python3 qa/smoke_rewrite_server.py
+python3 qa/validate_release_metadata_v2_7.py build/libs
 ```
 
-GitHub Actions compiles the mod, validates resource structure and starts a dedicated NeoForge server. Passing CI does **not** replace a graphical client test of crop growth, visuals and world generation in fresh chunks.
+GitHub Actions additionally checks agricultural resources, crop/seed visual audits, Fusion model and atlas consistency, and real NeoForge dedicated-server startup. The visual contact sheets are uploaded as CI artifacts.
 
-## Biological and gameplay boundaries
+**Development status:** v2.7 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
 
-- Crop textures are generated deterministically at build time from 96 crop-specific palettes and organ-aware pixel-art silhouettes; all 96 crop seed and produce icons are custom. Wild forage plants still use vanilla placeholder textures, and crop blocks retain Minecraft's standard cross-plane geometry.
-- The bee entities are registered prototypes, not independent species simulations. Solitary nesting for mason, leafcutter, carpenter and mining bees, colony lifecycle for bumblebees, unique art and inherited bee traits remain future work.
-- Soil pH, crop rotation, nutrient depletion, cultivar differences, seasons and a measured pollination-to-fruit-set/yield model are not implemented.
-- The rice rule models irrigated lowland cultivation. IRRI documents both flooded-field practices and water-saving alternate wetting and drying; other systems, including aerobic rice, exist.
+## References
 
-## Research references
-
-- Germination temperature references and limitations: `docs/REAL_AGRICULTURE_DATA_V0_2.md`
-- Crop/biome and bee design: `docs/AGRICULTURE_ECOLOGY_V0_2.md`, `docs/AGRICULTURE_V0_3_BIOMES.md`, `docs/BEE_BIODIVERSITY_V0_2.md`
-- International Rice Research Institute, [Alternate Wetting and Drying](https://ghgmitigation.irri.org/mitigation-technologies/alternate-wetting-and-drying)
-- International Rice Research Institute, [Healthy Soils, Healthy Rice](https://ricetoday.irri.org/healthy-soils-healthy-rice/)
-- NeoForged 1.21.1 biome modifiers: https://docs.neoforged.net/docs/1.21.1/worldgen/biomemodifier/
-- University of Minnesota Extension crop guidance: https://extension.umn.edu/garden-and-home/yard-and-garden/gardening-in-minnesota/planting-the-vegetable-garden
-- Xerces Society, bee nesting resources: https://www.xerces.org/pollinator-conservation/nesting-resources
-
-
-### Beekeeping enhancement v0.6
-
-The honey harvester supports **bottling honey** (one glass bottle, from offhand/inventory) or **honeycomb harvesting** (shears held in the offhand, losing one durability, yields three honeycombs). Both modes require a full vanilla hive and lit unobstructed campfire smoke; the hive's honey level resets afterward. Bee pollination and climate-limited plant growth are evaluated independently. See docs/AGRICULTURE_BEECARE_V0_6.md for biological caveats and sources.
-
-### Agriculture ecology and performance v0.7
-
-Mature fields now skip unnecessary biome/water/pollinator scans. A bee must have recently foraged (the vanilla nectar flag) before it can set a crop's pollination marker. Rice water detection reuses one mutable coordinate, and native-bee habitats distinguish bare-soil squash-bee nesting from managed cavity-nesting habitat. The honey harvester now uses Minecraft's own campfire-smoke check. See docs/AGRICULTURE_BEECARE_V0_6.md for source references and limitations.
-
-
-### v0.9: 44 crop lines and floral-source honey bottles
-
-Eight newly plantable crops (lavender, clover, basil, mint, mustard, canola,
-celery, leek) extend the original 36. New drinkable honey bottles are clover,
-lavender, buckwheat and sunflower; they are classified from predominant nearby
-flowering crops only when harvesting a full smoked native hive. Mixed/uncertain
-forage still yields regular honey. See `docs/AGRICULTURE_CROPS_AND_NECTAR_V0_9.md`.
-
-
-### Agriculture native composting (v1.3)
-All 96 harvested organic crop items and 96 corresponding seeds support vanilla
-composters through NeoForge's item `neoforge:compostables` data map. Seeds have a
-30% level-up chance and harvested biomass a 65% chance; villager auto-composting
-remains disabled to preserve farm/trade balance. Crop IDs and recipes unchanged.
-
-
-### Crop lifecycle and custom textures (v1.4)
-
-All 96 crop lines now have eight distinct growth-stage sprites, custom produce and seed inventory icons, and separate visible pollen-marked variants for reproductive stages. Gradle generates the transparent 16×16 PNG resources and matching crop models from the source catalog during the normal build; the generated assets are packaged in the JAR and require no external art tools. Harvest modes distinguish single-harvest grains, roots, bulbs and seed crops from repeated fruit, leafy, flower-head and side-shoot harvests. See docs/AGRICULTURE_CROP_LIFECYCLE_V1_8.md.
-
-The sprites are custom Minecraft pixel art informed by crop morphology, not photographs or claims that a single cultivar looks identical in every region. Published maturity ranges, cold tolerance and critical watering stages guide relative gameplay categories; they are not converted directly into Minecraft ticks. Client-side visual checks remain necessary after the build.
-
-#### Crop and honey expansion (v1.8 / honey v1.2)
-
-The crop catalog now contains **88 complete crop lines**, each with eight growth ages, custom seed and produce icons, bilingual names, loot, recipes, and validated crop-specific texture mappings. Seven new crops—cassava, taro, yam, teff, watercress, endive, kohlrabi, and rutabaga—have dedicated growth-stage art and climate/wet-bed rules where appropriate.
-
-The honey system now contains **38 distinct floral-honey variants**: 37 specific forage sources and a wildflower blend. The seven new insect-pollinated crop lines also have dedicated blossom honeys with bilingual names, custom 16×16 bottle sprites, item models, and short fantasy effects. Wind/self-pollinated grain crops are excluded from nectar counts; other mature crops participate in mixed-forage balancing. CI checks crop coverage, honey routing, effects, models, and generated texture uniqueness. See `docs/AGRICULTURE_HONEY_CROP_BLOSSOMS_V1_2.md` and `docs/AGRICULTURE_HONEY_FORAGE_COVERAGE_V1_1.md`.
-
-### Crop and honey expansion (v1.9 / honey v1.0)
-The eight v1.9 additions are jicama, adzuki bean, mung bean, cowpea, safflower, chicory, mustard greens and water spinach. Their crop blocks, seeds, harvested items, recipes, loot, bilingual names, climate mappings, organ-aware produce art, dedicated seed art and compost records are wired into the 88-crop catalog. Mustard greens and water spinach use repeat-cut leaf harvest. Floral honey now has 38 variants and 37 recognized forage routes; mixed forage remains a neutral wildflower blend.
-
-## Crop-specific texture precision (v1.5)
-
-The crop-only visual pass gives all 96 crops explicit leaf architectures plus crop-specific seedling and mature details. Produce icon families are derived from each crop profile's `harvested_organ` field; unknown values fail generation. Seed icons use a separate 16-form morphology map, with build-time coverage checks and unique-pixel-hash validation for all 96 produce icons and 96 seed icons. Existing crop IDs, recipes, loot tables, growth ages and harvest/regrowth behavior are preserved. CI publishes review sheets for crop stages/pollination, produce icons and seed icons. See `docs/AGRICULTURE_CROP_TEXTURE_PRECISION_V1_5.md` for the asset contract and acceptance limits.
-
-### Crop and honey expansion (v2.0 / honey v1.1)
-
-The catalog now contains **96 complete crop lines**. v2.0 adds celeriac, purslane, chayote, grape, tea, coffee, rapini and napa cabbage, with registered seed/planting items, eight growth ages, dedicated stage and inventory art, recipes, mature-only loot, bilingual names, climate bands and compost records. Purslane, tea and rapini use repeat-cut harvest; chayote and grape use repeat-fruit harvest, with the latter also receiving the berry pollination bonus.
-
-The honey catalog now contains **46 distinct bottle variants**: 45 recognized forage-source routes plus a neutral wildflower blend. The eight v2.0 crop sources each have a separate bottle sprite, item model, bilingual name and short level-I fantasy effect. Source dominance and mixed-forage thresholds remain unchanged; the effects are fictional game mechanics, not claims about real honey. CI validates all 96 crop cycles, 1,152 generated stage/model assets, 192 crop/seed icons, all 46 honey variants and 45 forage routes.
+- [Changelog](CHANGELOG.md)
+- [Fusion visual overhaul](docs/FUSION_VISUAL_OVERHAUL_V2_4.md)
+- [Crop and seed icon visual audit](docs/AGRICULTURE_CROP_ICON_DEPTH_V2_5.md)
+- [Chinese player guide](docs/AGRICULTURE_PLAYER_GUIDE_ZH_CN.md)
