@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.0-rc.1 — One-JAR optional Fusion resource integration
+
+- Bundled the complete 1,248-atlas Fusion visual resource pack inside the main mod JAR as `resourcepacks/fusion/`, **without** overwriting regular Minecraft-compatible assets.
+- Added client-only pack discovery. The built-in pack becomes active automatically **only** if Fusion is installed; otherwise the base mod runs with its original models.
+- Kept the independent ZIP as an optional build/test artifact; no additional Agriculture resource pack is required for players.
+- Added byte-for-byte verification between embedded resources and the companion ZIP. A real in-game client visual check remains required before stable publication.
+
 ## v2.7.0-rc.1 — Optional Fusion stage-model linkage hardening
 
 - Added the missing 1,200 crop and 40 marine/fungal `fusion:base` model overrides to the **optional** companion resource pack.
