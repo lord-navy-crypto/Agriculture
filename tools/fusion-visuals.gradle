@@ -1,0 +1,157 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+/*
+ * Fusion v2.4 companion RESOURCE PACK, not a hard dependency of the mod JAR.
+ * Official format: Fusion random texture tiles + fusion:base block models.
+ * Models are copied from already-registered bee habitat blocks and only their
+ * texture references are changed. The default textures remain fully vanilla.
+ */
+def fusionPackRoot = layout.buildDirectory.dir('fusion-visual-pack')
+def fusionProof = layout.buildDirectory.dir('reports/agriculture')
+
+tasks.register('generateFusionVisualPack') {
+    inputs.files(fileTree('src/main/resources/assets/gugugaga/models/block') {
+        include '*_bee_habitat*.json'
+        include 'bumblebee_habitat*.json'
+    })
+    outputs.dir(fusionPackRoot)
+    outputs.file(fusionProof.map { it.file('fusion-habitat-contact-sheet.png') })
+    doLast {
+        File root = fusionPackRoot.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def json = new JsonSlurper()
+        def putText = { String path, Object value ->
+            File target = new File(root, path)
+            target.parentFile.mkdirs()
+            target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
+        }
+        putText('pack.mcmeta', [
+            pack:[pack_format:34, description:'Gugu Gaga Agriculture - optional Fusion habitat textures (v2.4)']
+        ])
+        // Independently drawn warm/botanical palettes; do NOT copy Fusion sprites.
+        def palettes = [
+            bumblebee:[base:0x52683C, dark:0x293F30, light:0x83A568, accent:0xE0C75C],
+            mason:[base:0xA46C53, dark:0x543F42, light:0xD8AA80, accent:0xE4C89B],
+            leafcutter:[base:0x597A5B, dark:0x294F49, light:0x99B881, accent:0xE4A4B3],
+            squash:[base:0x957343, dark:0x55462C, light:0xC9AB6A, accent:0xD99D48]
+        ]
+        def pixels = { BufferedImage img, int x, int y, int color ->
+            if (x >= 0 && x < img.width && y >= 0 && y < img.height)
+                img.setRGB(x,y,(int)(0xFF000000L | (color & 0xFFFFFF)))
+        }
+        def rect = { BufferedImage img, int x1, int y1, int x2, int y2, int color ->
+            for (int y = y1; y <= y2; y++) for (int x = x1; x <= x2; x++) pixels.call(img,x,y,color)
+        }
+        def types = ['bumblebee','mason','leafcutter','squash']
+        BufferedImage proof = new BufferedImage(4 * 96, 2 * 96, BufferedImage.TYPE_INT_ARGB)
+        types.eachWithIndex { String type, int typeIndex ->
+            def pal = palettes[type]
+            ['side','roof'].eachWithIndex { String surface, int surfaceIndex ->
+                BufferedImage atlas = new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB)
+                for (int variant = 0; variant < 4; variant++) {
+                    BufferedImage tile = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+                    rect.call(tile,0,0,15,15,pal.base)
+                    // Four coherent hand-coded variants per surface, seeded by habitat.
+                    for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++) {
+                        int noise = Math.floorMod(x * 19 + y * 11 + variant * 13 + typeIndex * 31, 17)
+                        if (noise == 0 || noise == 1) pixels.call(tile,x,y,pal.light)
+                        if (noise == 13) pixels.call(tile,x,y,pal.dark)
+                    }
+                    if (surface == 'side') {
+                        for (int y : [3,9,14]) rect.call(tile,0,y,15,y,pal.dark)
+                        for (int y : [0,4,10]) {
+                            int knot = Math.floorMod(variant * 5 + y + typeIndex, 10) + 3
+                            rect.call(tile,knot,y+1,Math.min(knot+3,14),y+1,pal.light)
+                            pixels.call(tile,knot+1,y+2,pal.dark)
+                        }
+                        if (type == 'mason') {
+                            for (int y : [4,10]) rect.call(tile,0,y,15,y,pal.dark)
+                            for (int x : [5,12]) rect.call(tile,x,0,x,3,pal.dark)
+                            for (int x : [2,9]) rect.call(tile,x,5,x,9,pal.dark)
+                        } else if (type == 'leafcutter') {
+                            for (int i = 0; i < 4; i++) {
+                                int x = 2 + i*3, y = 2 + Math.floorMod(i + variant, 3)*3
+                                rect.call(tile,x,y,x+1,y+3,pal.light)
+                                pixels.call(tile,x+2,y+1,pal.accent)
+                            }
+                        } else if (type == 'bumblebee') {
+                            for (int i = 0; i < 5; i++) {
+                                int x = Math.floorMod(variant*3+i*5,14)+1, y = 2+Math.floorMod(i*4,10)
+                                pixels.call(tile,x,y,pal.accent)
+                                pixels.call(tile,x+1,y,pal.dark)
+                            }
+                        } else {
+                            for (int i = 0; i < 7; i++) {
+                                int x = 1+Math.floorMod(variant*7+i*5,14), y = 1+Math.floorMod(i*3+variant,13)
+                                pixels.call(tile,x,y,pal.accent)
+                            }
+                        }
+                    } else {
+                        for (int y : [2,7,12]) {
+                            for (int x = 1; x <= 14; x++) {
+                                pixels.call(tile,x,y,(x + variant) % 3 == 0 ? pal.accent : pal.dark)
+                                if (y+1 < 16 && (x+variant)%2 == 0) pixels.call(tile,x,y+1,pal.light)
+                            }
+                        }
+                        if (type == 'leafcutter' || type == 'bumblebee') {
+                            for (int i = 0; i < 5; i++) {
+                                int x = Math.floorMod(i*3+variant,13)+1, y = Math.floorMod(i*5+typeIndex,13)+1
+                                pixels.call(tile,x,y,pal.accent)
+                            }
+                        }
+                    }
+                    int ox=(variant%2)*16, oy=(variant.intdiv(2))*16
+                    for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++)
+                        atlas.setRGB(ox+x,oy+y,tile.getRGB(x,y))
+                    int tx=typeIndex*96 + (variant%2)*44 + 8
+                    int ty=surfaceIndex*96 + (variant.intdiv(2))*44 + 8
+                    for (int y = 0; y < 16; y++) for (int x = 0; x < 16; x++) {
+                        int rgba=tile.getRGB(x,y)
+                        for (int dy=0;dy<2;dy++) for (int dx=0;dx<2;dx++)
+                            proof.setRGB(tx+x*2+dx,ty+y*2+dy,rgba)
+                    }
+                }
+                String texture='assets/gugugaga/textures/block/fusion/' + type + '_' + surface + '.png'
+                File out = new File(root,texture)
+                out.parentFile.mkdirs()
+                if(!ImageIO.write(atlas,'png',out)) throw new GradleException('Unable to write Fusion atlas '+texture)
+                putText(texture+'.mcmeta',[fusion:[type:'random',rows:2,columns:2,
+                    randomness_source:'position_facing',seed:8300 + typeIndex*10 + surfaceIndex]])
+            }
+            [type+'_bee_habitat'].findAll { it != 'bumblebee_bee_habitat' }.each {} // naming handled below
+            String habitat = type == 'bumblebee' ? 'bumblebee_habitat' : type + '_bee_habitat'
+            ['', '_active'].each { String suffix ->
+                String id=habitat+suffix
+                File original=file('src/main/resources/assets/gugugaga/models/block/'+id+'.json')
+                if(!original.isFile()) throw new GradleException('Missing existing habitat model '+original)
+                Map model=(Map)json.parse(original)
+                model.loader='fusion:model'
+                model.type='fusion:base'
+                model.textures.particle='gugugaga:block/fusion/'+type+'_side'
+                model.textures.up='gugugaga:block/fusion/'+type+'_roof'
+                ['north','south','west','east'].each { face ->
+                    model.textures[face]='gugugaga:block/fusion/'+type+'_side'
+                }
+                putText('assets/gugugaga/models/block/'+id+'.json',model)
+            }
+        }
+        File report=fusionProof.get().asFile
+        report.mkdirs()
+        if(!ImageIO.write(proof,'png',new File(report,'fusion-habitat-contact-sheet.png')))
+            throw new GradleException('Could not write Fusion proof sheet')
+        logger.lifecycle('FUSION_VISUAL_PACK_OK: 8 habitat models, 8 random atlases, 32 distinct habitat tiles.')
+    }
+}
+tasks.register('packageFusionVisualPack', Zip) {
+    dependsOn tasks.named('generateFusionVisualPack')
+    from(fusionPackRoot)
+    destinationDirectory.set(layout.buildDirectory.dir('distributions'))
+    archiveFileName.set('gugugaga-fusion-visuals-v2.4.zip')
+}
+tasks.named('assemble').configure {
+    dependsOn tasks.named('packageFusionVisualPack')
+}

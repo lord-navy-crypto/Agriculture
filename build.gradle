@@ -50,3 +50,20 @@ tasks.withType(JavaCompile).configureEach {
 apply from: 'tools/crop-textures.gradle'
 apply from: 'tools/marine-fungi-textures.gradle'
 apply from: 'tools/crop-cuisine-textures.gradle'
+apply from: 'tools/fusion-visuals.gradle'
+
+
+// Fusion is an OPTIONAL developer/runtime dependency. The core JAR remains standalone.
+// Use -PenableFusionDev=true for the client development run; the companion resource pack
+// requires Fusion on the client's machine but never on the dedicated server.
+repositories {
+    maven {
+        url = uri('https://api.modrinth.com/maven')
+        content { includeGroup('maven.modrinth') }
+    }
+}
+if (providers.gradleProperty('enableFusionDev').map { it == 'true' }.orElse(false).get()) {
+    dependencies {
+        runtimeOnly 'maven.modrinth:fusion-connected-textures:1.2.5-neoforge-mc1.21'
+    }
+}
