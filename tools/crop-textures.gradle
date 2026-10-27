@@ -1688,6 +1688,44 @@ tasks.register('generateCropAssets') {
             image
         }
 
+        /*
+         * v2.5 icon polish: a restrained one-pixel lower-right shadow and edge
+         * bevel add inventory contrast without changing the 16x16 art style.
+         * Shadow is painted first; source pixels are then restored on top.
+         */
+        def polishItemTexture = { BufferedImage source ->
+            BufferedImage polished = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+            for (int y = 0; y < 16; y++) {
+                for (int x = 0; x < 16; x++) {
+                    int argb = source.getRGB(x, y)
+                    if (((argb >>> 24) & 255) != 0 && x + 1 < 16 && y + 1 < 16 &&
+                            (((source.getRGB(x + 1, y + 1) >>> 24) & 255) == 0)) {
+                        polished.setRGB(x + 1, y + 1, (int)0x660E120F)
+                    }
+                }
+            }
+            for (int y = 0; y < 16; y++) {
+                for (int x = 0; x < 16; x++) {
+                    int argb = source.getRGB(x, y)
+                    if (((argb >>> 24) & 255) == 0) continue
+                    int color = argb & 0x00FFFFFF
+                    boolean top = y == 0 || ((source.getRGB(x, y - 1) >>> 24) & 255) == 0
+                    boolean left = x == 0 || ((source.getRGB(x - 1, y) >>> 24) & 255) == 0
+                    boolean bottom = y == 15 || ((source.getRGB(x, y + 1) >>> 24) & 255) == 0
+                    boolean right = x == 15 || ((source.getRGB(x + 1, y) >>> 24) & 255) == 0
+                    int edgeNeighbors = (top ? 1 : 0) + (left ? 1 : 0) + (bottom ? 1 : 0) + (right ? 1 : 0)
+                    // Preserve isolated seed pixels and flower centers; bevel only supported edges.
+                    if (edgeNeighbors > 0 && edgeNeighbors < 4) {
+                        if ((top || left) && !(bottom || right)) color = shade.call(color, 1.14d)
+                        else if ((bottom || right) && !(top || left)) color = shade.call(color, 0.76d)
+                        else if (bottom || right) color = shade.call(color, 0.88d)
+                    }
+                    polished.setRGB(x, y, (int)(0xFF000000L | (color & 0x00FFFFFF)))
+                }
+            }
+            polished
+        }
+
         int modelCount = 0
         int blockTextureCount = 0
         int itemTextureCount = 0
@@ -1730,14 +1768,14 @@ tasks.register('generateCropAssets') {
             }
             if (thisCropStageHashes.size() != 8) throw new GradleException('Growth stages must all have distinct sprites: ' + crop)
             String producePath = 'assets/gugugaga/textures/item/crops/' + crop + '.png'
-            savePng.call(producePath, itemTexture.call(crop, false))
+            savePng.call(producePath, polishItemTexture.call(itemTexture.call(crop, false)))
             String produceHash = digest.digest(new File(outputRoot, producePath).bytes).encodeHex().toString()
             produceIconHashes.add(produceHash)
             if (!produceIconNamesByHash.containsKey(produceHash)) produceIconNamesByHash[produceHash] = []
             produceIconNamesByHash[produceHash] << crop.toString()
             itemTextureCount++
             String seedPath = 'assets/gugugaga/textures/item/crops/' + crop + '_seeds.png'
-            savePng.call(seedPath, itemTexture.call(crop, true))
+            savePng.call(seedPath, polishItemTexture.call(itemTexture.call(crop, true)))
             String seedHash = digest.digest(new File(outputRoot, seedPath).bytes).encodeHex().toString()
             seedIconHashes.add(seedHash)
             if (!seedIconNamesByHash.containsKey(seedHash)) seedIconNamesByHash[seedHash] = []
