@@ -12,14 +12,17 @@ import javax.imageio.ImageIO
  * Official format: Fusion random texture tiles + fusion:base block models.
  * Models are copied from already-registered bee habitat blocks and only their
  * texture references are changed. The default textures remain fully vanilla.
- * v2.6 also overlays all generated crop-stage textures with optional Fusion random variants.
+ * v2.6 overlays crop stages; v2.7 extends the same optional variants to marine plants and fungal cultures.
  */
 def fusionPackRoot = layout.buildDirectory.dir('fusion-visual-pack')
 def fusionProof = layout.buildDirectory.dir('reports/agriculture')
 
 tasks.register('generateFusionVisualPack') {
     dependsOn tasks.named('generateCropAssets')
+    dependsOn tasks.named('generateMarineFungiAssets')
     inputs.dir(layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/textures/block/crops'))
+    inputs.dir(layout.buildDirectory.dir('generated/resources/marineFungiAssets/assets/gugugaga/textures/block/marine_fungi'))
+    inputs.dir(layout.buildDirectory.dir('generated/resources/marineFungiAssets/assets/gugugaga/textures/block/marine_plants'))
     inputs.files(fileTree('src/main/resources/assets/gugugaga/models/block') {
         include '*_bee_habitat*.json'
         include 'bumblebee_habitat*.json'
@@ -27,6 +30,7 @@ tasks.register('generateFusionVisualPack') {
     outputs.dir(fusionPackRoot)
     outputs.file(fusionProof.map { it.file('fusion-habitat-contact-sheet.png') })
     outputs.file(fusionProof.map { it.file('fusion-crop-random-variants-contact-sheet.png') })
+    outputs.file(fusionProof.map { it.file('fusion-marine-fungi-random-variants-contact-sheet.png') })
     doLast {
         File root = fusionPackRoot.get().asFile
         project.delete(root)
@@ -38,7 +42,7 @@ tasks.register('generateFusionVisualPack') {
             target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
         }
         putText('pack.mcmeta', [
-            pack:[pack_format:34, description:'Gugu Gaga Agriculture - optional Fusion crop field and habitat textures (v2.6)']
+            pack:[pack_format:34, description:'Gugu Gaga Agriculture - optional Fusion crop, marine, fungal and habitat textures (v2.7)']
         ])
         // Standalone resource-pack icon: farm-green ground, sprout and amber honey.
         BufferedImage packIcon = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB)
@@ -245,20 +249,82 @@ tasks.register('generateFusionVisualPack') {
             }
         }
         cropGraphics.dispose()
+        // Extend the same optional Fusion random-variant treatment to marine crops
+        // and fungal cultures. Their base generated resources remain unchanged in the mod JAR.
+        File marineSourceRoot=layout.buildDirectory.dir('generated/resources/marineFungiAssets/assets/gugugaga/textures/block').get().asFile
+        List<Map> marineStageEntries=[]
+        [['marine_fungi',24],['marine_plants',16]].each { categoryEntry ->
+            String category=categoryEntry[0]
+            int expectedCount=(int)categoryEntry[1]
+            File categoryRoot=new File(marineSourceRoot,category)
+            List<File> categoryFiles=project.fileTree(categoryRoot).matching { include '*.png' }.files.toList().sort { a,b -> a.name <=> b.name }
+            if(categoryFiles.size()!=expectedCount)
+                throw new GradleException('Expected '+expectedCount+' '+category+' growth textures, found '+categoryFiles.size())
+            categoryFiles.each { File sourceFile ->
+                BufferedImage sourceImage=ImageIO.read(sourceFile)
+                if(sourceImage==null||sourceImage.width!=16||sourceImage.height!=16)
+                    throw new GradleException('Marine/fungal stage source must be 16x16: '+category+'/'+sourceFile.name)
+                BufferedImage atlas=new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB)
+                for(int variant=0;variant<4;variant++) {
+                    BufferedImage tile=cropVariant.call(sourceImage,variant)
+                    int ox=(variant%2)*16,oy=variant.intdiv(2)*16
+                    for(int y=0;y<16;y++) for(int x=0;x<16;x++)
+                        atlas.setRGB(ox+x,oy+y,tile.getRGB(x,y))
+                }
+                String texturePath='assets/gugugaga/textures/block/'+category+'/'+sourceFile.name
+                File atlasFile=new File(root,texturePath)
+                atlasFile.parentFile.mkdirs()
+                if(!ImageIO.write(atlas,'png',atlasFile))
+                    throw new GradleException('Unable to write Fusion '+category+' atlas '+sourceFile.name)
+                int textureSeed=100000+Math.floorMod((category+'/'+sourceFile.name).hashCode(),1800000000)
+                putText(texturePath+'.mcmeta',[fusion:[
+                    type:'random',rows:2,columns:2,randomness_source:'position',seed:textureSeed
+                ]])
+                marineStageEntries.add([category:category,file:sourceFile])
+            }
+        }
+
+        // Preview four variants for the mature stage of all six fungal cultures and four marine crops.
+        List<Map> matureMarineFiles=marineStageEntries.findAll { it.file.name.endsWith('_stage3.png') }.sort { a,b ->
+            (a.category+'/'+a.file.name) <=> (b.category+'/'+b.file.name)
+        }
+        if(matureMarineFiles.size()!=10)
+            throw new GradleException('Expected 10 mature marine/fungal textures for Fusion preview, found '+matureMarineFiles.size())
+        BufferedImage marineProof=new BufferedImage(960,264,BufferedImage.TYPE_INT_ARGB)
+        Graphics2D marineGraphics=marineProof.createGraphics()
+        marineGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
+        marineGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF)
+        marineGraphics.setColor(new Color(29,34,30,255))
+        marineGraphics.fillRect(0,0,marineProof.width,marineProof.height)
+        marineGraphics.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
+        matureMarineFiles.eachWithIndex { Map entry,int sample ->
+            File sourceFile=(File)entry.file
+            BufferedImage sourceImage=ImageIO.read(sourceFile)
+            int col=sample%4,row=(int)(sample/4),x=col*240,y=row*88
+            marineGraphics.setColor(new Color(238,240,232,255))
+            marineGraphics.drawString(entry.category+'/'+sourceFile.name.replace('_stage3.png',''),x+4,y+12)
+            for(int variant=0;variant<4;variant++) {
+                BufferedImage tile=cropVariant.call(sourceImage,variant)
+                marineGraphics.drawImage(tile,x+78+variant*36,y+18,32,32,null)
+            }
+        }
+        marineGraphics.dispose()
         File report=fusionProof.get().asFile
         report.mkdirs()
         if(!ImageIO.write(cropProof,'png',new File(report,'fusion-crop-random-variants-contact-sheet.png')))
             throw new GradleException('Could not write Fusion crop variation proof sheet')
+        if(!ImageIO.write(marineProof,'png',new File(report,'fusion-marine-fungi-random-variants-contact-sheet.png')))
+            throw new GradleException('Could not write Fusion marine/fungal variation proof sheet')
         if(!ImageIO.write(proof,'png',new File(report,'fusion-habitat-contact-sheet.png')))
             throw new GradleException('Could not write Fusion proof sheet')
-        logger.lifecycle('FUSION_VISUAL_PACK_OK: 8 habitat models, 8 habitat atlases, 1200 crop-stage random atlases, 32 habitat tiles.')
+        logger.lifecycle('FUSION_VISUAL_PACK_OK: 8 habitat models, 1200 crop-stage atlases, 40 marine/fungal atlases, 8 habitat atlases.')
     }
 }
 tasks.register('packageFusionVisualPack', Zip) {
     dependsOn tasks.named('generateFusionVisualPack')
     from(fusionPackRoot)
     destinationDirectory.set(layout.buildDirectory.dir('distributions'))
-    archiveFileName.set('gugugaga-fusion-visuals-v2.6.zip')
+    archiveFileName.set('gugugaga-fusion-visuals-v2.7.zip')
 }
 tasks.named('assemble').configure {
     dependsOn tasks.named('packageFusionVisualPack')
