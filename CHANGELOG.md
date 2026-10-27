@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7 — Fusion marine and fungal visual variation
+
+- Extended the optional Fusion pack to 24 fungal culture growth textures and 16 marine plant growth textures.
+- Preserved all generated 16×16 base textures in the main mod JAR; the optional pack supplies 2×2 random atlases with position-based selection.
+- Added a marine/fungal variation preview sheet and CI checks for every atlas, metadata file, and ZIP entry.
+- No item IDs, recipes, food values, or growth mechanics changed.
+
 ## v2.6 — Fusion crop-field variation
 
 - Extended the optional Fusion resource pack to all 1,200 generated crop growth-stage textures, including pollinated stages.
