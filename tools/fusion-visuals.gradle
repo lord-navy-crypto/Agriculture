@@ -32,6 +32,34 @@ tasks.register('generateFusionVisualPack') {
         putText('pack.mcmeta', [
             pack:[pack_format:34, description:'Gugu Gaga Agriculture - optional Fusion habitat textures (v2.4)']
         ])
+        // Standalone resource-pack icon: farm-green ground, sprout and amber honey.
+        BufferedImage packIcon = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB)
+        for(int y=0;y<64;y++) for(int x=0;x<64;x++) {
+            int rgb = y < 45 ? 0x314A36 : 0x725038
+            if ((x+y)%13==0) rgb = y < 45 ? 0x3C5941 : 0x7F5A40
+            packIcon.setRGB(x,y,(int)(0xFF000000L | rgb))
+        }
+        // Two leaves branching from a central stalk; warm honey orb below.
+        for(int y=10;y<=44;y++) for(int x=30;x<=33;x++)
+            packIcon.setRGB(x,y,(int)0xFF90BC6B)
+        for(int y=13;y<33;y++) for(int x=8;x<30;x++) {
+            int dx=x-22, dy=y-24
+            if(dx*dx*3+dy*dy*2<220 && x + y < 55)
+                packIcon.setRGB(x,y,(int)(0xFF000000L|0x91C86E))
+        }
+        for(int y=11;y<34;y++) for(int x=34;x<57;x++) {
+            int dx=x-41, dy=y-24
+            if(dx*dx*3+dy*dy*2<220 && x-y>13)
+                packIcon.setRGB(x,y,(int)(0xFF000000L|0xB0D875))
+        }
+        for(int y=42;y<58;y++) for(int x=37;x<52;x++) {
+            int dx=x-44,dy=y-49
+            if(dx*dx+dy*dy<57)
+                packIcon.setRGB(x,y,(int)(0xFF000000L|((x+y)%6==0?0xF4CF66:0xD89B35)))
+        }
+        if(!ImageIO.write(packIcon,'png',new File(root,'pack.png')))
+            throw new GradleException('Unable to encode companion pack icon')
+
         // Independently drawn warm/botanical palettes; do NOT copy Fusion sprites.
         def palettes = [
             bumblebee:[base:0x52683C, dark:0x293F30, light:0x83A568, accent:0xE0C75C],
@@ -122,7 +150,6 @@ tasks.register('generateFusionVisualPack') {
                 putText(texture+'.mcmeta',[fusion:[type:'random',rows:2,columns:2,
                     randomness_source:'position_facing',seed:8300 + typeIndex*10 + surfaceIndex]])
             }
-            [type+'_bee_habitat'].findAll { it != 'bumblebee_bee_habitat' }.each {} // naming handled below
             String habitat = type == 'bumblebee' ? 'bumblebee_habitat' : type + '_bee_habitat'
             ['', '_active'].each { String suffix ->
                 String id=habitat+suffix

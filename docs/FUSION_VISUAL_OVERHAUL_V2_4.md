@@ -5,7 +5,7 @@ This stage adds a **real optional Fusion companion resource pack**, upgrades the
 ## What is actually supported
 
 - **Minecraft 1.21.1 / NeoForge 21.1.x**.
-- Fusion's official *random textures* format and its `fusion:base` model loader, available in the NeoForge 1.21.1-compatible Fusion **1.2.5** series.
+- Fusion's official *random textures* format and its `fusion:base` model loader, available in the NeoForge 1.21.1-compatible Fusion **1.3.16** release.
 - Four already-registered, placeable bee habitat blocks: bumblebee, mason, leafcutter, squash. No fictional storage blocks have been added.
 - Eight block model variants (normal + active) override only the original material textures; they preserve the original block geometry, particle fallback and activity blockstates.
 - Eight freshly generated 32×32 PNG atlases, each containing four separate 16×16 texture choices. Their matching `.png.mcmeta` files use Fusion's `random` texture type.

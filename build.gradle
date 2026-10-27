@@ -64,6 +64,6 @@ repositories {
 }
 if (providers.gradleProperty('enableFusionDev').map { it == 'true' }.orElse(false).get()) {
     dependencies {
-        runtimeOnly 'maven.modrinth:fusion-connected-textures:1.2.5-neoforge-mc1.21'
+        runtimeOnly 'maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc1.21.1'
     }
 }

@@ -41,6 +41,8 @@ def main():
     with zipfile.ZipFile(ARCHIVE) as z:
         files=set(z.namelist())
         assert 'pack.mcmeta' in files
+        assert 'pack.png' in files, 'missing companion pack icon'
+        assert z.read('pack.png')[:8]==b'\\x89PNG\\r\\n\\x1a\\n', 'pack icon is not a PNG'
         for kind in KINDS:
             assert f'assets/gugugaga/models/block/{kind if kind != "bumblebee" else "bumblebee"}_bee_habitat.json' in files if kind!='bumblebee' else 'assets/gugugaga/models/block/bumblebee_habitat.json' in files
             for surface in ['side','roof']:
