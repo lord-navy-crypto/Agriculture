@@ -13,7 +13,6 @@ import javax.imageio.ImageIO
  * Models are copied from already-registered bee habitat blocks and only their
  * texture references are changed. The default textures remain fully vanilla.
  * v2.6 also overlays all generated crop-stage textures with optional Fusion random variants.
- * v2.6 also overlays all generated crop-stage textures with optional Fusion random variants.
  */
 def fusionPackRoot = layout.buildDirectory.dir('fusion-visual-pack')
 def fusionProof = layout.buildDirectory.dir('reports/agriculture')
@@ -27,7 +26,6 @@ tasks.register('generateFusionVisualPack') {
     })
     outputs.dir(fusionPackRoot)
     outputs.file(fusionProof.map { it.file('fusion-habitat-contact-sheet.png') })
-    outputs.file(fusionProof.map { it.file('fusion-crop-random-variants-contact-sheet.png') })
     outputs.file(fusionProof.map { it.file('fusion-crop-random-variants-contact-sheet.png') })
     doLast {
         File root = fusionPackRoot.get().asFile
@@ -247,87 +245,10 @@ tasks.register('generateFusionVisualPack') {
             }
         }
         cropGraphics.dispose()
-        // Optional Fusion random textures for every generated crop growth stage.
-        // The base 16x16 resources remain unchanged in the mod JAR; this pack overlays
-        // each texture with four related 16x16 variants in a 2x2 atlas.
-        File cropSourceRoot = layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/textures/block/crops').get().asFile
-        List<File> cropFiles = project.fileTree(cropSourceRoot).matching { include '*.png' }.files.toList().sort { a, b -> a.name <=> b.name }
-        if (cropFiles.size() != 1200)
-            throw new GradleException('Expected 1200 generated crop-stage textures for Fusion overlays, found ' + cropFiles.size())
-        def shadeArgb = { int argb, double factor ->
-            int alpha=(argb >>> 24) & 255
-            if (alpha == 0) return 0
-            int red=(int)Math.max(0,Math.min(255,Math.round(((argb >>> 16) & 255) * factor)))
-            int green=(int)Math.max(0,Math.min(255,Math.round(((argb >>> 8) & 255) * factor)))
-            int blue=(int)Math.max(0,Math.min(255,Math.round((argb & 255) * factor)))
-            (alpha << 24) | (red << 16) | (green << 8) | blue
-        }
-        def cropVariant = { BufferedImage source, int variant ->
-            BufferedImage tile = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
-            boolean mirror = variant == 1 || variant == 3
-            double factor = variant == 0 ? 1.0d : variant == 1 ? 1.04d : variant == 2 ? 0.90d : 1.10d
-            for (int y=0;y<16;y++) for (int x=0;x<16;x++) {
-                int sourceX = mirror ? 15-x : x
-                tile.setRGB(x,y,(int)shadeArgb.call(source.getRGB(sourceX,y),factor))
-            }
-            tile
-        }
-        cropFiles.eachWithIndex { File sourceFile, int sourceIndex ->
-            BufferedImage sourceImage = ImageIO.read(sourceFile)
-            if (sourceImage == null || sourceImage.width != 16 || sourceImage.height != 16)
-                throw new GradleException('Crop stage source must be 16x16: ' + sourceFile.name)
-            BufferedImage atlas = new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB)
-            for (int variant=0;variant<4;variant++) {
-                BufferedImage tile=cropVariant.call(sourceImage,variant)
-                int ox=(variant%2)*16, oy=variant.intdiv(2)*16
-                for (int y=0;y<16;y++) for (int x=0;x<16;x++)
-                    atlas.setRGB(ox+x,oy+y,tile.getRGB(x,y))
-            }
-            String texturePath='assets/gugugaga/textures/block/crops/'+sourceFile.name
-            File atlasFile=new File(root,texturePath)
-            atlasFile.parentFile.mkdirs()
-            if(!ImageIO.write(atlas,'png',atlasFile))
-                throw new GradleException('Unable to write Fusion crop atlas '+sourceFile.name)
-            int textureSeed=100000+Math.floorMod(sourceFile.name.hashCode(),1800000000)
-            putText(texturePath+'.mcmeta',[fusion:[
-                type:'random',rows:2,columns:2,randomness_source:'position',seed:textureSeed
-            ]])
-        }
-
-        // A review sheet shows four variants for twenty mature crops, without packaging the sheet.
-        List<File> matureCropFiles=cropFiles.findAll { it.name.endsWith('_stage7.png') }.sort { a,b -> a.name <=> b.name }
-        if(matureCropFiles.size()!=100)
-            throw new GradleException('Expected 100 mature crop textures for Fusion preview, found '+matureCropFiles.size())
-        BufferedImage cropProof=new BufferedImage(960,440,BufferedImage.TYPE_INT_ARGB)
-        Graphics2D cropGraphics=cropProof.createGraphics()
-        cropGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR)
-        cropGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_OFF)
-        cropGraphics.setColor(new Color(29,34,30,255))
-        cropGraphics.fillRect(0,0,cropProof.width,cropProof.height)
-        cropGraphics.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,10))
-        for(int sample=0;sample<20;sample++) {
-            int sourceIndex=(int)Math.floor(sample*(matureCropFiles.size()-1)/19.0d)
-            File sourceFile=matureCropFiles[sourceIndex]
-            BufferedImage sourceImage=ImageIO.read(sourceFile)
-            int col=sample%4,row=(int)(sample/4),x=col*240,y=row*88
-            cropGraphics.setColor(new Color(238,240,232,255))
-            cropGraphics.drawString(sourceFile.name.replace('_stage7.png',''),x+4,y+12)
-            for(int variant=0;variant<4;variant++) {
-                BufferedImage tile=cropVariant.call(sourceImage,variant)
-                cropGraphics.drawImage(tile,x+78+variant*36,y+18,32,32,null)
-            }
-        }
-        cropGraphics.dispose()
         File report=fusionProof.get().asFile
         report.mkdirs()
         if(!ImageIO.write(cropProof,'png',new File(report,'fusion-crop-random-variants-contact-sheet.png')))
             throw new GradleException('Could not write Fusion crop variation proof sheet')
-
-        report.mkdirs()
-        if(!ImageIO.write(cropProof,'png',new File(report,'fusion-crop-random-variants-contact-sheet.png')))
-            throw new GradleException('Could not write Fusion crop variation proof sheet')
-
-        report.mkdirs()
         if(!ImageIO.write(proof,'png',new File(report,'fusion-habitat-contact-sheet.png')))
             throw new GradleException('Could not write Fusion proof sheet')
         logger.lifecycle('FUSION_VISUAL_PACK_OK: 8 habitat models, 8 habitat atlases, 1200 crop-stage random atlases, 32 habitat tiles.')
