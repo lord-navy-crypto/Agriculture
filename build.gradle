@@ -58,7 +58,7 @@ apply from: 'tools/fusion-visuals.gradle'
  // loader must not be read unless the Fusion client mod is installed.
 tasks.named('processResources', ProcessResources).configure {
     dependsOn tasks.named('generateFusionVisualPack')
-    from(fusionPackRoot) {
+    from(layout.buildDirectory.dir('fusion-visual-pack')) {
         into 'resourcepacks/gugugaga_fusion'
     }
 }
