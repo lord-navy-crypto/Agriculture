@@ -94,6 +94,88 @@ tasks.register('generateCropCuisineAssets') {
                 put.call(image, 7, 6, dark)
                 put.call(image, 8, 7, accent)
                 rect.call(image, 5, 11, 10, 12, dark)
+            // v2.4: distinct food silhouettes rather than palette-swapped bowls.
+            } else if (id.contains('salad') || id.contains('slaw')) {
+                rect.call(image, 2, 10, 13, 12, dark)
+                rect.call(image, 3, 9, 12, 10, light)
+                rect.call(image, 4, 11, 11, 11, accent)
+                for (int i = 0; i < 10; i++) {
+                    int x = 3 + Math.floorMod(i * 7 + signature, 10)
+                    int y = 4 + Math.floorMod(i * 3 + signature.intdiv(5), 6)
+                    rect.call(image,x,y,x+1,y+1,(i%3==0)?accent:((i%3==1)?base:light))
+                    if (i%4==0) put.call(image,x,y,dark)
+                }
+                put.call(image, 6, 3, light)
+                put.call(image, 10, 5, accent)
+            } else if (id.contains('soup') || id.contains('stew') ||
+                       id.contains('chowder') || id.contains('broth') ||
+                       id.contains('porridge') || id.contains('curry') ||
+                       id.contains('congee')) {
+                rect.call(image, 2, 8, 13, 10, dark)
+                rect.call(image, 3, 7, 12, 9, light)
+                rect.call(image, 3, 10, 12, 11, base)
+                rect.call(image, 4, 12, 11, 13, dark)
+                rect.call(image, 5, 13, 10, 14, dark)
+                for (int i=0;i<8;i++) {
+                    int x=4+Math.floorMod(signature+i*3,8)
+                    int y=7+Math.floorMod(i*7+signature.intdiv(3),3)
+                    put.call(image,x,y,(i%3==0)?accent:(i%3==1)?dark:base)
+                }
+                for (int i=0;i<3;i++) {
+                    int x=5+2*i
+                    put.call(image,x,5-i%2,light)
+                    put.call(image,x+1,4-i%2,accent)
+                }
+            } else if (id.contains('rice') || id.contains('risotto') ||
+                       id.contains('pilaf') || id.contains('bowl')) {
+                rect.call(image, 2, 11, 13, 13, dark)
+                rect.call(image, 3, 10, 12, 11, accent)
+                for (int y=5;y<=10;y++) {
+                    int half=y<=6?2:Math.min(5,y-4)
+                    rect.call(image,8-half,y,8+half,y,(y%3==0)?light:base)
+                }
+                for (int i=0;i<8;i++) {
+                    int x=4+Math.floorMod(i*5+signature,9)
+                    int y=5+Math.floorMod(i*3+signature.intdiv(13),5)
+                    put.call(image,x,y,(i%2==0)?accent:dark)
+                }
+                rect.call(image, 5, 13, 10, 14, dark)
+            } else if (id.contains('pasta') || id.contains('noodles')) {
+                rect.call(image, 2, 11, 13, 13, dark)
+                rect.call(image, 3, 10, 12, 11, light)
+                for(int i=0;i<4;i++) {
+                    int y=5+2*i
+                    rect.call(image,4,y,11,y,base)
+                    put.call(image,4,y,accent)
+                    put.call(image,11,y+1,light)
+                    if (i%2==0) put.call(image,7,y,dark)
+                }
+                rect.call(image, 4, 12, 11, 12, accent)
+            } else if (id.contains('sauce') || id.contains('dressing') ||
+                       id.contains('hummus')) {
+                rect.call(image, 5, 2, 10, 3, dark)
+                rect.call(image, 4, 4, 11, 12, dark)
+                rect.call(image, 5, 5, 10, 11, base)
+                rect.call(image, 6, 6, 9, 9, light)
+                put.call(image, 7, 6, accent)
+                put.call(image, 8, 8, dark)
+                rect.call(image, 5, 13, 10, 13, accent)
+            } else if (id.contains('roast') || id.contains('grilled') ||
+                       id.contains('steak') || id.contains('skewer') ||
+                       id.contains('baked')) {
+                rect.call(image, 2, 12, 13, 13, dark)
+                rect.call(image, 3, 11, 12, 12, light)
+                rect.call(image, 3, 8, 11, 10, dark)
+                rect.call(image, 5, 6, 12, 8, base)
+                rect.call(image, 6, 5, 10, 5, light)
+                for (int i=0;i<5;i++) {
+                    int x=4+i*2
+                    put.call(image,x,9,(i%2==0)?accent:light)
+                    put.call(image,x+1,7,dark)
+                }
+                if (id.contains('skewer')) {
+                    for(int i=2;i<=13;i++) put.call(image,i,14-i,accent)
+                }
             } else {
                 rect.call(image, 2, 11, 13, 13, dark)
                 rect.call(image, 3, 10, 12, 11, light)
