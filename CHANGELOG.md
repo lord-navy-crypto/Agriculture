@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7.0-rc.1 — Optional Fusion stage-model linkage hardening
+
+- Added the missing 1,200 crop and 40 marine/fungal `fusion:base` model overrides to the **optional** companion resource pack.
+- Each model preserves the shipped Java Edition parent, geometry, and original texture references, and explicitly enables the Fusion model loader.
+- Expanded packaging QA to confirm model-to-texture binding for all 1,240 stages and byte-for-byte ZIP integrity.
+- The independent main mod JAR and gameplay remain unchanged. Actual client rendering with and without Fusion is still a release gate.
+
 ## v2.7.0-rc.1 — Packaged-art validation hardening
 
 - Added CI that compares the distributable mod JAR and optional Fusion resource pack at individual pixel level for 1,240 crop, fungal, and marine growth-stage atlases.

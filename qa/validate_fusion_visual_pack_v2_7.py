@@ -12,6 +12,7 @@ PACK = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "build/fusion-visual-p
 ARCHIVE = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "build/distributions/gugugaga-fusion-visuals-v2.7.zip"
 ART = ROOT / "src/main/resources/assets/gugugaga/models/block"
 CROP_SOURCE = ROOT / "build/generated/resources/cropAssets/assets/gugugaga/textures/block/crops"
+CROP_MODEL_SOURCE = ROOT / "build/generated/resources/cropAssets/assets/gugugaga/models/block/crops"
 MARINE_SOURCE = ROOT / "build/generated/resources/marineFungiAssets/assets/gugugaga/textures/block"
 CROP_PREFIX = "assets/gugugaga/textures/block/crops/"
 MARINE_COUNTS = {"marine_fungi": 24, "marine_plants": 16}
@@ -28,13 +29,27 @@ def png_size(path):
     return struct.unpack(">II", data[16:24])
 
 
-def validate_stage_directory(source_dir, pack_dir, prefix, expected_count, randomness_source):
+def validate_stage_directory(source_dir, source_models, pack_dir, prefix, expected_count, randomness_source):
     source_names = {p.name for p in source_dir.glob("*.png")}
     assert len(source_names) == expected_count, f"{source_dir}: expected {expected_count} source textures, got {len(source_names)}"
     textures = sorted(pack_dir.glob("*.png"))
     assert len(textures) == expected_count, f"{pack_dir}: expected {expected_count} atlases, got {len(textures)}"
     assert {p.name for p in textures} == source_names, f"{pack_dir}: texture names differ from source"
+    model_prefix = prefix.replace("/textures/", "/models/")
+    generated_model_dir = PACK / model_prefix
+    expected_model_names = {p.stem + ".json" for p in textures}
+    assert {p.name for p in generated_model_dir.glob("*.json")} == expected_model_names, (
+        f"{model_prefix}: model overrides must match all random texture atlases"
+    )
     for texture in textures:
+        original = read(source_models / (texture.stem + ".json"))
+        enhanced = read(generated_model_dir / (texture.stem + ".json"))
+        assert enhanced == {**original, "loader": "fusion:model", "type": "fusion:base"}, (
+            f"{texture.name}: Fusion model must preserve the exact original model"
+        )
+        assert f"gugugaga:block/{source_dir.name}/{texture.stem}" in original["textures"].values(), (
+            f"{texture.name}: source model not bound to the corresponding random texture"
+        )
         assert png_size(texture) == (32, 32), f"atlas must be 32x32: {texture.name}"
         metadata = read(texture.with_suffix(".png.mcmeta"))["fusion"]
         assert set(metadata) == {"type", "rows", "columns", "randomness_source", "seed"}, texture.name
@@ -71,13 +86,13 @@ def main():
     assert len(hashes) == 8, "Fusion habitat atlases must not be duplicates"
 
     crop_names = validate_stage_directory(
-        CROP_SOURCE, PACK / CROP_PREFIX, CROP_PREFIX, 1200, "position"
+        CROP_SOURCE, CROP_MODEL_SOURCE, PACK / CROP_PREFIX, CROP_PREFIX, 1200, "position"
     )
     marine_names = {}
     for category, count in MARINE_COUNTS.items():
         prefix = f"assets/gugugaga/textures/block/{category}/"
         marine_names[category] = validate_stage_directory(
-            MARINE_SOURCE / category, PACK / prefix, prefix, count, "position"
+            MARINE_SOURCE / category, ART / category, PACK / prefix, prefix, count, "position"
         )
 
     crop_proof = ROOT / "build/reports/agriculture/fusion-crop-random-variants-contact-sheet.png"
@@ -98,12 +113,22 @@ def main():
                 assert f"assets/gugugaga/textures/block/fusion/{kind}_{surface}.png.mcmeta" in files
         for category, names in [("crops", crop_names), *marine_names.items()]:
             prefix = f"assets/gugugaga/textures/block/{category}/"
+            model_prefix = prefix.replace("/textures/", "/models/")
+            model_names = {n for n in files if n.startswith(model_prefix) and n.endswith(".json")}
+            assert len(model_names) == len(names), f"{category} ZIP model count mismatch"
+            assert {Path(n).stem for n in model_names} == {Path(n).stem for n in names}, (
+                f"{category}: ZIP models do not match texture stages"
+            )
+            for model_name in model_names:
+                assert z.read(model_name) == (PACK / model_name).read_bytes(), (
+                    f"{category}: ZIP model does not match generated Fusion model: {model_name}"
+                )
             pngs = {n for n in files if n.startswith(prefix) and n.endswith(".png")}
             metas = {n for n in files if n.startswith(prefix) and n.endswith(".png.mcmeta")}
             assert len(pngs) == len(names), f"{category} ZIP PNG count mismatch: {len(pngs)}"
             assert len(metas) == len(names), f"{category} ZIP metadata count mismatch: {len(metas)}"
             assert {Path(n).name for n in pngs} == names, f"{category} ZIP missing texture(s)"
-    print("FUSION_VISUAL_PACK_V2_7_PASS: 1200 crop atlases, 24 fungal atlases, 16 marine atlases, 8 habitat atlases and models; all metadata and ZIP entries valid.")
+    print("FUSION_VISUAL_PACK_V2_7_PASS: 1200 crop, 24 fungal, 16 marine Fusion models and atlases; 8 habitat atlases and models; all metadata and ZIP entries valid.")
 
 
 if __name__ == "__main__":

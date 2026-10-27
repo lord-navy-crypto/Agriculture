@@ -18,7 +18,7 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 
 The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
 
-A separate optional Fusion resource pack adds random texture variations to crop-field growth stages, bee habitats, marine plants, and fungi. It requires [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 on the client.
+A separate optional Fusion resource pack adds random texture variations to crop-field growth stages, bee habitats, marine plants, and fungi. Its 1,240 stage-model overrides use the Fusion base loader while preserving the original crop/plant model geometry. The regular mod JAR keeps its vanilla-compatible models. It requires [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 on the client.
 
 1. Install the regular Gugu Gaga Agriculture JAR in `mods`.
 2. Optionally install the compatible Fusion mod in the client's `mods` folder.

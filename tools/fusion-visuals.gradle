@@ -21,6 +21,9 @@ tasks.register('generateFusionVisualPack') {
     dependsOn tasks.named('generateCropAssets')
     dependsOn tasks.named('generateMarineFungiAssets')
     inputs.dir(layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/textures/block/crops'))
+    inputs.dir(layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/models/block/crops'))
+    inputs.dir(file('src/main/resources/assets/gugugaga/models/block/marine_fungi'))
+    inputs.dir(file('src/main/resources/assets/gugugaga/models/block/marine_plants'))
     inputs.dir(layout.buildDirectory.dir('generated/resources/marineFungiAssets/assets/gugugaga/textures/block/marine_fungi'))
     inputs.dir(layout.buildDirectory.dir('generated/resources/marineFungiAssets/assets/gugugaga/textures/block/marine_plants'))
     inputs.files(fileTree('src/main/resources/assets/gugugaga/models/block') {
@@ -40,6 +43,21 @@ tasks.register('generateFusionVisualPack') {
             File target = new File(root, path)
             target.parentFile.mkdirs()
             target.setText(JsonOutput.prettyPrint(JsonOutput.toJson(value)) + '\n', 'UTF-8')
+        }
+        // Explicit Fusion base models are needed to bind the random texture metadata
+        // to each model. Keep the vanilla geometry, texture references and blockstates.
+        def overlayStageModel = { String category, File modelFile, String stem ->
+            if (!modelFile.isFile())
+                throw new GradleException('Missing stage model for Fusion overlay: ' + modelFile)
+            Map originalModel = (Map) json.parse(modelFile)
+            String expectedTexture = 'gugugaga:block/' + category + '/' + stem
+            if (!(originalModel.textures instanceof Map) ||
+                !originalModel.textures.values().contains(expectedTexture))
+                throw new GradleException('Fusion model texture binding mismatch: ' + modelFile)
+            Map fusionModel = new LinkedHashMap(originalModel)
+            fusionModel.loader = 'fusion:model'
+            fusionModel.type = 'fusion:base'
+            putText('assets/gugugaga/models/block/' + category + '/' + stem + '.json', fusionModel)
         }
         putText('pack.mcmeta', [
             pack:[pack_format:34, description:'Gugu Gaga Agriculture - optional Fusion crop, marine, fungal and habitat textures (v2.7)']
@@ -182,6 +200,7 @@ tasks.register('generateFusionVisualPack') {
         // The base 16x16 resources remain unchanged in the mod JAR; this pack overlays
         // each texture with four related 16x16 variants in a 2x2 atlas.
         File cropSourceRoot = layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/textures/block/crops').get().asFile
+        File cropModelRoot = layout.buildDirectory.dir('generated/resources/cropAssets/assets/gugugaga/models/block/crops').get().asFile
         List<File> cropFiles = project.fileTree(cropSourceRoot).matching { include '*.png' }.files.toList().sort { a, b -> a.name <=> b.name }
         if (cropFiles.size() != 1200)
             throw new GradleException('Expected 1200 generated crop-stage textures for Fusion overlays, found ' + cropFiles.size())
@@ -223,6 +242,8 @@ tasks.register('generateFusionVisualPack') {
             putText(texturePath+'.mcmeta',[fusion:[
                 type:'random',rows:2,columns:2,randomness_source:'position',seed:textureSeed
             ]])
+            String stem = sourceFile.name.substring(0, sourceFile.name.length() - 4)
+            overlayStageModel.call('crops', new File(cropModelRoot, stem + '.json'), stem)
         }
 
         // A review sheet shows four variants for twenty mature crops, without packaging the sheet.
@@ -280,6 +301,9 @@ tasks.register('generateFusionVisualPack') {
                 putText(texturePath+'.mcmeta',[fusion:[
                     type:'random',rows:2,columns:2,randomness_source:'position',seed:textureSeed
                 ]])
+                String stem = sourceFile.name.substring(0, sourceFile.name.length() - 4)
+                File modelFile = file('src/main/resources/assets/gugugaga/models/block/' + category + '/' + stem + '.json')
+                overlayStageModel.call(category, modelFile, stem)
                 marineStageEntries.add([category:category,file:sourceFile])
             }
         }
@@ -317,7 +341,7 @@ tasks.register('generateFusionVisualPack') {
             throw new GradleException('Could not write Fusion marine/fungal variation proof sheet')
         if(!ImageIO.write(proof,'png',new File(report,'fusion-habitat-contact-sheet.png')))
             throw new GradleException('Could not write Fusion proof sheet')
-        logger.lifecycle('FUSION_VISUAL_PACK_OK: 8 habitat models, 1200 crop-stage atlases, 40 marine/fungal atlases, 8 habitat atlases.')
+        logger.lifecycle('FUSION_VISUAL_PACK_OK: 1240 Fusion stage models, 8 habitat models, 1200 crop-stage atlases, 40 marine/fungal atlases, 8 habitat atlases.')
     }
 }
 tasks.register('packageFusionVisualPack', Zip) {
