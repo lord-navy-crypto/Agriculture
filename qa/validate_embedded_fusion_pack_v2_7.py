@@ -35,7 +35,7 @@ def main():
             )
         metadata = json.loads(mod.read(PREFIX + "pack.mcmeta"))
         assert metadata["pack"]["pack_format"] == 34, "wrong resource pack format"
-        assert mod.read(PREFIX + "pack.png").startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+        assert mod.read(PREFIX + "pack.png")[:8] == bytes([137, 80, 78, 71, 13, 10, 26, 10])
 
         for category, count in CATEGORIES.items():
             texture = f"assets/gugugaga/textures/block/{category}/"
