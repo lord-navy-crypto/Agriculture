@@ -227,7 +227,7 @@ public class KitchenProcessingBlock extends Block {
         }
         if (level instanceof ServerLevel server) {
             // Cosmetic, finite smoke/steam/food-processing particles. No
-            // persistent BlockEntity, item animation loop or client-only class.
+            // persistent inventories, item animation loop or client-only class.
             if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE) {
                 server.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5D,
                         pos.getY() + 0.85D, pos.getZ() + 0.5D, 7,
