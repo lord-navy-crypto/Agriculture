@@ -1,0 +1,576 @@
+{
+  "schema_version": "3.3",
+  "description": "Eight plantable new spice/vegetable crops, eight ocean fishing catches, time-gated non-alcoholic food fermentation, eight seasoning intermediates, eight smoked seafood results and eighteen cooked dishes. Fermentation is a Minecraft abstraction, not real-world processing guidance.",
+  "crops": [
+    {
+      "id": "black_pepper",
+      "english_name": "Black Pepper",
+      "chinese_name": "黑胡椒",
+      "climate_band": "WARM",
+      "color": "#55463A",
+      "starter": "minecraft:cocoa_beans",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "lemongrass",
+      "english_name": "Lemongrass",
+      "chinese_name": "香茅",
+      "climate_band": "WET",
+      "color": "#9DBE61",
+      "starter": "minecraft:sugar_cane",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "wasabi",
+      "english_name": "Wasabi",
+      "chinese_name": "山葵",
+      "climate_band": "COOL",
+      "color": "#72945D",
+      "starter": "minecraft:sea_pickle",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "cumin",
+      "english_name": "Cumin",
+      "chinese_name": "孜然",
+      "climate_band": "DRY",
+      "color": "#B8A06F",
+      "starter": "minecraft:beetroot_seeds",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "cardamom",
+      "english_name": "Cardamom",
+      "chinese_name": "小豆蔻",
+      "climate_band": "WET",
+      "color": "#759B5E",
+      "starter": "minecraft:melon_seeds",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "fenugreek",
+      "english_name": "Fenugreek",
+      "chinese_name": "葫芦巴",
+      "climate_band": "DRY",
+      "color": "#B39A65",
+      "starter": "minecraft:pumpkin_seeds",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "sugar_beet",
+      "english_name": "Sugar Beet",
+      "chinese_name": "糖用甜菜",
+      "climate_band": "COOL",
+      "color": "#C39B80",
+      "starter": "minecraft:beetroot",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    },
+    {
+      "id": "daikon",
+      "english_name": "Daikon Radish",
+      "chinese_name": "白萝卜",
+      "climate_band": "COOL",
+      "color": "#E1DABF",
+      "starter": "minecraft:carrot",
+      "food": true,
+      "nutrition": 2,
+      "saturation_modifier": 0.25
+    }
+  ],
+  "seafood": [
+    {
+      "id": "saltwater_anchovy",
+      "english_name": "Anchovy",
+      "chinese_name": "鳀鱼",
+      "color": "#86A2A4"
+    },
+    {
+      "id": "saltwater_sardine",
+      "english_name": "Sardine",
+      "chinese_name": "沙丁鱼",
+      "color": "#91ACBA"
+    },
+    {
+      "id": "saltwater_herring",
+      "english_name": "Herring",
+      "chinese_name": "鲱鱼",
+      "color": "#A0ADB8"
+    },
+    {
+      "id": "saltwater_mackerel",
+      "english_name": "Mackerel",
+      "chinese_name": "鲭鱼",
+      "color": "#7D9AA4"
+    },
+    {
+      "id": "saltwater_sea_bass",
+      "english_name": "Sea Bass",
+      "chinese_name": "海鲈鱼",
+      "color": "#8DA9A1"
+    },
+    {
+      "id": "saltwater_sea_bream",
+      "english_name": "Sea Bream",
+      "chinese_name": "海鲷",
+      "color": "#B4A39A"
+    },
+    {
+      "id": "saltwater_shrimp",
+      "english_name": "Shrimp",
+      "chinese_name": "虾",
+      "color": "#D69A85"
+    },
+    {
+      "id": "saltwater_crab",
+      "english_name": "Crab",
+      "chinese_name": "蟹",
+      "color": "#C7826F"
+    }
+  ],
+  "spices": [
+    {
+      "id": "cracked_black_pepper",
+      "source": "gugugaga:black_pepper",
+      "english_name": "Cracked Black Pepper",
+      "chinese_name": "黑胡椒碎",
+      "color": "#75634D",
+      "station": "mortar"
+    },
+    {
+      "id": "lemongrass_flakes",
+      "source": "gugugaga:lemongrass",
+      "english_name": "Lemongrass Flakes",
+      "chinese_name": "香茅碎",
+      "color": "#9DB47A",
+      "station": "mortar"
+    },
+    {
+      "id": "wasabi_paste",
+      "source": "gugugaga:wasabi",
+      "english_name": "Wasabi Paste",
+      "chinese_name": "山葵酱",
+      "color": "#92B478",
+      "station": "mortar"
+    },
+    {
+      "id": "ground_cumin",
+      "source": "gugugaga:cumin",
+      "english_name": "Ground Cumin",
+      "chinese_name": "孜然粉",
+      "color": "#B49B71",
+      "station": "mortar"
+    },
+    {
+      "id": "ground_cardamom",
+      "source": "gugugaga:cardamom",
+      "english_name": "Ground Cardamom",
+      "chinese_name": "小豆蔻粉",
+      "color": "#9AA874",
+      "station": "mortar"
+    },
+    {
+      "id": "ground_fenugreek",
+      "source": "gugugaga:fenugreek",
+      "english_name": "Ground Fenugreek",
+      "chinese_name": "葫芦巴粉",
+      "color": "#BDA071",
+      "station": "mortar"
+    },
+    {
+      "id": "sugar_beet_pulp",
+      "source": "gugugaga:sugar_beet",
+      "english_name": "Sugar Beet Pulp",
+      "chinese_name": "糖用甜菜泥",
+      "color": "#B9A1A1",
+      "station": "mortar"
+    },
+    {
+      "id": "daikon_relish",
+      "source": "gugugaga:daikon",
+      "english_name": "Daikon Relish",
+      "chinese_name": "白萝卜泥",
+      "color": "#CFD3BD",
+      "station": "mortar"
+    }
+  ],
+  "fermentations": [
+    {
+      "id": "fermented_soybeans",
+      "input": "gugugaga:soybean",
+      "english_name": "Fermented Soybeans",
+      "chinese_name": "发酵黄豆",
+      "color": "#B8A06C"
+    },
+    {
+      "id": "cultured_cabbage",
+      "input": "gugugaga:cabbage",
+      "english_name": "发酵卷心菜",
+      "chinese_name": "发酵卷心菜",
+      "color": "#98AB75"
+    },
+    {
+      "id": "fermented_cucumber",
+      "input": "gugugaga:cucumber",
+      "english_name": "发酵黄瓜",
+      "chinese_name": "发酵黄瓜",
+      "color": "#79A36A"
+    },
+    {
+      "id": "fermented_daikon",
+      "input": "gugugaga:daikon",
+      "english_name": "发酵白萝卜",
+      "chinese_name": "发酵白萝卜",
+      "color": "#CFC9AB"
+    },
+    {
+      "id": "aged_pepper_paste",
+      "input": "gugugaga:black_pepper",
+      "english_name": "发酵胡椒酱",
+      "chinese_name": "发酵胡椒酱",
+      "color": "#8D714F"
+    },
+    {
+      "id": "fermented_lemongrass",
+      "input": "gugugaga:lemongrass",
+      "english_name": "发酵香茅",
+      "chinese_name": "发酵香茅",
+      "color": "#A1AD70"
+    },
+    {
+      "id": "fermented_shiitake",
+      "input": "gugugaga:shiitake_mushroom",
+      "english_name": "发酵香菇",
+      "chinese_name": "发酵香菇",
+      "color": "#9D7C65"
+    },
+    {
+      "id": "cultured_beet_relish",
+      "input": "gugugaga:sugar_beet",
+      "english_name": "发酵甜菜酱",
+      "chinese_name": "发酵甜菜酱",
+      "color": "#B37C8B"
+    },
+    {
+      "id": "pickled_beetroot",
+      "input": "minecraft:beetroot",
+      "english_name": "腌渍甜菜根",
+      "chinese_name": "腌渍甜菜根",
+      "color": "#A85D78"
+    },
+    {
+      "id": "cultured_carrot",
+      "input": "minecraft:carrot",
+      "english_name": "发酵胡萝卜",
+      "chinese_name": "发酵胡萝卜",
+      "color": "#CB945A"
+    }
+  ],
+  "smoked_seafood": [
+    {
+      "id": "smoked_anchovy",
+      "input": "gugugaga:saltwater_anchovy",
+      "english_name": "Smoked Anchovy",
+      "chinese_name": "熏鳀鱼",
+      "color": "#86A2A4"
+    },
+    {
+      "id": "smoked_sardine",
+      "input": "gugugaga:saltwater_sardine",
+      "english_name": "Smoked Sardine",
+      "chinese_name": "熏沙丁鱼",
+      "color": "#91ACBA"
+    },
+    {
+      "id": "smoked_herring",
+      "input": "gugugaga:saltwater_herring",
+      "english_name": "Smoked Herring",
+      "chinese_name": "熏鲱鱼",
+      "color": "#A0ADB8"
+    },
+    {
+      "id": "smoked_mackerel",
+      "input": "gugugaga:saltwater_mackerel",
+      "english_name": "Smoked Mackerel",
+      "chinese_name": "熏鲭鱼",
+      "color": "#7D9AA4"
+    },
+    {
+      "id": "smoked_sea_bass",
+      "input": "gugugaga:saltwater_sea_bass",
+      "english_name": "Smoked Sea Bass",
+      "chinese_name": "熏海鲈鱼",
+      "color": "#8DA9A1"
+    },
+    {
+      "id": "smoked_sea_bream",
+      "input": "gugugaga:saltwater_sea_bream",
+      "english_name": "Smoked Sea Bream",
+      "chinese_name": "熏海鲷",
+      "color": "#B4A39A"
+    },
+    {
+      "id": "smoked_shrimp",
+      "input": "gugugaga:saltwater_shrimp",
+      "english_name": "Smoked Shrimp",
+      "chinese_name": "熏虾",
+      "color": "#D69A85"
+    },
+    {
+      "id": "smoked_crab",
+      "input": "gugugaga:saltwater_crab",
+      "english_name": "Smoked Crab",
+      "chinese_name": "熏蟹",
+      "color": "#C7826F"
+    }
+  ],
+  "dishes": [
+    {
+      "id": "spiced_mackerel_rice",
+      "english_name": "Black Pepper Mackerel Rice",
+      "chinese_name": "黑椒鲭鱼饭",
+      "ingredients": [
+        "gugugaga:smoked_mackerel",
+        "gugugaga:cracked_black_pepper",
+        "gugugaga:steamed_rice"
+      ],
+      "color": "#AFA589",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "lemongrass_sardine_soup",
+      "english_name": "Lemongrass Sardine Soup",
+      "chinese_name": "香茅沙丁鱼汤",
+      "ingredients": [
+        "gugugaga:smoked_sardine",
+        "gugugaga:lemongrass_flakes",
+        "gugugaga:kelp_broth"
+      ],
+      "color": "#B2A78B",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "wasabi_seabass_plate",
+      "english_name": "Wasabi Sea Bass Plate",
+      "chinese_name": "山葵海鲈鱼拼盘",
+      "ingredients": [
+        "gugugaga:smoked_sea_bass",
+        "gugugaga:wasabi_paste",
+        "gugugaga:steamed_rice"
+      ],
+      "color": "#A7B596",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "cumin_anchovy_toast",
+      "english_name": "Cumin Anchovy Toast",
+      "chinese_name": "孜然鳀鱼面包",
+      "ingredients": [
+        "gugugaga:smoked_anchovy",
+        "gugugaga:ground_cumin",
+        "minecraft:bread"
+      ],
+      "color": "#B99A75",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "cardamom_bream_bowl",
+      "english_name": "Cardamom Sea Bream Bowl",
+      "chinese_name": "豆蔻海鲷饭",
+      "ingredients": [
+        "gugugaga:smoked_sea_bream",
+        "gugugaga:ground_cardamom",
+        "gugugaga:steamed_rice"
+      ],
+      "color": "#B3AB98",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "fenugreek_shrimp_stew",
+      "english_name": "Fenugreek Shrimp Stew",
+      "chinese_name": "葫芦巴虾炖菜",
+      "ingredients": [
+        "gugugaga:smoked_shrimp",
+        "gugugaga:ground_fenugreek",
+        "minecraft:potato"
+      ],
+      "color": "#BBA380",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "pepper_crab_plate",
+      "english_name": "Pepper Crab Plate",
+      "chinese_name": "胡椒蟹拼盘",
+      "ingredients": [
+        "gugugaga:smoked_crab",
+        "gugugaga:cracked_black_pepper",
+        "gugugaga:serving_platter"
+      ],
+      "color": "#BD947D",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "herring_seaweed_bowl",
+      "english_name": "Herring Seaweed Bowl",
+      "chinese_name": "鲱鱼海藻饭",
+      "ingredients": [
+        "gugugaga:smoked_herring",
+        "gugugaga:fermented_lemongrass",
+        "gugugaga:steamed_rice"
+      ],
+      "color": "#9FB19C",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "fermented_soy_rice",
+      "english_name": "Fermented Soybean Rice",
+      "chinese_name": "发酵黄豆饭",
+      "ingredients": [
+        "gugugaga:fermented_soybeans",
+        "gugugaga:steamed_rice",
+        "minecraft:carrot"
+      ],
+      "color": "#BDAC7C",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "cultured_cabbage_bowl",
+      "english_name": "Cultured Cabbage Bowl",
+      "chinese_name": "发酵卷心菜碗",
+      "ingredients": [
+        "gugugaga:cultured_cabbage",
+        "gugugaga:steamed_rice",
+        "gugugaga:sesame_paste"
+      ],
+      "color": "#A7B08B",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "fermented_cucumber_plate",
+      "english_name": "Fermented Cucumber Salad",
+      "chinese_name": "发酵黄瓜沙拉",
+      "ingredients": [
+        "gugugaga:fermented_cucumber",
+        "gugugaga:lettuce",
+        "gugugaga:ceramic_plate"
+      ],
+      "color": "#92B68A",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "daikon_fish_soup",
+      "english_name": "Daikon Fish Soup",
+      "chinese_name": "白萝卜鱼汤",
+      "ingredients": [
+        "gugugaga:fermented_daikon",
+        "gugugaga:smoked_cod",
+        "gugugaga:kelp_broth"
+      ],
+      "color": "#C4C2A9",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "aged_pepper_beef",
+      "english_name": "Aged Pepper Beef",
+      "chinese_name": "发酵胡椒牛肉",
+      "ingredients": [
+        "gugugaga:aged_pepper_paste",
+        "minecraft:cooked_beef",
+        "gugugaga:caramelized_onions"
+      ],
+      "color": "#A18370",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "shiitake_ferment_noodles",
+      "english_name": "Fermented Shiitake Noodles",
+      "chinese_name": "发酵香菇面",
+      "ingredients": [
+        "gugugaga:fermented_shiitake",
+        "gugugaga:buckwheat_noodle_dough",
+        "gugugaga:steamed_carrot"
+      ],
+      "color": "#B3A58A",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "sweet_beet_rice_cake",
+      "english_name": "Sweet Beet Rice Cake",
+      "chinese_name": "甜菜米糕",
+      "ingredients": [
+        "gugugaga:cultured_beet_relish",
+        "gugugaga:rice_flour",
+        "minecraft:sugar"
+      ],
+      "color": "#C49A9A",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "pickled_beetroot_bowl",
+      "english_name": "Pickled Beetroot Bowl",
+      "chinese_name": "腌渍甜菜根饭",
+      "ingredients": [
+        "gugugaga:pickled_beetroot",
+        "gugugaga:steamed_rice",
+        "gugugaga:ceramic_bowl"
+      ],
+      "color": "#B48392",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "cultured_carrot_wrap",
+      "english_name": "Cultured Carrot Wrap",
+      "chinese_name": "发酵胡萝卜卷",
+      "ingredients": [
+        "gugugaga:cultured_carrot",
+        "gugugaga:flatbread_dough",
+        "gugugaga:lettuce"
+      ],
+      "color": "#C0A17F",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "spiced_vegetable_bowl",
+      "english_name": "Spiced Vegetable Bowl",
+      "chinese_name": "香料时蔬碗",
+      "ingredients": [
+        "gugugaga:daikon_relish",
+        "gugugaga:sugar_beet_pulp",
+        "gugugaga:steamed_rice"
+      ],
+      "color": "#C0B69E",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    }
+  ]
+}
