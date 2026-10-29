@@ -8,6 +8,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.KitchenContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV3Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV31Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV32Content;
+import io.github.lordnavycrypto.gugugaga.agriculture.FoodEcologyV33Content;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -31,7 +32,11 @@ public final class GuguGagaCreativeTabs {
                     .title(Component.translatable("itemGroup.gugugaga.agriculture"))
                     .icon(() -> new ItemStack(AgricultureContent.CORN_SEEDS.get()))
                     .displayItems((parameters, output) ->
-                            AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+                            { AgricultureContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              FoodEcologyV33Content.ITEMS.getEntries().forEach(item -> {
+                                  String name = item.getId().getPath();
+                                  if (name.endsWith("_seeds") || name.equals("black_pepper") || name.equals("lemongrass") || name.equals("wasabi") || name.equals("cumin") || name.equals("cardamom") || name.equals("fenugreek") || name.equals("sugar_beet") || name.equals("daikon")) output.accept(item.get());
+                              }); })
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BEEKEEPING =
@@ -51,7 +56,11 @@ public final class GuguGagaCreativeTabs {
                               KitchenContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                               KitchenV3Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                               KitchenV31Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                              KitchenV32Content.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
+                              KitchenV32Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              FoodEcologyV33Content.ITEMS.getEntries().forEach(item -> {
+                                  String name = item.getId().getPath();
+                                  if (!name.endsWith("_seeds") && !java.util.Set.of("black_pepper", "lemongrass", "wasabi", "cumin", "cardamom", "fenugreek", "sugar_beet", "daikon").contains(name) && !name.startsWith("saltwater_")) output.accept(item.get());
+                              }); })
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =
@@ -59,6 +68,9 @@ public final class GuguGagaCreativeTabs {
                     .title(Component.translatable("itemGroup.gugugaga.marine_fungi"))
                     .icon(() -> new ItemStack(MarineFungiContent.SEA_LETTUCE.get()))
                     .displayItems((parameters, output) ->
-                            MarineFungiContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+                            { MarineFungiContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              FoodEcologyV33Content.ITEMS.getEntries().forEach(item -> {
+                                  if (item.getId().getPath().startsWith("saltwater_")) output.accept(item.get());
+                              }); })
                     .build());
 }
