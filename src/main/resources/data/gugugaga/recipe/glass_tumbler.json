@@ -2,16 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "P P",
-    " P "
+    "G G",
+    "G G",
+    "GGG"
   ],
   "key": {
-    "P": {
+    "G": {
       "item": "minecraft:glass"
     }
   },
   "result": {
     "id": "gugugaga:glass_tumbler",
-    "count": 2
+    "count": 1
   }
 }

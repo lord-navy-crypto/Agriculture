@@ -2,12 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "P P",
-    " P "
+    "CCC",
+    " C "
   ],
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
+    "C": {
+      "item": "minecraft:clay_ball"
     }
   },
   "result": {

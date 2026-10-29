@@ -2,16 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    " I ",
-    " S ",
-    " S "
+    "G G",
+    "GGG"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "S": {
-      "item": "minecraft:stick"
+    "G": {
+      "item": "minecraft:glass"
     }
   },
   "result": {

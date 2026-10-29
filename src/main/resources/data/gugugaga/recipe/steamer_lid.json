@@ -2,13 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PPP",
-    "P P",
-    "   "
+    "BBB",
+    "B B"
   ],
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
+    "B": {
+      "item": "minecraft:bamboo_planks"
     }
   },
   "result": {

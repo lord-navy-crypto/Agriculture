@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "P P",
-    " P "
+    "III",
+    "I I"
   ],
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "result": {
     "id": "gugugaga:baking_tray",
-    "count": 2
+    "count": 1
   }
 }

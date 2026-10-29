@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "P P",
-    " P "
+    "B B",
+    " B "
   ],
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
+    "B": {
+      "item": "minecraft:clay_ball"
     }
   },
   "result": {
     "id": "gugugaga:sauce_dish",
-    "count": 2
+    "count": 1
   }
 }

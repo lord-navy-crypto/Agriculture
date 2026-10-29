@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "P P",
-    " P "
+    "SSS",
+    " S "
   ],
   "key": {
-    "P": {
-      "item": "minecraft:oak_planks"
+    "S": {
+      "item": "minecraft:smooth_stone"
     }
   },
   "result": {
     "id": "gugugaga:serving_platter",
-    "count": 2
+    "count": 1
   }
 }
