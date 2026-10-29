@@ -4,8 +4,8 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 
 ## Current content (v3.3 ocean, spice crops and food fermentation release candidate)
 
-- **108 plantable crops** (100 pre-existing + 8 new spice/vegetable crops), each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
-- Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
+- **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
+- Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
 - **100 wild seed sources** that spawn naturally in compatible Overworld biomes.
 - **50 honey varieties** with distinct floral sources and custom bottle graphics.
 - **68 original crop-cuisine items** with recipes and tailored, reproducible icons.
