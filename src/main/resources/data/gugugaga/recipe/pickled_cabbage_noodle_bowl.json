@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pickled_cabbage_v34"
+    },
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pickled_cabbage_noodle_bowl",
+    "count": 1
+  }
+}

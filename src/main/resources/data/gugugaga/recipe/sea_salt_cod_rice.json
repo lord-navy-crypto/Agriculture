@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sea_salt"
+    },
+    {
+      "item": "gugugaga:smoked_cod"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sea_salt_cod_rice",
+    "count": 1
+  }
+}

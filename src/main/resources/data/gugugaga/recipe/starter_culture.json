@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fermented_soybeans"
+    },
+    {
+      "item": "gugugaga:fermented_shiitake"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:starter_culture",
+    "count": 1
+  }
+}

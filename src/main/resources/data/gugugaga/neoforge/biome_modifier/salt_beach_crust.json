@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:beach",
+    "minecraft:snowy_beach",
+    "minecraft:desert"
+  ],
+  "features": "gugugaga:salt_beach_crust",
+  "step": "underground_ores"
+}

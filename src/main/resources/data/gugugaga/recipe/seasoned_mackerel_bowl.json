@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:seasoned_fish_sauce"
+    },
+    {
+      "item": "gugugaga:smoked_mackerel"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:seasoned_mackerel_bowl",
+    "count": 1
+  }
+}

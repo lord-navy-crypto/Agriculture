@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cultured_chili_sauce"
+    },
+    {
+      "item": "gugugaga:soy_sauce"
+    },
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:chili_soy_noodles",
+    "count": 1
+  }
+}

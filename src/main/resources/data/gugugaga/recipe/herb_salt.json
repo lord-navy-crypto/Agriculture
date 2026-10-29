@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sea_salt"
+    },
+    {
+      "item": "gugugaga:basil"
+    },
+    {
+      "item": "gugugaga:mint"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herb_salt",
+    "count": 1
+  }
+}

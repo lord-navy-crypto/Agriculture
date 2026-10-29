@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pickled_daikon_v34"
+    },
+    {
+      "item": "gugugaga:smoked_cod_fillets"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pickled_daikon_fish_bowl",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pickled_beetroot_v34"
+    },
+    {
+      "item": "gugugaga:ceramic_plate"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:beetroot_pickle_plate",
+    "count": 1
+  }
+}
