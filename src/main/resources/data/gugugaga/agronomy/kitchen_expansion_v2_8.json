@@ -1,0 +1,359 @@
+{
+  "schema_version": "2.8",
+  "description": "Add four actual single-input processing workstations and a reusable offhand mixing spoon, 16 processed ingredients, 2 utensils and 12 new dishes while preserving all existing crop/cuisine registry names and recipes.",
+  "stations": [
+    {
+      "id": "chopping_board",
+      "kind": "chop",
+      "english_name": "Chopping Board",
+      "chinese_name": "切配台"
+    },
+    {
+      "id": "hand_mill",
+      "kind": "mill",
+      "english_name": "Hand Mill",
+      "chinese_name": "手摇研磨台"
+    },
+    {
+      "id": "fruit_press",
+      "kind": "press",
+      "english_name": "Fruit Press",
+      "chinese_name": "水果压榨机"
+    },
+    {
+      "id": "mixing_basin",
+      "kind": "mix",
+      "english_name": "Mixing Basin",
+      "chinese_name": "搅拌盆",
+      "offhand": "gugugaga:wooden_spoon"
+    }
+  ],
+  "items": [
+    {
+      "id": "wooden_spoon",
+      "type": "tableware",
+      "english_name": "Wooden Mixing Spoon",
+      "chinese_name": "木制搅拌勺",
+      "color": "#A47A4A"
+    },
+    {
+      "id": "ceramic_plate",
+      "type": "tableware",
+      "english_name": "Ceramic Plate",
+      "chinese_name": "陶瓷餐盘",
+      "color": "#D8D0BD"
+    },
+    {
+      "id": "diced_tomato",
+      "type": "ingredient",
+      "english_name": "Diced Tomato",
+      "chinese_name": "番茄丁",
+      "color": "#D4513E",
+      "station": "chop",
+      "input": "gugugaga:tomato"
+    },
+    {
+      "id": "chopped_onion",
+      "type": "ingredient",
+      "english_name": "Chopped Onion",
+      "chinese_name": "洋葱碎",
+      "color": "#C9BB78",
+      "station": "chop",
+      "input": "gugugaga:onion"
+    },
+    {
+      "id": "sliced_cucumber",
+      "type": "ingredient",
+      "english_name": "Sliced Cucumber",
+      "chinese_name": "黄瓜片",
+      "color": "#75B35A",
+      "station": "chop",
+      "input": "gugugaga:cucumber"
+    },
+    {
+      "id": "shredded_cabbage",
+      "type": "ingredient",
+      "english_name": "Shredded Cabbage",
+      "chinese_name": "卷心菜丝",
+      "color": "#93C077",
+      "station": "chop",
+      "input": "gugugaga:cabbage"
+    },
+    {
+      "id": "rice_flour",
+      "type": "ingredient",
+      "english_name": "Rice Flour",
+      "chinese_name": "米粉",
+      "color": "#D8D3B6",
+      "station": "mill",
+      "input": "gugugaga:rice"
+    },
+    {
+      "id": "buckwheat_flour",
+      "type": "ingredient",
+      "english_name": "Buckwheat Flour",
+      "chinese_name": "荞麦粉",
+      "color": "#A48768",
+      "station": "mill",
+      "input": "gugugaga:buckwheat"
+    },
+    {
+      "id": "wheat_flour",
+      "type": "ingredient",
+      "english_name": "Wheat Flour",
+      "chinese_name": "小麦粉",
+      "color": "#E2CE96",
+      "station": "mill",
+      "input": "minecraft:wheat"
+    },
+    {
+      "id": "sesame_meal",
+      "type": "ingredient",
+      "english_name": "Ground Sesame",
+      "chinese_name": "芝麻粉",
+      "color": "#C6B491",
+      "station": "mill",
+      "input": "gugugaga:sesame"
+    },
+    {
+      "id": "grape_juice",
+      "type": "ingredient",
+      "english_name": "Grape Juice",
+      "chinese_name": "葡萄汁",
+      "color": "#81589C",
+      "station": "press",
+      "input": "gugugaga:grape"
+    },
+    {
+      "id": "strawberry_juice",
+      "type": "ingredient",
+      "english_name": "Strawberry Juice",
+      "chinese_name": "草莓汁",
+      "color": "#C84455",
+      "station": "press",
+      "input": "gugugaga:strawberry"
+    },
+    {
+      "id": "pineapple_juice",
+      "type": "ingredient",
+      "english_name": "Pineapple Juice",
+      "chinese_name": "菠萝汁",
+      "color": "#DCB24D",
+      "station": "press",
+      "input": "gugugaga:pineapple"
+    },
+    {
+      "id": "tomato_juice",
+      "type": "ingredient",
+      "english_name": "Tomato Juice",
+      "chinese_name": "番茄汁",
+      "color": "#C34D38",
+      "station": "press",
+      "input": "gugugaga:tomato"
+    },
+    {
+      "id": "tomato_puree",
+      "type": "ingredient",
+      "english_name": "Tomato Purée",
+      "chinese_name": "番茄泥",
+      "color": "#B64830",
+      "station": "mix",
+      "input": "gugugaga:diced_tomato"
+    },
+    {
+      "id": "cucumber_relish",
+      "type": "ingredient",
+      "english_name": "Cucumber Relish",
+      "chinese_name": "黄瓜酱",
+      "color": "#7EA350",
+      "station": "mix",
+      "input": "gugugaga:sliced_cucumber"
+    },
+    {
+      "id": "berry_compote_base",
+      "type": "ingredient",
+      "english_name": "Berry Compote Base",
+      "chinese_name": "莓果酱底",
+      "color": "#A44C71",
+      "station": "mix",
+      "input": "gugugaga:strawberry_juice"
+    },
+    {
+      "id": "flatbread_dough",
+      "type": "ingredient",
+      "english_name": "Flatbread Dough",
+      "chinese_name": "薄饼面团",
+      "color": "#E0CDA8",
+      "station": "mix",
+      "input": "gugugaga:wheat_flour"
+    },
+    {
+      "id": "tomato_basil_bruschetta",
+      "type": "food",
+      "english_name": "Tomato Basil Toast",
+      "chinese_name": "罗勒番茄烤面包",
+      "color": "#C75C3E",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "minecraft:bread",
+        "gugugaga:diced_tomato",
+        "gugugaga:basil"
+      ]
+    },
+    {
+      "id": "cucumber_onion_salad",
+      "type": "food",
+      "english_name": "Cucumber Onion Salad",
+      "chinese_name": "黄瓜洋葱沙拉",
+      "color": "#8EBA65",
+      "nutrition": 5,
+      "saturation_modifier": 0.5,
+      "ingredients": [
+        "gugugaga:sliced_cucumber",
+        "gugugaga:chopped_onion",
+        "gugugaga:ceramic_plate"
+      ]
+    },
+    {
+      "id": "cabbage_rice_bowl",
+      "type": "food",
+      "english_name": "Cabbage Rice Bowl",
+      "chinese_name": "卷心菜米饭",
+      "color": "#BAD58E",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:shredded_cabbage",
+        "gugugaga:rice",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "buckwheat_flatbread",
+      "type": "food",
+      "english_name": "Buckwheat Flatbread",
+      "chinese_name": "荞麦薄饼",
+      "color": "#B18B56",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:buckwheat_flour",
+        "gugugaga:wheat_flour",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "sesame_vegetable_noodles",
+      "type": "food",
+      "english_name": "Sesame Vegetable Noodles",
+      "chinese_name": "芝麻蔬菜面",
+      "color": "#D2AC67",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:sesame_meal",
+        "gugugaga:rice",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "berry_breakfast_bowl",
+      "type": "food",
+      "english_name": "Berry Breakfast Bowl",
+      "chinese_name": "莓果早餐碗",
+      "color": "#C96D83",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:strawberry_juice",
+        "gugugaga:oat",
+        "minecraft:apple"
+      ]
+    },
+    {
+      "id": "pineapple_glazed_rice",
+      "type": "food",
+      "english_name": "Pineapple Glazed Rice",
+      "chinese_name": "菠萝风味米饭",
+      "color": "#E4C054",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:pineapple_juice",
+        "gugugaga:rice",
+        "gugugaga:soybean"
+      ]
+    },
+    {
+      "id": "grape_fruit_cup",
+      "type": "food",
+      "english_name": "Grape Fruit Cup",
+      "chinese_name": "葡萄水果杯",
+      "color": "#A480B6",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:grape_juice",
+        "gugugaga:grape",
+        "minecraft:apple"
+      ]
+    },
+    {
+      "id": "tomato_vegetable_soup",
+      "type": "food",
+      "english_name": "Tomato Vegetable Soup",
+      "chinese_name": "番茄蔬菜汤",
+      "color": "#C45A42",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:tomato_puree",
+        "gugugaga:chopped_onion",
+        "minecraft:carrot"
+      ]
+    },
+    {
+      "id": "cucumber_pickle_plate",
+      "type": "food",
+      "english_name": "Cucumber Relish Plate",
+      "chinese_name": "黄瓜酱拼盘",
+      "color": "#77AE64",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:cucumber_relish",
+        "gugugaga:lettuce",
+        "gugugaga:ceramic_plate"
+      ]
+    },
+    {
+      "id": "forest_berry_pancakes",
+      "type": "food",
+      "english_name": "Forest Berry Pancakes",
+      "chinese_name": "林地莓果煎饼",
+      "color": "#B3657D",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:berry_compote_base",
+        "gugugaga:buckwheat_flour",
+        "minecraft:sugar"
+      ]
+    },
+    {
+      "id": "rustic_flatbread",
+      "type": "food",
+      "english_name": "Rustic Herb Flatbread",
+      "chinese_name": "乡村香草薄饼",
+      "color": "#CC965F",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:flatbread_dough",
+        "gugugaga:diced_tomato",
+        "gugugaga:basil"
+      ]
+    }
+  ]
+}
