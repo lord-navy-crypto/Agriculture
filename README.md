@@ -2,7 +2,7 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.5 comprehensive nutrition release candidate)
+## Current content (v3.6 32-day lunar seasons release candidate)
 
 - **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
 - Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
@@ -55,3 +55,4 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [v3.3 spice crop, ocean fishing, food-fermentation and seasoning guide](docs/FOOD_ECOLOGY_V3_3.md)
 - [v3.4 salt deposits, aged condiments, natural farmland and N-key nutrition](docs/SALT_CONDIMENT_NUTRITION_V3_4.md)
 - [v3.5 comprehensive gameplay nutrition: 27 indicators, 403 foods, N-key graphical panel and saved-data migration](docs/FULL_NUTRITION_V3_5.md)
+- [v3.6 32-day lunar seasons: 4×8 days, habitat-specific calendars, greenhouse overwintering](docs/LUNAR_SEASONS_V3_6.md)
