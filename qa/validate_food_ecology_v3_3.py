@@ -28,7 +28,7 @@ def main():
     ids=set(r["id"] for r in sections)
     newer=ids|{c["id"]+"_seeds" for c in m["crops"]}
     assert len(newer)==68
-    original=[read(DATA/"agronomy/"+name) for name in (
+    original=[read(DATA/"agronomy"/name) for name in (
         "kitchen_expansion_v2_8.json","kitchen_tools_v3_0.json",
         "kitchen_specialists_v3_1.json","kitchen_tool_modes_v3_2.json")]
     oldids={i["id"] for batch in original for i in batch["items"]}
