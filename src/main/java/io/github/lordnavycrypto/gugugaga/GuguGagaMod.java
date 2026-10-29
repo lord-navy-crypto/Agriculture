@@ -34,7 +34,7 @@ public final class GuguGagaMod {
         KitchenV32Content.ITEMS.register(modBus);
         FoodEcologyV33Content.BLOCKS.register(modBus);
         FoodEcologyV33Content.ITEMS.register(modBus);
-        NeoForge.EVENT_BUS.addListener(FoodEcologyFishing::onFishCaught);
+        NeoForge.EVENT_BUS.register(FoodEcologyFishing.class);
         BeeContent.BLOCKS.register(modBus);
         BeeContent.ITEMS.register(modBus);
         MarineFungiContent.BLOCKS.register(modBus);
