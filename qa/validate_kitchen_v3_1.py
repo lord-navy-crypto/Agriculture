@@ -93,10 +93,10 @@ def main():
         assert set("".join(recipe["pattern"]))-{" "}==set(recipe["key"])
 
         # Exact Java route parity, not merely an approximate count.
-        pattern=rf"\\b{kind}\\(Map\\.ofEntries\\((.*?)\\n\\s*\\)\\)(?:,|;)"
+        pattern=rf"\b{kind}\(Map\.ofEntries\((.*?)\n\s*\)\)(?:,|;)"
         matches=re.findall(pattern,processor,re.S)
         assert len(matches)==1,(kind,"map count",len(matches))
-        actual=re.findall(r'Map\\.entry\\("([a-z_:]+)",\\s*"([a-z_]+)"\\)',matches[0])
+        actual=re.findall(r'Map\.entry\("([a-z_:]+)",\s*"([a-z_]+)"\)',matches[0])
         expected={(p["input"],p["id"]) for p in prepared if p["station"]==kind.lower()}
         assert len(actual)==6 and set(actual)==expected,(kind,actual,expected)
 
