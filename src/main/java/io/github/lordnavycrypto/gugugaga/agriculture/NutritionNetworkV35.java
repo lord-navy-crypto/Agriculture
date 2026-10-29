@@ -17,7 +17,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 public final class NutritionNetworkV35 {
     private NutritionNetworkV35() {}
 
-    public record State(int[] scores) implements CustomPacketPayload {
+    public record State(int[] scores,int water,int salt) implements CustomPacketPayload {
         public static final Type<State> TYPE=new Type<>(
                 ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
                         "nutrition_state"));
@@ -27,12 +27,16 @@ public final class NutritionNetworkV35 {
                             if (data.scores().length != 27)
                                 throw new IllegalArgumentException("Invalid nutrition snapshot");
                             for(int n:data.scores())buf.writeVarInt(Math.max(0,Math.min(100,n)));
+                            buf.writeVarInt(Math.max(0,Math.min(100,data.water())));
+                            buf.writeVarInt(Math.max(0,Math.min(100,data.salt())));
                         },
                         (FriendlyByteBuf buf) -> {
                             int[] values=new int[27];
                             for(int i=0;i<values.length;i++)
                                 values[i]=Math.max(0,Math.min(100,buf.readVarInt()));
-                            return new State(values);
+                            return new State(values,
+                                    Math.max(0,Math.min(100,buf.readVarInt())),
+                                    Math.max(0,Math.min(100,buf.readVarInt())));
                         }
                 );
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
@@ -40,6 +44,6 @@ public final class NutritionNetworkV35 {
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToClient(State.TYPE,State.STREAM_CODEC,
-                (payload,context) -> NutritionScreenClientV35.open(payload.scores()));
+                (payload,context) -> NutritionScreenClientV35.open(payload.scores(),payload.water(),payload.salt()));
     }
 }

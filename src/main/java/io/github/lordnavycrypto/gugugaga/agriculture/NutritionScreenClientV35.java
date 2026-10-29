@@ -12,19 +12,23 @@ import net.minecraft.network.chat.Component;
  * the GUI never claims to measure real calories, health, body or deficiencies.
  */
 public final class NutritionScreenClientV35 extends Screen {
-    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}};
+    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0}};
     private final int[] values;
-    private int page=0;
+    private int page=5;
+    private final int water;
+    private final int salt;
     private Button back;
     private Button next;
 
-    private NutritionScreenClientV35(int[] snapshot) {
+    private NutritionScreenClientV35(int[] snapshot,int water,int salt) {
         super(Component.translatable("message.gugugaga.v35_gui_title"));
         this.values=Arrays.copyOf(snapshot,27);
+        this.water=Math.max(0,Math.min(100,water));
+        this.salt=Math.max(0,Math.min(100,salt));
     }
-    public static void open(int[] scores) {
+    public static void open(int[] scores,int water,int salt) {
         if(scores.length != 27) return;
-        Minecraft.getInstance().setScreen(new NutritionScreenClientV35(scores));
+        Minecraft.getInstance().setScreen(new NutritionScreenClientV35(scores,water,salt));
     }
 
     @Override
@@ -52,6 +56,15 @@ public final class NutritionScreenClientV35 extends Screen {
         graphics.drawCenteredString(font,title,width/2,y+12,0xFFF3E8CF);
         Component category=Component.translatable("message.gugugaga.v35_page_"+page);
         graphics.drawCenteredString(font,category,width/2,y+31,0xFFD7C19C);
+        if(page==5) {
+            drawVital(graphics,x+15,y+70,"water_level",water);
+            drawVital(graphics,x+15,y+107,"sodium_balance",salt);
+            Component status=Component.translatable(water<=15
+                    ?"message.gugugaga.v37_thirst_low":salt<=8
+                    ?"message.gugugaga.v37_salt_low":salt>85
+                    ?"message.gugugaga.v37_salt_high":"message.gugugaga.v37_balanced");
+            graphics.drawCenteredString(font,status,width/2,y+165,0xFFF5C69F);
+        }
         int start=PAGES[page][0],end=PAGES[page][1];
         int lineY=y+54;
         for(int i=start;i<end;i++) {
@@ -70,6 +83,12 @@ public final class NutritionScreenClientV35 extends Screen {
         graphics.drawCenteredString(font,Component.literal((page+1)+" / "+PAGES.length),
                 width/2,bottom-30,0xFFDDD7BF);
         super.render(graphics,mouseX,mouseY,partialTick);
+    }
+    private void drawVital(GuiGraphics g,int x,int y,String id,int value) {
+        g.drawString(font,Component.translatable("nutrition.gugugaga."+id),x,y,0xFFE6EEE1,false);
+        g.fill(x,y+14,x+200,y+26,0xFF43514B);
+        g.fill(x,y+14,x+value*2,y+26,0xFF83B8D0);
+        g.drawString(font,value+" / 100",x+219,y+16,0xFFEEE5D6,false);
     }
     @Override
     public boolean isPauseScreen() {return false;}

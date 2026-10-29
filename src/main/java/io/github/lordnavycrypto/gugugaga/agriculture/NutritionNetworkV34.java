@@ -30,7 +30,8 @@ public final class NutritionNetworkV34 {
                     if (context.player() instanceof ServerPlayer player) {
                         NutritionV34.show(player); // compatible text report
                         PacketDistributor.sendToPlayer(player,
-                                new NutritionNetworkV35.State(NutritionV34.snapshot(player)));
+                                new NutritionNetworkV35.State(NutritionV34.snapshot(player),
+                                        WaterSaltV37.water(player),WaterSaltV37.salt(player)));
                     }
                 });
     }

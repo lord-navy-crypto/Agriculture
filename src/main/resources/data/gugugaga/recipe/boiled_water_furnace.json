@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": {
+    "item": "gugugaga:raw_water_bottle"
+  },
+  "result": {
+    "id": "gugugaga:boiled_water_bottle"
+  },
+  "experience": 0,
+  "cookingtime": 200
+}

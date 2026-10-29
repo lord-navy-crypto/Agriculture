@@ -1,0 +1,1640 @@
+{
+  "schema_version": 1,
+  "units": "abstract Minecraft balance points per consumed item, not fluid volume or sodium in mg; derived from gameplay food types, not laboratory measurements",
+  "scientific_scope": "Water is obtained from foods and drinks; sodium is an electrolyte; untreated freshwater has a variable pathogen risk; boiling reduces microbial hazards but does not remove toxic chemicals.",
+  "sources": [
+    "https://www.nationalacademies.org/read/10925/chapter/6",
+    "https://www.who.int/publications/i/item/9789240121225",
+    "https://www.cdc.gov/water-emergency/about/drinking-water-advisories-an-overview.html"
+  ],
+  "foods": {
+    "gugugaga:adzuki_bean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:adzuki_bean_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:adzuki_bean_sweet_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:aged_pepper_beef": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:allium_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:amaranth": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:apple_cinnamon_porridge": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:apple_froth_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:apple_glazed_pork": {
+      "water": 7,
+      "sodium": 2
+    },
+    "gugugaga:apple_measure_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:apple_oat_crumble": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:apple_vinegar_vegetable_bowl": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:artichoke": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:arugula": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:asparagus": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:azure_bluet_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:baked_sweet_corn": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:baked_taro": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:barley": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:barley_vegetable_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:basil": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:basil_tomato_flatbread": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:bean_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_garden_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_garden_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_pickle_plate": {
+      "water": 5,
+      "sodium": 4
+    },
+    "gugugaga:beetroot_potato_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_ribbon_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:beetroot_winter_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:bell_pepper": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:berry_breakfast_bowl": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:berry_cream_tart": {
+      "water": 7,
+      "sodium": 3
+    },
+    "gugugaga:berry_jam_toast": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:berry_mash_bread": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:berry_pie": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:black_bean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:black_pepper": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:blackberry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:blackberry_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:blackcurrant": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:blackcurrant_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:blackcurrant_oat_crumble": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:blue_orchid_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:blueberry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:bok_choy": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:broccoli": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:brussels_sprouts": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:buckwheat": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:buckwheat_flatbread": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:buckwheat_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:buckwheat_mushroom_noodles": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:buckwheat_pancakes": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cabbage": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:cabbage_rice_bowl": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:cabbage_rolls": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:cardamom": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cardamom_bream_bowl": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:carrot_chicken_bowl": {
+      "water": 5,
+      "sodium": 2
+    },
+    "gugugaga:carrot_sunrise_drink": {
+      "water": 18,
+      "sodium": 1
+    },
+    "gugugaga:cassava_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:cassava_flatbread": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:cauliflower": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:celeriac": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:celeriac_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:celery": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:chayote": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:chayote_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:chayote_stir_fry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:chickpea": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:chickpea_hummus": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:chicory": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:chicory_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:chili_bean_chili": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:chili_pepper": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:chili_soy_noodles": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:chive_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:chives": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:chocolate_cream_biscuit": {
+      "water": 5,
+      "sodium": 3
+    },
+    "gugugaga:cilantro": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:clear_apple_jelly": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:clear_grape_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:clover_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:cocoa_crunch_cookies": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cocoa_morning_cake": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cocoa_oat_bites": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:cocoa_seed_brittle": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cod_clear_noodle_soup": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:cod_noodle_broth": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:coffee_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:coffee_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:collard_greens": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:corn": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:cornbread": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:cornflower_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:country_bread_basket": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:cowpea": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:cowpea_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:cranberry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:creamy_mushroom_bowl": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:creamy_potato_pot": {
+      "water": 5,
+      "sodium": 3
+    },
+    "gugugaga:crop_stir_fry": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:crunchy_carrot_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:cucumber": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:cucumber_mint_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:cucumber_onion_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:cucumber_pickle_plate": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:cultured_cabbage_bowl": {
+      "water": 8,
+      "sodium": 4
+    },
+    "gugugaga:cultured_carrot_wrap": {
+      "water": 5,
+      "sodium": 4
+    },
+    "gugugaga:cumin": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:cumin_anchovy_toast": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:daikon": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:daikon_fish_soup": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:dandelion_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:dill": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:dulse": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:egg_rice_breakfast": {
+      "water": 1,
+      "sodium": 2
+    },
+    "gugugaga:eggplant": {
+      "water": 7,
+      "sodium": 2
+    },
+    "gugugaga:eggplant_curry": {
+      "water": 7,
+      "sodium": 2
+    },
+    "gugugaga:endive": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:endive_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:enoki_mushroom": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:enoki_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:farmers_skillet": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:fava_bean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:fava_bean_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:fava_bean_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:fennel": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:fenugreek": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:fenugreek_shrimp_stew": {
+      "water": 14,
+      "sodium": 3
+    },
+    "gugugaga:fermented_cucumber_plate": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:fermented_soy_rice": {
+      "water": 3,
+      "sodium": 4
+    },
+    "gugugaga:fish_fillet": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:forest_berry_pancakes": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:fruit_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:garden_lunch_tray": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:garden_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:garden_tomato_broth": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:garlic": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:garlic_roasted_potatoes": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:garlic_water_spinach": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:ginger": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:glow_berry_custard": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:glow_berry_mousse": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:golden_hash_browns": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:grain_porridge": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:grape": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:grape_berry_compote": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:grape_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:grape_fruit_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:grape_measure_cup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:green_bean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:grilled_fish_skewer": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:handmade_rice_dumplings": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:hearty_potato_plate": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:herb_beef_wrap": {
+      "water": 2,
+      "sodium": 2
+    },
+    "gugugaga:herb_bread": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:herbal_tea": {
+      "water": 18,
+      "sodium": 1
+    },
+    "gugugaga:herring_seaweed_bowl": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:honey_berry_toast": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:honey_mustard_dressing": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:honey_salmon_plate": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:jicama": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:jicama_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:jute_mallow": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:jute_mallow_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:jute_mallow_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:kale": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:kelp_rice_soup": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:kelp_salmon_rice": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:kelp_spiced_cod": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:kohlrabi": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:kohlrabi_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:lavender_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:leek": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:lemongrass": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:lemongrass_sardine_soup": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:lentil": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:lentil_curry": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:lettuce": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:lily_of_the_valley_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:lion_mane_mushroom": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:lion_mane_steak": {
+      "water": 18,
+      "sodium": 2
+    },
+    "gugugaga:melon": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:melon_apple_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:melon_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:melon_seed_bread": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:millet": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:millet_fennel_pilaf": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:mint": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:mung_bean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:mung_bean_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:mung_bean_congee": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_barley_risotto": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_clear_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_egg_toast": {
+      "water": 6,
+      "sodium": 2
+    },
+    "gugugaga:mushroom_herb_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_medley": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_rice_bowl": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_rice_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:mushroom_sauce": {
+      "water": 6,
+      "sodium": 4
+    },
+    "gugugaga:mustard_greens": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:mustard_greens_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:napa_cabbage": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:napa_cabbage_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:napa_cabbage_braise": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:nori_rice_roll": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:nori_sheet": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:oat": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:oat_berry_porridge": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:okra": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:onion": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:onion_clear_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:onion_flatbread": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:onion_vegetable_pie": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:orange_tulip_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:oxeye_daisy_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:oyster_mushroom": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:parsley": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:parsnip": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:pea": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:peanut": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:peanut_sauce": {
+      "water": 3,
+      "sodium": 4
+    },
+    "gugugaga:pepper_crab_plate": {
+      "water": 7,
+      "sodium": 3
+    },
+    "gugugaga:pickled_beetroot_bowl": {
+      "water": 5,
+      "sodium": 8
+    },
+    "gugugaga:pickled_cabbage_noodle_bowl": {
+      "water": 8,
+      "sodium": 8
+    },
+    "gugugaga:pickled_cucumber_rice_roll": {
+      "water": 7,
+      "sodium": 8
+    },
+    "gugugaga:pickled_daikon_fish_bowl": {
+      "water": 5,
+      "sodium": 8
+    },
+    "gugugaga:pineapple": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pineapple_glazed_rice": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pineapple_tart": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pink_tulip_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:poppy_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:porcini_mushroom": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:potato_onion_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:potato_wedge_platter": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:pumpkin_breakfast_cake": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_cream_pie": {
+      "water": 7,
+      "sodium": 3
+    },
+    "gugugaga:pumpkin_meat_stew": {
+      "water": 14,
+      "sodium": 2
+    },
+    "gugugaga:pumpkin_pastry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_rice": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_seasonal_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_seed_crackers": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_seed_dip": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_shred_fritters": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:pumpkin_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:purslane": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:purslane_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:quinoa": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:quinoa_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:radish": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:rapini": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:rapini_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:rapini_garlic_saute": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:raspberry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:red_mushroom_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:red_mushroom_warm_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:red_tulip_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:rice": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:rice_vegetable_bowl": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:rice_vinegar_salad": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:roasted_chickpeas": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:roasted_root_vegetables": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:roasted_seed_mix": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:roasted_yam": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:root_vegetable_hash": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:rustic_flatbread": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:rutabaga": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:rutabaga_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:rye": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:safflower_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:salmon_apple_plate": {
+      "water": 7,
+      "sodium": 3
+    },
+    "gugugaga:sea_lettuce": {
+      "water": 8,
+      "sodium": 3
+    },
+    "gugugaga:sea_salt_cod_rice": {
+      "water": 2,
+      "sodium": 8
+    },
+    "gugugaga:seafood_broth": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:seafood_rice_bowl": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:seasoned_mackerel_bowl": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:seaweed_mushroom_soup": {
+      "water": 17,
+      "sodium": 3
+    },
+    "gugugaga:seaweed_potato_chowder": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:seaweed_salad": {
+      "water": 7,
+      "sodium": 3
+    },
+    "gugugaga:sesame": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sesame_noodles": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sesame_rice_balls": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sesame_steamed_buns": {
+      "water": 18,
+      "sodium": 1
+    },
+    "gugugaga:sesame_vegetable_noodles": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:shallot": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:shiitake_ferment_noodles": {
+      "water": 6,
+      "sodium": 4
+    },
+    "gugugaga:shiitake_mushroom": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:sifted_rice_cake": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:silky_pumpkin_bowl": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:smoked_beef": {
+      "water": 2,
+      "sodium": 2
+    },
+    "gugugaga:smoked_beef_hash": {
+      "water": 2,
+      "sodium": 2
+    },
+    "gugugaga:smoked_beef_panini": {
+      "water": 2,
+      "sodium": 2
+    },
+    "gugugaga:smoked_chicken": {
+      "water": 2,
+      "sodium": 2
+    },
+    "gugugaga:smoked_chicken_carrot_bowl": {
+      "water": 5,
+      "sodium": 2
+    },
+    "gugugaga:smoked_chicken_salad": {
+      "water": 7,
+      "sodium": 2
+    },
+    "gugugaga:smoked_cod": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:smoked_cod_pie": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:smoked_cod_rice": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:smoked_mushroom_bowl": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:smoked_salmon": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:smoked_salmon_rice": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:sorghum": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:soy_sauce_mushroom_rice": {
+      "water": 6,
+      "sodium": 8
+    },
+    "gugugaga:soybean": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:soybean_patties": {
+      "water": 3,
+      "sodium": 1
+    },
+    "gugugaga:spiced_fermented_beans": {
+      "water": 3,
+      "sodium": 4
+    },
+    "gugugaga:spiced_mackerel_rice": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:spiced_vegetable_bowl": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:spinach": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:spinach_omelette": {
+      "water": 8,
+      "sodium": 2
+    },
+    "gugugaga:strawberry": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:stuffed_pepper": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:sugar_beet": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:sunflower_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:sunflower_seed": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sweet_beet_rice_cake": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:sweet_berry_bran_biscuits": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:sweet_corn": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sweet_corn_fritters": {
+      "water": 1,
+      "sodium": 1
+    },
+    "gugugaga:sweet_potato": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:sweet_potato_roast": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:swiss_chard": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:taro_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:taro_dumplings": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:tea_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:tea_cup": {
+      "water": 18,
+      "sodium": 1
+    },
+    "gugugaga:teff": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:toasted_seaweed_rice": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:tomato": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:tomato_basil_bruschetta": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:tomato_egg_stir_fry": {
+      "water": 7,
+      "sodium": 2
+    },
+    "gugugaga:tomato_flatbread_pizza": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:tomato_okra_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:tomato_sauce": {
+      "water": 7,
+      "sodium": 4
+    },
+    "gugugaga:tomato_vegetable_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "gugugaga:torchflower_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:truffle": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:truffle_pasta": {
+      "water": 6,
+      "sodium": 1
+    },
+    "gugugaga:turmeric": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:turnip": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:vegetable_steamed_rice": {
+      "water": 18,
+      "sodium": 1
+    },
+    "gugugaga:vegetable_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "gugugaga:wakame": {
+      "water": 6,
+      "sodium": 3
+    },
+    "gugugaga:warm_carrot_salad": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:wasabi": {
+      "water": 2,
+      "sodium": 1
+    },
+    "gugugaga:wasabi_seabass_plate": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:water_spinach": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:water_spinach_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:watercress": {
+      "water": 8,
+      "sodium": 1
+    },
+    "gugugaga:watercress_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:watermelon": {
+      "water": 7,
+      "sodium": 1
+    },
+    "gugugaga:watermelon_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:white_tulip_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:wildflower_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:wither_rose_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:yam_blossom_honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "gugugaga:yam_cakes": {
+      "water": 5,
+      "sodium": 1
+    },
+    "gugugaga:zucchini": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:apple": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:baked_potato": {
+      "water": 5,
+      "sodium": 1
+    },
+    "minecraft:beef": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:beetroot": {
+      "water": 5,
+      "sodium": 1
+    },
+    "minecraft:beetroot_soup": {
+      "water": 17,
+      "sodium": 1
+    },
+    "minecraft:bread": {
+      "water": 1,
+      "sodium": 1
+    },
+    "minecraft:cake": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:carrot": {
+      "water": 5,
+      "sodium": 1
+    },
+    "minecraft:chicken": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:chorus_fruit": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:cod": {
+      "water": 2,
+      "sodium": 3
+    },
+    "minecraft:cooked_beef": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:cooked_chicken": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:cooked_cod": {
+      "water": 2,
+      "sodium": 3
+    },
+    "minecraft:cooked_mutton": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:cooked_porkchop": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:cooked_rabbit": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:cooked_salmon": {
+      "water": 2,
+      "sodium": 3
+    },
+    "minecraft:cookie": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:dried_kelp": {
+      "water": 6,
+      "sodium": 3
+    },
+    "minecraft:enchanted_golden_apple": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:glow_berries": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:golden_apple": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:golden_carrot": {
+      "water": 5,
+      "sodium": 1
+    },
+    "minecraft:honey_bottle": {
+      "water": 2,
+      "sodium": 0
+    },
+    "minecraft:melon_slice": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:mushroom_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "minecraft:mutton": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:poisonous_potato": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:porkchop": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:potato": {
+      "water": 5,
+      "sodium": 1
+    },
+    "minecraft:pufferfish": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:pumpkin_pie": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:rabbit": {
+      "water": 2,
+      "sodium": 2
+    },
+    "minecraft:rabbit_stew": {
+      "water": 14,
+      "sodium": 2
+    },
+    "minecraft:rotten_flesh": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:salmon": {
+      "water": 2,
+      "sodium": 3
+    },
+    "minecraft:slice_of_cake": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:spider_eye": {
+      "water": 2,
+      "sodium": 1
+    },
+    "minecraft:suspicious_stew": {
+      "water": 14,
+      "sodium": 1
+    },
+    "minecraft:sweet_berries": {
+      "water": 7,
+      "sodium": 1
+    },
+    "minecraft:tropical_fish": {
+      "water": 2,
+      "sodium": 3
+    },
+    "gugugaga:raw_water_bottle": {
+      "water": 26,
+      "sodium": 0
+    },
+    "gugugaga:boiled_water_bottle": {
+      "water": 36,
+      "sodium": 0
+    },
+    "gugugaga:filtered_water_bottle": {
+      "water": 36,
+      "sodium": 0
+    },
+    "minecraft:potion": {
+      "water": 18,
+      "sodium": 0
+    }
+  }
+}
