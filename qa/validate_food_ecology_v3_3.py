@@ -38,6 +38,8 @@ def main():
 
     source=(JAVA/"agriculture/FoodEcologyV33Content.java").read_text("utf-8")
     climate=(JAVA/"agriculture/CropClimate.java").read_text("utf-8")
+    new_climate=(JAVA/"agriculture/FoodEcologyV33Climate.java").read_text("utf-8")
+    assert "FoodEcologyV33Climate.allowGrowth(seedName, level, pos, random)" in climate
     vat=(JAVA/"agriculture/FoodFermentationVatBlock.java").read_text("utf-8")
     fish=(JAVA/"agriculture/FoodEcologyFishing.java").read_text("utf-8")
     modes=(JAVA/"agriculture/FoodEcologyV33Modes.java").read_text("utf-8")
@@ -60,7 +62,7 @@ def main():
         assert f'"{id}_crop", "{id}_seeds"' in source
         assert f'"{id}_seeds", {id.upper()}_CROP' in source
         assert f'food("{id}",' in source
-        assert f'"{id}_seeds"' in climate
+        assert f'"{id}_seeds"' in new_climate
         for lang in (en,zh):
             assert lang[f"item.gugugaga.{id}"]
             assert lang[f"item.gugugaga.{id}_seeds"]
