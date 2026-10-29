@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:potato_soup_base"
+    },
+    {
+      "item": "gugugaga:onion_stock"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:potato_onion_soup",
+    "count": 1
+  }
+}

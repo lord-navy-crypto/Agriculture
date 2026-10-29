@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sesame_paste"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:wooden_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sesame_rice_balls",
+    "count": 1
+  }
+}

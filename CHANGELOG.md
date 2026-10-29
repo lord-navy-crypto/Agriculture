@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.1.0-rc.1 — Specialist kitchen tools become functional
+
+- Four new kitchen processing blocks with real server-side interactions: **Whisking Station, Spice Mortar Station, Straining Station, Stock Pot**.
+- Reused four formerly decorative v3.0 tools as **functional, nonconsumable offhand requirements**: Wire Whisk, Mortar and Pestle, Kitchen Strainer, Soup Ladle.
+- Twenty-four additional intermediate ingredients across whipped bases, spice/seed pastes, filtered juices and simmered stocks. Original Minecraft eggs, cocoa beans and dried kelp now participate directly.
+- Twenty-three new finished dishes requiring v3.1 prepared ingredients, with original Minecraft apples, sugar, cookies, eggs, carrots, potatoes and bread.
+- Four extra paired idle/working frame models and short server-synchronized particle feedback; stock pot requires a lit smoky campfire.
+- Generated 47 unique 16×16 icons and dedicated 6×8 review sheet, independent of the original crop, v2.8, v2.9 and v3.0 art.
+- Retained all original 100 crops, 50 floral honeys, 68 original cuisine items, 5 old manual kitchen blocks, 3 v3 animated stations, all IDs and the embedded optional Fusion resource pack.
+- CI now tests all 24 new Java mapping routes, required tools, active models, recipes, labels and generated pixels, plus prior contracts, Java 21 compilation and real dedicated-server startup.
+- Still uses immediate 1:1 ingredient processing with no persistent machine inventory or real cooking timer. Client visual/interaction acceptance remains necessary.
+
+
 ## v3.0.0-rc.1 — Kitchen utensils, tableware and animated cooking machines
 
 - Three new placeable cooking stations: **dough bench, skillet station and bamboo steamer**, each with independent idle/working baked block models.

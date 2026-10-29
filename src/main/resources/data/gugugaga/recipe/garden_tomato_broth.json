@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:strained_tomato_juice"
+    },
+    {
+      "item": "gugugaga:onion_stock"
+    },
+    {
+      "item": "gugugaga:soup_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garden_tomato_broth",
+    "count": 1
+  }
+}

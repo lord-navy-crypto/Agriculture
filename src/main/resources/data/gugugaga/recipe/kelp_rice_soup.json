@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:kelp_broth"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:wooden_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:kelp_rice_soup",
+    "count": 1
+  }
+}

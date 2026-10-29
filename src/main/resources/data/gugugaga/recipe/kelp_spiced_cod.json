@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:seaweed_seasoning"
+    },
+    {
+      "item": "gugugaga:smoked_cod"
+    },
+    {
+      "item": "gugugaga:steamed_potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:kelp_spiced_cod",
+    "count": 1
+  }
+}

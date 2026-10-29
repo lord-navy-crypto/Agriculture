@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:clear_apple_juice"
+    },
+    {
+      "item": "gugugaga:glow_berry_froth"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:clear_apple_jelly",
+    "count": 1
+  }
+}

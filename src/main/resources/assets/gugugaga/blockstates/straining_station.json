@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "gugugaga:block/straining_station"
+    },
+    "active=true": {
+      "model": "gugugaga:block/straining_station_active"
+    }
+  }
+}

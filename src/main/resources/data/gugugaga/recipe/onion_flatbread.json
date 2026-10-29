@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:onion_paste"
+    },
+    {
+      "item": "gugugaga:pizza_base"
+    },
+    {
+      "item": "gugugaga:pan_roasted_tomato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:onion_flatbread",
+    "count": 1
+  }
+}

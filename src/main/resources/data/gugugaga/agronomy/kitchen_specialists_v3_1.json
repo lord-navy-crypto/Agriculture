@@ -1,0 +1,575 @@
+{
+  "schema_version": "3.1",
+  "description": "Additional four active-frame kitchen stations make four v3.0 utensils functional; 24 one-to-one prepared intermediates and 23 multi-ingredient dishes using vanilla and Agriculture crops; additive to all previous versions.",
+  "stations": [
+    {
+      "id": "whisking_station",
+      "kind": "whisk",
+      "english_name": "Whisking Station",
+      "chinese_name": "打发料理台",
+      "offhand": "gugugaga:wire_whisk"
+    },
+    {
+      "id": "spice_mortar_station",
+      "kind": "mortar",
+      "english_name": "Spice Mortar Station",
+      "chinese_name": "研钵调味台",
+      "offhand": "gugugaga:mortar_pestle"
+    },
+    {
+      "id": "straining_station",
+      "kind": "strain",
+      "english_name": "Straining Station",
+      "chinese_name": "食材过滤台",
+      "offhand": "gugugaga:kitchen_strainer"
+    },
+    {
+      "id": "stock_pot",
+      "kind": "simmer",
+      "english_name": "Stock Pot",
+      "chinese_name": "炖煮汤锅",
+      "offhand": "gugugaga:soup_ladle",
+      "requires": "lit_campfire_smoke"
+    }
+  ],
+  "items": [
+    {
+      "id": "beaten_egg",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "minecraft:egg",
+      "english_name": "Beaten Egg",
+      "chinese_name": "打散蛋液",
+      "color": "#E7BF75"
+    },
+    {
+      "id": "whipped_cocoa",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "gugugaga:cocoa_mix",
+      "english_name": "Whipped Cocoa",
+      "chinese_name": "打发可可糊",
+      "color": "#A87557"
+    },
+    {
+      "id": "glow_berry_froth",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "gugugaga:glow_berry_juice",
+      "english_name": "Glow Berry Froth",
+      "chinese_name": "发光浆果泡沫",
+      "color": "#D7B55B"
+    },
+    {
+      "id": "aerated_apple_mix",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "gugugaga:apple_juice",
+      "english_name": "Aerated Apple Mix",
+      "chinese_name": "苹果泡沫液",
+      "color": "#D5BA78"
+    },
+    {
+      "id": "whipped_pumpkin",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "gugugaga:pumpkin_puree",
+      "english_name": "Whipped Pumpkin",
+      "chinese_name": "打发南瓜糊",
+      "color": "#DDA35A"
+    },
+    {
+      "id": "whipped_berry_topping",
+      "type": "ingredient",
+      "station": "whisk",
+      "input": "gugugaga:berry_compote_base",
+      "english_name": "Whipped Berry Topping",
+      "chinese_name": "莓果打发酱",
+      "color": "#BF7091"
+    },
+    {
+      "id": "crushed_cocoa_nibs",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "minecraft:cocoa_beans",
+      "english_name": "Crushed Cocoa Nibs",
+      "chinese_name": "可可碎粒",
+      "color": "#81503A"
+    },
+    {
+      "id": "sesame_paste",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "gugugaga:sesame_meal",
+      "english_name": "Sesame Paste",
+      "chinese_name": "芝麻酱",
+      "color": "#B9A16F"
+    },
+    {
+      "id": "pumpkin_seed_paste",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "gugugaga:pumpkin_seed_meal",
+      "english_name": "Pumpkin Seed Paste",
+      "chinese_name": "南瓜籽酱",
+      "color": "#A2A069"
+    },
+    {
+      "id": "seaweed_seasoning",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "minecraft:dried_kelp",
+      "english_name": "Seaweed Seasoning",
+      "chinese_name": "海苔调味粉",
+      "color": "#648560"
+    },
+    {
+      "id": "onion_paste",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "gugugaga:chopped_onion",
+      "english_name": "Onion Paste",
+      "chinese_name": "洋葱泥",
+      "color": "#C3AD75"
+    },
+    {
+      "id": "berry_mash",
+      "type": "ingredient",
+      "station": "mortar",
+      "input": "gugugaga:chopped_sweet_berries",
+      "english_name": "Berry Mash",
+      "chinese_name": "浆果泥",
+      "color": "#BC5668"
+    },
+    {
+      "id": "clear_apple_juice",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:apple_juice",
+      "english_name": "Clarified Apple Juice",
+      "chinese_name": "澄清苹果汁",
+      "color": "#D6BB78"
+    },
+    {
+      "id": "clear_grape_juice",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:grape_juice",
+      "english_name": "Clarified Grape Juice",
+      "chinese_name": "澄清葡萄汁",
+      "color": "#9972AF"
+    },
+    {
+      "id": "strained_tomato_juice",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:tomato_juice",
+      "english_name": "Strained Tomato Juice",
+      "chinese_name": "过滤番茄汁",
+      "color": "#BC5D47"
+    },
+    {
+      "id": "clear_beet_juice",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:beetroot_juice",
+      "english_name": "Clarified Beetroot Juice",
+      "chinese_name": "澄清甜菜根汁",
+      "color": "#A95472"
+    },
+    {
+      "id": "kelp_broth",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:kelp_paste",
+      "english_name": "Kelp Broth",
+      "chinese_name": "海带清汤",
+      "color": "#8CA17E"
+    },
+    {
+      "id": "sifted_rice_flour",
+      "type": "ingredient",
+      "station": "strain",
+      "input": "gugugaga:rice_flour",
+      "english_name": "Sifted Rice Flour",
+      "chinese_name": "过筛米粉",
+      "color": "#DFD9C4"
+    },
+    {
+      "id": "pumpkin_soup_base",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:steamed_pumpkin",
+      "english_name": "Pumpkin Soup Base",
+      "chinese_name": "南瓜汤底",
+      "color": "#D6A264"
+    },
+    {
+      "id": "mushroom_stock",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:sauteed_mushrooms",
+      "english_name": "Mushroom Stock",
+      "chinese_name": "蘑菇高汤",
+      "color": "#9C9476"
+    },
+    {
+      "id": "onion_stock",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:caramelized_onions",
+      "english_name": "Onion Stock",
+      "chinese_name": "洋葱高汤",
+      "color": "#C2A16F"
+    },
+    {
+      "id": "cod_stock",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:smoked_cod",
+      "english_name": "Cod Stock",
+      "chinese_name": "鳕鱼高汤",
+      "color": "#AFB7AB"
+    },
+    {
+      "id": "beetroot_soup_base",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:steamed_beetroot",
+      "english_name": "Beetroot Soup Base",
+      "chinese_name": "甜菜根汤底",
+      "color": "#A25973"
+    },
+    {
+      "id": "potato_soup_base",
+      "type": "ingredient",
+      "station": "simmer",
+      "input": "gugugaga:steamed_potato",
+      "english_name": "Potato Soup Base",
+      "chinese_name": "马铃薯汤底",
+      "color": "#D0BA8E"
+    },
+    {
+      "id": "egg_rice_breakfast",
+      "type": "food",
+      "english_name": "Egg and Rice Breakfast",
+      "chinese_name": "鸡蛋米饭早餐",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:beaten_egg",
+        "gugugaga:steamed_rice",
+        "minecraft:carrot"
+      ],
+      "color": "#D2B978"
+    },
+    {
+      "id": "chocolate_cream_biscuit",
+      "type": "food",
+      "english_name": "Chocolate Cream Biscuit",
+      "chinese_name": "巧克力奶油饼",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:whipped_cocoa",
+        "minecraft:cookie",
+        "minecraft:sugar"
+      ],
+      "color": "#A7795D"
+    },
+    {
+      "id": "glow_berry_mousse",
+      "type": "food",
+      "english_name": "Glow Berry Mousse",
+      "chinese_name": "发光浆果慕斯",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:glow_berry_froth",
+        "minecraft:egg",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#D4B168"
+    },
+    {
+      "id": "apple_froth_cup",
+      "type": "food",
+      "english_name": "Apple Froth Cup",
+      "chinese_name": "苹果泡沫杯",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:aerated_apple_mix",
+        "minecraft:apple",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#D0BA83"
+    },
+    {
+      "id": "pumpkin_cream_pie",
+      "type": "food",
+      "english_name": "Pumpkin Cream Pie",
+      "chinese_name": "南瓜奶油派",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:whipped_pumpkin",
+        "gugugaga:bread_dough",
+        "minecraft:sugar"
+      ],
+      "color": "#D29A60"
+    },
+    {
+      "id": "berry_cream_tart",
+      "type": "food",
+      "english_name": "Berry Cream Tart",
+      "chinese_name": "莓果奶油塔",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:whipped_berry_topping",
+        "gugugaga:pumpkin_pastry_dough",
+        "gugugaga:dessert_plate"
+      ],
+      "color": "#C08992"
+    },
+    {
+      "id": "cocoa_seed_brittle",
+      "type": "food",
+      "english_name": "Cocoa Sesame Brittle",
+      "chinese_name": "可可芝麻脆糖",
+      "nutrition": 6,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:crushed_cocoa_nibs",
+        "minecraft:sugar",
+        "gugugaga:sesame_paste"
+      ],
+      "color": "#A57C57"
+    },
+    {
+      "id": "sesame_rice_balls",
+      "type": "food",
+      "english_name": "Sesame Rice Balls",
+      "chinese_name": "芝麻饭团",
+      "nutrition": 7,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:sesame_paste",
+        "gugugaga:steamed_rice",
+        "gugugaga:wooden_bowl"
+      ],
+      "color": "#C2B181"
+    },
+    {
+      "id": "pumpkin_seed_dip",
+      "type": "food",
+      "english_name": "Pumpkin Seed Dip",
+      "chinese_name": "南瓜籽蘸酱",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:pumpkin_seed_paste",
+        "minecraft:bread",
+        "gugugaga:sauce_dish"
+      ],
+      "color": "#ACA77E"
+    },
+    {
+      "id": "kelp_spiced_cod",
+      "type": "food",
+      "english_name": "Seaweed-Spiced Cod",
+      "chinese_name": "海苔香鳕鱼",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:seaweed_seasoning",
+        "gugugaga:smoked_cod",
+        "gugugaga:steamed_potato"
+      ],
+      "color": "#9DA484"
+    },
+    {
+      "id": "onion_flatbread",
+      "type": "food",
+      "english_name": "Onion-Paste Flatbread",
+      "chinese_name": "洋葱酱薄饼",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:onion_paste",
+        "gugugaga:pizza_base",
+        "gugugaga:pan_roasted_tomato"
+      ],
+      "color": "#C29A72"
+    },
+    {
+      "id": "berry_mash_bread",
+      "type": "food",
+      "english_name": "Berry Mash Bread",
+      "chinese_name": "莓果泥面包",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:berry_mash",
+        "gugugaga:bread_dough",
+        "minecraft:apple"
+      ],
+      "color": "#C18580"
+    },
+    {
+      "id": "clear_apple_jelly",
+      "type": "food",
+      "english_name": "Clarified Apple Jelly",
+      "chinese_name": "澄清苹果冻",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:clear_apple_juice",
+        "gugugaga:glow_berry_froth",
+        "minecraft:sugar"
+      ],
+      "color": "#D1BA82"
+    },
+    {
+      "id": "garden_tomato_broth",
+      "type": "food",
+      "english_name": "Garden Tomato Broth",
+      "chinese_name": "田园番茄汤",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:strained_tomato_juice",
+        "gugugaga:onion_stock",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#C1775F"
+    },
+    {
+      "id": "mushroom_rice_soup",
+      "type": "food",
+      "english_name": "Mushroom Rice Soup",
+      "chinese_name": "蘑菇米汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:mushroom_stock",
+        "gugugaga:steamed_rice",
+        "gugugaga:ceramic_bowl"
+      ],
+      "color": "#A89E82"
+    },
+    {
+      "id": "beetroot_winter_stew",
+      "type": "food",
+      "english_name": "Beetroot Winter Stew",
+      "chinese_name": "冬日甜菜根炖菜",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:beetroot_soup_base",
+        "gugugaga:steamed_potato",
+        "minecraft:carrot"
+      ],
+      "color": "#AD707D"
+    },
+    {
+      "id": "cod_noodle_broth",
+      "type": "food",
+      "english_name": "Cod Noodle Broth",
+      "chinese_name": "鳕鱼高汤面",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:cod_stock",
+        "gugugaga:buckwheat_noodle_dough",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#B3AB91"
+    },
+    {
+      "id": "potato_onion_soup",
+      "type": "food",
+      "english_name": "Potato and Onion Soup",
+      "chinese_name": "马铃薯洋葱汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:potato_soup_base",
+        "gugugaga:onion_stock",
+        "minecraft:baked_potato"
+      ],
+      "color": "#BCB08D"
+    },
+    {
+      "id": "pumpkin_seasonal_soup",
+      "type": "food",
+      "english_name": "Seasonal Pumpkin Soup",
+      "chinese_name": "时令南瓜汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:pumpkin_soup_base",
+        "gugugaga:steamed_pumpkin",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#D3A068"
+    },
+    {
+      "id": "kelp_rice_soup",
+      "type": "food",
+      "english_name": "Kelp Rice Soup",
+      "chinese_name": "海带米汤",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:kelp_broth",
+        "gugugaga:steamed_rice",
+        "gugugaga:wooden_bowl"
+      ],
+      "color": "#A0A78A"
+    },
+    {
+      "id": "sifted_rice_cake",
+      "type": "food",
+      "english_name": "Sifted Rice Cake",
+      "chinese_name": "细米粉蛋糕",
+      "nutrition": 7,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:sifted_rice_flour",
+        "gugugaga:beaten_egg",
+        "minecraft:sugar"
+      ],
+      "color": "#D4C5A5"
+    },
+    {
+      "id": "clear_grape_cup",
+      "type": "food",
+      "english_name": "Clear Grape Fruit Cup",
+      "chinese_name": "澄清葡萄果杯",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:clear_grape_juice",
+        "minecraft:apple",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#AC92B7"
+    },
+    {
+      "id": "beetroot_garden_salad",
+      "type": "food",
+      "english_name": "Beetroot Garden Salad",
+      "chinese_name": "甜菜根田园沙拉",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:clear_beet_juice",
+        "gugugaga:steamed_beetroot",
+        "gugugaga:dessert_plate"
+      ],
+      "color": "#B47F8C"
+    }
+  ]
+}

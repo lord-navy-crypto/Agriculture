@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:beaten_egg"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:egg_rice_breakfast",
+    "count": 1
+  }
+}

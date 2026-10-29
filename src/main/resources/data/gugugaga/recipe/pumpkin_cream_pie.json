@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:whipped_pumpkin"
+    },
+    {
+      "item": "gugugaga:bread_dough"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_cream_pie",
+    "count": 1
+  }
+}

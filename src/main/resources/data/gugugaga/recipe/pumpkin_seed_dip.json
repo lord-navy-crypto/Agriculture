@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin_seed_paste"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "gugugaga:sauce_dish"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_seed_dip",
+    "count": 1
+  }
+}
