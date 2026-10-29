@@ -61,14 +61,14 @@ def main():
         expected[key] = STATION_ENUMS[row["station"]]
     actual = {}
     enum_pattern = re.compile(
-        r"\\b(CHOP|MILL|PRESS|MIX|SMOKE)\\(Map\\.ofEntries\\((.*?)\\n\\s*\\)\\)(?:,|;)", re.S)
+        r"\b(CHOP|MILL|PRESS|MIX|SMOKE)\(Map\.ofEntries\((.*?)\n\s*\)\)(?:,|;)", re.S)
     # This expression is intentionally anchored at a complete enum map,
     # not just free text containing identifiers in comments.
     maps = list(enum_pattern.finditer(source))
     assert len(maps) == 5, f"Expected five workstation maps, got {len(maps)}"
     for entry in maps:
         station, body = entry.groups()
-        pairs = re.findall(r'Map\\.entry\\("([a-z_:]+)",\\s*"([a-z_]+)"\\)', body)
+        pairs = re.findall(r'Map\.entry\("([a-z_:]+)",\s*"([a-z_]+)"\)', body)
         assert pairs, station
         for inp, out in pairs:
             assert (inp, out) not in actual, f"duplicate workstation conversion {inp}"
