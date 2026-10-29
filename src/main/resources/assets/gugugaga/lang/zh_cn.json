@@ -1091,5 +1091,18 @@
   "message.gugugaga.v35_bonus_explore": "尝试多种食材可获得额外奖励；未达标没有惩罚。",
   "message.gugugaga.v35_next_page": "再次按 N 查看下一页。这里的营养指标是游戏分值，不代表真实摄入量。",
   "message.gugugaga.v35_gui_title": "食物多样性与营养面板",
-  "message.gugugaga.v35_gui_note": "仅为游戏分值，不代表真实营养诊断"
+  "message.gugugaga.v35_gui_note": "仅为游戏分值，不代表真实营养诊断",
+  "message.gugugaga.v36_calendar": "第 %s 年 · 第 %s/32 天 · 世界季节：%s · 当前群系：%s，第 %s/%s 天 · 月相 %s（%s）",
+  "season.gugugaga.spring": "春季",
+  "season.gugugaga.summer": "夏季",
+  "season.gugugaga.autumn": "秋季",
+  "season.gugugaga.winter": "冬季",
+  "moon.gugugaga.0": "满月",
+  "moon.gugugaga.1": "亏凸月",
+  "moon.gugugaga.2": "下弦月",
+  "moon.gugugaga.3": "残月",
+  "moon.gugugaga.4": "新月",
+  "moon.gugugaga.5": "蛾眉月",
+  "moon.gugugaga.6": "上弦月",
+  "moon.gugugaga.7": "盈凸月"
 }
