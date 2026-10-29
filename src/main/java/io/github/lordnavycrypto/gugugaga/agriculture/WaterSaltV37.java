@@ -47,34 +47,11 @@ public final class WaterSaltV37 {
         String name=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         if (!stack.has(DataComponents.FOOD) && !stack.is(Items.POTION)
                 && !stack.is(Items.HONEY_BOTTLE)) return;
-        int water=0, sodium=0;
-        if(name.equals("gugugaga:boiled_water_bottle")
-                || name.equals("gugugaga:filtered_water_bottle"))water=36;
-        else if(name.equals("gugugaga:raw_water_bottle")) {
-            water=26;
-            // Risk is environmental/gameplay uncertainty, not certainty that
-            // all natural water is poisonous in real life.
-            if(player.getRandom().nextInt(5)==0)
-                player.addEffect(new MobEffectInstance(MobEffects.CONFUSION,100,0));
-        } else if(name.equals("minecraft:potion")) water=18;
-        else if(name.endsWith("honey_bottle"))water=2;
-        else if(name.contains("soup")||name.contains("stew")||name.contains("broth"))
-            water=14;
-        else if(name.contains("juice")||name.contains("drink")||name.contains("tea"))
-            water=19;
-        else if(name.contains("melon")||name.contains("cucumber")
-                ||name.contains("tomato")||name.contains("orange"))
-            water=9;
-        else if(name.contains("apple")||name.contains("berry")||name.contains("carrot")
-                ||name.contains("lettuce")||name.contains("cabbage")) water=5;
-        else water=1;
-        if(name.contains("salt")||name.contains("soy_sauce")
-                ||name.contains("pickled")||name.contains("smoked")
-                ||name.contains("cheese"))sodium=8;
-        else if(name.contains("fish")||name.contains("seaweed")
-                ||name.contains("meat")||name.contains("bread")
-                ||name.contains("soup")||name.contains("stew"))sodium=3;
-        else sodium=1;
+        int water=WaterSaltProfilesV37.water(name);
+        int sodium=WaterSaltProfilesV37.sodium(name);
+        if(name.equals("gugugaga:raw_water_bottle") && player.getRandom().nextInt(5)==0) {
+            player.addEffect(new MobEffectInstance(MobEffects.CONFUSION,100,0));
+        }
         CompoundTag record=data(player);
         record.putInt("water",clamp(record.getInt("water")+water));
         record.putInt("salt",clamp(record.getInt("salt")+sodium));
