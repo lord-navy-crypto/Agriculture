@@ -15,32 +15,51 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 /**
- * Server-owned six-group diversity meter. A gameplay abstraction of dietary
- * variety; not recommended intakes, not diagnoses, no negative food/body effects.
- * No diet restriction, hidden penalties or nutrition-related damage.
+ * Full v3.5 game nutrition subsystem (retains this class name for v3.4
+ * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
+ * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
+ * No deficiency penalties, hunger loss, damage or negative body metrics exist.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID)
 public final class NutritionV34 {
     private NutritionV34() {}
-    private static final String ROOT="gugugaga_nutrition_v34";
-    private static final String[] GROUPS={
-        "grain_energy","protein","plant_fats","vitamins","minerals","fiber"
-    };
+    private static final String ROOT="gugugaga_nutrition_v35";
+    private static final String LEGACY="gugugaga_nutrition_v34";
     private static final int BASE=45;
     private static final int MAX=100;
+    private static final int PAGE_COUNT=5;
+    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}};
 
     private static CompoundTag record(ServerPlayer player) {
-        CompoundTag tag=player.getPersistentData();
-        if (!tag.contains(ROOT)) {
-            CompoundTag values=new CompoundTag();
-            for (String k:GROUPS) values.putInt(k, BASE);
-            tag.put(ROOT, values);
+        CompoundTag all=player.getPersistentData();
+        if(!all.contains(ROOT)) {
+            CompoundTag migrated=new CompoundTag();
+            for(String nutrient:NutritionProfilesV35.NUTRIENTS)
+                migrated.putInt(nutrient,BASE);
+            // Preserve earlier playtime progress instead of resetting every
+            // established world's nutrition state on upgrade.
+            if(all.contains(LEGACY)) {
+                CompoundTag old=all.getCompound(LEGACY);
+                copy(old,migrated,"grain_energy","carbohydrate");
+                copy(old,migrated,"protein","protein");
+                copy(old,migrated,"plant_fats","fat");
+                copy(old,migrated,"fiber","fiber");
+                for(String n:new String[]{"vitamin_a","vitamin_c","vitamin_k"})
+                    copy(old,migrated,"vitamins",n);
+                for(String n:new String[]{"calcium","iron","magnesium"})
+                    copy(old,migrated,"minerals",n);
+            }
+            migrated.putInt("page",0);
+            all.put(ROOT,migrated);
         }
-        return tag.getCompound(ROOT);
+        return all.getCompound(ROOT);
     }
-    private static void add(CompoundTag values, int index, int amount) {
-        String key=GROUPS[index];
-        values.putInt(key,Math.max(0,Math.min(MAX,values.getInt(key)+amount)));
+    private static void copy(CompoundTag old,CompoundTag dest,String from,String to) {
+        if(old.contains(from)) dest.putInt(to,clamp(old.getInt(from)));
+    }
+    private static int clamp(int value) {return Math.max(0,Math.min(MAX,value));}
+    private static void add(CompoundTag record,String key,int amount) {
+        record.putInt(key,clamp(record.getInt(key)+amount));
     }
 
     @SubscribeEvent
@@ -49,78 +68,89 @@ public final class NutritionV34 {
         ItemStack food=event.getItem();
         if (!food.has(DataComponents.FOOD)) return;
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
-                .getKey(food.getItem()).getPath();
+                .getKey(food.getItem()).toString();
+        int[] contribution=NutritionProfilesV35.contribution(id);
         CompoundTag values=record(player);
-        boolean seafood=has(id,"fish","cod","salmon","shrimp","crab","anchovy","sardine",
-                "mackerel","herring","sea_bream","sea_bass");
-        boolean protein=seafood||has(id,"egg","beef","pork","chicken","mutton",
-                "soy","bean","lentil","chickpea","milk","cheese","mushroom");
-        boolean grain=has(id,"bread","rice","wheat","porridge","oat","potato",
-                "noodle","cake","biscuit","pie","corn","barley","pasta","wrap");
-        boolean plant=has(id,"carrot","apple","berry","beet","cabbage","cucumber",
-                "vegetable","pepper","tomato","pumpkin","melon","radish",
-                "daikon","lettuce","fruit","orange","lemon","grape","seaweed");
-        boolean fats=has(id,"seed","sesame","peanut","nut","oil","avocado","salmon",
-                "mackerel","egg","soybean");
-        boolean mineral=seafood||has(id,"milk","cheese","green","kale",
-                "spinach","kelp","seaweed","mushroom","bean","seed","beet");
-        boolean fiber=plant||grain||has(id,"bean","lentil","chickpea","oat");
-        // Every edible item contributes basic energy; food diversity builds
-        // specific values more quickly than repeating one single food.
-        add(values,0,grain?5:2);
-        if (protein) add(values,1,6);
-        if (fats) add(values,2,5);
-        if (plant) add(values,3,6);
-        if (mineral) add(values,4,5);
-        if (fiber) add(values,5,5);
-        player.getPersistentData().put(ROOT, values);
+        for(int i=0;i<NutritionProfilesV35.NUTRIENTS.length;i++) {
+            int points=contribution[i];
+            if(points>0) add(values,NutritionProfilesV35.NUTRIENTS[i],points);
+        }
+        // All eaten foods are counted once, only on the server. Inventory
+        // possession, use-start and aborted eating never award nutrition.
+        player.getPersistentData().put(ROOT,values);
     }
-    private static boolean has(String id,String... words) {
-        for (String word:words) if (id.contains(word)) return true;
-        return false;
+
+    private static int count(CompoundTag values,int from,int to,int threshold) {
+        int result=0;
+        for(int i=from;i<to;i++) {
+            if(values.getInt(NutritionProfilesV35.NUTRIENTS[i])>=threshold)result++;
+        }
+        return result;
+    }
+    private static boolean varied(CompoundTag values) {
+        return count(values,0,5,55)>=3 &&
+               count(values,5,18,55)>=4 &&
+               count(values,18,27,55)>=2;
+    }
+    private static boolean highlyVaried(CompoundTag values) {
+        return count(values,0,5,70)>=4 &&
+               count(values,5,18,70)>=6 &&
+               count(values,18,27,70)>=4;
     }
 
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        // No continuous per-tick inventory scans. Positive status only.
-        if (player.tickCount%200 != 0) return;
+        if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
-        int diverse=0;
-        for (String key:GROUPS) if(values.getInt(key)>=55) diverse++;
-        if (diverse>=4) player.addEffect(new MobEffectInstance(
+        // Positive achievements only, without nutritional penalties.
+        if(varied(values)) player.addEffect(new MobEffectInstance(
                 MobEffects.DIG_SPEED,240,0,true,false,true));
-        // Very gradual score normalization. Never decreases vanilla hunger,
-        // health, speed or stamina; no punishment for food choices.
-        if (player.tickCount%24000==0) {
-            for (String key:GROUPS) values.putInt(key,Math.max(30,values.getInt(key)-1));
-            player.getPersistentData().put(ROOT, values);
+        if(highlyVaried(values)) player.addEffect(new MobEffectInstance(
+                MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
+        // Gentle game-score aging maintains progression without hunger,
+        // damage, starvation, negative potion effects or food restrictions.
+        if(player.tickCount%24000==0) {
+            for(String id:NutritionProfilesV35.NUTRIENTS)
+                values.putInt(id,Math.max(40,values.getInt(id)-1));
+            player.getPersistentData().put(ROOT,values);
         }
     }
 
     @SubscribeEvent
     public static void onClone(PlayerEvent.Clone event) {
-        if (event.getOriginal().getPersistentData().contains(ROOT))
-            event.getEntity().getPersistentData().put(ROOT,
-                    event.getOriginal().getPersistentData().getCompound(ROOT).copy());
+        CompoundTag old=event.getOriginal().getPersistentData();
+        for(String key:new String[]{ROOT,LEGACY}) {
+            if(old.contains(key)) event.getEntity().getPersistentData().put(
+                    key,old.getCompound(key).copy());
+        }
     }
 
+    /**
+     * The same configurable N key cycles five short server-authoritative
+     * pages through vanilla chat, requiring no client-only server class.
+     */
     public static void show(ServerPlayer player) {
         CompoundTag values=record(player);
-        int diverse=0;
-        for (String key:GROUPS) if(values.getInt(key)>=55) diverse++;
-        player.sendSystemMessage(Component.translatable("message.gugugaga.v34_nutrition_title"));
-        for (int i=0;i<GROUPS.length;i++) {
-            int score=Math.max(0,Math.min(100,values.getInt(GROUPS[i])));
-            int bars=score/10;
-            String bar="■".repeat(bars)+"·".repeat(10-bars);
+        int page=Math.floorMod(values.getInt("page"),PAGE_COUNT);
+        int[] range=PAGES[page];
+        player.sendSystemMessage(Component.translatable("message.gugugaga.v35_title",
+                page+1,PAGE_COUNT,Component.translatable(
+                    "message.gugugaga.v35_page_"+page)));
+        for(int i=range[0];i<range[1];i++) {
+            String nutrient=NutritionProfilesV35.NUTRIENTS[i];
+            int score=clamp(values.getInt(nutrient));
+            String bar="■".repeat(score/10)+"·".repeat(10-score/10);
             player.sendSystemMessage(Component.translatable(
                     "message.gugugaga.v34_nutrition_row",
-                    Component.translatable("nutrition.gugugaga."+GROUPS[i]),
-                    bar,score));
+                    Component.translatable("nutrition.gugugaga."+nutrient),bar,score));
         }
-        player.sendSystemMessage(Component.translatable(
-                diverse>=4?"message.gugugaga.v34_nutrition_varied":
-                          "message.gugugaga.v34_nutrition_explore"));
+        String bonus=highlyVaried(values)?"message.gugugaga.v35_bonus_advanced":
+                varied(values)?"message.gugugaga.v35_bonus_varied":
+                "message.gugugaga.v35_bonus_explore";
+        player.sendSystemMessage(Component.translatable(bonus));
+        player.sendSystemMessage(Component.translatable("message.gugugaga.v35_next_page"));
+        values.putInt("page",(page+1)%PAGE_COUNT);
+        player.getPersistentData().put(ROOT,values);
     }
 }
