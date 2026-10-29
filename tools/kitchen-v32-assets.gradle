@@ -1,0 +1,126 @@
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+// Kitchen v3.2 resources are isolated from earlier generated pixel art.
+// Existing icons and 3.0 art assets are never overwritten.
+def kitchenV32Output = layout.buildDirectory.dir('generated/resources/kitchenV32Assets')
+sourceSets.main.resources.srcDir(kitchenV32Output)
+
+tasks.register('generateKitchenV32Assets') {
+    inputs.file(file('src/main/resources/data/gugugaga/agronomy/kitchen_tool_modes_v3_2.json'))
+    outputs.dir(kitchenV32Output)
+    outputs.file(layout.buildDirectory.file('reports/agriculture/kitchen-v32-contact-sheet.png'))
+    doLast {
+        File root = kitchenV32Output.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/kitchen_tool_modes_v3_2.json'))
+        def items = catalog.items
+        if (items.size() != 47 || items.collect { it.id }.unique().size() != 47)
+            throw new GradleException('Expected 47 unique v3.2 kitchen items')
+        def dot = { BufferedImage image, int x, int y, int rgb ->
+            if (x >= 0 && x < 16 && y >= 0 && y < 16)
+                image.setRGB(x,y,(int)(0xFF000000L | (rgb & 0xFFFFFF)))
+        }
+        def rect = { BufferedImage img, int x1, int y1, int x2, int y2, int rgb ->
+            for (int y=y1; y<=y2; y++) for (int x=x1; x<=x2; x++) dot.call(img,x,y,rgb)
+        }
+        def shade = { int rgb, double factor ->
+            int red=Math.min(255,(int)Math.floor(((rgb>>16)&255)*factor))
+            int green=Math.min(255,(int)Math.floor(((rgb>>8)&255)*factor))
+            int blue=Math.min(255,(int)Math.floor((rgb&255)*factor))
+            return (red<<16) | (green<<8) | blue
+        }
+        def draw = { item ->
+            BufferedImage image=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+            int base=Integer.parseInt(item.color.substring(1),16)
+            int dark=shade.call(base,0.52d),light=shade.call(base,1.27d)
+            int highlight=0xF1E6CF,ink=0x3B332D
+            String id=item.id.toString()
+            int signature=id.hashCode()
+            if(item.type == 'tool') {
+                rect.call(image,7,4,8,14,ink)
+                rect.call(image,8,5,9,13,base)
+                rect.call(image,5,2,10,5,dark)
+                rect.call(image,6,2,9,4,light)
+                rect.call(image,7,3,8,4,highlight)
+                if(id.contains('knife')||id.contains('spatula')||id.contains('tongs')) {
+                    rect.call(image,4,1,11,2,light)
+                    dot.call(image,11,1,ink)
+                } else if(id.contains('whisk')||id.contains('strainer')) {
+                    rect.call(image,3,1,12,5,ink)
+                    rect.call(image,4,2,11,4,light)
+                    for(int x=5;x<12;x+=3)dot.call(image,x,3,dark)
+                }
+                dot.call(image,6,6,highlight)
+            } else if(item.type == 'tableware') {
+                if(id.contains('cup')||id.contains('tumbler')) {
+                    rect.call(image,4,3,11,13,ink)
+                    rect.call(image,5,4,10,12,base)
+                    rect.call(image,6,5,7,11,light)
+                    rect.call(image,10,4,10,11,dark)
+                    rect.call(image,10,6,13,8,highlight)
+                } else if(id.contains('basket')||id.contains('box')) {
+                    rect.call(image,2,5,13,13,ink)
+                    rect.call(image,3,6,12,12,base)
+                    for(int y=7;y<13;y+=2)rect.call(image,4,y,11,y,light)
+                    rect.call(image,2,4,13,5,dark)
+                    dot.call(image,7,3,highlight)
+                } else {
+                    rect.call(image,2,7,13,12,ink)
+                    rect.call(image,3,6,12,11,highlight)
+                    rect.call(image,4,7,11,10,base)
+                    rect.call(image,5,8,10,9,light)
+                    dot.call(image,8,7,dark)
+                    rect.call(image,4,12,11,13,dark)
+                }
+            } else if(item.type == 'ingredient') {
+                rect.call(image,2,11,13,13,ink)
+                rect.call(image,3,10,12,11,highlight)
+                for(int i=0;i<18;i++) {
+                    int x=3+Math.floorMod(signature+i*7,10)
+                    int y=4+Math.floorMod(signature.intdiv(17)+i*5,7)
+                    rect.call(image,x,y,Math.min(12,x+1),Math.min(11,y+1),i%4==0?highlight:i%4==1?light:i%4==2?base:dark)
+                }
+                dot.call(image,8,3,light)
+            } else {
+                rect.call(image,2,12,13,13,ink)
+                rect.call(image,3,11,12,12,highlight)
+                rect.call(image,3,7,12,11,dark)
+                rect.call(image,4,5,11,10,base)
+                for(int i=0;i<16;i++) {
+                    int x=4+Math.floorMod(signature+i*5,8)
+                    int y=5+Math.floorMod(signature.intdiv(19)+i*3,6)
+                    dot.call(image,x,y,i%4==0?highlight:i%4==1?dark:i%4==2?light:base)
+                }
+                rect.call(image,6,4,9,4,light)
+                dot.call(image,4,7,highlight)
+            }
+            // Deterministic visual signature identifies even similarly colored
+            // tools and bowls without relying only on their colour palette.
+            for(int bit=0;bit<5;bit++)if(((signature>>bit)&1)!=0)
+                dot.call(image,5+bit,14,bit%2==0?light:dark)
+            return image
+        }
+        int size=48,columns=6,rowCount=Math.floorDiv(items.size()+columns-1,columns)
+        BufferedImage sheet=new BufferedImage(columns*size,rowCount*size,BufferedImage.TYPE_INT_ARGB)
+        for(int y=0;y<sheet.height;y++) for(int x=0;x<sheet.width;x++) sheet.setRGB(x,y,(int)0xFF202821)
+        items.eachWithIndex { item,int i ->
+            BufferedImage icon=draw.call(item)
+            File out=new File(root,'assets/gugugaga/textures/item/kitchen_v32/'+item.id+'.png')
+            out.parentFile.mkdirs()
+            if(!ImageIO.write(icon,'png',out))throw new GradleException('Unable to encode '+item.id)
+            int ox=(i%columns)*size,oy=Math.floorDiv(i,columns)*size
+            for(int y=0;y<size;y++)for(int x=0;x<size;x++) {
+                int pixel=icon.getRGB(Math.floorDiv(x,3),Math.floorDiv(y,3))
+                if(((pixel>>>24)&255)!=0)sheet.setRGB(ox+x,oy+y,pixel)
+            }
+        }
+        File proof=layout.buildDirectory.file('reports/agriculture/kitchen-v32-contact-sheet.png').get().asFile
+        proof.parentFile.mkdirs()
+        if(!ImageIO.write(sheet,'png',proof))throw new GradleException('Unable to save kitchen v3 proof sheet')
+        logger.lifecycle('KITCHEN_V32_ASSETS_OK: 47 unique inventory icons and 6x8 proof sheet generated.')
+    }
+}
+tasks.named('processResources').configure { dependsOn tasks.named('generateKitchenV32Assets') }
