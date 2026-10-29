@@ -210,13 +210,15 @@ public class KitchenProcessingBlock extends Block {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         String input = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-        String outputName = kind.transformations().get(input);
+        String specialistOutput = KitchenV32Modes.resolve(kind, player.getOffhandItem(), input);
+        boolean specialistMode = specialistOutput != null;
+        String outputName = specialistMode ? specialistOutput : kind.transformations().get(input);
         if (outputName == null) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         // Mixing uses a reusable spoon held in the other hand: an actual utensil,
         // not a consumable ingredient silently destroyed by crafting.
-        if (kind == Kind.MIX && !player.getOffhandItem().is(KitchenContent.WOODEN_SPOON.get())) {
+        if (kind == Kind.MIX && !specialistMode && !player.getOffhandItem().is(KitchenContent.WOODEN_SPOON.get())) {
             if (!level.isClientSide) {
                 player.displayClientMessage(Component.translatable(
                         "message.gugugaga.kitchen_requires_spoon"), true);
@@ -252,7 +254,7 @@ public class KitchenProcessingBlock extends Block {
         if ((kind == Kind.WHISK && !player.getOffhandItem().is(KitchenV3Content.WIRE_WHISK.get()))
                 || (kind == Kind.MORTAR && !player.getOffhandItem().is(KitchenV3Content.MORTAR_PESTLE.get()))
                 || (kind == Kind.STRAIN && !player.getOffhandItem().is(KitchenV3Content.KITCHEN_STRAINER.get()))
-                || (kind == Kind.SIMMER && !player.getOffhandItem().is(KitchenV3Content.SOUP_LADLE.get()))) {
+                || (kind == Kind.SIMMER && !specialistMode && !player.getOffhandItem().is(KitchenV3Content.SOUP_LADLE.get()))) {
             if (!level.isClientSide) {
                 player.displayClientMessage(Component.translatable(
                         "message.gugugaga.kitchen_requires_specialist_tool"), true);
@@ -282,7 +284,12 @@ public class KitchenProcessingBlock extends Block {
         if (level instanceof ServerLevel server) {
             // Cosmetic, finite smoke/steam/food-processing particles. No
             // persistent inventories, item animation loop or client-only class.
-            if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE || kind == Kind.SIMMER) {
+            if (specialistMode) {
+                // Secondary-mode visual response remains short and server-issued.
+                server.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D,
+                        pos.getY() + 0.9D, pos.getZ() + 0.5D, 9,
+                        0.22D, 0.17D, 0.22D, 0.035D);
+            } else if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE || kind == Kind.SIMMER) {
                 server.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5D,
                         pos.getY() + 0.85D, pos.getZ() + 0.5D, 7,
                         0.18D, 0.12D, 0.18D, 0.015D);
