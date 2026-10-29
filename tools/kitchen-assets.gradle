@@ -47,6 +47,8 @@ tasks.register('generateKitchenAssets') {
                 rect.call(img,5,1,10,5,dark)
                 rect.call(img,6,2,9,4,light)
                 rect.call(img,7,3,8,5,base)
+                put.call(img,6,2,trim)
+                put.call(img,9,2,ink)
             } else if(id=='ceramic_plate') {
                 rect.call(img,2,6,13,11,ink)
                 rect.call(img,3,5,12,12,trim)
