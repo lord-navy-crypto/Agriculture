@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.9.0-rc.1 — Vanilla Minecraft pantry and campfire smoking
+
+- Fifth functional station: campfire smoking rack, with distinctive 3D model and an actual native lit-campfire smoke check.
+- Added **23 processing routes starting from vanilla Minecraft ingredients** (carrots, potatoes, beetroot, pumpkin, mushrooms, melon, sweet/glow berries, apples, cocoa beans, seeds, dried kelp, and raw fish/meat), plus six derived mixture stages.
+- Added 25 prepared ingredient IDs and 4 edible smoked fish/meat products, taking total kitchen conversions to **45**.
+- Added 20 new dishes using both vanilla foods and Agriculture crops, taking the kitchen-only recipe dishes to 32 (68 legacy cuisine dishes remain untouched).
+- Updated the kitchen sprite generator to create 79 distinct 16×16 icons and a 6-column, 14-row proof sheet, preserving the original v2.8 registry and art.
+- Added v2.9 source/recipe/collision/pixel testing and kept all previous core crop, honey, Fusion and dedicated-server checks.
+- No existing world save IDs or legacy recipes removed; Fusion stays optional and built into the one Agriculture JAR.
+
+
 ## v2.8.0-rc.1 — Functional food processing and kitchen progression
 
 - Four distinct placeable workstations: chopping board, hand mill, fruit press and mixing basin, each with actual right-click processing and 3D meshes.
