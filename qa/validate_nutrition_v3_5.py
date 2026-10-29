@@ -62,6 +62,8 @@ def main():
     java=(SRC/"NutritionProfilesV35.java").read_text("utf-8")
     logic=(SRC/"NutritionV34.java").read_text("utf-8")
     net=(SRC/"NutritionNetworkV34.java").read_text("utf-8")
+    net35=(SRC/"NutritionNetworkV35.java").read_text("utf-8")
+    screen=(SRC/"NutritionScreenClientV35.java").read_text("utf-8")
     client=(SRC/"NutritionKeyTickV34.java").read_text("utf-8")
     key=(SRC/"NutritionKeyV34.java").read_text("utf-8")
     assert "JsonParser.parseReader" in java
@@ -87,11 +89,20 @@ def main():
     assert "playToServer" in net and "NutritionV34.show(player)" in net
     assert "PacketDistributor.sendToServer" in client
     assert "GLFW.GLFW_KEY_N" in key
+    assert "playToClient(State.TYPE,State.STREAM_CODEC" in net35
+    assert "readVarInt()" in net35 and "writeVarInt" in net35
+    assert "PacketDistributor.sendToPlayer(player" in net
+    assert "NutritionV34.snapshot(player)" in net
+    assert "Minecraft.getInstance().setScreen" in screen
+    assert "Button.builder" in screen and "GuiGraphics" in screen
+    assert "NutritionProfilesV35.NUTRIENTS[i]" in screen
     for l in ("en_us","zh_cn"):
         strings=load(ASSETS/f"lang/{l}.json")
         assert all(strings["nutrition.gugugaga."+name] for name in nutrients),l
         for page in range(5):
             assert strings[f"message.gugugaga.v35_page_{page}"]
+        assert strings["message.gugugaga.v35_gui_title"]
+        assert strings["message.gugugaga.v35_gui_note"]
         for key in ("v35_title","v35_bonus_varied","v35_bonus_advanced",
                     "v35_bonus_explore","v35_next_page"):
             assert strings["message.gugugaga."+key]
@@ -104,7 +115,8 @@ def main():
             contained=archive.read("data/gugugaga/nutrition/food_profiles_v3_5.json")
             assert json.loads(contained)==document
             for cls in ("NutritionProfilesV35","NutritionV34","NutritionNetworkV34",
-                        "NutritionKeyV34","NutritionKeyTickV34"):
+                        "NutritionKeyV34","NutritionKeyTickV34",
+                        "NutritionNetworkV35","NutritionScreenClientV35"):
                 assert "io/github/lordnavycrypto/gugugaga/agriculture/"+cls+".class" in archive.namelist()
     print(f"NUTRITION_V35_OK: {len(edible)} edible Agriculture items including 50 honey bottles, "
           f"{len(foods)} explicit mapped foods, 27 metric groups, migration and five server-owned N-key pages")
