@@ -1,0 +1,544 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:seasoning_crock"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:soy_sauce",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "1"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_soybeans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "1"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:rice_vinegar",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "2"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:rice",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "2"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:apple_vinegar",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "3"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:apple",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "3"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:mushroom_umami_sauce",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "4"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_shiitake",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "4"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:pickled_cucumber_v34",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "5"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cucumber",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "5"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:pickled_daikon_v34",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "6"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:daikon",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "6"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:pickled_cabbage_v34",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "7"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cabbage",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "7"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:pickled_beetroot_v34",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "8"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:beetroot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "8"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cultured_chili_sauce",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "9"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:chili_pepper",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "9"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:seasoned_fish_sauce",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "10"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:smoked_anchovy",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:seasoning_crock",
+              "properties": {
+                "batch": "10"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:seasoning_crock",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

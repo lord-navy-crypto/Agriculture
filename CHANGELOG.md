@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.4.0-rc.1 — Salt geology, pickled foods, soy/vinegar condiments, ecology and nutrition
+
+- Salt deposits can be found through two biome-aware ore/evaporite worldgen features; a mineable salt deposit yields salt crystals and the craftable Salt Block offers reversible 9:1 storage.
+- A new Condiment Aging Crock handles ten non-intoxicating, abstract food-preserving preparations: soy sauce, rice vinegar, apple vinegar, mushroom sauce, four salt-pickled vegetables, spiced sauce and seasoned fish sauce. Each uses a 3-stage scheduled-tick process and a consumed secondary resource (food culture starter or salt).
+- Twelve additional crafted dishes now consume vinegar, sauces, pickles and salt in recipes that also use older Minecraft and Agriculture ingredients.
+- Eight biome-specific worldgen features now introduce small, wild-cultivated farmland crop patches for the eight 3.3 crops. Existing 100 wild-seed sources and new v3.3 crop growth remain unchanged.
+- Gameplay nutrition diversity tracks six broad groups server-side in persistent player data. Press **N** to show all scores and balance in the Minecraft chat UI; four of six sufficiently varied groups grant a *positive* Mining Haste effect. There are no deficits, damage or restrictive eating mechanics. Numbers are fictional game balance and are **not actual medical recommendations or human micronutrient diagnostics**.
+- 26 individual new item sprites in an independent art generator, full EN/ZH names, and regression contracts that verify legacy content and worldgen layouts.
+- Real client testing remains required. This does not yet represent human nutrient biochemistry, individual vitamins, a dedicated graphical nutrition panel, or fermentation food-safety guidance.
+
+
 ## v3.3.0-rc.1 — Food fermentation, fishing, and more farm crops
 
 - **8 additional plantable crops** (now 108 total): black pepper, lemongrass, wasabi, cumin, cardamom, fenugreek, sugar beet and daikon. Each has a harvest item, seed, 8 growth stages, weather-aware growth category, seed recipe and harvest drops.

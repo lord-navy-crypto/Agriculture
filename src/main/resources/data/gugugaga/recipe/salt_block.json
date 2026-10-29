@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "gugugaga:sea_salt"
+    }
+  },
+  "result": {
+    "id": "gugugaga:salt_block",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:soy_sauce"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:shiitake_mushroom"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:soy_sauce_mushroom_rice",
+    "count": 1
+  }
+}

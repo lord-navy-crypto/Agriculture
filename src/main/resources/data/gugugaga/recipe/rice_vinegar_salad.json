@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rice_vinegar"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rice_vinegar_salad",
+    "count": 1
+  }
+}

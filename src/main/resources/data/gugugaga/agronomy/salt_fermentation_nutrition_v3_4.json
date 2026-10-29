@@ -1,0 +1,454 @@
+{
+  "schema_version": "3.4",
+  "items": [
+    {
+      "id": "sea_salt",
+      "english_name": "Sea Salt",
+      "chinese_name": "食盐",
+      "color": "#E8E3D5",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "brine",
+      "english_name": "Salt Brine",
+      "chinese_name": "盐水",
+      "color": "#B8CFE2",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "starter_culture",
+      "english_name": "Food Culture Starter",
+      "chinese_name": "食品发酵引子",
+      "color": "#C9AE7A",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "soy_sauce",
+      "english_name": "Soy Sauce",
+      "chinese_name": "酱油",
+      "color": "#704C37",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "rice_vinegar",
+      "english_name": "Rice Vinegar",
+      "chinese_name": "米醋",
+      "color": "#D4B383",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "apple_vinegar",
+      "english_name": "Apple Vinegar",
+      "chinese_name": "苹果醋",
+      "color": "#CBAB78",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "mushroom_umami_sauce",
+      "english_name": "Mushroom Savory Sauce",
+      "chinese_name": "菌菇鲜味酱",
+      "color": "#9A7B61",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "pickled_cucumber_v34",
+      "english_name": "Salt-Pickled Cucumber",
+      "chinese_name": "盐渍黄瓜",
+      "color": "#8FAD74",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "pickled_daikon_v34",
+      "english_name": "Salt-Pickled Daikon",
+      "chinese_name": "盐渍白萝卜",
+      "color": "#D1CFB5",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "pickled_cabbage_v34",
+      "english_name": "Salt-Pickled Cabbage",
+      "chinese_name": "盐渍卷心菜",
+      "color": "#B6BA85",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "pickled_beetroot_v34",
+      "english_name": "Salt-Pickled Beetroot",
+      "chinese_name": "盐渍甜菜根",
+      "color": "#A66C7B",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "cultured_chili_sauce",
+      "english_name": "Cultured Chili Sauce",
+      "chinese_name": "发酵辣椒酱",
+      "color": "#BA5B43",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "seasoned_fish_sauce",
+      "english_name": "Seasoned Fish Sauce",
+      "chinese_name": "风味鱼露",
+      "color": "#956F59",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "herb_salt",
+      "english_name": "Herb Salt",
+      "chinese_name": "香草盐",
+      "color": "#B6C18D",
+      "type": "ingredient",
+      "nutrition": 0,
+      "saturation_modifier": 0
+    },
+    {
+      "id": "sea_salt_cod_rice",
+      "english_name": "Sea Salt Cod Rice",
+      "chinese_name": "海盐鳕鱼饭",
+      "color": "#B8AE94",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "soy_sauce_mushroom_rice",
+      "english_name": "Soy Sauce Mushroom Rice",
+      "chinese_name": "酱油蘑菇饭",
+      "color": "#A89B7C",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "rice_vinegar_salad",
+      "english_name": "Rice Vinegar Salad",
+      "chinese_name": "米醋蔬菜沙拉",
+      "color": "#A1BD87",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "apple_vinegar_vegetable_bowl",
+      "english_name": "Apple Vinegar Vegetable Bowl",
+      "chinese_name": "苹果醋蔬菜碗",
+      "color": "#BDB18A",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "spiced_fermented_beans",
+      "english_name": "Spiced Fermented Beans",
+      "chinese_name": "香料发酵豆",
+      "color": "#AFA17A",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "pickled_cucumber_rice_roll",
+      "english_name": "Pickled Cucumber Rice Roll",
+      "chinese_name": "腌黄瓜饭卷",
+      "color": "#9EAF8A",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "pickled_daikon_fish_bowl",
+      "english_name": "Pickled Daikon Fish Bowl",
+      "chinese_name": "腌萝卜鱼饭",
+      "color": "#B7B59C",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "pickled_cabbage_noodle_bowl",
+      "english_name": "Pickled Cabbage Noodles",
+      "chinese_name": "腌白菜面",
+      "color": "#B4AC91",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "beetroot_pickle_plate",
+      "english_name": "Beetroot Pickle Plate",
+      "chinese_name": "腌甜菜拼盘",
+      "color": "#B2878C",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "chili_soy_noodles",
+      "english_name": "Chili Soy Noodles",
+      "chinese_name": "辣酱拌面",
+      "color": "#A47A66",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "mushroom_herb_soup",
+      "english_name": "Mushroom Herb Soup",
+      "chinese_name": "菌菇香草汤",
+      "color": "#A9A88E",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    },
+    {
+      "id": "seasoned_mackerel_bowl",
+      "english_name": "Seasoned Mackerel Bowl",
+      "chinese_name": "风味鲭鱼饭",
+      "color": "#A89F87",
+      "type": "food",
+      "nutrition": 7,
+      "saturation_modifier": 0.7
+    }
+  ],
+  "aging_recipes": [
+    {
+      "source": "gugugaga:fermented_soybeans",
+      "output": "soy_sauce",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:rice",
+      "output": "rice_vinegar",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    },
+    {
+      "source": "minecraft:apple",
+      "output": "apple_vinegar",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:fermented_shiitake",
+      "output": "mushroom_umami_sauce",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:cucumber",
+      "output": "pickled_cucumber_v34",
+      "catalyst": "sea_salt",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:daikon",
+      "output": "pickled_daikon_v34",
+      "catalyst": "sea_salt",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:cabbage",
+      "output": "pickled_cabbage_v34",
+      "catalyst": "sea_salt",
+      "duration_stages": 3
+    },
+    {
+      "source": "minecraft:beetroot",
+      "output": "pickled_beetroot_v34",
+      "catalyst": "sea_salt",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:chili_pepper",
+      "output": "cultured_chili_sauce",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    },
+    {
+      "source": "gugugaga:smoked_anchovy",
+      "output": "seasoned_fish_sauce",
+      "catalyst": "starter_culture",
+      "duration_stages": 3
+    }
+  ],
+  "dishes": {
+    "sea_salt_cod_rice": [
+      "gugugaga:sea_salt",
+      "gugugaga:smoked_cod",
+      "gugugaga:steamed_rice"
+    ],
+    "soy_sauce_mushroom_rice": [
+      "gugugaga:soy_sauce",
+      "gugugaga:steamed_rice",
+      "gugugaga:shiitake_mushroom"
+    ],
+    "rice_vinegar_salad": [
+      "gugugaga:rice_vinegar",
+      "gugugaga:lettuce",
+      "minecraft:carrot"
+    ],
+    "apple_vinegar_vegetable_bowl": [
+      "gugugaga:apple_vinegar",
+      "gugugaga:cabbage",
+      "minecraft:apple"
+    ],
+    "spiced_fermented_beans": [
+      "gugugaga:soy_sauce",
+      "gugugaga:fermented_soybeans",
+      "gugugaga:ground_cumin"
+    ],
+    "pickled_cucumber_rice_roll": [
+      "gugugaga:pickled_cucumber_v34",
+      "gugugaga:steamed_rice",
+      "gugugaga:nori_sheet"
+    ],
+    "pickled_daikon_fish_bowl": [
+      "gugugaga:pickled_daikon_v34",
+      "gugugaga:smoked_cod_fillets",
+      "gugugaga:steamed_rice"
+    ],
+    "pickled_cabbage_noodle_bowl": [
+      "gugugaga:pickled_cabbage_v34",
+      "gugugaga:buckwheat_noodle_dough",
+      "minecraft:carrot"
+    ],
+    "beetroot_pickle_plate": [
+      "gugugaga:pickled_beetroot_v34",
+      "gugugaga:ceramic_plate",
+      "gugugaga:lettuce"
+    ],
+    "chili_soy_noodles": [
+      "gugugaga:cultured_chili_sauce",
+      "gugugaga:soy_sauce",
+      "gugugaga:buckwheat_noodle_dough"
+    ],
+    "mushroom_herb_soup": [
+      "gugugaga:mushroom_umami_sauce",
+      "gugugaga:herb_salt",
+      "gugugaga:mushroom_stock"
+    ],
+    "seasoned_mackerel_bowl": [
+      "gugugaga:seasoned_fish_sauce",
+      "gugugaga:smoked_mackerel",
+      "gugugaga:steamed_rice"
+    ]
+  },
+  "wild_farmland_ecology": [
+    {
+      "crop": "black_pepper",
+      "biomes": [
+        "minecraft:jungle",
+        "minecraft:sparse_jungle",
+        "minecraft:bamboo_jungle"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "lemongrass",
+      "biomes": [
+        "minecraft:jungle",
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "wasabi",
+      "biomes": [
+        "minecraft:river",
+        "minecraft:old_growth_pine_taiga",
+        "minecraft:old_growth_spruce_taiga"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "cumin",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:badlands"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "cardamom",
+      "biomes": [
+        "minecraft:jungle",
+        "minecraft:bamboo_jungle",
+        "minecraft:sparse_jungle"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "fenugreek",
+      "biomes": [
+        "minecraft:savanna",
+        "minecraft:plains",
+        "minecraft:badlands"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "sugar_beet",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:taiga"
+      ],
+      "rarity": 18
+    },
+    {
+      "crop": "daikon",
+      "biomes": [
+        "minecraft:plains",
+        "minecraft:meadow",
+        "minecraft:forest"
+      ],
+      "rarity": 18
+    }
+  ],
+  "nutrition": {
+    "schema_version": "gameplay-v1",
+    "note": "Gameplay nutrition diversity, not a medical diagnostic or an exact simulation of human vitamin needs.",
+    "dimensions": [
+      "grain_energy",
+      "protein",
+      "plant_fats",
+      "vitamins",
+      "minerals",
+      "fiber"
+    ],
+    "max": 100,
+    "start": 45,
+    "positive_balance_threshold": 55,
+    "minimum_groups_for_bonus": 4,
+    "default_key": "N"
+  }
+}

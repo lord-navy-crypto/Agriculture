@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:badlands"
+  ],
+  "features": "gugugaga:wild_farmland_cumin",
+  "step": "vegetal_decoration"
+}

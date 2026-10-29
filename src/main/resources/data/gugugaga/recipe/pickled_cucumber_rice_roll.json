@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pickled_cucumber_v34"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:nori_sheet"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pickled_cucumber_rice_roll",
+    "count": 1
+  }
+}

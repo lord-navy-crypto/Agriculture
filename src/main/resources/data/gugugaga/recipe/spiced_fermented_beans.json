@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:soy_sauce"
+    },
+    {
+      "item": "gugugaga:fermented_soybeans"
+    },
+    {
+      "item": "gugugaga:ground_cumin"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:spiced_fermented_beans",
+    "count": 1
+  }
+}

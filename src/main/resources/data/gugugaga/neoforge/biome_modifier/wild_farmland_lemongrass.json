@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:jungle",
+    "minecraft:swamp",
+    "minecraft:mangrove_swamp"
+  ],
+  "features": "gugugaga:wild_farmland_lemongrass",
+  "step": "vegetal_decoration"
+}

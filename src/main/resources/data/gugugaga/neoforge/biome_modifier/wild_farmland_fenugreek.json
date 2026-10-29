@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:savanna",
+    "minecraft:plains",
+    "minecraft:badlands"
+  ],
+  "features": "gugugaga:wild_farmland_fenugreek",
+  "step": "vegetal_decoration"
+}

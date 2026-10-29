@@ -10,6 +10,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV3Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV31Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV32Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.FoodEcologyV33Content;
+import io.github.lordnavycrypto.gugugaga.agriculture.FoodV34Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.FoodEcologyFishing;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.bus.api.IEventBus;
@@ -34,6 +35,8 @@ public final class GuguGagaMod {
         KitchenV32Content.ITEMS.register(modBus);
         FoodEcologyV33Content.BLOCKS.register(modBus);
         FoodEcologyV33Content.ITEMS.register(modBus);
+        FoodV34Content.BLOCKS.register(modBus);
+        FoodV34Content.ITEMS.register(modBus);
         NeoForge.EVENT_BUS.register(FoodEcologyFishing.class);
         BeeContent.BLOCKS.register(modBus);
         BeeContent.ITEMS.register(modBus);

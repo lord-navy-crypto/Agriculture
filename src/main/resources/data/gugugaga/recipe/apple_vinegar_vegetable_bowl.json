@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:apple_vinegar"
+    },
+    {
+      "item": "gugugaga:cabbage"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:apple_vinegar_vegetable_bowl",
+    "count": 1
+  }
+}

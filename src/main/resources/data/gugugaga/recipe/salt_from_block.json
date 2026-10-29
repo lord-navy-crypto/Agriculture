@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:salt_block"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sea_salt",
+    "count": 9
+  }
+}

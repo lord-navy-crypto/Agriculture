@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:mushroom_umami_sauce"
+    },
+    {
+      "item": "gugugaga:herb_salt"
+    },
+    {
+      "item": "gugugaga:mushroom_stock"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_herb_soup",
+    "count": 1
+  }
+}
