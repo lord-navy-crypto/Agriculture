@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.8.0-rc.1 — Functional food processing and kitchen progression
+
+- Four distinct placeable workstations: chopping board, hand mill, fruit press and mixing basin, each with actual right-click processing and 3D meshes.
+- Sixteen 1:1 ingredient conversions based on the expanded crop catalog; the mixer requires a reusable offhand wooden spoon.
+- Twelve new processed-ingredient meals and two dining utensils; added 18 vanilla crafting recipes.
+- Thirty independent 16×16 sprites and 6×5 visual proof sheet, separated from the original 68-dish asset generator.
+- Added bilingual UI/recipes/models/loot and CI contracts for ID consistency, stage maps, art, and packaging.
+- No old crop IDs, recipes, existing cuisine textures, or Fusion pack settings changed. Manual client validation remains open.
+
+
 ## v2.7.0-rc.1 — One-JAR optional Fusion resource integration
 
 - Bundled the complete 1,248-atlas Fusion visual resource pack inside the main mod JAR as `resourcepacks/fusion/`, **without** overwriting regular Minecraft-compatible assets.

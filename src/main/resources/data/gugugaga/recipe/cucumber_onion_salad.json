@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sliced_cucumber"
+    },
+    {
+      "item": "gugugaga:chopped_onion"
+    },
+    {
+      "item": "gugugaga:ceramic_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cucumber_onion_salad",
+    "count": 1
+  }
+}

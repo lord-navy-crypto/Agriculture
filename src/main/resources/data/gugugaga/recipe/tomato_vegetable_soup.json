@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:tomato_puree"
+    },
+    {
+      "item": "gugugaga:chopped_onion"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_vegetable_soup",
+    "count": 1
+  }
+}

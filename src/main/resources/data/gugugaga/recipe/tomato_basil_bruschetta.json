@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "gugugaga:diced_tomato"
+    },
+    {
+      "item": "gugugaga:basil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:tomato_basil_bruschetta",
+    "count": 1
+  }
+}

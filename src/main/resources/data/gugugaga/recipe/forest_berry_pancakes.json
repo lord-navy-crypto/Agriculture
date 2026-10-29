@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:berry_compote_base"
+    },
+    {
+      "item": "gugugaga:buckwheat_flour"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:forest_berry_pancakes",
+    "count": 1
+  }
+}

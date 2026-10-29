@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:flatbread_dough"
+    },
+    {
+      "item": "gugugaga:diced_tomato"
+    },
+    {
+      "item": "gugugaga:basil"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:rustic_flatbread",
+    "count": 1
+  }
+}
