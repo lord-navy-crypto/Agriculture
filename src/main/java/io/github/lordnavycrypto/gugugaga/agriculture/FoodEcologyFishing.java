@@ -10,6 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 /**
@@ -30,6 +31,7 @@ public final class FoodEcologyFishing {
             "saltwater_crab"
     };
 
+    @SubscribeEvent
     public static void onFishCaught(ItemFishedEvent event) {
         Player player = event.getEntity();
         Level level = player.level();
