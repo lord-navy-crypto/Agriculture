@@ -2,7 +2,7 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.2 tool-modes kitchen release candidate)
+## Current content (v3.3 ocean, spice crops and food fermentation release candidate)
 
 - **100 plantable crops**, each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
 - Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
