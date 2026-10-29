@@ -51,6 +51,7 @@ apply from: 'tools/crop-textures.gradle'
 apply from: 'tools/marine-fungi-textures.gradle'
 apply from: 'tools/crop-cuisine-textures.gradle'
 apply from: 'tools/kitchen-assets.gradle'
+apply from: 'tools/kitchen-v3-assets.gradle'
 apply from: 'tools/fusion-visuals.gradle'
 
 

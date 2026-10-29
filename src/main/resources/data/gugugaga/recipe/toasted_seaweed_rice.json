@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:toasted_seaweed"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:ceramic_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:toasted_seaweed_rice",
+    "count": 1
+  }
+}

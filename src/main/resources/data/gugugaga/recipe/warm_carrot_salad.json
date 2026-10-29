@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:steamed_carrot"
+    },
+    {
+      "item": "gugugaga:caramelized_onions"
+    },
+    {
+      "item": "gugugaga:wooden_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:warm_carrot_salad",
+    "count": 1
+  }
+}

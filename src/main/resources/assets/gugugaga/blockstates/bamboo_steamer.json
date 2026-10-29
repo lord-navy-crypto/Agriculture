@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "gugugaga:block/bamboo_steamer"
+    },
+    "active=true": {
+      "model": "gugugaga:block/bamboo_steamer_active"
+    }
+  }
+}

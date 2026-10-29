@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    " B ",
+    "BBB"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "minecraft:polished_andesite"
+    }
+  },
+  "result": {
+    "id": "gugugaga:mortar_pestle",
+    "count": 1
+  }
+}

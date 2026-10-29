@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "B B",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bamboo_planks"
+    }
+  },
+  "result": {
+    "id": "gugugaga:bamboo_steamer_basket",
+    "count": 1
+  }
+}

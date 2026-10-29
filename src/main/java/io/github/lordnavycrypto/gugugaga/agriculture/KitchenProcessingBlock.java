@@ -2,6 +2,8 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import java.util.Map;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * each successful operation consumes exactly one input and returns one result.
  * No block entity, passive output, ticking, fuel, or chunk loading.
  */
-public final class KitchenProcessingBlock extends Block {
+public class KitchenProcessingBlock extends Block {
     public enum Kind {
         CHOP(Map.ofEntries(
                 Map.entry("gugugaga:tomato", "diced_tomato"),
@@ -86,6 +88,36 @@ public final class KitchenProcessingBlock extends Block {
                 Map.entry("minecraft:salmon", "smoked_salmon"),
                 Map.entry("minecraft:beef", "smoked_beef"),
                 Map.entry("minecraft:chicken", "smoked_chicken")
+        )),
+        KNEAD(Map.ofEntries(
+                Map.entry("gugugaga:wheat_flour", "bread_dough"),
+                Map.entry("gugugaga:rice_flour", "rice_dumpling_dough"),
+                Map.entry("gugugaga:buckwheat_flour", "buckwheat_noodle_dough"),
+                Map.entry("gugugaga:sesame_meal", "sesame_bun_dough"),
+                Map.entry("gugugaga:flatbread_dough", "pizza_base"),
+                Map.entry("gugugaga:cocoa_mix", "cocoa_cookie_dough"),
+                Map.entry("gugugaga:wheat_bran", "bran_cracker_dough"),
+                Map.entry("gugugaga:pumpkin_puree", "pumpkin_pastry_dough")
+        )),
+        FRY(Map.ofEntries(
+                Map.entry("gugugaga:diced_potato", "crispy_potato_hash"),
+                Map.entry("gugugaga:chopped_onion", "caramelized_onions"),
+                Map.entry("gugugaga:sliced_brown_mushroom", "sauteed_mushrooms"),
+                Map.entry("gugugaga:sliced_red_mushroom", "seared_red_mushrooms"),
+                Map.entry("gugugaga:carrot_ribbons", "glazed_carrots"),
+                Map.entry("gugugaga:diced_tomato", "pan_roasted_tomato"),
+                Map.entry("gugugaga:smoked_beef", "seared_smoked_beef"),
+                Map.entry("gugugaga:kelp_paste", "toasted_seaweed")
+        )),
+        STEAM(Map.ofEntries(
+                Map.entry("gugugaga:rice", "steamed_rice"),
+                Map.entry("gugugaga:pumpkin_chunks", "steamed_pumpkin"),
+                Map.entry("gugugaga:shredded_cabbage", "steamed_cabbage"),
+                Map.entry("gugugaga:diced_potato", "steamed_potato"),
+                Map.entry("minecraft:carrot", "steamed_carrot"),
+                Map.entry("minecraft:beetroot", "steamed_beetroot"),
+                Map.entry("gugugaga:chopped_onion", "steamed_onion"),
+                Map.entry("gugugaga:sliced_brown_mushroom", "steamed_mushrooms")
         ));
 
         private final Map<String, String> transformations;
@@ -104,6 +136,7 @@ public final class KitchenProcessingBlock extends Block {
     private static final VoxelShape PRESS = Block.box(1, 0, 1, 15, 16, 15);
     private static final VoxelShape BOWL = Block.box(3, 0, 3, 13, 7, 13);
     private static final VoxelShape SMOKER = Block.box(1, 0, 1, 15, 15, 15);
+    private static final VoxelShape BENCH = Block.box(1, 0, 1, 15, 12, 15);
 
     private final Kind kind;
 
@@ -121,6 +154,9 @@ public final class KitchenProcessingBlock extends Block {
             case PRESS -> PRESS;
             case MIX -> BOWL;
             case SMOKE -> SMOKER;
+            case KNEAD -> BENCH;
+            case FRY -> SMOKER;
+            case STEAM -> SMOKER;
         };
     }
 
@@ -158,6 +194,23 @@ public final class KitchenProcessingBlock extends Block {
                     "message.gugugaga.kitchen_requires_smoke"), true);
             return ItemInteractionResult.FAIL;
         }
+        // Existing station semantics remain unchanged. v3 appliances require
+        // the relevant reusable utensil (no durability cost on operation).
+        if (kind == Kind.KNEAD && !player.getOffhandItem().is(KitchenV3Content.ROLLING_PIN.get())
+                || kind == Kind.FRY && !player.getOffhandItem().is(KitchenV3Content.FRYING_SPATULA.get())
+                || kind == Kind.STEAM && !player.getOffhandItem().is(KitchenV3Content.STEAMER_LID.get())) {
+            if (!level.isClientSide) {
+                player.displayClientMessage(Component.translatable(
+                        "message.gugugaga.kitchen_requires_v3_tool"), true);
+            }
+            return ItemInteractionResult.FAIL;
+        }
+        if ((kind == Kind.FRY || kind == Kind.STEAM)
+                && !level.isClientSide && !CampfireBlock.isSmokeyPos(level, pos)) {
+            player.displayClientMessage(Component.translatable(
+                    "message.gugugaga.kitchen_requires_heat"), true);
+            return ItemInteractionResult.FAIL;
+        }
         if (level.isClientSide) {
             return ItemInteractionResult.SUCCESS;
         }
@@ -171,6 +224,22 @@ public final class KitchenProcessingBlock extends Block {
         if (!player.getInventory().add(result)) {
             level.addFreshEntity(new ItemEntity(level,
                     pos.getX() + 0.5D, pos.getY() + 0.7D, pos.getZ() + 0.5D, result));
+        }
+        if (level instanceof ServerLevel server) {
+            // Cosmetic, finite smoke/steam/food-processing particles. No
+            // persistent inventories, item animation loop or client-only class.
+            if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE) {
+                server.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5D,
+                        pos.getY() + 0.85D, pos.getZ() + 0.5D, 7,
+                        0.18D, 0.12D, 0.18D, 0.015D);
+            } else {
+                server.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D,
+                        pos.getY() + 0.8D, pos.getZ() + 0.5D, 5,
+                        0.22D, 0.16D, 0.22D, 0.035D);
+            }
+            if (this instanceof KitchenV3AnimatedBlock animated) {
+                animated.startWork(server, pos);
+            }
         }
         level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.8F, 1.1F);
         player.displayClientMessage(Component.translatable(

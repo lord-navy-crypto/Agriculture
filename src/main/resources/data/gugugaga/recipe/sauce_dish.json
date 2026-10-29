@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "B B",
+    " B "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "id": "gugugaga:sauce_dish",
+    "count": 1
+  }
+}

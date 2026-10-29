@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:crispy_potato_hash"
+    },
+    {
+      "item": "gugugaga:glazed_carrots"
+    },
+    {
+      "item": "gugugaga:serving_platter"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:hearty_potato_plate",
+    "count": 1
+  }
+}

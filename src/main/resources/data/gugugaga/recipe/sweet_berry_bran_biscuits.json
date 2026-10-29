@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:bran_cracker_dough"
+    },
+    {
+      "item": "gugugaga:sweet_berry_compote"
+    },
+    {
+      "item": "gugugaga:bread_basket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sweet_berry_bran_biscuits",
+    "count": 1
+  }
+}

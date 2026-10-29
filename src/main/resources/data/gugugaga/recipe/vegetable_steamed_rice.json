@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:steamed_pumpkin"
+    },
+    {
+      "item": "gugugaga:lunch_box"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:vegetable_steamed_rice",
+    "count": 1
+  }
+}

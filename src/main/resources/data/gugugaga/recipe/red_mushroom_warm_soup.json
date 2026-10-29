@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:seared_red_mushrooms"
+    },
+    {
+      "item": "gugugaga:steamed_potato"
+    },
+    {
+      "item": "gugugaga:soup_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:red_mushroom_warm_soup",
+    "count": 1
+  }
+}

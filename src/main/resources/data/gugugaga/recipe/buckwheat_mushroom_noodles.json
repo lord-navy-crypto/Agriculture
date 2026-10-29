@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    },
+    {
+      "item": "gugugaga:sauteed_mushrooms"
+    },
+    {
+      "item": "gugugaga:soup_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:buckwheat_mushroom_noodles",
+    "count": 1
+  }
+}

@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.0.0-rc.1 — Kitchen utensils, tableware and animated cooking machines
+
+- Three new placeable cooking stations: **dough bench, skillet station and bamboo steamer**, each with independent idle/working baked block models.
+- Server-side work interactions switch the frame for 10 ticks, add short-lived visual particles and retain existing sound feedback; no continuously ticking inventories or complex renderer needed.
+- The new machines require reusable offhand **rolling pin**, **frying spatula** or **steamer lid** respectively. Skillet and steamer additionally check for native lit-campfire smoke.
+- 12 craftable hand utensils, 12 dining ware items, 24 prepared food intermediates and 18 dishes; all have new independent inventory icons and Chinese/English names.
+- Recipes use existing Agriculture crops and Minecraft bread, milk, carrots, potatoes, sugar, etc. The earlier 79 kitchen items, 68 cuisine dishes, 100 crop species, bee/honey system and built-in optional Fusion pack remain untouched.
+- New v3 structural/pixel/regression QA alongside the existing asset, Java build, Fusion pack, and real dedicated-server smoke gates.
+- Tool usage is a lightweight manual interaction mechanic; the remaining decorative utensils and tableware are craftable and some appear in dish recipes. No multi-slot inventory or time-based cooking is implied.
+
+
 ## v2.9.0-rc.1 — Vanilla Minecraft pantry and campfire smoking
 
 - Fifth functional station: campfire smoking rack, with distinctive 3D model and an actual native lit-campfire smoke check.
