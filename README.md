@@ -54,4 +54,4 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [Kitchen v3.2: five specialized offhand tool modes, no new blocks](docs/KITCHEN_TOOL_MODES_V3_2.md)
 - [v3.3 spice crop, ocean fishing, food-fermentation and seasoning guide](docs/FOOD_ECOLOGY_V3_3.md)
 - [v3.4 salt deposits, aged condiments, natural farmland and N-key nutrition](docs/SALT_CONDIMENT_NUTRITION_V3_4.md)
-- [v3.5 complete gameplay nutrition catalog: 27 indicators, 403 foods, N-key pages and migration](docs/FULL_NUTRITION_V3_5.md)
+- [v3.5 comprehensive gameplay nutrition: 27 indicators, 403 foods, N-key graphical panel and saved-data migration](docs/FULL_NUTRITION_V3_5.md)
