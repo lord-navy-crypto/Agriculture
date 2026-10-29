@@ -49,7 +49,8 @@ def main():
 
     assert "FoodEcologyV33Content.BLOCKS.register(modBus)" in mod
     assert "FoodEcologyV33Content.ITEMS.register(modBus)" in mod
-    assert "NeoForge.EVENT_BUS.addListener(FoodEcologyFishing::onFishCaught)" in mod
+    assert "NeoForge.EVENT_BUS.register(FoodEcologyFishing.class)" in mod
+    assert "@SubscribeEvent" in fish
     assert "FoodEcologyV33Content.ITEMS.getEntries()" in tabs
     assert "FoodEcologyV33Modes.resolve(kind, player.getOffhandItem(), input)" in kitchen
     assert "CampfireBlock.isSmokeyPos(level, pos)" in kitchen
