@@ -1,6 +1,6 @@
 {
-  "schema_version": "2.8",
-  "description": "Add four actual single-input processing workstations and a reusable offhand mixing spoon, 16 processed ingredients, 2 utensils and 12 new dishes while preserving all existing crop/cuisine registry names and recipes.",
+  "schema_version": "2.9",
+  "description": "Preserves all v2.8 kitchen routes and adds 25 vanilla-ingredient preparation routes, four campfire-smoked fish/meat food outputs, and twenty dishes using Minecraft vanilla food and farm products alongside Gugu Gaga crops. Dedicated smoke rack requires native campfire smoke.",
   "stations": [
     {
       "id": "chopping_board",
@@ -26,6 +26,13 @@
       "english_name": "Mixing Basin",
       "chinese_name": "搅拌盆",
       "offhand": "gugugaga:wooden_spoon"
+    },
+    {
+      "id": "smoking_rack",
+      "kind": "smoke",
+      "english_name": "Campfire Smoking Rack",
+      "chinese_name": "篝火熏制架",
+      "requires": "lit_campfire_smoke"
     }
   ],
   "items": [
@@ -354,6 +361,555 @@
         "gugugaga:diced_tomato",
         "gugugaga:basil"
       ]
+    },
+    {
+      "id": "carrot_ribbons",
+      "type": "ingredient",
+      "english_name": "Carrot Ribbons",
+      "chinese_name": "胡萝卜丝",
+      "color": "#EBA04E",
+      "station": "chop",
+      "input": "minecraft:carrot"
+    },
+    {
+      "id": "diced_potato",
+      "type": "ingredient",
+      "english_name": "Diced Potato",
+      "chinese_name": "马铃薯丁",
+      "color": "#D4B478",
+      "station": "chop",
+      "input": "minecraft:potato"
+    },
+    {
+      "id": "grated_beetroot",
+      "type": "ingredient",
+      "english_name": "Grated Beetroot",
+      "chinese_name": "甜菜根丝",
+      "color": "#91354E",
+      "station": "chop",
+      "input": "minecraft:beetroot"
+    },
+    {
+      "id": "pumpkin_chunks",
+      "type": "ingredient",
+      "english_name": "Pumpkin Chunks",
+      "chinese_name": "南瓜块",
+      "color": "#DB8C31",
+      "station": "chop",
+      "input": "minecraft:pumpkin"
+    },
+    {
+      "id": "sliced_brown_mushroom",
+      "type": "ingredient",
+      "english_name": "Sliced Brown Mushroom",
+      "chinese_name": "棕蘑菇片",
+      "color": "#A78565",
+      "station": "chop",
+      "input": "minecraft:brown_mushroom"
+    },
+    {
+      "id": "sliced_red_mushroom",
+      "type": "ingredient",
+      "english_name": "Sliced Red Mushroom",
+      "chinese_name": "红蘑菇片",
+      "color": "#C85B4D",
+      "station": "chop",
+      "input": "minecraft:red_mushroom"
+    },
+    {
+      "id": "melon_cubes",
+      "type": "ingredient",
+      "english_name": "Melon Cubes",
+      "chinese_name": "西瓜丁",
+      "color": "#D96571",
+      "station": "chop",
+      "input": "minecraft:melon_slice"
+    },
+    {
+      "id": "chopped_sweet_berries",
+      "type": "ingredient",
+      "english_name": "Chopped Sweet Berries",
+      "chinese_name": "甜浆果碎",
+      "color": "#C54857",
+      "station": "chop",
+      "input": "minecraft:sweet_berries"
+    },
+    {
+      "id": "cocoa_powder",
+      "type": "ingredient",
+      "english_name": "Cocoa Powder",
+      "chinese_name": "可可粉",
+      "color": "#8C5639",
+      "station": "mill",
+      "input": "minecraft:cocoa_beans"
+    },
+    {
+      "id": "pumpkin_seed_meal",
+      "type": "ingredient",
+      "english_name": "Ground Pumpkin Seeds",
+      "chinese_name": "南瓜籽粉",
+      "color": "#A6A76B",
+      "station": "mill",
+      "input": "minecraft:pumpkin_seeds"
+    },
+    {
+      "id": "melon_seed_meal",
+      "type": "ingredient",
+      "english_name": "Ground Melon Seeds",
+      "chinese_name": "西瓜籽粉",
+      "color": "#A6C07E",
+      "station": "mill",
+      "input": "minecraft:melon_seeds"
+    },
+    {
+      "id": "kelp_powder",
+      "type": "ingredient",
+      "english_name": "Dried Kelp Powder",
+      "chinese_name": "干海带粉",
+      "color": "#497F57",
+      "station": "mill",
+      "input": "minecraft:dried_kelp"
+    },
+    {
+      "id": "wheat_bran",
+      "type": "ingredient",
+      "english_name": "Wheat Bran",
+      "chinese_name": "麦麸",
+      "color": "#C5AA72",
+      "station": "mill",
+      "input": "minecraft:wheat_seeds"
+    },
+    {
+      "id": "apple_juice",
+      "type": "ingredient",
+      "english_name": "Apple Juice",
+      "chinese_name": "苹果汁",
+      "color": "#D2AF58",
+      "station": "press",
+      "input": "minecraft:apple"
+    },
+    {
+      "id": "melon_juice",
+      "type": "ingredient",
+      "english_name": "Melon Juice",
+      "chinese_name": "西瓜汁",
+      "color": "#D76C76",
+      "station": "press",
+      "input": "minecraft:melon_slice"
+    },
+    {
+      "id": "sweet_berry_juice",
+      "type": "ingredient",
+      "english_name": "Sweet Berry Juice",
+      "chinese_name": "甜浆果汁",
+      "color": "#AB485D",
+      "station": "press",
+      "input": "minecraft:sweet_berries"
+    },
+    {
+      "id": "glow_berry_juice",
+      "type": "ingredient",
+      "english_name": "Glow Berry Juice",
+      "chinese_name": "发光浆果汁",
+      "color": "#D6A749",
+      "station": "press",
+      "input": "minecraft:glow_berries"
+    },
+    {
+      "id": "carrot_juice",
+      "type": "ingredient",
+      "english_name": "Carrot Juice",
+      "chinese_name": "胡萝卜汁",
+      "color": "#D9944C",
+      "station": "press",
+      "input": "minecraft:carrot"
+    },
+    {
+      "id": "beetroot_juice",
+      "type": "ingredient",
+      "english_name": "Beetroot Juice",
+      "chinese_name": "甜菜根汁",
+      "color": "#9C4068",
+      "station": "press",
+      "input": "minecraft:beetroot"
+    },
+    {
+      "id": "apple_syrup",
+      "type": "ingredient",
+      "english_name": "Apple Syrup",
+      "chinese_name": "苹果糖浆",
+      "color": "#C69A3A",
+      "station": "mix",
+      "input": "gugugaga:apple_juice"
+    },
+    {
+      "id": "carrot_slaw",
+      "type": "ingredient",
+      "english_name": "Carrot Slaw",
+      "chinese_name": "胡萝卜拌菜",
+      "color": "#E69C51",
+      "station": "mix",
+      "input": "gugugaga:carrot_ribbons"
+    },
+    {
+      "id": "pumpkin_puree",
+      "type": "ingredient",
+      "english_name": "Pumpkin Purée",
+      "chinese_name": "南瓜泥",
+      "color": "#D69847",
+      "station": "mix",
+      "input": "gugugaga:pumpkin_chunks"
+    },
+    {
+      "id": "cocoa_mix",
+      "type": "ingredient",
+      "english_name": "Cocoa Mixture",
+      "chinese_name": "可可混合酱",
+      "color": "#855239",
+      "station": "mix",
+      "input": "gugugaga:cocoa_powder"
+    },
+    {
+      "id": "sweet_berry_compote",
+      "type": "ingredient",
+      "english_name": "Sweet Berry Compote",
+      "chinese_name": "甜浆果酱",
+      "color": "#A3455A",
+      "station": "mix",
+      "input": "gugugaga:sweet_berry_juice"
+    },
+    {
+      "id": "kelp_paste",
+      "type": "ingredient",
+      "english_name": "Kelp Paste",
+      "chinese_name": "海带泥",
+      "color": "#598A5B",
+      "station": "mix",
+      "input": "gugugaga:kelp_powder"
+    },
+    {
+      "id": "smoked_cod",
+      "type": "processed_food",
+      "english_name": "Campfire Smoked Cod",
+      "chinese_name": "篝火熏鳕鱼",
+      "color": "#BFB59B",
+      "station": "smoke",
+      "input": "minecraft:cod",
+      "nutrition": 5,
+      "saturation_modifier": 0.65
+    },
+    {
+      "id": "smoked_salmon",
+      "type": "processed_food",
+      "english_name": "Campfire Smoked Salmon",
+      "chinese_name": "篝火熏鲑鱼",
+      "color": "#DA9070",
+      "station": "smoke",
+      "input": "minecraft:salmon",
+      "nutrition": 7,
+      "saturation_modifier": 0.65
+    },
+    {
+      "id": "smoked_beef",
+      "type": "processed_food",
+      "english_name": "Campfire Smoked Beef",
+      "chinese_name": "篝火熏牛肉",
+      "color": "#975A4A",
+      "station": "smoke",
+      "input": "minecraft:beef",
+      "nutrition": 7,
+      "saturation_modifier": 0.65
+    },
+    {
+      "id": "smoked_chicken",
+      "type": "processed_food",
+      "english_name": "Campfire Smoked Chicken",
+      "chinese_name": "篝火熏鸡肉",
+      "color": "#D5B38F",
+      "station": "smoke",
+      "input": "minecraft:chicken",
+      "nutrition": 7,
+      "saturation_modifier": 0.65
+    },
+    {
+      "id": "apple_oat_crumble",
+      "type": "food",
+      "english_name": "Apple Oat Crumble",
+      "chinese_name": "苹果燕麦酥",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:apple_syrup",
+        "gugugaga:oat",
+        "minecraft:cookie"
+      ],
+      "color": "#D7B377"
+    },
+    {
+      "id": "pumpkin_meat_stew",
+      "type": "food",
+      "english_name": "Pumpkin Beef Stew",
+      "chinese_name": "南瓜牛肉炖菜",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:pumpkin_puree",
+        "minecraft:cooked_beef",
+        "minecraft:potato"
+      ],
+      "color": "#CD8349"
+    },
+    {
+      "id": "apple_glazed_pork",
+      "type": "food",
+      "english_name": "Apple-Glazed Pork",
+      "chinese_name": "苹果蜜汁猪排",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:apple_syrup",
+        "minecraft:cooked_porkchop",
+        "minecraft:carrot"
+      ],
+      "color": "#BB8466"
+    },
+    {
+      "id": "mushroom_egg_toast",
+      "type": "food",
+      "english_name": "Mushroom Egg Toast",
+      "chinese_name": "蘑菇鸡蛋吐司",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:sliced_brown_mushroom",
+        "minecraft:egg",
+        "minecraft:bread"
+      ],
+      "color": "#B8A076"
+    },
+    {
+      "id": "kelp_salmon_rice",
+      "type": "food",
+      "english_name": "Seaweed Salmon Rice",
+      "chinese_name": "海带鲑鱼饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:kelp_paste",
+        "minecraft:cooked_salmon",
+        "gugugaga:rice"
+      ],
+      "color": "#9CA77A"
+    },
+    {
+      "id": "crunchy_carrot_salad",
+      "type": "food",
+      "english_name": "Golden Carrot Salad",
+      "chinese_name": "金胡萝卜沙拉",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:carrot_slaw",
+        "minecraft:golden_carrot",
+        "gugugaga:lettuce"
+      ],
+      "color": "#D8AD59"
+    },
+    {
+      "id": "beetroot_potato_soup",
+      "type": "food",
+      "english_name": "Beetroot Potato Soup",
+      "chinese_name": "甜菜根马铃薯汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:grated_beetroot",
+        "minecraft:potato",
+        "gugugaga:onion"
+      ],
+      "color": "#AE4C6C"
+    },
+    {
+      "id": "berry_jam_toast",
+      "type": "food",
+      "english_name": "Sweet Berry Jam Toast",
+      "chinese_name": "甜浆果果酱面包",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:sweet_berry_compote",
+        "minecraft:bread",
+        "minecraft:glow_berries"
+      ],
+      "color": "#C66C75"
+    },
+    {
+      "id": "cocoa_oat_bites",
+      "type": "food",
+      "english_name": "Cocoa Oat Bites",
+      "chinese_name": "可可燕麦小饼",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:cocoa_mix",
+        "gugugaga:oat",
+        "minecraft:sugar"
+      ],
+      "color": "#9D6B50"
+    },
+    {
+      "id": "pumpkin_seed_crackers",
+      "type": "food",
+      "english_name": "Pumpkin Seed Crackers",
+      "chinese_name": "南瓜籽脆饼",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:pumpkin_seed_meal",
+        "gugugaga:wheat_flour",
+        "minecraft:sugar"
+      ],
+      "color": "#B3A574"
+    },
+    {
+      "id": "melon_apple_salad",
+      "type": "food",
+      "english_name": "Melon Apple Salad",
+      "chinese_name": "西瓜苹果沙拉",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:melon_cubes",
+        "minecraft:apple",
+        "minecraft:sweet_berries"
+      ],
+      "color": "#D58D83"
+    },
+    {
+      "id": "carrot_chicken_bowl",
+      "type": "food",
+      "english_name": "Carrot Chicken Rice Bowl",
+      "chinese_name": "胡萝卜鸡肉饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:carrot_juice",
+        "minecraft:cooked_chicken",
+        "gugugaga:rice"
+      ],
+      "color": "#D5AC69"
+    },
+    {
+      "id": "glow_berry_custard",
+      "type": "food",
+      "english_name": "Glow Berry Custard",
+      "chinese_name": "发光浆果布丁",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:glow_berry_juice",
+        "minecraft:egg",
+        "minecraft:milk_bucket"
+      ],
+      "color": "#DDBE71"
+    },
+    {
+      "id": "honey_salmon_plate",
+      "type": "food",
+      "english_name": "Honey Salmon Plate",
+      "chinese_name": "蜂蜜鲑鱼拼盘",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:sliced_cucumber",
+        "minecraft:cooked_salmon",
+        "minecraft:honey_bottle"
+      ],
+      "color": "#C4A260"
+    },
+    {
+      "id": "red_mushroom_stew",
+      "type": "food",
+      "english_name": "Red Mushroom Tomato Stew",
+      "chinese_name": "红蘑菇番茄汤",
+      "nutrition": 6,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:sliced_red_mushroom",
+        "gugugaga:tomato_puree",
+        "gugugaga:onion"
+      ],
+      "color": "#B96957"
+    },
+    {
+      "id": "melon_seed_bread",
+      "type": "food",
+      "english_name": "Melon Seed Bread",
+      "chinese_name": "西瓜籽面包",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:melon_seed_meal",
+        "gugugaga:flatbread_dough",
+        "minecraft:sugar"
+      ],
+      "color": "#C6B58B"
+    },
+    {
+      "id": "smoked_salmon_rice",
+      "type": "food",
+      "english_name": "Smoked Salmon Rice",
+      "chinese_name": "熏鲑鱼饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.85,
+      "ingredients": [
+        "gugugaga:smoked_salmon",
+        "gugugaga:rice",
+        "gugugaga:kelp_paste"
+      ],
+      "color": "#BDA778"
+    },
+    {
+      "id": "smoked_beef_hash",
+      "type": "food",
+      "english_name": "Smoked Beef Potato Hash",
+      "chinese_name": "熏牛肉马铃薯炒",
+      "nutrition": 8,
+      "saturation_modifier": 0.85,
+      "ingredients": [
+        "gugugaga:smoked_beef",
+        "gugugaga:diced_potato",
+        "gugugaga:onion"
+      ],
+      "color": "#AE7960"
+    },
+    {
+      "id": "smoked_chicken_carrot_bowl",
+      "type": "food",
+      "english_name": "Smoked Chicken Carrot Bowl",
+      "chinese_name": "熏鸡胡萝卜饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:smoked_chicken",
+        "gugugaga:carrot_slaw",
+        "gugugaga:rice"
+      ],
+      "color": "#D0A372"
+    },
+    {
+      "id": "smoked_cod_pie",
+      "type": "food",
+      "english_name": "Smoked Cod Pie",
+      "chinese_name": "熏鳕鱼馅饼",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:smoked_cod",
+        "gugugaga:wheat_flour",
+        "minecraft:potato"
+      ],
+      "color": "#B9B38E"
     }
   ]
 }
