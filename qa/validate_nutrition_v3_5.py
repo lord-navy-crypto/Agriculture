@@ -44,9 +44,9 @@ def main():
     edible=set()
     for file in sources:
         source=(SRC/(file+".java")).read_text("utf-8")
-        edible|={"gugugaga:"+m for m in re.findall(r'\\bfood\\("([a-z_0-9]+)"',source)}
+        edible|={"gugugaga:"+m for m in re.findall(r'\bfood\("([a-z_0-9]+)"',source)}
     honey=(SRC/"BeeContent.java").read_text("utf-8")
-    honey_ids={"gugugaga:"+m for m in re.findall(r'floralHoney\\("([a-z_0-9]+)"',honey)}
+    honey_ids={"gugugaga:"+m for m in re.findall(r'floralHoney\("([a-z_0-9]+)"',honey)}
     assert len(honey_ids)==50
     edible|=honey_ids
     missing=sorted(edible-set(foods))
