@@ -7,6 +7,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.MarineFungiContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV3Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV31Content;
+import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV32Content;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -49,7 +50,8 @@ public final class GuguGagaCreativeTabs {
                             { AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                               KitchenContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                               KitchenV3Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                              KitchenV31Content.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
+                              KitchenV31Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              KitchenV32Content.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =

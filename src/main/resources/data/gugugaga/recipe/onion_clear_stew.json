@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:clear_onion_stock"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    },
+    {
+      "item": "gugugaga:steamed_carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:onion_clear_stew",
+    "count": 1
+  }
+}

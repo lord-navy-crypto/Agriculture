@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_cod_fillets"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:kelp_paste"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:smoked_cod_rice",
+    "count": 1
+  }
+}

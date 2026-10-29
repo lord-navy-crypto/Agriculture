@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:hash_brown_shreds"
+    },
+    {
+      "item": "gugugaga:beaten_egg"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:golden_hash_browns",
+    "count": 1
+  }
+}

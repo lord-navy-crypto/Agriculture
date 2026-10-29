@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:clear_cod_stock"
+    },
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    },
+    {
+      "item": "gugugaga:steamed_onion"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cod_clear_noodle_soup",
+    "count": 1
+  }
+}

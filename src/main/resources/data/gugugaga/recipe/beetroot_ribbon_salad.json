@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:beetroot_shavings"
+    },
+    {
+      "item": "gugugaga:finely_grated_carrot"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:beetroot_ribbon_salad",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:measured_carrot_drink"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "gugugaga:glass_tumbler"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:carrot_sunrise_drink",
+    "count": 1
+  }
+}

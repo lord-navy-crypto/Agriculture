@@ -1,0 +1,625 @@
+{
+  "schema_version": "3.2",
+  "description": "Five reusable utensils gain actual behavior on four existing kitchen workstations; no new placeable blocks, preserves all old recipes. 27 intermediate item routes and 20 prepared dishes.",
+  "modes": [
+    {
+      "id": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "workstation": "chopping_board",
+      "english_name": "Knife Slicing",
+      "chinese_name": "厨刀精切"
+    },
+    {
+      "id": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "workstation": "chopping_board",
+      "english_name": "Fine Grating",
+      "chinese_name": "细刨丝"
+    },
+    {
+      "id": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "workstation": "smoking_rack",
+      "english_name": "Tongs Smoking",
+      "chinese_name": "厨房夹烟熏"
+    },
+    {
+      "id": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "workstation": "mixing_basin",
+      "english_name": "Measured Mixing",
+      "chinese_name": "量杯调配"
+    },
+    {
+      "id": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "workstation": "stock_pot",
+      "english_name": "Broth Skimming",
+      "chinese_name": "漏勺撇清"
+    }
+  ],
+  "items": [
+    {
+      "id": "raw_beef_strips",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:beef",
+      "english_name": "Raw Beef Strips",
+      "chinese_name": "生牛肉条",
+      "color": "#A45A53"
+    },
+    {
+      "id": "raw_chicken_strips",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:chicken",
+      "english_name": "Raw Chicken Strips",
+      "chinese_name": "生鸡肉条",
+      "color": "#D6B297"
+    },
+    {
+      "id": "potato_wedges",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:potato",
+      "english_name": "Potato Wedges",
+      "chinese_name": "马铃薯角",
+      "color": "#D0B177"
+    },
+    {
+      "id": "apple_slices",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:apple",
+      "english_name": "Apple Slices",
+      "chinese_name": "苹果片",
+      "color": "#CE7C6B"
+    },
+    {
+      "id": "raw_cod_fillets",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:cod",
+      "english_name": "Raw Cod Fillets",
+      "chinese_name": "生鳕鱼片",
+      "color": "#C6B79A"
+    },
+    {
+      "id": "raw_salmon_fillets",
+      "type": "ingredient",
+      "mode": "knife",
+      "station": "chop",
+      "offhand": "gugugaga:chef_knife",
+      "input": "minecraft:salmon",
+      "english_name": "Raw Salmon Fillets",
+      "chinese_name": "生鲑鱼片",
+      "color": "#D99476"
+    },
+    {
+      "id": "finely_grated_carrot",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "minecraft:carrot",
+      "english_name": "Finely Grated Carrot",
+      "chinese_name": "细胡萝卜丝",
+      "color": "#DE9D61"
+    },
+    {
+      "id": "hash_brown_shreds",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "minecraft:potato",
+      "english_name": "Shredded Potato",
+      "chinese_name": "薯饼丝",
+      "color": "#D1BF93"
+    },
+    {
+      "id": "beetroot_shavings",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "minecraft:beetroot",
+      "english_name": "Beetroot Shavings",
+      "chinese_name": "甜菜根刨花",
+      "color": "#AD597A"
+    },
+    {
+      "id": "grated_pumpkin",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "minecraft:pumpkin",
+      "english_name": "Grated Pumpkin",
+      "chinese_name": "南瓜丝",
+      "color": "#DAA063"
+    },
+    {
+      "id": "grated_cucumber",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "gugugaga:cucumber",
+      "english_name": "Grated Cucumber",
+      "chinese_name": "黄瓜丝",
+      "color": "#88AF6A"
+    },
+    {
+      "id": "grated_apple",
+      "type": "ingredient",
+      "mode": "grater",
+      "station": "chop",
+      "offhand": "gugugaga:box_grater",
+      "input": "minecraft:apple",
+      "english_name": "Grated Apple",
+      "chinese_name": "苹果泥丝",
+      "color": "#C79B76"
+    },
+    {
+      "id": "smoked_beef_strips",
+      "type": "ingredient",
+      "mode": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "input": "gugugaga:raw_beef_strips",
+      "english_name": "Smoked Beef Strips",
+      "chinese_name": "烟熏牛肉条",
+      "color": "#97624E"
+    },
+    {
+      "id": "smoked_chicken_strips",
+      "type": "ingredient",
+      "mode": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "input": "gugugaga:raw_chicken_strips",
+      "english_name": "Smoked Chicken Strips",
+      "chinese_name": "烟熏鸡肉条",
+      "color": "#BC8D70"
+    },
+    {
+      "id": "smoked_cod_fillets",
+      "type": "ingredient",
+      "mode": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "input": "gugugaga:raw_cod_fillets",
+      "english_name": "Smoked Cod Fillets",
+      "chinese_name": "烟熏鳕鱼片",
+      "color": "#B3AA91"
+    },
+    {
+      "id": "smoked_salmon_fillets",
+      "type": "ingredient",
+      "mode": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "input": "gugugaga:raw_salmon_fillets",
+      "english_name": "Smoked Salmon Fillets",
+      "chinese_name": "烟熏鲑鱼片",
+      "color": "#C17F6A"
+    },
+    {
+      "id": "smoked_mushroom_slices",
+      "type": "ingredient",
+      "mode": "tongs",
+      "station": "smoke",
+      "offhand": "gugugaga:kitchen_tongs",
+      "input": "gugugaga:sliced_brown_mushroom",
+      "english_name": "Smoked Mushroom Slices",
+      "chinese_name": "烟熏蘑菇片",
+      "color": "#9A8067"
+    },
+    {
+      "id": "measured_apple_drink",
+      "type": "ingredient",
+      "mode": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "input": "gugugaga:apple_juice",
+      "english_name": "Measured Apple Drink Base",
+      "chinese_name": "定量苹果饮料基底",
+      "color": "#CFB173"
+    },
+    {
+      "id": "measured_grape_drink",
+      "type": "ingredient",
+      "mode": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "input": "gugugaga:grape_juice",
+      "english_name": "Measured Grape Drink Base",
+      "chinese_name": "定量葡萄饮料基底",
+      "color": "#996EA1"
+    },
+    {
+      "id": "measured_cocoa_base",
+      "type": "ingredient",
+      "mode": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "input": "gugugaga:cocoa_mix",
+      "english_name": "Measured Cocoa Base",
+      "chinese_name": "定量可可基底",
+      "color": "#946B51"
+    },
+    {
+      "id": "measured_pumpkin_base",
+      "type": "ingredient",
+      "mode": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "input": "gugugaga:pumpkin_puree",
+      "english_name": "Measured Pumpkin Base",
+      "chinese_name": "定量南瓜基底",
+      "color": "#D6A166"
+    },
+    {
+      "id": "measured_carrot_drink",
+      "type": "ingredient",
+      "mode": "measure",
+      "station": "mix",
+      "offhand": "gugugaga:measuring_cup",
+      "input": "gugugaga:carrot_juice",
+      "english_name": "Measured Carrot Drink Base",
+      "chinese_name": "定量胡萝卜饮料基底",
+      "color": "#CB965F"
+    },
+    {
+      "id": "clear_mushroom_stock",
+      "type": "ingredient",
+      "mode": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "input": "gugugaga:mushroom_stock",
+      "english_name": "Clear Mushroom Stock",
+      "chinese_name": "澄清蘑菇高汤",
+      "color": "#A39A7C"
+    },
+    {
+      "id": "clear_cod_stock",
+      "type": "ingredient",
+      "mode": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "input": "gugugaga:cod_stock",
+      "english_name": "Clear Cod Stock",
+      "chinese_name": "澄清鳕鱼高汤",
+      "color": "#B0B6A4"
+    },
+    {
+      "id": "clear_onion_stock",
+      "type": "ingredient",
+      "mode": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "input": "gugugaga:onion_stock",
+      "english_name": "Clear Onion Stock",
+      "chinese_name": "澄清洋葱高汤",
+      "color": "#BFAA81"
+    },
+    {
+      "id": "silky_pumpkin_soup",
+      "type": "ingredient",
+      "mode": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "input": "gugugaga:pumpkin_soup_base",
+      "english_name": "Silky Pumpkin Soup Base",
+      "chinese_name": "细腻南瓜汤底",
+      "color": "#D4A26A"
+    },
+    {
+      "id": "creamy_potato_soup",
+      "type": "ingredient",
+      "mode": "skim",
+      "station": "simmer",
+      "offhand": "gugugaga:skimmer_spoon",
+      "input": "gugugaga:potato_soup_base",
+      "english_name": "Creamy Potato Soup Base",
+      "chinese_name": "浓稠马铃薯汤底",
+      "color": "#CAB48A"
+    },
+    {
+      "id": "herb_beef_wrap",
+      "type": "food",
+      "english_name": "Herb Beef Wrap",
+      "chinese_name": "香草牛肉卷",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:smoked_beef_strips",
+        "gugugaga:flatbread_dough",
+        "gugugaga:lettuce"
+      ],
+      "color": "#B78861"
+    },
+    {
+      "id": "smoked_chicken_salad",
+      "type": "food",
+      "english_name": "Smoked Chicken Salad",
+      "chinese_name": "烟熏鸡肉沙拉",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:smoked_chicken_strips",
+        "gugugaga:grated_cucumber",
+        "minecraft:carrot"
+      ],
+      "color": "#B3A277"
+    },
+    {
+      "id": "smoked_cod_rice",
+      "type": "food",
+      "english_name": "Smoked Cod Rice",
+      "chinese_name": "烟熏鳕鱼饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:smoked_cod_fillets",
+        "gugugaga:steamed_rice",
+        "gugugaga:kelp_paste"
+      ],
+      "color": "#BCB397"
+    },
+    {
+      "id": "salmon_apple_plate",
+      "type": "food",
+      "english_name": "Smoked Salmon Apple Plate",
+      "chinese_name": "苹果烟熏鲑鱼拼盘",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:smoked_salmon_fillets",
+        "gugugaga:apple_slices",
+        "gugugaga:grated_cucumber"
+      ],
+      "color": "#BE8E78"
+    },
+    {
+      "id": "smoked_mushroom_bowl",
+      "type": "food",
+      "english_name": "Smoked Mushroom Bowl",
+      "chinese_name": "烟熏蘑菇碗",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:smoked_mushroom_slices",
+        "gugugaga:steamed_rice",
+        "gugugaga:carrot_slaw"
+      ],
+      "color": "#A6A081"
+    },
+    {
+      "id": "golden_hash_browns",
+      "type": "food",
+      "english_name": "Golden Hash Browns",
+      "chinese_name": "金黄薯饼",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:hash_brown_shreds",
+        "gugugaga:beaten_egg",
+        "minecraft:wheat"
+      ],
+      "color": "#CCAF77"
+    },
+    {
+      "id": "beetroot_ribbon_salad",
+      "type": "food",
+      "english_name": "Beetroot Ribbon Salad",
+      "chinese_name": "甜菜根丝沙拉",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:beetroot_shavings",
+        "gugugaga:finely_grated_carrot",
+        "gugugaga:lettuce"
+      ],
+      "color": "#B7847A"
+    },
+    {
+      "id": "pumpkin_shred_fritters",
+      "type": "food",
+      "english_name": "Pumpkin Shred Fritters",
+      "chinese_name": "南瓜丝煎饼",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:grated_pumpkin",
+        "gugugaga:wheat_flour",
+        "minecraft:egg"
+      ],
+      "color": "#D3A173"
+    },
+    {
+      "id": "apple_cinnamon_porridge",
+      "type": "food",
+      "english_name": "Apple Morning Porridge",
+      "chinese_name": "苹果早餐粥",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:grated_apple",
+        "gugugaga:oat",
+        "minecraft:sugar"
+      ],
+      "color": "#C6A37D"
+    },
+    {
+      "id": "potato_wedge_platter",
+      "type": "food",
+      "english_name": "Potato Wedge Platter",
+      "chinese_name": "马铃薯角拼盘",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:potato_wedges",
+        "gugugaga:glazed_carrots",
+        "gugugaga:caramelized_onions"
+      ],
+      "color": "#C0A070"
+    },
+    {
+      "id": "apple_measure_cup",
+      "type": "food",
+      "english_name": "Apple Fruit Drink",
+      "chinese_name": "苹果果饮",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:measured_apple_drink",
+        "minecraft:apple",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#D2B48A"
+    },
+    {
+      "id": "grape_measure_cup",
+      "type": "food",
+      "english_name": "Grape Fruit Drink",
+      "chinese_name": "葡萄果饮",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:measured_grape_drink",
+        "gugugaga:grape",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#A98BB1"
+    },
+    {
+      "id": "cocoa_morning_cake",
+      "type": "food",
+      "english_name": "Cocoa Morning Cake",
+      "chinese_name": "可可晨间蛋糕",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:measured_cocoa_base",
+        "gugugaga:wheat_flour",
+        "minecraft:sugar"
+      ],
+      "color": "#A88169"
+    },
+    {
+      "id": "pumpkin_breakfast_cake",
+      "type": "food",
+      "english_name": "Pumpkin Breakfast Cake",
+      "chinese_name": "南瓜早餐糕",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:measured_pumpkin_base",
+        "gugugaga:bread_dough",
+        "minecraft:egg"
+      ],
+      "color": "#D6A76C"
+    },
+    {
+      "id": "carrot_sunrise_drink",
+      "type": "food",
+      "english_name": "Carrot Sunrise Drink",
+      "chinese_name": "胡萝卜晨光饮",
+      "nutrition": 5,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:measured_carrot_drink",
+        "minecraft:apple",
+        "gugugaga:glass_tumbler"
+      ],
+      "color": "#D3A072"
+    },
+    {
+      "id": "mushroom_clear_soup",
+      "type": "food",
+      "english_name": "Clear Mushroom Soup",
+      "chinese_name": "清澈蘑菇汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:clear_mushroom_stock",
+        "gugugaga:steamed_mushrooms",
+        "minecraft:carrot"
+      ],
+      "color": "#AAA187"
+    },
+    {
+      "id": "cod_clear_noodle_soup",
+      "type": "food",
+      "english_name": "Clear Cod Noodle Soup",
+      "chinese_name": "清汤鳕鱼面",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:clear_cod_stock",
+        "gugugaga:buckwheat_noodle_dough",
+        "gugugaga:steamed_onion"
+      ],
+      "color": "#B0AE96"
+    },
+    {
+      "id": "onion_clear_stew",
+      "type": "food",
+      "english_name": "Clear Onion Stew",
+      "chinese_name": "清洋葱炖菜",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:clear_onion_stock",
+        "minecraft:baked_potato",
+        "gugugaga:steamed_carrot"
+      ],
+      "color": "#C2AB8E"
+    },
+    {
+      "id": "silky_pumpkin_bowl",
+      "type": "food",
+      "english_name": "Silky Pumpkin Bowl",
+      "chinese_name": "细腻南瓜浓汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:silky_pumpkin_soup",
+        "gugugaga:steamed_pumpkin",
+        "gugugaga:wooden_bowl"
+      ],
+      "color": "#D4A96C"
+    },
+    {
+      "id": "creamy_potato_pot",
+      "type": "food",
+      "english_name": "Creamy Potato Pot",
+      "chinese_name": "奶香马铃薯炖锅",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:creamy_potato_soup",
+        "gugugaga:caramelized_onions",
+        "minecraft:milk_bucket"
+      ],
+      "color": "#C7B598"
+    }
+  ]
+}

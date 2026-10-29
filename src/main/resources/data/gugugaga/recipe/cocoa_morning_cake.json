@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:measured_cocoa_base"
+    },
+    {
+      "item": "gugugaga:wheat_flour"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cocoa_morning_cake",
+    "count": 1
+  }
+}

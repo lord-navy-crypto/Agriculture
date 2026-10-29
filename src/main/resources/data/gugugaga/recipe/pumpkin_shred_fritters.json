@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:grated_pumpkin"
+    },
+    {
+      "item": "gugugaga:wheat_flour"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_shred_fritters",
+    "count": 1
+  }
+}
