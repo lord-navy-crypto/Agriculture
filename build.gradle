@@ -53,6 +53,7 @@ apply from: 'tools/crop-cuisine-textures.gradle'
 apply from: 'tools/kitchen-assets.gradle'
 apply from: 'tools/kitchen-v3-assets.gradle'
 apply from: 'tools/kitchen-v31-assets.gradle'
+apply from: 'tools/kitchen-v32-assets.gradle'
 apply from: 'tools/fusion-visuals.gradle'
 
 
