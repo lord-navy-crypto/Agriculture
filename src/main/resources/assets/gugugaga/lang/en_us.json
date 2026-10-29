@@ -1044,5 +1044,15 @@
   "message.gugugaga.v34_aging_progress": "Condiment aging: stage %s / 3.",
   "message.gugugaga.v34_aging_ready": "Aging completed: %s.",
   "key.gugugaga.nutrition": "Show Nutrition Overview",
-  "key.categories.gugugaga": "Gugu Gaga Agriculture"
+  "key.categories.gugugaga": "Gugu Gaga Agriculture",
+  "message.gugugaga.v34_nutrition_title": "Nutrition diversity overview (gameplay only)",
+  "message.gugugaga.v34_nutrition_row": "%s  %s  %s/100",
+  "message.gugugaga.v34_nutrition_varied": "Varied foods: Active Food Diversity bonus (Mining Haste I).",
+  "message.gugugaga.v34_nutrition_explore": "Explore different food groups for a Food Diversity bonus. No negative effects.",
+  "nutrition.gugugaga.grain_energy": "Grains & energy",
+  "nutrition.gugugaga.protein": "Protein-rich foods",
+  "nutrition.gugugaga.plant_fats": "Seeds & fats",
+  "nutrition.gugugaga.vitamins": "Fruit & vegetable variety",
+  "nutrition.gugugaga.minerals": "Mineral-rich variety",
+  "nutrition.gugugaga.fiber": "Whole foods & fiber"
 }
