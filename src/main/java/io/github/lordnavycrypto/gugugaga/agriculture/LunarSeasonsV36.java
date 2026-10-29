@@ -4,7 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractGlassBlock;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -91,7 +91,10 @@ public final class LunarSeasonsV36 {
         for(int dy=2;dy<=4;dy++) {
             BlockPos check=crop.above(dy);
             if(!level.hasChunkAt(check))return false;
-            if(level.getBlockState(check).getBlock() instanceof AbstractGlassBlock)
+            String glassId=BuiltInRegistries.BLOCK.getKey(
+                    level.getBlockState(check).getBlock()).getPath();
+            if(glassId.equals("glass") || glassId.endsWith("_glass")
+                    || glassId.equals("glass_pane") || glassId.endsWith("_glass_pane"))
                 return true;
         }
         return false;
