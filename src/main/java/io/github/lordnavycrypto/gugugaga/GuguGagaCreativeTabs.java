@@ -4,6 +4,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.AgricultureContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.AgricultureCuisineContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.BeeContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.MarineFungiContent;
+import io.github.lordnavycrypto.gugugaga.agriculture.KitchenContent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -43,7 +44,8 @@ public final class GuguGagaCreativeTabs {
                     .title(Component.translatable("itemGroup.gugugaga.cuisine"))
                     .icon(() -> new ItemStack(AgricultureCuisineContent.GRAIN_PORRIDGE.get()))
                     .displayItems((parameters, output) ->
-                            AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())))
+                            { AgricultureCuisineContent.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              KitchenContent.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =
