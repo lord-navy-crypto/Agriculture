@@ -164,7 +164,7 @@ tasks.register('generateFoodEcologyV33Assets') {
                 model.parentFile.mkdirs()
                 model.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(
                     [parent:'minecraft:block/cross',
-                     textures:[cross:'gugugaga:block/food_ecology/' + crop.id + '_stage' + age]]))+'\\n','UTF-8')
+                     textures:[cross:'gugugaga:block/food_ecology/' + crop.id + '_stage' + age]]))+System.lineSeparator(),'UTF-8')
             }
         }
         logger.lifecycle('FOOD_ECOLOGY_V33_ASSETS_OK: 68 icons, 64 crop growth stages and 12-row proof sheet generated.')
