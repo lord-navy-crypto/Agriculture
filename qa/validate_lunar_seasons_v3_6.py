@@ -52,7 +52,7 @@ for day in range(0,96):
     assert (day%32) == ((day+32)%32)
 # Local climate differences never change the shared world date, year or lunar phase.
 assert all(sum(v)==32 for v in profiles.values())
-assert 'if(level.getBlockState(check).getBlock() instanceof AbstractGlassBlock)' in calendar
+assert 'glassId.equals("glass") || glassId.endsWith("_glass")' in calendar
 assert "if(!level.hasChunkAt(p))continue;" in calendar
 assert "level.getMaxLocalRawBrightness(pos)<9" in calendar
 assert "state.is(Blocks.CAMPFIRE)" in calendar
