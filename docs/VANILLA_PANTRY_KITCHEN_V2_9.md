@@ -41,7 +41,7 @@ The 23 raw vanilla conversions cover base-game carrots, potatoes, beetroot, pump
 | Melon Apple Salad 西瓜苹果沙拉 | melon cubes + vanilla apple + sweet berries |
 | Carrot Chicken Bowl 胡萝卜鸡肉饭 | carrot juice + vanilla cooked chicken + rice |
 | Glow Berry Custard 发光浆果布丁 | glow berry juice + vanilla egg + milk bucket |
-| Honey Salmon Plate 蜂蜜鲑鱼拼盘 | sliced cucumber + vanilla cooked salmon + honey bottle |
+| Honey Salmon Plate 蜂蜜鲑鱼拼盘 | carrot ribbons + vanilla cooked salmon + honey bottle |
 | Red Mushroom Tomato Stew 红蘑菇番茄汤 | sliced red mushroom + tomato purée + onion |
 | Melon Seed Bread 西瓜籽面包 | melon seed meal + flatbread dough + vanilla sugar |
 | Smoked Salmon Rice 熏鲑鱼饭 | smoked salmon + rice + kelp paste |
