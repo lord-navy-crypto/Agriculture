@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "age=0,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage0"
+    },
+    "age=0,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage0"
+    },
+    "age=1,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage1"
+    },
+    "age=1,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage1"
+    },
+    "age=2,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage2"
+    },
+    "age=2,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage2"
+    },
+    "age=3,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage3"
+    },
+    "age=3,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage3"
+    },
+    "age=4,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage4"
+    },
+    "age=4,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage4"
+    },
+    "age=5,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage5"
+    },
+    "age=5,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage5"
+    },
+    "age=6,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage6"
+    },
+    "age=6,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage6"
+    },
+    "age=7,pollinated=false": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage7"
+    },
+    "age=7,pollinated=true": {
+      "model": "gugugaga:block/food_ecology/cardamom_stage7"
+    }
+  }
+}

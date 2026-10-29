@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_sardine"
+    },
+    {
+      "item": "gugugaga:lemongrass_flakes"
+    },
+    {
+      "item": "gugugaga:kelp_broth"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:lemongrass_sardine_soup",
+    "count": 1
+  }
+}

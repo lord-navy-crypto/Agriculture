@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cultured_cabbage"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:sesame_paste"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cultured_cabbage_bowl",
+    "count": 1
+  }
+}

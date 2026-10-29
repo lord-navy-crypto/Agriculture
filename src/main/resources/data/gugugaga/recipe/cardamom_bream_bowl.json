@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_sea_bream"
+    },
+    {
+      "item": "gugugaga:ground_cardamom"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cardamom_bream_bowl",
+    "count": 1
+  }
+}

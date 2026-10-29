@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cultured_beet_relish"
+    },
+    {
+      "item": "gugugaga:rice_flour"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sweet_beet_rice_cake",
+    "count": 1
+  }
+}

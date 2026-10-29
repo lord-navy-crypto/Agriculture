@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_mackerel"
+    },
+    {
+      "item": "gugugaga:cracked_black_pepper"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:spiced_mackerel_rice",
+    "count": 1
+  }
+}

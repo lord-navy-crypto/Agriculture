@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_shrimp"
+    },
+    {
+      "item": "gugugaga:ground_fenugreek"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:fenugreek_shrimp_stew",
+    "count": 1
+  }
+}
