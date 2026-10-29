@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:melon_seed_meal"
+    },
+    {
+      "item": "gugugaga:flatbread_dough"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:melon_seed_bread",
+    "count": 1
+  }
+}

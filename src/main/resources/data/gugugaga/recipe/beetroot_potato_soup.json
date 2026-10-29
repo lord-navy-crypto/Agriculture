@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:grated_beetroot"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "gugugaga:onion"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:beetroot_potato_soup",
+    "count": 1
+  }
+}

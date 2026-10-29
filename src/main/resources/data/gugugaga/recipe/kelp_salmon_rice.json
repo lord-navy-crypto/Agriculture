@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:kelp_paste"
+    },
+    {
+      "item": "minecraft:cooked_salmon"
+    },
+    {
+      "item": "gugugaga:rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:kelp_salmon_rice",
+    "count": 1
+  }
+}
