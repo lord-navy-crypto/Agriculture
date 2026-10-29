@@ -1091,5 +1091,18 @@
   "message.gugugaga.v35_bonus_explore": "Explore different foods for optional variety bonuses. No penalties.",
   "message.gugugaga.v35_next_page": "Press N again for the next nutrition page. These are abstract game scores, not real nutrient amounts.",
   "message.gugugaga.v35_gui_title": "Food Variety & Nutrition",
-  "message.gugugaga.v35_gui_note": "Game score only · Not real nutrition guidance"
+  "message.gugugaga.v35_gui_note": "Game score only · Not real nutrition guidance",
+  "message.gugugaga.v36_calendar": "Year %s · Day %s/32 · Calendar: %s · Local: %s, day %s/%s · Moon phase %s (%s)",
+  "season.gugugaga.spring": "Spring",
+  "season.gugugaga.summer": "Summer",
+  "season.gugugaga.autumn": "Autumn",
+  "season.gugugaga.winter": "Winter",
+  "moon.gugugaga.0": "Full Moon",
+  "moon.gugugaga.1": "Waning Gibbous",
+  "moon.gugugaga.2": "Last Quarter",
+  "moon.gugugaga.3": "Waning Crescent",
+  "moon.gugugaga.4": "New Moon",
+  "moon.gugugaga.5": "Waxing Crescent",
+  "moon.gugugaga.6": "First Quarter",
+  "moon.gugugaga.7": "Waxing Gibbous"
 }
