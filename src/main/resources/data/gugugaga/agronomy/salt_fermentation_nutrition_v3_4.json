@@ -439,9 +439,9 @@
     "note": "Gameplay nutrition diversity, not a medical diagnostic or an exact simulation of human vitamin needs.",
     "dimensions": [
       "grain_energy",
-      "proteins",
-      "healthy_fats",
-      "vegetable_vitamins",
+      "protein",
+      "plant_fats",
+      "vitamins",
       "minerals",
       "fiber"
     ],
