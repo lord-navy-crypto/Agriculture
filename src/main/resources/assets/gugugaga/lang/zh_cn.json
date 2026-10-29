@@ -1089,5 +1089,7 @@
   "message.gugugaga.v35_bonus_advanced": "多样化料理进阶奖励：急迫 I 与速度 I。",
   "message.gugugaga.v35_bonus_varied": "多样化料理奖励：急迫 I。",
   "message.gugugaga.v35_bonus_explore": "尝试多种食材可获得额外奖励；未达标没有惩罚。",
-  "message.gugugaga.v35_next_page": "再次按 N 查看下一页。这里的营养指标是游戏分值，不代表真实摄入量。"
+  "message.gugugaga.v35_next_page": "再次按 N 查看下一页。这里的营养指标是游戏分值，不代表真实摄入量。",
+  "message.gugugaga.v35_gui_title": "食物多样性与营养面板",
+  "message.gugugaga.v35_gui_note": "仅为游戏分值，不代表真实营养诊断"
 }
