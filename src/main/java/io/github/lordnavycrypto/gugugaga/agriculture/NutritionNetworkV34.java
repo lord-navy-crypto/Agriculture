@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /** Single request packet: server owns and reports the player's nutrition data. */
 @EventBusSubscriber(modid=GuguGagaMod.MOD_ID, bus=EventBusSubscriber.Bus.MOD)
@@ -26,8 +27,11 @@ public final class NutritionNetworkV34 {
     public static void register(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
-                    if (context.player() instanceof ServerPlayer player)
-                        NutritionV34.show(player);
+                    if (context.player() instanceof ServerPlayer player) {
+                        NutritionV34.show(player); // compatible text report
+                        PacketDistributor.sendToPlayer(player,
+                                new NutritionNetworkV35.State(NutritionV34.snapshot(player)));
+                    }
                 });
     }
 }
