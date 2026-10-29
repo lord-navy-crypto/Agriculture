@@ -1089,5 +1089,7 @@
   "message.gugugaga.v35_bonus_advanced": "Varied meals milestone: Mining Haste I + Speed I.",
   "message.gugugaga.v35_bonus_varied": "Varied meals milestone: Mining Haste I.",
   "message.gugugaga.v35_bonus_explore": "Explore different foods for optional variety bonuses. No penalties.",
-  "message.gugugaga.v35_next_page": "Press N again for the next nutrition page. These are abstract game scores, not real nutrient amounts."
+  "message.gugugaga.v35_next_page": "Press N again for the next nutrition page. These are abstract game scores, not real nutrient amounts.",
+  "message.gugugaga.v35_gui_title": "Food Variety & Nutrition",
+  "message.gugugaga.v35_gui_note": "Game score only · Not real nutrition guidance"
 }
