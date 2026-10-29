@@ -50,6 +50,7 @@ tasks.withType(JavaCompile).configureEach {
 apply from: 'tools/crop-textures.gradle'
 apply from: 'tools/marine-fungi-textures.gradle'
 apply from: 'tools/crop-cuisine-textures.gradle'
+apply from: 'tools/kitchen-assets.gradle'
 apply from: 'tools/fusion-visuals.gradle'
 
 
