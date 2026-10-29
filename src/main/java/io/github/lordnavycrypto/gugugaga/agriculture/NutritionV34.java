@@ -130,6 +130,14 @@ public final class NutritionV34 {
      * The same configurable N key cycles five short server-authoritative
      * pages through vanilla chat, requiring no client-only server class.
      */
+    public static int[] snapshot(ServerPlayer player) {
+        CompoundTag values=record(player);
+        int[] result=new int[NutritionProfilesV35.NUTRIENTS.length];
+        for(int i=0;i<result.length;i++)
+            result[i]=clamp(values.getInt(NutritionProfilesV35.NUTRIENTS[i]));
+        return result;
+    }
+
     public static void show(ServerPlayer player) {
         CompoundTag values=record(player);
         int page=Math.floorMod(values.getInt("page"),PAGE_COUNT);
