@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.6.0-rc.1 — Lunar calendar, four 8-day seasons and crop overwintering
+
+- A full agricultural **32-day world year** synchronized to four existing eight-day Minecraft lunar cycles: Spring (day 1–8), Summer (9–16), Autumn (17–24), Winter (25–32). Each global season begins at moon phase 0 (full moon). Year/date follow the vanilla world day clock; no new clock, timers or SavedData needed.
+- Five local biome calendar adaptations, each totaling 32 days: temperate (8/8/8/8), tropical (8/10/8/6), arid (7/11/8/6), cold (7/6/8/11), wet (9/9/8/6). Local spring/summer/autumn/winter can end on different dates, but the world and lunar date stay globally consistent.
+- All **108 crops** now use seasonal growth probability gates via their existing horticulture band before old biomes/water/breeding checks. Growth slows or pauses in adverse winter conditions, especially cold regions; no crops are instantly deleted, and existing food IDs and crop loot remain untouched.
+- A lightweight glass-canopy/nearby heat source shelter may recover winter growth probability. Checks are bounded and do not force chunk loads. Original vanilla light minimum (9) remains respected.
+- New bilingual read-only **/agseason** command shows current year/day, shared season, local season length and exact eight-stage moon phase at the player's location.
+- No biome temperatures, real weather, block states or world geometry are globally changed; compatible with other season mods at the world state level, although two crop growth multipliers may stack if multiple season systems are enabled.
+- CI adds calendar arithmetic, complete 32-day cycles, resource and integration tests, alongside all prior agriculture, food, nutrients, marine, hive and Fusion regressions.
+- Manual Minecraft client acceptance still required, especially across transitions, sleep/time commands and custom modded biomes.
+
+
 ## v3.5.0-rc.1 — Comprehensive gameplay nutrition catalog
 
 - Replace the v3.4 name-based six-group scoring with an explicit packaged, versioned catalog for **403** edible foods: every registered Agriculture food, 50 honey bottles, and over 40 original Minecraft foods.
