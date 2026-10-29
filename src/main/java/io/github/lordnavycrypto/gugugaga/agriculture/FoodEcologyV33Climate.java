@@ -32,6 +32,8 @@ public final class FoodEcologyV33Climate {
                                       BlockPos pos, RandomSource random) {
         if (level.dimension() != Level.OVERWORLD) return random.nextInt(6) == 0;
         String profile = BANDS.get(seedName);
+        if (!LunarSeasonsV36.allowsGrowth(
+                profile.toLowerCase(java.util.Locale.ROOT), level, pos, random)) return false;
         String biome = level.getBiome(pos).unwrapKey()
                 .map(key -> key.location().getPath()).orElse("plains");
         boolean cold = biome.contains("snowy") || biome.contains("frozen")
