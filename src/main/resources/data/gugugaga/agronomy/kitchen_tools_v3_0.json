@@ -1,0 +1,667 @@
+{
+  "schema_version": "3.0",
+  "description": "Additive v3 kitchen tools, 3 offhand-gated workstations, 24 intermediate routes and 18 meals.",
+  "stations": [
+    {
+      "id": "dough_bench",
+      "kind": "knead",
+      "english_name": "Dough Bench",
+      "chinese_name": "面案台",
+      "offhand": "gugugaga:rolling_pin"
+    },
+    {
+      "id": "skillet_station",
+      "kind": "fry",
+      "english_name": "Skillet Station",
+      "chinese_name": "煎炒台",
+      "offhand": "gugugaga:frying_spatula",
+      "requires": "lit_campfire_smoke"
+    },
+    {
+      "id": "bamboo_steamer",
+      "kind": "steam",
+      "english_name": "Bamboo Steamer",
+      "chinese_name": "竹蒸笼台",
+      "offhand": "gugugaga:steamer_lid",
+      "requires": "lit_campfire_smoke"
+    }
+  ],
+  "items": [
+    {
+      "id": "rolling_pin",
+      "type": "tool",
+      "english_name": "Rolling Pin",
+      "chinese_name": "擀面杖",
+      "color": "#AD8155"
+    },
+    {
+      "id": "frying_spatula",
+      "type": "tool",
+      "english_name": "Frying Spatula",
+      "chinese_name": "煎炒锅铲",
+      "color": "#98745B"
+    },
+    {
+      "id": "steamer_lid",
+      "type": "tool",
+      "english_name": "Steamer Lid",
+      "chinese_name": "蒸笼盖",
+      "color": "#B7A16F"
+    },
+    {
+      "id": "chef_knife",
+      "type": "tool",
+      "english_name": "Chef Knife",
+      "chinese_name": "厨刀",
+      "color": "#AEBAC1"
+    },
+    {
+      "id": "wire_whisk",
+      "type": "tool",
+      "english_name": "Wire Whisk",
+      "chinese_name": "打蛋器",
+      "color": "#C4BEC0"
+    },
+    {
+      "id": "soup_ladle",
+      "type": "tool",
+      "english_name": "Soup Ladle",
+      "chinese_name": "汤勺",
+      "color": "#A77E64"
+    },
+    {
+      "id": "kitchen_tongs",
+      "type": "tool",
+      "english_name": "Kitchen Tongs",
+      "chinese_name": "厨房夹",
+      "color": "#B4A89B"
+    },
+    {
+      "id": "kitchen_strainer",
+      "type": "tool",
+      "english_name": "Kitchen Strainer",
+      "chinese_name": "滤网",
+      "color": "#C2BEB4"
+    },
+    {
+      "id": "box_grater",
+      "type": "tool",
+      "english_name": "Box Grater",
+      "chinese_name": "刨丝器",
+      "color": "#B0BEC4"
+    },
+    {
+      "id": "mortar_pestle",
+      "type": "tool",
+      "english_name": "Mortar and Pestle",
+      "chinese_name": "研钵与研杵",
+      "color": "#B8AF9E"
+    },
+    {
+      "id": "measuring_cup",
+      "type": "tool",
+      "english_name": "Measuring Cup",
+      "chinese_name": "量杯",
+      "color": "#A5C7CD"
+    },
+    {
+      "id": "skimmer_spoon",
+      "type": "tool",
+      "english_name": "Skimmer Spoon",
+      "chinese_name": "漏勺",
+      "color": "#BCC8C1"
+    },
+    {
+      "id": "wooden_bowl",
+      "type": "tableware",
+      "english_name": "Wooden Bowl",
+      "chinese_name": "木碗",
+      "color": "#B98B58"
+    },
+    {
+      "id": "ceramic_bowl",
+      "type": "tableware",
+      "english_name": "Ceramic Bowl",
+      "chinese_name": "陶碗",
+      "color": "#DCC9A6"
+    },
+    {
+      "id": "soup_bowl",
+      "type": "tableware",
+      "english_name": "Soup Bowl",
+      "chinese_name": "汤碗",
+      "color": "#DBD0BD"
+    },
+    {
+      "id": "serving_platter",
+      "type": "tableware",
+      "english_name": "Serving Platter",
+      "chinese_name": "上菜大盘",
+      "color": "#D0D5CD"
+    },
+    {
+      "id": "bread_basket",
+      "type": "tableware",
+      "english_name": "Bread Basket",
+      "chinese_name": "面包篮",
+      "color": "#BA9259"
+    },
+    {
+      "id": "glazed_tea_cup",
+      "type": "tableware",
+      "english_name": "Glazed Tea Cup",
+      "chinese_name": "釉面茶杯",
+      "color": "#95B4A9"
+    },
+    {
+      "id": "glass_tumbler",
+      "type": "tableware",
+      "english_name": "Glass Tumbler",
+      "chinese_name": "玻璃杯",
+      "color": "#A5D2D8"
+    },
+    {
+      "id": "dessert_plate",
+      "type": "tableware",
+      "english_name": "Dessert Plate",
+      "chinese_name": "甜点盘",
+      "color": "#DDC6C9"
+    },
+    {
+      "id": "lunch_box",
+      "type": "tableware",
+      "english_name": "Lunch Box",
+      "chinese_name": "便当盒",
+      "color": "#BE9877"
+    },
+    {
+      "id": "sauce_dish",
+      "type": "tableware",
+      "english_name": "Sauce Dish",
+      "chinese_name": "调料碟",
+      "color": "#D2BEA5"
+    },
+    {
+      "id": "baking_tray",
+      "type": "tableware",
+      "english_name": "Baking Tray",
+      "chinese_name": "烤盘",
+      "color": "#838E91"
+    },
+    {
+      "id": "bamboo_steamer_basket",
+      "type": "tableware",
+      "english_name": "Bamboo Steamer Basket",
+      "chinese_name": "竹蒸笼",
+      "color": "#B6A071"
+    },
+    {
+      "id": "bread_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:wheat_flour",
+      "english_name": "Bread Dough",
+      "chinese_name": "面包面团",
+      "color": "#D6BA80"
+    },
+    {
+      "id": "rice_dumpling_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:rice_flour",
+      "english_name": "Rice Dumpling Dough",
+      "chinese_name": "米饺面团",
+      "color": "#D8D1BF"
+    },
+    {
+      "id": "buckwheat_noodle_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:buckwheat_flour",
+      "english_name": "Buckwheat Noodle Dough",
+      "chinese_name": "荞麦面团",
+      "color": "#A68D70"
+    },
+    {
+      "id": "sesame_bun_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:sesame_meal",
+      "english_name": "Sesame Bun Dough",
+      "chinese_name": "芝麻包面团",
+      "color": "#B4A17B"
+    },
+    {
+      "id": "pizza_base",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:flatbread_dough",
+      "english_name": "Pizza Base",
+      "chinese_name": "披萨面饼",
+      "color": "#CBAB7D"
+    },
+    {
+      "id": "cocoa_cookie_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:cocoa_mix",
+      "english_name": "Cocoa Cookie Dough",
+      "chinese_name": "可可饼干胚",
+      "color": "#9A664E"
+    },
+    {
+      "id": "bran_cracker_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:wheat_bran",
+      "english_name": "Bran Cracker Dough",
+      "chinese_name": "麦麸脆饼胚",
+      "color": "#BDA277"
+    },
+    {
+      "id": "pumpkin_pastry_dough",
+      "type": "ingredient",
+      "station": "knead",
+      "input": "gugugaga:pumpkin_puree",
+      "english_name": "Pumpkin Pastry Dough",
+      "chinese_name": "南瓜糕面团",
+      "color": "#D99B57"
+    },
+    {
+      "id": "crispy_potato_hash",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:diced_potato",
+      "english_name": "Crispy Potato Hash",
+      "chinese_name": "香煎马铃薯丁",
+      "color": "#C7A16B"
+    },
+    {
+      "id": "caramelized_onions",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:chopped_onion",
+      "english_name": "Caramelized Onions",
+      "chinese_name": "焦糖洋葱",
+      "color": "#B58C54"
+    },
+    {
+      "id": "sauteed_mushrooms",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:sliced_brown_mushroom",
+      "english_name": "Sauteed Mushrooms",
+      "chinese_name": "香煎蘑菇",
+      "color": "#A58C6C"
+    },
+    {
+      "id": "seared_red_mushrooms",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:sliced_red_mushroom",
+      "english_name": "Seared Red Mushrooms",
+      "chinese_name": "香煎红蘑菇",
+      "color": "#B36D57"
+    },
+    {
+      "id": "glazed_carrots",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:carrot_ribbons",
+      "english_name": "Glazed Carrots",
+      "chinese_name": "香煎胡萝卜",
+      "color": "#D39A54"
+    },
+    {
+      "id": "pan_roasted_tomato",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:diced_tomato",
+      "english_name": "Pan-Roasted Tomato",
+      "chinese_name": "锅烤番茄",
+      "color": "#C26A4D"
+    },
+    {
+      "id": "seared_smoked_beef",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:smoked_beef",
+      "english_name": "Seared Smoked Beef",
+      "chinese_name": "香煎熏牛肉",
+      "color": "#A66A51"
+    },
+    {
+      "id": "toasted_seaweed",
+      "type": "ingredient",
+      "station": "fry",
+      "input": "gugugaga:kelp_paste",
+      "english_name": "Toasted Seaweed",
+      "chinese_name": "烘烤海苔",
+      "color": "#618A67"
+    },
+    {
+      "id": "steamed_rice",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:rice",
+      "english_name": "Steamed Rice",
+      "chinese_name": "蒸米饭",
+      "color": "#DAD1B7"
+    },
+    {
+      "id": "steamed_pumpkin",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:pumpkin_chunks",
+      "english_name": "Steamed Pumpkin",
+      "chinese_name": "蒸南瓜",
+      "color": "#DFA85E"
+    },
+    {
+      "id": "steamed_cabbage",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:shredded_cabbage",
+      "english_name": "Steamed Cabbage",
+      "chinese_name": "蒸卷心菜",
+      "color": "#A8C185"
+    },
+    {
+      "id": "steamed_potato",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:diced_potato",
+      "english_name": "Steamed Potato",
+      "chinese_name": "蒸马铃薯",
+      "color": "#D8BD89"
+    },
+    {
+      "id": "steamed_carrot",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "minecraft:carrot",
+      "english_name": "Steamed Carrot",
+      "chinese_name": "蒸胡萝卜",
+      "color": "#DDA165"
+    },
+    {
+      "id": "steamed_beetroot",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "minecraft:beetroot",
+      "english_name": "Steamed Beetroot",
+      "chinese_name": "蒸甜菜根",
+      "color": "#A95372"
+    },
+    {
+      "id": "steamed_onion",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:chopped_onion",
+      "english_name": "Steamed Onion",
+      "chinese_name": "蒸洋葱",
+      "color": "#D0BA86"
+    },
+    {
+      "id": "steamed_mushrooms",
+      "type": "ingredient",
+      "station": "steam",
+      "input": "gugugaga:sliced_brown_mushroom",
+      "english_name": "Steamed Mushrooms",
+      "chinese_name": "蒸蘑菇",
+      "color": "#B0A082"
+    },
+    {
+      "id": "tomato_flatbread_pizza",
+      "type": "food",
+      "english_name": "Tomato Flatbread Pizza",
+      "chinese_name": "番茄薄饼披萨",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:pizza_base",
+        "gugugaga:pan_roasted_tomato",
+        "gugugaga:basil"
+      ],
+      "color": "#C47D58"
+    },
+    {
+      "id": "handmade_rice_dumplings",
+      "type": "food",
+      "english_name": "Handmade Rice Dumplings",
+      "chinese_name": "手工米饺",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:rice_dumpling_dough",
+        "gugugaga:steamed_cabbage",
+        "minecraft:carrot"
+      ],
+      "color": "#D2B895"
+    },
+    {
+      "id": "buckwheat_mushroom_noodles",
+      "type": "food",
+      "english_name": "Buckwheat Mushroom Noodles",
+      "chinese_name": "荞麦蘑菇面",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:buckwheat_noodle_dough",
+        "gugugaga:sauteed_mushrooms",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#9D9275"
+    },
+    {
+      "id": "sesame_steamed_buns",
+      "type": "food",
+      "english_name": "Sesame Steamed Buns",
+      "chinese_name": "芝麻蒸包",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:sesame_bun_dough",
+        "gugugaga:steamed_onion",
+        "gugugaga:bamboo_steamer_basket"
+      ],
+      "color": "#C4B18D"
+    },
+    {
+      "id": "pumpkin_pastry",
+      "type": "food",
+      "english_name": "Pumpkin Pastry",
+      "chinese_name": "南瓜糕点",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:pumpkin_pastry_dough",
+        "minecraft:sugar",
+        "gugugaga:dessert_plate"
+      ],
+      "color": "#D6A16B"
+    },
+    {
+      "id": "cocoa_crunch_cookies",
+      "type": "food",
+      "english_name": "Cocoa Crunch Cookies",
+      "chinese_name": "可可脆饼",
+      "nutrition": 6,
+      "saturation_modifier": 0.55,
+      "ingredients": [
+        "gugugaga:cocoa_cookie_dough",
+        "minecraft:sugar",
+        "gugugaga:baking_tray"
+      ],
+      "color": "#8D644C"
+    },
+    {
+      "id": "hearty_potato_plate",
+      "type": "food",
+      "english_name": "Hearty Potato Plate",
+      "chinese_name": "香煎薯丁拼盘",
+      "nutrition": 8,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:crispy_potato_hash",
+        "gugugaga:glazed_carrots",
+        "gugugaga:serving_platter"
+      ],
+      "color": "#C0A075"
+    },
+    {
+      "id": "creamy_mushroom_bowl",
+      "type": "food",
+      "english_name": "Creamy Mushroom Bowl",
+      "chinese_name": "蘑菇浓汤碗",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:sauteed_mushrooms",
+        "minecraft:milk_bucket",
+        "gugugaga:ceramic_bowl"
+      ],
+      "color": "#B1A789"
+    },
+    {
+      "id": "warm_carrot_salad",
+      "type": "food",
+      "english_name": "Warm Carrot Salad",
+      "chinese_name": "温拌胡萝卜",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:steamed_carrot",
+        "gugugaga:caramelized_onions",
+        "gugugaga:wooden_bowl"
+      ],
+      "color": "#CC9E65"
+    },
+    {
+      "id": "vegetable_steamed_rice",
+      "type": "food",
+      "english_name": "Vegetable Steamed Rice",
+      "chinese_name": "时蔬蒸饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:steamed_rice",
+        "gugugaga:steamed_pumpkin",
+        "gugugaga:lunch_box"
+      ],
+      "color": "#C9BA83"
+    },
+    {
+      "id": "beetroot_garden_soup",
+      "type": "food",
+      "english_name": "Beetroot Garden Soup",
+      "chinese_name": "甜菜根田园汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.75,
+      "ingredients": [
+        "gugugaga:steamed_beetroot",
+        "minecraft:potato",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#B07B83"
+    },
+    {
+      "id": "smoked_beef_panini",
+      "type": "food",
+      "english_name": "Smoked Beef Panini",
+      "chinese_name": "熏牛肉热三明治",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:seared_smoked_beef",
+        "minecraft:bread",
+        "gugugaga:caramelized_onions"
+      ],
+      "color": "#A47A62"
+    },
+    {
+      "id": "toasted_seaweed_rice",
+      "type": "food",
+      "english_name": "Toasted Seaweed Rice",
+      "chinese_name": "海苔蒸米饭",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:toasted_seaweed",
+        "gugugaga:steamed_rice",
+        "gugugaga:ceramic_bowl"
+      ],
+      "color": "#7E9B77"
+    },
+    {
+      "id": "sweet_berry_bran_biscuits",
+      "type": "food",
+      "english_name": "Sweet Berry Bran Biscuits",
+      "chinese_name": "莓果麦麸饼",
+      "nutrition": 6,
+      "saturation_modifier": 0.6,
+      "ingredients": [
+        "gugugaga:bran_cracker_dough",
+        "gugugaga:sweet_berry_compote",
+        "gugugaga:bread_basket"
+      ],
+      "color": "#B48B83"
+    },
+    {
+      "id": "red_mushroom_warm_soup",
+      "type": "food",
+      "english_name": "Red Mushroom Warm Soup",
+      "chinese_name": "热红蘑菇汤",
+      "nutrition": 7,
+      "saturation_modifier": 0.65,
+      "ingredients": [
+        "gugugaga:seared_red_mushrooms",
+        "gugugaga:steamed_potato",
+        "gugugaga:soup_bowl"
+      ],
+      "color": "#B78072"
+    },
+    {
+      "id": "onion_vegetable_pie",
+      "type": "food",
+      "english_name": "Onion Vegetable Pie",
+      "chinese_name": "洋葱蔬菜派",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:bread_dough",
+        "gugugaga:steamed_onion",
+        "gugugaga:carrot_ribbons"
+      ],
+      "color": "#BC9875"
+    },
+    {
+      "id": "country_bread_basket",
+      "type": "food",
+      "english_name": "Country Bread Basket",
+      "chinese_name": "乡村面包篮",
+      "nutrition": 7,
+      "saturation_modifier": 0.7,
+      "ingredients": [
+        "gugugaga:bread_dough",
+        "gugugaga:glazed_carrots",
+        "gugugaga:bread_basket"
+      ],
+      "color": "#C3A178"
+    },
+    {
+      "id": "garden_lunch_tray",
+      "type": "food",
+      "english_name": "Garden Lunch Tray",
+      "chinese_name": "田园便当",
+      "nutrition": 8,
+      "saturation_modifier": 0.8,
+      "ingredients": [
+        "gugugaga:steamed_rice",
+        "gugugaga:pan_roasted_tomato",
+        "gugugaga:lunch_box"
+      ],
+      "color": "#CBB28F"
+    }
+  ]
+}
