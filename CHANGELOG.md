@@ -5,12 +5,12 @@
 - Replace the v3.4 name-based six-group scoring with an explicit packaged, versioned catalog for **403** edible foods: every registered Agriculture food, 50 honey bottles, and over 40 original Minecraft foods.
 - **27 distinct game nutrition categories**: five broad macronutrient/hydration/fiber indicators, all **13 recognized vitamins** (A, B1, B2, B3, B5, B6, B7, B9, B12, C, D, E, K), and nine mineral-source categories (Ca, Fe, Mg, K, Zn, I, Se, P, Na).
 - Nutrient profiles are explicit 0–8 abstract food contribution units, not calories, vitamin concentrations, RDA goals or medical advice. Unknown third-party edible items get a conservative neutral contribution.
-- N key now cycles **five compact, server-authored pages** in Minecraft chat: macronutrients, two vitamin pages and two mineral pages, complete with bilingual nutrient names and current perk status.
+- N key now opens a **five-page graphical nutrition panel** with buttons, 27 colored progress bars and bilingual labels; the original five-page server-authored text report remains for compatibility. All GUI scores arrive in one validated, server-to-client packet.
 - Preserve v3.4 player food diversity scores on migration to the new NBT schema; save new per-nutrient values, including after death/clone.
 - Two balanced **positive-only milestones**: Haste I for broad variety and Speed I for sustained high variety. Never cause starvation, negative effects or dietary restriction.
 - Full regression suite asserts catalog coverage for every declared edible and honey, bilingual translation completeness, explicit zero-overwrite data format, server-side food intake, and packaged JAR integrity.
 - No new food items or block IDs; all 108 crop varieties, beekeeping, marine foods, fermentation equipment, old kitchens and optional embedded Fusion visuals are retained.
-- The N-key display remains a paged text UI, not a separate graphical screen; testing on a Minecraft client remains necessary.
+- The N-key screen now has a real graphical interface, but testing on a Minecraft client remains necessary.
 
 
 ## v3.4.0-rc.1 — Salt geology, pickled foods, soy/vinegar condiments, ecology and nutrition
