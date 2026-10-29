@@ -1,0 +1,1672 @@
+{
+  "schema_version": 1,
+  "unit": "abstract 0-8 game points per consumed item; NOT nutrient mass, daily values, calories, or clinical intake guidance",
+  "categories": {
+    "macros": "Macros & variety",
+    "vitamins": "Vitamins",
+    "minerals": "Minerals"
+  },
+  "nutrients": [
+    {
+      "id": "carbohydrate",
+      "category": "macros"
+    },
+    {
+      "id": "protein",
+      "category": "macros"
+    },
+    {
+      "id": "fat",
+      "category": "macros"
+    },
+    {
+      "id": "fiber",
+      "category": "macros"
+    },
+    {
+      "id": "hydration",
+      "category": "macros"
+    },
+    {
+      "id": "vitamin_a",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b1",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b2",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b3",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b5",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b6",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b7",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b9",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_b12",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_c",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_d",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_e",
+      "category": "vitamins"
+    },
+    {
+      "id": "vitamin_k",
+      "category": "vitamins"
+    },
+    {
+      "id": "calcium",
+      "category": "minerals"
+    },
+    {
+      "id": "iron",
+      "category": "minerals"
+    },
+    {
+      "id": "magnesium",
+      "category": "minerals"
+    },
+    {
+      "id": "potassium",
+      "category": "minerals"
+    },
+    {
+      "id": "zinc",
+      "category": "minerals"
+    },
+    {
+      "id": "iodine",
+      "category": "minerals"
+    },
+    {
+      "id": "selenium",
+      "category": "minerals"
+    },
+    {
+      "id": "phosphorus",
+      "category": "minerals"
+    },
+    {
+      "id": "sodium",
+      "category": "minerals"
+    }
+  ],
+  "profiles": {
+    "grain": {
+      "carbohydrate": 6,
+      "protein": 2,
+      "fiber": 3,
+      "vitamin_b1": 3,
+      "vitamin_b3": 2,
+      "magnesium": 3,
+      "iron": 2,
+      "phosphorus": 2
+    },
+    "root": {
+      "carbohydrate": 4,
+      "fiber": 3,
+      "vitamin_b6": 2,
+      "vitamin_c": 2,
+      "potassium": 4,
+      "magnesium": 1
+    },
+    "leafy": {
+      "fiber": 4,
+      "vitamin_a": 4,
+      "vitamin_c": 3,
+      "vitamin_k": 5,
+      "vitamin_b9": 4,
+      "iron": 3,
+      "calcium": 3,
+      "magnesium": 2
+    },
+    "fruit": {
+      "carbohydrate": 3,
+      "hydration": 4,
+      "fiber": 3,
+      "vitamin_c": 4,
+      "vitamin_b9": 1,
+      "potassium": 2
+    },
+    "berries": {
+      "carbohydrate": 3,
+      "hydration": 3,
+      "fiber": 4,
+      "vitamin_c": 5,
+      "vitamin_e": 2,
+      "magnesium": 1
+    },
+    "vegetable": {
+      "hydration": 3,
+      "fiber": 3,
+      "vitamin_a": 2,
+      "vitamin_c": 3,
+      "vitamin_k": 2,
+      "vitamin_b9": 2,
+      "potassium": 2
+    },
+    "legume": {
+      "carbohydrate": 3,
+      "protein": 6,
+      "fiber": 5,
+      "fat": 2,
+      "vitamin_b1": 3,
+      "vitamin_b6": 2,
+      "vitamin_b9": 4,
+      "iron": 4,
+      "magnesium": 3,
+      "zinc": 2,
+      "phosphorus": 3
+    },
+    "seed": {
+      "fat": 5,
+      "protein": 3,
+      "fiber": 3,
+      "vitamin_e": 5,
+      "vitamin_b1": 2,
+      "vitamin_b7": 2,
+      "magnesium": 5,
+      "zinc": 3,
+      "phosphorus": 3
+    },
+    "seafood": {
+      "protein": 6,
+      "fat": 2,
+      "vitamin_b3": 3,
+      "vitamin_b6": 3,
+      "vitamin_b12": 5,
+      "vitamin_d": 3,
+      "iodine": 4,
+      "selenium": 4,
+      "phosphorus": 3
+    },
+    "meat": {
+      "protein": 7,
+      "fat": 3,
+      "vitamin_b3": 4,
+      "vitamin_b6": 4,
+      "vitamin_b12": 5,
+      "iron": 4,
+      "zinc": 5,
+      "phosphorus": 3
+    },
+    "egg": {
+      "protein": 5,
+      "fat": 4,
+      "vitamin_a": 2,
+      "vitamin_b2": 3,
+      "vitamin_b5": 3,
+      "vitamin_b7": 4,
+      "vitamin_b12": 3,
+      "vitamin_d": 2,
+      "selenium": 3
+    },
+    "dairy": {
+      "protein": 4,
+      "fat": 3,
+      "vitamin_b2": 4,
+      "vitamin_b12": 4,
+      "calcium": 6,
+      "phosphorus": 3
+    },
+    "mushroom": {
+      "protein": 2,
+      "fiber": 3,
+      "vitamin_b2": 3,
+      "vitamin_b3": 4,
+      "vitamin_b5": 4,
+      "vitamin_d": 1,
+      "potassium": 3,
+      "selenium": 2
+    },
+    "seaweed": {
+      "protein": 2,
+      "fiber": 3,
+      "vitamin_a": 2,
+      "vitamin_b9": 3,
+      "vitamin_k": 3,
+      "calcium": 2,
+      "iodine": 6,
+      "magnesium": 3
+    },
+    "sweet": {
+      "carbohydrate": 4
+    },
+    "beverage": {
+      "hydration": 4
+    },
+    "honey": {
+      "carbohydrate": 5
+    },
+    "fermented": {
+      "vitamin_b2": 2,
+      "vitamin_b3": 1
+    },
+    "herb": {
+      "vitamin_a": 2,
+      "vitamin_c": 2,
+      "vitamin_k": 2,
+      "magnesium": 1
+    },
+    "salt": {
+      "sodium": 3
+    },
+    "general": {
+      "carbohydrate": 1,
+      "protein": 1,
+      "hydration": 1
+    }
+  },
+  "foods": {
+    "gugugaga:adzuki_bean": [
+      "legume"
+    ],
+    "gugugaga:adzuki_bean_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:adzuki_bean_sweet_soup": [
+      "legume",
+      "beverage"
+    ],
+    "gugugaga:aged_pepper_beef": [
+      "meat",
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:allium_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:amaranth": [
+      "general"
+    ],
+    "gugugaga:apple_cinnamon_porridge": [
+      "grain",
+      "fruit"
+    ],
+    "gugugaga:apple_froth_cup": [
+      "fruit",
+      "beverage"
+    ],
+    "gugugaga:apple_glazed_pork": [
+      "meat",
+      "fruit"
+    ],
+    "gugugaga:apple_measure_cup": [
+      "fruit",
+      "beverage"
+    ],
+    "gugugaga:apple_oat_crumble": [
+      "grain",
+      "fruit",
+      "sweet"
+    ],
+    "gugugaga:apple_vinegar_vegetable_bowl": [
+      "fruit",
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:artichoke": [
+      "general"
+    ],
+    "gugugaga:arugula": [
+      "general"
+    ],
+    "gugugaga:asparagus": [
+      "general"
+    ],
+    "gugugaga:azure_bluet_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:baked_sweet_corn": [
+      "grain"
+    ],
+    "gugugaga:baked_taro": [
+      "root"
+    ],
+    "gugugaga:barley": [
+      "grain"
+    ],
+    "gugugaga:barley_vegetable_soup": [
+      "grain",
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:basil": [
+      "herb"
+    ],
+    "gugugaga:basil_tomato_flatbread": [
+      "grain",
+      "vegetable",
+      "herb"
+    ],
+    "gugugaga:bean_stew": [
+      "legume"
+    ],
+    "gugugaga:beetroot_garden_salad": [
+      "root",
+      "vegetable"
+    ],
+    "gugugaga:beetroot_garden_soup": [
+      "root",
+      "beverage"
+    ],
+    "gugugaga:beetroot_pickle_plate": [
+      "root",
+      "fermented"
+    ],
+    "gugugaga:beetroot_potato_soup": [
+      "root",
+      "beverage"
+    ],
+    "gugugaga:beetroot_ribbon_salad": [
+      "root",
+      "vegetable"
+    ],
+    "gugugaga:beetroot_soup": [
+      "root",
+      "beverage"
+    ],
+    "gugugaga:beetroot_winter_stew": [
+      "root"
+    ],
+    "gugugaga:bell_pepper": [
+      "vegetable"
+    ],
+    "gugugaga:berry_breakfast_bowl": [
+      "berries"
+    ],
+    "gugugaga:berry_cream_tart": [
+      "dairy",
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:berry_jam_toast": [
+      "berries"
+    ],
+    "gugugaga:berry_mash_bread": [
+      "grain",
+      "berries"
+    ],
+    "gugugaga:berry_pie": [
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:black_bean": [
+      "legume"
+    ],
+    "gugugaga:black_pepper": [
+      "vegetable"
+    ],
+    "gugugaga:blackberry": [
+      "berries"
+    ],
+    "gugugaga:blackberry_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:blackcurrant": [
+      "berries"
+    ],
+    "gugugaga:blackcurrant_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:blackcurrant_oat_crumble": [
+      "grain",
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:blue_orchid_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:blueberry": [
+      "berries"
+    ],
+    "gugugaga:bok_choy": [
+      "leafy"
+    ],
+    "gugugaga:broccoli": [
+      "vegetable"
+    ],
+    "gugugaga:brussels_sprouts": [
+      "general"
+    ],
+    "gugugaga:buckwheat": [
+      "grain"
+    ],
+    "gugugaga:buckwheat_flatbread": [
+      "grain"
+    ],
+    "gugugaga:buckwheat_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:buckwheat_mushroom_noodles": [
+      "mushroom",
+      "grain"
+    ],
+    "gugugaga:buckwheat_pancakes": [
+      "grain",
+      "sweet"
+    ],
+    "gugugaga:cabbage": [
+      "leafy"
+    ],
+    "gugugaga:cabbage_rice_bowl": [
+      "grain",
+      "leafy"
+    ],
+    "gugugaga:cabbage_rolls": [
+      "leafy"
+    ],
+    "gugugaga:cardamom": [
+      "herb"
+    ],
+    "gugugaga:cardamom_bream_bowl": [
+      "seafood",
+      "herb"
+    ],
+    "gugugaga:carrot_chicken_bowl": [
+      "meat",
+      "root"
+    ],
+    "gugugaga:carrot_sunrise_drink": [
+      "root",
+      "beverage"
+    ],
+    "gugugaga:cassava_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:cassava_flatbread": [
+      "grain",
+      "root"
+    ],
+    "gugugaga:cauliflower": [
+      "general"
+    ],
+    "gugugaga:celeriac": [
+      "root"
+    ],
+    "gugugaga:celeriac_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:celery": [
+      "general"
+    ],
+    "gugugaga:chayote": [
+      "vegetable"
+    ],
+    "gugugaga:chayote_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:chayote_stir_fry": [
+      "vegetable"
+    ],
+    "gugugaga:chickpea": [
+      "legume"
+    ],
+    "gugugaga:chickpea_hummus": [
+      "legume"
+    ],
+    "gugugaga:chicory": [
+      "general"
+    ],
+    "gugugaga:chicory_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:chili_bean_chili": [
+      "legume"
+    ],
+    "gugugaga:chili_pepper": [
+      "vegetable"
+    ],
+    "gugugaga:chili_soy_noodles": [
+      "legume",
+      "grain"
+    ],
+    "gugugaga:chive_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:chives": [
+      "general"
+    ],
+    "gugugaga:chocolate_cream_biscuit": [
+      "dairy",
+      "sweet"
+    ],
+    "gugugaga:cilantro": [
+      "herb"
+    ],
+    "gugugaga:clear_apple_jelly": [
+      "fruit",
+      "sweet"
+    ],
+    "gugugaga:clear_grape_cup": [
+      "fruit",
+      "beverage"
+    ],
+    "gugugaga:clover_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:cocoa_crunch_cookies": [
+      "sweet"
+    ],
+    "gugugaga:cocoa_morning_cake": [
+      "sweet"
+    ],
+    "gugugaga:cocoa_oat_bites": [
+      "grain"
+    ],
+    "gugugaga:cocoa_seed_brittle": [
+      "general"
+    ],
+    "gugugaga:cod_clear_noodle_soup": [
+      "seafood",
+      "grain",
+      "beverage"
+    ],
+    "gugugaga:cod_noodle_broth": [
+      "seafood",
+      "grain",
+      "beverage"
+    ],
+    "gugugaga:coffee_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:coffee_cup": [
+      "beverage"
+    ],
+    "gugugaga:collard_greens": [
+      "leafy"
+    ],
+    "gugugaga:corn": [
+      "grain"
+    ],
+    "gugugaga:cornbread": [
+      "grain"
+    ],
+    "gugugaga:cornflower_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:country_bread_basket": [
+      "grain"
+    ],
+    "gugugaga:cowpea": [
+      "legume"
+    ],
+    "gugugaga:cowpea_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:cranberry": [
+      "berries"
+    ],
+    "gugugaga:creamy_mushroom_bowl": [
+      "dairy",
+      "mushroom"
+    ],
+    "gugugaga:creamy_potato_pot": [
+      "dairy",
+      "root"
+    ],
+    "gugugaga:crop_stir_fry": [
+      "general"
+    ],
+    "gugugaga:crunchy_carrot_salad": [
+      "root",
+      "vegetable"
+    ],
+    "gugugaga:cucumber": [
+      "vegetable"
+    ],
+    "gugugaga:cucumber_mint_salad": [
+      "vegetable",
+      "herb"
+    ],
+    "gugugaga:cucumber_onion_salad": [
+      "vegetable"
+    ],
+    "gugugaga:cucumber_pickle_plate": [
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:cultured_cabbage_bowl": [
+      "leafy",
+      "fermented"
+    ],
+    "gugugaga:cultured_carrot_wrap": [
+      "grain",
+      "root",
+      "fermented"
+    ],
+    "gugugaga:cumin": [
+      "herb"
+    ],
+    "gugugaga:cumin_anchovy_toast": [
+      "seafood",
+      "herb"
+    ],
+    "gugugaga:daikon": [
+      "root"
+    ],
+    "gugugaga:daikon_fish_soup": [
+      "seafood",
+      "root",
+      "beverage"
+    ],
+    "gugugaga:dandelion_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:dill": [
+      "general"
+    ],
+    "gugugaga:dulse": [
+      "seaweed"
+    ],
+    "gugugaga:egg_rice_breakfast": [
+      "egg",
+      "grain"
+    ],
+    "gugugaga:eggplant": [
+      "egg",
+      "vegetable"
+    ],
+    "gugugaga:eggplant_curry": [
+      "egg",
+      "vegetable"
+    ],
+    "gugugaga:endive": [
+      "leafy"
+    ],
+    "gugugaga:endive_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:enoki_mushroom": [
+      "mushroom"
+    ],
+    "gugugaga:enoki_soup": [
+      "mushroom",
+      "beverage"
+    ],
+    "gugugaga:farmers_skillet": [
+      "general"
+    ],
+    "gugugaga:fava_bean": [
+      "legume"
+    ],
+    "gugugaga:fava_bean_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:fava_bean_soup": [
+      "legume",
+      "beverage"
+    ],
+    "gugugaga:fennel": [
+      "general"
+    ],
+    "gugugaga:fenugreek": [
+      "herb"
+    ],
+    "gugugaga:fenugreek_shrimp_stew": [
+      "seafood",
+      "herb"
+    ],
+    "gugugaga:fermented_cucumber_plate": [
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:fermented_soy_rice": [
+      "legume",
+      "grain",
+      "fermented"
+    ],
+    "gugugaga:fish_fillet": [
+      "seafood"
+    ],
+    "gugugaga:forest_berry_pancakes": [
+      "grain",
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:fruit_salad": [
+      "fruit",
+      "vegetable"
+    ],
+    "gugugaga:garden_lunch_tray": [
+      "general"
+    ],
+    "gugugaga:garden_salad": [
+      "vegetable"
+    ],
+    "gugugaga:garden_tomato_broth": [
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:garlic": [
+      "vegetable"
+    ],
+    "gugugaga:garlic_roasted_potatoes": [
+      "root",
+      "vegetable"
+    ],
+    "gugugaga:garlic_water_spinach": [
+      "leafy",
+      "vegetable"
+    ],
+    "gugugaga:ginger": [
+      "general"
+    ],
+    "gugugaga:glow_berry_custard": [
+      "berries"
+    ],
+    "gugugaga:glow_berry_mousse": [
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:golden_hash_browns": [
+      "general"
+    ],
+    "gugugaga:grain_porridge": [
+      "grain"
+    ],
+    "gugugaga:grape": [
+      "fruit"
+    ],
+    "gugugaga:grape_berry_compote": [
+      "berries",
+      "fruit"
+    ],
+    "gugugaga:grape_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:grape_fruit_cup": [
+      "fruit",
+      "beverage"
+    ],
+    "gugugaga:grape_measure_cup": [
+      "fruit",
+      "beverage"
+    ],
+    "gugugaga:green_bean": [
+      "legume"
+    ],
+    "gugugaga:grilled_fish_skewer": [
+      "seafood"
+    ],
+    "gugugaga:handmade_rice_dumplings": [
+      "grain"
+    ],
+    "gugugaga:hearty_potato_plate": [
+      "root"
+    ],
+    "gugugaga:herb_beef_wrap": [
+      "meat",
+      "grain"
+    ],
+    "gugugaga:herb_bread": [
+      "grain"
+    ],
+    "gugugaga:herbal_tea": [
+      "beverage"
+    ],
+    "gugugaga:herring_seaweed_bowl": [
+      "seaweed",
+      "seafood"
+    ],
+    "gugugaga:honey_berry_toast": [
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:honey_mustard_dressing": [
+      "sweet"
+    ],
+    "gugugaga:honey_salmon_plate": [
+      "seafood",
+      "sweet"
+    ],
+    "gugugaga:jicama": [
+      "root"
+    ],
+    "gugugaga:jicama_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:jute_mallow": [
+      "leafy"
+    ],
+    "gugugaga:jute_mallow_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:jute_mallow_soup": [
+      "leafy",
+      "beverage"
+    ],
+    "gugugaga:kale": [
+      "leafy"
+    ],
+    "gugugaga:kelp_rice_soup": [
+      "seaweed",
+      "grain",
+      "beverage"
+    ],
+    "gugugaga:kelp_salmon_rice": [
+      "seaweed",
+      "seafood",
+      "grain"
+    ],
+    "gugugaga:kelp_spiced_cod": [
+      "seaweed",
+      "seafood"
+    ],
+    "gugugaga:kohlrabi": [
+      "general"
+    ],
+    "gugugaga:kohlrabi_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:lavender_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:leek": [
+      "general"
+    ],
+    "gugugaga:lemongrass": [
+      "fruit",
+      "herb"
+    ],
+    "gugugaga:lemongrass_sardine_soup": [
+      "seafood",
+      "fruit",
+      "herb",
+      "beverage"
+    ],
+    "gugugaga:lentil": [
+      "legume"
+    ],
+    "gugugaga:lentil_curry": [
+      "legume"
+    ],
+    "gugugaga:lettuce": [
+      "leafy"
+    ],
+    "gugugaga:lily_of_the_valley_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:lion_mane_mushroom": [
+      "mushroom"
+    ],
+    "gugugaga:lion_mane_steak": [
+      "meat",
+      "beverage"
+    ],
+    "gugugaga:melon": [
+      "fruit"
+    ],
+    "gugugaga:melon_apple_salad": [
+      "fruit",
+      "vegetable"
+    ],
+    "gugugaga:melon_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:melon_seed_bread": [
+      "grain",
+      "fruit"
+    ],
+    "gugugaga:millet": [
+      "grain"
+    ],
+    "gugugaga:millet_fennel_pilaf": [
+      "grain"
+    ],
+    "gugugaga:mint": [
+      "herb"
+    ],
+    "gugugaga:mung_bean": [
+      "legume"
+    ],
+    "gugugaga:mung_bean_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:mung_bean_congee": [
+      "legume"
+    ],
+    "gugugaga:mushroom_barley_risotto": [
+      "mushroom",
+      "grain"
+    ],
+    "gugugaga:mushroom_clear_soup": [
+      "mushroom",
+      "beverage"
+    ],
+    "gugugaga:mushroom_egg_toast": [
+      "egg",
+      "mushroom"
+    ],
+    "gugugaga:mushroom_herb_soup": [
+      "mushroom",
+      "beverage"
+    ],
+    "gugugaga:mushroom_medley": [
+      "mushroom"
+    ],
+    "gugugaga:mushroom_rice_bowl": [
+      "mushroom",
+      "grain"
+    ],
+    "gugugaga:mushroom_rice_soup": [
+      "mushroom",
+      "grain",
+      "beverage"
+    ],
+    "gugugaga:mushroom_sauce": [
+      "mushroom",
+      "fermented"
+    ],
+    "gugugaga:mustard_greens": [
+      "leafy"
+    ],
+    "gugugaga:mustard_greens_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:napa_cabbage": [
+      "leafy"
+    ],
+    "gugugaga:napa_cabbage_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:napa_cabbage_braise": [
+      "leafy"
+    ],
+    "gugugaga:nori_rice_roll": [
+      "seaweed",
+      "grain"
+    ],
+    "gugugaga:nori_sheet": [
+      "seaweed"
+    ],
+    "gugugaga:oat": [
+      "grain"
+    ],
+    "gugugaga:oat_berry_porridge": [
+      "grain",
+      "berries"
+    ],
+    "gugugaga:okra": [
+      "vegetable"
+    ],
+    "gugugaga:onion": [
+      "vegetable"
+    ],
+    "gugugaga:onion_clear_stew": [
+      "vegetable"
+    ],
+    "gugugaga:onion_flatbread": [
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:onion_vegetable_pie": [
+      "vegetable",
+      "sweet"
+    ],
+    "gugugaga:orange_tulip_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:oxeye_daisy_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:oyster_mushroom": [
+      "mushroom"
+    ],
+    "gugugaga:parsley": [
+      "herb"
+    ],
+    "gugugaga:parsnip": [
+      "root"
+    ],
+    "gugugaga:pea": [
+      "legume"
+    ],
+    "gugugaga:peanut": [
+      "legume",
+      "seed"
+    ],
+    "gugugaga:peanut_sauce": [
+      "legume",
+      "seed",
+      "fermented"
+    ],
+    "gugugaga:pepper_crab_plate": [
+      "seafood",
+      "vegetable"
+    ],
+    "gugugaga:pickled_beetroot_bowl": [
+      "root",
+      "fermented"
+    ],
+    "gugugaga:pickled_cabbage_noodle_bowl": [
+      "grain",
+      "leafy",
+      "fermented"
+    ],
+    "gugugaga:pickled_cucumber_rice_roll": [
+      "grain",
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:pickled_daikon_fish_bowl": [
+      "seafood",
+      "root",
+      "fermented"
+    ],
+    "gugugaga:pineapple": [
+      "fruit"
+    ],
+    "gugugaga:pineapple_glazed_rice": [
+      "grain",
+      "fruit"
+    ],
+    "gugugaga:pineapple_tart": [
+      "fruit",
+      "sweet"
+    ],
+    "gugugaga:pink_tulip_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:poppy_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:porcini_mushroom": [
+      "mushroom"
+    ],
+    "gugugaga:potato_onion_soup": [
+      "root",
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:potato_wedge_platter": [
+      "root"
+    ],
+    "gugugaga:pumpkin": [
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:pumpkin_breakfast_cake": [
+      "vegetable",
+      "sweet"
+    ],
+    "gugugaga:pumpkin_cream_pie": [
+      "dairy",
+      "vegetable",
+      "sweet"
+    ],
+    "gugugaga:pumpkin_meat_stew": [
+      "meat",
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_pastry": [
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_rice": [
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_seasonal_soup": [
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:pumpkin_seed_crackers": [
+      "seed",
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_seed_dip": [
+      "seed",
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_shred_fritters": [
+      "vegetable"
+    ],
+    "gugugaga:pumpkin_soup": [
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:purslane": [
+      "general"
+    ],
+    "gugugaga:purslane_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:quinoa": [
+      "grain"
+    ],
+    "gugugaga:quinoa_salad": [
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:radish": [
+      "root"
+    ],
+    "gugugaga:rapini": [
+      "leafy"
+    ],
+    "gugugaga:rapini_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:rapini_garlic_saute": [
+      "leafy",
+      "vegetable"
+    ],
+    "gugugaga:raspberry": [
+      "berries"
+    ],
+    "gugugaga:red_mushroom_stew": [
+      "mushroom"
+    ],
+    "gugugaga:red_mushroom_warm_soup": [
+      "mushroom",
+      "beverage"
+    ],
+    "gugugaga:red_tulip_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:rice": [
+      "grain"
+    ],
+    "gugugaga:rice_vegetable_bowl": [
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:rice_vinegar_salad": [
+      "grain",
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:roasted_chickpeas": [
+      "legume"
+    ],
+    "gugugaga:roasted_root_vegetables": [
+      "vegetable"
+    ],
+    "gugugaga:roasted_seed_mix": [
+      "seed"
+    ],
+    "gugugaga:roasted_yam": [
+      "root"
+    ],
+    "gugugaga:root_vegetable_hash": [
+      "vegetable"
+    ],
+    "gugugaga:rustic_flatbread": [
+      "grain"
+    ],
+    "gugugaga:rutabaga": [
+      "root"
+    ],
+    "gugugaga:rutabaga_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:rye": [
+      "grain"
+    ],
+    "gugugaga:safflower_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:salmon_apple_plate": [
+      "seafood",
+      "fruit"
+    ],
+    "gugugaga:sea_lettuce": [
+      "seaweed",
+      "leafy"
+    ],
+    "gugugaga:sea_salt_cod_rice": [
+      "seafood",
+      "grain"
+    ],
+    "gugugaga:seafood_broth": [
+      "beverage"
+    ],
+    "gugugaga:seafood_rice_bowl": [
+      "grain"
+    ],
+    "gugugaga:seasoned_mackerel_bowl": [
+      "seafood"
+    ],
+    "gugugaga:seaweed_mushroom_soup": [
+      "seaweed",
+      "mushroom",
+      "beverage"
+    ],
+    "gugugaga:seaweed_potato_chowder": [
+      "seaweed",
+      "root"
+    ],
+    "gugugaga:seaweed_salad": [
+      "seaweed",
+      "vegetable"
+    ],
+    "gugugaga:sesame": [
+      "seed"
+    ],
+    "gugugaga:sesame_noodles": [
+      "seed",
+      "grain"
+    ],
+    "gugugaga:sesame_rice_balls": [
+      "seed",
+      "grain"
+    ],
+    "gugugaga:sesame_steamed_buns": [
+      "seed",
+      "beverage"
+    ],
+    "gugugaga:sesame_vegetable_noodles": [
+      "seed",
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:shallot": [
+      "general"
+    ],
+    "gugugaga:shiitake_ferment_noodles": [
+      "mushroom",
+      "grain",
+      "fermented"
+    ],
+    "gugugaga:shiitake_mushroom": [
+      "mushroom"
+    ],
+    "gugugaga:sifted_rice_cake": [
+      "grain",
+      "sweet"
+    ],
+    "gugugaga:silky_pumpkin_bowl": [
+      "vegetable"
+    ],
+    "gugugaga:smoked_beef": [
+      "meat"
+    ],
+    "gugugaga:smoked_beef_hash": [
+      "meat"
+    ],
+    "gugugaga:smoked_beef_panini": [
+      "meat"
+    ],
+    "gugugaga:smoked_chicken": [
+      "meat"
+    ],
+    "gugugaga:smoked_chicken_carrot_bowl": [
+      "meat",
+      "root"
+    ],
+    "gugugaga:smoked_chicken_salad": [
+      "meat",
+      "vegetable"
+    ],
+    "gugugaga:smoked_cod": [
+      "seafood"
+    ],
+    "gugugaga:smoked_cod_pie": [
+      "seafood",
+      "sweet"
+    ],
+    "gugugaga:smoked_cod_rice": [
+      "seafood",
+      "grain"
+    ],
+    "gugugaga:smoked_mushroom_bowl": [
+      "mushroom"
+    ],
+    "gugugaga:smoked_salmon": [
+      "seafood"
+    ],
+    "gugugaga:smoked_salmon_rice": [
+      "seafood",
+      "grain"
+    ],
+    "gugugaga:sorghum": [
+      "general"
+    ],
+    "gugugaga:soy_sauce_mushroom_rice": [
+      "mushroom",
+      "legume",
+      "grain",
+      "fermented"
+    ],
+    "gugugaga:soybean": [
+      "legume"
+    ],
+    "gugugaga:soybean_patties": [
+      "legume"
+    ],
+    "gugugaga:spiced_fermented_beans": [
+      "legume",
+      "fermented"
+    ],
+    "gugugaga:spiced_mackerel_rice": [
+      "seafood",
+      "grain"
+    ],
+    "gugugaga:spiced_vegetable_bowl": [
+      "vegetable"
+    ],
+    "gugugaga:spinach": [
+      "leafy"
+    ],
+    "gugugaga:spinach_omelette": [
+      "egg",
+      "leafy"
+    ],
+    "gugugaga:strawberry": [
+      "berries"
+    ],
+    "gugugaga:stuffed_pepper": [
+      "vegetable"
+    ],
+    "gugugaga:sugar_beet": [
+      "root",
+      "sweet"
+    ],
+    "gugugaga:sunflower_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:sunflower_seed": [
+      "seed"
+    ],
+    "gugugaga:sweet_beet_rice_cake": [
+      "grain",
+      "root",
+      "sweet"
+    ],
+    "gugugaga:sweet_berry_bran_biscuits": [
+      "berries",
+      "sweet"
+    ],
+    "gugugaga:sweet_corn": [
+      "grain"
+    ],
+    "gugugaga:sweet_corn_fritters": [
+      "grain"
+    ],
+    "gugugaga:sweet_potato": [
+      "root"
+    ],
+    "gugugaga:sweet_potato_roast": [
+      "root"
+    ],
+    "gugugaga:swiss_chard": [
+      "leafy"
+    ],
+    "gugugaga:taro_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:taro_dumplings": [
+      "grain",
+      "root"
+    ],
+    "gugugaga:tea_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:tea_cup": [
+      "beverage"
+    ],
+    "gugugaga:teff": [
+      "general"
+    ],
+    "gugugaga:toasted_seaweed_rice": [
+      "seaweed",
+      "grain"
+    ],
+    "gugugaga:tomato": [
+      "vegetable"
+    ],
+    "gugugaga:tomato_basil_bruschetta": [
+      "vegetable",
+      "herb"
+    ],
+    "gugugaga:tomato_egg_stir_fry": [
+      "egg",
+      "vegetable"
+    ],
+    "gugugaga:tomato_flatbread_pizza": [
+      "grain",
+      "vegetable"
+    ],
+    "gugugaga:tomato_okra_stew": [
+      "vegetable"
+    ],
+    "gugugaga:tomato_sauce": [
+      "vegetable",
+      "fermented"
+    ],
+    "gugugaga:tomato_vegetable_soup": [
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:torchflower_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:truffle": [
+      "mushroom"
+    ],
+    "gugugaga:truffle_pasta": [
+      "mushroom",
+      "grain"
+    ],
+    "gugugaga:turmeric": [
+      "general"
+    ],
+    "gugugaga:turnip": [
+      "root"
+    ],
+    "gugugaga:vegetable_steamed_rice": [
+      "grain",
+      "vegetable",
+      "beverage"
+    ],
+    "gugugaga:vegetable_stew": [
+      "vegetable"
+    ],
+    "gugugaga:wakame": [
+      "seaweed"
+    ],
+    "gugugaga:warm_carrot_salad": [
+      "root",
+      "vegetable"
+    ],
+    "gugugaga:wasabi": [
+      "herb"
+    ],
+    "gugugaga:wasabi_seabass_plate": [
+      "seafood",
+      "herb"
+    ],
+    "gugugaga:water_spinach": [
+      "leafy"
+    ],
+    "gugugaga:water_spinach_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:watercress": [
+      "leafy"
+    ],
+    "gugugaga:watercress_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:watermelon": [
+      "fruit"
+    ],
+    "gugugaga:watermelon_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:white_tulip_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:wildflower_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:wither_rose_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:yam_blossom_honey_bottle": [
+      "honey"
+    ],
+    "gugugaga:yam_cakes": [
+      "root",
+      "sweet"
+    ],
+    "gugugaga:zucchini": [
+      "vegetable"
+    ],
+    "minecraft:apple": [
+      "fruit"
+    ],
+    "minecraft:baked_potato": [
+      "root"
+    ],
+    "minecraft:beef": [
+      "meat"
+    ],
+    "minecraft:beetroot": [
+      "root"
+    ],
+    "minecraft:beetroot_soup": [
+      "root",
+      "beverage"
+    ],
+    "minecraft:bread": [
+      "grain"
+    ],
+    "minecraft:cake": [
+      "sweet"
+    ],
+    "minecraft:carrot": [
+      "root"
+    ],
+    "minecraft:chicken": [
+      "meat"
+    ],
+    "minecraft:chorus_fruit": [
+      "fruit"
+    ],
+    "minecraft:cod": [
+      "seafood"
+    ],
+    "minecraft:cooked_beef": [
+      "meat"
+    ],
+    "minecraft:cooked_chicken": [
+      "meat"
+    ],
+    "minecraft:cooked_cod": [
+      "seafood"
+    ],
+    "minecraft:cooked_mutton": [
+      "meat"
+    ],
+    "minecraft:cooked_porkchop": [
+      "meat"
+    ],
+    "minecraft:cooked_rabbit": [
+      "meat"
+    ],
+    "minecraft:cooked_salmon": [
+      "seafood"
+    ],
+    "minecraft:cookie": [
+      "sweet"
+    ],
+    "minecraft:dried_kelp": [
+      "seaweed"
+    ],
+    "minecraft:enchanted_golden_apple": [
+      "fruit"
+    ],
+    "minecraft:glow_berries": [
+      "berries"
+    ],
+    "minecraft:golden_apple": [
+      "fruit"
+    ],
+    "minecraft:golden_carrot": [
+      "root"
+    ],
+    "minecraft:honey_bottle": [
+      "honey"
+    ],
+    "minecraft:melon_slice": [
+      "fruit"
+    ],
+    "minecraft:mushroom_stew": [
+      "mushroom"
+    ],
+    "minecraft:mutton": [
+      "meat"
+    ],
+    "minecraft:poisonous_potato": [
+      "general"
+    ],
+    "minecraft:porkchop": [
+      "meat"
+    ],
+    "minecraft:potato": [
+      "root"
+    ],
+    "minecraft:pufferfish": [
+      "general"
+    ],
+    "minecraft:pumpkin_pie": [
+      "vegetable",
+      "sweet"
+    ],
+    "minecraft:rabbit": [
+      "meat"
+    ],
+    "minecraft:rabbit_stew": [
+      "meat"
+    ],
+    "minecraft:rotten_flesh": [
+      "general"
+    ],
+    "minecraft:salmon": [
+      "seafood"
+    ],
+    "minecraft:slice_of_cake": [
+      "sweet"
+    ],
+    "minecraft:spider_eye": [
+      "general"
+    ],
+    "minecraft:suspicious_stew": [
+      "general"
+    ],
+    "minecraft:sweet_berries": [
+      "berries"
+    ],
+    "minecraft:tropical_fish": [
+      "seafood"
+    ]
+  }
+}
