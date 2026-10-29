@@ -46,16 +46,15 @@ public final class CropClimate {
                  "collard_greens_seeds", "brussels_sprouts_seeds", "cauliflower_seeds",
                  "bok_choy_seeds", "shallot_seeds", "quinoa_seeds", "asparagus_seeds", "blackcurrant_seeds", "chives_seeds",
                  "endive_seeds", "kohlrabi_seeds", "rutabaga_seeds", "chicory_seeds", "mustard_greens_seeds",
-                 "celeriac_seeds", "rapini_seeds", "napa_cabbage_seeds", "fava_bean_seeds",
-                 "wasabi_seeds", "sugar_beet_seeds", "daikon_seeds" -> Band.COOL;
+                 "celeriac_seeds", "rapini_seeds", "napa_cabbage_seeds", "fava_bean_seeds" -> Band.COOL;
             case "corn_seeds", "tomato_seeds", "soybean_seeds", "cucumber_seeds",
                  "bell_pepper_seeds", "eggplant_seeds", "cotton_seeds", "peanut_seeds",
                  "sunflower_seed_seeds", "sweet_potato_seeds", "zucchini_seeds",
                  "basil_seeds", "okra_seeds", "green_bean_seeds", "chili_pepper_seeds",
                  "black_bean_seeds", "pumpkin_seeds", "sweet_corn_seeds", "cassava_seeds", "yam_seeds", "jicama_seeds", "adzuki_bean_seeds", "mung_bean_seeds", "cowpea_seeds",
-                 "purslane_seeds", "chayote_seeds", "coffee_seeds", "melon_seeds", "watermelon_seeds", "jute_mallow_seeds" , "black_pepper_seeds" -> Band.WARM;
-            case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds", "amaranth_seeds", "teff_seeds", "safflower_seeds", "cumin_seeds", "fenugreek_seeds" -> Band.DRY;
-            case "rice_seeds", "ginger_seeds", "turmeric_seeds", "pineapple_seeds", "taro_seeds", "watercress_seeds", "water_spinach_seeds", "lemongrass_seeds", "cardamom_seeds" -> Band.WET;
+                 "purslane_seeds", "chayote_seeds", "coffee_seeds", "melon_seeds", "watermelon_seeds", "jute_mallow_seeds" -> Band.WARM;
+            case "sorghum_seeds", "millet_seeds", "sesame_seeds", "lavender_seeds", "amaranth_seeds", "teff_seeds", "safflower_seeds" -> Band.DRY;
+            case "rice_seeds", "ginger_seeds", "turmeric_seeds", "pineapple_seeds", "taro_seeds", "watercress_seeds", "water_spinach_seeds" -> Band.WET;
             case "chickpea_seeds", "clover_seeds", "mint_seeds", "artichoke_seeds", "blackberry_seeds", "grape_seeds", "tea_seeds" -> Band.TEMPERATE;
             default -> throw new IllegalArgumentException("Unclassified crop seed: " + seedName);
         };
@@ -72,6 +71,9 @@ public final class CropClimate {
     }
     /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
     public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (FoodEcologyV33Climate.isNewCrop(seedName)) {
+            return FoodEcologyV33Climate.allowGrowth(seedName, level, pos, random);
+        }
         // Rice, taro and watercress use bounded freshwater checks as gameplay proxies;
         // these are not claims that every real cultivation system requires flooding.
         if ("rice_seeds".equals(seedName) && !hasNearbyFreshWater(level, pos, 3, -1, 0)) return false;
