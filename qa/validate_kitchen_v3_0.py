@@ -80,6 +80,25 @@ def main():
         expected={(x["input"],x["id"]) for x in prepared if x["station"]==station["kind"]}
         assert len(matches)==8 and set(matches)==expected, (name,matches,expected)
 
+    # Crafting must not offer multiple indistinguishable utensil/tableware
+    # recipes; treat horizontal mirror patterns as the same recipe.
+    shaped_signatures = {}
+    for row in (i for i in items if i["type"] in ("tool", "tableware")):
+        recipe = load(REC / (row["id"] + ".json"))
+        pattern = recipe["pattern"]
+        key = recipe["key"]
+        def tokens(lines):
+            return tuple(tuple(" " if v == " " else key[v]["item"] for v in line)
+                         for line in lines)
+        forward = tokens(pattern)
+        flipped = tokens([line[::-1] for line in pattern])
+        sig = min(forward, flipped)
+        assert sig not in shaped_signatures, (
+            "shaped recipe collision: " + row["id"] + " and " + shaped_signatures.get(sig, "")
+        )
+        shaped_signatures[sig] = row["id"]
+    assert len(shaped_signatures) == 24
+
     for item in items:
         id=item["id"]
         for lang in (en,zh):
