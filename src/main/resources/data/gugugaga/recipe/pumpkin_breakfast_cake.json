@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:measured_pumpkin_base"
+    },
+    {
+      "item": "gugugaga:bread_dough"
+    },
+    {
+      "item": "minecraft:egg"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_breakfast_cake",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:measured_grape_drink"
+    },
+    {
+      "item": "gugugaga:grape"
+    },
+    {
+      "item": "gugugaga:glass_tumbler"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:grape_measure_cup",
+    "count": 1
+  }
+}

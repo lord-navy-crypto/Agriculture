@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_chicken_strips"
+    },
+    {
+      "item": "gugugaga:grated_cucumber"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:smoked_chicken_salad",
+    "count": 1
+  }
+}

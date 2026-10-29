@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:clear_mushroom_stock"
+    },
+    {
+      "item": "gugugaga:steamed_mushrooms"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_clear_soup",
+    "count": 1
+  }
+}

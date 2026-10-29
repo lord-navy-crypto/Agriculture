@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_beef_strips"
+    },
+    {
+      "item": "gugugaga:flatbread_dough"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herb_beef_wrap",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:potato_wedges"
+    },
+    {
+      "item": "gugugaga:glazed_carrots"
+    },
+    {
+      "item": "gugugaga:caramelized_onions"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:potato_wedge_platter",
+    "count": 1
+  }
+}

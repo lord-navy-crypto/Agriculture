@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_salmon_fillets"
+    },
+    {
+      "item": "gugugaga:apple_slices"
+    },
+    {
+      "item": "gugugaga:grated_cucumber"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:salmon_apple_plate",
+    "count": 1
+  }
+}

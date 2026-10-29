@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:creamy_potato_soup"
+    },
+    {
+      "item": "gugugaga:caramelized_onions"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:creamy_potato_pot",
+    "count": 1
+  }
+}
