@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_anchovy"
+    },
+    {
+      "item": "gugugaga:ground_cumin"
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cumin_anchovy_toast",
+    "count": 1
+  }
+}

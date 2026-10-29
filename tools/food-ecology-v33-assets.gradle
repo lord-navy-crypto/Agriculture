@@ -1,0 +1,173 @@
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+// Kitchen v3.1 resources are isolated from earlier generated pixel art.
+// Existing icons and 3.0 art assets are never overwritten.
+def foodEcologyV33Output = layout.buildDirectory.dir('generated/resources/foodEcologyV33Assets')
+sourceSets.main.resources.srcDir(foodEcologyV33Output)
+
+tasks.register('generateFoodEcologyV33Assets') {
+    inputs.file(file('src/main/resources/data/gugugaga/agronomy/food_ecology_v3_3.json'))
+    outputs.dir(foodEcologyV33Output)
+    outputs.file(layout.buildDirectory.file('reports/agriculture/food-ecology-v33-contact-sheet.png'))
+    doLast {
+        File root = foodEcologyV33Output.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/food_ecology_v3_3.json'))
+        def items = []
+        catalog.crops.each { crop ->
+            items.add([id:crop.id, color:crop.color, type:'ingredient'])
+            items.add([id:crop.id + '_seeds', color:crop.color, type:'ingredient'])
+        }
+        for (String section : ['seafood','spices','fermentations','smoked_seafood','dishes']) {
+            items.addAll(catalog[section])
+        }
+        if (items.size() != 68 || items.collect { it.id }.unique().size() != 68)
+            throw new GradleException('Expected 68 unique food ecology items')
+        def dot = { BufferedImage image, int x, int y, int rgb ->
+            if (x >= 0 && x < 16 && y >= 0 && y < 16)
+                image.setRGB(x,y,(int)(0xFF000000L | (rgb & 0xFFFFFF)))
+        }
+        def rect = { BufferedImage img, int x1, int y1, int x2, int y2, int rgb ->
+            for (int y=y1; y<=y2; y++) for (int x=x1; x<=x2; x++) dot.call(img,x,y,rgb)
+        }
+        def shade = { int rgb, double factor ->
+            int red=Math.min(255,(int)Math.floor(((rgb>>16)&255)*factor))
+            int green=Math.min(255,(int)Math.floor(((rgb>>8)&255)*factor))
+            int blue=Math.min(255,(int)Math.floor((rgb&255)*factor))
+            return (red<<16) | (green<<8) | blue
+        }
+        def draw = { item ->
+            BufferedImage image=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+            int base=Integer.parseInt(item.color.substring(1),16)
+            int dark=shade.call(base,0.52d),light=shade.call(base,1.27d)
+            int highlight=0xF1E6CF,ink=0x3B332D
+            String id=item.id.toString()
+            int signature=id.hashCode()
+            if(item.type == 'tool') {
+                rect.call(image,7,4,8,14,ink)
+                rect.call(image,8,5,9,13,base)
+                rect.call(image,5,2,10,5,dark)
+                rect.call(image,6,2,9,4,light)
+                rect.call(image,7,3,8,4,highlight)
+                if(id.contains('knife')||id.contains('spatula')||id.contains('tongs')) {
+                    rect.call(image,4,1,11,2,light)
+                    dot.call(image,11,1,ink)
+                } else if(id.contains('whisk')||id.contains('strainer')) {
+                    rect.call(image,3,1,12,5,ink)
+                    rect.call(image,4,2,11,4,light)
+                    for(int x=5;x<12;x+=3)dot.call(image,x,3,dark)
+                }
+                dot.call(image,6,6,highlight)
+            } else if(item.type == 'tableware') {
+                if(id.contains('cup')||id.contains('tumbler')) {
+                    rect.call(image,4,3,11,13,ink)
+                    rect.call(image,5,4,10,12,base)
+                    rect.call(image,6,5,7,11,light)
+                    rect.call(image,10,4,10,11,dark)
+                    rect.call(image,10,6,13,8,highlight)
+                } else if(id.contains('basket')||id.contains('box')) {
+                    rect.call(image,2,5,13,13,ink)
+                    rect.call(image,3,6,12,12,base)
+                    for(int y=7;y<13;y+=2)rect.call(image,4,y,11,y,light)
+                    rect.call(image,2,4,13,5,dark)
+                    dot.call(image,7,3,highlight)
+                } else {
+                    rect.call(image,2,7,13,12,ink)
+                    rect.call(image,3,6,12,11,highlight)
+                    rect.call(image,4,7,11,10,base)
+                    rect.call(image,5,8,10,9,light)
+                    dot.call(image,8,7,dark)
+                    rect.call(image,4,12,11,13,dark)
+                }
+            } else if(item.type == 'ingredient') {
+                rect.call(image,2,11,13,13,ink)
+                rect.call(image,3,10,12,11,highlight)
+                for(int i=0;i<18;i++) {
+                    int x=3+Math.floorMod(signature+i*7,10)
+                    int y=4+Math.floorMod(signature.intdiv(17)+i*5,7)
+                    rect.call(image,x,y,Math.min(12,x+1),Math.min(11,y+1),i%4==0?highlight:i%4==1?light:i%4==2?base:dark)
+                }
+                dot.call(image,8,3,light)
+            } else {
+                rect.call(image,2,12,13,13,ink)
+                rect.call(image,3,11,12,12,highlight)
+                rect.call(image,3,7,12,11,dark)
+                rect.call(image,4,5,11,10,base)
+                for(int i=0;i<16;i++) {
+                    int x=4+Math.floorMod(signature+i*5,8)
+                    int y=5+Math.floorMod(signature.intdiv(19)+i*3,6)
+                    dot.call(image,x,y,i%4==0?highlight:i%4==1?dark:i%4==2?light:base)
+                }
+                rect.call(image,6,4,9,4,light)
+                dot.call(image,4,7,highlight)
+            }
+            // Deterministic visual signature identifies even similarly colored
+            // tools and bowls without relying only on their colour palette.
+            for(int bit=0;bit<5;bit++)if(((signature>>bit)&1)!=0)
+                dot.call(image,5+bit,14,bit%2==0?light:dark)
+            return image
+        }
+        int size=48,columns=6,rowCount=Math.floorDiv(items.size()+columns-1,columns)
+        BufferedImage sheet=new BufferedImage(columns*size,rowCount*size,BufferedImage.TYPE_INT_ARGB)
+        for(int y=0;y<sheet.height;y++) for(int x=0;x<sheet.width;x++) sheet.setRGB(x,y,(int)0xFF202821)
+        items.eachWithIndex { item,int i ->
+            BufferedImage icon=draw.call(item)
+            File out=new File(root,'assets/gugugaga/textures/item/food_ecology/'+item.id+'.png')
+            out.parentFile.mkdirs()
+            if(!ImageIO.write(icon,'png',out))throw new GradleException('Unable to encode '+item.id)
+            int ox=(i%columns)*size,oy=Math.floorDiv(i,columns)*size
+            for(int y=0;y<size;y++)for(int x=0;x<size;x++) {
+                int pixel=icon.getRGB(Math.floorDiv(x,3),Math.floorDiv(y,3))
+                if(((pixel>>>24)&255)!=0)sheet.setRGB(ox+x,oy+y,pixel)
+            }
+        }
+        File proof=layout.buildDirectory.file('reports/agriculture/food-ecology-v33-contact-sheet.png').get().asFile
+        proof.parentFile.mkdirs()
+        if(!ImageIO.write(sheet,'png',proof))throw new GradleException('Unable to save kitchen v3 proof sheet')
+
+        // Independent crop textures and models; the original 100-crop art
+        // generator is unchanged. Each of the eight new crops has 8 stages.
+        catalog.crops.each { crop ->
+            int base=Integer.parseInt(crop.color.substring(1),16)
+            int shadow=shade.call(base,0.65d)
+            int light=shade.call(base,1.30d)
+            for (int age=0;age<8;age++) {
+                BufferedImage stageImage=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+                int height=2+age*2
+                int top=Math.max(1,15-height)
+                rect.call(stageImage,7,top,8,15,0x447C42)
+                if(age>=1) {
+                    rect.call(stageImage,4,Math.max(1,top+2),7,Math.max(1,top+3),0x569F55)
+                    rect.call(stageImage,8,Math.max(1,top+3),11,Math.max(1,top+4),0x68A463)
+                }
+                if(age>=3) {
+                    rect.call(stageImage,5,top,6,top+1,light)
+                    rect.call(stageImage,9,top+1,10,top+2,light)
+                }
+                if(age>=5) {
+                    rect.call(stageImage,5,top+3,6,top+4,base)
+                    rect.call(stageImage,10,top+3,11,top+4,base)
+                    dot.call(stageImage,9,top+1,shadow)
+                }
+                if(age>=7) {
+                    rect.call(stageImage,3,top+4,5,top+5,base)
+                    rect.call(stageImage,11,top+5,13,top+6,base)
+                }
+                String texpath='assets/gugugaga/textures/block/food_ecology/' + crop.id + '_stage' + age + '.png'
+                File texture=new File(root,texpath)
+                texture.parentFile.mkdirs()
+                if (!ImageIO.write(stageImage,'png',texture)) throw new GradleException('Crop stage texture write failed')
+                File model=new File(root,'assets/gugugaga/models/block/food_ecology/' + crop.id + '_stage' + age + '.json')
+                model.parentFile.mkdirs()
+                model.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(
+                    [parent:'minecraft:block/cross',
+                     textures:[cross:'gugugaga:block/food_ecology/' + crop.id + '_stage' + age]]))+System.lineSeparator(),'UTF-8')
+            }
+        }
+        logger.lifecycle('FOOD_ECOLOGY_V33_ASSETS_OK: 68 icons, 64 crop growth stages and 12-row proof sheet generated.')
+    }
+}
+tasks.named('processResources').configure { dependsOn tasks.named('generateFoodEcologyV33Assets') }

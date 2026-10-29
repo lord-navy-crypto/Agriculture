@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:aged_pepper_paste"
+    },
+    {
+      "item": "minecraft:cooked_beef"
+    },
+    {
+      "item": "gugugaga:caramelized_onions"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:aged_pepper_beef",
+    "count": 1
+  }
+}

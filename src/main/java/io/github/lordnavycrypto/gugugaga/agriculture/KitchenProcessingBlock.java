@@ -211,6 +211,9 @@ public class KitchenProcessingBlock extends Block {
         }
         String input = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         String specialistOutput = KitchenV32Modes.resolve(kind, player.getOffhandItem(), input);
+        if (specialistOutput == null) {
+            specialistOutput = FoodEcologyV33Modes.resolve(kind, player.getOffhandItem(), input);
+        }
         boolean specialistMode = specialistOutput != null;
         String outputName = specialistMode ? specialistOutput : kind.transformations().get(input);
         if (outputName == null) {

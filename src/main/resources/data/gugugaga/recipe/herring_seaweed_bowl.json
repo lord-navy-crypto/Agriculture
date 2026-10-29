@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_herring"
+    },
+    {
+      "item": "gugugaga:fermented_lemongrass"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:herring_seaweed_bowl",
+    "count": 1
+  }
+}

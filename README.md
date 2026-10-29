@@ -2,10 +2,10 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.2 tool-modes kitchen release candidate)
+## Current content (v3.3 ocean, spice crops and food fermentation release candidate)
 
-- **100 plantable crops**, each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
-- Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
+- **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
+- Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
 - **100 wild seed sources** that spawn naturally in compatible Overworld biomes.
 - **50 honey varieties** with distinct floral sources and custom bottle graphics.
 - **68 original crop-cuisine items** with recipes and tailored, reproducible icons.
@@ -39,7 +39,7 @@ python3 qa/validate_release_metadata_v2_7.py build/libs
 
 GitHub Actions additionally checks agricultural resources, crop/seed visual audits, Fusion model and atlas consistency, and real NeoForge dedicated-server startup. The visual contact sheets are uploaded as CI artifacts.
 
-**Development status:** v3.2 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
+**Development status:** v3.3 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
 
 ## References
 
@@ -52,3 +52,4 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [Kitchen v3 utensils, tableware, animated stations and prepared meals](docs/KITCHEN_TOOLS_ANIMATIONS_V3_0.md)
 - [Kitchen v3.1 four functional specialist tools and 23 dishes](docs/KITCHEN_SPECIALISTS_V3_1.md)
 - [Kitchen v3.2: five specialized offhand tool modes, no new blocks](docs/KITCHEN_TOOL_MODES_V3_2.md)
+- [v3.3 spice crop, ocean fishing, food-fermentation and seasoning guide](docs/FOOD_ECOLOGY_V3_3.md)

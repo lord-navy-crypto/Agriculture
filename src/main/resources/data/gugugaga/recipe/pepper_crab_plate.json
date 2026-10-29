@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_crab"
+    },
+    {
+      "item": "gugugaga:cracked_black_pepper"
+    },
+    {
+      "item": "gugugaga:serving_platter"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pepper_crab_plate",
+    "count": 1
+  }
+}

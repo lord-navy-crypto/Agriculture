@@ -71,6 +71,9 @@ public final class CropClimate {
     }
     /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
     public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (FoodEcologyV33Climate.isNewCrop(seedName)) {
+            return FoodEcologyV33Climate.allowGrowth(seedName, level, pos, random);
+        }
         // Rice, taro and watercress use bounded freshwater checks as gameplay proxies;
         // these are not claims that every real cultivation system requires flooding.
         if ("rice_seeds".equals(seedName) && !hasNearbyFreshWater(level, pos, 3, -1, 0)) return false;

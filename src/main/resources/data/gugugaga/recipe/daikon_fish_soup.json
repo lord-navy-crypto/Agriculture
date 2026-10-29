@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fermented_daikon"
+    },
+    {
+      "item": "gugugaga:smoked_cod"
+    },
+    {
+      "item": "gugugaga:kelp_broth"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:daikon_fish_soup",
+    "count": 1
+  }
+}

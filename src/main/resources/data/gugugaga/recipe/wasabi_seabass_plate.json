@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_sea_bass"
+    },
+    {
+      "item": "gugugaga:wasabi_paste"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:wasabi_seabass_plate",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fermented_shiitake"
+    },
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    },
+    {
+      "item": "gugugaga:steamed_carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:shiitake_ferment_noodles",
+    "count": 1
+  }
+}

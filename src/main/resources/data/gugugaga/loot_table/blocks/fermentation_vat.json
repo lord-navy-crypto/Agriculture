@@ -1,0 +1,544 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermentation_vat"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_soybeans",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "1"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:soybean",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "1"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cultured_cabbage",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "2"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cabbage",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "2"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_cucumber",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "3"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cucumber",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "3"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_daikon",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "4"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:daikon",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "4"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:aged_pepper_paste",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "5"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:black_pepper",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "5"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_lemongrass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "6"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:lemongrass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "6"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:fermented_shiitake",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "7"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:shiitake_mushroom",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "7"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cultured_beet_relish",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "8"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:sugar_beet",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "8"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:pickled_beetroot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "9"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:beetroot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "9"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:cultured_carrot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "10"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "stage": "3"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:carrot",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "gugugaga:fermentation_vat",
+              "properties": {
+                "batch": "10"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:block_state_property",
+                "block": "gugugaga:fermentation_vat",
+                "properties": {
+                  "stage": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

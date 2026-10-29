@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:daikon_relish"
+    },
+    {
+      "item": "gugugaga:sugar_beet_pulp"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:spiced_vegetable_bowl",
+    "count": 1
+  }
+}

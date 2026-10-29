@@ -58,6 +58,7 @@ jobs:
           python3 qa/validate_kitchen_v3_0.py
           python3 qa/validate_kitchen_v3_1.py
           python3 qa/validate_kitchen_v3_2.py
+          python3 qa/validate_food_ecology_v3_3.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
 
@@ -87,7 +88,9 @@ jobs:
         run: python3 qa/validate_kitchen_v3_1.py build/generated/resources/kitchenV31Assets
       - name: Validate kitchen v3.2 offhand-tool modes and 47 item images
         run: python3 qa/validate_kitchen_v3_2.py build/generated/resources/kitchenV32Assets
-      - name: Validate v3.2 release metadata in packaged mod JAR
+      - name: Validate eight crop textures and food-fermentation graphics
+        run: python3 qa/validate_food_ecology_v3_3.py build/generated/resources/foodEcologyV33Assets
+      - name: Validate v3.3 release metadata in packaged mod JAR
         run: python3 qa/validate_release_metadata_v2_7.py build/libs
       - name: Verify one-JAR embedded optional Fusion visuals and standalone compatibility
         run: python3 qa/validate_embedded_fusion_v2_7.py build/libs/gugugaga-*.jar build/distributions/gugugaga-fusion-visuals-v2.7.zip

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:fermented_cucumber"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    },
+    {
+      "item": "gugugaga:ceramic_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:fermented_cucumber_plate",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cultured_carrot"
+    },
+    {
+      "item": "gugugaga:flatbread_dough"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cultured_carrot_wrap",
+    "count": 1
+  }
+}
