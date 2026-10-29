@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:clear_beet_juice"
+    },
+    {
+      "item": "gugugaga:steamed_beetroot"
+    },
+    {
+      "item": "gugugaga:dessert_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:beetroot_garden_salad",
+    "count": 1
+  }
+}

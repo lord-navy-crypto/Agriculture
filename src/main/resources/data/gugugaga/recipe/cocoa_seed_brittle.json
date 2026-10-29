@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:crushed_cocoa_nibs"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "gugugaga:sesame_paste"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cocoa_seed_brittle",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sifted_rice_flour"
+    },
+    {
+      "item": "gugugaga:beaten_egg"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sifted_rice_cake",
+    "count": 1
+  }
+}

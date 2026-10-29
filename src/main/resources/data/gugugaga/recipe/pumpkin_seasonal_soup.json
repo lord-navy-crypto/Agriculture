@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin_soup_base"
+    },
+    {
+      "item": "gugugaga:steamed_pumpkin"
+    },
+    {
+      "item": "gugugaga:soup_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_seasonal_soup",
+    "count": 1
+  }
+}

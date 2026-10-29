@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:mushroom_stock"
+    },
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:ceramic_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:mushroom_rice_soup",
+    "count": 1
+  }
+}

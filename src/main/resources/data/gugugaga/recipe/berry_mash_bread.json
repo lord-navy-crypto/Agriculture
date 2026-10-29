@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:berry_mash"
+    },
+    {
+      "item": "gugugaga:bread_dough"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_mash_bread",
+    "count": 1
+  }
+}

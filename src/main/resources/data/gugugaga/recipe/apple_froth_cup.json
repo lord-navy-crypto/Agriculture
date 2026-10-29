@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:aerated_apple_mix"
+    },
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "gugugaga:glass_tumbler"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:apple_froth_cup",
+    "count": 1
+  }
+}

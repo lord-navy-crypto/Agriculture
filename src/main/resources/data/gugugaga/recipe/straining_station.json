@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SIS",
+    "P P",
+    "PPP"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "minecraft:iron_bars"
+    },
+    "P": {
+      "item": "minecraft:birch_planks"
+    }
+  },
+  "result": {
+    "id": "gugugaga:straining_station",
+    "count": 1
+  }
+}

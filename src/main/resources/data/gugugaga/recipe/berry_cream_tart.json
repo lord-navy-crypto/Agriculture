@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:whipped_berry_topping"
+    },
+    {
+      "item": "gugugaga:pumpkin_pastry_dough"
+    },
+    {
+      "item": "gugugaga:dessert_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_cream_tart",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cod_stock"
+    },
+    {
+      "item": "gugugaga:buckwheat_noodle_dough"
+    },
+    {
+      "item": "gugugaga:soup_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cod_noodle_broth",
+    "count": 1
+  }
+}
