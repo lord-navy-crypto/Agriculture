@@ -118,6 +118,38 @@ public class KitchenProcessingBlock extends Block {
                 Map.entry("minecraft:beetroot", "steamed_beetroot"),
                 Map.entry("gugugaga:chopped_onion", "steamed_onion"),
                 Map.entry("gugugaga:sliced_brown_mushroom", "steamed_mushrooms")
+        )),
+        WHISK(Map.ofEntries(
+                Map.entry("minecraft:egg", "beaten_egg"),
+                Map.entry("gugugaga:cocoa_mix", "whipped_cocoa"),
+                Map.entry("gugugaga:glow_berry_juice", "glow_berry_froth"),
+                Map.entry("gugugaga:apple_juice", "aerated_apple_mix"),
+                Map.entry("gugugaga:pumpkin_puree", "whipped_pumpkin"),
+                Map.entry("gugugaga:berry_compote_base", "whipped_berry_topping")
+        )),
+        MORTAR(Map.ofEntries(
+                Map.entry("minecraft:cocoa_beans", "crushed_cocoa_nibs"),
+                Map.entry("gugugaga:sesame_meal", "sesame_paste"),
+                Map.entry("gugugaga:pumpkin_seed_meal", "pumpkin_seed_paste"),
+                Map.entry("minecraft:dried_kelp", "seaweed_seasoning"),
+                Map.entry("gugugaga:chopped_onion", "onion_paste"),
+                Map.entry("gugugaga:chopped_sweet_berries", "berry_mash")
+        )),
+        STRAIN(Map.ofEntries(
+                Map.entry("gugugaga:apple_juice", "clear_apple_juice"),
+                Map.entry("gugugaga:grape_juice", "clear_grape_juice"),
+                Map.entry("gugugaga:tomato_juice", "strained_tomato_juice"),
+                Map.entry("gugugaga:beetroot_juice", "clear_beet_juice"),
+                Map.entry("gugugaga:kelp_paste", "kelp_broth"),
+                Map.entry("gugugaga:rice_flour", "sifted_rice_flour")
+        )),
+        SIMMER(Map.ofEntries(
+                Map.entry("gugugaga:steamed_pumpkin", "pumpkin_soup_base"),
+                Map.entry("gugugaga:sauteed_mushrooms", "mushroom_stock"),
+                Map.entry("gugugaga:caramelized_onions", "onion_stock"),
+                Map.entry("gugugaga:smoked_cod", "cod_stock"),
+                Map.entry("gugugaga:steamed_beetroot", "beetroot_soup_base"),
+                Map.entry("gugugaga:steamed_potato", "potato_soup_base")
         ));
 
         private final Map<String, String> transformations;
@@ -157,6 +189,10 @@ public class KitchenProcessingBlock extends Block {
             case KNEAD -> BENCH;
             case FRY -> SMOKER;
             case STEAM -> SMOKER;
+            case WHISK -> BOWL;
+            case MORTAR -> MILL;
+            case STRAIN -> BENCH;
+            case SIMMER -> SMOKER;
         };
     }
 
@@ -211,6 +247,24 @@ public class KitchenProcessingBlock extends Block {
                     "message.gugugaga.kitchen_requires_heat"), true);
             return ItemInteractionResult.FAIL;
         }
+        // v3.1 specialist utensils are required only for the new workstations.
+        // Each is reusable and never consumed by the conversion.
+        if ((kind == Kind.WHISK && !player.getOffhandItem().is(KitchenV3Content.WIRE_WHISK.get()))
+                || (kind == Kind.MORTAR && !player.getOffhandItem().is(KitchenV3Content.MORTAR_PESTLE.get()))
+                || (kind == Kind.STRAIN && !player.getOffhandItem().is(KitchenV3Content.KITCHEN_STRAINER.get()))
+                || (kind == Kind.SIMMER && !player.getOffhandItem().is(KitchenV3Content.SOUP_LADLE.get()))) {
+            if (!level.isClientSide) {
+                player.displayClientMessage(Component.translatable(
+                        "message.gugugaga.kitchen_requires_specialist_tool"), true);
+            }
+            return ItemInteractionResult.FAIL;
+        }
+        if (kind == Kind.SIMMER && !level.isClientSide
+                && !CampfireBlock.isSmokeyPos(level, pos)) {
+            player.displayClientMessage(Component.translatable(
+                    "message.gugugaga.kitchen_requires_heat"), true);
+            return ItemInteractionResult.FAIL;
+        }
         if (level.isClientSide) {
             return ItemInteractionResult.SUCCESS;
         }
@@ -228,7 +282,7 @@ public class KitchenProcessingBlock extends Block {
         if (level instanceof ServerLevel server) {
             // Cosmetic, finite smoke/steam/food-processing particles. No
             // persistent inventories, item animation loop or client-only class.
-            if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE) {
+            if (kind == Kind.FRY || kind == Kind.STEAM || kind == Kind.SMOKE || kind == Kind.SIMMER) {
                 server.sendParticles(ParticleTypes.CLOUD, pos.getX() + 0.5D,
                         pos.getY() + 0.85D, pos.getZ() + 0.5D, 7,
                         0.18D, 0.12D, 0.18D, 0.015D);
