@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sliced_red_mushroom"
+    },
+    {
+      "item": "gugugaga:tomato_puree"
+    },
+    {
+      "item": "gugugaga:onion"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:red_mushroom_stew",
+    "count": 1
+  }
+}

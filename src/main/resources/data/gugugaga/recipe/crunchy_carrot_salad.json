@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:carrot_slaw"
+    },
+    {
+      "item": "minecraft:golden_carrot"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:crunchy_carrot_salad",
+    "count": 1
+  }
+}

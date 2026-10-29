@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:smoked_chicken"
+    },
+    {
+      "item": "gugugaga:carrot_slaw"
+    },
+    {
+      "item": "gugugaga:rice"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:smoked_chicken_carrot_bowl",
+    "count": 1
+  }
+}

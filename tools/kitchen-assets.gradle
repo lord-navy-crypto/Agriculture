@@ -16,8 +16,8 @@ tasks.register('generateKitchenAssets') {
         outputRoot.mkdirs()
         def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/kitchen_expansion_v2_8.json'))
         def items = catalog.items
-        if (items.size() != 30 || items.collect { it.id }.unique().size() != 30)
-            throw new GradleException('Expected 30 unique kitchen expansion entries')
+        if (items.size() != 79 || items.collect { it.id }.unique().size() != 79)
+            throw new GradleException('Expected 79 unique kitchen and vanilla pantry entries')
         def put = { BufferedImage img, int x, int y, int rgb ->
             if (x >= 0 && x < 16 && y >= 0 && y < 16)
                 img.setRGB(x, y, (int)(0xFF000000L | (rgb & 0xFFFFFF)))
@@ -55,6 +55,19 @@ tasks.register('generateKitchenAssets') {
                 rect.call(img,4,6,11,11,base)
                 rect.call(img,5,7,10,10,light)
                 for(int x=5;x<=10;x++) put.call(img,x,6,trim)
+            } else if(id.startsWith('smoked_')) {
+                // Distinct cooked-protein silhouette with grill marks and browned edges.
+                rect.call(img,2,12,13,13,ink)
+                rect.call(img,3,11,12,12,trim)
+                rect.call(img,3,7,12,10,dark)
+                rect.call(img,4,5,11,9,base)
+                rect.call(img,5,5,10,6,light)
+                for(int i=0;i<3;i++) {
+                    int x=5+i*2
+                    rect.call(img,x,7,x,9,dark)
+                    put.call(img,x+1,8,trim)
+                }
+                put.call(img,7,4,light)
             } else if(id.endsWith('_juice')) {
                 rect.call(img,5,1,10,3,ink)
                 rect.call(img,6,2,9,4,trim)
@@ -125,7 +138,7 @@ tasks.register('generateKitchenAssets') {
         File out=layout.buildDirectory.file('reports/agriculture/kitchen-item-contact-sheet.png').get().asFile
         out.parentFile.mkdirs()
         if(!ImageIO.write(sheet,'png',out)) throw new GradleException('Cannot save kitchen icon proof')
-        logger.lifecycle('KITCHEN_ASSETS_OK: 30 generated 16x16 icons + contact sheet')
+        logger.lifecycle('KITCHEN_ASSETS_OK: 79 generated 16x16 icons + contact sheet')
     }
 }
 tasks.named('processResources').configure { dependsOn tasks.named('generateKitchenAssets') }

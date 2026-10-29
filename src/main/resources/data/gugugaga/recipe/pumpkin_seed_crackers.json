@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin_seed_meal"
+    },
+    {
+      "item": "gugugaga:wheat_flour"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_seed_crackers",
+    "count": 1
+  }
+}
