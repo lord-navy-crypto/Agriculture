@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sesame_bun_dough"
+    },
+    {
+      "item": "gugugaga:steamed_onion"
+    },
+    {
+      "item": "gugugaga:bamboo_steamer_basket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:sesame_steamed_buns",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:rice_dumpling_dough"
+    },
+    {
+      "item": "gugugaga:steamed_cabbage"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:handmade_rice_dumplings",
+    "count": 1
+  }
+}

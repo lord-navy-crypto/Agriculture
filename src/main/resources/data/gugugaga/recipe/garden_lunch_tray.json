@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:steamed_rice"
+    },
+    {
+      "item": "gugugaga:pan_roasted_tomato"
+    },
+    {
+      "item": "gugugaga:lunch_box"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:garden_lunch_tray",
+    "count": 1
+  }
+}

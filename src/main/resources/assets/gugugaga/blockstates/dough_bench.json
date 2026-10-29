@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "gugugaga:block/dough_bench"
+    },
+    "active=true": {
+      "model": "gugugaga:block/dough_bench_active"
+    }
+  }
+}

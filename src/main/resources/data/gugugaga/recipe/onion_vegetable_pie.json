@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:bread_dough"
+    },
+    {
+      "item": "gugugaga:steamed_onion"
+    },
+    {
+      "item": "gugugaga:carrot_ribbons"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:onion_vegetable_pie",
+    "count": 1
+  }
+}

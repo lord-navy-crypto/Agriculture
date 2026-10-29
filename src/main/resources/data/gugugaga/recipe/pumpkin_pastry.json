@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pumpkin_pastry_dough"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "gugugaga:dessert_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pumpkin_pastry",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:seared_smoked_beef"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "gugugaga:caramelized_onions"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:smoked_beef_panini",
+    "count": 1
+  }
+}

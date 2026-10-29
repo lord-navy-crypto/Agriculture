@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sauteed_mushrooms"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "gugugaga:ceramic_bowl"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:creamy_mushroom_bowl",
+    "count": 1
+  }
+}

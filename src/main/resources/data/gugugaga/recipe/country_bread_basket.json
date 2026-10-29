@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:bread_dough"
+    },
+    {
+      "item": "gugugaga:glazed_carrots"
+    },
+    {
+      "item": "gugugaga:bread_basket"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:country_bread_basket",
+    "count": 1
+  }
+}

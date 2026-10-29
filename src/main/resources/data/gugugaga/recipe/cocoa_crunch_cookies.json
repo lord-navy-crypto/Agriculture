@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cocoa_cookie_dough"
+    },
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "gugugaga:baking_tray"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cocoa_crunch_cookies",
+    "count": 1
+  }
+}
