@@ -35,7 +35,7 @@ All previous 100 core crops and the 8 later spice/vegetable crops have an **addi
 
 Warm/wet crops strongly slow in ordinary winter; cool-season crops can grow more slowly. Cold-region winters are especially restrictive; tropical and arid habitat adaptations keep some growth. Summer can slow cool-weather crops in arid biomes.
 
-Sheltered growth: a **glass canopy** within 2–4 blocks above a crop and a nearby heat source (campfire, furnace, magma, lava) can improve winter crop growth probabilities. Vanilla minimum crop light 9 still applies. These are small, bounded checks on crop random ticks: not a detailed thermodynamics or sealed-room simulator; torches supply light but do not automatically count as a major heating unit. The current simple heat model does not check furnace lit state or campfire flame state and needs balance testing in a Minecraft client.
+Sheltered growth: a **registered glass or glass-pane canopy** within 2–4 blocks above a crop and a nearby heat source (campfire, furnace, magma, lava) can improve winter crop growth probabilities. Vanilla minimum crop light 9 still applies. These are small, bounded checks on crop random ticks: not a detailed thermodynamics or sealed-room simulator; torches supply light but do not automatically count as a major heating unit. The current simple heat model does not check furnace lit state or campfire flame state and needs balance testing in a Minecraft client.
 
 ## In-game status
 
