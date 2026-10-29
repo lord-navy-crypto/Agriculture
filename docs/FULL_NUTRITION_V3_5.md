@@ -17,7 +17,7 @@ Each has a Chinese and English translated display name and independent bounded s
 
 ## Playing and viewing
 
-Press **N** in the game world. Each keypress sends the existing lightweight request to the server, which returns the next page to the chat:
+Press **N** in the game world. The client sends a lightweight request; the server returns all 27 score values using a bounded clientbound packet. This opens a **full read-only graphical panel** with translated labels, progress bars and Previous/Next/Done controls. A paged chat report remains as a backward-compatible text option:
 
 1. Macronutrient / fiber / hydration categories — 5 entries
 2. Vitamins A through B7 — 7 entries
@@ -25,7 +25,7 @@ Press **N** in the game world. Each keypress sends the existing lightweight requ
 4. Minerals: calcium, iron, magnesium, potassium, zinc — 5 entries
 5. Minerals: iodine, selenium, phosphorus, sodium — 4 entries
 
-Each row shows a name, 10-cell progress bar and value from **0 to 100**. Press N again to advance, repeating from page 1 after page 5. The selected page and values persist in the world save. The client does not supply or calculate values.
+The graphical panel has its own five-page controls (independent from the optional chat report): each row shows a label, visual progress bar and number from **0 to 100**. The GUI is read-only; it receives all values from the server, never computes nutrients from client-side inventory. The chat-report page cursor and nutrient values persist in the world save.
 
 ## State and balance
 
@@ -48,4 +48,4 @@ The repository QA checks:
 - English and Chinese labels for each metric, and presence of the catalog and five nutrition classes inside the compiled single JAR.
 - Full previous v2/v3 farm, kitchen, marine, food, beekeeping, fermentation, and embedded optional Fusion regressions, NeoForge Java build, real dedicated-server boot.
 
-**Manual client acceptance is still needed**, especially after death and on multiplayer servers. The UI is intentionally a short paged text report, not yet a separate inventory-style graphical screen. A real laboratory nutrition database or precise medical simulator would require independently sourced per-food nutrient amounts, serving sizes, preparation losses, player-specific physiology and nutritional risk review; none of those features are claimed here.
+**Manual client acceptance is still needed**, especially after death and on multiplayer servers. The UI is a new read-only graphical panel with the older paged chat output retained for compatibility. Real client rendering and packet handling require manual in-game acceptance. A real laboratory nutrition database or precise medical simulator would require independently sourced per-food nutrient amounts, serving sizes, preparation losses, player-specific physiology and nutritional risk review; none of those features are claimed here.
