@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:grape_juice"
+    },
+    {
+      "item": "gugugaga:grape"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:grape_fruit_cup",
+    "count": 1
+  }
+}

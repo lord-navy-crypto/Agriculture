@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:pineapple_juice"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "gugugaga:soybean"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:pineapple_glazed_rice",
+    "count": 1
+  }
+}

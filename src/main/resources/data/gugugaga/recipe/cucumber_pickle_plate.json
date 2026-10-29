@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:cucumber_relish"
+    },
+    {
+      "item": "gugugaga:lettuce"
+    },
+    {
+      "item": "gugugaga:ceramic_plate"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cucumber_pickle_plate",
+    "count": 1
+  }
+}

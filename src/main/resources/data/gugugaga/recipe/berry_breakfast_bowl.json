@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:strawberry_juice"
+    },
+    {
+      "item": "gugugaga:oat"
+    },
+    {
+      "item": "minecraft:apple"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:berry_breakfast_bowl",
+    "count": 1
+  }
+}

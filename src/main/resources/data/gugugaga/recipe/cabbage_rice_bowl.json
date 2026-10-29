@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:shredded_cabbage"
+    },
+    {
+      "item": "gugugaga:rice"
+    },
+    {
+      "item": "minecraft:carrot"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:cabbage_rice_bowl",
+    "count": 1
+  }
+}

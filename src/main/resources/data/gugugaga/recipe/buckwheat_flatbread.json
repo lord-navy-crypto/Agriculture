@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:buckwheat_flour"
+    },
+    {
+      "item": "gugugaga:wheat_flour"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:buckwheat_flatbread",
+    "count": 1
+  }
+}
