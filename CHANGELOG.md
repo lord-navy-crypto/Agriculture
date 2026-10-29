@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.2.0-rc.1 — Five real kitchen tools; zero new workstation blocks
+
+- All twelve previously introduced hand utensils now have direct equipment interactions, including **five new offhand-specialized modes** on four existing workstations.
+- Chopping Board: Chef Knife cuts beef/chicken/potatoes/apples/fish; Box Grater shreds carrots, potatoes, beetroot, pumpkin, cucumber and apples.
+- Campfire Smoking Rack: Kitchen Tongs make additional smoked prepared meats/fish/mushrooms, while retaining the lit-campfire smoke requirement.
+- Mixing Basin: Measuring Cup can prepare measured fruit drinks and sauce bases as an alternative to the original wooden spoon route.
+- Stock Pot: Skimmer Spoon clarifies five existing stocks/soup bases while preserving the original Soup Ladle routes and campfire heat requirement.
+- Twenty-seven new prepared ingredient IDs and twenty dishes dependent on these prepared materials; original vanilla food items remain unchanged.
+- Added 47 distinct generated pixel-art icons and 20 shaped-free food crafting recipes. Independent catalog + graphics generator, new regression tests, and all prior assets preserved.
+- No additional placeable blocks, no permanent inventory/ticking systems, no new chunk-loading logic; all transformations continue to be server-authoritative.
+- Still subject to manual Minecraft client acceptance; a successful CI run does not claim visually perfect animation.
+
+
 ## v3.1.0-rc.1 — Specialist kitchen tools become functional
 
 - Four new kitchen processing blocks with real server-side interactions: **Whisking Station, Spice Mortar Station, Straining Station, Stock Pot**.
