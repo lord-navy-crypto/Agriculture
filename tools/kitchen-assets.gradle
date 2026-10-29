@@ -1,0 +1,129 @@
+import groovy.json.JsonSlurper
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+// Independent from the original 68-dish icon generator: no existing asset is replaced.
+def kitchenOutput = layout.buildDirectory.dir('generated/resources/kitchenAssets')
+sourceSets.main.resources.srcDir(kitchenOutput)
+
+tasks.register('generateKitchenAssets') {
+    inputs.file(file('src/main/resources/data/gugugaga/agronomy/kitchen_expansion_v2_8.json'))
+    outputs.dir(kitchenOutput)
+    outputs.file(layout.buildDirectory.file('reports/agriculture/kitchen-item-contact-sheet.png'))
+    doLast {
+        File outputRoot = kitchenOutput.get().asFile
+        project.delete(outputRoot)
+        outputRoot.mkdirs()
+        def catalog = new JsonSlurper().parse(file('src/main/resources/data/gugugaga/agronomy/kitchen_expansion_v2_8.json'))
+        def items = catalog.items
+        if (items.size() != 30 || items.collect { it.id }.unique().size() != 30)
+            throw new GradleException('Expected 30 unique kitchen expansion entries')
+        def put = { BufferedImage img, int x, int y, int rgb ->
+            if (x >= 0 && x < 16 && y >= 0 && y < 16)
+                img.setRGB(x, y, (int)(0xFF000000L | (rgb & 0xFFFFFF)))
+        }
+        def rect = { BufferedImage img, int x0, int y0, int x1, int y1, int rgb ->
+            for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
+                put.call(img,x,y,rgb)
+        }
+        def shade = { int color, double factor ->
+            int r=Math.min(255,(int)Math.floor(((color>>16)&255)*factor))
+            int g=Math.min(255,(int)Math.floor(((color>>8)&255)*factor))
+            int b=Math.min(255,(int)Math.floor((color&255)*factor))
+            return (r<<16)|(g<<8)|b
+        }
+        def sprite = { item ->
+            BufferedImage img=new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
+            int base=Integer.parseInt(item.color.substring(1),16)
+            int dark=shade.call(base,0.52d)
+            int light=shade.call(base,1.34d)
+            int trim=0xECE2CE
+            int ink=0x41372E
+            int sig=item.id.toString().hashCode()
+            String id=item.id.toString()
+            if(id=='wooden_spoon') {
+                rect.call(img,7,4,8,14,dark)
+                rect.call(img,7,5,8,13,base)
+                rect.call(img,5,1,10,5,dark)
+                rect.call(img,6,2,9,4,light)
+                rect.call(img,7,3,8,5,base)
+            } else if(id=='ceramic_plate') {
+                rect.call(img,2,6,13,11,ink)
+                rect.call(img,3,5,12,12,trim)
+                rect.call(img,4,6,11,11,base)
+                rect.call(img,5,7,10,10,light)
+                for(int x=5;x<=10;x++) put.call(img,x,6,trim)
+            } else if(id.endsWith('_juice')) {
+                rect.call(img,5,1,10,3,ink)
+                rect.call(img,6,2,9,4,trim)
+                rect.call(img,4,4,11,13,ink)
+                rect.call(img,5,5,10,12,base)
+                rect.call(img,6,6,7,11,light)
+                rect.call(img,8,7,9,11,dark)
+                rect.call(img,5,13,10,14,ink)
+            } else if(id.endsWith('_flour')||id=='sesame_meal') {
+                rect.call(img,3,4,12,13,ink)
+                rect.call(img,4,5,11,12,trim)
+                rect.call(img,5,6,10,11,base)
+                rect.call(img,5,2,10,4,dark)
+                rect.call(img,6,4,9,6,light)
+                for(int i=0;i<9;i++) put.call(img,5+Math.floorMod(i*3+sig,6),7+Math.floorMod(i*5+sig,4),i%2==0?light:dark)
+            } else if(item.type=='ingredient') {
+                rect.call(img,2,11,13,13,ink)
+                rect.call(img,3,10,12,11,trim)
+                for(int i=0;i<18;i++) {
+                    int x=3+Math.floorMod(i*7+sig,10),y=5+Math.floorMod(i*5+(sig>>4),7)
+                    rect.call(img,x,y,Math.min(12,x+1),Math.min(11,y+1),i%3==0?dark:i%3==1?light:base)
+                }
+                put.call(img,6,4,light)
+            } else if(id.contains('bread')||id.contains('toast')||id.contains('pancakes')) {
+                rect.call(img,2,12,13,13,ink)
+                rect.call(img,3,11,12,12,trim)
+                rect.call(img,3,7,12,10,dark)
+                rect.call(img,4,5,11,9,base)
+                rect.call(img,5,5,10,6,light)
+                for(int i=0;i<7;i++) put.call(img,5+Math.floorMod(i*5+sig,6),7+Math.floorMod(i*3+sig,3),i%2==0?trim:dark)
+            } else if(id.contains('soup')) {
+                rect.call(img,2,7,13,11,ink)
+                rect.call(img,3,6,12,9,trim)
+                rect.call(img,4,7,11,9,base)
+                for(int i=0;i<7;i++) put.call(img,4+Math.floorMod(i*5+sig,8),7+Math.floorMod(i*2+sig,3),i%2==0?light:dark)
+                rect.call(img,4,12,11,13,ink)
+                put.call(img,6,3,trim);put.call(img,8,2,trim);put.call(img,10,4,trim)
+            } else {
+                rect.call(img,2,10,13,13,ink)
+                rect.call(img,3,9,12,11,trim)
+                rect.call(img,4,10,11,10,dark)
+                for(int i=0;i<20;i++) {
+                    int x=3+Math.floorMod(i*7+sig,10),y=4+Math.floorMod(i*3+(sig>>3),6)
+                    put.call(img,x,y,i%4==0?trim:i%4==1?light:i%4==2?base:dark)
+                }
+            }
+            int visible=0
+            for(int y=0;y<16;y++) for(int x=0;x<16;x++)
+                if((img.getRGB(x,y)>>>24)!=0) visible++
+            if(visible<20) throw new GradleException('Kitchen icon too sparse: '+id)
+            return img
+        }
+        int tile=48,cols=6,rows=Math.floorDiv(items.size()+cols-1,cols)
+        BufferedImage sheet=new BufferedImage(cols*tile,rows*tile,BufferedImage.TYPE_INT_ARGB)
+        int bg=(int)0xFF202A23
+        for(int y=0;y<sheet.height;y++) for(int x=0;x<sheet.width;x++) sheet.setRGB(x,y,bg)
+        items.eachWithIndex { item,int i ->
+            BufferedImage icon=sprite.call(item)
+            File png=new File(outputRoot,'assets/gugugaga/textures/item/kitchen/'+item.id+'.png')
+            png.parentFile.mkdirs()
+            if(!ImageIO.write(icon,'png',png)) throw new GradleException('Cannot encode kitchen icon '+item.id)
+            int ox=(i%cols)*tile,oy=Math.floorDiv(i,cols)*tile
+            for(int y=0;y<tile;y++) for(int x=0;x<tile;x++) {
+                int pixel=icon.getRGB(Math.floorDiv(x,3),Math.floorDiv(y,3))
+                if(((pixel>>>24)&255)!=0)sheet.setRGB(ox+x,oy+y,pixel)
+            }
+        }
+        File out=layout.buildDirectory.file('reports/agriculture/kitchen-item-contact-sheet.png').get().asFile
+        out.parentFile.mkdirs()
+        if(!ImageIO.write(sheet,'png',out)) throw new GradleException('Cannot save kitchen icon proof')
+        logger.lifecycle('KITCHEN_ASSETS_OK: 30 generated 16x16 icons + contact sheet')
+    }
+}
+tasks.named('processResources').configure { dependsOn tasks.named('generateKitchenAssets') }
