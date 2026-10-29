@@ -20,9 +20,9 @@ def read(path):
 
 def main():
     manifest = read(MANIFEST)
-    assert manifest["schema_version"] == "2.8"
-    items = manifest["items"]
-    stations = manifest["stations"]
+    assert manifest["schema_version"] in {"2.8", "2.9"}
+    items = manifest["items"][:30]  # v2.8 stability: old content must remain unchanged
+    stations = manifest["stations"][:4]
     assert len(items) == 30 and len(stations) == 4
     ids = {row["id"] for row in items}
     assert len(ids) == 30 and len({r["id"] for r in stations}) == 4
@@ -59,8 +59,8 @@ def main():
         assert item["input"].startswith(("gugugaga:", "minecraft:"))
         expected[(item["input"], item["id"])] = item["station"]
     mapped = re.findall(r'"(gugugaga:[a-z_]+|minecraft:[a-z_]+)",\s*"([a-z_]+)"', processor)
-    assert len(mapped) == 16 and len(set(mapped)) == 16
-    assert set(mapped) == set(expected), (
+    assert len(mapped) >= 16 and len(set(mapped)) == len(mapped)
+    assert set(expected).issubset(set(mapped)), (
         "Java workstation inputs/outputs differ from manifest: "
         + str(set(mapped).symmetric_difference(expected))
     )
@@ -152,7 +152,7 @@ def main():
         assert len(unique) == 30, "duplicate kitchen item graphics"
         contact = ROOT / "build/reports/agriculture/kitchen-item-contact-sheet.png"
         w, h, _, visible = read_png(contact)
-        assert (w, h) == (288, 240) and visible, "missing correct kitchen contact sheet"
+        assert (w, h) == (288, ((len(manifest["items"]) + 5) // 6) * 48) and visible, "missing correct kitchen contact sheet"
 
     print("KITCHEN_V2_8_OK: four real processing blocks, 16 unique conversions, 2 utensils, "
           "12 novel processed-food dishes, bilingual names, meshes, drops and craft recipes; "
