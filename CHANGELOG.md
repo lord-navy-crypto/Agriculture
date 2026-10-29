@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.3.0-rc.1 — Food fermentation, fishing, and more farm crops
+
+- **8 additional plantable crops** (now 108 total): black pepper, lemongrass, wasabi, cumin, cardamom, fenugreek, sugar beet and daikon. Each has a harvest item, seed, 8 growth stages, weather-aware growth category, seed recipe and harvest drops.
+- **8 new ocean fishing inventory catches**: anchovy, sardine, herring, mackerel, sea bass, sea bream, shrimp and crab. Native Minecraft fishing loot is untouched; ocean fishing has a bounded 1/5 chance of an additional ingredient after catching normal vanilla fish. No extra fish mobs are claimed.
+- **1 food-fermentation vat** with ten distinct non-alcoholic food batches, three scheduled maturation stages, safe one-batch state persistence and ingredient/final output recovered if broken. It is a timed Minecraft mechanic, not a real-world food preparation or safety procedure.
+- **8 seasoning routes** at the existing mortar and **8 seafood smoking routes** at the existing smoke rack; their reusable tools and heat gates remain in force.
+- **18 additional dishes** consuming fermented ingredients, seafood and powdered spices. Vanilla fish, vegetables and earlier Agriculture seafood remain intact.
+- Independent generation of **68 new inventory icons and 64 crop stage sprites**, bilingual translations, crafting recipes, seed-start recipes and 120 add-on resource files.
+- All old IDs, recipes, crops, dishes, bee/honey mechanics and in-JAR optional Fusion resources kept untouched. Added strict v3.3 regression and generated-resource checks alongside normal Java 21 build and real dedicated-server boot.
+
+
 ## v3.2.0-rc.1 — Five real kitchen tools; zero new workstation blocks
 
 - All twelve previously introduced hand utensils now have direct equipment interactions, including **five new offhand-specialized modes** on four existing workstations.
