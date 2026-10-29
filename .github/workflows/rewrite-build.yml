@@ -75,7 +75,7 @@ jobs:
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Validate kitchen icon generator and four-station recipes
         run: python3 qa/validate_kitchen_expansion_v2_8.py build/generated/resources/kitchenAssets
-      - name: Validate v2.7 release metadata in packaged mod JAR
+      - name: Validate v2.8 release metadata in packaged mod JAR
         run: python3 qa/validate_release_metadata_v2_7.py build/libs
       - name: Verify one-JAR embedded optional Fusion visuals and standalone compatibility
         run: python3 qa/validate_embedded_fusion_v2_7.py build/libs/gugugaga-*.jar build/distributions/gugugaga-fusion-visuals-v2.7.zip
