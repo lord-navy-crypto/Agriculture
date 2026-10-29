@@ -74,6 +74,11 @@ public final class CropClimate {
         if (FoodEcologyV33Climate.isNewCrop(seedName)) {
             return FoodEcologyV33Climate.allowGrowth(seedName, level, pos, random);
         }
+        // The shared lunar calendar gates only immature crop growth. Existing
+        // rice irrigation, crop bands and the prior 100-crop climate logic stay.
+        if (!LunarSeasonsV36.allowsGrowth(
+                cropBand(seedName).name().toLowerCase(java.util.Locale.ROOT),
+                level, pos, random)) return false;
         // Rice, taro and watercress use bounded freshwater checks as gameplay proxies;
         // these are not claims that every real cultivation system requires flooding.
         if ("rice_seeds".equals(seedName) && !hasNearbyFreshWater(level, pos, 3, -1, 0)) return false;
