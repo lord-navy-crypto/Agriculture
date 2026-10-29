@@ -1104,5 +1104,19 @@
   "moon.gugugaga.4": "New Moon",
   "moon.gugugaga.5": "Waxing Crescent",
   "moon.gugugaga.6": "First Quarter",
-  "moon.gugugaga.7": "Waxing Gibbous"
+  "moon.gugugaga.7": "Waxing Gibbous",
+  "item.gugugaga.empty_water_flask": "Empty Water Flask",
+  "item.gugugaga.raw_water_bottle": "Untreated Freshwater",
+  "item.gugugaga.boiled_water_bottle": "Boiled Drinking Water",
+  "item.gugugaga.filtered_water_bottle": "Boiled & Filtered Water",
+  "button.gugugaga.nutrition": "Nutrition",
+  "hud.gugugaga.nutrition_hint": "N  Nutrition",
+  "nutrition.gugugaga.water_level": "Hydration",
+  "nutrition.gugugaga.sodium_balance": "Salt balance",
+  "message.gugugaga.v37_saltwater": "Ocean saltwater cannot be collected as freshwater.",
+  "message.gugugaga.v37_thirst_low": "Low game hydration: seek clean drinking water.",
+  "message.gugugaga.v37_salt_low": "Low game salt balance: try a savory meal.",
+  "message.gugugaga.v37_salt_high": "High game salt balance: drinking water is more important.",
+  "message.gugugaga.v37_balanced": "Hydration and electrolyte balance are stable.",
+  "message.gugugaga.v35_page_5": "Water and salt balance"
 }

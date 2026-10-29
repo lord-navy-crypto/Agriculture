@@ -1104,5 +1104,19 @@
   "moon.gugugaga.4": "新月",
   "moon.gugugaga.5": "蛾眉月",
   "moon.gugugaga.6": "上弦月",
-  "moon.gugugaga.7": "盈凸月"
+  "moon.gugugaga.7": "盈凸月",
+  "item.gugugaga.empty_water_flask": "空水壶",
+  "item.gugugaga.raw_water_bottle": "未处理淡水",
+  "item.gugugaga.boiled_water_bottle": "煮沸饮用水",
+  "item.gugugaga.filtered_water_bottle": "煮沸过滤水",
+  "button.gugugaga.nutrition": "营养状态",
+  "hud.gugugaga.nutrition_hint": "N  营养",
+  "nutrition.gugugaga.water_level": "水分状态",
+  "nutrition.gugugaga.sodium_balance": "盐分平衡",
+  "message.gugugaga.v37_saltwater": "海水不能直接当作淡水装瓶。",
+  "message.gugugaga.v37_thirst_low": "游戏水分偏低：需要补充安全饮水。",
+  "message.gugugaga.v37_salt_low": "游戏盐分平衡偏低：可选择风味料理。",
+  "message.gugugaga.v37_salt_high": "游戏盐分平衡偏高：请注意补充饮水。",
+  "message.gugugaga.v37_balanced": "水分与盐分状态平稳。",
+  "message.gugugaga.v35_page_5": "水分与盐分平衡"
 }

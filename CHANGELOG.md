@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.7.0-rc.1 — Hydration, electrolyte balance, water processing & inventory nutrition button
+
+- Add an independent **hydration meter and salt-balance meter** (0–100 gameplay units each) to the 27-nutrient dashboard, alongside persistent player save state, death/clone preservation and two added multiplayer network snapshot fields.
+- **Fixed clickable Nutrition button in the vanilla Survival inventory**, plus the old configurable N key and a small always-visible HUD hint. The nutrition GUI has a sixth page with hydration and salt bars.
+- Drinking water route: reusable empty flask fills from a **freshwater source**, saltwater ocean biomes are refused; campfire/furnace can convert untreated water into boiled drinking water. Further craft boiled water with charcoal/paper as a fictional filtered variant (not a claim that these ingredients disinfect water).
+- **407 explicit food/drink hydration and salt contribution records** loaded from a versioned resource; includes all previous 403 catalog foods, vanilla potion and three new water bottles. Honey contributes only minimal water, while soups, watery produce and beverages contribute more. Values are game scores and NOT ml, sodium mg, or lab-tested food chemistry.
+- Every 200 server ticks, water balance drains; sprinting or the Nether increases demand, and very high salt balance slightly increases water expenditure. Low values cause *moderate game mobility/mining difficulties*, not real medical diagnoses or injury.
+- Untreated water has a **probabilistic** short in-game nausea effect; not every natural water source is always contaminated. Boiling reduces microbial hazards in reality but does not remove chemical contaminants. Water quality is simplified, not a real purity assay.
+- All vanilla hunger and existing nutrition/crop/Fusion registries preserved. Server exclusively updates per-player meters; no client-provided scores.
+- Full v3.7 resource, recipe, registry and packaging QA added. Real Minecraft client click, item handling and balance review still necessary.
+
+
 ## v3.6.0-rc.1 — Lunar calendar, four 8-day seasons and crop overwintering
 
 - A full agricultural **32-day world year** synchronized to four existing eight-day Minecraft lunar cycles: Spring (day 1–8), Summer (9–16), Autumn (17–24), Winter (25–32). Each global season begins at moon phase 0 (full moon). Year/date follow the vanilla world day clock; no new clock, timers or SavedData needed.
