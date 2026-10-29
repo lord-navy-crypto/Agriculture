@@ -2,14 +2,14 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v2.9 vanilla-pantry kitchen release candidate)
+## Current content (v3.0 kitchen equipment release candidate)
 
 - **100 plantable crops**, each with dedicated seed and harvested produce items, crop-specific silhouettes, growth textures, and recipes.
 - Eight growth-stage textures per crop plus four pollen-marked textures for reproductive stages.
 - **100 wild seed sources** that spawn naturally in compatible Overworld biomes.
 - **50 honey varieties** with distinct floral sources and custom bottle graphics.
 - **68 original crop-cuisine items** with recipes and tailored, reproducible icons.
-- **Five functional kitchen workstations** (chopping board, hand mill, fruit press, mixing basin, campfire smoking rack), **45 ingredient transformations** and **32 kitchen dishes**, plus two dining utensils. The vanilla-pantry update includes original Minecraft carrot, potato, beetroot, pumpkin, mushrooms, melon, apple, berries, cocoa, seeds, kelp, fish and meats.
+- **Five legacy functional kitchen workstations** (chopping board, hand mill, fruit press, mixing basin, campfire smoking rack), **45 ingredient transformations** and **32 kitchen dishes**, plus two dining utensils. The vanilla-pantry update includes original Minecraft carrot, potato, beetroot, pumpkin, mushrooms, melon, apple, berries, cocoa, seeds, kelp, fish and meats.
 - The campfire smoking rack only processes raw cod, salmon, beef or chicken when real lit campfire smoke is detected. The original 68 dishes and 100 crops remain intact.
 - Marine farming, edible sea plants, and fungal cultures with dedicated textures and growth-stage visuals.
 - Distinct pollinator and beekeeping content, including four placeable bee habitat designs.
@@ -39,7 +39,7 @@ python3 qa/validate_release_metadata_v2_7.py build/libs
 
 GitHub Actions additionally checks agricultural resources, crop/seed visual audits, Fusion model and atlas consistency, and real NeoForge dedicated-server startup. The visual contact sheets are uploaded as CI artifacts.
 
-**Development status:** v2.9 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
+**Development status:** v3.0 is an automated-test-verified release candidate, not proof of exhaustive manual Minecraft client rendering checks. Test the base and optional Fusion configurations before public distribution.
 
 ## References
 
@@ -49,3 +49,4 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [Chinese player guide](docs/AGRICULTURE_PLAYER_GUIDE_ZH_CN.md)
 - [Functional kitchen equipment and processing](docs/KITCHEN_PROCESSING_V2_8.md)
 - [Vanilla Minecraft pantry, smoke rack, and 20 new meals](docs/VANILLA_PANTRY_KITCHEN_V2_9.md)
+- [Kitchen v3 utensils, tableware, animated stations and prepared meals](docs/KITCHEN_TOOLS_ANIMATIONS_V3_0.md)
