@@ -14,6 +14,12 @@ Minecraft Java 1.21.1, NeoForge 21.1.259, Java 21. All 108 crops, 32-day seasons
 - The sixth page contains hydration and salt balance with progress bars and game-status descriptions. The first five pages still show 27 macro/vitamin/mineral category indicators in EN/ZH.
 - No UI scores are trusted from a connected client.
 
+## v3.7.0-rc.2 UI hotfix and in-client acceptance
+- N and the Inventory Nutrition button now open the same six-page server-owned UI, without an extra chat report.
+- The UI shows explicit **0–100 scores** without scaling Minecraft font glyphs down. Each page scrolls when the GUI is too short: wheel, up/down arrows, or the on-screen ^/v controls; use </> to change pages. Hover an abbreviated label to see its complete localized text and number.
+- Test at GUI scales **2, 3, 4, Auto**, in English and Simplified Chinese, windowed and fullscreen, on both long vitamin names and the Water/Salt page. Verify no overlap between title, metric label, bar, value, status line, explanatory note, and buttons. Resize while the screen is open and confirm it remains usable.
+- Confirm changing hydration or eating updates the number after reopening, and that a multiplayer client cannot author its scores. A CI compile is not a screenshot-based rendering acceptance test.
+
 ## Collecting, boiling and drinking
 1. Craft an Empty Water Flask with a Glass Bottle and an Iron Nugget. Right-click a freshwater source block with the empty flask; natural ocean biomes are rejected (saltwater is not ordinary fresh drinking water).
 2. The collected item is **Untreated Freshwater**. It restores water when consumed but has a 1-in-5 abstract gameplay chance of a very brief nausea effect. Natural water is not universally poisonous in real life; contaminant risk depends on source.

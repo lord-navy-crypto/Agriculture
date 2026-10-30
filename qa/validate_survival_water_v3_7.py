@@ -93,8 +93,30 @@ def main():
     assert "buf.readVarInt()" in sync and "buf.writeVarInt" in sync
     assert "payload.water(),payload.salt()" in sync
     assert "WaterSaltV37.water(player),WaterSaltV37.salt(player)" in wire
-    assert '"water_level",water' in screen
-    assert '"sodium_balance",salt' in screen
+    assert '"nutrition.gugugaga.water_level"' in screen
+    assert '"nutrition.gugugaga.sodium_balance"' in screen
+    assert "scrollUp" in screen and "scrollDown" in screen
+    assert "font.plainSubstrByWidth" in screen and "graphics.renderTooltip" in screen
+    assert "int panelWidth()" in screen and "int panelHeight()" in screen
+    assert "renderBackground(graphics" not in screen
+    assert "public boolean mouseScrolled" in screen
+    assert "public boolean keyPressed" in screen
+    assert "value+\" / 100\"" in screen
+    assert "Math.min(screen.width-76" in inventory
+    # Layout arithmetic for representative scaled-game GUI viewports.
+    for width,height in ((240,180),(320,180),(400,240),(640,360),(960,540)):
+        pw=max(120,min(440,width-12)); ph=max(105,min(305,height-12))
+        assert pw<=width and ph<=height
+        top=47; bottom=ph-45; visible=max(1,(bottom-top-3)//23)
+        assert visible>=1
+        compact=pw<280; side=28 if compact else 40
+        scrollw=24 if compact else 30; donew=54 if compact else 80
+        gap=6 if compact else 9
+        assert 2*side+2*scrollw+donew+4*gap<=pw
+        for rows in (3,7):
+            maxscroll=max(0,rows-visible)
+            assert maxscroll+visible>=rows
+    assert "value+\" / 100\"" in screen
     assert 'int page=5' in screen and "PAGES.length" in screen
     for lang in ("en_us","zh_cn"):
         keys=read_json(ART/f"lang/{lang}.json")

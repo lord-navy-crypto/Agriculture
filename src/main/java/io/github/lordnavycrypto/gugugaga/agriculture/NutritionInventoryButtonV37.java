@@ -17,8 +17,9 @@ public final class NutritionInventoryButtonV37 {
     @SubscribeEvent
     public static void onInventoryInit(ScreenEvent.Init.Post event) {
         if(!(event.getScreen() instanceof InventoryScreen screen))return;
-        int x=screen.width/2+91;
-        int y=screen.height/2-82;
+        // Keep the launcher inside the visible GUI, even at high GUI scale.
+        int x=Math.max(4,Math.min(screen.width-76,screen.width/2+91));
+        int y=Math.max(4,Math.min(screen.height-24,screen.height/2-82));
         event.addListener(Button.builder(Component.translatable(
                 "button.gugugaga.nutrition"),button ->
                     PacketDistributor.sendToServer(new NutritionNetworkV34.Request()))

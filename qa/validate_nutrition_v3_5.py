@@ -86,7 +86,8 @@ def main():
     assert 'PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}}' in logic
     assert '"page",(page+1)%PAGE_COUNT' in logic
     assert "StreamCodec.unit(new Request())" in net
-    assert "playToServer" in net and "NutritionV34.show(player)" in net
+    assert "playToServer" in net and "NutritionV34.show(player)" not in net
+    # Readable GUI only: no legacy chat flooding at every open.
     assert "PacketDistributor.sendToServer" in client
     assert "GLFW.GLFW_KEY_N" in key
     assert "playToClient(State.TYPE,State.STREAM_CODEC" in net35
@@ -95,7 +96,7 @@ def main():
     assert "NutritionV34.snapshot(player)" in net
     assert "Minecraft.getInstance().setScreen" in screen
     assert "Button.builder" in screen and "GuiGraphics" in screen
-    assert "NutritionProfilesV35.NUTRIENTS[i]" in screen
+    assert "NutritionProfilesV35.NUTRIENTS[index]" in screen
     for l in ("en_us","zh_cn"):
         strings=load(ASSETS/f"lang/{l}.json")
         assert all(strings["nutrition.gugugaga."+name] for name in nutrients),l
