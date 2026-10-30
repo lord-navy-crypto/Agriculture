@@ -33,9 +33,11 @@ public final class NutritionNetworkV35 {
                                 throw new IllegalArgumentException("Invalid feedback snapshot");
                             for(int i=0;i<NutritionFeedbackV38.SNAPSHOT_SIZE;i++) {
                                 int value=data.feedback()[i];
-                                buf.writeVarInt(i<5?Math.max(0,Math.min(100,value))
-                                        :i<10?Math.max(0,Math.min(3,value+2))
-                                        :Math.max(0,Math.min(3,value)));
+                                if(i<5)buf.writeVarInt(Math.max(0,Math.min(100,value)));
+                                else if(i<10 || (i>=NutritionFeedbackV38.NUTRIENT_STATES_OFFSET
+                                        && i<NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET))
+                                    buf.writeVarInt(Math.max(0,Math.min(2,value+2)));
+                                else buf.writeVarInt(Math.max(0,Math.min(60,value)));
                             }
                         },
                         (FriendlyByteBuf buf) -> {
@@ -47,9 +49,11 @@ public final class NutritionNetworkV35 {
                             int[] feedback=new int[NutritionFeedbackV38.SNAPSHOT_SIZE];
                             for(int i=0;i<feedback.length;i++) {
                                 int value=buf.readVarInt();
-                                feedback[i]=i<5?Math.max(0,Math.min(100,value))
-                                        :i<10?Math.max(-2,Math.min(1,value-2))
-                                        :Math.max(0,Math.min(3,value));
+                                if(i<5)feedback[i]=Math.max(0,Math.min(100,value));
+                                else if(i<10 || (i>=NutritionFeedbackV38.NUTRIENT_STATES_OFFSET
+                                        && i<NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET))
+                                    feedback[i]=Math.max(-2,Math.min(0,value-2));
+                                else feedback[i]=Math.max(0,Math.min(60,value));
                             }
                             return new State(values,water,salt,feedback);
                         }
@@ -58,7 +62,7 @@ public final class NutritionNetworkV35 {
     }
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("2").playToClient(State.TYPE,State.STREAM_CODEC,
+        event.registrar("3").playToClient(State.TYPE,State.STREAM_CODEC,
                 (payload,context) -> NutritionScreenClientV35.open(payload.scores(),payload.water(),payload.salt(),payload.feedback()));
     }
 }

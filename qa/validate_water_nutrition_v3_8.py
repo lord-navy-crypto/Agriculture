@@ -47,10 +47,10 @@ def main():
     assert "CampfireBlock.LIT" in pan
     assert "LunarSeasonsV36.habitat" in pan
     assert "LunarSeasonsV36.localSeason" in pan and "Season.WINTER" in pan
-    assert "V38_FLOOR=15" in nutrition
-    assert "NutritionFeedbackV38.advance" in nutrition
+    assert "NutritionPhysiologyV39.advance" in nutrition
+    assert "NutritionPhysiologyV39.consume" in nutrition
     assert "NutritionFeedbackV38.apply" in nutrition
-    assert "NutritionFeedbackV38.recoverAfterEating" in nutrition
+    assert "NutritionFeedbackV38.snapshot" in nutrition
     assert "player.hurt" not in nutrition and "player.kill" not in nutrition
     assert "gugugaga_nutrition_v35" in nutrition
     for i in range(4):

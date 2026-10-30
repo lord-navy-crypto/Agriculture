@@ -166,9 +166,11 @@ public final class NutritionScreenClientV35 extends Screen {
                 int barRight=valueRight-numericWidth-11;
                 int barWidth=Math.max(23,Math.min(110,(w-45)/3));
                 int barLeft=barRight-barWidth;
-                int state=page==6?feedback[NutritionFeedbackV38.GROUP_COUNT+row]:0;
-                int textColor=page!=6?0xFFFFFFFF:state==-2?0xFFFFB5A9
-                        :state==-1?0xFFFFDEA6:state==1?0xFFBEF3BA:0xFFFFFFFF;
+                int nutrientIndex=page<5?PAGES[page][0]+row:-1;
+                int state=page==6?feedback[NutritionFeedbackV38.GROUP_COUNT+row]:
+                        nutrientIndex>=0?feedback[NutritionFeedbackV38.NUTRIENT_STATES_OFFSET+nutrientIndex]:0;
+                int textColor=state==-2?0xFFFFB5A9
+                        :state==-1?0xFFFFDEA6:0xFFFFFFFF;
                 int labelWidth=Math.max(18,barLeft-labelX-(page==6?24:9));
                 graphics.drawString(font,fitted(label,labelWidth),labelX,line+5,
                         textColor,false);
@@ -179,7 +181,7 @@ public final class NutritionScreenClientV35 extends Screen {
                 graphics.fill(barLeft,line+7,barRight,line+15,0xFF182923);
                 int fillWidth=barWidth*value/100;
                 if(fillWidth>0)graphics.fill(barLeft,line+7,barLeft+fillWidth,line+15,
-                        page==5?0xFF80C6E9:page==6?textColor:0xFF9ED89A);
+                        page==5?0xFF80C6E9:textColor==0xFFFFFFFF?0xFF9ED89A:textColor);
                 graphics.drawString(font,numeric,valueRight-numericWidth,line+5,
                         0xFFFFF2D8,false);
                 if(mouseX>=x+9 && mouseX<x+w-9 && mouseY>=line && mouseY<line+ROW_HEIGHT) {
@@ -189,6 +191,14 @@ public final class NutritionScreenClientV35 extends Screen {
                         hover=Component.translatable("feedback.gugugaga.tooltip",
                                 label,numeric,Component.translatable(
                                         "feedback.gugugaga.stage_"+(stage+2)),days);
+                    } else if(nutrientIndex>=0){
+                        int days=feedback[NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET+nutrientIndex];
+                        String id=NutritionProfilesV35.NUTRIENTS[nutrientIndex];
+                        hover=Component.translatable("feedback.gugugaga.nutrient_tooltip",
+                                label,numeric,
+                                Component.translatable("feedback.gugugaga.role."+id),
+                                Component.translatable("feedback.gugugaga.stage_"+(state+2)),
+                                days,NutritionPhysiologyV39.requiredDays(nutrientIndex));
                     } else hover=Component.literal(label.getString()+" : "+numeric);
                 }
             }

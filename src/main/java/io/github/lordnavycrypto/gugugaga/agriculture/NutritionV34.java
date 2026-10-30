@@ -18,7 +18,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
  * Versioned nutrition progression subsystem (retains this class name for v3.4
  * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
  * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
- * Nutrition diversity scores are fictional gameplay progress, not physiology.
+ * Legacy values become abstract reserve indicators in the v3.9 model.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID)
 public final class NutritionV34 {
@@ -27,7 +27,6 @@ public final class NutritionV34 {
     private static final String LEGACY="gugugaga_nutrition_v34";
     private static final int BASE=45;
     private static final int MAX=100;
-    private static final int V38_FLOOR=15;
     private static final int PAGE_COUNT=5;
     private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}};
 
@@ -72,11 +71,9 @@ public final class NutritionV34 {
                 .getKey(food.getItem()).toString();
         int[] contribution=NutritionProfilesV35.contribution(id);
         CompoundTag values=record(player);
-        for(int i=0;i<NutritionProfilesV35.NUTRIENTS.length;i++) {
-            int points=contribution[i];
-            if(points>0) add(values,NutritionProfilesV35.NUTRIENTS[i],points);
-        }
-        NutritionFeedbackV38.recoverAfterEating(values);
+        // Ingest is an input to the next daily reserve update, NOT an
+        // instantaneous tissue replenishment or clinical blood level.
+        NutritionPhysiologyV39.consume(values,contribution);
         // All eaten foods are counted once, only on the server. Inventory
         // possession, use-start and aborted eating never award nutrition.
         player.getPersistentData().put(ROOT,values);
@@ -106,7 +103,7 @@ public final class NutritionV34 {
         if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
-        NutritionFeedbackV38.advance(values,
+        NutritionPhysiologyV39.advance(values,
                 Math.floorDiv(player.level().getDayTime(),24000L));
         // Keep existing positive diversity milestones; the new group effects
         // never replace vanilla water/salt penalties or double stack rewards.
@@ -116,12 +113,7 @@ public final class NutritionV34 {
         if(advancedMeals) player.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
         NutritionFeedbackV38.apply(player,values,variedMeals||advancedMeals);
-        // Slow game-score aging preserves existing save and score IDs.
-        if(player.tickCount%24000==0) {
-            for(String id:NutritionProfilesV35.NUTRIENTS)
-                values.putInt(id,Math.max(V38_FLOOR,values.getInt(id)-1));
-            player.getPersistentData().put(ROOT,values);
-        }
+        player.getPersistentData().put(ROOT,values);
     }
 
     @SubscribeEvent
@@ -142,6 +134,10 @@ public final class NutritionV34 {
         int[] result=new int[NutritionProfilesV35.NUTRIENTS.length];
         for(int i=0;i<result.length;i++)
             result[i]=clamp(values.getInt(NutritionProfilesV35.NUTRIENTS[i]));
+        // These two indicators are directly backed by the already established
+        // v3.7 water/salt system, not separate fictitious vitamin stores.
+        result[NutritionPhysiologyV39.WATER_INDEX]=WaterSaltV37.water(player);
+        result[NutritionPhysiologyV39.SODIUM_INDEX]=WaterSaltV37.salt(player);
         return result;
     }
 

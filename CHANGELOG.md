@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.9.0-rc.1 — Rework 27 nutrient scores into evidence-informed, nonclinical reserves
+
+- Removed the v3.8 fictitious five-group average deficiency trigger and magical individual nutrient bonuses. Five groups now only summarize the **individual** states; no individual low reserve can be averaged away.
+- Added 25 independently timed nutrient reserves and a two-indicator link to the previously existing water and salt system. Each modeled nutrient has its own game-day intake target, depletion, recovery and prolonged-shortage window. Food inputs no longer instantly restore stored nutrient points.
+- Separated short-reserve thiamin/B1 from long-reserve vitamin B12, and differentiated iron, folate, calcium/D, iodine and other roles. These are *game abstractions based on factual biological distinctions*, not clinical dynamics.
+- The seven-page nutrition panel now provides 27 localized physiological-role summaries with state and time-window hover information. Added server-synchronized individual stage/day data to the established packet and advanced channel version.
+- Preserve all item IDs, biome ecology, sea-salt production, agriculture and season systems, 27 food catalog identifiers, and save-tag migration. Water and salt penalties remain authoritative; no redundant sodium/iodine equivalence.
+- Introduced evidence notes and new continuous integration contracts. Game client playthrough and medical accuracy validation remain separate and not claimed.
+
+
 ## v3.8.0-rc.2 — Complete nutrition feedback and clear in-game group status
 
 - Replace v3.8's single restrictive energy/protein/vitamin trigger with **five independent fictional nutrition groups** that jointly cover all 27 existing scores without omission or double counting.

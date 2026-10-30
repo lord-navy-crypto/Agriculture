@@ -2,7 +2,7 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.8 water ecology & nutrition survival release candidate)
+## Current content (v3.9 evidence-informed nutrition release candidate)
 
 - **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
 - Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
@@ -33,16 +33,19 @@ The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated a
 - The **Field Sampling Bucket** is a new independent tool, crafted from an iron bucket and glass bottle. Right-click a water source to collect 1000 mB of a non-drinkable, tagged sample. The collected item records source biome and approximate game salinity; ordinary vanilla buckets, vanilla water and the existing v3.7 drinking flask stay unchanged.
 - Normal freshwater samples are 0 ppt, beach samples 12 ppt, and ocean samples approximately 33–37 ppt. These are game classifications, not measurements. For now, only samples at or above 5 ppt can be evaporated for salt.
 - Fill a **Salt Evaporation Pan** with a brackish/saltwater sample. It advances through brine, concentration and crystals using scheduled ticks, daylight and dry weather. A lit campfire or magma block below offers a faster heated route. Retrieve one existing `sea_salt` per sample batch. The sample is consumed and the sampling bucket returned. No new fluids or automatic duplicated outputs.
-- The 27 existing food diversity scores now gradually age down to 15 rather than 40. Prolonged low diversity across the energy, protein and vitamin groups gives one mild mining-fatigue status, after a three-game-day grace period; eating diverse foods can reverse it. This is purely fictional game balance and **not** a medical model.
+- Nutrition was originally represented by 27 game scores. The newer v3.9 individual-reserve design below supersedes v3.8's group-average penalty logic.
 - **GUI troubleshooting:** In Minecraft Options → Accessibility Settings, set Menu Background Blur to **0** if a modded GUI looks blurry. v3.7.0-rc.2 responsive nutrition text remains in place.
 
-## v3.8.0-rc.2 nutrition feedback (fictional game scores)
+## v3.9.0-rc.1: individually modeled nutrient reserves (research-informed, nonclinical)
 
-- The 27 nutrition metrics remain unchanged and are now shown in **five actionable groups** on the seventh Nutrition screen page (press N, use page navigation).
-- Five groups: energy, maintenance/protein, B-family, plant-food variety, and mineral support. Each uses only the existing 27 score slots; this is game scoring, not human dietary diagnosis.
-- Low group scores produce an **improvement suggestion** first. Three elapsed game days of persistently low values can produce just **one short, mild** movement/mining/combat inconvenience. Recovery from food resets streaks; drinking water and adequate salt remain separately modeled.
-- High group scores can enable a bounded focus bonus, without stacking extras over original food-diversity rewards. Both positive and negative states are directly visible through status symbols and hover details. Existing saved worlds get a grace period.
-- To avoid vanilla/other-mod UI blur, use Options → Accessibility → Menu Background Blur → 0 when needed.
+- The established **27 indicators remain**. The **25 food-related reserves** now receive independent food inputs, daily game consumption, replenishment, and sustained-shortage windows. **Water and sodium** continue to use the preexisting v3.7 water/salt subsystem, preventing duplicate dehydration or sodium effects.
+- **B1 declines faster than stored B12**; long-stored A, D, E, calcium and iron follow different game kinetics. These times are deliberately compressed and **not** real biological half-lives, medical symptoms or dose thresholds.
+- Food is recorded upon completed consumption, then contributes to reserve recovery on the following Minecraft day. Eating one food no longer instantly restores a depleted tissue-like score.
+- Feedback is assessed **per nutrient**; a high score in one nutrient cannot conceal persistent low iron or B12 in a group average. N-key pages 1–5 give 27 individually localized physiological roles and long-term status on hover; page 7 retains a high-level overview.
+- Most shortages only inform the player. A few prolonged functional limitations receive at most one short, mild game effect. No disease diagnoses, damage, toxic vitamin penalties, or magical night-vision/resistance bonuses. Existing older **food-variety perks** remain a separately identified game reward.
+- Sodium-rich foods are not automatically iodine-rich: sea salt made in the evaporation pan is not iodized salt. The mod does not pretend its 403 food profiles are laboratory-verified nutrient masses.
+- Current limitations: no measured mg/g, bioavailability, individual age or illness assumptions, actual time-based clinical deficiency prediction, or medical recommendations. See [physiology design and evidence](docs/NUTRITION_PHYSIOLOGY_V3_9.md).
+- GUI blur: Options → Accessibility → Menu Background Blur → 0 if required.
 
 ## Build and validation
 
