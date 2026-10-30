@@ -93,8 +93,13 @@ def main():
     assert "buf.readVarInt()" in sync and "buf.writeVarInt" in sync
     assert "payload.water(),payload.salt()" in sync
     assert "WaterSaltV37.water(player),WaterSaltV37.salt(player)" in wire
-    assert '"water_level",water' in screen
-    assert '"sodium_balance",salt' in screen
+    assert '"nutrition.gugugaga.water_level"' in screen
+    assert '"nutrition.gugugaga.sodium_balance"' in screen
+    assert "scrollUp" in screen and "scrollDown" in screen
+    assert "font.plainSubstrByWidth" in screen and "graphics.renderTooltip" in screen
+    assert "int panelWidth()" in screen and "int panelHeight()" in screen
+    assert "renderBackground(graphics" not in screen
+    assert "value+\" / 100\"" in screen
     assert 'int page=5' in screen and "PAGES.length" in screen
     for lang in ("en_us","zh_cn"):
         keys=read_json(ART/f"lang/{lang}.json")
