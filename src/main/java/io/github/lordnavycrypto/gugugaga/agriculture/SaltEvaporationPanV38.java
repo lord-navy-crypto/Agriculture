@@ -100,6 +100,12 @@ public final class SaltEvaporationPanV38 extends Block {
             var habitat=LunarSeasonsV36.habitat(LunarSeasonsV36.biomeId(level,pos));
             if(habitat==LunarSeasonsV36.Habitat.ARID)delay=350;
             if(habitat==LunarSeasonsV36.Habitat.COLD)delay=1000;
+            var season=LunarSeasonsV36.localSeason(
+                    LunarSeasonsV36.absoluteDay(level),habitat);
+            if(season==LunarSeasonsV36.Season.SUMMER)
+                delay=Math.max(200,delay-150);
+            if(season==LunarSeasonsV36.Season.WINTER)
+                delay+=350;
         }
         level.setBlock(pos,state.setValue(STAGE,stage+1),3);
         if(stage+1<3)level.scheduleTick(pos,this,delay);
