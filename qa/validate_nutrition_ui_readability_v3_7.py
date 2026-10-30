@@ -49,14 +49,18 @@ for width,height in ((320,180),(320,240),(426,240),(480,270),
     x=(width-w)//2
     y=(height-h)//2
     button_y=y+h-27
-    left=(x+9,x+9+44)
-    right=(x+w-53,x+w-53+44)
-    done=(width//2-38,width//2+38)
+    row_width=34+54+54+34+3*3
+    row_x=x+(w-row_width)//2
+    left=(row_x,row_x+34)
+    copy=(left[1]+3,left[1]+3+54)
+    done=(copy[1]+3,copy[1]+3+54)
+    right=(done[1]+3,done[1]+3+34)
     assert 0<=x and x+w<=width, (width,height,"panel x")
     assert 0<=y and y+h<=height, (width,height,"panel y")
     assert 0<=left[0] and left[1]<=width, (width,height,"left")
     assert 0<=right[0] and right[1]<=width, (width,height,"right")
-    assert left[1]<done[0] and done[1]<right[0], (width,height,"buttons")
+    assert left[1]<copy[0] and copy[1]<done[0] and done[1]<right[0], (width,height,"buttons")
+    assert row_x>=x and right[1]<=x+w, (width,height,"button row inside panel")
     assert button_y+20<=height, (width,height,"button y")
     row_start=y+51
     row_end=y+h-(37 if h<220 else 67)
