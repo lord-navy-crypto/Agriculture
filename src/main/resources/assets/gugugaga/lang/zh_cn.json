@@ -1169,5 +1169,10 @@
   "feedback.gugugaga.role.selenium": "支持硒蛋白及甲状腺相关酶功能",
   "feedback.gugugaga.role.phosphorus": "参与 ATP、细胞结构及骨骼矿物质构成",
   "feedback.gugugaga.role.sodium": "由独立盐分与水分平衡系统管理",
-  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s。%s。持续偏低 %s 天；游戏观察窗口 %s 天"
+  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s。%s。持续偏低 %s 天；游戏观察窗口 %s 天。%s",
+  "message.gugugaga.v35_page_7": "27 项营养素药水效果表",
+  "message.gugugaga.v310_effects_active": "营养反馈：27 项指标均已配置正面与储备不足效果，请打开药水效果页查看。",
+  "feedback.gugugaga.effect_pair": "正面效果：%s | 储备不足效果：%s",
+  "feedback.gugugaga.water_salt_tooltip": "%s %s。%s",
+  "feedback.gugugaga.effects_note": "27 项指标均有正面/负面效果映射。为保持生存平衡，最多同时生效五种增益和四种减益；水盐惩罚优先。"
 }

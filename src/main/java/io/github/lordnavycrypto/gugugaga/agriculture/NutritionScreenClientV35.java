@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
  * The values are fictional 0..100 game scores, never clinical nutrition data.
  */
 public final class NutritionScreenClientV35 extends Screen {
-    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0}};
+    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27}};
     private static final int ROW_HEIGHT=23;
     private final int[] values;
     private final int water;
@@ -54,7 +54,7 @@ public final class NutritionScreenClientV35 extends Screen {
         return Math.max(1,(contentBottom()-contentTop()-3)/ROW_HEIGHT);
     }
     private int rowCount() {
-        return page==6?NutritionFeedbackV38.GROUP_COUNT:page==5?3:PAGES[page][1]-PAGES[page][0];
+        return page==7?27:page==6?NutritionFeedbackV38.GROUP_COUNT:page==5?3:PAGES[page][1]-PAGES[page][0];
     }
     private int maxScroll() {return Math.max(0,rowCount()-visibleRows());}
     private void setScroll(int target) {
@@ -97,6 +97,7 @@ public final class NutritionScreenClientV35 extends Screen {
 
     private Component rowLabel(int row) {
         if(page==6)return Component.translatable("feedback.gugugaga.group_"+row);
+        if(page==7)return Component.translatable("nutrition.gugugaga."+NutritionProfilesV35.NUTRIENTS[row]);
         if(page==5) {
             if(row==0)return Component.translatable("nutrition.gugugaga.water_level");
             if(row==1)return Component.translatable("nutrition.gugugaga.sodium_balance");
@@ -113,6 +114,7 @@ public final class NutritionScreenClientV35 extends Screen {
     }
     private int rowValue(int row) {
         if(page==6)return clamp(feedback[row]);
+        if(page==7)return clamp(values[row]);
         if(page==5)return row==0?water:salt;
         return clamp(values[PAGES[page][0]+row]);
     }
@@ -166,7 +168,7 @@ public final class NutritionScreenClientV35 extends Screen {
                 int barRight=valueRight-numericWidth-11;
                 int barWidth=Math.max(23,Math.min(110,(w-45)/3));
                 int barLeft=barRight-barWidth;
-                int nutrientIndex=page<5?PAGES[page][0]+row:-1;
+                int nutrientIndex=page<5?PAGES[page][0]+row:page==7?row:-1;
                 int state=page==6?feedback[NutritionFeedbackV38.GROUP_COUNT+row]:
                         nutrientIndex>=0?feedback[NutritionFeedbackV38.NUTRIENT_STATES_OFFSET+nutrientIndex]:0;
                 int textColor=state==-2?0xFFFFB5A9
@@ -174,7 +176,7 @@ public final class NutritionScreenClientV35 extends Screen {
                 int labelWidth=Math.max(18,barLeft-labelX-(page==6?24:9));
                 graphics.drawString(font,fitted(label,labelWidth),labelX,line+5,
                         textColor,false);
-                if(page==6) {
+                if(page==6 || page==7) {
                     String indicator=state==-2?"!!":state==-1?"!":state==1?"+":"=";
                     graphics.drawString(font,indicator,barLeft-18,line+5,textColor,false);
                 }
@@ -194,16 +196,26 @@ public final class NutritionScreenClientV35 extends Screen {
                     } else if(nutrientIndex>=0){
                         int days=feedback[NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET+nutrientIndex];
                         String id=NutritionProfilesV35.NUTRIENTS[nutrientIndex];
+                        Component pair=Component.translatable("feedback.gugugaga.effect_pair",
+                                Component.translatable("effect.minecraft."+NutritionEffectsV310.positiveKey(nutrientIndex)),
+                                Component.translatable("effect.minecraft."+NutritionEffectsV310.negativeKey(nutrientIndex)));
                         hover=Component.translatable("feedback.gugugaga.nutrient_tooltip",
                                 label,numeric,
                                 Component.translatable("feedback.gugugaga.role."+id),
                                 Component.translatable("feedback.gugugaga.stage_"+(state+2)),
-                                days,NutritionPhysiologyV39.requiredDays(nutrientIndex));
+                                days,NutritionPhysiologyV39.requiredDays(nutrientIndex),pair);
+                    } else if(page==5 && row<2){
+                        int effectIndex=row==0?NutritionPhysiologyV39.WATER_INDEX:NutritionPhysiologyV39.SODIUM_INDEX;
+                        Component pair=Component.translatable("feedback.gugugaga.effect_pair",
+                                Component.translatable("effect.minecraft."+NutritionEffectsV310.positiveKey(effectIndex)),
+                                Component.translatable("effect.minecraft."+NutritionEffectsV310.negativeKey(effectIndex)));
+                        hover=Component.translatable("feedback.gugugaga.water_salt_tooltip",label,numeric,pair);
                     } else hover=Component.literal(label.getString()+" : "+numeric);
                 }
             }
         }
-        Component note=Component.translatable(page==6
+        Component note=Component.translatable(page==7
+                ?"feedback.gugugaga.effects_note":page==6
                 ?"feedback.gugugaga.note":"message.gugugaga.v35_gui_note");
         centered(graphics,note,x+w/2,y+h-39,w-20,0xFFE2E6D7);
         syncScrollButtons();

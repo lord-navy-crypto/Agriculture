@@ -1169,5 +1169,10 @@
   "feedback.gugugaga.role.selenium": "Supports selenoproteins including thyroid-related enzymes",
   "feedback.gugugaga.role.phosphorus": "Supports ATP, cell structure and bone mineral",
   "feedback.gugugaga.role.sodium": "Uses the separate sodium and hydration balance system",
-  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s. %s. Low days: %s; game window: %s"
+  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s. %s. Low days: %s; game window: %s. %s",
+  "message.gugugaga.v35_page_7": "Potion effect matrix",
+  "message.gugugaga.v310_effects_active": "Potion feedback: all 27 nutrition indicators have mapped positive and low-reserve effects. Open the effect matrix page for details.",
+  "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",
+  "feedback.gugugaga.water_salt_tooltip": "%s %s. %s",
+  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; water/salt penalties take priority."
 }

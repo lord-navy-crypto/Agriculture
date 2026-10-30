@@ -79,24 +79,6 @@ public final class NutritionV34 {
         player.getPersistentData().put(ROOT,values);
     }
 
-    private static int count(CompoundTag values,int from,int to,int threshold) {
-        int result=0;
-        for(int i=from;i<to;i++) {
-            if(values.getInt(NutritionProfilesV35.NUTRIENTS[i])>=threshold)result++;
-        }
-        return result;
-    }
-    private static boolean varied(CompoundTag values) {
-        return count(values,0,5,55)>=3 &&
-               count(values,5,18,55)>=4 &&
-               count(values,18,27,55)>=2;
-    }
-    private static boolean highlyVaried(CompoundTag values) {
-        return count(values,0,5,70)>=4 &&
-               count(values,5,18,70)>=6 &&
-               count(values,18,27,70)>=4;
-    }
-
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -161,10 +143,7 @@ public final class NutritionV34 {
                     "message.gugugaga.v34_nutrition_row",
                     Component.translatable("nutrition.gugugaga."+nutrient),bar,score));
         }
-        String bonus=highlyVaried(values)?"message.gugugaga.v35_bonus_advanced":
-                varied(values)?"message.gugugaga.v35_bonus_varied":
-                "message.gugugaga.v35_bonus_explore";
-        player.sendSystemMessage(Component.translatable(bonus));
+        player.sendSystemMessage(Component.translatable("message.gugugaga.v310_effects_active"));
         player.sendSystemMessage(Component.translatable("message.gugugaga.v35_next_page"));
         values.putInt("page",(page+1)%PAGE_COUNT);
         player.getPersistentData().put(ROOT,values);
