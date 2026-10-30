@@ -117,7 +117,7 @@ def main():
     assert "PlayerEvent.Clone" in nut
     assert "DataComponents.FOOD" in nut
     assert "MobEffects.DIG_SPEED" in effects and "MobEffects.MOVEMENT_SPEED" in effects
-    assert len(re.findall(r"new Pair\\(",effects))==27
+    assert effects.count("new Pair(")==27
     assert "player.sendSystemMessage" in nut
     assert "minimum_groups_for_bonus" in json.dumps(cat["nutrition"])
     assert "StreamCodec.unit(new Request())" in net

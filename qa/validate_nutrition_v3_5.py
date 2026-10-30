@@ -82,7 +82,7 @@ def main():
     assert "copy(old,migrated" in logic
     assert "PlayerEvent.Clone" in logic
     assert "player.getPersistentData().put(ROOT,values)" in logic
-    assert len(re.findall(r"new Pair\\(",effects))==27
+    assert effects.count("new Pair(")==27
     assert "NutritionEffectsV310.apply(player,tag)" in feedback
     assert "NutritionFeedbackV38.apply(player,values,false)" in logic
     assert "varied(values)" not in logic and "highlyVaried(values)" not in logic
