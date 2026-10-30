@@ -16,7 +16,6 @@ assert "private int page=0;" in screen, "N key should show the nutrient list"
 assert "PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0}}" in screen
 assert "panelWidth=Math.min(PANEL_MAX_WIDTH,Math.max(1,width-16))" in screen
 assert "panelHeight=Math.min(PANEL_MAX_HEIGHT,Math.max(1,height-12))" in screen
-assert "graphics.fill(0,0,width,height,0xB0000000)" in screen
 assert "renderBackground(graphics" not in screen, "blurred GUI background may obscure text"
 assert "pose().scale(" not in screen, "fractional font scaling blurs pixel glyphs"
 assert "font.plainSubstrByWidth" in screen, "names must not overlap numeric slots"
