@@ -120,7 +120,7 @@ def main():
     assert "minimum_groups_for_bonus" in json.dumps(cat["nutrition"])
     assert "StreamCodec.unit(new Request())" in net
     assert "playToServer" in net
-    assert "NutritionV34.show(player)" in net
+    assert "NutritionV34.show(player)" not in net  # graphical panel no longer floods chat
     assert "GLFW.GLFW_KEY_N" in key
     assert "RegisterKeyMappingsEvent" in key
     assert "ClientTickEvent.Post" in tick
