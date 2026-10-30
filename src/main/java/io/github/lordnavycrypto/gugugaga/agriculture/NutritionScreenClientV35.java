@@ -1,22 +1,24 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import java.util.Arrays;
+import java.util.Locale;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.client.Window;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Server-snapshot-only nutrition dashboard.
  *
- * <p>All coordinates are Minecraft's scaled GUI coordinates, and all glyphs
- * use the vanilla font at native 1:1 pixel size. The backdrop is a flat
- * translucent fill rather than a world-blur post-processing pass: this keeps
- * labels, values and widgets on a single crisp GUI layer even alongside other
- * mods' HUD renderers. No client-derived nutrition scores exist.</p>
+ * <p>Uses native vanilla font rendering and integer GUI coordinates only.
+ * No blur post-process, texture scaling, pose scaling, or client-side
+ * recomputation is used. Press C or the Copy button to export every exact
+ * server-synchronized value plus display diagnostics.</p>
  */
 public final class NutritionScreenClientV35 extends Screen {
     private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0}};
@@ -24,19 +26,20 @@ public final class NutritionScreenClientV35 extends Screen {
     private static final int PANEL_MAX_HEIGHT=276;
     private static final int TEXT=0xFFF1F5EA;
     private static final int DETAIL=0xFFE9CF9A;
+    private static final int GOOD=0xFF91E2A5;
     private static final int BAR_BASE=0xFF43514B;
     private static final int BAR_FILL=0xFF95C5A0;
 
     private final int[] values;
     private final int water;
     private final int salt;
-    // The N key opens the actual nutrient list first. Hydration remains page 6.
     private int page=0;
-
     private int panelX;
     private int panelY;
     private int panelWidth;
     private int panelHeight;
+    private String feedback="";
+    private int feedbackTicks;
 
     private NutritionScreenClientV35(int[] snapshot,int water,int salt) {
         super(Component.translatable("message.gugugaga.v35_gui_title"));
@@ -50,7 +53,6 @@ public final class NutritionScreenClientV35 extends Screen {
         Minecraft.getInstance().setScreen(new NutritionScreenClientV35(scores,water,salt));
     }
 
-    /** Bounds are recomputed after GUI Scale / window changes. */
     private void updatePanelBounds() {
         panelWidth=Math.min(PANEL_MAX_WIDTH,Math.max(1,width-16));
         panelHeight=Math.min(PANEL_MAX_HEIGHT,Math.max(1,height-12));
@@ -62,15 +64,30 @@ public final class NutritionScreenClientV35 extends Screen {
     protected void init() {
         updatePanelBounds();
         int buttonY=panelY+panelHeight-27;
-        addRenderableWidget(Button.builder(Component.literal("<"),
-                b -> setPage(page-1))
-                .bounds(panelX+9,buttonY,44,20).build());
-        addRenderableWidget(Button.builder(Component.literal(">"),
-                b -> setPage(page+1))
-                .bounds(panelX+panelWidth-53,buttonY,44,20).build());
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"),
-                b -> onClose())
-                .bounds(width/2-38,buttonY,76,20).build());
+        int navWidth=34;
+        int copyWidth=54;
+        int doneWidth=54;
+        int gap=3;
+        int rowWidth=navWidth+copyWidth+doneWidth+navWidth+gap*3;
+        int x=panelX+(panelWidth-rowWidth)/2;
+        addRenderableWidget(Button.builder(Component.literal("<"),b->setPage(page-1))
+                .bounds(x,buttonY,navWidth,20).build());
+        x+=navWidth+gap;
+        addRenderableWidget(Button.builder(Component.literal("Copy"),b->copySnapshot())
+                .bounds(x,buttonY,copyWidth,20).build());
+        x+=copyWidth+gap;
+        addRenderableWidget(Button.builder(Component.literal("Done"),b->onClose())
+                .bounds(x,buttonY,doneWidth,20).build());
+        x+=doneWidth+gap;
+        addRenderableWidget(Button.builder(Component.literal(">"),b->setPage(page+1))
+                .bounds(x,buttonY,navWidth,20).build());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(feedbackTicks>0)feedbackTicks--;
+        if(feedbackTicks==0)feedback="";
     }
 
     private void setPage(int newPage) {
@@ -79,6 +96,10 @@ public final class NutritionScreenClientV35 extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode,int scanCode,int modifiers) {
+        if(keyCode==GLFW.GLFW_KEY_C) {
+            copySnapshot();
+            return true;
+        }
         if(keyCode==GLFW.GLFW_KEY_LEFT) {
             setPage(page-1);
             return true;
@@ -90,38 +111,54 @@ public final class NutritionScreenClientV35 extends Screen {
         return super.keyPressed(keyCode,scanCode,modifiers);
     }
 
+    private void copySnapshot() {
+        Minecraft minecraft=Minecraft.getInstance();
+        Window window=minecraft.getWindow();
+        StringBuilder out=new StringBuilder(4096);
+        out.append("AGRICULTURE NUTRITION SNAPSHOT\n");
+        out.append("Minecraft: ").append(SharedConstants.getCurrentVersion().getName()).append('\n');
+        out.append("Display framebuffer: ").append(window.getWidth()).append('x').append(window.getHeight()).append('\n');
+        out.append("GUI scale: ").append(String.format(Locale.ROOT,"%.3f",window.getGuiScale())).append('\n');
+        out.append("GUI scaled dimensions: ").append(window.getGuiScaledWidth()).append('x')
+                .append(window.getGuiScaledHeight()).append('\n');
+        out.append("Data source: server-synchronized snapshot; scores are abstract game points, not medical measurements.\n\n");
+        out.append("NUTRIENT SCORES\n");
+        for(int i=0;i<values.length;i++) {
+            String id=NutritionProfilesV35.NUTRIENTS[i];
+            String label=Component.translatable("nutrition.gugugaga."+id).getString();
+            out.append(String.format(Locale.ROOT,"%02d. %s [%s]: %d/100%n",i+1,label,id,values[i]));
+        }
+        out.append("\nWATER LEVEL: ").append(water).append("/100\n");
+        out.append("SODIUM BALANCE: ").append(salt).append("/100\n");
+        out.append("Displayed page: ").append(page+1).append('/').append(PAGES.length).append('\n');
+        minecraft.keyboardHandler.setClipboard(out.toString());
+        feedback="COPIED • 27 SCORES + WATER + SODIUM";
+        feedbackTicks=80;
+    }
+
     @Override
     public void render(GuiGraphics graphics,int mouseX,int mouseY,float partialTick) {
-        // Do not call renderBackground(): a world-blur pass plus foreign HUD
-        // layers can obscure the entire foreground on NeoForge 1.21.1.
-        // Native-pixel, integer-aligned fills and font rendering stay crisp.
-        graphics.fill(0,0,width,height,0xB0000000);
+        // Deliberately bypass Screen.renderBackground(): it may invoke the
+        // vanilla GUI blur post-process. Draw an opaque backdrop instead.
+        graphics.fill(0,0,width,height,0xFF080D0B);
         int x=panelX,y=panelY,w=panelWidth,h=panelHeight;
         graphics.fill(x,y,x+w,y+h,0xFF192621);
         graphics.fill(x,y,x+w,y+2,0xFFB8D7A3);
 
         drawCenteredFitted(graphics,title,y+9,w-18,TEXT);
-        Component category=Component.translatable("message.gugugaga.v35_page_"+page);
-        drawCenteredFitted(graphics,category,y+28,w-18,DETAIL);
+        Component category=feedbackTicks>0?Component.literal(feedback)
+                :Component.translatable("message.gugugaga.v35_page_"+page);
+        drawCenteredFitted(graphics,category,y+28,w-18,feedbackTicks>0?GOOD:DETAIL);
 
-        if(page==5) {
-            drawWaterSalt(graphics);
-        } else {
-            drawNutrients(graphics);
-        }
+        if(page==5)drawWaterSalt(graphics);
+        else drawNutrients(graphics);
 
-        // All footer positions stay within the visible panel, independent of
-        // GUI Scale. Navigation buttons are rendered afterwards by Screen.
         if(h<220) {
-            // Compact GUI: keep the content region tall enough for seven real
-            // readings. Page index moves to the header, not over the rows.
-            graphics.drawString(font,(page+1)+"/"+PAGES.length,
-                    x+w-38,y+9,DETAIL,false);
+            graphics.drawString(font,(page+1)+"/"+PAGES.length,x+w-38,y+9,DETAIL,false);
         } else {
             drawCenteredFitted(graphics,Component.literal((page+1)+" / "+PAGES.length),
                     y+h-53,w-18,DETAIL);
-            drawCenteredFitted(graphics,
-                    Component.translatable("message.gugugaga.v35_gui_note"),
+            drawCenteredFitted(graphics,Component.translatable("message.gugugaga.v35_gui_note"),
                     y+h-41,w-18,0xFFDCE5D9);
         }
         super.render(graphics,mouseX,mouseY,partialTick);
@@ -146,16 +183,12 @@ public final class NutritionScreenClientV35 extends Screen {
             int index=i-start;
             int yy=rowStart+index*rowHeight;
             int value=Math.max(0,Math.min(100,values[i]));
-            Component name=Component.translatable(
-                    "nutrition.gugugaga."+NutritionProfilesV35.NUTRIENTS[i]);
+            Component name=Component.translatable("nutrition.gugugaga."+NutritionProfilesV35.NUTRIENTS[i]);
             drawFitted(graphics,name,nameX,yy,nameWidth,TEXT);
             int barY=yy+1;
             graphics.fill(barX,barY,barX+barWidth,barY+9,BAR_BASE);
             graphics.fill(barX,barY,barX+(barWidth*value/100),barY+9,BAR_FILL);
-            // A separate high-contrast numeric readout must never be replaced
-            // by a bar alone, a blurred shader, or a hidden internal value.
-            graphics.drawString(font,Integer.toString(value),
-                    barX+barWidth+8,yy,TEXT,false);
+            graphics.drawString(font,Integer.toString(value),barX+barWidth+8,yy,TEXT,false);
         }
     }
 
@@ -172,15 +205,13 @@ public final class NutritionScreenClientV35 extends Screen {
     }
 
     private void drawVital(GuiGraphics graphics,int x,int y,int rowWidth,String id,int value) {
-        drawFitted(graphics,Component.translatable("nutrition.gugugaga."+id),
-                x,y,rowWidth,TEXT);
+        drawFitted(graphics,Component.translatable("nutrition.gugugaga."+id),x,y,rowWidth,TEXT);
         int barWidth=Math.max(30,rowWidth-78);
         graphics.fill(x,y+15,x+barWidth,y+27,BAR_BASE);
         graphics.fill(x,y+15,x+(barWidth*value/100),y+27,0xFF83B8D0);
         graphics.drawString(font,value+" / 100",x+barWidth+9,y+17,TEXT,false);
     }
 
-    /** Text is clipped to its own slot, not drawn over neighbouring values. */
     private void drawFitted(GuiGraphics graphics,Component text,int x,int y,int maxWidth,int color) {
         String value=text.getString();
         if(font.width(value)>maxWidth) {
