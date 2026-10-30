@@ -15,7 +15,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 /**
- * Full v3.5 game nutrition subsystem (retains this class name for v3.4
+ * Versioned nutrition progression subsystem (retains this class name for v3.4
  * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
  * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
  * Nutrition diversity scores are fictional gameplay progress, not physiology.
@@ -28,8 +28,6 @@ public final class NutritionV34 {
     private static final int BASE=45;
     private static final int MAX=100;
     private static final int V38_FLOOR=15;
-    private static final String LAST_DAY="v38_last_day";
-    private static final String LOW_DAYS="v38_low_days";
     private static final int PAGE_COUNT=5;
     private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}};
 
@@ -78,6 +76,7 @@ public final class NutritionV34 {
             int points=contribution[i];
             if(points>0) add(values,NutritionProfilesV35.NUTRIENTS[i],points);
         }
+        NutritionFeedbackV38.recoverAfterEating(values);
         // All eaten foods are counted once, only on the server. Inventory
         // possession, use-start and aborted eating never award nutrition.
         player.getPersistentData().put(ROOT,values);
@@ -101,51 +100,22 @@ public final class NutritionV34 {
                count(values,18,27,70)>=4;
     }
 
-    /** One bounded long-term gameplay strain rather than 27 simultaneous debuffs. */
-    private static boolean lowVariety(CompoundTag values) {
-        return values.getInt("carbohydrate")<30
-                && values.getInt("protein")<30
-                && count(values,5,18,30)<4;
-    }
-    private static void updateLongTermState(ServerPlayer player,CompoundTag values) {
-        long day=Math.floorDiv(player.level().getDayTime(),24000L);
-        if(!values.contains(LAST_DAY)) {
-            values.putLong(LAST_DAY,day);
-            values.putInt(LOW_DAYS,0);
-            return; // existing saved worlds have a grace period
-        }
-        long last=values.getLong(LAST_DAY);
-        if(day<=last) {
-            // /time set can go backwards; don't add artificial elapsed days.
-            if(day<last)values.putLong(LAST_DAY,day);
-            return;
-        }
-        int elapsed=(int)Math.min(3L,day-last);
-        values.putLong(LAST_DAY,day);
-        if(lowVariety(values))
-            values.putInt(LOW_DAYS,Math.min(3,values.getInt(LOW_DAYS)+elapsed));
-        else values.putInt(LOW_DAYS,0);
-    }
-
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
-        updateLongTermState(player,values);
-        // Existing positive food-diversity milestones remain unchanged.
-        if(varied(values)) player.addEffect(new MobEffectInstance(
+        NutritionFeedbackV38.advance(values,
+                Math.floorDiv(player.level().getDayTime(),24000L));
+        // Keep existing positive diversity milestones; the new group effects
+        // never replace vanilla water/salt penalties or double stack rewards.
+        boolean variedMeals=varied(values),advancedMeals=highlyVaried(values);
+        if(variedMeals) player.addEffect(new MobEffectInstance(
                 MobEffects.DIG_SPEED,240,0,true,false,true));
-        if(highlyVaried(values)) player.addEffect(new MobEffectInstance(
+        if(advancedMeals) player.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
-        // Long-term strain is mild, recoverable and does not damage the player.
-        // Existing hydration/salt fatigue uses the same effect at the same
-        // amplifier rather than stacking duplicate stronger penalties.
-        if(values.getInt(LOW_DAYS)>=3 && lowVariety(values))
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.DIG_SLOWDOWN,220,0,true,false,true));
-        else if(!lowVariety(values))values.putInt(LOW_DAYS,0);
+        NutritionFeedbackV38.apply(player,values,variedMeals||advancedMeals);
         // Slow game-score aging preserves existing save and score IDs.
         if(player.tickCount%24000==0) {
             for(String id:NutritionProfilesV35.NUTRIENTS)
@@ -173,6 +143,11 @@ public final class NutritionV34 {
         for(int i=0;i<result.length;i++)
             result[i]=clamp(values.getInt(NutritionProfilesV35.NUTRIENTS[i]));
         return result;
+    }
+
+    /** Server-owned group scores, status flags and streaks for the feedback page. */
+    public static int[] feedbackSnapshot(ServerPlayer player) {
+        return NutritionFeedbackV38.snapshot(record(player));
     }
 
     public static void show(ServerPlayer player) {

@@ -17,27 +17,31 @@ import org.lwjgl.glfw.GLFW;
  * The values are fictional 0..100 game scores, never clinical nutrition data.
  */
 public final class NutritionScreenClientV35 extends Screen {
-    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0}};
+    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0}};
     private static final int ROW_HEIGHT=23;
     private final int[] values;
     private final int water;
     private final int salt;
+    private final int[] feedback;
     private int page=5;
     private int scroll=0;
     private Button scrollUp;
     private Button scrollDown;
 
-    private NutritionScreenClientV35(int[] snapshot,int water,int salt) {
+    private NutritionScreenClientV35(int[] snapshot,int water,int salt,int[] feedback) {
         super(Component.translatable("message.gugugaga.v35_gui_title"));
         this.values=Arrays.copyOf(snapshot,27);
         this.water=clamp(water);
         this.salt=clamp(salt);
+        this.feedback=Arrays.copyOf(feedback,NutritionFeedbackV38.SNAPSHOT_SIZE);
     }
     private static int clamp(int value) {return Math.max(0,Math.min(100,value));}
 
-    public static void open(int[] scores,int water,int salt) {
-        if(scores==null || scores.length!=27)return;
-        Minecraft.getInstance().setScreen(new NutritionScreenClientV35(scores,water,salt));
+    public static void open(int[] scores,int water,int salt,int[] feedback) {
+        if(scores==null || scores.length!=27 || feedback==null
+                || feedback.length!=NutritionFeedbackV38.SNAPSHOT_SIZE)return;
+        Minecraft.getInstance().setScreen(new NutritionScreenClientV35(
+                scores,water,salt,feedback));
     }
 
     private int panelWidth() {return Math.max(120,Math.min(440,width-12));}
@@ -50,7 +54,7 @@ public final class NutritionScreenClientV35 extends Screen {
         return Math.max(1,(contentBottom()-contentTop()-3)/ROW_HEIGHT);
     }
     private int rowCount() {
-        return page==5?3:PAGES[page][1]-PAGES[page][0];
+        return page==6?NutritionFeedbackV38.GROUP_COUNT:page==5?3:PAGES[page][1]-PAGES[page][0];
     }
     private int maxScroll() {return Math.max(0,rowCount()-visibleRows());}
     private void setScroll(int target) {
@@ -92,6 +96,7 @@ public final class NutritionScreenClientV35 extends Screen {
     }
 
     private Component rowLabel(int row) {
+        if(page==6)return Component.translatable("feedback.gugugaga.group_"+row);
         if(page==5) {
             if(row==0)return Component.translatable("nutrition.gugugaga.water_level");
             if(row==1)return Component.translatable("nutrition.gugugaga.sodium_balance");
@@ -107,6 +112,7 @@ public final class NutritionScreenClientV35 extends Screen {
                 ?"message.gugugaga.v37_salt_high":"message.gugugaga.v37_balanced");
     }
     private int rowValue(int row) {
+        if(page==6)return clamp(feedback[row]);
         if(page==5)return row==0?water:salt;
         return clamp(values[PAGES[page][0]+row]);
     }
@@ -160,20 +166,35 @@ public final class NutritionScreenClientV35 extends Screen {
                 int barRight=valueRight-numericWidth-11;
                 int barWidth=Math.max(23,Math.min(110,(w-45)/3));
                 int barLeft=barRight-barWidth;
-                int labelWidth=Math.max(18,barLeft-labelX-9);
+                int state=page==6?feedback[NutritionFeedbackV38.GROUP_COUNT+row]:0;
+                int textColor=page!=6?0xFFFFFFFF:state==-2?0xFFFFB5A9
+                        :state==-1?0xFFFFDEA6:state==1?0xFFBEF3BA:0xFFFFFFFF;
+                int labelWidth=Math.max(18,barLeft-labelX-(page==6?24:9));
                 graphics.drawString(font,fitted(label,labelWidth),labelX,line+5,
-                        0xFFFFFFFF,false);
+                        textColor,false);
+                if(page==6) {
+                    String indicator=state==-2?"!!":state==-1?"!":state==1?"+":"=";
+                    graphics.drawString(font,indicator,barLeft-18,line+5,textColor,false);
+                }
                 graphics.fill(barLeft,line+7,barRight,line+15,0xFF182923);
                 int fillWidth=barWidth*value/100;
                 if(fillWidth>0)graphics.fill(barLeft,line+7,barLeft+fillWidth,line+15,
-                        page==5?0xFF80C6E9:0xFF9ED89A);
+                        page==5?0xFF80C6E9:page==6?textColor:0xFF9ED89A);
                 graphics.drawString(font,numeric,valueRight-numericWidth,line+5,
                         0xFFFFF2D8,false);
-                if(mouseX>=x+9 && mouseX<x+w-9 && mouseY>=line && mouseY<line+ROW_HEIGHT)
-                    hover=Component.literal(label.getString()+" : "+numeric);
+                if(mouseX>=x+9 && mouseX<x+w-9 && mouseY>=line && mouseY<line+ROW_HEIGHT) {
+                    if(page==6) {
+                        int stage=feedback[NutritionFeedbackV38.GROUP_COUNT+row];
+                        int days=feedback[NutritionFeedbackV38.GROUP_COUNT*2+row];
+                        hover=Component.translatable("feedback.gugugaga.tooltip",
+                                label,numeric,Component.translatable(
+                                        "feedback.gugugaga.stage_"+(stage+2)),days);
+                    } else hover=Component.literal(label.getString()+" : "+numeric);
+                }
             }
         }
-        Component note=Component.translatable("message.gugugaga.v35_gui_note");
+        Component note=Component.translatable(page==6
+                ?"feedback.gugugaga.note":"message.gugugaga.v35_gui_note");
         centered(graphics,note,x+w/2,y+h-39,w-20,0xFFE2E6D7);
         syncScrollButtons();
         super.render(graphics,mouseX,mouseY,partialTick);

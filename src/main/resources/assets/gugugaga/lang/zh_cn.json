@@ -1129,5 +1129,17 @@
   "message.gugugaga.v38_pan_stage_0": "空盐盘：加入采集的含盐水样。",
   "message.gugugaga.v38_pan_stage_1": "盐水正在蒸发，需要日照或底部热源。",
   "message.gugugaga.v38_pan_stage_2": "盐水已浓缩，正在结晶。",
-  "message.gugugaga.v38_pan_stage_3": "海盐已结晶，互动即可收集。"
+  "message.gugugaga.v38_pan_stage_3": "海盐已结晶，互动即可收集。",
+  "message.gugugaga.v35_page_6": "营养反馈总览",
+  "feedback.gugugaga.group_0": "能量与脂类",
+  "feedback.gugugaga.group_1": "蛋白与维持",
+  "feedback.gugugaga.group_2": "B 族维生素",
+  "feedback.gugugaga.group_3": "植物性食物多样性",
+  "feedback.gugugaga.group_4": "矿物质支持",
+  "feedback.gugugaga.stage_0": "持续偏低：3 天以上后仅有一种轻度游戏负面效果",
+  "feedback.gugugaga.stage_1": "建议改善食物多样性，目前无惩罚",
+  "feedback.gugugaga.stage_2": "正常游戏状态",
+  "feedback.gugugaga.stage_3": "可触发正向专注奖励（不与原有食物多样性奖励叠加）",
+  "feedback.gugugaga.tooltip": "%s：%s。%s。连续偏低游戏天数：%s/3。",
+  "feedback.gugugaga.note": "仅为游戏评分；悬停查看状态与恢复情况"
 }
