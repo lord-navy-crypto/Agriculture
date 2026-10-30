@@ -85,14 +85,9 @@ public final class NutritionV34 {
         if(player.isCreative()||player.isSpectator())return;
         NutritionPhysiologyV39.advance(values,
                 Math.floorDiv(player.level().getDayTime(),24000L));
-        // Keep existing positive diversity milestones; the new group effects
-        // never replace vanilla water/salt penalties or double stack rewards.
-        boolean variedMeals=varied(values),advancedMeals=highlyVaried(values);
-        if(variedMeals) player.addEffect(new MobEffectInstance(
-                MobEffects.DIG_SPEED,240,0,true,false,true));
-        if(advancedMeals) player.addEffect(new MobEffectInstance(
-                MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
-        NutritionFeedbackV38.apply(player,values,variedMeals||advancedMeals);
+        // Each of the 27 nutrition indicators has an explicit positive and
+        // low-reserve potion mapping. Resolve overlaps in the effect matrix.
+        NutritionFeedbackV38.apply(player,values,false);
         player.getPersistentData().put(ROOT,values);
     }
 
