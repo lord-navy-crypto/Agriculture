@@ -1139,7 +1139,7 @@
   "feedback.gugugaga.stage_0": "长期游戏储备偏低（不等于医学诊断）",
   "feedback.gugugaga.stage_1": "游戏储备偏低，建议改善食物多样性",
   "feedback.gugugaga.stage_2": "游戏储备维持正常",
-  "feedback.gugugaga.stage_3": "游戏储备维持正常",
+  "feedback.gugugaga.stage_3": "正面效果已达触发条件",
   "feedback.gugugaga.tooltip": "%s %s — %s。最长持续偏低 %s 个游戏日",
   "feedback.gugugaga.note": "各营养素独立储备，仅为游戏模拟，并非诊断",
   "feedback.gugugaga.role.carbohydrate": "提供食物能量来源",
@@ -1169,5 +1169,10 @@
   "feedback.gugugaga.role.selenium": "支持硒蛋白及甲状腺相关酶功能",
   "feedback.gugugaga.role.phosphorus": "参与 ATP、细胞结构及骨骼矿物质构成",
   "feedback.gugugaga.role.sodium": "由独立盐分与水分平衡系统管理",
-  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s。%s。持续偏低 %s 天；游戏观察窗口 %s 天"
+  "feedback.gugugaga.nutrient_tooltip": "%s %s — %s。%s。持续偏低 %s 天；游戏观察窗口 %s 天。%s",
+  "message.gugugaga.v35_page_7": "27 项营养素药水效果表",
+  "message.gugugaga.v310_effects_active": "营养反馈：27 项指标均已配置正面与储备不足效果，请打开药水效果页查看。",
+  "feedback.gugugaga.effect_pair": "正面效果：%s | 储备不足效果：%s",
+  "feedback.gugugaga.water_salt_tooltip": "%s %s。%s",
+  "feedback.gugugaga.effects_note": "27 项指标均有正面/负面效果映射。最多同时生效五种增益和四种减益；高盐状态也会触发轻度警示。水盐惩罚优先。"
 }

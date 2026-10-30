@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.10.0-rc.1 — Complete positive/negative potion mapping for all 27 indicators
+
+- Added a 27-entry positive/negative potion-effect matrix. Every macronutrient, fiber, vitamin, mineral, hydration and sodium indicator has its own mapped pair.
+- Added an eighth Nutrition GUI page listing all 27 indicators and showing both effect names on hover; pages 1–5 and the water/salt page also show the pair in the tooltip.
+- Adequate reserves can activate a short positive effect; low reserve activates a brief negative warning; persistent low reserve activates a longer mild effect. No poison, wither, damage, or forced health loss.
+- Cap simultaneous effects at five distinct buffs and four distinct debuffs; strongest positive reserves and most severe/longest deficits win. Every nutrient still has its own status and pair in the GUI.
+- Water and sodium remain linked to WaterSaltV37; its penalties take priority and are not duplicated. Removed obsolete aggregate meal-variety potion rewards.
+- Added bilingual labels, mapping documentation, and CI coverage for all 27 positive/negative pairs, thresholds, priority, page navigation, and locale strings.
+
+
 ## v3.9.0-rc.1 — Rework 27 nutrient scores into evidence-informed, nonclinical reserves
 
 - Removed the v3.8 fictitious five-group average deficiency trigger and magical individual nutrient bonuses. Five groups now only summarize the **individual** states; no individual low reserve can be averaged away.

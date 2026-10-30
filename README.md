@@ -36,16 +36,13 @@ The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated a
 - Nutrition was originally represented by 27 game scores. The newer v3.9 individual-reserve design below supersedes v3.8's group-average penalty logic.
 - **GUI troubleshooting:** In Minecraft Options → Accessibility Settings, set Menu Background Blur to **0** if a modded GUI looks blurry. v3.7.0-rc.2 responsive nutrition text remains in place.
 
-## v3.9.0-rc.1: individually modeled nutrient reserves (research-informed, nonclinical)
+## v3.10.0-rc.1: complete 27-indicator potion feedback matrix
 
-- The established **27 indicators remain**. The **25 food-related reserves** now receive independent food inputs, daily game consumption, replenishment, and sustained-shortage windows. **Water and sodium** continue to use the preexisting v3.7 water/salt subsystem, preventing duplicate dehydration or sodium effects.
-- **B1 declines faster than stored B12**; long-stored A, D, E, calcium and iron follow different game kinetics. These times are deliberately compressed and **not** real biological half-lives, medical symptoms or dose thresholds.
-- Food is recorded upon completed consumption, then contributes to reserve recovery on the following Minecraft day. Eating one food no longer instantly restores a depleted tissue-like score.
-- Feedback is assessed **per nutrient**; a high score in one nutrient cannot conceal persistent low iron or B12 in a group average. N-key pages 1–5 give 27 individually localized physiological roles and long-term status on hover; page 7 retains a high-level overview.
-- Most shortages only inform the player. A few prolonged functional limitations receive at most one short, mild game effect. No disease diagnoses, damage, toxic vitamin penalties, or magical night-vision/resistance bonuses. Existing older **food-variety perks** remain a separately identified game reward.
-- Sodium-rich foods are not automatically iodine-rich: sea salt made in the evaporation pan is not iodized salt. The mod does not pretend its 403 food profiles are laboratory-verified nutrient masses.
-- Current limitations: no measured mg/g, bioavailability, individual age or illness assumptions, actual time-based clinical deficiency prediction, or medical recommendations. See [physiology design and evidence](docs/NUTRITION_PHYSIOLOGY_V3_9.md).
-- GUI blur: Options → Accessibility → Menu Background Blur → 0 if required.
+- **All 27 indicators** now have an explicit positive-effect and low-reserve-effect mapping, including the separate hydration and sodium meters. The in-game effect matrix is the eighth Nutrition page; hover each nutrient to see its assigned pair and status.
+- Positive effects activate when a nutrient reserve reaches the game's adequate threshold; early shortfall applies a brief warning debuff, and persistent low reserve applies a longer mild debuff. These are Minecraft gameplay analogies, not medical predictions.
+- To prevent 27 indicators from turning into an uncontrolled potion stack, at most **five distinct positive** and **four distinct negative** effects are active at once. Strongest reserves and most persistent deficits are prioritized. Every indicator still has its own visible pair and status.
+- Water/sodium effects remain owned by the established v3.7 balance system and take priority over nutrient penalties. The old aggregate food-variety Haste/Speed bonuses have been replaced by per-indicator effect eligibility.
+- Effect mapping rationale and limitations: [Nutrition effect matrix v3.10](docs/NUTRITION_EFFECT_MATRIX_V3_10.md). Real nutrient functions are based on NIH/WHO sources; the potion mappings are explicitly fictional.
 
 ## Build and validation
 

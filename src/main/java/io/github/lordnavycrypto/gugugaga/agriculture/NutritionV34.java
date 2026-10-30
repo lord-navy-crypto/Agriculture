@@ -5,8 +5,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,7 +16,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
  * Versioned nutrition progression subsystem (retains this class name for v3.4
  * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
  * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
- * Legacy values become abstract reserve indicators in the v3.9 model.
+ * Legacy values become abstract reserve indicators in the v3.10 model.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID)
 public final class NutritionV34 {
@@ -79,24 +77,6 @@ public final class NutritionV34 {
         player.getPersistentData().put(ROOT,values);
     }
 
-    private static int count(CompoundTag values,int from,int to,int threshold) {
-        int result=0;
-        for(int i=from;i<to;i++) {
-            if(values.getInt(NutritionProfilesV35.NUTRIENTS[i])>=threshold)result++;
-        }
-        return result;
-    }
-    private static boolean varied(CompoundTag values) {
-        return count(values,0,5,55)>=3 &&
-               count(values,5,18,55)>=4 &&
-               count(values,18,27,55)>=2;
-    }
-    private static boolean highlyVaried(CompoundTag values) {
-        return count(values,0,5,70)>=4 &&
-               count(values,5,18,70)>=6 &&
-               count(values,18,27,70)>=4;
-    }
-
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -105,14 +85,9 @@ public final class NutritionV34 {
         if(player.isCreative()||player.isSpectator())return;
         NutritionPhysiologyV39.advance(values,
                 Math.floorDiv(player.level().getDayTime(),24000L));
-        // Keep existing positive diversity milestones; the new group effects
-        // never replace vanilla water/salt penalties or double stack rewards.
-        boolean variedMeals=varied(values),advancedMeals=highlyVaried(values);
-        if(variedMeals) player.addEffect(new MobEffectInstance(
-                MobEffects.DIG_SPEED,240,0,true,false,true));
-        if(advancedMeals) player.addEffect(new MobEffectInstance(
-                MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
-        NutritionFeedbackV38.apply(player,values,variedMeals||advancedMeals);
+        // Each of the 27 nutrition indicators has an explicit positive and
+        // low-reserve potion mapping. Resolve overlaps in the effect matrix.
+        NutritionFeedbackV38.apply(player,values,false);
         player.getPersistentData().put(ROOT,values);
     }
 
@@ -161,10 +136,7 @@ public final class NutritionV34 {
                     "message.gugugaga.v34_nutrition_row",
                     Component.translatable("nutrition.gugugaga."+nutrient),bar,score));
         }
-        String bonus=highlyVaried(values)?"message.gugugaga.v35_bonus_advanced":
-                varied(values)?"message.gugugaga.v35_bonus_varied":
-                "message.gugugaga.v35_bonus_explore";
-        player.sendSystemMessage(Component.translatable(bonus));
+        player.sendSystemMessage(Component.translatable("message.gugugaga.v310_effects_active"));
         player.sendSystemMessage(Component.translatable("message.gugugaga.v35_next_page"));
         values.putInt("page",(page+1)%PAGE_COUNT);
         player.getPersistentData().put(ROOT,values);

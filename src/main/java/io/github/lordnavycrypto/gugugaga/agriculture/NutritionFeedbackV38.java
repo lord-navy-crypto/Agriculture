@@ -2,27 +2,18 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 
 /**
- * An explanatory group view over 25 independently tracked nutrient stores.
- * This DOES NOT pool iron with calcium, B1 with B12, or average a weak nutrient
- * away: individual states and time windows determine persistent warnings.
- *
- * Water and sodium are linked directly to WaterSaltV37, which already owns
- * the short-term water/salt penalties.
+ * Explanatory group view over 25 independently tracked nutrient stores.
+ * Individual nutrient states are never averaged away. Water and sodium remain
+ * owned by the independent v3.7 water/salt system.
  */
 public final class NutritionFeedbackV38 {
     private NutritionFeedbackV38() {}
     public static final int GROUP_COUNT=5;
-    // Five aggregate scores, states, days; then individual 27 states, days.
     public static final int SNAPSHOT_SIZE=GROUP_COUNT*3+27*2;
     public static final int NUTRIENT_STATES_OFFSET=GROUP_COUNT*3;
     public static final int NUTRIENT_DAYS_OFFSET=NUTRIENT_STATES_OFFSET+27;
-
-    // Covers 25 modeled nutrient stores exactly once, excluding 4 & 26.
-    // Each group is only a navigation/category summary. No group penalties.
     private static final int[][] GROUPS={
         {0,1,2,6,7,8,9,10,11},
         {3,5,14,16,17,22,24},
@@ -63,26 +54,8 @@ public final class NutritionFeedbackV38 {
         }
         return out;
     }
-    /**
-     * No magical night-vision or resistance reward. Only a few plausible
-     * functional limitations have a very mild, explicitly fictional
-     * Minecraft analogue; other shortages are visible in the GUI only.
-     * Water/salt effects have priority and no effects stack.
-     */
+    /** Compatibility signature; legacyVaried is deliberately ignored. */
     public static void apply(ServerPlayer player,CompoundTag tag,boolean legacyVaried){
-        if(WaterSaltV37.water(player)<=15 || WaterSaltV37.salt(player)<=8)return;
-        // Specific persistent shortages, never combined across nutrients.
-        // Iron, folate, B12 or thiamin: capacity/energy approximation.
-        if(NutritionPhysiologyV39.stage(tag,19)==-2
-                ||NutritionPhysiologyV39.stage(tag,12)==-2
-                ||NutritionPhysiologyV39.stage(tag,13)==-2
-                ||NutritionPhysiologyV39.stage(tag,6)==-2){
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.DIG_SLOWDOWN,220,0,true,false,true));
-        }else if(NutritionPhysiologyV39.stage(tag,0)==-2
-                ||NutritionPhysiologyV39.stage(tag,1)==-2){
-            player.addEffect(new MobEffectInstance(
-                    MobEffects.MOVEMENT_SLOWDOWN,220,0,true,false,true));
-        }
+        NutritionEffectsV310.apply(player,tag);
     }
 }

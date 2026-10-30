@@ -8,6 +8,7 @@ ART=ROOT/"src/main/resources/assets/gugugaga"
 def java(n):return (SRC/(n+".java")).read_text("utf-8")
 def main():
     feedback=java("NutritionFeedbackV38")
+    effects=java("NutritionEffectsV310")
     physiology=java("NutritionPhysiologyV39")
     screen=java("NutritionScreenClientV35")
     nutrition=java("NutritionV34")
@@ -18,8 +19,8 @@ def main():
     assert "NUTRIENT_DAYS_OFFSET" in feedback
     assert "NutritionPhysiologyV39.stage(data,i)" in feedback
     assert "NutritionPhysiologyV39.shortfallDays(data,i)" in feedback
-    assert "WaterSaltV37.water(player)<=15" in feedback
-    assert "WaterSaltV37.salt(player)<=8" in feedback
+    assert "if(water<=15 || sodium<=8)return" in effects
+    assert "WaterSaltV37.water(player)" in effects and "WaterSaltV37.salt(player)" in effects
     assert "MobEffects.NIGHT_VISION" not in feedback
     assert "MobEffects.DAMAGE_RESISTANCE" not in feedback
     assert "NutritionPhysiologyV39.advance" in nutrition
@@ -51,5 +52,5 @@ def main():
             for name in ("NutritionFeedbackV38","NutritionPhysiologyV39",
                     "NutritionNetworkV35","NutritionV34","NutritionScreenClientV35"):
                 assert "io/github/lordnavycrypto/gugugaga/agriculture/"+name+".class" in jar.namelist()
-    print("NUTRITION_FEEDBACK_V38_COMPAT_PASS: established 7-page GUI and packet, 27 individual statuses")
+    print("NUTRITION_FEEDBACK_V38_COMPAT_PASS: established 8-page GUI and packet, 27 individual statuses")
 if __name__=="__main__":main()
