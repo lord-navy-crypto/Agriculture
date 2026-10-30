@@ -173,7 +173,7 @@ public final class NutritionScreenClientV35 extends Screen {
                         nutrientIndex>=0?feedback[NutritionFeedbackV38.NUTRIENT_STATES_OFFSET+nutrientIndex]:0;
                 int textColor=state==-2?0xFFFFB5A9
                         :state==-1?0xFFFFDEA6:0xFFFFFFFF;
-                int labelWidth=Math.max(18,barLeft-labelX-(page==6?24:9));
+                int labelWidth=Math.max(18,barLeft-labelX-(page==6 || page==7?24:9));
                 graphics.drawString(font,fitted(label,labelWidth),labelX,line+5,
                         textColor,false);
                 if(page==6 || page==7) {
