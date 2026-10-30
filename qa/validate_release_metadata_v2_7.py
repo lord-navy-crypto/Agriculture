@@ -8,7 +8,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "3.8.0-rc.2"
+VERSION = "3.9.0-rc.1"
 build_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "build/libs"
 props = (ROOT / "gradle.properties").read_text(encoding="utf-8")
 template = (ROOT / "src/main/templates/META-INF/neoforge.mods.toml").read_text(encoding="utf-8")
