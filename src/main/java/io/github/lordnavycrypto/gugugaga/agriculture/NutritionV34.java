@@ -18,7 +18,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
  * Full v3.5 game nutrition subsystem (retains this class name for v3.4
  * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
  * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
- * No deficiency penalties, hunger loss, damage or negative body metrics exist.
+ * Nutrition diversity scores are fictional gameplay progress, not physiology.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID)
 public final class NutritionV34 {
@@ -27,6 +27,9 @@ public final class NutritionV34 {
     private static final String LEGACY="gugugaga_nutrition_v34";
     private static final int BASE=45;
     private static final int MAX=100;
+    private static final int V38_FLOOR=15;
+    private static final String LAST_DAY="v38_last_day";
+    private static final String LOW_DAYS="v38_low_days";
     private static final int PAGE_COUNT=5;
     private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}};
 
@@ -98,21 +101,55 @@ public final class NutritionV34 {
                count(values,18,27,70)>=4;
     }
 
+    /** One bounded long-term gameplay strain rather than 27 simultaneous debuffs. */
+    private static boolean lowVariety(CompoundTag values) {
+        return values.getInt("carbohydrate")<30
+                && values.getInt("protein")<30
+                && count(values,5,18,30)<4;
+    }
+    private static void updateLongTermState(ServerPlayer player,CompoundTag values) {
+        long day=Math.floorDiv(player.level().getDayTime(),24000L);
+        if(!values.contains(LAST_DAY)) {
+            values.putLong(LAST_DAY,day);
+            values.putInt(LOW_DAYS,0);
+            return; // existing saved worlds have a grace period
+        }
+        long last=values.getLong(LAST_DAY);
+        if(day<=last) {
+            // /time set can go backwards; don't add artificial elapsed days.
+            if(day<last)values.putLong(LAST_DAY,day);
+            return;
+        }
+        int elapsed=(int)Math.min(3L,day-last);
+        values.putLong(LAST_DAY,day);
+        if(lowVariety(values))
+            values.putInt(LOW_DAYS,Math.min(3,values.getInt(LOW_DAYS)+elapsed));
+        else values.putInt(LOW_DAYS,0);
+    }
+
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
-        // Positive achievements only, without nutritional penalties.
+        if(player.isCreative()||player.isSpectator())return;
+        updateLongTermState(player,values);
+        // Existing positive food-diversity milestones remain unchanged.
         if(varied(values)) player.addEffect(new MobEffectInstance(
                 MobEffects.DIG_SPEED,240,0,true,false,true));
         if(highlyVaried(values)) player.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SPEED,240,0,true,false,true));
-        // Gentle game-score aging maintains progression without hunger,
-        // damage, starvation, negative potion effects or food restrictions.
+        // Long-term strain is mild, recoverable and does not damage the player.
+        // Existing hydration/salt fatigue uses the same effect at the same
+        // amplifier rather than stacking duplicate stronger penalties.
+        if(values.getInt(LOW_DAYS)>=3 && lowVariety(values))
+            player.addEffect(new MobEffectInstance(
+                    MobEffects.DIG_SLOWDOWN,220,0,true,false,true));
+        else if(!lowVariety(values))values.putInt(LOW_DAYS,0);
+        // Slow game-score aging preserves existing save and score IDs.
         if(player.tickCount%24000==0) {
             for(String id:NutritionProfilesV35.NUTRIENTS)
-                values.putInt(id,Math.max(40,values.getInt(id)-1));
+                values.putInt(id,Math.max(V38_FLOOR,values.getInt(id)-1));
             player.getPersistentData().put(ROOT,values);
         }
     }

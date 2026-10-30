@@ -1118,5 +1118,16 @@
   "message.gugugaga.v37_salt_low": "游戏盐分平衡偏低：可选择风味料理。",
   "message.gugugaga.v37_salt_high": "游戏盐分平衡偏高：请注意补充饮水。",
   "message.gugugaga.v37_balanced": "水分与盐分状态平稳。",
-  "message.gugugaga.v35_page_5": "水分与盐分平衡"
+  "message.gugugaga.v35_page_5": "水分与盐分平衡",
+  "item.gugugaga.field_sampling_bucket": "野外采样水桶",
+  "item.gugugaga.sampled_water_bucket": "采集的水样桶",
+  "block.gugugaga.salt_evaporation_pan": "盐田蒸发盘",
+  "tooltip.gugugaga.v38_water_salinity": "来源盐度：%s‰（游戏估算）",
+  "tooltip.gugugaga.v38_water_volume": "水样容量：%s mB",
+  "tooltip.gugugaga.v38_not_drinkable": "仅供加工，不能直接饮用。",
+  "message.gugugaga.v38_pan_needs_saltwater": "需要半咸水或海水水样才能制盐。",
+  "message.gugugaga.v38_pan_stage_0": "空盐盘：加入采集的含盐水样。",
+  "message.gugugaga.v38_pan_stage_1": "盐水正在蒸发，需要日照或底部热源。",
+  "message.gugugaga.v38_pan_stage_2": "盐水已浓缩，正在结晶。",
+  "message.gugugaga.v38_pan_stage_3": "海盐已结晶，互动即可收集。"
 }

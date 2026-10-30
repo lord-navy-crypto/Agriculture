@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.8.0-rc.1 — Field water ecology, solar salt pan and balanced nutrition feedback
+
+- Introduce biome-authored 1000 mB field-water samples with persistent salinity data on a new reusable bucket. Keep vanilla water, buckets and drinking flasks unmodified.
+- Add Salt Evaporation Pan with brackish/ocean intake, scheduled solar or heated evaporation, seasonal variation, and one existing sea-salt output per consumed sample.
+- Give the 27 existing fictional food-diversity scores long-term recoverable negative feedback (one non-stacking mining-fatigue effect after three low-diversity days) while preserving existing bonuses, water/salt mechanics, save IDs and GUI.
+- Add bilingual user-facing labels, vanilla-texture models, recipes, state rendering and automated checks. Client rendering and balancing still require manual testing.
+- Reference context: NOAA sea salinity https://www.noaa.gov/jetstream/ocean/sea-water ; NeoForge data components https://docs.neoforged.net/docs/1.21.1/items/datacomponents/ .
+
+
 ## v3.7.0-rc.2 — Nutrition UI readability hotfix
 
 - Render all 27 nutrition scores plus water and salt using native-size, high-contrast Minecraft text. Replace overlapping fixed-position rows with a viewport-aware, scrollable list; every metric displays an explicit score out of 100.

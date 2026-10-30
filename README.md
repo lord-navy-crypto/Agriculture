@@ -2,7 +2,7 @@
 
 A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.7 hydration & electrolyte survival release candidate)
+## Current content (v3.8 water ecology & nutrition survival release candidate)
 
 - **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
 - Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
@@ -27,6 +27,14 @@ The base mod uses standard Minecraft PNG and JSON resources and **does not requi
 3. Without Fusion, the advanced pack is never registered, so all original vanilla-compatible models and textures are used.
 
 The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated artifact for legacy/manual testing, **not required** for regular installation. Do **not** enable that standalone ZIP at the same time as the automatically enabled built-in pack. Fusion itself is third-party, remains optional and is never redistributed. This is not a claim of completed in-game visual acceptance; see Issue #61.
+
+## v3.8 field water sampling and solar salt production
+
+- The **Field Sampling Bucket** is a new independent tool, crafted from an iron bucket and glass bottle. Right-click a water source to collect 1000 mB of a non-drinkable, tagged sample. The collected item records source biome and approximate game salinity; ordinary vanilla buckets, vanilla water and the existing v3.7 drinking flask stay unchanged.
+- Normal freshwater samples are 0 ppt, beach samples 12 ppt, and ocean samples approximately 33–37 ppt. These are game classifications, not measurements. For now, only samples at or above 5 ppt can be evaporated for salt.
+- Fill a **Salt Evaporation Pan** with a brackish/saltwater sample. It advances through brine, concentration and crystals using scheduled ticks, daylight and dry weather. A lit campfire or magma block below offers a faster heated route. Retrieve one existing `sea_salt` per sample batch. The sample is consumed and the sampling bucket returned. No new fluids or automatic duplicated outputs.
+- The 27 existing food diversity scores now gradually age down to 15 rather than 40. Prolonged low diversity across the energy, protein and vitamin groups gives one mild mining-fatigue status, after a three-game-day grace period; eating diverse foods can reverse it. This is purely fictional game balance and **not** a medical model.
+- **GUI troubleshooting:** In Minecraft Options → Accessibility Settings, set Menu Background Blur to **0** if a modded GUI looks blurry. v3.7.0-rc.2 responsive nutrition text remains in place.
 
 ## Build and validation
 
