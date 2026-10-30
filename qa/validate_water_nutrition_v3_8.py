@@ -46,6 +46,7 @@ def main():
     assert "level.isRainingAt" in pan and "level.canSeeSky" in pan
     assert "CampfireBlock.LIT" in pan
     assert "LunarSeasonsV36.habitat" in pan
+    assert "LunarSeasonsV36.localSeason" in pan and "Season.WINTER" in pan
     assert "V38_FLOOR=15" in nutrition
     assert "LOW_DAYS" in nutrition and "Math.min(3L,day-last)" in nutrition
     assert "lowVariety(values)" in nutrition
