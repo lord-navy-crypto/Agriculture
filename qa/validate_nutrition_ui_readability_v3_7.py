@@ -24,6 +24,14 @@ assert "Integer.toString(value)" in screen, "always show exact server numeric sc
 assert "drawVital(graphics" in screen and 'value+" / 100"' in screen
 assert "GLFW.GLFW_KEY_LEFT" in screen and "GLFW.GLFW_KEY_RIGHT" in screen
 assert "PAGES.length" in screen
+assert 'Button.builder(Component.literal("Copy"),b->copySnapshot())' in screen
+assert "GLFW.GLFW_KEY_C" in screen and "private void copySnapshot()" in screen
+assert "keyboardHandler.setClipboard(out.toString())" in screen
+assert "Display framebuffer:" in screen and "GUI scaled dimensions:" in screen
+assert "NutritionProfilesV35.NUTRIENTS[i]" in screen
+assert "renderBackground(graphics" not in screen
+assert "graphics.fill(0,0,width,height,0xFF080D0B)" in screen
+assert "graphics.pose().scale(" not in screen
 assert "ScreenEvent.Init.Post" in inventory
 assert "Math.min(screen.width-74" in inventory, "inventory button must stay visible"
 assert "minecraft.font.plainSubstrByWidth" in hud
