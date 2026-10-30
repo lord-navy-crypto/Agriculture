@@ -23,6 +23,7 @@ def simulate(score,daily,intake,loss,target,replenish):
 def main():
     phys=source("NutritionPhysiologyV39")
     feedback=source("NutritionFeedbackV38")
+    effects=source("NutritionEffectsV310")
     nutrition=source("NutritionV34")
     screen=source("NutritionScreenClientV35")
     wire=source("NutritionNetworkV35")
@@ -65,8 +66,8 @@ def main():
     assert "SNAPSHOT_SIZE=GROUP_COUNT*3+27*2" in feedback
     assert "NutritionPhysiologyV39.stage(data,i)" in feedback
     assert "NutritionPhysiologyV39.shortfallDays(data,i)" in feedback
-    assert "WaterSaltV37.water(player)<=15" in feedback
-    assert "WaterSaltV37.salt(player)<=8" in feedback
+    assert "if(water<=15 || sodium<=8)return" in effects
+    assert "WaterSaltV37.water(player)" in effects and "WaterSaltV37.salt(player)" in effects
     assert "MobEffects.NIGHT_VISION" not in feedback
     assert "MobEffects.DAMAGE_RESISTANCE" not in feedback
     assert "player.hurt" not in feedback
