@@ -52,5 +52,5 @@ def main():
             for name in ("NutritionFeedbackV38","NutritionPhysiologyV39",
                     "NutritionNetworkV35","NutritionV34","NutritionScreenClientV35"):
                 assert "io/github/lordnavycrypto/gugugaga/agriculture/"+name+".class" in jar.namelist()
-    print("NUTRITION_FEEDBACK_V38_COMPAT_PASS: established 7-page GUI and packet, 27 individual statuses")
+    print("NUTRITION_FEEDBACK_V38_COMPAT_PASS: established 8-page GUI and packet, 27 individual statuses")
 if __name__=="__main__":main()
