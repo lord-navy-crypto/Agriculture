@@ -61,6 +61,8 @@ def main():
     assert "general" in profiles
     java=(SRC/"NutritionProfilesV35.java").read_text("utf-8")
     logic=(SRC/"NutritionV34.java").read_text("utf-8")
+    effects=(SRC/"NutritionEffectsV310.java").read_text("utf-8")
+    feedback=(SRC/"NutritionFeedbackV38.java").read_text("utf-8")
     net=(SRC/"NutritionNetworkV34.java").read_text("utf-8")
     net35=(SRC/"NutritionNetworkV35.java").read_text("utf-8")
     screen=(SRC/"NutritionScreenClientV35.java").read_text("utf-8")
@@ -80,8 +82,10 @@ def main():
     assert "copy(old,migrated" in logic
     assert "PlayerEvent.Clone" in logic
     assert "player.getPersistentData().put(ROOT,values)" in logic
-    assert "MobEffects.DIG_SPEED" in logic and "MobEffects.MOVEMENT_SPEED" in logic
-    assert "varied(values)" in logic and "highlyVaried(values)" in logic
+    assert len(re.findall(r"new Pair\\(",effects))==27
+    assert "NutritionEffectsV310.apply(player,tag)" in feedback
+    assert "NutritionFeedbackV38.apply(player,values,false)" in logic
+    assert "varied(values)" not in logic and "highlyVaried(values)" not in logic
     assert "player.sendSystemMessage" in logic
     assert 'PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}}' in logic
     assert '"page",(page+1)%PAGE_COUNT' in logic

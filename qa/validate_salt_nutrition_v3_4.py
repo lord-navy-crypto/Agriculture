@@ -32,6 +32,7 @@ def main():
     src=(JAVA/"agriculture/FoodV34Content.java").read_text("utf8")
     crock=(JAVA/"agriculture/SeasoningAgingCrockBlock.java").read_text("utf8")
     nut=(JAVA/"agriculture/NutritionV34.java").read_text("utf8")
+    effects=(JAVA/"agriculture/NutritionEffectsV310.java").read_text("utf8")
     net=(JAVA/"agriculture/NutritionNetworkV34.java").read_text("utf8")
     key=(JAVA/"agriculture/NutritionKeyV34.java").read_text("utf8")
     tick=(JAVA/"agriculture/NutritionKeyTickV34.java").read_text("utf8")
@@ -115,7 +116,8 @@ def main():
     assert "LivingEntityUseItemEvent.Finish" in nut
     assert "PlayerEvent.Clone" in nut
     assert "DataComponents.FOOD" in nut
-    assert "MobEffects.DIG_SPEED" in nut
+    assert "MobEffects.DIG_SPEED" in effects and "MobEffects.MOVEMENT_SPEED" in effects
+    assert len(re.findall(r"new Pair\\(",effects))==27
     assert "player.sendSystemMessage" in nut
     assert "minimum_groups_for_bonus" in json.dumps(cat["nutrition"])
     assert "StreamCodec.unit(new Request())" in net
