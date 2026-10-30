@@ -95,7 +95,7 @@ def main():
             assert content.get("feedback.gugugaga.role."+id),(locale,id)
         assert "feedback.gugugaga.nutrient_tooltip" in content
         assert "feedback.gugugaga.stage_0" in content
-        assert content["feedback.gugugaga.nutrient_tooltip"].count("%s")==6
+        assert content["feedback.gugugaga.nutrient_tooltip"].count("%s")==7
     if len(sys.argv)>1:
         jar=Path(sys.argv[1])
         assert jar.is_file(),jar
