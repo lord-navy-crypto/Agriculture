@@ -96,7 +96,7 @@ def main():
     assert "NutritionV34.snapshot(player)" in net
     assert "Minecraft.getInstance().setScreen" in screen
     assert "Button.builder" in screen and "GuiGraphics" in screen
-    assert "NutritionProfilesV35.NUTRIENTS[i]" in screen
+    assert "NutritionProfilesV35.NUTRIENTS[index]" in screen
     for l in ("en_us","zh_cn"):
         strings=load(ASSETS/f"lang/{l}.json")
         assert all(strings["nutrition.gugugaga."+name] for name in nutrients),l
