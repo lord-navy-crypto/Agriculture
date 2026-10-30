@@ -63,6 +63,7 @@ jobs:
           python3 qa/validate_nutrition_v3_5.py
           python3 qa/validate_lunar_seasons_v3_6.py
           python3 qa/validate_survival_water_v3_7.py
+          python3 qa/validate_nutrition_ui_readability_v3_7.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
 

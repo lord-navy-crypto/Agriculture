@@ -95,7 +95,13 @@ def main():
     assert "WaterSaltV37.water(player),WaterSaltV37.salt(player)" in wire
     assert '"water_level",water' in screen
     assert '"sodium_balance",salt' in screen
-    assert 'int page=5' in screen and "PAGES.length" in screen
+    assert 'int page=0' in screen and "PAGES.length" in screen
+    assert "updatePanelBounds()" in screen and "panelWidth=Math.min(PANEL_MAX_WIDTH" in screen
+    assert "drawFitted(graphics,name,nameX,yy,nameWidth,TEXT)" in screen
+    assert "graphics.fill(0,0,width,height" in screen
+    assert "renderBackground(graphics" not in screen
+    assert "Integer.toString(value)" in screen
+    assert "NutritionV34.show(player)" not in wire
     for lang in ("en_us","zh_cn"):
         keys=read_json(ART/f"lang/{lang}.json")
         for k in ("button.gugugaga.nutrition","hud.gugugaga.nutrition_hint",

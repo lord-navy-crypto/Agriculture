@@ -28,7 +28,11 @@ public final class NutritionNetworkV34 {
         event.registrar("1").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
                     if (context.player() instanceof ServerPlayer player) {
-                        NutritionV34.show(player); // compatible text report
+                        // Send one authoritative GUI snapshot. The legacy chat
+                        // report was displayed simultaneously with the GUI and
+                        // cycled a different page in persistent NBT on every press.
+                        // Keep NutritionV34.show() for explicit legacy callers,
+                        // but do not spam chat on the N-key / inventory-button path.
                         PacketDistributor.sendToPlayer(player,
                                 new NutritionNetworkV35.State(NutritionV34.snapshot(player),
                                         WaterSaltV37.water(player),WaterSaltV37.salt(player)));

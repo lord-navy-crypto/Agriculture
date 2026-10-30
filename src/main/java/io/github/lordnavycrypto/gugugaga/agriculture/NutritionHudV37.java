@@ -8,18 +8,26 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.minecraft.network.chat.Component;
 
-/** Small always-visible pointer to the N key; clickable access is in inventory. */
+/**
+ * Crisp, single-line pointer to the nutrition panel. Width is based on the
+ * translated text rather than a hardcoded 104px, and fits the scaled viewport.
+ */
 @EventBusSubscriber(modid=GuguGagaMod.MOD_ID,value=Dist.CLIENT)
 public final class NutritionHudV37 {
     private NutritionHudV37(){}
+
     @SubscribeEvent
     public static void render(RenderGuiEvent.Post event) {
         Minecraft minecraft=Minecraft.getInstance();
         if(minecraft.player==null ||minecraft.options.hideGui ||minecraft.screen!=null)return;
         var graphics=event.getGuiGraphics();
-        int x=graphics.guiWidth()-112;
-        graphics.fill(x,8,x+104,23,0xA72A3530);
-        graphics.drawString(minecraft.font,Component.translatable(
-                "hud.gugugaga.nutrition_hint"),x+5,12,0xFFDAF0D8,false);
+        int maxTextWidth=Math.max(0,graphics.guiWidth()-24);
+        if(maxTextWidth<24)return;
+        String full=Component.translatable("hud.gugugaga.nutrition_hint").getString();
+        String label=minecraft.font.plainSubstrByWidth(full,maxTextWidth);
+        int panelWidth=minecraft.font.width(label)+10;
+        int x=Math.max(4,graphics.guiWidth()-panelWidth-8);
+        graphics.fill(x,8,x+panelWidth,23,0xDE1A3027);
+        graphics.drawString(minecraft.font,label,x+5,12,0xFFEDFBE6,false);
     }
 }
