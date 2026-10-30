@@ -5,8 +5,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,7 +16,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
  * Versioned nutrition progression subsystem (retains this class name for v3.4
  * compatibility). Tracks 27 abstract nutrients from an explicit food catalog.
  * This is NOT physiology, a diagnosis, a food restriction or a real diet plan.
- * Legacy values become abstract reserve indicators in the v3.9 model.
+ * Legacy values become abstract reserve indicators in the v3.10 model.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID)
 public final class NutritionV34 {

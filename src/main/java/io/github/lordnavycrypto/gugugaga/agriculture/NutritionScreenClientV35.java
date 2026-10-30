@@ -194,16 +194,22 @@ public final class NutritionScreenClientV35 extends Screen {
                                 label,numeric,Component.translatable(
                                         "feedback.gugugaga.stage_"+(stage+2)),days);
                     } else if(nutrientIndex>=0){
-                        int days=feedback[NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET+nutrientIndex];
-                        String id=NutritionProfilesV35.NUTRIENTS[nutrientIndex];
                         Component pair=Component.translatable("feedback.gugugaga.effect_pair",
                                 Component.translatable("effect.minecraft."+NutritionEffectsV310.positiveKey(nutrientIndex)),
                                 Component.translatable("effect.minecraft."+NutritionEffectsV310.negativeKey(nutrientIndex)));
-                        hover=Component.translatable("feedback.gugugaga.nutrient_tooltip",
-                                label,numeric,
-                                Component.translatable("feedback.gugugaga.role."+id),
-                                Component.translatable("feedback.gugugaga.stage_"+(state+2)),
-                                days,NutritionPhysiologyV39.requiredDays(nutrientIndex),pair);
+                        if(nutrientIndex==NutritionPhysiologyV39.WATER_INDEX
+                                ||nutrientIndex==NutritionPhysiologyV39.SODIUM_INDEX){
+                            hover=Component.translatable("feedback.gugugaga.water_salt_tooltip",
+                                    label,numeric,pair);
+                        }else{
+                            int days=feedback[NutritionFeedbackV38.NUTRIENT_DAYS_OFFSET+nutrientIndex];
+                            String id=NutritionProfilesV35.NUTRIENTS[nutrientIndex];
+                            hover=Component.translatable("feedback.gugugaga.nutrient_tooltip",
+                                    label,numeric,
+                                    Component.translatable("feedback.gugugaga.role."+id),
+                                    Component.translatable("feedback.gugugaga.stage_"+(state+2)),
+                                    days,NutritionPhysiologyV39.requiredDays(nutrientIndex),pair);
+                        }
                     } else if(page==5 && row<2){
                         int effectIndex=row==0?NutritionPhysiologyV39.WATER_INDEX:NutritionPhysiologyV39.SODIUM_INDEX;
                         Component pair=Component.translatable("feedback.gugugaga.effect_pair",
