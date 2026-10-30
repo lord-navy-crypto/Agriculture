@@ -11,6 +11,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.KitchenV32Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.FoodEcologyV33Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.FoodV34Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.WaterV37Content;
+import io.github.lordnavycrypto.gugugaga.agriculture.WaterV38Content;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -64,7 +65,8 @@ public final class GuguGagaCreativeTabs {
                                   if (!name.endsWith("_seeds") && !java.util.Set.of("black_pepper", "lemongrass", "wasabi", "cumin", "cardamom", "fenugreek", "sugar_beet", "daikon").contains(name) && !name.startsWith("saltwater_")) output.accept(item.get());
                               });
                               FoodV34Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                              WaterV37Content.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
+                              WaterV37Content.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                              WaterV38Content.ITEMS.getEntries().forEach(item -> output.accept(item.get())); })
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MARINE_FUNGI =

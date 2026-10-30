@@ -1118,5 +1118,16 @@
   "message.gugugaga.v37_salt_low": "Low game salt balance: try a savory meal.",
   "message.gugugaga.v37_salt_high": "High game salt balance: drinking water is more important.",
   "message.gugugaga.v37_balanced": "Hydration and electrolyte balance are stable.",
-  "message.gugugaga.v35_page_5": "Water and salt balance"
+  "message.gugugaga.v35_page_5": "Water and salt balance",
+  "item.gugugaga.field_sampling_bucket": "Field Sampling Bucket",
+  "item.gugugaga.sampled_water_bucket": "Collected Water Sample",
+  "block.gugugaga.salt_evaporation_pan": "Salt Evaporation Pan",
+  "tooltip.gugugaga.v38_water_salinity": "Source salinity: %s ppt (game estimate)",
+  "tooltip.gugugaga.v38_water_volume": "Water sample: %s mB",
+  "tooltip.gugugaga.v38_not_drinkable": "For processing only; not drinkable.",
+  "message.gugugaga.v38_pan_needs_saltwater": "A brackish or seawater sample is needed to make salt.",
+  "message.gugugaga.v38_pan_stage_0": "Empty salt pan: add a collected salty water sample.",
+  "message.gugugaga.v38_pan_stage_1": "Brine evaporating. Needs sun or heat below.",
+  "message.gugugaga.v38_pan_stage_2": "Concentrated brine: crystals forming.",
+  "message.gugugaga.v38_pan_stage_3": "Sea salt ready. Interact to collect."
 }

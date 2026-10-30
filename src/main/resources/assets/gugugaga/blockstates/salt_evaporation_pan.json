@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "gugugaga:block/salt_evaporation_pan_stage_0"
+    },
+    "stage=1": {
+      "model": "gugugaga:block/salt_evaporation_pan_stage_1"
+    },
+    "stage=2": {
+      "model": "gugugaga:block/salt_evaporation_pan_stage_2"
+    },
+    "stage=3": {
+      "model": "gugugaga:block/salt_evaporation_pan_stage_3"
+    }
+  }
+}
