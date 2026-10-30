@@ -112,11 +112,18 @@ public final class NutritionScreenClientV35 extends Screen {
 
         // All footer positions stay within the visible panel, independent of
         // GUI Scale. Navigation buttons are rendered afterwards by Screen.
-        drawCenteredFitted(graphics,Component.literal((page+1)+" / "+PAGES.length),
-                y+h-53,w-18,DETAIL);
-        drawCenteredFitted(graphics,
-                Component.translatable("message.gugugaga.v35_gui_note"),
-                y+h-41,w-18,0xFFDCE5D9);
+        if(h<220) {
+            // Compact GUI: keep the content region tall enough for seven real
+            // readings. Page index moves to the header, not over the rows.
+            graphics.drawString(font,(page+1)+"/"+PAGES.length,
+                    x+w-38,y+9,DETAIL,false);
+        } else {
+            drawCenteredFitted(graphics,Component.literal((page+1)+" / "+PAGES.length),
+                    y+h-53,w-18,DETAIL);
+            drawCenteredFitted(graphics,
+                    Component.translatable("message.gugugaga.v35_gui_note"),
+                    y+h-41,w-18,0xFFDCE5D9);
+        }
         super.render(graphics,mouseX,mouseY,partialTick);
     }
 
@@ -127,8 +134,8 @@ public final class NutritionScreenClientV35 extends Screen {
         if(count==0)return;
         int x=panelX,y=panelY,w=panelWidth,h=panelHeight;
         int rowStart=y+51;
-        int rowEnd=y+h-67;
-        int rowHeight=Math.max(12,(rowEnd-rowStart)/count);
+        int rowEnd=y+h-(h<220?37:67);
+        int rowHeight=Math.max(10,(rowEnd-rowStart)/count);
         int scoreWidth=Math.max(27,font.width("100"));
         int barWidth=Math.max(38,Math.min(100,w/4));
         int barX=x+w-12-scoreWidth-8-barWidth;
@@ -154,13 +161,14 @@ public final class NutritionScreenClientV35 extends Screen {
 
     private void drawWaterSalt(GuiGraphics graphics) {
         int x=panelX,y=panelY,w=panelWidth;
-        drawVital(graphics,x+15,y+59,w-30,"water_level",water);
-        drawVital(graphics,x+15,y+104,w-30,"sodium_balance",salt);
+        boolean compact=panelHeight<220;
+        drawVital(graphics,x+15,y+(compact?46:59),w-30,"water_level",water);
+        drawVital(graphics,x+15,y+(compact?82:104),w-30,"sodium_balance",salt);
         Component status=Component.translatable(water<=15
                 ?"message.gugugaga.v37_thirst_low":salt<=8
                 ?"message.gugugaga.v37_salt_low":salt>85
                 ?"message.gugugaga.v37_salt_high":"message.gugugaga.v37_balanced");
-        drawCenteredFitted(graphics,status,y+156,w-24,DETAIL);
+        drawCenteredFitted(graphics,status,y+(compact?115:156),w-24,DETAIL);
     }
 
     private void drawVital(GuiGraphics graphics,int x,int y,int rowWidth,String id,int value) {
