@@ -1139,7 +1139,7 @@
   "feedback.gugugaga.stage_0": "Prolonged low game reserve (not a diagnosis)",
   "feedback.gugugaga.stage_1": "Lower game reserve — review food variety",
   "feedback.gugugaga.stage_2": "Game reserve maintained",
-  "feedback.gugugaga.stage_3": "Game reserve maintained",
+  "feedback.gugugaga.stage_3": "Positive effect eligible",
   "feedback.gugugaga.tooltip": "%s %s — %s. Longest low-reserve run: %s game days",
   "feedback.gugugaga.note": "Independent nutrient reserves; no medical diagnoses or superpowers",
   "feedback.gugugaga.role.carbohydrate": "Supports energy supply from food",
@@ -1174,5 +1174,5 @@
   "message.gugugaga.v310_effects_active": "Potion feedback: all 27 nutrition indicators have mapped positive and low-reserve effects. Open the effect matrix page for details.",
   "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",
   "feedback.gugugaga.water_salt_tooltip": "%s %s. %s",
-  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; water/salt penalties take priority."
+  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority."
 }

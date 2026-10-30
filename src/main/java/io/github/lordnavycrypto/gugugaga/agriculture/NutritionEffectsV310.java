@@ -93,6 +93,8 @@ public final class NutritionEffectsV310 {
             if(i==NutritionPhysiologyV39.SODIUM_INDEX){
                 if(score>=35 && score<=75)
                     positive.add(new Candidate(pair.positive(),100-Math.abs(55-score),POSITIVE_DURATION));
+                else if(score>85)
+                    negative.add(new Candidate(pair.negative(),1500+score,WATCH_DURATION));
                 continue;
             }
             int stage=NutritionPhysiologyV39.stage(data,i);

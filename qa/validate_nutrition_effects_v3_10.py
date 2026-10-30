@@ -25,6 +25,7 @@ def main():
     assert "applyLimited(player,positive,POSITIVE_LIMIT)" in matrix
     assert "applyLimited(player,negative,NEGATIVE_LIMIT)" in matrix
     assert "if(water<=15 || sodium<=8)return" in matrix
+    assert "else if(score>85)" in matrix
     assert "WaterSaltV37.water(player)" in matrix and "WaterSaltV37.salt(player)" in matrix
     assert "if(score>=35 && score<=75)" in matrix
     assert "NutritionEffectsV310.apply(player,tag)" in feedback
@@ -33,6 +34,8 @@ def main():
     assert "message.gugugaga.v310_effects_active" in nutrition
     assert "PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27}}" in screen
     assert "page==7?27" in screen and "page==7?row" in screen
+    assert "water<=8?-2:water<=15?-1:water>=65?1:0" in screen
+    assert "salt<=8?-2:salt>85?-1:salt>=35 && salt<=75?1:0" in screen
     assert "NutritionEffectsV310.positiveKey" in screen
     assert "NutritionEffectsV310.negativeKey" in screen
     assert "feedback.gugugaga.effect_pair" in screen

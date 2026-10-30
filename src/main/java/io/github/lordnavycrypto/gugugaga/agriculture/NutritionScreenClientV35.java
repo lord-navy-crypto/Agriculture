@@ -168,15 +168,22 @@ public final class NutritionScreenClientV35 extends Screen {
                 int barRight=valueRight-numericWidth-11;
                 int barWidth=Math.max(23,Math.min(110,(w-45)/3));
                 int barLeft=barRight-barWidth;
-                int nutrientIndex=page<5?PAGES[page][0]+row:page==7?row:-1;
+                int nutrientIndex=page<5?PAGES[page][0]+row:page==7?row:page==5 && row<2?(row==0?NutritionPhysiologyV39.WATER_INDEX:NutritionPhysiologyV39.SODIUM_INDEX):-1;
                 int state=page==6?feedback[NutritionFeedbackV38.GROUP_COUNT+row]:
                         nutrientIndex>=0?feedback[NutritionFeedbackV38.NUTRIENT_STATES_OFFSET+nutrientIndex]:0;
+                if(nutrientIndex==NutritionPhysiologyV39.WATER_INDEX){
+                    state=water<=8?-2:water<=15?-1:water>=65?1:0;
+                }else if(nutrientIndex==NutritionPhysiologyV39.SODIUM_INDEX){
+                    state=salt<=8?-2:salt>85?-1:salt>=35 && salt<=75?1:0;
+                }else if(nutrientIndex>=0 && state==0 && values[nutrientIndex]>=65){
+                    state=1;
+                }
                 int textColor=state==-2?0xFFFFB5A9
                         :state==-1?0xFFFFDEA6:0xFFFFFFFF;
                 int labelWidth=Math.max(18,barLeft-labelX-(page==6 || page==7?24:9));
                 graphics.drawString(font,fitted(label,labelWidth),labelX,line+5,
                         textColor,false);
-                if(page==6 || page==7) {
+                if(page==6 || nutrientIndex>=0) {
                     String indicator=state==-2?"!!":state==-1?"!":state==1?"+":"=";
                     graphics.drawString(font,indicator,barLeft-18,line+5,textColor,false);
                 }

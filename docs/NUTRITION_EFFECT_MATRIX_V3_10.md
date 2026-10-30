@@ -41,7 +41,7 @@ Every established indicator has an explicit positive and negative Minecraft effe
 | 24 | Iodine | Speed | Slowness | Thyroid-hormone synthesis support |
 | 25 | Selenium | Resistance | Weakness | Selenoprotein support |
 | 26 | Phosphorus | Strength | Weakness | ATP and bone-mineral support |
-| 27 | Sodium | Jump Boost | Mining Fatigue | Electrolyte balance; low state handled by water/salt system |
+| 27 | Sodium | Jump Boost | Mining Fatigue | Balanced range grants a game buff; low state is handled by water/salt system; high salt gives a brief warning pulse |
 
 ## Why the game does not copy clinical symptoms literally
 
