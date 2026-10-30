@@ -17,8 +17,10 @@ public final class NutritionInventoryButtonV37 {
     @SubscribeEvent
     public static void onInventoryInit(ScreenEvent.Init.Post event) {
         if(!(event.getScreen() instanceof InventoryScreen screen))return;
-        int x=screen.width/2+91;
-        int y=screen.height/2-82;
+        // The old +91 offset places the 72px button partly outside a
+        // 320px-wide GUI (common at high Minecraft GUI Scale).
+        int x=Math.max(2,Math.min(screen.width-74,screen.width/2+91));
+        int y=Math.max(2,Math.min(screen.height-22,screen.height/2-82));
         event.addListener(Button.builder(Component.translatable(
                 "button.gugugaga.nutrition"),button ->
                     PacketDistributor.sendToServer(new NutritionNetworkV34.Request()))
