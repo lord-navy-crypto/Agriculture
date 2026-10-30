@@ -32,7 +32,8 @@ public final class NutritionNetworkV34 {
                         // Do not mix chat paragraphs with every GUI refresh.
                         PacketDistributor.sendToPlayer(player,
                                 new NutritionNetworkV35.State(NutritionV34.snapshot(player),
-                                        WaterSaltV37.water(player),WaterSaltV37.salt(player)));
+                                        WaterSaltV37.water(player),WaterSaltV37.salt(player),
+                                        NutritionV34.feedbackSnapshot(player)));
                     }
                 });
     }
