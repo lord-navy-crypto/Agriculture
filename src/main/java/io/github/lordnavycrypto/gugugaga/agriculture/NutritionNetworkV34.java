@@ -28,7 +28,8 @@ public final class NutritionNetworkV34 {
         event.registrar("1").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
                     if (context.player() instanceof ServerPlayer player) {
-                        NutritionV34.show(player); // compatible text report
+                        // The graphical panel supersedes the legacy five-page chat dump.
+                        // Do not mix chat paragraphs with every GUI refresh.
                         PacketDistributor.sendToPlayer(player,
                                 new NutritionNetworkV35.State(NutritionV34.snapshot(player),
                                         WaterSaltV37.water(player),WaterSaltV37.salt(player)));
