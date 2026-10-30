@@ -86,7 +86,8 @@ def main():
     assert 'PAGES={{0,5},{5,12},{12,18},{18,23},{23,27}}' in logic
     assert '"page",(page+1)%PAGE_COUNT' in logic
     assert "StreamCodec.unit(new Request())" in net
-    assert "playToServer" in net and "NutritionV34.show(player)" in net
+    assert "playToServer" in net and "NutritionV34.snapshot(player)" in net
+    assert "NutritionV34.show(player)" not in net
     assert "PacketDistributor.sendToServer" in client
     assert "GLFW.GLFW_KEY_N" in key
     assert "playToClient(State.TYPE,State.STREAM_CODEC" in net35
