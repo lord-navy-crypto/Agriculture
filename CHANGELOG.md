@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.7.0-rc.2 — Nutrition UI readability hotfix
+
+- Render all 27 nutrition scores plus water and salt using native-size, high-contrast Minecraft text. Replace overlapping fixed-position rows with a viewport-aware, scrollable list; every metric displays an explicit score out of 100.
+- Shorten overlong localized labels on screen without losing the underlying values; hover shows the full localized name and exact score. Use mouse wheel, arrow keys, or ^/v buttons to scroll, and </> to switch pages.
+- Remove the extra legacy chat-page dump when N or the inventory Nutrition button opens the dashboard. Keep all server-authoritative readings and the six pages.
+- Clamp the inventory shortcut inside screen bounds at large GUI scales. Avoid background blur processing while showing the text-heavy panel.
+- Version bumped for distinguishing downloadable test builds. Manual visual acceptance at Minecraft GUI scales 2, 3, 4, and Auto remains necessary; no new survival logic or player-data changes.
+
+
 ## v3.7.0-rc.1 — Hydration, electrolyte balance, water processing & inventory nutrition button
 
 - Add an independent **hydration meter and salt-balance meter** (0–100 gameplay units each) to the 27-nutrient dashboard, alongside persistent player save state, death/clone preservation and two added multiplayer network snapshot fields.
