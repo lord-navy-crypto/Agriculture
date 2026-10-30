@@ -120,7 +120,8 @@ def main():
     assert "minimum_groups_for_bonus" in json.dumps(cat["nutrition"])
     assert "StreamCodec.unit(new Request())" in net
     assert "playToServer" in net
-    assert "NutritionV34.show(player)" in net
+    assert "NutritionV34.snapshot(player)" in net
+    assert "NutritionV34.show(player)" not in net  # v3.7 graph is the only N-key output
     assert "GLFW.GLFW_KEY_N" in key
     assert "RegisterKeyMappingsEvent" in key
     assert "ClientTickEvent.Post" in tick
