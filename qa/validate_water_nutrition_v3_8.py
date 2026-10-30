@@ -48,9 +48,9 @@ def main():
     assert "LunarSeasonsV36.habitat" in pan
     assert "LunarSeasonsV36.localSeason" in pan and "Season.WINTER" in pan
     assert "V38_FLOOR=15" in nutrition
-    assert "LOW_DAYS" in nutrition and "Math.min(3L,day-last)" in nutrition
-    assert "lowVariety(values)" in nutrition
-    assert "MobEffects.DIG_SLOWDOWN,220,0" in nutrition
+    assert "NutritionFeedbackV38.advance" in nutrition
+    assert "NutritionFeedbackV38.apply" in nutrition
+    assert "NutritionFeedbackV38.recoverAfterEating" in nutrition
     assert "player.hurt" not in nutrition and "player.kill" not in nutrition
     assert "gugugaga_nutrition_v35" in nutrition
     for i in range(4):

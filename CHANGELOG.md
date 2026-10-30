@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.8.0-rc.2 — Complete nutrition feedback and clear in-game group status
+
+- Replace v3.8's single restrictive energy/protein/vitamin trigger with **five independent fictional nutrition groups** that jointly cover all 27 existing scores without omission or double counting.
+- Differentiate normal, improvement suggested, focus bonus ready, and persistent strain. Persistent low group scores accumulate at most three game-day steps; established worlds receive a grace period. Eating that recovers the group resets its streak immediately.
+- Cap group-specific status effects at **one short-lived positive OR one mild negative**, with preexisting water/salt penalties taking priority. Keep original food-diversity Haste and Speed bonuses; avoid adding focus bonuses on top of them.
+- Add a seventh page to the high-contrast nutrition GUI showing each group score, status indicator and hover explanation with low-day progress. Server transmits validated group snapshots, rather than letting the client invent an assessment.
+- Preserve all existing item/block IDs, 27 nutrients, food catalog, saved NBT keys, world generation, food/water/salt code and six prior GUI pages. Nutrition feedback is a **game balancing system, not a medical assessment**.
+- Add bilingual feedback labels and regression/packaged-JAR checks. Manual gameplay testing remains necessary.
+
+
 ## v3.8.0-rc.1 — Field water ecology, solar salt pan and balanced nutrition feedback
 
 - Introduce biome-authored 1000 mB field-water samples with persistent salinity data on a new reusable bucket. Keep vanilla water, buckets and drinking flasks unmodified.

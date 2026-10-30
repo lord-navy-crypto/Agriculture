@@ -36,6 +36,14 @@ The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated a
 - The 27 existing food diversity scores now gradually age down to 15 rather than 40. Prolonged low diversity across the energy, protein and vitamin groups gives one mild mining-fatigue status, after a three-game-day grace period; eating diverse foods can reverse it. This is purely fictional game balance and **not** a medical model.
 - **GUI troubleshooting:** In Minecraft Options → Accessibility Settings, set Menu Background Blur to **0** if a modded GUI looks blurry. v3.7.0-rc.2 responsive nutrition text remains in place.
 
+## v3.8.0-rc.2 nutrition feedback (fictional game scores)
+
+- The 27 nutrition metrics remain unchanged and are now shown in **five actionable groups** on the seventh Nutrition screen page (press N, use page navigation).
+- Five groups: energy, maintenance/protein, B-family, plant-food variety, and mineral support. Each uses only the existing 27 score slots; this is game scoring, not human dietary diagnosis.
+- Low group scores produce an **improvement suggestion** first. Three elapsed game days of persistently low values can produce just **one short, mild** movement/mining/combat inconvenience. Recovery from food resets streaks; drinking water and adequate salt remain separately modeled.
+- High group scores can enable a bounded focus bonus, without stacking extras over original food-diversity rewards. Both positive and negative states are directly visible through status symbols and hover details. Existing saved worlds get a grace period.
+- To avoid vanilla/other-mod UI blur, use Options → Accessibility → Menu Background Blur → 0 when needed.
+
 ## Build and validation
 
 Run with Java 21:

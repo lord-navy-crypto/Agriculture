@@ -25,7 +25,7 @@ public final class NutritionNetworkV34 {
     }
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToServer(Request.TYPE, Request.STREAM_CODEC,
+        event.registrar("2").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
                     if (context.player() instanceof ServerPlayer player) {
                         // The graphical panel supersedes the legacy five-page chat dump.

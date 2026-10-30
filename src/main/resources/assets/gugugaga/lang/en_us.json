@@ -1129,5 +1129,17 @@
   "message.gugugaga.v38_pan_stage_0": "Empty salt pan: add a collected salty water sample.",
   "message.gugugaga.v38_pan_stage_1": "Brine evaporating. Needs sun or heat below.",
   "message.gugugaga.v38_pan_stage_2": "Concentrated brine: crystals forming.",
-  "message.gugugaga.v38_pan_stage_3": "Sea salt ready. Interact to collect."
+  "message.gugugaga.v38_pan_stage_3": "Sea salt ready. Interact to collect.",
+  "message.gugugaga.v35_page_6": "Food-group feedback",
+  "feedback.gugugaga.group_0": "Energy variety",
+  "feedback.gugugaga.group_1": "Protein and maintenance",
+  "feedback.gugugaga.group_2": "B-vitamin variety",
+  "feedback.gugugaga.group_3": "Plant-food variety",
+  "feedback.gugugaga.group_4": "Mineral balance",
+  "feedback.gugugaga.stage_0": "Persistent strain: one mild game effect (3+ low days)",
+  "feedback.gugugaga.stage_1": "Improvement suggested; no penalty yet",
+  "feedback.gugugaga.stage_2": "Normal game condition",
+  "feedback.gugugaga.stage_3": "Positive focus ready (does not stack with food-variety bonuses)",
+  "feedback.gugugaga.tooltip": "%s: %s. %s. Consecutive low game days: %s/3.",
+  "feedback.gugugaga.note": "Fictional scores; hover groups for status and recovery"
 }
