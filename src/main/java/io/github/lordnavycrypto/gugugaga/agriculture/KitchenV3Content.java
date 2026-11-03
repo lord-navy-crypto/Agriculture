@@ -19,8 +19,10 @@ public final class KitchenV3Content {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GuguGagaMod.MOD_ID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GuguGagaMod.MOD_ID);
 
-    public static final DeferredBlock<KitchenV3AnimatedBlock> DOUGH_BENCH =
-            station("dough_bench", KitchenProcessingBlock.Kind.KNEAD);
+    public static final DeferredBlock<GeckoKneadingBenchBlock> DOUGH_BENCH =
+            BLOCKS.register("dough_bench", () -> new GeckoKneadingBenchBlock(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+                            .strength(1.8F).sound(SoundType.WOOD).noOcclusion()));
     public static final DeferredBlock<KitchenV3AnimatedBlock> SKILLET_STATION =
             station("skillet_station", KitchenProcessingBlock.Kind.FRY);
     public static final DeferredBlock<KitchenV3AnimatedBlock> BAMBOO_STEAMER =
