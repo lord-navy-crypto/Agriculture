@@ -81,7 +81,9 @@ def assert_variants(original: bytes, atlas: bytes, name: str):
     assert (w, h) == (16, 16), f"{name}: source must be 16x16"
     assert (aw, ah) == (32, 32), f"{name}: atlas must be 32x32"
     variant_pixels = set()
-    for variant, factor in enumerate((1.0, 1.04, 0.90, 1.10)):
+    texture_seed = sum(name.rsplit("/", 1)[-1].encode("utf-8"))
+    factors = (1.0, 1.025, 0.965, 1.045)
+    for variant, factor in enumerate(factors):
         mirrored = variant in (1, 3)
         tile = bytearray()
         for y in range(16):
@@ -90,10 +92,38 @@ def assert_variants(original: bytes, atlas: bytes, name: str):
                 input_offset = (y * 16 + source_x) * 4
                 output_offset = ((y + variant // 2 * 16) * 32 + x + variant % 2 * 16) * 4
                 pixel = source[input_offset:input_offset + 4]
-                expected = (
-                    b"\x00\x00\x00\x00" if pixel[3] == 0
-                    else bytes(min(255, math.floor(c * factor + 0.5)) for c in pixel[:3]) + pixel[3:4]
-                )
+                if pixel[3] == 0:
+                    expected = b"\x00\x00\x00\x00"
+                elif variant == 0:
+                    expected = pixel
+                else:
+                    red, green, blue, alpha = pixel
+                    foliage = green > red * 1.10 and green > blue * 1.05
+                    red_factor = green_factor = blue_factor = factor
+                    detail_seed = (x * 7 + y * 11 + texture_seed + variant * 17)
+                    if foliage and variant == 1 and detail_seed % 19 == 0:
+                        red_factor *= 0.96
+                        green_factor *= 1.10
+                        blue_factor *= 0.97
+                    elif foliage and variant == 2 and detail_seed % 17 == 0:
+                        red_factor *= 0.82
+                        green_factor *= 0.84
+                        blue_factor *= 0.82
+                    elif foliage and variant == 3 and detail_seed % 13 == 0:
+                        red_factor *= 1.03
+                        green_factor *= 1.10
+                        blue_factor *= 0.98
+                    offsets = {
+                        1: (-1, 1, -1),
+                        2: (1, -1, 1),
+                        3: (-1, 2, 1),
+                    }[variant]
+                    channels = (
+                        math.floor(red * red_factor + 0.5) + offsets[0],
+                        math.floor(green * green_factor + 0.5) + offsets[1],
+                        math.floor(blue * blue_factor + 0.5) + offsets[2],
+                    )
+                    expected = bytes(max(0, min(255, channel)) for channel in channels) + bytes((alpha,))
                 observed = dest[output_offset:output_offset + 4]
                 assert expected == observed, (
                     f"{name}: variant {variant}, pixel ({x},{y}) mismatch: "
