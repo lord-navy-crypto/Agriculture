@@ -19,7 +19,7 @@ import net.minecraft.core.particles.ParticleTypes;
  * or produces items on its own. All actual ingredient conversion remains
  * server-authoritative inside KitchenProcessingBlock.
  */
-public final class KitchenV3AnimatedBlock extends KitchenProcessingBlock {
+public class KitchenV3AnimatedBlock extends KitchenProcessingBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private final Kind animationKind;
 
