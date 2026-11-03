@@ -33,7 +33,9 @@ def main():
     assert "geckolib_version=4.9.3" in props
     assert "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/" in gradle
     assert 'modId="geckolib"' in metadata and 'versionRange="[4.9.3,)"' in metadata
-    assert "generateGeckoKitchenTexturesV311" in gradle
+    texture_generator = (ROOT / "tools/gecko-kitchen-textures-v311.gradle").read_text(encoding="utf-8")
+    assert "gecko-kitchen-textures-v311.gradle" in gradle
+    assert "generateGeckoKitchenTexturesV311" in texture_generator
 
     block = (JAVA / "agriculture/GeckoKitchenStationBlock.java").read_text(encoding="utf-8")
     block_entity = (JAVA / "agriculture/GeckoKitchenStationBlockEntity.java").read_text(encoding="utf-8")
