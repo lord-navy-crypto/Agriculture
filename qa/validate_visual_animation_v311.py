@@ -27,6 +27,7 @@ ANIMATIONS = {
     "salt_pan_brine": ("salt_evaporation_pan_stage_1.json", "element_up"),
     "salt_pan_concentrated": ("salt_evaporation_pan_stage_2.json", "element_up"),
     "salt_pan_crystals": ("salt_evaporation_pan_stage_3.json", "element_up"),
+    "bee_habitat_active": ("bumblebee_habitat_active.json", "texture_hole"),
 }
 
 ECOLOGY = {
@@ -64,6 +65,12 @@ def read_json(path):
 def has_animated_surface(model, surface_kind):
     if surface_kind == "cube_top":
         return model.get("textures", {}).get("top") == "#motion"
+    if surface_kind == "texture_hole":
+        return model.get("textures", {}).get("hole") == "#motion" and any(
+            face.get("texture") == "#motion"
+            for element in model.get("elements", [])
+            for face in element.get("faces", {}).values()
+        )
     return any(element.get("faces", {}).get("up", {}).get("texture") == "#motion"
                for element in model.get("elements", []))
 
@@ -76,7 +83,7 @@ def main():
     assert "apply from: 'tools/kitchen-motion-v311.gradle'" in gradle
     assert "dependsOn tasks.named('generateKitchenMotionV311')" in generator
     assert "outputs.dir(motionAssets)" in generator
-    assert png_pixels(REPORT.read_bytes())[:2] == (256, 576), "invalid agriculture motion contact sheet"
+    assert png_pixels(REPORT.read_bytes())[:2] == (256, 640), "invalid agriculture motion contact sheet"
 
     with zipfile.ZipFile(jar_path) as packaged:
         assert packaged.testzip() is None, "invalid packaged JAR"
@@ -106,9 +113,19 @@ def main():
             assert model.get("textures", {}).get("motion") == f"gugugaga:block/kitchen_motion/{texture_id}"
             assert has_animated_surface(model, surface_kind), texture_id + ": no visible animated surface"
 
+        # Every species-specific habitat uses the same small animation atlas,
+        # but only its ACTIVITY=3 model references it.
+        for species in ("bumblebee", "mason_bee", "squash_bee", "leafcutter_bee"):
+            model = read_json(BASE / f"{species}_habitat_active.json")
+            assert model["textures"].get("motion") == "gugugaga:block/kitchen_motion/bee_habitat_active"
+            assert model["textures"].get("hole") == "#motion"
+            assert has_animated_surface(model, "texture_hole"), species
+
         # The unoccupied/empty variants intentionally remain static.
         for path in ("fermentation_vat_stage0.json", "salt_evaporation_pan_stage_0.json",
-                     "dough_bench.json", "skillet_station.json", "bamboo_steamer.json"):
+                     "dough_bench.json", "skillet_station.json", "bamboo_steamer.json",
+                     "bumblebee_habitat.json", "mason_bee_habitat.json",
+                     "squash_bee_habitat.json", "leafcutter_bee_habitat.json"):
             model = read_json(BASE / path)
             assert "motion" not in model.get("textures", {}), path + ": idle model unexpectedly animated"
 
@@ -119,9 +136,9 @@ def main():
             assert marker in source, (filename, marker)
 
     print(
-        "VISUAL_ANIMATION_V311_PASS: 9 x 4 distinct animated atlases, exact JAR bytes, "
+        "VISUAL_ANIMATION_V311_PASS: 10 x 4 distinct animated atlases, exact JAR bytes, "
         "surface bindings, static idle states, five bounded ecology visual hooks, "
-        "and a 256x576 contact sheet."
+        "and a 256x640 contact sheet."
     )
 
 if __name__ == "__main__":
