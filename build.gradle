@@ -65,6 +65,7 @@ apply from: 'tools/fusion-visuals.gradle'
 // Use -PenableFusionDev=true for the client development run; the companion resource pack
 // requires Fusion on the client's machine but never on the dedicated server.
 repositories {
+    mavenCentral()
     maven {
         name = 'GeckoLib'
         url = uri('https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/')
