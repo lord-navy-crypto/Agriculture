@@ -95,6 +95,8 @@ jobs:
         run: python3 qa/validate_kitchen_v3_0.py build/generated/resources/kitchenV3Assets
       - name: Validate visual animation v3.11 and packaged sprite frames
         run: python3 qa/validate_visual_animation_v311.py build/libs/gugugaga-*.jar
+      - name: Validate GeckoLib 4.9.3 animated kneading bench and packaged rig
+        run: python3 qa/validate_geckolib_kneading_v311.py build/libs/gugugaga-*.jar
       - name: Verify kitchen v3.1 specialist art and actual workstation models
         run: python3 qa/validate_kitchen_v3_1.py build/generated/resources/kitchenV31Assets
       - name: Validate kitchen v3.2 offhand-tool modes and 47 item images
