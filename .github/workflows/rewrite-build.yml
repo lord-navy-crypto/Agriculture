@@ -69,6 +69,7 @@ jobs:
           python3 qa/validate_nutrition_effects_v3_10.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
+          python3 qa/validate_swaying_garden_compat_v311.py
 
   neoforge:
     runs-on: ubuntu-latest
