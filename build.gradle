@@ -53,6 +53,7 @@ apply from: 'tools/crop-cuisine-textures.gradle'
 apply from: 'tools/kitchen-assets.gradle'
 apply from: 'tools/kitchen-v3-assets.gradle'
 apply from: 'tools/kitchen-motion-v311.gradle'
+apply from: 'tools/gecko-kneading-texture-v311.gradle'
 apply from: 'tools/kitchen-v31-assets.gradle'
 apply from: 'tools/kitchen-v32-assets.gradle'
 apply from: 'tools/food-ecology-v33-assets.gradle'
@@ -65,10 +66,19 @@ apply from: 'tools/fusion-visuals.gradle'
 // requires Fusion on the client's machine but never on the dedicated server.
 repositories {
     maven {
+        name = 'GeckoLib'
+        url = uri('https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/')
+        content { includeGroup('software.bernie.geckolib') }
+    }
+    maven {
         url = uri('https://api.modrinth.com/maven')
         content { includeGroup('maven.modrinth') }
     }
 }
+dependencies {
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+}
+
 if (providers.gradleProperty('enableFusionDev').map { it == 'true' }.orElse(false).get()) {
     dependencies {
         runtimeOnly 'maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc1.21.1'
