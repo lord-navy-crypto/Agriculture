@@ -26,7 +26,8 @@ tasks.register('generateKitchenMotionV311') {
             fermentation_vat_stage3:[base:0x526B3B, dark:0x2E4328, light:0x8BAA60, detail:0xC5D88A],
             salt_pan_brine:[base:0x4D8796, dark:0x28525D, light:0x85C8D1, detail:0xD8F2EC],
             salt_pan_concentrated:[base:0x82958A, dark:0x465A51, light:0xCBD8BE, detail:0xF1E7BB],
-            salt_pan_crystals:[base:0xC9C8BA, dark:0x7D8179, light:0xE6E3D2, detail:0xFFFFFF]
+            salt_pan_crystals:[base:0xC9C8BA, dark:0x7D8179, light:0xE6E3D2, detail:0xFFFFFF],
+            bee_habitat_active:[base:0x30251C, dark:0x17120E, light:0x66503A, detail:0xE5C76A]
         ]
         int rows = colors.size()
         BufferedImage sheet = new BufferedImage(256, rows * 64, BufferedImage.TYPE_INT_ARGB)
@@ -82,6 +83,13 @@ tasks.register('generateKitchenMotionV311') {
                         if ((x*5+y*7+frame*3)%23==0)
                             rgb = pal.detail
                         if ((x*3+y*11+frame*2)%29==0)
+                            rgb = pal.light
+                    } else if (id=='bee_habitat_active') {
+                        // The entrance remains dark; a few pollen-colored motes drift
+                        // across the inner aperture only at the maximum activity state.
+                        if (x>=4 && x<=11 && y>=4 && y<=11 && (x*5+y*7+frame*9)%29==0)
+                            rgb = pal.detail
+                        else if (x>=4 && x<=11 && y>=4 && y<=11 && (x*3+y*11+frame*5)%17==0)
                             rgb = pal.light
                     }
 
