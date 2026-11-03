@@ -1,51 +1,55 @@
-# Gugu Gaga Agriculture — Visual & Animation Refinement v3.11, second pass
+# Gugu Gaga Agriculture — Visual & Animation Refinement v3.11
 
 **Scope:** Minecraft 1.21.1 / NeoForge 21.1.259 / Java 21.
-**Version:** 3.11.0-alpha.2. Built on alpha.1's Fusion botanical detail and short workstation particles.
+**Version:** 3.11.0-alpha.2, continuing visual work on the existing Draft PR.
 
-## 1. Real animated workstation surfaces
+## 1. Four-frame animated surfaces
 
-Three already-registered workstations now carry **four real PNG animation frames** in their ACTIVE block models:
+Nine deterministic four-frame PNG atlases are now generated at build time:
 
-| Existing station | Animated part | 4-frame motion | Additional FX |
-|---|---|---|---|
-| Dough Bench | Top work surface | Moving flour / rolling ridge | Client-only flour puffs |
-| Skillet Station | Cooking surface | Alternating browning/sizzle glints | Smoke and occasional flame |
-| Bamboo Steamer | Lid top | Shifting weave highlights and condensation | Gentle steam |
-
-- Textures are generated deterministically by the Gradle task generateKitchenMotionV311.
-- Each source atlas is 16×64 pixels (four 16×16 frames), with companion PNG metadata declaring a two-tick frame duration.
-- Only the existing _active models refer to these animations. Idle models remain static; the existing 10-game-tick ACTIVE lifetime remains server-authoritative.
-- The work surfaces animate **by pixels**, not a physically moving mesh or GeckoLib skeleton.
-- No block registry ID, collision shape, inventory storage, recipe, or server-side animation ticker has changed.
-- Preview: build/reports/agriculture/kitchen-motion-v311-contact-sheet.png.
-
-## 2. Ecology display-tick feedback
-
-These only affect **client-side ambient display-tick visuals**. They do not update crop states, simulate disease, represent food safety, or run client-side AI.
-
-| Existing block | State gate | Visual cue |
+| Existing system | Animated surface | State behavior |
 |---|---|---|
-| Pollination-eligible crops | Flowering ages 4–7 | Sparse floral fleck, or distinct saved-pollinated marker |
-| Wild bee habitats | Existing ACTIVITY 1–3 | Rare nectar fleck, proportional to gauge; squash bee morning window respected |
-| Fermentation vat | Non-empty batch | Sparse working-stage bubble; distinct completed-batch mote |
-| Marine crops | Waterlogged and age 2–3 | Rare underwater bubble |
-| Fungal culture | Age 2–3 | Very occasional spore mote |
+| Dough Bench | Moving rolling ridge / flour texture | Only ACTIVE model |
+| Skillet Station | Sizzle and browning glints | Only ACTIVE model |
+| Bamboo Steamer | Condensation and bamboo highlights | Only ACTIVE model |
+| Fermentation Vat | Bubbles and surface rings | Stage 1, 2 and 3 each use a distinct palette |
+| Salt Evaporation Pan | Brine ripples, concentrated brine shimmer, salt crystal glints | Stage 1, 2 and 3; empty stage remains static |
 
-Particles are sampled probabilistically by vanilla's random display callback. No block entities, background scans, or chunk-loading calls are added. Per callback, at most one particle may be emitted, with early returns for inactive blocks.
+- Gradle task: `generateKitchenMotionV311`.
+- Each atlas is 16×64 pixels: four 16×16 frames, two game ticks per frame.
+- All nine atlases are packaged into the normal mod JAR; no runtime dependency is added.
+- Existing block states continue to control which model is visible. The animation does not change processing time, recipe results, water consumption, salt output, or crop growth.
+- The kitchen ACTIVE window remains server-authoritative; fermentation and salt pan progress remain stored in their existing block states.
+- Review sheet: `build/reports/agriculture/agriculture-motion-v311-contact-sheet.png`.
 
-Farm crop wind **does not** yet have bone deformation or geometry sway; do not characterize these effects as such.
+These are animated texture surfaces, not bone-driven geometry. No Block Entity, renderer registration, server animation loop, entity scan, or chunk-loading behavior is added.
 
-## 3. Validation
+## 2. Client-side ecology cues
 
-- Run Gradle build with Java 21.
-- Run the dedicated v3.11 QA against the built mod JAR: qa/validate_visual_animation_v311.py.
-- Check all 12 animation frames, metadata, model bindings, packaged texture bytes, review-sheet dimensions, and five stage-bound ecology hooks.
-- Full Agriculture / Kitchen / Nutrition / Fusion regression checks and real dedicated server boot remain in CI.
-- Fusion is still optional; the standard JAR works without it.
+The existing client display-tick feedback remains state-gated:
 
-## 4. In-client review
+| System | Gate | Cue |
+|---|---|---|
+| Pollination-eligible crops | Flowering ages 4–7 | Floral fleck / saved-pollinated marker |
+| Wild bee habitats | Existing ACTIVITY 1–3 | Rare nectar fleck |
+| Fermentation vat | Non-empty batch | Stage-dependent bubbles / completed marker |
+| Marine crops | Waterlogged, age 2–3 | Rare underwater bubble |
+| Fungal cultures | Age 2–3 | Occasional spore mote |
 
-Place all three stations and operate them with their existing utensils. Check idle frames are static, work surfaces animate during the short ACTIVE window, and particle cues stop afterwards. Inspect a flower-stage pollination crop, a bee habitat with activity, in-progress fermentation vat, mature fungus, and waterlogged sea crops.
+These visuals do not mutate gameplay state. Each display callback can emit at most one particle; inactive states return early.
 
-Finally inspect a dense farm at normal settings and with particles set to Minimal; compare FPS and particle clutter. Headless tests do **not** prove rendered animation quality; review in a real client.
+## 3. Swaying Garden interoperability
+
+Two block tags are included for optional client-side foliage animation:
+
+- `#gugugaga:wind_swaying_plants`: 212 crop, wild-plant and marine-plant blocks.
+- `#gugugaga:wind_swaying_fungi`: 6 fungal culture blocks.
+
+The mod does not depend on Swaying Garden. See `docs/CLIENT_VISUAL_COMPATIBILITY_V311.md` for client configuration.
+
+## 4. Validation and acceptance
+
+- `qa/validate_visual_animation_v311.py`: validates all 36 unique animation frames, metadata, model bindings, exact JAR bytes, static idle variants, and five ecology display hooks.
+- `qa/validate_swaying_garden_compat_v311.py`: cross-checks both compatibility tags against registered block IDs.
+- Existing Agriculture / Kitchen / Nutrition / Fusion regression checks and real dedicated-server boot remain in CI.
+- A real client review is still required for perceived motion quality, shader compatibility and FPS. Headless CI cannot establish visual smoothness.
