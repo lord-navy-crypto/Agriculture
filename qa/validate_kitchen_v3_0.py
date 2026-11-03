@@ -36,6 +36,13 @@ def main():
     assert "KitchenV3Content.ITEMS.getEntries()" in tab
     assert "BooleanProperty.create(\"active\")" in animation
     assert "level.scheduleTick(pos, this, 10)" in animation
+    assert "public void animateTick(" in animation
+    assert "state.getValue(ACTIVE)" in animation
+    assert "ParticleTypes.POOF" in animation
+    assert "ParticleTypes.SMOKE" in animation
+    assert "ParticleTypes.FLAME" in animation
+    assert "ParticleTypes.CAMPFIRE_COSY_SMOKE" in animation
+    assert "random.nextFloat()" in animation
     assert "animated.startWork(server, pos)" in processor
     assert "server.sendParticles(ParticleTypes." in processor
     assert "KitchenV3Content.ROLLING_PIN.get()" in processor
