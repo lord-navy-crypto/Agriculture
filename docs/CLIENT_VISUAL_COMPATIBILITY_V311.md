@@ -18,11 +18,13 @@ For Minecraft 1.21.1 / NeoForge, use the matching Swaying Garden 1.21.1 NeoForge
 
 Keep them inside the list already used by your installed Swaying Garden version; do not replace the rest of that file. The effect is client-side shader foliage movement and requires a compatible shader loader and shader pack. It is optional: the mod remains fully playable without Swaying Garden or shaders.
 
-## GeckoLib — next-stage 3D animation
+## GeckoLib — active 3D animation integration
 
-GeckoLib provides keyframed, bone-based 3D animation for entities, items and block entities. It is appropriate for articulated kitchen mechanisms, bee wing/body animation and other rigs. GeckoLib-animated blocks generally need a Block Entity and a dedicated renderer; adding the library alone does not animate existing vanilla baked block models.
+The current Gugu-Gaga v3.11 development branch now uses **GeckoLib 4.9.3 for Minecraft 1.21.1 NeoForge** as a required runtime dependency. Install the matching GeckoLib mod on both client and dedicated server.
 
-For this project, the safe path is a separate optional integration prototype, beginning with one low-risk workstation. Measure client frame time, server behavior, dedicated-server boot and no-GeckoLib fallback before expanding to all stations or entities. The core JAR should remain standalone; GeckoLib should not become mandatory merely to make crops sway.
+The existing Dough Bench is the first converted workstation. Its registry ID, recipes, rolling-pin requirement and server-owned ACTIVE state are preserved; only its in-world renderer uses a GeckoLib Block Entity and GeoBlockRenderer. See `docs/GECKOLIB_INTEGRATION_V311.md` for installation and acceptance checks.
+
+GeckoLib-animated blocks require a Block Entity and a dedicated renderer; adding the library alone does not animate existing vanilla baked block models. Further conversions will be staged one workstation or entity at a time, with dedicated-server and real-client checks before expansion.
 
 ## Oculus / Iris-family shader loaders
 
