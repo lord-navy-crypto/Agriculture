@@ -67,7 +67,7 @@ def has_animated_surface(model, surface_kind):
         return model.get("textures", {}).get("top") == "#motion"
     if surface_kind == "texture_hole":
         return model.get("textures", {}).get("hole") == "#motion" and any(
-            face.get("texture") == "#motion"
+            face.get("texture") == "#hole"
             for element in model.get("elements", [])
             for face in element.get("faces", {}).values()
         )
