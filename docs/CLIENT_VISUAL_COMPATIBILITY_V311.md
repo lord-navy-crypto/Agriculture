@@ -1,6 +1,6 @@
-# Client visual compatibility — Swaying Garden and GeckoLib
+# Client visual compatibility — Swaying Garden, GeckoLib and shader loaders
 
-## Swaying Garden (first client-side foliage integration)
+## Swaying Garden — first foliage integration
 
 Gugu-Gaga Agriculture publishes two ordinary Minecraft block tags:
 
@@ -18,12 +18,14 @@ For Minecraft 1.21.1 / NeoForge, use the matching Swaying Garden 1.21.1 NeoForge
 
 Keep them inside the list already used by your installed Swaying Garden version; do not replace the rest of that file. The effect is client-side shader foliage movement and requires a compatible shader loader and shader pack. It is optional: the mod remains fully playable without Swaying Garden or shaders.
 
-## GeckoLib (next-stage 3D animation)
+## GeckoLib — next-stage 3D animation
 
-GeckoLib is a different tool: it provides keyframed, bone-based 3D animation for entities, items and block entities. It is appropriate for articulated kitchen mechanisms, bee wing/body animation and other rigs. For GeckoLib-animated blocks, the architecture generally needs a Block Entity and a dedicated renderer; adding the library alone does not animate existing vanilla baked block models.
+GeckoLib provides keyframed, bone-based 3D animation for entities, items and block entities. It is appropriate for articulated kitchen mechanisms, bee wing/body animation and other rigs. GeckoLib-animated blocks generally need a Block Entity and a dedicated renderer; adding the library alone does not animate existing vanilla baked block models.
 
-The core Gugu-Gaga JAR remains standalone. Do not make GeckoLib a mandatory dependency just to improve crop sway. A separate, optional integration should be prototyped first, beginning with one low-risk workstation and a measured client/server test before expanding to all stations or entities.
+For this project, the safe path is a separate optional integration prototype, beginning with one low-risk workstation. Measure client frame time, server behavior, dedicated-server boot and no-GeckoLib fallback before expanding to all stations or entities. The core JAR should remain standalone; GeckoLib should not become mandatory merely to make crops sway.
 
-## Other render extensions
+## Oculus / Iris-family shader loaders
 
-Shader loaders (Iris-family projects) affect the client's shader pipeline; they are not replacements for GeckoLib and are not required for the mod's base animations. Keep shader-loader compatibility optional and validate the exact NeoForge 1.21.1 build before recommending a client pack.
+If “OLAP” meant Oculus: shader loaders are not 3D animation libraries. They affect the client's shader pipeline. The original Oculus project is not the correct version target for this 1.21.1 NeoForge project; use a loader explicitly built for 1.21.1, such as the compatible Iris/NeoForge line or a matching NeOculus fork, and test the exact shader pack. Do not bundle a shader loader into the Agriculture JAR.
+
+Keep all shader-loader compatibility optional. Swaying Garden, GeckoLib and shader loaders solve different problems and should not be treated as interchangeable dependencies.
