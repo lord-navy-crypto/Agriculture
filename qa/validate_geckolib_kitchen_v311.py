@@ -53,7 +53,7 @@ def main():
     assert all(f'Profile.{profile}' in content for profile in ("KNEAD", "SKILLET", "STEAMER"))
     assert "BlockEntityType.Builder.of" in content
     assert "GeckoKitchenStationContent.BLOCK_ENTITY_TYPES.register(modBus)" in main_mod
-    assert all(f'geckoStation("{profile}"' in kitchen for profile in PROFILES)
+    assert all(f'geckoStation("{station}"' in kitchen for station in ("dough_bench", "skillet_station", "bamboo_steamer"))
     assert all(f"GeckoKitchenStationContent.{name}.get()" in client for name in
                ("DOUGH_BENCH", "SKILLET_STATION", "BAMBOO_STEAMER"))
     assert "GeoBlockRenderer" in renderer
