@@ -66,7 +66,8 @@ def main():
         if id == "dough_bench":
             assert 'BLOCKS.register("dough_bench"' in v3
             assert "new GeckoKneadingBenchBlock" in v3
-            assert "KitchenProcessingBlock.Kind.KNEAD" in v3
+            gecko_block = (JROOT/"agriculture/GeckoKneadingBenchBlock.java").read_text("utf-8")
+            assert "KitchenProcessingBlock.Kind.KNEAD" in gecko_block
         else:
             assert f'station("{id}", KitchenProcessingBlock.Kind.{station["kind"].upper()})' in v3
             assert f'station("{id}"' in v3
