@@ -22,7 +22,7 @@ Keep them inside the list already used by your installed Swaying Garden version;
 
 The current Gugu-Gaga v3.11 development branch now uses **GeckoLib 4.9.3 for Minecraft 1.21.1 NeoForge** as a required runtime dependency. Install the matching GeckoLib mod on both client and dedicated server.
 
-The existing Dough Bench is the first converted workstation. Its registry ID, recipes, rolling-pin requirement and server-owned ACTIVE state are preserved; only its in-world renderer uses a GeckoLib Block Entity and GeoBlockRenderer. See `docs/GECKOLIB_INTEGRATION_V311.md` for installation and acceptance checks.
+The Dough Bench, Skillet Station and Bamboo Steamer now share a reusable GeckoLib Block Entity and GeoBlockRenderer. Their registry IDs, recipes, reusable utensil requirements and server-owned ACTIVE state are preserved. Each has its own 3D rig, texture atlas and idle/work animations. See `docs/GECKOLIB_INTEGRATION_V311.md` for installation and acceptance checks.
 
 GeckoLib-animated blocks require a Block Entity and a dedicated renderer; adding the library alone does not animate existing vanilla baked block models. Further conversions will be staged one workstation or entity at a time, with dedicated-server and real-client checks before expansion.
 
