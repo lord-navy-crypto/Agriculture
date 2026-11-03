@@ -1,0 +1,80 @@
+import groovy.json.JsonOutput
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+/*
+ * Short, genuine 4-frame texture animations for the three manual kitchen stations.
+ * Only the ACTIVE models reference these sprites, so idle stations remain static.
+ * The sprites are generated deterministically at build time; there is no renderer,
+ * block entity, entity scan, or extra server-side ticking.
+ */
+def motionAssets = layout.buildDirectory.dir('generated/resources/kitchenMotionV311')
+sourceSets.main.resources.srcDir(motionAssets)
+
+tasks.register('generateKitchenMotionV311') {
+    outputs.dir(motionAssets)
+    outputs.file(layout.buildDirectory.file('reports/agriculture/kitchen-motion-v311-contact-sheet.png'))
+    doLast {
+        File root = motionAssets.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def colors = [
+            dough_bench:[base:0xBCA57C, dark:0x927B58, light:0xE5D4A9, detail:0xF8EDCC],
+            skillet_station:[base:0x3D3834, dark:0x242626, light:0x745945, detail:0xE3A25A],
+            bamboo_steamer:[base:0xAE8754, dark:0x755936, light:0xD7B47B, detail:0xE4D9B6]
+        ]
+        BufferedImage sheet = new BufferedImage(256, 192, BufferedImage.TYPE_INT_ARGB)
+        for (int y=0;y<sheet.height;y++) for (int x=0;x<sheet.width;x++)
+            sheet.setRGB(x,y,(int)0xFF26302A)
+        colors.eachWithIndex { String id, Map pal, int row ->
+            BufferedImage atlas = new BufferedImage(16, 64, BufferedImage.TYPE_INT_ARGB)
+            for (int frame=0;frame<4;frame++) {
+                for (int y=0;y<16;y++) for (int x=0;x<16;x++) {
+                    int rgb = pal.base
+                    boolean rim = x<2 || x>13 || y<2 || y>13
+                    if (rim) rgb = pal.dark
+                    else if ((x+2*y)%7==0) rgb = pal.light
+                    if (id=='dough_bench') {
+                        // The moving, softly shadowed ridge reads as a rolling pass over dough.
+                        int ridge = 4 + frame*2
+                        if (Math.abs(x-ridge)<=1 && y>=4 && y<=11)
+                            rgb = Math.abs(x-ridge)==0 ? pal.detail : pal.light
+                        if (x>=3 && x<=12 && y>=5 && y<=10 && (x+y+frame)%11==0)
+                            rgb = pal.dark
+                    } else if (id=='skillet_station') {
+                        // Surface bubbles and hot-oil glints alternate in a stable skillet.
+                        if (x>=3 && x<=12 && y>=3 && y<=12 && (x*7+y*11+frame*5)%17==0)
+                            rgb=pal.detail
+                        if (x>=4 && x<=11 && y>=4 && y<=11 && (x*3+y*5+frame*3)%13==0)
+                            rgb=pal.light
+                    } else {
+                        // Bamboo weave stays stationary while condensation glints move.
+                        if (x>=2 && x<=13 && y>=2 && y<=13 && ((x+y)%5==0))
+                            rgb=pal.light
+                        if (x>=3 && x<=12 && y>=3 && y<=12
+                                && (x*5+y*7+frame*11)%19==0)
+                            rgb=pal.detail
+                    }
+                    int pixel=(int)(0xFF000000L | (rgb & 0xFFFFFF))
+                    atlas.setRGB(x,y+frame*16,pixel)
+                    for (int dy=0;dy<4;dy++) for (int dx=0;dx<4;dx++)
+                        sheet.setRGB(frame*64+x*4+dx,row*64+y*4+dy,pixel)
+                }
+            }
+            File out=new File(root,'assets/gugugaga/textures/block/kitchen_motion/'+id+'.png')
+            out.parentFile.mkdirs()
+            if(!ImageIO.write(atlas,'png',out))
+                throw new GradleException('Cannot encode animated work texture '+id)
+            new File(out.path+'.mcmeta').setText(JsonOutput.prettyPrint(
+                JsonOutput.toJson([animation:[frametime:2,interpolate:false,frames:[0,1,2,3]]]))+'\n','UTF-8')
+        }
+        File preview=layout.buildDirectory.file('reports/agriculture/kitchen-motion-v311-contact-sheet.png').get().asFile
+        preview.parentFile.mkdirs()
+        if(!ImageIO.write(sheet,'png',preview))
+            throw new GradleException('Cannot save kitchen animation proof sheet')
+        logger.lifecycle('KITCHEN_MOTION_V311_OK: 3 four-frame textures and one review sheet generated.')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateKitchenMotionV311')
+}
