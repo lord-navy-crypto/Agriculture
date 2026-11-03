@@ -5,7 +5,8 @@
     "particle": "minecraft:block/oak_planks",
     "wood": "minecraft:block/oak_planks",
     "accent": "minecraft:block/smooth_sandstone",
-    "metal": "minecraft:block/iron_block"
+    "metal": "minecraft:block/iron_block",
+    "motion": "gugugaga:block/kitchen_motion/dough_bench"
   },
   "elements": [
     {
@@ -88,7 +89,7 @@
           "texture": "#accent"
         },
         "up": {
-          "texture": "#accent"
+          "texture": "#motion"
         },
         "north": {
           "texture": "#accent"
