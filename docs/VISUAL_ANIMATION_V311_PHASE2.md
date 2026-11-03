@@ -5,7 +5,7 @@
 
 ## 1. Four-frame animated surfaces
 
-Nine deterministic four-frame PNG atlases are now generated at build time:
+Ten deterministic four-frame PNG atlases are now generated at build time:
 
 | Existing system | Animated surface | State behavior |
 |---|---|---|
@@ -14,6 +14,7 @@ Nine deterministic four-frame PNG atlases are now generated at build time:
 | Bamboo Steamer | Condensation and bamboo highlights | Only ACTIVE model |
 | Fermentation Vat | Bubbles and surface rings | Stage 1, 2 and 3 each use a distinct palette |
 | Salt Evaporation Pan | Brine ripples, concentrated brine shimmer, salt crystal glints | Stage 1, 2 and 3; empty stage remains static |
+| Wild bee habitats | Pollen-colored motes inside the entrance | Only ACTIVITY=3 models for all four habitat species |
 
 - Gradle task: `generateKitchenMotionV311`.
 - Each atlas is 16×64 pixels: four 16×16 frames, two game ticks per frame.
@@ -49,7 +50,7 @@ The mod does not depend on Swaying Garden. See `docs/CLIENT_VISUAL_COMPATIBILITY
 
 ## 4. Validation and acceptance
 
-- `qa/validate_visual_animation_v311.py`: validates all 36 unique animation frames, metadata, model bindings, exact JAR bytes, static idle variants, and five ecology display hooks.
+- `qa/validate_visual_animation_v311.py`: validates all 40 unique animation frames, metadata, model bindings, exact JAR bytes, static idle variants, four bee-habitat bindings, and five ecology display hooks.
 - `qa/validate_swaying_garden_compat_v311.py`: cross-checks both compatibility tags against registered block IDs.
 - Existing Agriculture / Kitchen / Nutrition / Fusion regression checks and real dedicated-server boot remain in CI.
 - A real client review is still required for perceived motion quality, shader compatibility and FPS. Headless CI cannot establish visual smoothness.
