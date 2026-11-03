@@ -63,14 +63,9 @@ def main():
         id=station["id"]
         for lang in (en,zh):
             assert lang[f"block.gugugaga.{id}"] and lang[f"item.gugugaga.{id}"]
-        if id == "dough_bench":
-            assert 'BLOCKS.register("dough_bench"' in v3
-            assert "new GeckoKneadingBenchBlock" in v3
-            gecko_block = (JROOT/"agriculture/GeckoKneadingBenchBlock.java").read_text("utf-8")
-            assert "KitchenProcessingBlock.Kind.KNEAD" in gecko_block
-        else:
-            assert f'station("{id}", KitchenProcessingBlock.Kind.{station["kind"].upper()})' in v3
-            assert f'station("{id}"' in v3
+        assert f'geckoStation("{id}"' in v3
+        assert "new GeckoKitchenStationBlock" in v3
+        assert f'KitchenProcessingBlock.Kind.{station["kind"].upper()}' in v3
         states=load(RES/f"assets/gugugaga/blockstates/{id}.json")["variants"]
         assert set(states)=={"active=false","active=true"}
         for active in (False,True):
