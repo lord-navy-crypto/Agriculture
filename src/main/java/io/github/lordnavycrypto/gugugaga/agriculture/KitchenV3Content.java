@@ -19,12 +19,15 @@ public final class KitchenV3Content {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GuguGagaMod.MOD_ID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GuguGagaMod.MOD_ID);
 
-    public static final DeferredBlock<KitchenV3AnimatedBlock> DOUGH_BENCH =
-            station("dough_bench", KitchenProcessingBlock.Kind.KNEAD);
-    public static final DeferredBlock<KitchenV3AnimatedBlock> SKILLET_STATION =
-            station("skillet_station", KitchenProcessingBlock.Kind.FRY);
-    public static final DeferredBlock<KitchenV3AnimatedBlock> BAMBOO_STEAMER =
-            station("bamboo_steamer", KitchenProcessingBlock.Kind.STEAM);
+    public static final DeferredBlock<GeckoKitchenStationBlock> DOUGH_BENCH =
+            geckoStation("dough_bench", KitchenProcessingBlock.Kind.KNEAD,
+                    GeckoKitchenStationBlockEntity.Profile.KNEAD);
+    public static final DeferredBlock<GeckoKitchenStationBlock> SKILLET_STATION =
+            geckoStation("skillet_station", KitchenProcessingBlock.Kind.FRY,
+                    GeckoKitchenStationBlockEntity.Profile.SKILLET);
+    public static final DeferredBlock<GeckoKitchenStationBlock> BAMBOO_STEAMER =
+            geckoStation("bamboo_steamer", KitchenProcessingBlock.Kind.STEAM,
+                    GeckoKitchenStationBlockEntity.Profile.STEAMER);
     public static final DeferredItem<Item> DOUGH_BENCH_ITEM =
             ITEMS.register("dough_bench", () -> new BlockItem(DOUGH_BENCH.get(), new Item.Properties()));
     public static final DeferredItem<Item> SKILLET_STATION_ITEM =
@@ -99,9 +102,10 @@ public final class KitchenV3Content {
     public static final DeferredItem<Item> COUNTRY_BREAD_BASKET = food("country_bread_basket", 7, 0.70F);
     public static final DeferredItem<Item> GARDEN_LUNCH_TRAY = food("garden_lunch_tray", 8, 0.80F);
 
-    private static DeferredBlock<KitchenV3AnimatedBlock> station(
-            String id, KitchenProcessingBlock.Kind kind) {
-        return BLOCKS.register(id, () -> new KitchenV3AnimatedBlock(kind,
+    private static DeferredBlock<GeckoKitchenStationBlock> geckoStation(
+            String id, KitchenProcessingBlock.Kind kind,
+            GeckoKitchenStationBlockEntity.Profile profile) {
+        return BLOCKS.register(id, () -> new GeckoKitchenStationBlock(kind, profile,
                 BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
                         .strength(1.8F).sound(SoundType.WOOD).noOcclusion()));
     }

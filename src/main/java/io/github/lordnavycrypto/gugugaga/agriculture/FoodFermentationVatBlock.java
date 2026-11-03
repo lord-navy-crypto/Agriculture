@@ -111,6 +111,26 @@ public final class FoodFermentationVatBlock extends Block {
         return InteractionResult.SUCCESS;
     }
 
+    /**
+     * Stage-dependent ambient bubbles are visual status cues only. This
+     * fictional food-culture timer does not model actual fermentation safety.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        int stage = state.getValue(STAGE);
+        if (state.getValue(BATCH) == 0 || random.nextInt(stage >= 3 ? 46 : 30) != 0) {
+            return;
+        }
+        double x = pos.getX() + 0.32D + random.nextDouble() * 0.36D;
+        double z = pos.getZ() + 0.32D + random.nextDouble() * 0.36D;
+        double y = pos.getY() + 0.79D;
+        if (stage == 3) {
+            level.addParticle(ParticleTypes.COMPOSTER, x, y, z, 0, 0.015D, 0);
+        } else {
+            level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, 0, 0.02D, 0);
+        }
+    }
+
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(BATCH) == 0 || state.getValue(STAGE) >= 3) return;

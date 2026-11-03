@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 import com.mojang.serialization.MapCodec;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -72,6 +73,21 @@ public final class FungalCultureBlock extends BushBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    /**
+     * A few visible spores at late growth stages; no changes to culture
+     * reproduction, yields, or the server's growth random ticks.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(AGE) < 2 || random.nextInt(95) != 0) {
+            return;
+        }
+        double x = pos.getX() + 0.28D + random.nextDouble() * 0.44D;
+        double z = pos.getZ() + 0.28D + random.nextDouble() * 0.44D;
+        level.addParticle(ParticleTypes.SPORE_BLOSSOM_AIR,
+                x, pos.getY() + 0.40D, z, 0, 0.01D, 0);
     }
 
     @Override
