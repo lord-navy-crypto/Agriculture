@@ -65,6 +65,17 @@ def main() -> int:
     require(commands, 'literal("level_3")', "operator travel command for Level 3")
     require(commands, 'literal("level_4")', "operator travel command for Level 4")
 
+    passage_models = {
+        "level_1_to_3": "minecraft:block/iron_block",
+        "level_3_to_1": "minecraft:block/copper_block",
+        "level_3_to_4": "minecraft:block/white_concrete",
+        "level_4_to_3": "minecraft:block/light_gray_concrete",
+    }
+    for passage, model in passage_models.items():
+        blockstate = read_json(RES / f"assets/threshold/blockstates/{passage}.json")
+        assert blockstate["variants"][""]["model"] == model
+
+
     modifier = read_json(RES / "data/threshold/neoforge/biome_modifier/room_layout.json")
     assert sorted(modifier["biomes"]) == [
         "threshold:level_0", "threshold:level_1",
