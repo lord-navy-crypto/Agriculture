@@ -125,7 +125,7 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Wikidot Level 1 documents a smooth transition into Level 2. Wikidot Level 2 documents anomalous exits to Levels 1, 3 and 4. Wikidot Level 3 documents elevators that can lead to Level 4 or Level 5.
 - Fandom Level 2 describes fire exits to Levels 1 or 3 and certain hallways that may lead to Level 4 or Level 27. Fandom Level 4 describes the metal Office Sector entrance from Level 3 and several other destination-specific exits.
 - The Fandom Level 3 page currently carries a rewrite notice; the Wikidot Level 4 page also carries a rewrite notice. Their current pages take priority over archived material, and disputed routes remain configurable.
-- No Phantom-level network or Phantom traversal rules are used.
+- Only the documented ordinary-level route graph is implemented; no separate mirrored level family is generated.
 
 ### Source pages
 - Wikidot: https://backrooms-wiki.wikidot.com/level-0
