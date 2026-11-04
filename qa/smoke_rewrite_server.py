@@ -16,14 +16,17 @@ CUISINE_INIT = "GUGUGAGA_CROP_CUISINE_RUNTIME_INIT_OK"
 READY = re.compile(r"Done \([0-9.,]+s\)! For help, type", re.I)
 LIMIT = int(os.environ.get("GUGUGAGA_SERVER_BOOT_TIMEOUT", "420"))
 
+
 def run():
     for folder in (ROOT / "runs/server", ROOT / "run"):
         folder.mkdir(parents=True, exist_ok=True)
         (folder / "eula.txt").write_text("eula=true\n", encoding="utf-8")
     LOG.parent.mkdir(parents=True, exist_ok=True)
     with LOG.open("wb") as stream:
+        # Use the root task path explicitly: the repository now also contains
+        # Threshold's own :threshold:runServer task.
         process = subprocess.Popen(
-            ["gradle", "--no-daemon", "--console=plain", "runServer"],
+            ["gradle", "--no-daemon", "--console=plain", ":runServer"],
             cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT,
             start_new_session=True)
         try:
@@ -55,6 +58,7 @@ def run():
                     except ProcessLookupError:
                         pass
                     process.wait(timeout=5)
+
 
 if __name__ == "__main__":
     sys.exit(run())
