@@ -98,6 +98,7 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/client/ThresholdWatcherRenderer.class",
     "io/github/lordnavycrypto/threshold/client/ThresholdHoundModel.class",
     "io/github/lordnavycrypto/threshold/client/ThresholdHoundRenderer.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdClientEvents.class",
     "assets/threshold/geo/watcher.geo.json",
     "assets/threshold/animations/watcher.animation.json",
     "assets/threshold/textures/entity/watcher.png",
