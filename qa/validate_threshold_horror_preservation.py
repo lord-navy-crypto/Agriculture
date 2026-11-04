@@ -161,8 +161,8 @@ def main() -> int:
             "Level 0 rejects hostile projectiles")
     require(r"event\.getEntity\(\)\s+instanceof\s+ThresholdHoundEntity", director,
             "Hound dimension is explicitly restricted")
-    require(r"level\.dimension\(\)\.equals\(ThresholdDimensions\.LEVEL_1\)\s+&&\s+event\.getEntity\(\)\s+instanceof\s+Mob\s+mob\s+&&\s+!\(mob\s+instanceof\s+ThresholdHoundEntity\)", director,
-            "Level 1 admits only authored Threshold mobs in this first pass")
+    require(r"level\.dimension\(\)\.equals\(ThresholdDimensions\.LEVEL_1\)\s+&&\s+event\.getEntity\(\)\s+instanceof\s+LivingEntity\s+living\s+&&\s+!\(living\s+instanceof\s+Player\)\s+&&\s+!\(living\s+instanceof\s+ThresholdHoundEntity\)", director,
+            "Level 1 admits only players and authored Threshold creatures in this first pass")
     require(r"spawnObservers\(level\)", director, "Level 0 observer spawner exists")
     require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
     require(r"playerRoomX\s*==\s*0\s*&&\s*playerRoomZ\s*==\s*0", director,
