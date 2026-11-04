@@ -27,7 +27,7 @@
 - Development commands are operator-only; physical exit transitions are not yet implemented.
 - Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
 - No new mobs, no AI hunters, no sound jump scares or client-only shaders.
-- Placeholder models reuse Minecraft textures; bespoke artwork comes after gameplay verification.
+- Five original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
 - World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
 ## Test

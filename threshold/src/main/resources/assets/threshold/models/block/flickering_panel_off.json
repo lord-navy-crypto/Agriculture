@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "minecraft:block/iron_block"
+    "all": "threshold:block/flickering_panel_off"
   }
 }
