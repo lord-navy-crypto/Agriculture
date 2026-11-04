@@ -107,8 +107,8 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 
 ### Source-backed route graph
 - Level 0 → Level 1: the original unstable-wall passage is preserved.
-- Level 1 → Level 2: smooth environmental transition with gradually increasing pipes and dials, matching the Wikidot description.
-- Level 2 → Level 1 / Level 3: service exits and fire exits. The Fandom fire-exit variant can resolve to either Level 1 or Level 3.
+- Level 1 → Level 2: smooth environmental transition with gradually increasing pipes and service fittings, matching the Wikidot description.
+- Level 2 → Level 1 / Level 3: unlocked doors and fire exits. The Fandom fire-exit variant can resolve to either Level 1 or Level 3.
 - Level 2 → Level 1 / Level 3 / Level 4: unmarked branch doors model the Wikidot version's anomalous doors to the common adjacent levels.
 - Level 3 → Level 2: retracing the service corridor is retained as a practical return route for gameplay; this is not represented as a newly documented universal canon exit.
 - Level 3 → Level 4: the metallic Office Sector door is based on the Fandom Level 4 entrance description.
