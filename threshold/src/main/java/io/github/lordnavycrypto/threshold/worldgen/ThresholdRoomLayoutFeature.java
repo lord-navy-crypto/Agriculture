@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
- * Builds a deterministic 16x16 chunk slice for Threshold Levels 0 through 4.
+ * Builds deterministic 16x16 chunk slices for Threshold Levels 0 through 5.
  * Room dimensions are multiples of 16, and every block write stays inside
  * the chunk currently being decorated.
  */
@@ -38,6 +38,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_3_supply"));
     private static final ResourceKey<LootTable> LEVEL_4_SUPPLY_LOOT = ResourceKey.create(
             Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_4_supply"));
+    private static final ResourceKey<LootTable> LEVEL_5_SUPPLY_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_5_supply"));
 
     private static final int LEVEL_0_ROOM_SIZE = 32;
     private static final int LEVEL_0_CARPET_Y = 64;
@@ -61,6 +63,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static final int LEVEL_4_WALL_BOTTOM = 64;
     private static final int LEVEL_4_WALL_TOP = 70;
     private static final int LEVEL_4_CEILING_Y = 71;
+    private static final int LEVEL_5_ROOM_SIZE = 32;
+    private static final int LEVEL_5_WALL_BOTTOM = 64;
+    private static final int LEVEL_5_WALL_TOP = 70;
+    private static final int LEVEL_5_CEILING_Y = 71;
 
     public ThresholdRoomLayoutFeature() {
         super(NoneFeatureConfiguration.CODEC);
@@ -91,6 +97,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_4)) {
             buildLevel4Chunk(world, chunkX, chunkZ);
+            return true;
+        }
+        if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_5)) {
+            buildLevel5Chunk(world, chunkX, chunkZ);
             return true;
         }
         return false;
@@ -568,6 +578,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get().defaultBlockState());
                     set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get().defaultBlockState());
                 }
+                // The service elevator usually serves Level 4; a rarer draw reaches Level 5.
+                if (roomX == 0 && roomZ == 0 && localX == 16 && localZ == LEVEL_3_ROOM_SIZE - 1) {
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_ELEVATOR.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_ELEVATOR.get().defaultBlockState());
+                }
             }
         }
     }
@@ -675,6 +690,17 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         && (localZ == 8 || localZ == 24 || localZ == 40)) {
                     set(world, pos, x, 70, z, Blocks.SEA_LANTERN.defaultBlockState());
                 }
+                // An old-fashioned stairwell climbs to the hotel entrance.
+                if (roomX == 0 && roomZ == 0 && localZ == 16 && localX >= 40 && localX <= 46) {
+                    int stepHeight = (localX - 40) / 2;
+                    for (int y = 64; y <= 64 + stepHeight; y++) {
+                        set(world, pos, x, y, z, Blocks.SPRUCE_PLANKS.defaultBlockState());
+                    }
+                }
+                if (roomX == 0 && roomZ == 0 && localX == LEVEL_4_ROOM_SIZE - 1 && localZ == 16) {
+                    set(world, pos, x, 68, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_5.get().defaultBlockState());
+                    set(world, pos, x, 69, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_5.get().defaultBlockState());
+                }
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get().defaultBlockState());
                     set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get().defaultBlockState());
@@ -686,6 +712,214 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static int level4Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
         return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0x4A40L), 5);
+    }
+
+
+    /**
+     * Level 5 — Terror Hotel. The three accessible zones are deliberately
+     * distinct: a furnished Main Hall, the Beverly ballroom and a dense Boiler
+     * Room. Rare guest wings and the unconfirmed Lobby Room are seed-stable
+     * variations. No casino or wagering mechanics are implemented.
+     */
+    private static void buildLevel5Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
+        long seed = world.getSeed();
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_5_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_5_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_5_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_5_ROOM_SIZE);
+                int style = level5Architecture(seed, roomX, roomZ);
+
+                BlockState floor = switch (style) {
+                    case 1 -> Blocks.CALCITE.defaultBlockState();
+                    case 2 -> Blocks.POLISHED_BLACKSTONE.defaultBlockState();
+                    case 3 -> Blocks.SPRUCE_PLANKS.defaultBlockState();
+                    case 4 -> Blocks.POLISHED_DEEPSLATE.defaultBlockState();
+                    case 5 -> Blocks.WHITE_CONCRETE.defaultBlockState();
+                    default -> Blocks.DARK_OAK_PLANKS.defaultBlockState();
+                };
+                BlockState wall = switch (style) {
+                    case 1 -> Blocks.RED_NETHER_BRICKS.defaultBlockState();
+                    case 2 -> Blocks.DEEPSLATE_BRICKS.defaultBlockState();
+                    case 3 -> Blocks.DARK_OAK_PLANKS.defaultBlockState();
+                    case 4 -> Blocks.POLISHED_BLACKSTONE_BRICKS.defaultBlockState();
+                    case 5 -> Blocks.GRAY_CONCRETE.defaultBlockState();
+                    default -> Blocks.RED_TERRACOTTA.defaultBlockState();
+                };
+                set(world, pos, x, FLOOR_Y, z, floor);
+
+                boolean boundary = isBoundary(localX, localZ, LEVEL_5_ROOM_SIZE);
+                boolean doorway = boundary && isDoorway(
+                        seed, LEVEL_5_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_5_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+
+                for (int y = LEVEL_5_WALL_BOTTOM; y <= LEVEL_5_WALL_TOP; y++) {
+                    if (boundary && !doorway) {
+                        set(world, pos, x, y, z, wall);
+                    } else if (style == 0 && y == 69
+                            && (localX == 2 || localX == 29)
+                            && Math.floorMod(localZ, 4) == 0) {
+                        // Gold detailing frames the otherwise quiet red Main Hall.
+                        set(world, pos, x, y, z, Blocks.GOLD_BLOCK.defaultBlockState());
+                    } else if (style == 2 && y == 69
+                            && (localX == 4 || localX == 27 || localZ == 4 || localZ == 27)) {
+                        // Exposed copper mains in the Boiler Room.
+                        set(world, pos, x, y, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                    } else if (style == 2 && y == 70
+                            && (localX == 4 || localX == 27) && Math.floorMod(localZ, 4) == 0) {
+                        set(world, pos, x, y, z, Blocks.CHAIN.defaultBlockState());
+                    }
+                }
+
+                BlockState ceiling = style == 2
+                        ? Blocks.DEEPSLATE_TILES.defaultBlockState()
+                        : style == 1 ? Blocks.RED_NETHER_BRICKS.defaultBlockState()
+                        : Blocks.BROWN_CONCRETE.defaultBlockState();
+                if ((localX == 8 || localX == 24) && (localZ == 8 || localZ == 24)) {
+                    ceiling = Blocks.SEA_LANTERN.defaultBlockState();
+                }
+                set(world, pos, x, LEVEL_5_CEILING_Y, z, ceiling);
+
+                if (!protectedRoute) {
+                    switch (style) {
+                        case 0 -> {
+                            // Red-and-gold carpet runners and restrained antique furniture.
+                            if (localZ >= 14 && localZ <= 17) {
+                                set(world, pos, x, 64, z, Blocks.RED_CARPET.defaultBlockState());
+                            } else if ((localZ == 12 || localZ == 19)
+                                    && localX >= 8 && localX <= 23) {
+                                set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                            }
+                            if ((localX == 7 || localX == 24) && localZ >= 8 && localZ <= 11) {
+                                set(world, pos, x, 64, z, Blocks.SPRUCE_STAIRS.defaultBlockState());
+                            }
+                            if (localX == 28 && localZ == 8
+                                    && roomX == 0 && roomZ == 0) {
+                                set(world, pos, x, 65, z,
+                                        ThresholdEnvironmentBlocks.LEVEL_5_ELEVATOR_PANEL.get().defaultBlockState());
+                            }
+                        }
+                        case 1 -> {
+                            // Beverly Room: a broad ballroom with a central table and chandelier.
+                            if (localX >= 14 && localX <= 17
+                                    && localZ >= 14 && localZ <= 17) {
+                                set(world, pos, x, 64, z, Blocks.OAK_SLAB.defaultBlockState());
+                            }
+                            if ((localX == 12 || localX == 19) && localZ == 16) {
+                                set(world, pos, x, 64, z, Blocks.OAK_STAIRS.defaultBlockState());
+                            }
+                            if (localX == 16 && localZ == 16) {
+                                set(world, pos, x, 67, z, Blocks.CHAIN.defaultBlockState());
+                                set(world, pos, x, 68, z, Blocks.CHAIN.defaultBlockState());
+                                set(world, pos, x, 69, z, Blocks.SEA_LANTERN.defaultBlockState());
+                            }
+                            if ((localX == 8 || localX == 23) && localZ >= 8 && localZ <= 23
+                                    && Math.floorMod(localZ, 5) == 0) {
+                                set(world, pos, x, 65, z, Blocks.GOLD_BLOCK.defaultBlockState());
+                            }
+                        }
+                        case 2 -> {
+                            // Boiler Room: cramped machinery, pipework and shallow leaking channels.
+                            if ((localX == 7 || localX == 8 || localX == 23 || localX == 24)
+                                    && localZ >= 7 && localZ <= 24) {
+                                set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                                set(world, pos, x, 65, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            }
+                            if (localX == 6 && localZ >= 9 && localZ <= 22) {
+                                set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
+                            }
+                            if (localX == 10 && localZ == 8) {
+                                set(world, pos, x, 64, z, Blocks.BLAST_FURNACE.defaultBlockState());
+                            }
+                            if (localX == 21 && localZ == 8) {
+                                set(world, pos, x, 64, z, Blocks.CAULDRON.defaultBlockState());
+                            }
+                            if ((localX == 10 || localX == 21)
+                                    && localZ >= 12 && localZ <= 22) {
+                                set(world, pos, x, 68, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        case 3 -> {
+                            // Guest suites: quiet rooms with bookshelves and simple furniture.
+                            if (localX >= 8 && localX <= 13 && localZ == 8) {
+                                set(world, pos, x, 64, z, Blocks.BOOKSHELF.defaultBlockState());
+                            }
+                            if (localZ == 20 && localX >= 14 && localX <= 18) {
+                                set(world, pos, x, 64, z, Blocks.SPRUCE_PLANKS.defaultBlockState());
+                            }
+                            if ((localX == 13 || localX == 19) && localZ == 20) {
+                                set(world, pos, x, 64, z, Blocks.SPRUCE_STAIRS.defaultBlockState());
+                            }
+                        }
+                        case 4 -> {
+                            // Impossible corridor variant: repeated dark panels and compressed sightlines.
+                            if ((localX == 10 || localX == 21)
+                                    && localZ >= 6 && localZ <= 25) {
+                                set(world, pos, x, 65, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                                set(world, pos, x, 66, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                                set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        case 5 -> {
+                            // Rare, unconfirmed Lobby Room: an empty reception desk and isolated light.
+                            if (localZ == 22 && localX >= 10 && localX <= 21) {
+                                set(world, pos, x, 64, z, Blocks.QUARTZ_SLAB.defaultBlockState());
+                            }
+                            if (localX == 16 && localZ == 22) {
+                                set(world, pos, x, 65, z, Blocks.GOLD_BLOCK.defaultBlockState());
+                            }
+                            if (localX == 16 && localZ == 10) {
+                                set(world, pos, x, 69, z, Blocks.SEA_LANTERN.defaultBlockState());
+                            }
+                        }
+                        default -> { }
+                    }
+                }
+
+                // Supply caches are scarce and use Agriculture's real hydration and food items.
+                if ((style == 0 || style == 2) && localX == 8 && localZ == 8
+                        && !protectedRoute
+                        && ((roomX == 0 && roomZ == 0)
+                        || Math.floorMod(mix(seed, roomX, roomZ, 0x5A77L), 7) == 0)) {
+                    placeLootBarrel(world, pos, x, 64, z,
+                            LEVEL_5_SUPPLY_LOOT, mix(seed, x, z, 0x5A78L));
+                }
+
+                // The two source-backed exits sit on opposite sides of the entry Main Hall.
+                if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
+                    set(world, pos, x, 64, z,
+                            ThresholdEnvironmentBlocks.LEVEL_5_TO_3.get().defaultBlockState());
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_5_TO_3.get().defaultBlockState());
+                }
+                if (roomX == 0 && roomZ == 0 && localX == LEVEL_5_ROOM_SIZE - 1 && localZ == 16) {
+                    set(world, pos, x, 64, z,
+                            ThresholdEnvironmentBlocks.LEVEL_5_TO_4.get().defaultBlockState());
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_5_TO_4.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static int level5Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0; // Main Hall / entry wing
+        if (roomX == 1 && roomZ == 0) return 1; // Beverly Room
+        if (roomX == 0 && roomZ == 1) return 2; // Boiler Room
+        int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0x5A50L), 100);
+        if (roll < 45) return 0;
+        if (roll < 67) return 2;
+        if (roll < 82) return 3;
+        if (roll < 97) return 4;
+        return 5; // rare Lobby Room anomaly
     }
 
     /*
