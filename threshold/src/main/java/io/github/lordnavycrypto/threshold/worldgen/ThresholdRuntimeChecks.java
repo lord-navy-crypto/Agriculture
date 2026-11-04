@@ -97,6 +97,29 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL1_FLICKERING_LIGHT_OK"
                 : "THRESHOLD_LEVEL1_FLICKERING_LIGHT_FAIL");
 
+        boolean level0HorrorIdentity =
+                level0.getBlockState(new BlockPos(0, 65, 4))
+                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())
+                && level0.getBlockState(new BlockPos(4, 64, 4)).is(Blocks.YELLOW_CARPET)
+                && level0.getBlockState(new BlockPos(0, 63, 4)).is(Blocks.GRAY_CONCRETE)
+                && level0.getBlockState(new BlockPos(8, 72, 8))
+                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FLICKERING_PANEL.get());
+        System.out.println(level0HorrorIdentity
+                ? "THRESHOLD_LEVEL0_HORROR_IDENTITY_OK"
+                : "THRESHOLD_LEVEL0_HORROR_IDENTITY_FAIL");
+
+        boolean level1HorrorIdentity =
+                level1.getBlockState(new BlockPos(0, 65, 4))
+                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get())
+                && level1.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.SMOOTH_STONE)
+                && level1.getBlockState(new BlockPos(12, 73, 12))
+                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.CEILING_VENT.get())
+                && level1.getBlockState(new BlockPos(24, 74, 24))
+                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FLICKERING_PANEL.get());
+        System.out.println(level1HorrorIdentity
+                ? "THRESHOLD_LEVEL1_HORROR_IDENTITY_OK"
+                : "THRESHOLD_LEVEL1_HORROR_IDENTITY_FAIL");
+
         boolean freshwaterBuilt = level1.getBlockState(new BlockPos(16, 63, 16)).is(Blocks.WATER)
                 && level1.getFluidState(new BlockPos(16, 63, 16)).isSource();
         System.out.println(freshwaterBuilt
