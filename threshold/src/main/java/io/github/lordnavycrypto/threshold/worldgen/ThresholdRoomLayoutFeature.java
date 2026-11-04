@@ -404,6 +404,113 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         return Math.floorMod((int) mix(seed, roomX, roomZ, 0x3A30L), 6);
     }
 
+
+    /** Level 4: quiet, mostly empty offices with occasional service areas. */
+    private static void buildLevel4Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
+        long seed = world.getSeed();
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_4_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_4_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_4_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_4_ROOM_SIZE);
+                int style = level4Architecture(seed, roomX, roomZ);
+                BlockState floor = style == 4
+                        ? Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState()
+                        : Blocks.SMOOTH_STONE.defaultBlockState();
+                BlockState wall = style == 3
+                        ? Blocks.WHITE_CONCRETE.defaultBlockState()
+                        : Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState();
+                set(world, pos, x, FLOOR_Y, z, floor);
+
+                boolean boundary = isBoundary(localX, localZ, LEVEL_4_ROOM_SIZE);
+                boolean doorway = boundary && isDoorway(
+                        seed, LEVEL_4_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_4_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+
+                for (int y = LEVEL_4_WALL_BOTTOM; y <= LEVEL_4_WALL_TOP; y++) {
+                    if (boundary && !doorway) {
+                        set(world, pos, x, y, z, wall);
+                    }
+                }
+                set(world, pos, x, LEVEL_4_CEILING_Y, z,
+                        Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState());
+
+                if (!protectedRoute) {
+                    if (style == 1) {
+                        // Sparse desk and chair in an otherwise empty office.
+                        if (localX >= 15 && localX <= 19 && localZ == 18) {
+                            set(world, pos, x, 64, z, Blocks.OAK_SLAB.defaultBlockState());
+                        }
+                        if (localX == 14 && localZ == 18) {
+                            set(world, pos, x, 64, z, Blocks.OAK_STAIRS.defaultBlockState());
+                        }
+                    } else if (style == 2) {
+                        // Reception counter and a static glass-front cabinet.
+                        if (localZ >= 12 && localZ <= 15 && localX >= 17 && localX <= 29) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                        }
+                        if (localX == 32 && localZ >= 12 && localZ <= 16) {
+                            set(world, pos, x, 64, z, Blocks.BLACK_CONCRETE.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                        }
+                    } else if (style == 3) {
+                        // Blacked-out window panels; no openings or unsafe drops.
+                        if ((localX == 12 || localX == 35) && localZ >= 10 && localZ <= 22) {
+                            set(world, pos, x, 65, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                            if (Math.floorMod(localZ, 4) == 0) {
+                                set(world, pos, x, 68, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                    } else if (style == 4) {
+                        // A sealed decorative water cooler and nearby supply cabinet.
+                        if (localX == 8 && localZ == 8) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.BLUE_STAINED_GLASS.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                        if (localX == 10 && localZ == 8) {
+                            placeLootBarrel(world, pos, x, 64, z,
+                                    LEVEL_4_SUPPLY_LOOT, mix(seed, x, z, 0x4A77L));
+                        }
+                    } else if (style == 5) {
+                        // Long meeting table and only a couple of chairs.
+                        if (localZ == 24 && localX >= 15 && localX <= 31) {
+                            set(world, pos, x, 64, z, Blocks.OAK_SLAB.defaultBlockState());
+                        }
+                        if ((localX == 14 || localX == 32) && localZ == 24) {
+                            set(world, pos, x, 64, z, Blocks.OAK_STAIRS.defaultBlockState());
+                        }
+                    }
+                }
+
+                if (roomX == 0 && roomZ == 0 && localX == 10 && localZ == 8) {
+                    placeLootBarrel(world, pos, x, 64, z,
+                            LEVEL_4_SUPPLY_LOOT, mix(seed, x, z, 0x4A78L));
+                }
+                if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static int level4Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0x4A40L), 5);
+    }
+
     /*
      * Architectural overlays add authored room archetypes without changing
      * the established 32x32 / 48x48 room grid, entry rooms, exits or floor Y.
