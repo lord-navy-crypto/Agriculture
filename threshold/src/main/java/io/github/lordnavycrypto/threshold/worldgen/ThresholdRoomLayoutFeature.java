@@ -205,7 +205,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 int z = minZ + dz;
                 int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
                 int localZ = Math.floorMod(z, LEVEL_1_ROOM_SIZE);
-                int style = level1Style(seed, roomX, roomZ);
+                int style = roomX == 1 && roomZ == 0 ? 3 : level1Style(seed, roomX, roomZ);
 
                 BlockState floor = style == 3
                         ? Blocks.GRAY_CONCRETE.defaultBlockState()
