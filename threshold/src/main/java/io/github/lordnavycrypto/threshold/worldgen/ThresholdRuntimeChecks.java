@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
@@ -47,6 +48,21 @@ public final class ThresholdRuntimeChecks {
 
         System.out.println(level0Built
                 ? "THRESHOLD_LEVEL0_WORLDGEN_OK" : "THRESHOLD_LEVEL0_WORLDGEN_FAIL");
+        // Regression for the carpet seam visible in Level 0: a wall base
+        // must be full-height and match the block directly above it.
+        BlockState wallFooting = level0.getBlockState(new BlockPos(0, 64, 5));
+        BlockState wallAbove = level0.getBlockState(new BlockPos(0, 65, 5));
+        boolean wallFloorConnected = wallFooting.is(
+                io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())
+                && wallAbove.is(
+                io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FADED_WALLPAPER.get());
+        System.out.println(wallFloorConnected
+                ? "THRESHOLD_LEVEL0_WALL_FOOTING_OK" : "THRESHOLD_LEVEL0_WALL_FOOTING_FAIL");
+
+        boolean transitionFooting = level0.getBlockState(new BlockPos(0, 64, 15))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
+        System.out.println(transitionFooting
+                ? "THRESHOLD_LEVEL0_PASSAGE_FOOTING_OK" : "THRESHOLD_LEVEL0_PASSAGE_FOOTING_FAIL");
         System.out.println(level1Built
                 ? "THRESHOLD_LEVEL1_WORLDGEN_OK" : "THRESHOLD_LEVEL1_WORLDGEN_FAIL");
         boolean wallBuilt = level0.getBlockState(new BlockPos(0, 66, 15))

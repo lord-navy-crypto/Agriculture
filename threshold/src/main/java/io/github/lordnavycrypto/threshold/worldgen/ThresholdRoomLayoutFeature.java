@@ -90,24 +90,40 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     default -> ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState();
                 };
 
-                set(world, pos, x, FLOOR_Y, z, Blocks.GRAY_CONCRETE.defaultBlockState());
-                set(world, pos, x, LEVEL_0_CARPET_Y, z, carpet);
-
                 boolean boundary = isBoundary(localX, localZ, LEVEL_0_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
                         seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ, false);
+                boolean transition = boundary && isTransitionWall(seed, roomX, roomZ, localX, localZ);
+                boolean divider = !boundary && hasLevel0Divider(seed, roomX, roomZ, localX, localZ);
+                boolean pillar = !boundary && style == 1 && isPillar(localX, localZ, LEVEL_0_ROOM_SIZE);
+
+                // Voxel-correct footing: a full block at Y=65 must not float on
+                // top of a 1/16-high carpet at Y=64. Build walls, dividers,
+                // pillars and transition walls starting at Y=64; carpet ONLY
+                // fills actual walkable space and the open doorways.
+                BlockState footing = transition
+                        ? ThresholdEnvironmentBlocks.TRANSITION_WALL.get().defaultBlockState()
+                        : boundary && !doorway
+                        ? wall
+                        : divider
+                        ? ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState()
+                        : pillar
+                        ? Blocks.YELLOW_CONCRETE.defaultBlockState()
+                        : carpet;
+
+                set(world, pos, x, FLOOR_Y, z, Blocks.GRAY_CONCRETE.defaultBlockState());
+                set(world, pos, x, LEVEL_0_CARPET_Y, z, footing);
 
                 for (int y = LEVEL_0_WALL_BOTTOM; y <= LEVEL_0_WALL_TOP; y++) {
-                    if (boundary && isTransitionWall(seed, roomX, roomZ, localX, localZ)
-                            && y <= 68) {
+                    if (transition && y <= 68) {
                         set(world, pos, x, y, z,
                                 ThresholdEnvironmentBlocks.TRANSITION_WALL.get().defaultBlockState());
                     } else if (boundary && !(y <= 69 && doorway)) {
                         set(world, pos, x, y, z, wall);
-                    } else if (!boundary && hasLevel0Divider(seed, roomX, roomZ, localX, localZ)
-                            && y <= 68) {
-                        set(world, pos, x, y, z, ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
-                    } else if (!boundary && style == 1 && isPillar(localX, localZ, LEVEL_0_ROOM_SIZE)) {
+                    } else if (divider && y <= 68) {
+                        set(world, pos, x, y, z,
+                                ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
+                    } else if (pillar) {
                         set(world, pos, x, y, z, Blocks.YELLOW_CONCRETE.defaultBlockState());
                     }
                 }

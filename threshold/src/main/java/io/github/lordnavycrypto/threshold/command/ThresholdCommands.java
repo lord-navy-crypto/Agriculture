@@ -5,6 +5,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
+import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
@@ -37,7 +40,9 @@ public final class ThresholdCommands {
                         .then(Commands.literal("overworld")
                                 .executes(ThresholdCommands::returnToOverworld)))
                 .then(Commands.literal("whereami")
-                        .executes(ThresholdCommands::whereAmI)));
+                        .executes(ThresholdCommands::whereAmI))
+                .then(Commands.literal("repair_floor")
+                        .executes(ThresholdCommands::repairFloor)));
     }
 
     private static int travel(
@@ -75,6 +80,61 @@ public final class ThresholdCommands {
         );
         context.getSource().sendSuccess(() -> Component.literal("Returned to the Overworld."), false);
         return Command.SINGLE_SUCCESS;
+    }
+
+    /**
+     * Repairs the legacy carpet-under-wall seam in already generated Level 0
+     * chunks. Bounded to loaded chunks in a five-by-five region around the
+     * operator; no worldgen and no edits to plain carpet or player inventories.
+     */
+    private static int repairFloor(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (!player.level().dimension().equals(ThresholdDimensions.LEVEL_0)) {
+            context.getSource().sendFailure(
+                    Component.literal("Use this command inside Threshold Level 0."));
+            return 0;
+        }
+        ServerLevel level = player.serverLevel();
+        int centerChunkX = player.blockPosition().getX() >> 4;
+        int centerChunkZ = player.blockPosition().getZ() >> 4;
+        int fixed = 0;
+        int chunks = 0;
+        for (int cx = centerChunkX - 2; cx <= centerChunkX + 2; cx++) {
+            for (int cz = centerChunkZ - 2; cz <= centerChunkZ + 2; cz++) {
+                if (!level.hasChunk(cx, cz)) continue;
+                chunks++;
+                for (int x = cx << 4; x < (cx << 4) + 16; x++) {
+                    for (int z = cz << 4; z < (cz << 4) + 16; z++) {
+                        BlockPos base = new BlockPos(x, 64, z);
+                        BlockState lower = level.getBlockState(base);
+                        if (!lower.is(Blocks.YELLOW_CARPET)
+                                && !lower.is(Blocks.RED_CARPET)
+                                && !lower.is(Blocks.GRAY_CARPET)) continue;
+                        BlockState upper = level.getBlockState(base.above());
+                        if (isThresholdWall(upper)) {
+                            level.setBlock(base, upper, 3);
+                            fixed++;
+                        }
+                    }
+                }
+            }
+        }
+        final int repaired = fixed;
+        final int inspected = chunks;
+        context.getSource().sendSuccess(
+                () -> Component.literal("Repaired " + repaired
+                        + " wall footings in " + inspected + " loaded chunks."), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static boolean isThresholdWall(BlockState state) {
+        return state.is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())
+                || state.is(ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get())
+                || state.is(ThresholdEnvironmentBlocks.TRANSITION_WALL.get())
+                || state.is(Blocks.YELLOW_CONCRETE)
+                || state.is(Blocks.GRAY_CONCRETE)
+                || state.is(Blocks.RED_TERRACOTTA);
     }
 
     private static int whereAmI(CommandContext<CommandSourceStack> context)
