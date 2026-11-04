@@ -17,6 +17,16 @@ public final class ThresholdDimensions {
             ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "level_1")
     );
 
+    public static final ResourceKey<Level> LEVEL_3 = ResourceKey.create(
+            Registries.DIMENSION,
+            ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "level_3")
+    );
+
+    public static final ResourceKey<Level> LEVEL_4 = ResourceKey.create(
+            Registries.DIMENSION,
+            ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "level_4")
+    );
+
     private ThresholdDimensions() {
     }
 }
