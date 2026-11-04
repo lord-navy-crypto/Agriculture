@@ -2,7 +2,9 @@
   "type": "neoforge:add_features",
   "biomes": [
     "threshold:level_0",
-    "threshold:level_1"
+    "threshold:level_1",
+    "threshold:level_3",
+    "threshold:level_4"
   ],
   "features": "threshold:room_sequence",
   "step": "vegetal_decoration"
