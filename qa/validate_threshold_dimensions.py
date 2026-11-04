@@ -109,6 +109,7 @@ REQUIRED = {
     "assets/threshold/geo/watcher.geo.json",
     "assets/threshold/animations/watcher.animation.json",
     "assets/threshold/textures/entity/watcher.png",
+    "assets/threshold/textures/entity/partygoer.png",
     "assets/threshold/geo/hound.geo.json",
     "assets/threshold/models/item/almond_water.json",
     "assets/threshold/models/item/flashlight.json",
