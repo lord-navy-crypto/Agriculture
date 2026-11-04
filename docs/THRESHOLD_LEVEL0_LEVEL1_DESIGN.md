@@ -64,6 +64,39 @@ Distinct features:
 - Packaged-JAR validation verifies both GeckoLib models, animations, textures and the Hound's no-drop loot table.
 - Manual client testing must confirm the Observer reads as a distant silhouette, vanishes on notice, and never interferes with navigation; the Hound must remain readable, avoid the starter shelter and path through existing doorways without modifying blocks.
 
+
+## Alpha 6 — procedural architectural complexes
+
+### Design principle
+Complexity comes from a readable building grammar, not indiscriminate clutter. Both levels retain their validated room-cell dimensions, entry rooms, floor elevations, shared-edge doorway decisions and transition coordinates. New architecture is deterministic from world seed and room coordinates, so chunk load order does not change a room.
+
+### Level 0 — offices that remember the wrong layout
+- Distant room cells select among the established empty office, cubicle clusters, staggered partition offices, repeated column bays, suspended service ducts and mirrored/echo office arrangements.
+- The first yellow office is excluded from overlays and remains the recognizable baseline.
+- The overlay uses the same edge-door center calculation as the base generator. A protected L-shaped corridor joins each actual doorway to the room hub before any cubicle or partition is placed.
+- Some echo rooms mirror the internal cubicle grammar or change its material rhythm while leaving the outer room and exit topology intact.
+- The aim is spatial uncertainty: familiar office structures recur with small, unsettling differences, rather than adding random clutter or turning Level 0 into a conventional combat maze.
+
+### Level 1 — a functioning industrial complex
+- Distant warehouse cells can become pallet-rack aisles, copper service galleries, loading platforms, static machine bays, overhead gantries or mirrored rack layouts.
+- Rack beams, machine islands and loading platforms are placed outside the protected circulation network and Agriculture resource footprints.
+- Overhead pipework and gantries add vertical scale without reducing normal floor clearance. Gantry supports also respect reserved paths.
+- The starter shelter, greenhouse, supply caches, return passage and warehouse floor plan remain unchanged.
+- Structures are static block assemblies. This pass adds no ticking machinery, redstone logic or additional block entities.
+
+### Phantom-inspired variation (original implementation)
+- The broad idea is to preserve a room's recognizable architectural signature while mirroring or inverting its internal arrangement and visual rhythm.
+- This is a design principle, not a reproduction of another creator's exact layout, textures, models or assets.
+- Mirroring applies only to room interiors. It never changes the validated doorway decisions, route graph, starter shelter or dimension transition.
+
+### Alpha 6 acceptance
+- Source validation confirms both overlay passes are called after base room construction.
+- Deterministic archetype selection and shared doorway-center calculations are present.
+- The two entry rooms remain excluded from overlays.
+- The protected corridor function is shared by the room overlay system.
+- CI must compile the independent mod and run the real dedicated-server smoke test before Alpha 6 is considered playable.
+- Manual client testing must inspect each archetype, verify routes and resource areas remain accessible, and check that overhead structures do not clip the player camera or Hound navigation.
+
 ## Acceptance gates
 - Java compile and asset validation.
 - Separate `threshold` JAR, loading alongside required Agriculture.
@@ -77,7 +110,7 @@ Distinct features:
 - Level 0 isolated rooms may rarely contain forgotten supplies, but no reliable food source.
 - The Level 1 starting cache is deterministic for water and diverse Agriculture foods; later supply and maintenance caches have different water safety and nutrition trade-offs.
 - No extra needs system is created: all foods and water are actual Agriculture items, so their registered profiles continue to determine water, sodium and other nutrients.
-- Level 1 gains subtle stone floor wear, suspended iron fittings and longer ceiling lamps. No monsters or AI.
+- Level 1 gains subtle stone floor wear, suspended iron fittings and longer ceiling lamps. Later Alpha 5 adds the controlled Hound only to Level 1; Level 0 remains observation-only.
 
 ## Alpha 3 validation contract
 - Level 0 wall base (0,64,5) and transition footing (0,64,15) must be solid and flush with the blocks above; walkable carpet (4,64,4) remains.
