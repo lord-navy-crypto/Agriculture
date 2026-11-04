@@ -1,7 +1,11 @@
 package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
+import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +28,17 @@ public final class ThresholdRuntimeChecks {
             return;
         }
         System.out.println("THRESHOLD_DIMENSIONS_REGISTRY_READY_OK");
+
+        boolean watcherRegistered = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.containsKey(
+                ResourceLocation.fromNamespaceAndPath("threshold", "watcher"))
+                && ThresholdEntities.WATCHER.get() != null;
+        boolean houndRegistered = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.containsKey(
+                ResourceLocation.fromNamespaceAndPath("threshold", "hound"))
+                && ThresholdEntities.HOUND.get() != null;
+        System.out.println(watcherRegistered && houndRegistered
+                ? "THRESHOLD_ENTITY_REGISTRY_OK" : "THRESHOLD_ENTITY_REGISTRY_FAIL");
+        System.out.println(houndRegistered
+                ? "THRESHOLD_LEVEL1_HOUND_REGISTRY_OK" : "THRESHOLD_LEVEL1_HOUND_REGISTRY_FAIL");
 
         level0.getChunk(0, 0);
         level0.getChunk(0, 1);
@@ -50,6 +65,12 @@ public final class ThresholdRuntimeChecks {
 
         System.out.println(level0Built
                 ? "THRESHOLD_LEVEL0_WORLDGEN_OK" : "THRESHOLD_LEVEL0_WORLDGEN_FAIL");
+
+        boolean level0NoHostileEntities = level0.getEntitiesOfClass(
+                Monster.class, new AABB(-32, 0, -32, 32, 128, 32)).isEmpty();
+        System.out.println(level0NoHostileEntities
+                ? "THRESHOLD_LEVEL0_NO_HOSTILE_ENTITIES_OK"
+                : "THRESHOLD_LEVEL0_NO_HOSTILE_ENTITIES_FAIL");
         // Scan every wall, divider, pillar and transition segment in the first 32x32 room.
         boolean wallFloorConnected = true;
         int wallCells = 0;
