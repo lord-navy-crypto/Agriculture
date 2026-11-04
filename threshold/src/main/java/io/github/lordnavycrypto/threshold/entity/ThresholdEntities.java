@@ -31,5 +31,14 @@ public final class ThresholdEntities {
                     .updateInterval(3)
                     .build("threshold:hound"));
 
+    /** A non-lethal Overworld lure that leads players into Level 0. */
+    public static final DeferredHolder<EntityType<?>, EntityType<ThresholdPartygoerEntity>> PARTYGOER =
+            ENTITY_TYPES.register("partygoer", () -> EntityType.Builder
+                    .of(ThresholdPartygoerEntity::new, MobCategory.CREATURE)
+                    .sized(0.65F, 2.35F)
+                    .clientTrackingRange(32)
+                    .updateInterval(2)
+                    .build("threshold:partygoer"));
+
     private ThresholdEntities() {}
 }
