@@ -25,8 +25,10 @@ public final class ThresholdRuntimeChecks {
         MinecraftServer server = event.getServer();
         ServerLevel level0 = server.getLevel(ThresholdDimensions.LEVEL_0);
         ServerLevel level1 = server.getLevel(ThresholdDimensions.LEVEL_1);
+        ServerLevel level3 = server.getLevel(ThresholdDimensions.LEVEL_3);
+        ServerLevel level4 = server.getLevel(ThresholdDimensions.LEVEL_4);
 
-        if (level0 == null || level1 == null) {
+        if (level0 == null || level1 == null || level3 == null || level4 == null) {
             System.err.println("THRESHOLD_DIMENSIONS_REGISTRY_FAIL");
             return;
         }
@@ -51,6 +53,12 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
         level1.getChunk(1, 1);
+        level1.getChunk(3, 1);
+        level3.getChunk(0, 0);
+        level3.getChunk(0, 1);
+        level3.getChunk(1, 1);
+        level4.getChunk(0, 0);
+        level4.getChunk(0, 1);
 
         System.out.println("THRESHOLD_LEVEL0_SAMPLE floor=" +
                 level0.getBlockState(new BlockPos(4, 63, 4)) +
@@ -59,6 +67,38 @@ public final class ThresholdRuntimeChecks {
         System.out.println("THRESHOLD_LEVEL1_SAMPLE floor=" +
                 level1.getBlockState(new BlockPos(4, 63, 4)) +
                 " biome=" + level1.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+
+        System.out.println("THRESHOLD_LEVEL3_SAMPLE floor=" +
+                level3.getBlockState(new BlockPos(4, 63, 4)) +
+                " biome=" + level3.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+        System.out.println("THRESHOLD_LEVEL4_SAMPLE floor=" +
+                level4.getBlockState(new BlockPos(4, 63, 4)) +
+                " biome=" + level4.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+
+        boolean level3Built = level3.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.DEEPSLATE_TILES);
+        boolean level4Built = level4.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.SMOOTH_STONE);
+        System.out.println(level3Built ? "THRESHOLD_LEVEL3_WORLDGEN_OK" : "THRESHOLD_LEVEL3_WORLDGEN_FAIL");
+        System.out.println(level4Built ? "THRESHOLD_LEVEL4_WORLDGEN_OK" : "THRESHOLD_LEVEL4_WORLDGEN_FAIL");
+
+        boolean route1To3 = level1.getBlockState(new BlockPos(48, 64, 23))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get());
+        boolean route3To1 = level3.getBlockState(new BlockPos(0, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get());
+        boolean route3To4 = level3.getBlockState(new BlockPos(31, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get());
+        boolean route4To3 = level4.getBlockState(new BlockPos(0, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get());
+        System.out.println(route1To3 ? "THRESHOLD_LEVEL1_TO_LEVEL3_PASSAGE_OK" : "THRESHOLD_LEVEL1_TO_LEVEL3_PASSAGE_FAIL");
+        System.out.println(route3To1 ? "THRESHOLD_LEVEL3_TO_LEVEL1_PASSAGE_OK" : "THRESHOLD_LEVEL3_TO_LEVEL1_PASSAGE_FAIL");
+        System.out.println(route3To4 ? "THRESHOLD_LEVEL3_TO_LEVEL4_PASSAGE_OK" : "THRESHOLD_LEVEL3_TO_LEVEL4_PASSAGE_FAIL");
+        System.out.println(route4To3 ? "THRESHOLD_LEVEL4_TO_LEVEL3_PASSAGE_OK" : "THRESHOLD_LEVEL4_TO_LEVEL3_PASSAGE_FAIL");
+
+        boolean level0MusicReady = net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.containsKey(
+                ResourceLocation.fromNamespaceAndPath("threshold", "level_0_ambient"));
+        boolean level1MusicReady = net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.containsKey(
+                ResourceLocation.fromNamespaceAndPath("threshold", "level_1_ambient"));
+        System.out.println(level0MusicReady ? "THRESHOLD_LEVEL0_MUSIC_REGISTRY_OK" : "THRESHOLD_LEVEL0_MUSIC_REGISTRY_FAIL");
+        System.out.println(level1MusicReady ? "THRESHOLD_LEVEL1_MUSIC_REGISTRY_OK" : "THRESHOLD_LEVEL1_MUSIC_REGISTRY_FAIL");
 
         boolean level0Built =
                 level0.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.GRAY_CONCRETE)
