@@ -2,7 +2,6 @@ package io.github.lordnavycrypto.threshold.entity;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
@@ -85,8 +84,8 @@ public final class ThresholdEntityDirector {
                         ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
                 if (sight.getType() != HitResult.Type.MISS) continue;
 
-                ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level).orElse(null);
-                if (watcher == null) return;
+                ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level);
+                if (watcher == null) continue;
                 float yaw = (float) (Mth.atan2(player.getZ() - z, player.getX() - x)
                         * (180.0D / Math.PI)) - 90.0F;
                 watcher.moveTo(x + 0.5D, pos.getY(), z + 0.5D, yaw, 0.0F);
@@ -123,8 +122,8 @@ public final class ThresholdEntityDirector {
                 if (!isSafeStandingSpace(level, pos)) continue;
                 if (level.getMaxLocalRawBrightness(pos) > 9) continue;
 
-                ThresholdHoundEntity hound = ThresholdEntities.HOUND.get().create(level).orElse(null);
-                if (hound == null) return;
+                ThresholdHoundEntity hound = ThresholdEntities.HOUND.get().create(level);
+                if (hound == null) continue;
                 hound.moveTo(x + 0.5D, pos.getY(), z + 0.5D,
                         level.getRandom().nextFloat() * 360.0F, 0.0F);
                 hound.setTarget(player);
@@ -141,7 +140,6 @@ public final class ThresholdEntityDirector {
         BlockState floor = level.getBlockState(pos.below());
         return !floor.isAir()
                 && floor.getFluidState().isEmpty()
-                && !floor.getCollisionShape(level, pos.below()).isEmpty()
-                && floor.isFaceSturdy(level, pos.below(), Direction.UP);
+                && !floor.getCollisionShape(level, pos.below()).isEmpty();
     }
 }
