@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Threshold's five-level, source-backed transit network and original audio."""
+"""Validate Threshold's six-level, source-backed transit network and original audio."""
 from __future__ import annotations
 
 import json
