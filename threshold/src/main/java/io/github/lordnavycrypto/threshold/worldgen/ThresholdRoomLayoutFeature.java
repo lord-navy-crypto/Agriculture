@@ -303,9 +303,25 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
 
-                if (roomX == 1 && roomZ == 0 && localX == 0 && localZ == 23) {
-                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_2.get().defaultBlockState());
-                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get().defaultBlockState());
+                // Smooth threshold toward Level 2: warehouse fittings gradually
+                // become utility pipes before the corridor seamlessly changes dimension.
+                if (roomX == 1 && roomZ == 0) {
+                    if (localX >= 6 && localX <= 42 && (localZ == 18 || localZ == 28)
+                            && Math.floorMod(localX, 3) == 0) {
+                        set(world, pos, x, 70, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                    }
+                    if (localX >= 18 && localX <= 42 && localZ == 23
+                            && Math.floorMod(localX, 6) == 0) {
+                        set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                    }
+                    if (localX >= 30 && localX <= 42 && (localZ == 17 || localZ == 29)
+                            && Math.floorMod(localX, 4) == 2) {
+                        set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                    }
+                    if (localX == 16 && localZ == 23) {
+                        set(world, pos, x, 64, z,
+                                ThresholdEnvironmentBlocks.LEVEL_1_TO_2.get().defaultBlockState());
+                    }
                 }
             }
         }
@@ -423,9 +439,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // The first cell preserves a readable entrance and a stable return.
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
                     set(world, pos, x, 64, z,
-                            ThresholdEnvironmentBlocks.LEVEL_2_TO_1.get().defaultBlockState());
+                            ThresholdEnvironmentBlocks.LEVEL_2_FIRE_EXIT.get().defaultBlockState());
                     set(world, pos, x, 65, z,
-                            ThresholdEnvironmentBlocks.LEVEL_2_TO_1.get().defaultBlockState());
+                            ThresholdEnvironmentBlocks.LEVEL_2_FIRE_EXIT.get().defaultBlockState());
                 }
                 if (roomX == 0 && roomZ == 0 && localX == LEVEL_2_ROOM_SIZE - 1 && localZ == 16) {
                     set(world, pos, x, 64, z,
@@ -546,7 +562,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_2.get().defaultBlockState());
-                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_2.get().defaultBlockState());
                 }
                 if (roomX == 0 && roomZ == 0 && localX == LEVEL_3_ROOM_SIZE - 1 && localZ == 16) {
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get().defaultBlockState());
