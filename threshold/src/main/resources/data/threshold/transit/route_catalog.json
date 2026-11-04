@@ -49,11 +49,11 @@
       "source": "https://backrooms-wiki.wikidot.com/level-2"
     },
     {
-      "id": "level_2_maintenance_door",
+      "id": "level_2_unlocked_door",
       "from": "level_2",
       "to": ["level_3"],
-      "method": "maintenance_door",
-      "profile": "wikidot_and_fandom",
+      "method": "unlocked_anomalous_door",
+      "profile": "wikidot",
       "selection": "fixed",
       "status": "implemented",
       "source": "https://backrooms-wiki.wikidot.com/level-2"
