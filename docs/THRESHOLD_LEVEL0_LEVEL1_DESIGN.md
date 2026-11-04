@@ -1,33 +1,45 @@
-# Threshold — Level 0 and Level 1 Design Contract
+# THRESHOLD — Level 0 and 1 Environment Design Contract
 
-## Project boundary
-Threshold is an independent NeoForge mod subproject in this repository. It has Mod ID `threshold`, its own Java package, resources, metadata, and JAR. It must not import Agriculture implementation classes. Optional Agriculture integration will be a separate compatibility module in a later phase.
+The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
-## Dimension contract
-Each Backrooms level is a separate Minecraft dimension:
+## Architectural boundary
+The repo contains `Agriculture` and the separate `threshold` Gradle subproject, with different Mod IDs, packages, metadata and JARs. **Agriculture is now a mandatory runtime prerequisite**: its existing food, hydration, sodium and nutrition mechanisms provide survival constraints. Threshold itself does not import Agriculture Java classes or include them in its JAR. We resolve crop blocks and foods by registry ID when loaded.
 
-- `threshold:level_0` — Level 0: Isolation
-- `threshold:level_1` — Level 1: The Vulnerable Shelter
+## L0 — Isolation
+**Fear mechanism:** uncertainty, isolation, loss of spatial confidence.
 
-Both dimensions use independent dimension-type definitions and the void biome as a blank world-generation canvas. A registered deterministic feature builds architecture chunk-by-chunk. No generated block writes outside the current chunk.
+Distinct features:
+- A ceiling-covered 32x32 office grid, not an overworld structure.
+- Yellow wallpaper, damp-looking carpet and occasional stained walls.
+- Infrequent column/dim/red architectural variants.
+- Fluorescent panels flicker only in Level 0 via local random ticks, with no player health effect.
+- Shared-edge doorway choices so neighboring rooms agree.
+- Future: Peripheral Shift, ambient electric buzzing, and the rare transition to Level 1.
 
-## Level 0 — Isolation
-Theme: isolation, uncertainty, spatial disorientation.
+**No ordinary combat mobs** added at this stage.
 
-- 32x32-block room cells, aligned to two chunks.
-- Yellow wall palette, yellow carpet, pale ceiling, flush light panels.
-- Shared deterministic door decisions on every room boundary.
-- Rare pillar rooms, dim rooms, red rooms and partial interior partitions.
-- No ordinary hostile entity is introduced in this foundation.
+## L1 — The Vulnerable Shelter
+**Fear mechanism:** relief and vulnerability; supplies exist, but are sparse and unevenly distributed.
 
-## Level 1 — The Vulnerable Shelter
-Theme: survival uncertainty and fragile shelter.
+Distinct features:
+- 48x48 concrete warehouse cells, high ceilings, storage bays and short dividers.
+- Some rooms are intentionally dim, other rooms provide light and a small supply cache.
+- A limited number of barrels use weighted real Agriculture food loot.
+- Rare 5x5 planter areas grow actual Agriculture crops. Initial crop age is partial rather than instantly mature.
+- No ordinary enemy AI. Later: stable corridors, resource camps, erratic lights and route planning.
 
-- 48x48-block room cells, aligned to three chunks.
-- Concrete warehouse floor, tall concrete walls and ceiling.
-- Wide shared-boundary doorways.
-- Open halls, storage bays, divided halls and dim halls.
-- Decorative storage barrels; actual loot and resource systems are deferred.
+## Generation invariants
+- One real Minecraft dimension per level.
+- One custom biome per dimension, not shared with vanilla void or other mods.
+- Flat generator has a non-air support layer at Y=63, because empty flat worlds may skip features.
+- Custom feature is added at the `vegetal_decoration` generation step. The earlier `surface_structures` placement never ran in a flat world.
+- Feature placement is deterministic from world seed and room coordinate.
+- Block writes constrained to the current generation chunk.
+- Never rewrite already generated rooms upon reload.
 
-## Validation contract
-A dedicated-server startup check must find both dimensions and generate chunk (0, 0) in each. It verifies the Level 0 concrete floor and yellow carpet, plus the Level 1 smooth-stone floor. Commands are operator-only test entry points until physical transition structures are implemented.
+## Acceptance gates
+- Java compile and asset validation.
+- Separate `threshold` JAR, loading alongside required Agriculture.
+- Dedicated server registers two dimensions and confirms Level 0 carpet and Level 1 stone floor actually generated.
+- No console worldgen errors, missing models or missing loot IDs.
+- Manual client test for room visibility, lighting and resource availability before marking release ready.

@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Validate Threshold dimension architecture contracts
+        run: python3 qa/validate_threshold_graph.py
       - name: Validate crop resources, loot tables, translations, and recipes
         run: |
           python3 qa/validate_agriculture_assets.py

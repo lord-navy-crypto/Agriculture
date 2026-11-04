@@ -1,45 +1,47 @@
-# Threshold: Backrooms
+# THRESHOLD — Liminal Horror Mod (Development)
 
-An independent NeoForge 1.21.1 horror mod subproject in this repository.
+**Independent NeoForge 1.21.1 mod subproject in the Agriculture repository**
 
-- Mod ID: `threshold`
-- Minecraft: `1.21.1`
-- NeoForge: `21.1.259`
-- Java: `21`
-- Independent artifact: `threshold-0.1.0-alpha.1.jar`
+- Mod ID: `threshold`; independent JAR and resource namespace.
+- Java 21 / NeoForge 21.1.259.
+- **Gugu-Gaga Agriculture 3.9+ is a required runtime dependency** for this experiment.
+- No additional animation/rendering library is required for the first environment-only pass.
+- The existing Agriculture module and main branch stay unchanged by this draft PR.
 
-Threshold has its own source tree, metadata, resource namespace, dimension registry data, and JAR. It does not import Agriculture classes or require the Agriculture mod.
+## Level 0 — Isolation
+- Native dimension `threshold:level_0`; custom biome and dimension type.
+- Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions.
+- Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
+- Random-tick fluorescent panels emit light and occasionally blink. No entity AI in this release.
+- Atmospheric cave ambience used as a provisional sound bed.
 
-## First dimensions
+## Level 1 — The Vulnerable Shelter
+- Native dimension `threshold:level_1`; custom biome and dimension type.
+- Chunk-aligned 48x48 concrete warehouse layout with halls, storage bays, pillars and partitions.
+- Scarce supply barrels with `threshold:chests/level_1_supply` loot drawing from real `gugugaga` foods.
+- A minority of storage rooms have watered small planters of actual Agriculture crops.
+- Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them.
+- This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
-### Level 0 — Isolation
-- Deterministic 32x32 room cells aligned to two chunks.
-- Yellow office palette, carpet, pale ceiling and flush light panels.
-- Shared-boundary doorway decisions keep adjacent chunks aligned.
-- Rare column rooms, dim rooms, red rooms and interior dividers.
+## Current scope / limitations
+- Development commands are operator-only; physical exit transitions are not yet implemented.
+- Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
+- No new mobs, no AI hunters, no sound jump scares or client-only shaders.
+- Placeholder models reuse Minecraft textures; bespoke artwork comes after gameplay verification.
+- World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
-### Level 1 — The Vulnerable Shelter
-- Deterministic 48x48 warehouse-room cells aligned to three chunks.
-- Concrete halls, pillars, storage bays, decorative barrels and dim halls.
-- Wide door openings are computed from shared room boundaries.
-- Separate dimension type and ambient-light setting.
+## Test
 
-## Operator-only development commands
+```bash
+gradle --no-daemon --stacktrace :threshold:build
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.1.jar
+python3 qa/smoke_threshold_server.py
+```
 
-```text
+Test commands (requires OP permissions):
+```
 /threshold travel level_0
 /threshold travel level_1
 /threshold travel overworld
 /threshold whereami
 ```
-
-These are test entry points. Physical transition structures will follow after the dimensions and generation are validated.
-
-## Build
-
-```sh
-gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.1.jar
-```
-
-Agriculture compatibility is intentionally optional and is not part of this foundation.
