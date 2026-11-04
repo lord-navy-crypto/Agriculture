@@ -3,7 +3,6 @@ package io.github.lordnavycrypto.threshold.item;
 import io.github.lordnavycrypto.threshold.ThresholdMod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.DeferredItem;
 
 public final class ThresholdItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ThresholdMod.MOD_ID);
