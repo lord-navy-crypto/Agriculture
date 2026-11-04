@@ -13,7 +13,7 @@ public final class ThresholdPartygoerModel extends GeoModel<ThresholdPartygoerEn
 
     @Override
     public ResourceLocation getTextureResource(ThresholdPartygoerEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "textures/entity/watcher.png");
+        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "textures/entity/partygoer.png");
     }
 
     @Override
