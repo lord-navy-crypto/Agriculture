@@ -10,14 +10,17 @@ REQUIRED = {
     "META-INF/neoforge.mods.toml",
     "data/threshold/dimension/level_0.json",
     "data/threshold/dimension/level_1.json",
+    "data/threshold/dimension/level_2.json",
     "data/threshold/dimension/level_3.json",
     "data/threshold/dimension/level_4.json",
     "data/threshold/dimension_type/level_0_type.json",
     "data/threshold/dimension_type/level_1_type.json",
+    "data/threshold/dimension_type/level_2_type.json",
     "data/threshold/dimension_type/level_3_type.json",
     "data/threshold/dimension_type/level_4_type.json",
     "data/threshold/worldgen/biome/level_0.json",
     "data/threshold/worldgen/biome/level_1.json",
+    "data/threshold/worldgen/biome/level_2.json",
     "data/threshold/worldgen/biome/level_3.json",
     "data/threshold/worldgen/biome/level_4.json",
     "data/threshold/loot_table/chests/level_1_supply.json",
@@ -39,8 +42,11 @@ REQUIRED = {
     "assets/threshold/textures/block/flickering_panel_off.png",
     "assets/threshold/textures/block/transition_wall.png",
     "assets/threshold/blockstates/transition_wall.json",
-    "assets/threshold/blockstates/level_1_to_3.json",
-    "assets/threshold/blockstates/level_3_to_1.json",
+    "assets/threshold/blockstates/level_1_to_2.json",
+    "assets/threshold/blockstates/level_2_to_1.json",
+    "assets/threshold/blockstates/level_2_to_3.json",
+    "assets/threshold/blockstates/level_2_branch_door.json",
+    "assets/threshold/blockstates/level_3_to_2.json",
     "assets/threshold/blockstates/level_3_to_4.json",
     "assets/threshold/blockstates/level_4_to_3.json",
     "assets/threshold/models/block/transition_wall.json",
@@ -48,6 +54,7 @@ REQUIRED = {
     "data/threshold/loot_table/blocks/transition_wall.json",
     "io/github/lordnavycrypto/threshold/block/ThresholdTransitionWallBlock.class",
     "io/github/lordnavycrypto/threshold/block/ThresholdPassageBlock.class",
+    "io/github/lordnavycrypto/threshold/block/ThresholdRouteBlock.class",
     "io/github/lordnavycrypto/threshold/ThresholdSounds.class",
     "io/github/lordnavycrypto/threshold/dimension/ThresholdDimensions.class",
     "io/github/lordnavycrypto/threshold/block/ThresholdEnvironmentBlocks.class",
@@ -105,7 +112,7 @@ def main():
         assert 'modId="gugugaga"' in meta and 'type="required"' in meta
         assert 'modId="geckolib"' in meta and 'versionRange="[4.9.3,5)"' in meta
         assert 'modId="lithostitched"' in meta and 'versionRange="[1.7.11,2)"' in meta
-        for level in ("level_0","level_1","level_3","level_4"):
+        for level in ("level_0","level_1","level_2","level_3","level_4"):
             dim=read_json(z,f"data/threshold/dimension/{level}.json")
             assert dim["type"] == f"threshold:{level}_type"
             settings=dim["generator"]["settings"]
@@ -125,7 +132,7 @@ def main():
         assert configured["type"] == placed["feature"] == "threshold:room_layout"
         modifier=read_json(z,"data/threshold/neoforge/biome_modifier/room_layout.json")
         assert modifier["type"]=="neoforge:add_features"
-        assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1","threshold:level_3","threshold:level_4"]
+        assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1","threshold:level_2","threshold:level_3","threshold:level_4"]
         assert modifier["features"]=="threshold:room_sequence"
         sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
         assert sequence["type"]=="lithostitched:composite"
@@ -183,6 +190,12 @@ def main():
                 "gugugaga:soybean", "gugugaga:tomato",
                 "gugugaga:barley_vegetable_soup"} <= guaranteed
         assert modifier["step"]=="vegetal_decoration"
+
+        for passage in ("level_1_to_2", "level_2_to_1", "level_2_to_3",
+                        "level_2_branch_door", "level_3_to_2",
+                        "level_3_to_4", "level_4_to_3"):
+            blockstate = read_json(z, f"assets/threshold/blockstates/{passage}.json")
+            assert blockstate["variants"][""]["model"].startswith("minecraft:block/")
 
         sound_definitions=read_json(z,"assets/threshold/sounds.json")
         for level in ("level_0","level_1"):
