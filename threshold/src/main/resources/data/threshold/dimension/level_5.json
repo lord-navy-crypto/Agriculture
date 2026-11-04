@@ -1,0 +1,16 @@
+{
+  "type": "threshold:level_5_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "threshold:level_5",
+      "features": true,
+      "lakes": false,
+      "layers": [
+        { "height": 127, "block": "minecraft:air" },
+        { "height": 1, "block": "minecraft:gray_concrete" }
+      ],
+      "structure_overrides": []
+    }
+  }
+}
