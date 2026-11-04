@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.threshold.client;
 
 import io.github.lordnavycrypto.threshold.ThresholdMod;
 import io.github.lordnavycrypto.threshold.block.ThresholdBlockEntities;
+import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -15,6 +16,8 @@ public final class ThresholdClientRenderers {
         event.registerBlockEntityRenderer(
                 ThresholdBlockEntities.CEILING_VENT.get(),
                 context -> new ThresholdVentRenderer());
+        event.registerEntityRenderer(ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new);
+        event.registerEntityRenderer(ThresholdEntities.HOUND.get(), ThresholdHoundRenderer::new);
     }
 
     private ThresholdClientRenderers() {}
