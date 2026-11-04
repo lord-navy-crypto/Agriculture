@@ -10,7 +10,7 @@ displayName="${mod_name}"
 displayURL="https://github.com/lord-navy-crypto/Agriculture"
 authors="Threshold development contributors"
 description='''
-An independent Backrooms-inspired environment mod with Level 0, Level 1, Level 3 and Level 4 dimensions.
+An independent Backrooms-inspired environment mod with Level 0, Level 1, Level 2, Level 3 and Level 4 dimensions.
 Gugu-Gaga Agriculture is a required survival dependency for this development build.
 '''
 
