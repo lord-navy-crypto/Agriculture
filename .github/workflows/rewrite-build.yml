@@ -25,7 +25,7 @@ jobs:
         run: python3 qa/validate_threshold_graph.py
       - name: Protect original Threshold horror identity and spatial layout
         run: python3 qa/validate_threshold_horror_preservation.py
-      - name: Validate five-level source-backed transit and audio expansion
+      - name: Validate six-level source-backed transit and hotel expansion
         run: python3 qa/validate_threshold_expansion.py
       - name: Validate Threshold Agriculture nutrition and hydration integration
         run: python3 qa/validate_threshold_survival_integration.py
@@ -99,12 +99,12 @@ jobs:
       - name: Build independent Threshold horror mod
         run: gradle --no-daemon --stacktrace :threshold:build
       - name: Validate Threshold dimensions in packaged JAR
-        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.8.jar
+        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.9.jar
       - name: Upload independent Threshold JAR
         uses: actions/upload-artifact@v4
         with:
-          name: threshold-horror-alpha8
-          path: threshold/build/libs/threshold-0.1.0-alpha.8.jar
+          name: threshold-horror-alpha9
+          path: threshold/build/libs/threshold-0.1.0-alpha.9.jar
           if-no-files-found: error
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
@@ -189,7 +189,7 @@ jobs:
           gradle-version: '9.2.1'
       - name: Launch fresh real NeoForge 1.21.1 server
         run: python3 qa/smoke_rewrite_server.py
-      - name: Launch Threshold server and verify both dimensions and generated chunks
+      - name: Launch Threshold server and verify all six dimensions and generated chunks
         run: python3 qa/smoke_threshold_server.py
       - name: Upload launch logs
         if: always()
