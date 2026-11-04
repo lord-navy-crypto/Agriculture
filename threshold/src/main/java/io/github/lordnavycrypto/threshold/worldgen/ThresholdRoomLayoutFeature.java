@@ -305,6 +305,105 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
 
+
+    /** Level 3: a brick-lined electrical station with narrow, linked service rooms. */
+    private static void buildLevel3Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
+        long seed = world.getSeed();
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_3_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_3_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_3_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_3_ROOM_SIZE);
+                int style = level3Architecture(seed, roomX, roomZ);
+                BlockState floor = style == 1
+                        ? Blocks.POLISHED_DEEPSLATE.defaultBlockState()
+                        : Blocks.DEEPSLATE_TILES.defaultBlockState();
+                BlockState wall = style == 2
+                        ? Blocks.DEEPSLATE_BRICKS.defaultBlockState()
+                        : Blocks.BRICKS.defaultBlockState();
+                set(world, pos, x, FLOOR_Y, z, floor);
+
+                boolean boundary = isBoundary(localX, localZ, LEVEL_3_ROOM_SIZE);
+                boolean doorway = boundary && isDoorway(
+                        seed, LEVEL_3_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_3_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+
+                for (int y = LEVEL_3_WALL_BOTTOM; y <= LEVEL_3_WALL_TOP; y++) {
+                    if (boundary && !doorway) {
+                        set(world, pos, x, y, z, wall);
+                    } else if (!boundary && y == 69
+                            && (localX == 4 || localX == 27 || localZ == 4 || localZ == 27)) {
+                        set(world, pos, x, y, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                    } else if (!boundary && y == 70
+                            && (localX == 4 || localX == 27) && Math.floorMod(localZ, 4) == 0) {
+                        set(world, pos, x, y, z, Blocks.CHAIN.defaultBlockState());
+                    }
+                }
+                set(world, pos, x, LEVEL_3_CEILING_Y, z,
+                        Blocks.GRAY_CONCRETE.defaultBlockState());
+
+                if (!protectedRoute) {
+                    if (style == 1) {
+                        boolean equipmentBay = localX >= 12 && localX <= 19
+                                && localZ >= 12 && localZ <= 19;
+                        if (equipmentBay && (localX == 12 || localX == 19
+                                || localZ == 12 || localZ == 19)) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                        }
+                    } else if (style == 2) {
+                        if ((localX == 7 || localX == 8 || localX == 23 || localX == 24)
+                                && localZ >= 7 && localZ <= 24) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.REDSTONE_LAMP.defaultBlockState());
+                        }
+                    } else if (style == 3) {
+                        if ((localX == 14 || localX == 17)
+                                && localZ >= 8 && localZ <= 23) {
+                            set(world, pos, x, 65, z, Blocks.BLACK_STAINED_GLASS.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                    } else if (style == 4) {
+                        if ((localX == 10 || localX == 21) && localZ >= 8 && localZ <= 23) {
+                            set(world, pos, x, 64, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                        if ((localZ == 10 || localZ == 21) && localX >= 8 && localX <= 23) {
+                            set(world, pos, x, 68, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    } else if (style == 5) {
+                        if ((localX == 8 || localX == 23) && (localZ == 8 || localZ == 23)) {
+                            for (int y = 64; y <= 68; y++) {
+                                set(world, pos, x, y, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            }
+                        }
+                    }
+                }
+
+                if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
+                }
+                if (roomX == 0 && roomZ == 0 && localX == LEVEL_3_ROOM_SIZE - 1 && localZ == 16) {
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_4.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static int level3Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        return Math.floorMod((int) mix(seed, roomX, roomZ, 0x3A30L), 6);
+    }
+
     /*
      * Architectural overlays add authored room archetypes without changing
      * the established 32x32 / 48x48 room grid, entry rooms, exits or floor Y.
