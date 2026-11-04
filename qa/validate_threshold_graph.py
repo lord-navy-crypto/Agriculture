@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Boundary agreement, deterministic room exits and Level 1 no-sealed-cell invariants."""
+"""Boundary agreement, deterministic room exits and Level 1 and Level 2 no-sealed-cell invariants."""
 MASK=(1<<64)-1
 
 def mix(seed,x,z,salt):
@@ -58,10 +58,11 @@ def check():
         for rx in range(-24,25):
             for rz in range(-24,25):
                 assert room_has_exit(seed,48,rx,rz), f"sealed Level 1 room at {(rx,rz)}"
+                assert room_has_exit(seed,32,rx,rz), f"sealed Level 2 room at {(rx,rz)}"
 
     # Level 0 retains occasional fully closed boundaries as part of its isolation motif.
     assert any(not edge_open(seed, x, z, "z", False)
                for seed in (0,1,42) for x in range(-8,9) for z in range(-8,9))
-    print("THRESHOLD_ROOM_EDGE_AND_LEVEL1_ESCAPE_INVARIANTS_PASS")
+    print("THRESHOLD_ROOM_EDGE_AND_LEVEL1_LEVEL2_ESCAPE_INVARIANTS_PASS")
 
 if __name__=="__main__": check()
