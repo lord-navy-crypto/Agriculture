@@ -18,6 +18,7 @@ public final class ThresholdMod {
     public static final String MOD_ID = "threshold";
 
     public ThresholdMod(IEventBus modBus, ModContainer container) {
+        ThresholdSounds.SOUNDS.register(modBus);
         ThresholdEnvironmentBlocks.BLOCKS.register(modBus);
         ThresholdEnvironmentBlocks.ITEMS.register(modBus);
         ThresholdBlockEntities.TYPES.register(modBus);
