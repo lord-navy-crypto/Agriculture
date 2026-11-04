@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.10.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.11.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -143,6 +143,15 @@ The packaged-JAR validator enforces this invariant.
 - Distant rooms can become pallet-rack aisles, copper service galleries, raised loading platforms, static machine bays, overhead gantries or mirrored rack layouts.
 - Rack spans, dock platforms and machine islands avoid the reserved circulation routes and the Agriculture resource footprints. Gantries remain above normal walking height; their supports also respect protected routes.
 - These are deterministic block assemblies, not ticking machinery or redstone contraptions. They add architectural scale without introducing extra server load from block entities.
+
+## Alpha 11 — entity expansion and classic survival equipment
+
+- Level 0 Watcher silhouette is taller and more elongated, with irregular head/arm/shroud animation and longer distant sightings. It remains harmless and disappears when approached or noticed.
+- Level 1 Hound remains the only hostile entity inside the Backrooms.
+- A rare night-time Overworld Partygoer encounter slowly follows a player and relocates them to the Level 0 entry after sustained close proximity. It does not deal damage.
+- Added `/threshold summon watcher`, `/threshold summon hound`, and `/threshold summon partygoer` test commands, each restricted to its intended dimension.
+- Added rare Almond Water, Flashlight and Battery items to Level 0 forgotten caches and Level 1 supply/maintenance caches. Agriculture continues to own ordinary hydration and nutrition; Almond Water is a rare restorative utility, and the flashlight currently provides a short night-vision pulse rather than dynamic world lighting.
+- Added more Level 0 abandoned meeting-room details and Level 1 cold-storage loading-bay architecture without changing room routing or the established entry layout.
 
 ## Alpha 10 — visible Level 0 and Level 1 entities
 
