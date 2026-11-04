@@ -398,8 +398,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         int rackZ = archetype == 6 ? localX : localZ;
                         boolean post = (rackX == 9 || rackX == 18 || rackX == 30 || rackX == 39)
                                 && rackZ >= 7 && rackZ <= 41 && Math.floorMod(rackZ, 8) <= 1;
-                        boolean shelf = (rackX == 9 || rackX == 18 || rackX == 30 || rackX == 39)
-                                && rackZ >= 8 && rackZ <= 40 && Math.floorMod(rackZ, 8) == 4;
+                        boolean shelf = (rackZ >= 12 && rackZ <= 36
+                                && Math.floorMod(rackZ, 8) == 4)
+                                && (rackX >= 9 && rackX <= 18 || rackX >= 30 && rackX <= 39);
                         if (!protectedTile && post) {
                             for (int y = 65; y <= 69; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
