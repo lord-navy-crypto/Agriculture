@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -71,6 +72,8 @@ public final class ThresholdEntityDirector {
             if (gameTime % 240L == 0L) spawnObservers(level);
         } else if (level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
             if (gameTime % 360L == 0L) spawnHounds(level);
+        } else if (level.dimension().equals(Level.OVERWORLD)) {
+            if (gameTime % 1200L == 0L) spawnPartygoers(level);
         }
     }
 
@@ -102,6 +105,37 @@ public final class ThresholdEntityDirector {
                 watcher.setYHeadRot(yaw);
                 watcher.setYBodyRot(yaw);
                 if (level.addFreshEntity(watcher)) return;
+            }
+        }
+    }
+
+    private static void spawnPartygoers(ServerLevel level) {
+        // A rare encounter: one lure at a time, well away from the world spawn.
+        for (Player player : level.players()) {
+            if (!player.isAlive() || player.isSpectator()) continue;
+            if (level.isDay()) continue;
+            if (!level.getEntitiesOfClass(ThresholdPartygoerEntity.class,
+                    player.getBoundingBox().inflate(64.0D)).isEmpty()) continue;
+            if (level.getRandom().nextInt(8) != 0) continue;
+
+            for (int attempt = 0; attempt < 12; attempt++) {
+                double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
+                int distance = 24 + level.getRandom().nextInt(13);
+                int x = Mth.floor(player.getX() + Math.cos(angle) * distance);
+                int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
+                BlockPos pos = level.getHeightmapPos(
+                        net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                        new BlockPos(x, player.blockPosition().getY(), z));
+                if (pos.distSqr(level.getSharedSpawnPos()) < 48.0D * 48.0D) continue;
+                if (!isSafeStandingSpace(level, pos)) continue;
+
+                ThresholdPartygoerEntity partygoer = ThresholdEntities.PARTYGOER.get().create(level);
+                if (partygoer == null) continue;
+                partygoer.moveTo(x + 0.5D, pos.getY(), z + 0.5D,
+                        (float) (Mth.atan2(player.getZ() - z, player.getX() - x)
+                                * (180.0D / Math.PI)) - 90.0F, 0.0F);
+                partygoer.setTarget(player);
+                if (level.addFreshEntity(partygoer)) return;
             }
         }
     }
