@@ -30,6 +30,12 @@ def main() -> int:
     sounds_java = (JAVA / "ThresholdSounds.java").read_text(encoding="utf-8")
     mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
     client_events = (JAVA / "client/ThresholdClientEvents.java").read_text(encoding="utf-8")
+    watcher = (JAVA / "entity/ThresholdWatcherEntity.java").read_text(encoding="utf-8")
+    partygoer = (JAVA / "entity/ThresholdPartygoerEntity.java").read_text(encoding="utf-8")
+    director = (JAVA / "entity/ThresholdEntityDirector.java").read_text(encoding="utf-8")
+    items = (JAVA / "item/ThresholdItems.java").read_text(encoding="utf-8")
+    flashlight = (JAVA / "item/FlashlightItem.java").read_text(encoding="utf-8")
+    almond_water = (JAVA / "item/AlmondWaterItem.java").read_text(encoding="utf-8")
     commands = (JAVA / "command/ThresholdCommands.java").read_text(encoding="utf-8")
 
     levels = ("level_0", "level_1", "level_2", "level_3", "level_4", "level_5")
@@ -164,6 +170,20 @@ def main() -> int:
     require(client_events, "EntityRenderersEvent.RegisterRenderers", "entity renderer registration event")
     require(client_events, "ThresholdEntities.HOUND.get(), ThresholdHoundRenderer::new", "Hound renderer registration")
     require(client_events, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
+    require(client_events, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
+    require(director, "spawnPartygoers(level)", "rare Overworld Partygoer encounter")
+    require(director, "gameTime % 1200L", "slow Partygoer encounter cadence")
+    require(director, "level.isDay()", "Partygoer night-only encounter")
+    require(partygoer, "closeTicks >= 100", "Partygoer sustained close-range capture")
+    require(partygoer, "ThresholdDimensions.LEVEL_0", "Partygoer sends player into Level 0")
+    require(partygoer, "doHurtTarget", "Partygoer never damages the player")
+    require(watcher, "tickCount > 180", "longer distant Watcher sightings")
+    require(watcher, "distanceToSqr(nearest) < 72.25D", "Watcher disappears when approached")
+    require(items, 'register("almond_water"', "Almond Water registry")
+    require(items, 'register("flashlight"', "Flashlight registry")
+    require(items, 'register("battery"', "Battery registry")
+    require(flashlight, "MobEffects.NIGHT_VISION", "Flashlight activation effect")
+    require(almond_water, "MobEffects.REGENERATION", "Almond Water restorative effect")
 
     allowed_agriculture = {
         "boiled_water_bottle", "filtered_water_bottle", "grain_porridge",
