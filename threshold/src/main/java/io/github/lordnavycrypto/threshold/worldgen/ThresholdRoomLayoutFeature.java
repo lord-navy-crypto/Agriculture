@@ -801,11 +801,6 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             if ((localX == 7 || localX == 24) && localZ >= 8 && localZ <= 11) {
                                 set(world, pos, x, 64, z, Blocks.SPRUCE_STAIRS.defaultBlockState());
                             }
-                            if (localX == 28 && localZ == 8
-                                    && roomX == 0 && roomZ == 0) {
-                                set(world, pos, x, 65, z,
-                                        ThresholdEnvironmentBlocks.LEVEL_5_ELEVATOR_PANEL.get().defaultBlockState());
-                            }
                         }
                         case 1 -> {
                             // Beverly Room: a broad ballroom with a central table and chandelier.
@@ -882,6 +877,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         }
                         default -> { }
                     }
+                }
+
+                if (roomX == 0 && roomZ == 0 && localX == 28 && localZ == 8) {
+                    // Fixed location keeps the first hotel's elevator panel guaranteed and reachable.
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_5_ELEVATOR_PANEL.get().defaultBlockState());
                 }
 
                 // Supply caches are scarce and use Agriculture's real hydration and food items.
