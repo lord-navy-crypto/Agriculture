@@ -24,8 +24,8 @@ def main() -> int:
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
     passages = (JAVA / "block/ThresholdPassageBlock.java").read_text(encoding="utf-8")
     blocks = (JAVA / "block/ThresholdEnvironmentBlocks.java").read_text(encoding="utf-8")
-    sounds_java = (JAVA.parent / "ThresholdSounds.java").read_text(encoding="utf-8")
-    mod = (JAVA.parent / "ThresholdMod.java").read_text(encoding="utf-8")
+    sounds_java = (JAVA / "ThresholdSounds.java").read_text(encoding="utf-8")
+    mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
     commands = (JAVA / "command/ThresholdCommands.java").read_text(encoding="utf-8")
 
     for level in ("level_0", "level_1", "level_3", "level_4"):
