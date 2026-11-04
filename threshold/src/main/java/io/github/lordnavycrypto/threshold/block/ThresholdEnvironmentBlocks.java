@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.threshold.block;
 
 import io.github.lordnavycrypto.threshold.ThresholdMod;
+import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -23,6 +24,28 @@ public final class ThresholdEnvironmentBlocks {
     public static final DeferredBlock<ThresholdTransitionWallBlock> TRANSITION_WALL =
             BLOCKS.registerBlock("transition_wall", ThresholdTransitionWallBlock::new,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_TERRACOTTA));
+
+    // Authored route doors: the existing Level 0 <-> Level 1 wall is unchanged.
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_1_TO_3 =
+            BLOCKS.registerBlock("level_1_to_3", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
+                    "Level 3 — Electrical Station", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_3_TO_1 =
+            BLOCKS.registerBlock("level_3_to_1", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_1, 8.5, 64.0, 8.5,
+                    "Level 1 — The Vulnerable Shelter", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_3_TO_4 =
+            BLOCKS.registerBlock("level_3_to_4", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_4, 4.5, 64.0, 4.5,
+                    "Level 4 — Abandoned Office", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_4_TO_3 =
+            BLOCKS.registerBlock("level_4_to_3", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
+                    "Level 3 — Electrical Station", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
 
     public static final DeferredBlock<FlickeringPanelBlock> FLICKERING_PANEL =
             BLOCKS.registerBlock("flickering_panel", FlickeringPanelBlock::new,
