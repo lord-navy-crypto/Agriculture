@@ -6,6 +6,7 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.server.MinecraftServer;
@@ -75,6 +76,12 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level0NoOtherCreatures
                 ? "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_OK"
                 : "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_FAIL");
+
+        boolean level1EntryShelterClear = level1.getEntitiesOfClass(
+                Mob.class, new AABB(0, 0, 0, 48, 128, 48)).isEmpty();
+        System.out.println(level1EntryShelterClear
+                ? "THRESHOLD_LEVEL1_STARTER_SHELTER_CLEAR_OK"
+                : "THRESHOLD_LEVEL1_STARTER_SHELTER_CLEAR_FAIL");
         // Scan every wall, divider, pillar and transition segment in the first 32x32 room.
         boolean wallFloorConnected = true;
         int wallCells = 0;
