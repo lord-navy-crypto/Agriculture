@@ -175,6 +175,8 @@ def main() -> int:
     require(director, "gameTime % 1200L", "slow Partygoer encounter cadence")
     require(director, "level.isDay()", "Partygoer night-only encounter")
     require(partygoer, "closeTicks >= 100", "Partygoer sustained close-range capture")
+    require(partygoer, "implements GeoEntity", "Partygoer uses GeckoLib entity rendering")
+    require(partygoer, "registerControllers", "Partygoer has an animation controller")
     require(partygoer, "ThresholdDimensions.LEVEL_0", "Partygoer sends player into Level 0")
     require(partygoer, "doHurtTarget", "Partygoer never damages the player")
     require(watcher, "tickCount > 180", "longer distant Watcher sightings")
