@@ -23,6 +23,7 @@ def read_json(path: Path) -> dict:
 def main() -> int:
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
     lights = (JAVA / "block/FlickeringPanelBlock.java").read_text(encoding="utf-8")
+    vent = (JAVA / "worldgen/ThresholdIndustrialVentFeature.java").read_text(encoding="utf-8")
     level0 = read_json(RESOURCES / "data/threshold/worldgen/biome/level_0.json")
     level1 = read_json(RESOURCES / "data/threshold/worldgen/biome/level_1.json")
 
@@ -64,10 +65,14 @@ def main() -> int:
         ("ThresholdEnvironmentBlocks.WAREHOUSE_WALL", "Level 1 warehouse walls"),
         ("Blocks.SMOOTH_STONE", "Level 1 industrial floor"),
         ("Blocks.IRON_BARS", "Level 1 overhead industrial fittings"),
-        ("ThresholdEnvironmentBlocks.CEILING_VENT", "Level 1 animated vent"),
     ):
         if token not in layout:
             raise AssertionError(f"THRESHOLD horror-preservation contract changed: {label}")
+
+    require("ThresholdEnvironmentBlocks.CEILING_VENT", vent,
+            "Level 1 retains its authored animated ventilation unit")
+    require(r"new BlockPos\(\(chunkX << 4\) \+ 12, 73, \(chunkZ << 4\) \+ 12\)",
+            vent, "Level 1 vent remains at its established overhead placement")
 
     # Keep the known transition locations and the asymmetric route philosophy:
     # Level 0 can feel isolating; Level 1 rooms retain a deterministic exit.
