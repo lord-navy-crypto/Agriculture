@@ -207,9 +207,17 @@ def main():
 
         for passage in ("level_2_fire_exit", "level_2_to_3",
                         "level_2_branch_door", "level_3_to_2",
-                        "level_3_to_4", "level_4_to_3"):
+                        "level_3_to_4", "level_4_to_3",
+                        "level_3_elevator", "level_4_to_5",
+                        "level_5_to_3", "level_5_to_4"):
             blockstate = read_json(z, f"assets/threshold/blockstates/{passage}.json")
             assert blockstate["variants"][""]["model"].startswith("minecraft:block/")
+
+        hotel_panel = read_json(z, "assets/threshold/blockstates/level_5_elevator_panel.json")["variants"]
+        assert len(hotel_panel) == 12
+        assert all(v["model"] == "minecraft:block/iron_block" for v in hotel_panel.values())
+        hotel_biome = read_json(z, "data/threshold/worldgen/biome/level_5.json")
+        assert hotel_biome["effects"]["mood_sound"]["sound"] == "minecraft:block.note_block.harp"
 
         sound_definitions=read_json(z,"assets/threshold/sounds.json")
         for level in ("level_0","level_1"):
@@ -220,7 +228,7 @@ def main():
             assert biome["effects"]["music"]["replace_current_music"] is True
             ogg=z.read(f"assets/threshold/sounds/{event}.ogg")
             assert ogg[:4] == b"OggS" and len(ogg) > 4000
-        for filename in ("level_3_supply","level_4_supply"):
+        for filename in ("level_3_supply","level_4_supply","level_5_supply"):
             loot=read_json(z,f"data/threshold/loot_table/chests/{filename}.json")
             assert loot["type"] == "minecraft:chest"
             for pool in loot["pools"]:
