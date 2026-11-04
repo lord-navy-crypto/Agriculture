@@ -50,6 +50,22 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/ThresholdMod.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdRoomLayoutFeature.class",
     "io/github/lordnavycrypto/threshold/command/ThresholdCommands.class",
+    "io/github/lordnavycrypto/threshold/entity/ThresholdEntities.class",
+    "io/github/lordnavycrypto/threshold/entity/ThresholdWatcherEntity.class",
+    "io/github/lordnavycrypto/threshold/entity/ThresholdHoundEntity.class",
+    "io/github/lordnavycrypto/threshold/entity/ThresholdEntityAttributes.class",
+    "io/github/lordnavycrypto/threshold/entity/ThresholdEntityDirector.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdWatcherModel.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdWatcherRenderer.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdHoundModel.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdHoundRenderer.class",
+    "assets/threshold/geo/watcher.geo.json",
+    "assets/threshold/animations/watcher.animation.json",
+    "assets/threshold/textures/entity/watcher.png",
+    "assets/threshold/geo/hound.geo.json",
+    "assets/threshold/animations/hound.animation.json",
+    "assets/threshold/textures/entity/hound.png",
+    "data/threshold/loot_table/entities/hound.json",
 }
 
 def read_json(z, path):
@@ -82,6 +98,8 @@ def main():
             biome=read_json(z,f"data/threshold/worldgen/biome/{level}.json")
             assert biome["features"] == [], "custom biome should not duplicate injected features"
             assert biome["carvers"] == {}, "NeoForge 1.21.1 expects a keyed carver map"
+            assert biome["spawners"] == {}, "Threshold entity director owns dimension-specific encounters"
+            assert biome["spawn_costs"] == {}, "No generic natural spawn costs should be injected"
             dtype=read_json(z,f"data/threshold/dimension_type/{level}_type.json")
             assert dtype["has_skylight"] is False
         configured=read_json(z,"data/threshold/worldgen/configured_feature/room_layout.json")
@@ -101,6 +119,19 @@ def main():
             assert all(p.get("type")!="minecraft:biome" for p in nested["placement"]), (
                 f"Nested Lithostitched feature {child} must not check its biome individually")
         assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
+        # Packaged entity assets must be complete in the independent JAR.
+        for name in ("watcher", "hound"):
+            geo=read_json(z,f"assets/threshold/geo/{name}.geo.json")["minecraft:geometry"][0]
+            anim=read_json(z,f"assets/threshold/animations/{name}.animation.json")["animations"]
+            assert geo["description"]["texture_width"] == 64
+            assert geo["description"]["texture_height"] == 64
+            assert geo["bones"] and anim
+            png=z.read(f"assets/threshold/textures/entity/{name}.png")
+            assert png[:8] == b"\\x89PNG\\r\\n\\x1a\\n"
+            assert int.from_bytes(png[16:20],"big") == 64
+            assert int.from_bytes(png[20:24],"big") == 64
+        hound_loot=read_json(z,"data/threshold/loot_table/entities/hound.json")
+        assert hound_loot["type"] == "minecraft:entity" and hound_loot["pools"] == []
         clips=read_json(z, "assets/threshold/animations/ceiling_vent.animation.json")["animations"]
         assert "animation.ceiling_vent.spin" in clips
         bones=read_json(z, "assets/threshold/geo/ceiling_vent.geo.json")["minecraft:geometry"][0]["bones"]
