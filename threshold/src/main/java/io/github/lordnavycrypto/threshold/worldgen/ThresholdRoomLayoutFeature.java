@@ -402,7 +402,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 && Math.floorMod(rackZ, 8) == 4)
                                 && (rackX >= 9 && rackX <= 18 || rackX >= 30 && rackX <= 39);
                         if (!protectedTile && post) {
-                            for (int y = 65; y <= 69; y++) {
+                            for (int y = 64; y <= 69; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
                             }
                         }
@@ -416,7 +416,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         if (localX == 11 || localX == 24 || localX == 37) {
                             set(world, pos, x, 70, z, Blocks.COPPER_BLOCK.defaultBlockState());
                             if (Math.floorMod(localZ, 8) == 0) {
-                                set(world, pos, x, 71, z, Blocks.CHAIN.defaultBlockState());
+                                set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
                             }
                         }
                         if (localZ == 11 || localZ == 37) {
@@ -461,7 +461,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         }
                         if (!protectedTile && (localX == 8 || localX == 40)
                                 && (localZ == 22 || localZ == 25)) {
-                            for (int y = 65; y <= 68; y++) {
+                            for (int y = 64; y <= 68; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
                             }
                         }
