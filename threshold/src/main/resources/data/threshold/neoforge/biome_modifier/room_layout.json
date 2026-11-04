@@ -1,6 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": "minecraft:the_void",
-  "features": "threshold:room_layout",
-  "step": "surface_structures"
-}

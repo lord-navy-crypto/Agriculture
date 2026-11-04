@@ -10,9 +10,8 @@ displayName="${mod_name}"
 displayURL="https://github.com/lord-navy-crypto/Agriculture"
 authors="Threshold development contributors"
 description='''
-An independent psychological and liminal horror exploration mod for Minecraft 1.21.1.
-The first release adds separate Level 0 and Level 1 dimensions with deterministic,
-chunk-safe room generation. Agriculture integration is optional and is not required.
+An independent Backrooms-inspired environment mod with Level 0 and Level 1 dimensions.
+Gugu-Gaga Agriculture is a required survival dependency for this development build.
 '''
 
 [[dependencies.${mod_id}]]
@@ -27,4 +26,11 @@ modId="minecraft"
 type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="gugugaga"
+type="required"
+versionRange="[3.9,)"
+ordering="AFTER"
 side="BOTH"

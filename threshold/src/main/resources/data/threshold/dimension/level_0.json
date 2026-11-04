@@ -3,10 +3,19 @@
   "generator": {
     "type": "minecraft:flat",
     "settings": {
-      "biome": "minecraft:the_void",
+      "biome": "threshold:level_0",
       "features": true,
       "lakes": false,
-      "layers": [],
+      "layers": [
+        {
+          "height": 127,
+          "block": "minecraft:air"
+        },
+        {
+          "height": 1,
+          "block": "minecraft:gray_concrete"
+        }
+      ],
       "structure_overrides": []
     }
   }
