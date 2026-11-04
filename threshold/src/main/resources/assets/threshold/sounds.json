@@ -1,0 +1,12 @@
+{
+  "level_0_ambient": {
+    "sounds": [
+      { "name": "threshold:level_0_ambient", "stream": true, "volume": 0.42 }
+    ]
+  },
+  "level_1_ambient": {
+    "sounds": [
+      { "name": "threshold:level_1_ambient", "stream": true, "volume": 0.38 }
+    ]
+  }
+}
