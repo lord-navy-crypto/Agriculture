@@ -1,4 +1,4 @@
-# THRESHOLD — Level 0 and 1 Environment Design Contract
+# THRESHOLD — Level 0–4 Environment Design Contract
 
 The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
