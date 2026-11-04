@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.9.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.10.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -143,6 +143,12 @@ The packaged-JAR validator enforces this invariant.
 - Distant rooms can become pallet-rack aisles, copper service galleries, raised loading platforms, static machine bays, overhead gantries or mirrored rack layouts.
 - Rack spans, dock platforms and machine islands avoid the reserved circulation routes and the Agriculture resource footprints. Gantries remain above normal walking height; their supports also respect protected routes.
 - These are deterministic block assemblies, not ticking machinery or redstone contraptions. They add architectural scale without introducing extra server load from block entities.
+
+## Alpha 10 — visible Level 0 and Level 1 entities
+
+- Register the GeckoLib Hound and Watcher entity renderers on the client MOD event bus.
+- The renderer subscriber is explicitly restricted to Dist.CLIENT so dedicated servers never load client-only classes.
+- The packaged-JAR validator now requires the renderer event subscriber, and the source validator checks both entity-to-renderer registrations.
 
 ## Alpha 9 — source-backed six-level transit network
 
