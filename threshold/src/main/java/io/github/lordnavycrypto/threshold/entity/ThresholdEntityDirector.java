@@ -81,12 +81,12 @@ public final class ThresholdEntityDirector {
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
             if (!level.getEntitiesOfClass(ThresholdWatcherEntity.class,
-                    player.getBoundingBox().inflate(36.0D)).isEmpty()) continue;
-            if (level.getRandom().nextInt(4) != 0) continue;
+                    player.getBoundingBox().inflate(42.0D)).isEmpty()) continue;
+            if (level.getRandom().nextInt(3) != 0) continue;
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
-                int distance = 13 + level.getRandom().nextInt(9);
+                int distance = 17 + level.getRandom().nextInt(11);
                 int x = Mth.floor(player.getX() + Math.cos(angle) * distance);
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
