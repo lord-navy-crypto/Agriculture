@@ -113,6 +113,9 @@ def main() -> int:
         ("Blocks.IRON_BARS", "Level 1 rack frames and gantry rails"),
         ("Blocks.SMOOTH_STONE_SLAB", "Level 1 loading platforms"),
         ("isLevel1MachineIsland", "Level 1 machine-bay structures"),
+        ("for (int y = 64; y <= 69; y++)", "Level 1 rack frames rest on the warehouse floor"),
+        ("for (int y = 64; y <= 68; y++)", "Level 1 gantry supports rest on the warehouse floor"),
+        ("!protectedTile && (localX == 8 || localX == 40)", "gantry supports respect protected circulation/resource tiles"),
     ):
         if token not in layout:
             raise AssertionError(f"THRESHOLD architecture contract missing: {label}")
