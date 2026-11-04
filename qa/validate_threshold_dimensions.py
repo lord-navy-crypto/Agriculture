@@ -127,7 +127,7 @@ def main():
             assert geo["description"]["texture_height"] == 64
             assert geo["bones"] and anim
             png=z.read(f"assets/threshold/textures/entity/{name}.png")
-            assert png[:8] == b"\\x89PNG\\r\\n\\x1a\\n"
+            assert png[:8] == b"\x89PNG\r\n\x1a\n"
             assert int.from_bytes(png[16:20],"big") == 64
             assert int.from_bytes(png[20:24],"big") == 64
         hound_loot=read_json(z,"data/threshold/loot_table/entities/hound.json")
