@@ -34,6 +34,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_1_maintenance"));
     private static final ResourceKey<LootTable> FORGOTTEN_LOOT = ResourceKey.create(
             Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_0_forgotten"));
+    private static final ResourceKey<LootTable> LEVEL_3_SUPPLY_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_3_supply"));
+    private static final ResourceKey<LootTable> LEVEL_4_SUPPLY_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_4_supply"));
 
     private static final int LEVEL_0_ROOM_SIZE = 32;
     private static final int LEVEL_0_CARPET_Y = 64;
@@ -45,6 +49,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static final int LEVEL_1_WALL_BOTTOM = 64;
     private static final int LEVEL_1_WALL_TOP = 73;
     private static final int LEVEL_1_CEILING_Y = 74;
+    private static final int LEVEL_3_ROOM_SIZE = 32;
+    private static final int LEVEL_3_WALL_BOTTOM = 64;
+    private static final int LEVEL_3_WALL_TOP = 70;
+    private static final int LEVEL_3_CEILING_Y = 71;
+    private static final int LEVEL_4_ROOM_SIZE = 48;
+    private static final int LEVEL_4_WALL_BOTTOM = 64;
+    private static final int LEVEL_4_WALL_TOP = 70;
+    private static final int LEVEL_4_CEILING_Y = 71;
 
     public ThresholdRoomLayoutFeature() {
         super(NoneFeatureConfiguration.CODEC);
@@ -63,6 +75,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_1)) {
             buildLevel1Chunk(world, chunkX, chunkZ);
+            return true;
+        }
+        if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_3)) {
+            buildLevel3Chunk(world, chunkX, chunkZ);
+            return true;
+        }
+        if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_4)) {
+            buildLevel4Chunk(world, chunkX, chunkZ);
             return true;
         }
         return false;
