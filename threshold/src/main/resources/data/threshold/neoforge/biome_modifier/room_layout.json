@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "threshold:level_0",
+    "threshold:level_1"
+  ],
+  "features": "threshold:room_layout",
+  "step": "vegetal_decoration"
+}

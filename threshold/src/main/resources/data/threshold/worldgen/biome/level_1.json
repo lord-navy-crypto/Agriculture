@@ -17,19 +17,5 @@
   "spawners": {},
   "spawn_costs": {},
   "carvers": [],
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [
-      "threshold:room_layout"
-    ],
-    []
-  ]
+  "features": []
 }

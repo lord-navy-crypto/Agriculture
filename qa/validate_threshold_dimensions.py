@@ -53,13 +53,17 @@ def main():
             assert settings["features"] is True
             assert any(l["block"] != "minecraft:air" for l in settings["layers"])
             biome=read_json(z,f"data/threshold/worldgen/biome/{level}.json")
-            assert any("threshold:room_layout" in step for step in biome["features"])
+            assert biome["features"] == [], "custom biome should not duplicate injected features"
             dtype=read_json(z,f"data/threshold/dimension_type/{level}_type.json")
             assert dtype["has_skylight"] is False
         configured=read_json(z,"data/threshold/worldgen/configured_feature/room_layout.json")
         placed=read_json(z,"data/threshold/worldgen/placed_feature/room_layout.json")
         assert configured["type"] == placed["feature"] == "threshold:room_layout"
-        assert "data/threshold/neoforge/biome_modifier/room_layout.json" not in names
+        modifier=read_json(z,"data/threshold/neoforge/biome_modifier/room_layout.json")
+        assert modifier["type"]=="neoforge:add_features"
+        assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1"]
+        assert modifier["features"]=="threshold:room_layout"
+        assert modifier["step"]=="vegetal_decoration"
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0
 

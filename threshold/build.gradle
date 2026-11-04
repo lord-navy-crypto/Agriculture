@@ -70,6 +70,7 @@ tasks.register('validateThresholdResources') {
             'data/threshold/worldgen/placed_feature/room_layout.json',
             'data/threshold/worldgen/biome/level_0.json',
             'data/threshold/worldgen/biome/level_1.json',
+            'data/threshold/neoforge/biome_modifier/room_layout.json',
             'data/threshold/loot_table/chests/level_1_supply.json',
             'assets/threshold/blockstates/flickering_panel.json',
             'META-INF/neoforge.mods.toml'
