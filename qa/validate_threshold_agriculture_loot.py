@@ -9,7 +9,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 AGRI = ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/agriculture"
 LOOT = ROOT / "threshold/src/main/resources/data/threshold/loot_table/chests"
-FILES = ("AgricultureContent.java", "FoodV34Content.java", "WaterV37Content.java")
+FILES = (
+    "AgricultureContent.java",
+    "AgricultureCuisineContent.java",
+    "FoodV34Content.java",
+    "WaterV37Content.java",
+)
 
 
 def registered_items() -> set[str]:
