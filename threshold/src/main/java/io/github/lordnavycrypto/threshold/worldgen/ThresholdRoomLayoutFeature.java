@@ -458,7 +458,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 69, z, Blocks.IRON_BLOCK.defaultBlockState());
                             set(world, pos, x, 70, z, Blocks.IRON_BARS.defaultBlockState());
                         }
-                        if ((localX == 8 || localX == 40) && (localZ == 22 || localZ == 25)) {
+                        if (!protectedTile && (localX == 8 || localX == 40)
+                                && (localZ == 22 || localZ == 25)) {
                             for (int y = 65; y <= 68; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
                             }
