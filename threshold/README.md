@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.7.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.8.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -56,6 +56,7 @@ Test commands (requires OP permissions):
 ```
 /threshold travel level_0
 /threshold travel level_1
+/threshold travel level_2
 /threshold travel overworld
 /threshold whereami
 ```
@@ -140,41 +141,51 @@ The packaged-JAR validator enforces this invariant.
 - Rack spans, dock platforms and machine islands avoid the reserved circulation routes and the Agriculture resource footprints. Gantries remain above normal walking height; their supports also respect protected routes.
 - These are deterministic block assemblies, not ticking machinery or redstone contraptions. They add architectural scale without introducing extra server load from block entities.
 
-### Phantom-inspired spatial variation
-- Some rooms preserve their signature architecture while mirroring its internal arrangement or changing its material/lighting rhythm. This borrows the broad design idea of a Phantom variant, not another creator's exact room blueprint or assets.
-- Exit topology, entry rooms and inter-level transitions are not mirrored or relocated. The variation is architectural and perceptual, not a silent route rewrite.
+## Alpha 8 — source-backed five-level transit network
 
+### Level 2 — Abandoned Utility Halls
+- Level 2 is now a full playable dimension, not an invisible waypoint. Its 32×32 deterministic room cells contain narrow concrete service corridors, pipe galleries, copper mains, cable runs, maintenance trenches, valve bays and damp sump edges.
+- Room variants are generated per world seed and room coordinate. Shared-edge doorway decisions keep adjacent cells connected, and the QA graph checks that no Level 2 room is sealed.
+- The entry cell remains readable; deeper cells become denser and more industrial. Agriculture supplies are not duplicated or turned into a second survival system.
 
-## Alpha 7 — four-level traversal and original horror audio
-
-### Original Level 0 and Level 1 music
-- Level 0 now has an original, low-volume eerie office drone: slow detuned fluorescent hum, soft spectral movement and a distant tonal layer.
-- Level 1 has a separate original industrial ambience: low transformer resonance, rotating machinery rhythm and restrained metallic overtones.
-- Both tracks are original generated audio, packaged inside the independent JAR and selected by their own biome music entries. They do not replace the established flickering lights, cave/vault ambience or room layouts.
+### Level 0 and Level 1 original music
+- Level 0 keeps its original, low-volume eerie office drone: detuned fluorescent hum, soft spectral movement and a distant tonal layer.
+- Level 1 keeps its separate industrial ambience: low transformer resonance, mechanical rhythm and restrained metallic overtones.
+- Both OGG tracks are packaged in the independent JAR and selected by their own biome music entries. Existing flickering lights, cave/vault ambience and established room layouts remain intact.
 
 ### Level 3 — Electrical Station
-- A separate dimension built around narrow brick service corridors, overhead copper mains, cable runs, static electrical rooms and occasional barred black-glass observation slits.
-- Deterministic room archetypes include plain pipe tunnels, equipment bays, switchgear galleries, window-like observation rooms, cable trenches and transformer chambers.
-- Scarce supply barrels use real Agriculture hydration and food items. Generic biome spawning remains disabled; entity ecology can be added in a later pass.
+- Narrow brick service corridors, copper mains, cable runs, static electrical rooms, equipment bays, switchgear galleries, black-glass observation slits, cable trenches and transformer chambers.
+- Scarce supply barrels use real Agriculture hydration and food items. Generic biome spawning remains disabled in this architecture pass.
 
 ### Level 4 — Abandoned Office
-- A separate, quieter dimension of broad empty office cells, pale concrete, sparse desks, reception counters, meeting rooms, blacked-out windows and sealed water-cooler props.
+- Broad, quiet office cells, pale concrete, sparse desks, reception counters, meeting rooms, blacked-out windows and sealed water-cooler props.
 - Occasional caches provide more reliable Agriculture hydration and food than Level 3, while most rooms remain intentionally empty.
-- The ambient profile is softer and brighter than Level 3; windows are opaque and do not create unsafe openings.
 
-### Traversal network
-- Level 0 ↔ Level 1: the original validated transition remains unchanged.
-- Level 1 → Level 3: a fixed industrial service lift in a distant warehouse cell. This is an explicit bridge while Level 2 is not yet implemented.
-- Level 3 → Level 1: a return lift near the Level 3 entry sector.
-- Level 3 ↔ Level 4: an Office Sector door and a return elevator, matching the documented electrical-station/office-sector connection.
-- Each passage is an interactable in-world door block that transfers the player to a safe, authored arrival point. Operator travel commands are also available: /threshold travel level_3 and /threshold travel level_4.
-- The route graph is deliberately non-linear at the level of room layouts, but its authored inter-level links remain stable and discoverable. Level 2 is not silently fabricated; its future entrances can be added without moving these links.
+### Transit graph — no Phantom network
+- Level 0 → Level 1: preserve the original validated unstable-wall passage.
+- Level 1 → Level 2: a seamless corridor transition. Warehouse fittings gradually become copper pipes, chains and utility fixtures before the player crosses an invisible trigger into Level 2. This replaces the earlier non-canonical direct Level 1 → Level 3 lift.
+- Level 2 → Level 1 / Level 3: marked utility exits and fire exits. The fire-exit destination is selected from Level 1 or Level 3.
+- Level 2 → Level 1 / Level 3 / Level 4: unmarked branch doors use a seed-stable weighted destination draw. Each door's destination is fixed by world seed and coordinates, so repeated use cannot reroll it.
+- Level 3 → Level 2: the return maintenance corridor lets a wanderer retrace the route used to enter the electrical station. This is a gameplay return path, not a claim that every source version documents a separate Level 3 exit.
+- Level 3 → Level 4: the metallic Office Sector door, based on the Fandom Level 4 entrance description.
+- Level 4 → Level 3: a service elevator return, retained as a Wikidot-version route variant.
 
-### Canon and spatial design
-- Wikidot remains the primary reference. Fandom contributes optional details such as Level 3's pipe-lined, shifting corridors, repeated machinery rooms and barred windows.
-- Level 3 keeps the electrical-facility identity; Level 4 keeps the mostly empty office identity and its lower entity density.
-- Phantom-inspired variation is limited to original mirrored room interiors and altered spatial rhythm. No external map, texture, model or exact room blueprint is copied.
-- Existing Level 0 / Level 1 room sizes, entry rooms, carpet/floor elevations, lighting character, Agriculture systems and validated transition coordinates remain protected.
+### Random route rules
+- Source pages describe many routes as common, occasional, rare or random but generally do not publish numeric probabilities.
+- The code uses relative gameplay weights, not asserted canon percentages. Current branch-door weights are 4:4:1 for Level 1, Level 3 and Level 4; the fire exit chooses between Level 1 and Level 3 with equal relative weight.
+- The selected destination is deterministic per world seed and door position. Different doors can resolve differently, while one door remains stable after reload.
+- Unimplemented destinations such as Level 5, Level 6, Level 14, Level 27 and other distant exits are documented as future route candidates, not silently redirected to an unrelated built dimension.
+
+### Source handling
+- Wikidot and Fandom are treated as separate source profiles, not flattened into one contradictory canon.
+- The current Wikidot pages define the main Level 0 → 1 → 2 progression and Level 2's broad links to Levels 1, 3 and 4.
+- Fandom contributes its own fire-exit, anomalous-corridor and Office Sector details. Where a page is being rewritten or differs from the other wiki, the route remains attributed to that version.
+- No Phantom-level network, Phantom travel rules, copied maps, sound recordings, textures or exact room blueprints are used.
+
+### Protected invariants
+- Level 0 / Level 1 room sizes, entry rooms, floor elevations, original wall transition, lighting identity and Agriculture survival integration remain protected.
+- Level 2 is additive; it does not resize or regenerate existing Level 0 / Level 1 rooms.
+- Level 3 and Level 4 retain their own architectural and horror identities. More connections do not homogenize their atmospheres.
 
 ## Horror identity preservation
 
