@@ -4,6 +4,10 @@
   "block.threshold.warehouse_wall": "仓库混凝土",
   "block.threshold.flickering_panel": "闪烁灯板",
   "block.threshold.transition_wall": "不稳定的墙壁",
+  "block.threshold.level_1_to_3": "工业服务电梯",
+  "block.threshold.level_3_to_1": "返回第一层的电梯",
+  "block.threshold.level_3_to_4": "办公区通道门",
+  "block.threshold.level_4_to_3": "返回第三层的办公电梯",
   "block.threshold.ceiling_vent": "悬挂通风装置",
   "entity.threshold.watcher": "远处的观察者",
   "entity.threshold.hound": "猎犬"
