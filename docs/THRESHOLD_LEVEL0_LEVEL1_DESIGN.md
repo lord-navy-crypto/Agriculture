@@ -84,11 +84,6 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - The starter shelter, greenhouse, supply caches, return passage and warehouse floor plan remain unchanged.
 - Structures are static block assemblies. This pass adds no ticking machinery, redstone logic or additional block entities.
 
-### Phantom-inspired variation (original implementation)
-- The broad idea is to preserve a room's recognizable architectural signature while mirroring or inverting its internal arrangement and visual rhythm.
-- This is a design principle, not a reproduction of another creator's exact layout, textures, models or assets.
-- Mirroring applies only to room interiors. It never changes the validated doorway decisions, route graph, starter shelter or dimension transition.
-
 ### Alpha 6 acceptance
 - Source validation confirms both overlay passes are called after base room construction.
 - Deterministic archetype selection and shared doorway-center calculations are present.
@@ -98,40 +93,56 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Manual client testing must inspect each archetype, verify routes and resource areas remain accessible, and check that overhead structures do not clip the player camera or Hound navigation.
 
 
-## Alpha 7 — four-level design extension
+## Alpha 8 — five-level source-backed transit design
 
-### Level 3 — Electrical Station
-- Separate dimension with 32x32 room cells, brick service corridors, overhead copper mains, cable runs and static equipment rooms.
-- Deterministic room variants include plain tunnels, equipment bays, switchgear galleries, black-glass observation slits, cable trenches and transformer chambers.
-- Sparse supply barrels use existing Agriculture hydration and food items. Generic biome spawning remains disabled.
+### Level 2 — Abandoned Utility Halls
+- Level 2 is a full playable dimension with 32×32 room cells, dense concrete service corridors, copper mains, pipe galleries, cable runs, maintenance trenches, valve bays and damp sump edges.
+- The room graph is deterministic and shared-edge. Each cell must retain at least one valid doorway; the route graph test now checks both Level 1 and Level 2.
+- Level 2 has fixed service routes plus multiple anomalous branch doors. It is a real exploration space, not merely a loading screen or teleport chamber.
 
-### Level 4 — Abandoned Office
-- Separate dimension with 48x48 room cells, broad empty offices, pale concrete, sparse desks, reception counters and meeting rooms.
-- Blacked-out windows use opaque blocks and do not create openings.
-- Occasional decorative water-cooler props and supply barrels use existing Agriculture items. Most rooms remain intentionally empty.
+### Level 0 / Level 1 preservation
+- Level 0's original yellow-office layout, entry room, harmless observer-only rule, flickering lights, music and Level 0 ↔ Level 1 transition remain unchanged.
+- Level 1's warehouse layout, starter shelter, Agriculture planter and supplies, Hound restrictions, lighting and industrial music remain unchanged.
+- The earlier direct Level 1 → Level 3 lift is removed. A seamless trigger zone is placed inside a dedicated warehouse corridor; pipes and service fittings become denser before the environment transitions into Level 2.
 
-### Music
-- Level 0 and Level 1 have separate original OGG ambience tracks, registered as sound events and selected by their respective biome music settings.
-- Level 0 uses a quiet, detuned office drone; Level 1 uses a low industrial hum and restrained mechanical rhythm.
-- Existing flickering panels, biome mood sounds and room layouts remain in place.
+### Source-backed route graph
+- Level 0 → Level 1: the original unstable-wall passage is preserved.
+- Level 1 → Level 2: smooth environmental transition with gradually increasing pipes and dials, matching the Wikidot description.
+- Level 2 → Level 1 / Level 3: service exits and fire exits. The Fandom fire-exit variant can resolve to either Level 1 or Level 3.
+- Level 2 → Level 1 / Level 3 / Level 4: unmarked branch doors model the Wikidot version's anomalous doors to the common adjacent levels.
+- Level 3 → Level 2: retracing the service corridor is retained as a practical return route for gameplay; this is not represented as a newly documented universal canon exit.
+- Level 3 → Level 4: the metallic Office Sector door is based on the Fandom Level 4 entrance description.
+- Level 4 → Level 3: a service elevator return is retained as an optional Wikidot/archived-version route variant. Current rewritten pages may differ.
 
-### Inter-level traversal
-- Level 0 ↔ Level 1: original validated passage, unchanged.
-- Level 1 → Level 3: fixed industrial service lift.
-- Level 3 → Level 1: return lift.
-- Level 3 → Level 4: Office Sector door.
-- Level 4 → Level 3: return elevator.
-- Level 2 is not added in this pass. The Level 1 service lift is an explicit bridge that leaves room for a future Level 2 connection without moving existing route nodes.
+### Random destination implementation
+- Wiki pages commonly describe exits as random, occasional, rare or dependent on a particular door/area, but do not generally publish exact numeric probabilities.
+- Relative weights in the mod are gameplay tuning, not canon percentages. The current Level 2 branch uses 4:4:1 relative weights for Level 1, Level 3 and Level 4. The Level 2 fire exit uses equal relative weights for Level 1 and Level 3.
+- A door's result is calculated from the world seed and its coordinates. It remains stable after reload, while different doors can resolve to different destinations. This prevents repeated interaction from rerolling the same door.
+- Routes to unimplemented destinations (for example Level 5, Level 6, Level 14, Level 27 and other distant levels) are recorded as future candidates and are not redirected to an unrelated existing dimension.
 
-### Reference synthesis
-- Wikidot remains the primary reference for the electrical-facility identity of Level 3 and the mostly empty office identity of Level 4.
-- Fandom contributes optional pipe-lined corridors, repeated machinery rooms, barred windows and spatially inconsistent room arrangements.
-- Phantom-inspired changes are original mirrored room interiors and altered spatial rhythm. No external map, recording, texture or model is copied.
+### Source profiles and disagreements
+- Wikidot and Fandom remain separate source profiles. The mod combines compatible routes, but records conflicting descriptions as version-specific variants rather than pretending that every page describes one canon.
+- Wikidot Level 1 documents a smooth transition into Level 2. Wikidot Level 2 documents anomalous exits to Levels 1, 3 and 4. Wikidot Level 3 documents elevators that can lead to Level 4 or Level 5.
+- Fandom Level 2 describes fire exits to Levels 1 or 3 and certain hallways that may lead to Level 4 or Level 27. Fandom Level 4 describes the metal Office Sector entrance from Level 3 and several other destination-specific exits.
+- The Fandom Level 3 page currently carries a rewrite notice; the Wikidot Level 4 page also carries a rewrite notice. Their current pages take priority over archived material, and disputed routes remain configurable.
+- No Phantom-level network or Phantom traversal rules are used.
+
+### Source pages
+- Wikidot: https://backrooms-wiki.wikidot.com/level-0
+- Wikidot: https://backrooms-wiki.wikidot.com/level-1
+- Wikidot: https://backrooms-wiki.wikidot.com/level-2
+- Wikidot: https://backrooms-wiki.wikidot.com/level-3
+- Wikidot: https://backrooms-wiki.wikidot.com/level-4
+- Fandom: https://backrooms.fandom.com/wiki/Level_0
+- Fandom: https://backrooms.fandom.com/wiki/Level_1
+- Fandom: https://backrooms.fandom.com/wiki/Level_2
+- Fandom: https://backrooms.fandom.com/wiki/Level_3
+- Fandom: https://backrooms.fandom.com/wiki/Level_4
 
 ## Acceptance gates
 - Java compile and asset validation.
 - Separate `threshold` JAR, loading alongside required Agriculture.
-- Dedicated server registers two dimensions and confirms Level 0 carpet, Level 1 floor, both transition walls, the starter cache and a lit planter actually generated.
+- Dedicated server registers all five dimensions and confirms the Level 0 carpet, Level 1 warehouse, Level 2 utility halls, Level 3 electrical station, Level 4 office, route blocks, starter cache and lit planter actually generated.
 - No console worldgen errors, missing models or missing loot IDs.
 - Manual client test for room visibility, lighting and resource availability before marking release ready.
 
