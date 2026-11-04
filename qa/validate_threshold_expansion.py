@@ -178,7 +178,8 @@ def main() -> int:
     require(partygoer, "implements GeoEntity", "Partygoer uses GeckoLib entity rendering")
     require(partygoer, "registerControllers", "Partygoer has an animation controller")
     require(partygoer, "ThresholdDimensions.LEVEL_0", "Partygoer sends player into Level 0")
-    require(partygoer, "doHurtTarget", "Partygoer never damages the player")
+    require(partygoer, "getNavigation().moveTo(player, 0.72D)", "Partygoer follows without an attack goal")
+    assert "MeleeAttackGoal" not in partygoer, "Partygoer must remain non-attacking"
     require(watcher, "tickCount > 180", "longer distant Watcher sightings")
     require(watcher, "distanceToSqr(nearest) < 72.25D", "Watcher disappears when approached")
     require(items, 'register("almond_water"', "Almond Water registry")
