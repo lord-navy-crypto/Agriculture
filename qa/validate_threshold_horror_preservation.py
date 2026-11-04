@@ -107,7 +107,7 @@ def main() -> int:
             "architectural overlays preserve both entry rooms")
     for token, label in (
         ("Blocks.WHITE_STAINED_GLASS_PANE", "Level 0 office cubicles"),
-        ("Blocks.GRAY_STAINED_GLASS_PANE", "Level 0 mirrored phantom office"),
+        ("Blocks.GRAY_STAINED_GLASS_PANE", "Level 0 mirrored office partitions"),
         ("Blocks.STAINED_WALLPAPER", "Level 0 staggered partitions"),
         ("Blocks.COPPER_BLOCK", "Level 1 industrial pipework"),
         ("Blocks.IRON_BARS", "Level 1 rack frames and gantry rails"),
