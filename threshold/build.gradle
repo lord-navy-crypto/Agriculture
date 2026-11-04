@@ -128,6 +128,7 @@ tasks.register('validateThresholdResources') {
             'assets/threshold/geo/watcher.geo.json',
             'assets/threshold/animations/watcher.animation.json',
             'assets/threshold/textures/entity/watcher.png',
+            'assets/threshold/textures/entity/partygoer.png',
             'assets/threshold/sounds.json',
             'assets/threshold/sounds/level_0_ambient.ogg',
             'assets/threshold/sounds/level_1_ambient.ogg',
