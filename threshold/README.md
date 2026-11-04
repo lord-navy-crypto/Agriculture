@@ -164,7 +164,7 @@ The packaged-JAR validator enforces this invariant.
 ### Source-backed transit graph
 - Level 0 → Level 1: preserve the original validated unstable-wall passage.
 - Level 1 → Level 2: a seamless corridor transition. Warehouse fittings gradually become copper pipes, chains and utility fixtures before the player crosses an invisible trigger into Level 2. This replaces the earlier non-canonical direct Level 1 → Level 3 lift.
-- Level 2 → Level 1 / Level 3: marked utility exits and fire exits. The fire-exit destination is selected from Level 1 or Level 3.
+- Level 2 → Level 1 / Level 3: unmarked doors and fire exits. The fire-exit destination is selected from Level 1 or Level 3.
 - Level 2 → Level 1 / Level 3 / Level 4: unmarked branch doors use a seed-stable weighted destination draw. Each door's destination is fixed by world seed and coordinates, so repeated use cannot reroll it.
 - Level 3 → Level 2: the return maintenance corridor lets a wanderer retrace the route used to enter the electrical station. This is a gameplay return path, not a claim that every source version documents a separate Level 3 exit.
 - Level 3 → Level 4: the metallic Office Sector door, based on the Fandom Level 4 entrance description.
