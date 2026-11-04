@@ -208,6 +208,19 @@ def main():
                     if name.startswith("gugugaga:"):
                         assert name.removeprefix("gugugaga:") in allowed_agriculture, (
                             f"Unknown Agriculture loot item {name}")
+        threshold_loot_items = set()
+        for filename in ("level_0_forgotten", "level_1_supply", "level_1_maintenance"):
+            loot = read_json(z, f"data/threshold/loot_table/chests/{filename}.json")
+            for pool in loot["pools"]:
+                for entry in pool["entries"]:
+                    if entry["type"] == "minecraft:item" and entry["name"].startswith("threshold:"):
+                        threshold_loot_items.add(entry["name"])
+        assert {"threshold:almond_water", "threshold:flashlight", "threshold:battery"} <= threshold_loot_items
+
+        for item_model in ("almond_water", "flashlight", "battery"):
+            model = read_json(z, f"assets/threshold/models/item/{item_model}.json")
+            assert model["parent"] == "minecraft:item/generated"
+
         starter = read_json(z, "data/threshold/loot_table/chests/level_1_starter.json")
         guaranteed = {e["name"] for pool in starter["pools"]
                       for e in pool["entries"] if e["type"] == "minecraft:item"}
