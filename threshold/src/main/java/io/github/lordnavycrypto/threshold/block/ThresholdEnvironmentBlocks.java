@@ -28,16 +28,21 @@ public final class ThresholdEnvironmentBlocks {
                     BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_TERRACOTTA));
 
     // Source-backed passages. Level 0 <-> Level 1 remains in its original transition wall.
-    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_1_TO_2 =
-            BLOCKS.registerBlock("level_1_to_2", p -> new ThresholdPassageBlock(
-                    ThresholdDimensions.LEVEL_2, 4.5, 64.0, 4.5,
-                    "Level 2 — Abandoned Utility Halls", p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
-    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_2_TO_1 =
-            BLOCKS.registerBlock("level_2_to_1", p -> new ThresholdPassageBlock(
-                    ThresholdDimensions.LEVEL_1, 4.5, 64.0, 4.5,
-                    "Level 1 — The Habitable Zone", p),
-                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdTransitionZoneBlock> LEVEL_1_TO_2 =
+            BLOCKS.registerBlock("level_1_to_2", ThresholdTransitionZoneBlock::new,
+                    BlockBehaviour.Properties.of().noCollission().noOcclusion()
+                            .strength(-1.0F, 3600000.0F));
+    public static final DeferredBlock<ThresholdRouteBlock> LEVEL_2_FIRE_EXIT =
+            BLOCKS.registerBlock("level_2_fire_exit", p -> new ThresholdRouteBlock(
+                    List.of(
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_1, 4.5, 64.0, 4.5,
+                                    "Level 1 — The Habitable Zone", 1),
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
+                                    "Level 3 — Electrical Station", 1)
+                    ), 0x2F1E5A7CL, p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
     public static final DeferredBlock<ThresholdPassageBlock> LEVEL_2_TO_3 =
             BLOCKS.registerBlock("level_2_to_3", p -> new ThresholdPassageBlock(
                     ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
