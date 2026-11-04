@@ -20,7 +20,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
- * Builds a deterministic 16x16 chunk slice of Level 0 or Level 1.
+ * Builds a deterministic 16x16 chunk slice for Threshold Levels 0 through 4.
  * Room dimensions are multiples of 16, and every block write stays inside
  * the chunk currently being decorated.
  */
@@ -1058,7 +1058,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         return Math.abs(along - center) <= radius;
     }
 
-    /** Each Level 1 room chooses one deterministic exit, preventing sealed cells. */
+    /** Level 1 and Level 2 rooms choose deterministic exits, preventing sealed cells. */
     private static boolean isPrimaryExit(long seed, int roomX, int roomZ, int direction) {
         return Math.floorMod(mix(seed, roomX, roomZ, 0xE453L), 4) == direction;
     }
