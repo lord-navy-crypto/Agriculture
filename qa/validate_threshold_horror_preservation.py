@@ -89,21 +89,21 @@ def main() -> int:
 
     # Complex room archetypes add detail without changing the validated room
     # grid, entry shelters, transition coordinates or floor-level circulation.
-    require(r"buildLevel0ArchitecturalDetails\\(world, chunkX, chunkZ, seed, pos\\)", layout,
+    require(r"buildLevel0ArchitecturalDetails\(world, chunkX, chunkZ, seed, pos\)", layout,
             "Level 0 receives deterministic architectural overlays")
-    require(r"buildLevel1ArchitecturalDetails\\(world, chunkX, chunkZ, seed, pos\\)", layout,
+    require(r"buildLevel1ArchitecturalDetails\(world, chunkX, chunkZ, seed, pos\)", layout,
             "Level 1 receives deterministic architectural overlays")
-    require(r"private static int level0Architecture\\(", layout,
+    require(r"private static int level0Architecture\(", layout,
             "Level 0 has a deterministic room-archetype selector")
-    require(r"private static int level1Architecture\\(", layout,
+    require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
-    require(r"private static boolean isReservedRoomPath\\(", layout,
+    require(r"private static boolean isReservedRoomPath\(", layout,
             "architectural overlays reserve a route from each actual doorway to the room hub")
     require(r"doorwayCenterAlongZ", layout,
             "doorway reservation uses the same deterministic edge center as room generation")
     require(r"doorwayCenterAlongX", layout,
             "doorway reservation uses the same deterministic edge center as room generation")
-    require(r"if \\(roomX == 0 && roomZ == 0\\) continue", layout,
+    require(r"if \(roomX == 0 && roomZ == 0\) continue", layout,
             "architectural overlays preserve both entry rooms")
     for token, label in (
         ("Blocks.WHITE_STAINED_GLASS_PANE", "Level 0 office cubicles"),
