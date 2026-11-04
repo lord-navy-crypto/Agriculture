@@ -148,7 +148,7 @@ The packaged-JAR validator enforces this invariant.
 
 - Level 0 Watcher silhouette is taller and more elongated, with irregular head/arm/shroud animation and longer distant sightings. It remains harmless and disappears when approached or noticed.
 - Level 1 Hound remains the only hostile entity inside the Backrooms.
-- A rare night-time Overworld Partygoer encounter slowly follows a player and relocates them to the Level 0 entry after sustained close proximity. It does not deal damage.
+- A rare night-time Overworld Partygoer encounter slowly follows a player and relocates them to the Level 0 entry after sustained close proximity. It does not deal damage. It has a dedicated 64×64 yellow smiling-mask texture; its first-pass geometry reuses the tall humanoid silhouette rig.
 - Added `/threshold summon watcher`, `/threshold summon hound`, and `/threshold summon partygoer` test commands, each restricted to its intended dimension.
 - Added rare Almond Water, Flashlight and Battery items to Level 0 forgotten caches and Level 1 supply/maintenance caches. Agriculture continues to own ordinary hydration and nutrition; Almond Water is a rare restorative utility, and the flashlight currently provides a short night-vision pulse rather than dynamic world lighting.
 - Added more Level 0 abandoned meeting-room details and Level 1 cold-storage loading-bay architecture without changing room routing or the established entry layout.
