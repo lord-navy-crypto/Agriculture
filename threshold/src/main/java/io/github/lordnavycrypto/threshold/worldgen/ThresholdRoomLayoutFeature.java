@@ -159,6 +159,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
             }
         }
+        buildLevel0ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
     }
 
     private static void buildLevel1Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
@@ -275,6 +276,300 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
             }
         }
+        buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
+    }
+
+
+    /*
+     * Architectural overlays add authored room archetypes without changing
+     * the established 32x32 / 48x48 room grid, entry rooms, exits or floor Y.
+     * Every overlay is evaluated from world seed + room coordinates, so the
+     * same chunk is stable across reloads and safe to generate out of order.
+     */
+
+    private static void buildLevel0ArchitecturalDetails(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_0_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_0_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_0_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_0_ROOM_SIZE);
+                if (roomX == 0 && roomZ == 0) continue; // preserve the iconic entry room
+
+                int archetype = level0Architecture(seed, roomX, roomZ);
+                if (archetype == 0) continue;
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
+
+                switch (archetype) {
+                    case 1 -> {
+                        // Open-plan office cubicles: two-height glass partitions,
+                        // with deliberate gaps and a preserved route to every exit.
+                        if (!protectedRoute && isLevel0CubiclePanel(localX, localZ, false)) {
+                            set(world, pos, x, 65, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                        }
+                        if (!protectedRoute && isLevel0Desk(localX, localZ)) {
+                            set(world, pos, x, 65, z, Blocks.OAK_SLAB.defaultBlockState());
+                        }
+                    }
+                    case 2 -> {
+                        // Offset partition offices: short stained walls create
+                        // multiple sightline breaks without sealing the room.
+                        if (!protectedRoute && isLevel0Partition(localX, localZ)) {
+                            for (int y = 65; y <= 67; y++) {
+                                set(world, pos, x, y, z,
+                                        ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
+                            }
+                        }
+                    }
+                    case 3 -> {
+                        // Repeated structural columns and cross-beams evoke a
+                        // larger office block hidden inside the same room cell.
+                        if (!protectedRoute && isLevel0Column(localX, localZ)) {
+                            for (int y = 65; y <= 70; y++) {
+                                set(world, pos, x, y, z, Blocks.YELLOW_CONCRETE.defaultBlockState());
+                            }
+                        }
+                        if ((localX == 8 || localX == 24) && localZ >= 8 && localZ <= 24
+                                && !isLevel0LightPosition(localX, localZ)) {
+                            set(world, pos, x, 70, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                        }
+                    }
+                    case 4 -> {
+                        // Suspended service ducts and recessed ceiling strips.
+                        if ((localX == 10 || localX == 21) && localZ >= 5 && localZ <= 26
+                                || (localZ == 10 || localZ == 21) && localX >= 5 && localX <= 26) {
+                            set(world, pos, x, 69, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 4) == 0) {
+                                set(world, pos, x, 70, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                    }
+                    case 5 -> {
+                        // Phantom/echo office: the cubicle grammar is mirrored
+                        // and recoloured, but its exit topology remains original.
+                        if (!protectedRoute && isLevel0CubiclePanel(localX, localZ, true)) {
+                            set(world, pos, x, 65, z, Blocks.GRAY_STAINED_GLASS_PANE.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.GRAY_STAINED_GLASS_PANE.defaultBlockState());
+                        }
+                        if ((localX == 7 || localX == 25) && localZ >= 7 && localZ <= 25
+                                && Math.floorMod(localZ, 3) == 0) {
+                            set(world, pos, x, 70, z, Blocks.DEEPSLATE_TILES.defaultBlockState());
+                        }
+                    }
+                    default -> { }
+                }
+            }
+        }
+    }
+
+    private static void buildLevel1ArchitecturalDetails(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_1_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_1_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_1_ROOM_SIZE);
+                if (roomX == 0 && roomZ == 0) continue; // protect starter shelter and its greenhouse
+
+                int archetype = level1Architecture(seed, roomX, roomZ);
+                if (archetype == 0) continue;
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+                boolean protectedResource = isLevel1ResourceFootprint(localX, localZ);
+                boolean protectedTile = protectedRoute || protectedResource;
+
+                switch (archetype) {
+                    case 1, 6 -> {
+                        // Heavy pallet-rack aisles. The sixth archetype is a
+                        // mirrored echo of the same warehouse grammar.
+                        int rackX = archetype == 6 ? localZ : localX;
+                        int rackZ = archetype == 6 ? localX : localZ;
+                        boolean post = (rackX == 9 || rackX == 18 || rackX == 30 || rackX == 39)
+                                && rackZ >= 7 && rackZ <= 41 && Math.floorMod(rackZ, 8) <= 1;
+                        boolean shelf = (rackX == 9 || rackX == 18 || rackX == 30 || rackX == 39)
+                                && rackZ >= 8 && rackZ <= 40 && Math.floorMod(rackZ, 8) == 4;
+                        if (!protectedTile && post) {
+                            for (int y = 65; y <= 69; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        if (!protectedTile && shelf) {
+                            set(world, pos, x, 67, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 69, z, Blocks.IRON_BLOCK.defaultBlockState());
+                        }
+                    }
+                    case 2 -> {
+                        // Copper service mains, suspended above head height.
+                        if (localX == 11 || localX == 24 || localX == 37) {
+                            set(world, pos, x, 70, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localZ, 8) == 0) {
+                                set(world, pos, x, 71, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        if (localZ == 11 || localZ == 37) {
+                            set(world, pos, x, 71, z, Blocks.CUT_COPPER.defaultBlockState());
+                        }
+                    }
+                    case 3 -> {
+                        // Loading platforms occupy the side bays only. The
+                        // central circulation paths and resource footprints stay clear.
+                        boolean dock = (localX >= 6 && localX <= 12 || localX >= 35 && localX <= 41)
+                                && localZ >= 8 && localZ <= 40;
+                        if (!protectedTile && dock && Math.floorMod(localZ, 7) != 0) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                        }
+                        if (!protectedTile && dock && (localZ == 8 || localZ == 40)) {
+                            set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                    }
+                    case 4 -> {
+                        // Machine islands: static industrial equipment blocks,
+                        // not ticking block entities or redstone contraptions.
+                        if (!protectedTile && isLevel1MachineIsland(localX, localZ)) {
+                            BlockState machine = switch (Math.floorMod(localX + localZ, 4)) {
+                                case 0 -> Blocks.IRON_BLOCK.defaultBlockState();
+                                case 1 -> Blocks.PISTON.defaultBlockState();
+                                case 2 -> Blocks.FURNACE.defaultBlockState();
+                                default -> Blocks.COPPER_BLOCK.defaultBlockState();
+                            };
+                            set(world, pos, x, 64, z, machine);
+                            if (Math.floorMod(localX + localZ, 3) == 0) {
+                                set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                    }
+                    case 5 -> {
+                        // Elevated service gantry: overhead walkway and rails;
+                        // it adds vertical scale without blocking floor-level routes.
+                        if (localZ == 23 || localZ == 24) {
+                            set(world, pos, x, 69, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 70, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                        if ((localX == 8 || localX == 40) && (localZ == 22 || localZ == 25)) {
+                            for (int y = 65; y <= 68; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            }
+                        }
+                    }
+                    default -> { }
+                }
+            }
+        }
+    }
+
+    private static int level0Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 6);
+    }
+
+    private static int level1Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 6);
+    }
+
+    private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
+        int x = mirrored ? localZ : localX;
+        int z = mirrored ? localX : localZ;
+        return (x == 8 || x == 23) && (z >= 6 && z <= 13 || z >= 18 && z <= 25)
+                || (z == 8 || z == 23) && (x >= 6 && x <= 13 || x >= 18 && x <= 25);
+    }
+
+    private static boolean isLevel0Desk(int localX, int localZ) {
+        return (localX == 10 || localX == 21) && (localZ == 10 || localZ == 21);
+    }
+
+    private static boolean isLevel0Partition(int localX, int localZ) {
+        return (localX == 10 || localX == 21) && localZ >= 6 && localZ <= 25
+                && Math.floorMod(localZ, 6) != 0
+                || (localZ == 10 || localZ == 21) && localX >= 6 && localX <= 25
+                && Math.floorMod(localX, 6) != 0;
+    }
+
+    private static boolean isLevel0Column(int localX, int localZ) {
+        return (localX == 8 || localX == 9 || localX == 22 || localX == 23)
+                && (localZ == 8 || localZ == 9 || localZ == 22 || localZ == 23);
+    }
+
+    private static boolean isLevel1ResourceFootprint(int localX, int localZ) {
+        boolean planter = localX >= 13 && localX <= 19 && localZ >= 13 && localZ <= 19;
+        boolean crate = (localX == 8 || localX == 24 || localX == 40)
+                && (localZ == 8 || localZ == 24 || localZ == 40);
+        return planter || crate;
+    }
+
+    private static boolean isLevel1MachineIsland(int localX, int localZ) {
+        boolean west = localX >= 11 && localX <= 14 && localZ >= 11 && localZ <= 14;
+        boolean east = localX >= 33 && localX <= 36 && localZ >= 11 && localZ <= 14;
+        boolean southWest = localX >= 11 && localX <= 14 && localZ >= 33 && localZ <= 36;
+        boolean southEast = localX >= 33 && localX <= 36 && localZ >= 33 && localZ <= 36;
+        return west || east || southWest || southEast;
+    }
+
+    private static boolean isReservedRoomPath(
+            long seed, int roomSize, int roomX, int roomZ,
+            int localX, int localZ, int radius, boolean guaranteeRoomExit) {
+        int mid = roomSize / 2;
+        int westCenter = doorwayCenterAlongZ(seed, roomSize, roomX, roomZ);
+        if (doorwayAlongZ(seed, roomSize, radius == 1 ? 1 : 2,
+                roomX, roomZ, westCenter, guaranteeRoomExit)
+                && (nearHorizontalSegment(localX, localZ, 0, mid, westCenter, radius)
+                || nearVerticalSegment(localX, localZ, mid, westCenter, mid, radius))) return true;
+
+        int eastCenter = doorwayCenterAlongZ(seed, roomSize, roomX + 1, roomZ);
+        if (doorwayAlongZ(seed, roomSize, radius == 1 ? 1 : 2,
+                roomX + 1, roomZ, eastCenter, guaranteeRoomExit)
+                && (nearHorizontalSegment(localX, localZ, mid, roomSize - 1, eastCenter, radius)
+                || nearVerticalSegment(localX, localZ, mid, eastCenter, mid, radius))) return true;
+
+        int northCenter = doorwayCenterAlongX(seed, roomSize, roomX, roomZ);
+        if (doorwayAlongX(seed, roomSize, radius == 1 ? 1 : 2,
+                roomX, roomZ, northCenter, guaranteeRoomExit)
+                && (nearVerticalSegment(localX, localZ, northCenter, 0, mid, radius)
+                || nearHorizontalSegment(localX, localZ, northCenter, mid, mid, radius))) return true;
+
+        int southCenter = doorwayCenterAlongX(seed, roomSize, roomX, roomZ + 1);
+        if (doorwayAlongX(seed, roomSize, radius == 1 ? 1 : 2,
+                roomX, roomZ + 1, southCenter, guaranteeRoomExit)
+                && (nearVerticalSegment(localX, localZ, southCenter, mid, roomSize - 1, radius)
+                || nearHorizontalSegment(localX, localZ, mid, southCenter, mid, radius))) return true;
+        return false;
+    }
+
+    private static int doorwayCenterAlongZ(long seed, int roomSize, int boundaryX, int roomZ) {
+        long edge = mix(seed, boundaryX, roomZ, 0xE451L);
+        int margin = roomSize / 4;
+        return margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
+    }
+
+    private static int doorwayCenterAlongX(long seed, int roomSize, int roomX, int boundaryZ) {
+        long edge = mix(seed, roomX, boundaryZ, 0xE452L);
+        int margin = roomSize / 4;
+        return margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
+    }
+
+    private static boolean nearHorizontalSegment(
+            int x, int z, int startX, int endX, int centerZ, int radius) {
+        return x >= Math.min(startX, endX) - radius && x <= Math.max(startX, endX) + radius
+                && Math.abs(z - centerZ) <= radius;
+    }
+
+    private static boolean nearVerticalSegment(
+            int x, int z, int centerX, int startZ, int endZ, int radius) {
+        return z >= Math.min(startZ, endZ) - radius && z <= Math.max(startZ, endZ) + radius
+                && Math.abs(x - centerX) <= radius;
     }
 
     /** The first room always has an accessible wall; rare later ones vary by world seed. */
