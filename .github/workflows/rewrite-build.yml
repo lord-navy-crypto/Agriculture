@@ -21,6 +21,8 @@ jobs:
           python-version: '3.x'
       - name: Validate Threshold dimension architecture contracts
         run: python3 qa/validate_threshold_graph.py
+      - name: Protect original Threshold horror identity and spatial layout
+        run: python3 qa/validate_threshold_horror_preservation.py
       - name: Validate Threshold Agriculture nutrition and hydration integration
         run: python3 qa/validate_threshold_survival_integration.py
       - name: Check actual Agriculture item IDs used by Backrooms survival loot
