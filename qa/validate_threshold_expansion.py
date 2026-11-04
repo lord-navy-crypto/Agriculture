@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the four-level Threshold expansion, audio assets and traversal graph."""
+"""Validate Threshold's five-level, source-backed transit network and original audio."""
 from __future__ import annotations
 
 import json
@@ -22,13 +22,15 @@ def require(source: str, token: str, label: str) -> None:
 def main() -> int:
     dimensions = (JAVA / "dimension/ThresholdDimensions.java").read_text(encoding="utf-8")
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
-    passages = (JAVA / "block/ThresholdPassageBlock.java").read_text(encoding="utf-8")
+    passage = (JAVA / "block/ThresholdPassageBlock.java").read_text(encoding="utf-8")
+    route_block = (JAVA / "block/ThresholdRouteBlock.java").read_text(encoding="utf-8")
     blocks = (JAVA / "block/ThresholdEnvironmentBlocks.java").read_text(encoding="utf-8")
     sounds_java = (JAVA / "ThresholdSounds.java").read_text(encoding="utf-8")
     mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
     commands = (JAVA / "command/ThresholdCommands.java").read_text(encoding="utf-8")
 
-    for level in ("level_0", "level_1", "level_3", "level_4"):
+    levels = ("level_0", "level_1", "level_2", "level_3", "level_4")
+    for level in levels:
         dim = read_json(RES / f"data/threshold/dimension/{level}.json")
         dtype = read_json(RES / f"data/threshold/dimension_type/{level}_type.json")
         biome = read_json(RES / f"data/threshold/worldgen/biome/{level}.json")
@@ -41,46 +43,58 @@ def main() -> int:
         assert biome["spawn_costs"] == {}
         assert biome["carvers"] == {}
 
-    require(dimensions, "LEVEL_3", "Level 3 dimension key")
-    require(dimensions, "LEVEL_4", "Level 4 dimension key")
-    require(layout, "buildLevel3Chunk(world, chunkX, chunkZ)", "Level 3 world generation dispatch")
-    require(layout, "buildLevel4Chunk(world, chunkX, chunkZ)", "Level 4 world generation dispatch")
-    require(layout, "level3Architecture", "deterministic Level 3 room archetypes")
-    require(layout, "level4Architecture", "deterministic Level 4 room archetypes")
-    require(layout, "LEVEL_3_ROOM_SIZE = 32", "Level 3 room grid")
-    require(layout, "LEVEL_4_ROOM_SIZE = 48", "Level 4 room grid")
-    require(layout, "Blocks.COPPER_BLOCK", "Level 3 electrical pipework")
-    require(layout, "Blocks.BLACK_STAINED_GLASS", "Level 4 blacked-out windows")
-    require(layout, "LEVEL_3_SUPPLY_LOOT", "Level 3 Agriculture supply cache")
-    require(layout, "LEVEL_4_SUPPLY_LOOT", "Level 4 Agriculture supply cache")
-
     for token, label in (
-        ("LEVEL_1_TO_3", "Level 1 to Level 3 service lift"),
-        ("LEVEL_3_TO_1", "Level 3 return lift"),
-        ("LEVEL_3_TO_4", "Level 3 office-sector door"),
-        ("LEVEL_4_TO_3", "Level 4 return elevator"),
+        ("LEVEL_2", "Level 2 dimension key"),
+        ("LEVEL_3", "Level 3 dimension key"),
+        ("LEVEL_4", "Level 4 dimension key"),
     ):
-        require(blocks, token, label)
-    require(passages, "teleportTo(destination", "passage block performs dimension travel")
+        require(dimensions, token, label)
+    for token, label in (
+        ("buildLevel2Chunk(world, chunkX, chunkZ)", "Level 2 world generation dispatch"),
+        ("buildLevel3Chunk(world, chunkX, chunkZ)", "Level 3 world generation dispatch"),
+        ("buildLevel4Chunk(world, chunkX, chunkZ)", "Level 4 world generation dispatch"),
+        ("level2Architecture", "deterministic Level 2 room archetypes"),
+        ("level3Architecture", "deterministic Level 3 room archetypes"),
+        ("level4Architecture", "deterministic Level 4 room archetypes"),
+        ("LEVEL_2_ROOM_SIZE = 32", "Level 2 room grid"),
+        ("Blocks.COPPER_BLOCK", "industrial pipework"),
+        ("LEVEL_2_BRANCH_DOOR", "Level 2 branching route placement"),
+    ):
+        require(layout, token, label)
+
+    route_tokens = (
+        "LEVEL_1_TO_2", "LEVEL_2_TO_1", "LEVEL_2_TO_3",
+        "LEVEL_2_BRANCH_DOOR", "LEVEL_3_TO_2", "LEVEL_3_TO_4",
+        "LEVEL_4_TO_3",
+    )
+    for token in route_tokens:
+        require(blocks, token, f"registered route {token}")
+    require(passage, "teleportTo(destination", "fixed passage performs dimension travel")
+    require(route_block, "chooseRoute", "weighted route selection")
+    require(route_block, "source.getSeed()", "route stable for a world seed")
+    require(route_block, "pos.asLong()", "each doorway has its own route draw")
+    require(route_block, "Weights are implementation tuning", "weights are not presented as canon probabilities")
+    require(commands, 'literal("level_2")', "operator travel command for Level 2")
     require(commands, 'literal("level_3")', "operator travel command for Level 3")
     require(commands, 'literal("level_4")', "operator travel command for Level 4")
+    assert "LEVEL_1_TO_3" not in blocks, "remove non-canonical direct Level 1 -> Level 3 route"
+    assert "LEVEL_3_TO_1" not in blocks, "Level 3 return should follow the Level 2 service route"
 
     passage_models = {
-        "level_1_to_3": "minecraft:block/iron_block",
-        "level_3_to_1": "minecraft:block/copper_block",
+        "level_1_to_2": "minecraft:block/iron_block",
+        "level_2_to_1": "minecraft:block/redstone_lamp",
+        "level_2_to_3": "minecraft:block/copper_block",
+        "level_2_branch_door": "minecraft:block/iron_trapdoor",
+        "level_3_to_2": "minecraft:block/deepslate_bricks",
         "level_3_to_4": "minecraft:block/white_concrete",
         "level_4_to_3": "minecraft:block/light_gray_concrete",
     }
-    for passage, model in passage_models.items():
-        blockstate = read_json(RES / f"assets/threshold/blockstates/{passage}.json")
+    for passage_name, model in passage_models.items():
+        blockstate = read_json(RES / f"assets/threshold/blockstates/{passage_name}.json")
         assert blockstate["variants"][""]["model"] == model
 
-
     modifier = read_json(RES / "data/threshold/neoforge/biome_modifier/room_layout.json")
-    assert sorted(modifier["biomes"]) == [
-        "threshold:level_0", "threshold:level_1",
-        "threshold:level_3", "threshold:level_4"
-    ]
+    assert sorted(modifier["biomes"]) == [f"threshold:{level}" for level in levels]
     assert modifier["features"] == "threshold:room_sequence"
 
     sound_definitions = read_json(RES / "assets/threshold/sounds.json")
@@ -90,8 +104,7 @@ def main() -> int:
         music = read_json(RES / f"data/threshold/worldgen/biome/{level}.json")["effects"]["music"]
         assert music["sound"] == f"threshold:{event}"
         assert music["replace_current_music"] is True
-        ogg = RES / f"assets/threshold/sounds/{event}.ogg"
-        raw = ogg.read_bytes()
+        raw = (RES / f"assets/threshold/sounds/{event}.ogg").read_bytes()
         assert raw[:4] == b"OggS" and len(raw) > 4000
     require(sounds_java, "LEVEL_0_AMBIENT", "Level 0 sound registry entry")
     require(sounds_java, "LEVEL_1_AMBIENT", "Level 1 sound registry entry")
@@ -109,7 +122,7 @@ def main() -> int:
                 if entry["type"] == "minecraft:item" and entry["name"].startswith("gugugaga:"):
                     assert entry["name"].split(":", 1)[1] in allowed_agriculture
 
-    print("THRESHOLD_FOUR_LEVEL_AUDIO_AND_TRAVERSAL_VALIDATION_PASS")
+    print("THRESHOLD_FIVE_LEVEL_TRANSIT_AND_AUDIO_VALIDATION_PASS")
     return 0
 
 
