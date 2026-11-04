@@ -151,10 +151,14 @@ def main() -> int:
 
     # Dimension guardrails: Level 0 admits only the harmless watcher; Hounds
     # are rejected outside Level 1 and are not spawned in the entry shelter.
-    require(r"event\.getEntity\(\)\s+instanceof\s+Mob", director,
-            "Level 0 rejects other mobs")
-    require(r"!\(event\.getEntity\(\)\s+instanceof\s+ThresholdWatcherEntity\)", director,
-            "Level 0 allows only its observer")
+    require(r"event\.getEntity\(\)\s+instanceof\s+LivingEntity\s+living", director,
+            "Level 0 rejects every non-player living creature")
+    require(r"!\(living\s+instanceof\s+Player\)", director,
+            "Level 0 still allows players to traverse")
+    require(r"!\(living\s+instanceof\s+ThresholdWatcherEntity\)", director,
+            "Level 0 allows only its observer creature")
+    require(r"event\.getEntity\(\)\s+instanceof\s+Projectile", director,
+            "Level 0 rejects hostile projectiles")
     require(r"event\.getEntity\(\)\s+instanceof\s+ThresholdHoundEntity", director,
             "Hound dimension is explicitly restricted")
     require(r"spawnObservers\(level\)", director, "Level 0 observer spawner exists")
