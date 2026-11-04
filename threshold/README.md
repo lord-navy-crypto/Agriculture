@@ -141,7 +141,7 @@ The packaged-JAR validator enforces this invariant.
 - Rack spans, dock platforms and machine islands avoid the reserved circulation routes and the Agriculture resource footprints. Gantries remain above normal walking height; their supports also respect protected routes.
 - These are deterministic block assemblies, not ticking machinery or redstone contraptions. They add architectural scale without introducing extra server load from block entities.
 
-## Alpha 8 — source-backed five-level transit network
+## Alpha 9 — source-backed six-level transit network
 
 ### Level 2 — Abandoned Utility Halls
 - Level 2 is now a full playable dimension, not an invisible waypoint. Its 32×32 deterministic room cells contain narrow concrete service corridors, pipe galleries, copper mains, cable runs, maintenance trenches, valve bays and damp sump edges.
@@ -161,6 +161,16 @@ The packaged-JAR validator enforces this invariant.
 - Broad, quiet office cells, pale concrete, sparse desks, reception counters, meeting rooms, blacked-out windows and sealed water-cooler props.
 - Occasional caches provide more reliable Agriculture hydration and food than Level 3, while most rooms remain intentionally empty.
 
+### Level 5 — Terror Hotel
+- Level 5 is a playable hotel dimension with a 32×32 room grid and three guaranteed, distinct zones: the furnished Main Hall, the Beverly ballroom and the industrial Boiler Room.
+- The Main Hall uses dark timber floors, red-and-gold detailing, carpet runners, sparse furniture, room-wing caches and a working hotel elevator panel.
+- The Beverly Room is a larger ballroom cell with a central table, chandelier and many connecting doors. Its layout connects naturally to the Main Hall and Boiler Room.
+- The Boiler Room uses dark stone floors, old machinery, copper mains, chains, cauldrons and narrow water-leak channels. Its deeper exit remains deferred until Level 6 exists.
+- Seed-stable guest suites, compressed corridors and a rare unconfirmed Lobby Room provide additional architectural variation.
+- The hotel elevator panel cycles floors 1–12 with sneak-use. Normal use travels to the selected wing within Level 5; it never sends the player to an unimplemented destination.
+- A subdued, irregular vanilla piano-note mood cue supports the hotel's quiet, uncanny atmosphere. Level 0 and Level 1 original OGG music remains unchanged.
+- Scarce caches use actual Agriculture water and food items; no duplicate nutrition or hydration system is introduced.
+
 ### Source-backed transit graph
 - Level 0 → Level 1: preserve the original validated unstable-wall passage.
 - Level 1 → Level 2: a seamless corridor transition. Warehouse fittings gradually become copper pipes, chains and utility fixtures before the player crosses an invisible trigger into Level 2. This replaces the earlier non-canonical direct Level 1 → Level 3 lift.
@@ -169,23 +179,27 @@ The packaged-JAR validator enforces this invariant.
 - Level 3 → Level 2: the return maintenance corridor lets a wanderer retrace the route used to enter the electrical station. This is a gameplay return path, not a claim that every source version documents a separate Level 3 exit.
 - Level 3 → Level 4: the metallic Office Sector door, based on the Fandom Level 4 entrance description.
 - Level 4 → Level 3: a service elevator return, retained as a Wikidot-version route variant.
+- Level 3 → Level 4 / Level 5: a service elevator uses a seed-stable 9:1 relative draw. Level 4 is common and Level 5 is rarer in the source description; 9:1 is gameplay tuning, not a canon probability.
+- Level 4 → Level 5: an old-fashioned stairway, with a climbable stairwell leading to the hotel.
+- Level 5 → Level 3 / Level 4: fixed elevator and stairwell returns.
+- Level 5 → Level 5: the hotel elevator selects one of twelve internal wings; its floor selection is stored in the block state.
 
 ### Random route rules
 - Source pages describe many routes as common, occasional, rare or random but generally do not publish numeric probabilities.
-- The code uses relative gameplay weights, not asserted canon percentages. Current branch-door weights are 4:4:1 for Level 1, Level 3 and Level 4; the fire exit chooses between Level 1 and Level 3 with equal relative weight.
+- The code uses relative gameplay weights, not asserted canon percentages. Current weights are 4:4:1 for the Level 2 branch, 1:1 for the Level 2 fire exit and 9:1 for the Level 3 elevator to Levels 4 and 5.
 - The selected destination is deterministic per world seed and door position. Different doors can resolve differently, while one door remains stable after reload.
-- Unimplemented destinations such as Level 5, Level 6, Level 14, Level 27 and other distant exits are documented as future route candidates, not silently redirected to an unrelated built dimension.
+- Unimplemented destinations such as Level 6, Level 9, Level 14, Level 27 and other distant exits are documented as future route candidates, not silently redirected to an unrelated built dimension.
 
 ### Source handling
 - Wikidot and Fandom are treated as separate source profiles, not flattened into one contradictory canon.
-- The current Wikidot pages define the main Level 0 → 1 → 2 progression and Level 2's broad links to Levels 1, 3 and 4.
+- The current Wikidot pages define the main Level 0 → 1 → 2 progression, Level 2's broad links to Levels 1, 3 and 4, and Level 5's hotel areas, stairway/elevator links and internal elevator wings.
 - Fandom contributes its own fire-exit, anomalous-corridor and Office Sector details. Where a page is being rewritten or differs from the other wiki, the route remains attributed to that version.
 - Only source-documented ordinary-level connections are implemented; no separate mirrored level family is generated. No copied maps, sound recordings, textures or exact room blueprints are used.
 
 ### Protected invariants
 - Level 0 / Level 1 room sizes, entry rooms, floor elevations, original wall transition, lighting identity and Agriculture survival integration remain protected.
 - Level 2 is additive; it does not resize or regenerate existing Level 0 / Level 1 rooms.
-- Level 3 and Level 4 retain their own architectural and horror identities. More connections do not homogenize their atmospheres.
+- Level 3 and Level 4 retain their own architectural and horror identities. Level 5 adds a hotel palette and room grammar rather than reusing their layouts.
 
 ## Horror identity preservation
 
