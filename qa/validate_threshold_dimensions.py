@@ -59,6 +59,7 @@ def main():
             assert any(l["block"] != "minecraft:air" for l in settings["layers"])
             biome=read_json(z,f"data/threshold/worldgen/biome/{level}.json")
             assert biome["features"] == [], "custom biome should not duplicate injected features"
+            assert biome["carvers"] == {}, "NeoForge 1.21.1 expects a keyed carver map"
             dtype=read_json(z,f"data/threshold/dimension_type/{level}_type.json")
             assert dtype["has_skylight"] is False
         configured=read_json(z,"data/threshold/worldgen/configured_feature/room_layout.json")
