@@ -29,6 +29,7 @@ def main() -> int:
     blocks = (JAVA / "block/ThresholdEnvironmentBlocks.java").read_text(encoding="utf-8")
     sounds_java = (JAVA / "ThresholdSounds.java").read_text(encoding="utf-8")
     mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
+    client_events = (JAVA / "client/ThresholdClientEvents.java").read_text(encoding="utf-8")
     commands = (JAVA / "command/ThresholdCommands.java").read_text(encoding="utf-8")
 
     levels = ("level_0", "level_1", "level_2", "level_3", "level_4", "level_5")
@@ -158,6 +159,11 @@ def main() -> int:
     require(sounds_java, "LEVEL_0_AMBIENT", "Level 0 sound registry entry")
     require(sounds_java, "LEVEL_1_AMBIENT", "Level 1 sound registry entry")
     require(mod, "ThresholdSounds.SOUNDS.register(modBus)", "sound registry wiring")
+    require(client_events, "EventBusSubscriber.Bus.MOD", "client-only mod-bus renderer subscriber")
+    require(client_events, "value = Dist.CLIENT", "dedicated-server-safe client renderer gating")
+    require(client_events, "EntityRenderersEvent.RegisterRenderers", "entity renderer registration event")
+    require(client_events, "ThresholdEntities.HOUND.get(), ThresholdHoundRenderer::new", "Hound renderer registration")
+    require(client_events, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
 
     allowed_agriculture = {
         "boiled_water_bottle", "filtered_water_bottle", "grain_porridge",
