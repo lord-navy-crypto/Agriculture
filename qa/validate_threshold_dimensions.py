@@ -10,14 +10,25 @@ REQUIRED = {
     "META-INF/neoforge.mods.toml",
     "data/threshold/dimension/level_0.json",
     "data/threshold/dimension/level_1.json",
+    "data/threshold/dimension/level_3.json",
+    "data/threshold/dimension/level_4.json",
     "data/threshold/dimension_type/level_0_type.json",
     "data/threshold/dimension_type/level_1_type.json",
+    "data/threshold/dimension_type/level_3_type.json",
+    "data/threshold/dimension_type/level_4_type.json",
     "data/threshold/worldgen/biome/level_0.json",
     "data/threshold/worldgen/biome/level_1.json",
+    "data/threshold/worldgen/biome/level_3.json",
+    "data/threshold/worldgen/biome/level_4.json",
     "data/threshold/loot_table/chests/level_1_supply.json",
     "data/threshold/loot_table/chests/level_1_starter.json",
     "data/threshold/loot_table/chests/level_1_maintenance.json",
     "data/threshold/loot_table/chests/level_0_forgotten.json",
+    "data/threshold/loot_table/chests/level_3_supply.json",
+    "data/threshold/loot_table/chests/level_4_supply.json",
+    "assets/threshold/sounds.json",
+    "assets/threshold/sounds/level_0_ambient.ogg",
+    "assets/threshold/sounds/level_1_ambient.ogg",
     "assets/threshold/blockstates/flickering_panel.json",
     "assets/threshold/models/block/faded_wallpaper.json",
     "assets/threshold/models/block/warehouse_wall.json",
@@ -32,6 +43,9 @@ REQUIRED = {
     "assets/threshold/models/item/transition_wall.json",
     "data/threshold/loot_table/blocks/transition_wall.json",
     "io/github/lordnavycrypto/threshold/block/ThresholdTransitionWallBlock.class",
+    "io/github/lordnavycrypto/threshold/block/ThresholdPassageBlock.class",
+    "io/github/lordnavycrypto/threshold/ThresholdSounds.class",
+    "io/github/lordnavycrypto/threshold/dimension/ThresholdDimensions.class",
     "io/github/lordnavycrypto/threshold/block/ThresholdEnvironmentBlocks.class",
     "io/github/lordnavycrypto/threshold/block/FlickeringPanelBlock.class",
     "data/threshold/worldgen/configured_feature/room_layout.json",
@@ -87,7 +101,7 @@ def main():
         assert 'modId="gugugaga"' in meta and 'type="required"' in meta
         assert 'modId="geckolib"' in meta and 'versionRange="[4.9.3,5)"' in meta
         assert 'modId="lithostitched"' in meta and 'versionRange="[1.7.11,2)"' in meta
-        for level in ("level_0","level_1"):
+        for level in ("level_0","level_1","level_3","level_4"):
             dim=read_json(z,f"data/threshold/dimension/{level}.json")
             assert dim["type"] == f"threshold:{level}_type"
             settings=dim["generator"]["settings"]
@@ -107,7 +121,7 @@ def main():
         assert configured["type"] == placed["feature"] == "threshold:room_layout"
         modifier=read_json(z,"data/threshold/neoforge/biome_modifier/room_layout.json")
         assert modifier["type"]=="neoforge:add_features"
-        assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1"]
+        assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1","threshold:level_3","threshold:level_4"]
         assert modifier["features"]=="threshold:room_sequence"
         sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
         assert sequence["type"]=="lithostitched:composite"
@@ -165,6 +179,23 @@ def main():
                 "gugugaga:soybean", "gugugaga:tomato",
                 "gugugaga:barley_vegetable_soup"} <= guaranteed
         assert modifier["step"]=="vegetal_decoration"
+
+        sound_definitions=read_json(z,"assets/threshold/sounds.json")
+        for level in ("level_0","level_1"):
+            event=f"{level}_ambient"
+            assert event in sound_definitions
+            biome=read_json(z,f"data/threshold/worldgen/biome/{level}.json")
+            assert biome["effects"]["music"]["sound"] == f"threshold:{event}"
+            assert biome["effects"]["music"]["replace_current_music"] is True
+            ogg=z.read(f"assets/threshold/sounds/{event}.ogg")
+            assert ogg[:4] == b"OggS" and len(ogg) > 4000
+        for filename in ("level_3_supply","level_4_supply"):
+            loot=read_json(z,f"data/threshold/loot_table/chests/{filename}.json")
+            assert loot["type"] == "minecraft:chest"
+            for pool in loot["pools"]:
+                for entry in pool["entries"]:
+                    if entry["type"] == "minecraft:item" and entry["name"].startswith("gugugaga:"):
+                        assert entry["name"].removeprefix("gugugaga:") in allowed_agriculture
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0
 
