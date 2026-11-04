@@ -15,12 +15,20 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * A non-lethal Overworld lure. It approaches slowly, then relocates a nearby
  * player to the Level 0 entry after a sustained close-range encounter.
  */
-public final class ThresholdPartygoerEntity extends PathfinderMob {
+public final class ThresholdPartygoerEntity extends PathfinderMob implements GeoEntity {
+    private static final RawAnimation STILL = RawAnimation.begin().thenLoop("animation.threshold_watcher.still");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int closeTicks;
 
     public ThresholdPartygoerEntity(EntityType<? extends PathfinderMob> type, Level level) {
@@ -79,5 +87,16 @@ public final class ThresholdPartygoerEntity extends PathfinderMob {
                                 net.minecraft.world.entity.Entity target) {
         // Partygoers never deal damage; their threat is the forced transition.
         return false;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "presence", 5,
+                state -> state.setAndContinue(STILL)));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }
