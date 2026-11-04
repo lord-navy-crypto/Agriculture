@@ -84,8 +84,8 @@ def main() -> int:
     require(
         r"return\s+localX\s*==\s*0\s*&&\s*\(localZ\s*==\s*23\s*\|\|\s*localZ\s*==\s*24\)",
         layout, "Level 1 return passage remains at its established wall")
-    require(r"Each Level 1 room chooses one deterministic exit",
-            layout, "Level 1 escape invariant remains documented")
+    require(r"Level 1 and Level 2 rooms choose deterministic exits",
+            layout, "Level 1 / Level 2 escape invariants remain documented")
 
     # Complex room archetypes add detail without changing the validated room
     # grid, entry shelters, transition coordinates or floor-level circulation.
