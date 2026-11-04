@@ -97,6 +97,37 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - CI must compile the independent mod and run the real dedicated-server smoke test before Alpha 6 is considered playable.
 - Manual client testing must inspect each archetype, verify routes and resource areas remain accessible, and check that overhead structures do not clip the player camera or Hound navigation.
 
+
+## Alpha 7 — four-level design extension
+
+### Level 3 — Electrical Station
+- Separate dimension with 32x32 room cells, brick service corridors, overhead copper mains, cable runs and static equipment rooms.
+- Deterministic room variants include plain tunnels, equipment bays, switchgear galleries, black-glass observation slits, cable trenches and transformer chambers.
+- Sparse supply barrels use existing Agriculture hydration and food items. Generic biome spawning remains disabled.
+
+### Level 4 — Abandoned Office
+- Separate dimension with 48x48 room cells, broad empty offices, pale concrete, sparse desks, reception counters and meeting rooms.
+- Blacked-out windows use opaque blocks and do not create openings.
+- Occasional decorative water-cooler props and supply barrels use existing Agriculture items. Most rooms remain intentionally empty.
+
+### Music
+- Level 0 and Level 1 have separate original OGG ambience tracks, registered as sound events and selected by their respective biome music settings.
+- Level 0 uses a quiet, detuned office drone; Level 1 uses a low industrial hum and restrained mechanical rhythm.
+- Existing flickering panels, biome mood sounds and room layouts remain in place.
+
+### Inter-level traversal
+- Level 0 ↔ Level 1: original validated passage, unchanged.
+- Level 1 → Level 3: fixed industrial service lift.
+- Level 3 → Level 1: return lift.
+- Level 3 → Level 4: Office Sector door.
+- Level 4 → Level 3: return elevator.
+- Level 2 is not added in this pass. The Level 1 service lift is an explicit bridge that leaves room for a future Level 2 connection without moving existing route nodes.
+
+### Reference synthesis
+- Wikidot remains the primary reference for the electrical-facility identity of Level 3 and the mostly empty office identity of Level 4.
+- Fandom contributes optional pipe-lined corridors, repeated machinery rooms, barred windows and spatially inconsistent room arrangements.
+- Phantom-inspired changes are original mirrored room interiors and altered spatial rhythm. No external map, recording, texture or model is copied.
+
 ## Acceptance gates
 - Java compile and asset validation.
 - Separate `threshold` JAR, loading alongside required Agriculture.
