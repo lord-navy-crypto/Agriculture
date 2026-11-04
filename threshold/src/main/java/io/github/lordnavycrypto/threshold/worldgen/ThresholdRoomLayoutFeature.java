@@ -387,6 +387,13 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     }
                 }
 
+                if (style == 1 && localX == 6 && localZ == 6
+                        && Math.floorMod(mix(seed, roomX, roomZ, 0x3A77L), 3) == 0
+                        && !protectedRoute) {
+                    placeLootBarrel(world, pos, x, 64, z,
+                            LEVEL_3_SUPPLY_LOOT, mix(seed, x, z, 0x3A78L));
+                }
+
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
                     set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
@@ -497,6 +504,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 if (roomX == 0 && roomZ == 0 && localX == 10 && localZ == 8) {
                     placeLootBarrel(world, pos, x, 64, z,
                             LEVEL_4_SUPPLY_LOOT, mix(seed, x, z, 0x4A78L));
+                }
+                if ((localX == 8 || localX == 24 || localX == 40)
+                        && (localZ == 8 || localZ == 24 || localZ == 40)) {
+                    set(world, pos, x, 70, z, Blocks.SEA_LANTERN.defaultBlockState());
                 }
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
                     set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get().defaultBlockState());
