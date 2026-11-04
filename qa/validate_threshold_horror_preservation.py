@@ -87,6 +87,36 @@ def main() -> int:
     require(r"Each Level 1 room chooses one deterministic exit",
             layout, "Level 1 escape invariant remains documented")
 
+    # Complex room archetypes add detail without changing the validated room
+    # grid, entry shelters, transition coordinates or floor-level circulation.
+    require(r"buildLevel0ArchitecturalDetails\\(world, chunkX, chunkZ, seed, pos\\)", layout,
+            "Level 0 receives deterministic architectural overlays")
+    require(r"buildLevel1ArchitecturalDetails\\(world, chunkX, chunkZ, seed, pos\\)", layout,
+            "Level 1 receives deterministic architectural overlays")
+    require(r"private static int level0Architecture\\(", layout,
+            "Level 0 has a deterministic room-archetype selector")
+    require(r"private static int level1Architecture\\(", layout,
+            "Level 1 has a deterministic room-archetype selector")
+    require(r"private static boolean isReservedRoomPath\\(", layout,
+            "architectural overlays reserve a route from each actual doorway to the room hub")
+    require(r"doorwayCenterAlongZ", layout,
+            "doorway reservation uses the same deterministic edge center as room generation")
+    require(r"doorwayCenterAlongX", layout,
+            "doorway reservation uses the same deterministic edge center as room generation")
+    require(r"if \\(roomX == 0 && roomZ == 0\\) continue", layout,
+            "architectural overlays preserve both entry rooms")
+    for token, label in (
+        ("Blocks.WHITE_STAINED_GLASS_PANE", "Level 0 office cubicles"),
+        ("Blocks.GRAY_STAINED_GLASS_PANE", "Level 0 mirrored phantom office"),
+        ("Blocks.STAINED_WALLPAPER", "Level 0 staggered partitions"),
+        ("Blocks.COPPER_BLOCK", "Level 1 industrial pipework"),
+        ("Blocks.IRON_BARS", "Level 1 rack frames and gantry rails"),
+        ("Blocks.SMOOTH_STONE_SLAB", "Level 1 loading platforms"),
+        ("isLevel1MachineIsland", "Level 1 machine-bay structures"),
+    ):
+        if token not in layout:
+            raise AssertionError(f"THRESHOLD architecture contract missing: {label}")
+
     # The two lighting systems retain different failure and recovery profiles.
     require(r"int offChance\s*=\s*level0\s*\?\s*16\s*:\s*10\s*;", lights,
             "Level 0 and Level 1 retain distinct light-failure rates")
