@@ -21,6 +21,7 @@ REQUIRED = {
     "data/threshold/worldgen/biome/level_0.json",
     "data/threshold/worldgen/biome/level_1.json",
     "data/threshold/worldgen/biome/level_2.json",
+    "data/threshold/transit/route_catalog.json",
     "data/threshold/worldgen/biome/level_3.json",
     "data/threshold/worldgen/biome/level_4.json",
     "data/threshold/loot_table/chests/level_1_supply.json",
