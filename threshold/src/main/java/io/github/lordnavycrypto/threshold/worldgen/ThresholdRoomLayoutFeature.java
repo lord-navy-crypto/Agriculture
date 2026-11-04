@@ -760,7 +760,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         }
                     }
                     case 5 -> {
-                        // Phantom/echo office: the cubicle grammar is mirrored
+                        // Echo office: the cubicle grammar is mirrored
                         // and recoloured, but its exit topology remains original.
                         if (!protectedRoute && isLevel0CubiclePanel(localX, localZ, true)) {
                             set(world, pos, x, 65, z, Blocks.GRAY_STAINED_GLASS_PANE.defaultBlockState());
