@@ -62,9 +62,9 @@ Test commands (requires OP permissions):
 /threshold travel level_5
 /threshold travel overworld
 /threshold whereami
-/threshold summon watcher    # Level 0 only
-/threshold summon hound      # Level 1 only
-/threshold summon partygoer  # Overworld only
+/threshold summon watcher
+/threshold summon hound
+/threshold summon partygoer
 ```
 
 ## Animated industrial details
