@@ -9,7 +9,9 @@
     {
       "id": "level_0_flickering_wall",
       "from": "level_0",
-      "to": ["level_1"],
+      "to": [
+        "level_1"
+      ],
       "method": "flickering_wall_noclip",
       "profile": "wikidot",
       "selection": "fixed",
@@ -19,7 +21,9 @@
     {
       "id": "level_1_smooth_threshold",
       "from": "level_1",
-      "to": ["level_2"],
+      "to": [
+        "level_2"
+      ],
       "method": "gradual_pipe_corridor",
       "profile": "wikidot",
       "selection": "fixed",
@@ -29,29 +33,45 @@
     {
       "id": "level_2_fire_exit",
       "from": "level_2",
-      "to": ["level_1", "level_3"],
+      "to": [
+        "level_1",
+        "level_3"
+      ],
       "method": "fire_exit",
       "profile": "fandom",
       "selection": "seed_stable_weighted",
-      "relative_weights": [1, 1],
+      "relative_weights": [
+        1,
+        1
+      ],
       "status": "implemented",
       "source": "https://backrooms.fandom.com/wiki/Level_2"
     },
     {
       "id": "level_2_anomalous_branch",
       "from": "level_2",
-      "to": ["level_1", "level_3", "level_4"],
+      "to": [
+        "level_1",
+        "level_3",
+        "level_4"
+      ],
       "method": "unmarked_anomalous_door",
       "profile": "wikidot",
       "selection": "seed_stable_weighted",
-      "relative_weights": [4, 4, 1],
+      "relative_weights": [
+        4,
+        4,
+        1
+      ],
       "status": "implemented",
       "source": "https://backrooms-wiki.wikidot.com/level-2"
     },
     {
       "id": "level_2_unlocked_door",
       "from": "level_2",
-      "to": ["level_3"],
+      "to": [
+        "level_3"
+      ],
       "method": "unlocked_anomalous_door",
       "profile": "wikidot",
       "selection": "fixed",
@@ -61,7 +81,9 @@
     {
       "id": "level_3_retrace_corridor",
       "from": "level_3",
-      "to": ["level_2"],
+      "to": [
+        "level_2"
+      ],
       "method": "retrace_entry_corridor",
       "profile": "gameplay_return",
       "selection": "fixed",
@@ -72,7 +94,9 @@
     {
       "id": "level_3_office_sector",
       "from": "level_3",
-      "to": ["level_4"],
+      "to": [
+        "level_4"
+      ],
       "method": "metal_office_sector_door",
       "profile": "fandom",
       "selection": "fixed",
@@ -82,42 +106,140 @@
     {
       "id": "level_4_service_elevator_return",
       "from": "level_4",
-      "to": ["level_3"],
+      "to": [
+        "level_3"
+      ],
       "method": "service_elevator",
       "profile": "wikidot_archived_variant",
       "selection": "fixed",
       "status": "implemented",
       "source": "https://backrooms-wiki.wikidot.com/level-4",
       "notes": "Optional legacy route variant; the current Level 4 page is marked as being rewritten."
+    },
+    {
+      "id": "level_3_elevator_to_level5",
+      "from": "level_3",
+      "to": [
+        "level_4",
+        "level_5"
+      ],
+      "method": "service_elevator",
+      "profile": "fandom_and_wikidot",
+      "selection": "seed_stable_weighted",
+      "relative_weights": [
+        9,
+        1
+      ],
+      "status": "implemented",
+      "sources": [
+        "https://backrooms.fandom.com/wiki/Level_3",
+        "https://backrooms-wiki.wikidot.com/level-5"
+      ],
+      "notes": "Level 4 is the common elevator destination and Level 5 is a rarer destination; 9:1 is implementation tuning, not a published canon probability."
+    },
+    {
+      "id": "level_4_stairway_to_level5",
+      "from": "level_4",
+      "to": [
+        "level_5"
+      ],
+      "method": "old_fashioned_stairway",
+      "profile": "wikidot",
+      "selection": "fixed",
+      "status": "implemented",
+      "source": "https://backrooms-wiki.wikidot.com/level-5"
+    },
+    {
+      "id": "level_5_elevator_return_to_level3",
+      "from": "level_5",
+      "to": [
+        "level_3"
+      ],
+      "method": "hotel_elevator_return",
+      "profile": "wikidot",
+      "selection": "fixed",
+      "status": "implemented",
+      "source": "https://backrooms-wiki.wikidot.com/level-5"
+    },
+    {
+      "id": "level_5_stairway_return_to_level4",
+      "from": "level_5",
+      "to": [
+        "level_4"
+      ],
+      "method": "hotel_stairway_return",
+      "profile": "wikidot",
+      "selection": "fixed",
+      "status": "implemented",
+      "source": "https://backrooms-wiki.wikidot.com/level-5"
+    },
+    {
+      "id": "level_5_internal_elevator_floors",
+      "from": "level_5",
+      "to": [
+        "level_5"
+      ],
+      "method": "select_hotel_floors_1_to_12",
+      "profile": "wikidot",
+      "selection": "player_selected_fixed",
+      "status": "implemented",
+      "source": "https://backrooms-wiki.wikidot.com/level-5",
+      "notes": "Sneak-use cycles floors 1–12; normal use travels to the selected hotel wing within Level 5."
     }
   ],
   "deferred_routes": [
     {
       "id": "level_0_alternate_exits",
       "from": "level_0",
-      "to": ["level_14", "level_27", "level_483", "the_void", "the_manila_room"],
+      "to": [
+        "level_14",
+        "level_27",
+        "level_483",
+        "the_void",
+        "the_manila_room"
+      ],
       "profile": "fandom_variants",
       "method": "wall_floor_emergency_or_rare_walk",
       "status": "deferred_until_destinations_exist",
       "source": "https://backrooms.fandom.com/wiki/Level_0"
     },
     {
-      "id": "level_3_elevator_draw",
-      "from": "level_3",
-      "to": ["level_4", "level_5"],
-      "profile": "wikidot_and_fandom",
-      "method": "elevator_button",
-      "status": "deferred_until_level_5_exists",
-      "source": "https://backrooms-wiki.wikidot.com/level-3"
-    },
-    {
       "id": "level_4_special_exits",
       "from": "level_4",
-      "to": ["level_5", "level_6", "level_14", "level_156", "level_197", "level_332"],
+      "to": [
+        "level_6",
+        "level_14",
+        "level_156",
+        "level_197",
+        "level_332"
+      ],
       "profile": "fandom",
       "method": "music_door_hatch_vending_machine_curtain_or_numbered_door",
       "status": "deferred_until_destinations_exist",
       "source": "https://backrooms.fandom.com/wiki/Level_4"
+    },
+    {
+      "id": "level_5_boiler_deep_exit",
+      "from": "level_5",
+      "to": [
+        "level_6"
+      ],
+      "profile": "wikidot",
+      "method": "deep_boiler_room_descent",
+      "status": "deferred_until_level_6_exists",
+      "source": "https://backrooms-wiki.wikidot.com/level-5",
+      "notes": "The boiler-room route is catalogued but not made a dead-end teleport until Level 6 is implemented."
+    },
+    {
+      "id": "level_5_dark_oak_door",
+      "from": "level_5",
+      "to": [
+        "level_9"
+      ],
+      "profile": "wikidot",
+      "method": "dark_oak_door",
+      "status": "deferred_until_level_9_exists",
+      "source": "https://backrooms-wiki.wikidot.com/level-5"
     }
   ]
 }
