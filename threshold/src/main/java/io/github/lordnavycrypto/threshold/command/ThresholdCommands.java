@@ -6,6 +6,10 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
+import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
+import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdHoundEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdPartygoerEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.CommandSourceStack;
@@ -57,6 +61,10 @@ public final class ThresholdCommands {
                                 .executes(ThresholdCommands::returnToOverworld)))
                 .then(Commands.literal("whereami")
                         .executes(ThresholdCommands::whereAmI))
+                .then(Commands.literal("summon")
+                        .then(Commands.literal("watcher").executes(ThresholdCommands::summonWatcher))
+                        .then(Commands.literal("hound").executes(ThresholdCommands::summonHound))
+                        .then(Commands.literal("partygoer").executes(ThresholdCommands::summonPartygoer)))
                 .then(Commands.literal("repair_floor")
                         .executes(ThresholdCommands::repairFloor)));
     }
@@ -151,6 +159,61 @@ public final class ThresholdCommands {
                 || state.is(Blocks.YELLOW_CONCRETE)
                 || state.is(Blocks.GRAY_CONCRETE)
                 || state.is(Blocks.RED_TERRACOTTA);
+    }
+
+    private static int summonWatcher(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (!player.level().dimension().equals(ThresholdDimensions.LEVEL_0)) {
+            context.getSource().sendFailure(Component.literal("Watcher can only be summoned in Level 0."));
+            return 0;
+        }
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = player.blockPosition().relative(player.getDirection().getOpposite(), 14);
+        ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level);
+        if (watcher == null) return 0;
+        float yaw = (float) (Math.atan2(player.getZ() - pos.getZ(), player.getX() - pos.getX())
+                * (180.0D / Math.PI)) - 90.0F;
+        watcher.moveTo(pos.getX() + 0.5D, player.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+        level.addFreshEntity(watcher);
+        context.getSource().sendSuccess(() -> Component.literal("A distant presence has appeared behind you."), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int summonHound(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (!player.level().dimension().equals(ThresholdDimensions.LEVEL_1)) {
+            context.getSource().sendFailure(Component.literal("Hound can only be summoned in Level 1."));
+            return 0;
+        }
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = player.blockPosition().relative(player.getDirection(), 3);
+        ThresholdHoundEntity hound = ThresholdEntities.HOUND.get().create(level);
+        if (hound == null) return 0;
+        hound.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot(), 0.0F);
+        hound.setTarget(player);
+        level.addFreshEntity(hound);
+        context.getSource().sendSuccess(() -> Component.literal("A Hound has entered the warehouse."), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static int summonPartygoer(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        if (!player.level().dimension().equals(Level.OVERWORLD)) {
+            context.getSource().sendFailure(Component.literal("Partygoer test summon is only available in the Overworld."));
+            return 0;
+        }
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = player.blockPosition().relative(player.getDirection(), 10);
+        ThresholdPartygoerEntity partygoer = ThresholdEntities.PARTYGOER.get().create(level);
+        if (partygoer == null) return 0;
+        partygoer.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot() + 180.0F, 0.0F);
+        partygoer.setTarget(player);
+        level.addFreshEntity(partygoer);
+        context.getSource().sendSuccess(() -> Component.literal("A Partygoer has noticed you. Keep your distance."), false);
+        return Command.SINGLE_SUCCESS;
     }
 
     private static int whereAmI(CommandContext<CommandSourceStack> context)
