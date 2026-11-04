@@ -4,6 +4,6 @@
     "threshold:level_0",
     "threshold:level_1"
   ],
-  "features": "threshold:room_layout",
+  "features": "threshold:room_sequence",
   "step": "vegetal_decoration"
 }

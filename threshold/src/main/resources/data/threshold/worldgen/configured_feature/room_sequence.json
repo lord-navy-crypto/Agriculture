@@ -1,0 +1,9 @@
+{
+  "type": "lithostitched:composite",
+  "config": {
+    "features": [
+      "threshold:room_layout"
+    ],
+    "placement_type": "never_cancel"
+  }
+}

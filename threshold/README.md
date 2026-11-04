@@ -5,8 +5,15 @@
 - Mod ID: `threshold`; independent JAR and resource namespace.
 - Java 21 / NeoForge 21.1.259.
 - **Gugu-Gaga Agriculture 3.9+ is a required runtime dependency** for this experiment.
-- No additional animation/rendering library is required for the first environment-only pass.
+- Required additions: GeckoLib 4.9.3 and Lithostitched 1.7.11 (NeoForge 1.21.1). Libraries are installed as separate mods, never embedded.
 - The existing Agriculture module and main branch stay unchanged by this draft PR.
+
+## Libraries (Phase II)
+
+- GeckoLib 4.9.3: used for animated industrial environment blocks; client rendering will be implemented in the next change.
+- Lithostitched 1.7.11: `threshold:room_sequence` now uses the library's `lithostitched:composite` feature for ordered room generation, preserving chunk boundaries.
+- Gugu-Gaga Agriculture remains a required survival mod.
+- No copy of any library is bundled inside the Threshold JAR.
 
 ## Level 0 — Isolation
 
@@ -38,7 +45,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.1.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.2.jar
 python3 qa/smoke_threshold_server.py
 ```
 

@@ -34,3 +34,17 @@ type="required"
 versionRange="[3.9,)"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="geckolib"
+type="required"
+versionRange="[4.9.3,5)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="lithostitched"
+type="required"
+versionRange="[1.7.11,2)"
+ordering="AFTER"
+side="BOTH"

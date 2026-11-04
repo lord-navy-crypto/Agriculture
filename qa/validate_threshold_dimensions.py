@@ -33,6 +33,8 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/block/FlickeringPanelBlock.class",
     "data/threshold/worldgen/configured_feature/room_layout.json",
     "data/threshold/worldgen/placed_feature/room_layout.json",
+    "data/threshold/worldgen/configured_feature/room_sequence.json",
+    "data/threshold/worldgen/placed_feature/room_sequence.json",
     "io/github/lordnavycrypto/threshold/ThresholdMod.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdRoomLayoutFeature.class",
     "io/github/lordnavycrypto/threshold/command/ThresholdCommands.class",
@@ -55,6 +57,8 @@ def main():
         meta=z.read("META-INF/neoforge.mods.toml").decode("utf-8")
         assert 'modId="threshold"' in meta
         assert 'modId="gugugaga"' in meta and 'type="required"' in meta
+        assert 'modId="geckolib"' in meta and 'versionRange="[4.9.3,5)"' in meta
+        assert 'modId="lithostitched"' in meta and 'versionRange="[1.7.11,2)"' in meta
         for level in ("level_0","level_1"):
             dim=read_json(z,f"data/threshold/dimension/{level}.json")
             assert dim["type"] == f"threshold:{level}_type"
@@ -74,7 +78,12 @@ def main():
         modifier=read_json(z,"data/threshold/neoforge/biome_modifier/room_layout.json")
         assert modifier["type"]=="neoforge:add_features"
         assert sorted(modifier["biomes"])==["threshold:level_0","threshold:level_1"]
-        assert modifier["features"]=="threshold:room_layout"
+        assert modifier["features"]=="threshold:room_sequence"
+        sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
+        assert sequence["type"]=="lithostitched:composite"
+        assert sequence["config"]["features"]==["threshold:room_layout"]
+        wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
+        assert wrapper["feature"]=="threshold:room_sequence"
         assert modifier["step"]=="vegetal_decoration"
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0
