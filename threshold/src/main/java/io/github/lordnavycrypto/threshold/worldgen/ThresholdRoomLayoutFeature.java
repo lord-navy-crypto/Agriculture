@@ -49,6 +49,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static final int LEVEL_1_WALL_BOTTOM = 64;
     private static final int LEVEL_1_WALL_TOP = 73;
     private static final int LEVEL_1_CEILING_Y = 74;
+    private static final int LEVEL_2_ROOM_SIZE = 32;
+    private static final int LEVEL_2_WALL_BOTTOM = 64;
+    private static final int LEVEL_2_WALL_TOP = 70;
+    private static final int LEVEL_2_CEILING_Y = 71;
     private static final int LEVEL_3_ROOM_SIZE = 32;
     private static final int LEVEL_3_WALL_BOTTOM = 64;
     private static final int LEVEL_3_WALL_TOP = 70;
@@ -75,6 +79,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_1)) {
             buildLevel1Chunk(world, chunkX, chunkZ);
+            return true;
+        }
+        if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_2)) {
+            buildLevel2Chunk(world, chunkX, chunkZ);
             return true;
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_3)) {
@@ -296,7 +304,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
 
                 if (roomX == 1 && roomZ == 0 && localX == 0 && localZ == 23) {
-                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get().defaultBlockState());
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_2.get().defaultBlockState());
                     set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get().defaultBlockState());
                 }
             }
@@ -305,6 +313,148 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
 
+
+
+    /**
+     * Level 2 — Abandoned Utility Halls. A dense network of service corridors,
+     * pipe galleries, maintenance bays and occasional crawlspace-like passages.
+     * The 32x32 room grid is deterministic, while route doors use a separate
+     * seed-stable weighted destination draw.
+     */
+    private static void buildLevel2Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
+        long seed = world.getSeed();
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_2_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_2_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_2_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_2_ROOM_SIZE);
+                int style = level2Architecture(seed, roomX, roomZ);
+
+                BlockState floor = switch (style) {
+                    case 1 -> Blocks.POLISHED_ANDESITE.defaultBlockState();
+                    case 2 -> Blocks.DEEPSLATE_TILES.defaultBlockState();
+                    case 3 -> Blocks.GRAVEL.defaultBlockState();
+                    case 4 -> Blocks.SMOOTH_BASALT.defaultBlockState();
+                    case 5 -> Blocks.COBBLED_DEEPSLATE.defaultBlockState();
+                    default -> Blocks.GRAY_CONCRETE.defaultBlockState();
+                };
+                BlockState wall = switch (style) {
+                    case 2, 5 -> Blocks.DEEPSLATE_BRICKS.defaultBlockState();
+                    case 3 -> Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
+                    default -> Blocks.GRAY_CONCRETE.defaultBlockState();
+                };
+                set(world, pos, x, FLOOR_Y, z, floor);
+
+                boolean boundary = isBoundary(localX, localZ, LEVEL_2_ROOM_SIZE);
+                boolean doorway = boundary && isDoorway(
+                        seed, LEVEL_2_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                boolean protectedRoute = isReservedRoomPath(
+                        seed, LEVEL_2_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+
+                for (int y = LEVEL_2_WALL_BOTTOM; y <= LEVEL_2_WALL_TOP; y++) {
+                    if (boundary && !doorway) {
+                        set(world, pos, x, y, z, wall);
+                    } else if (!boundary && y == 69
+                            && (localX == 4 || localX == 27 || localZ == 4 || localZ == 27)) {
+                        set(world, pos, x, y, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                    } else if (!boundary && y == 70
+                            && (localX == 4 || localX == 27)
+                            && Math.floorMod(localZ, 3) == 0) {
+                        set(world, pos, x, y, z, Blocks.CHAIN.defaultBlockState());
+                    }
+                }
+                set(world, pos, x, LEVEL_2_CEILING_Y, z,
+                        style == 5 ? Blocks.DEEPSLATE_TILES.defaultBlockState()
+                                : Blocks.GRAY_CONCRETE.defaultBlockState());
+
+                if (!protectedRoute) {
+                    switch (style) {
+                        case 1 -> {
+                            // Paired pipe racks along the service-bay walls.
+                            if ((localX == 7 || localX == 24) && localZ >= 7 && localZ <= 24) {
+                                set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                                set(world, pos, x, 65, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            }
+                        }
+                        case 2 -> {
+                            // Narrow cable gallery; overhead lines preserve a clear walking path.
+                            if ((localZ == 9 || localZ == 22) && localX >= 8 && localX <= 23) {
+                                set(world, pos, x, 68, z, Blocks.CHAIN.defaultBlockState());
+                                if (Math.floorMod(localX, 4) == 0) {
+                                    set(world, pos, x, 69, z, Blocks.REDSTONE_LAMP.defaultBlockState());
+                                }
+                            }
+                        }
+                        case 3 -> {
+                            // Low maintenance trench, covered with flush trapdoors.
+                            if ((localX == 10 || localX == 21) && localZ >= 8 && localZ <= 23) {
+                                set(world, pos, x, 64, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                        case 4 -> {
+                            // Damp sump edge: a shallow water channel beside the route.
+                            if (localX == 5 && localZ >= 8 && localZ <= 23) {
+                                set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
+                            }
+                            if (localX == 6 && localZ >= 8 && localZ <= 23) {
+                                set(world, pos, x, 64, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        case 5 -> {
+                            // Repeating valve columns and mechanical service panels.
+                            if ((localX == 8 || localX == 23)
+                                    && (localZ == 8 || localZ == 23)) {
+                                set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                                set(world, pos, x, 65, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                                set(world, pos, x, 66, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                        default -> { }
+                    }
+                }
+
+                // The first cell preserves a readable entrance and a stable return.
+                if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
+                    set(world, pos, x, 64, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_TO_1.get().defaultBlockState());
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_TO_1.get().defaultBlockState());
+                }
+                if (roomX == 0 && roomZ == 0 && localX == LEVEL_2_ROOM_SIZE - 1 && localZ == 16) {
+                    set(world, pos, x, 64, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_TO_3.get().defaultBlockState());
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_TO_3.get().defaultBlockState());
+                }
+
+                // Fandom/Wikidot both document anomalous doors and non-linear
+                // exits here. Each branch is assigned once per world/position.
+                boolean guaranteedBranch = roomX == 0 && roomZ == 0
+                        && localX == 16 && localZ == LEVEL_2_ROOM_SIZE - 1;
+                boolean rareBranch = (roomX != 0 || roomZ != 0)
+                        && localX == 16 && localZ == LEVEL_2_ROOM_SIZE - 1
+                        && Math.floorMod(mix(seed, roomX, roomZ, 0x2B4A77L), 5) == 0;
+                if (guaranteedBranch || rareBranch) {
+                    set(world, pos, x, 64, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_BRANCH_DOOR.get().defaultBlockState());
+                    set(world, pos, x, 65, z,
+                            ThresholdEnvironmentBlocks.LEVEL_2_BRANCH_DOOR.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static int level2Architecture(long seed, int roomX, int roomZ) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        return Math.floorMod((int) mix(seed, roomX, roomZ, 0x2A20L), 6);
+    }
 
     /** Level 3: a brick-lined electrical station with narrow, linked service rooms. */
     private static void buildLevel3Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
@@ -395,7 +545,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
 
                 if (roomX == 0 && roomZ == 0 && localX == 0 && localZ == 16) {
-                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_2.get().defaultBlockState());
                     set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_3_TO_1.get().defaultBlockState());
                 }
                 if (roomX == 0 && roomZ == 0 && localX == LEVEL_3_ROOM_SIZE - 1 && localZ == 16) {
