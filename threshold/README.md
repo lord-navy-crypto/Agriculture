@@ -21,7 +21,7 @@
 - Native dimension `threshold:level_0`; custom biome and dimension type.
 - Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
-- Random-tick fluorescent panels emit light and occasionally blink. No entity AI in this release.
+- Random-tick fluorescent panels emit light and occasionally blink. Level 0 uses only the non-combat Observer: a distant silhouette with no AI, collision, damage or attack behavior; it vanishes when approached or directly noticed.
 - Atmospheric cave ambience used as a provisional sound bed.
 
 ## Level 1 — The Vulnerable Shelter
@@ -33,13 +33,14 @@
 - The entry room guarantees a small watered, lit planter with six different mature Agriculture crops (barley, corn, soybean, tomato, lettuce and spinach); other storage rooms have rare planters.
 - The central water source is a real freshwater source and can refill the Agriculture empty water flask.
 - One ceiling panel in the entry warehouse flickers; partitioned storage rooms can have similar faults that remain dark longer than Level 0's office lights.
+- The first real predator is the Hound: it uses GeckoLib movement animation and ordinary pathfinding/melee AI. It spawns only in darker Level 1 areas after the player leaves the 48x48 entry shelter; it cannot break blocks and has no special drops.
 - Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them. The entry greenhouse is lit by five overhead sea lanterns so crops can grow without skylight. The warehouse ambience uses a intermittent mechanical vault crackle, contrasting with Level 0's cave-like emptiness.
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
 ## Current scope / limitations
 - A paired Unstable Wall passage connects Level 0 and Level 1 in both directions; each entry room has a guaranteed return wall. Interact with an empty hand.
 - Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
-- No new mobs, no AI hunters, no sound jump scares or client-only shaders.
+- No Level 0 combat mobs. Level 0's Observer is a harmless visual presence; Level 1's Hound is the first real hostile entity. No sound jump scares or client-only shaders are added in this pass.
 - Six original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
 - World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
@@ -47,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.4.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.5.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -100,6 +101,28 @@ The packaged-JAR validator enforces this invariant.
 - The Level 1 entry warehouse and partitioned storage rooms can contain a flickering ceiling panel; its recovery interval is longer than the Level 0 office panels.
 - Pantry loot now includes prepared meals that carry Agriculture's actual nutrient, hydration and sodium profiles. Ordinary supply lockers are less dense and their water pool is not guaranteed; the entry cache remains protected from a survival softlock.
 
+
+
+## Alpha 5 — dimension-specific entity ecology
+
+### Level 0: Observer only
+- The Observer is a temporary, distant silhouette. It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
+- It appears only in Level 0, from a visible and unobstructed position at a distance. It disappears after a short interval, when the player approaches, or when the player directly looks at it.
+- Level 0 rejects every other Mob joining the dimension. This includes vanilla hostile mobs and other modded creatures. It is not a combat or chase level.
+- The Observer is atmosphere, not a threat: its purpose is to make the player question whether something is watching from the far end of an otherwise empty corridor.
+
+### Level 1: first predator
+- The Hound is a real Monster with player targeting, pathfinding and melee behavior. It has explicit health, movement, damage and follow-range attributes.
+- Hounds are spawned by the Threshold entity director, not generic biome spawner tables. They are restricted to Level 1, prefer darker areas, and cannot spawn while the player remains inside the first 48×48 entry shelter.
+- A nearby active Hound suppresses another encounter, keeping the first pass controlled rather than turning the warehouse into a mob farm.
+- The Hound does not break blocks or alter the validated room graph. It uses a dedicated no-drop loot table so it does not create an unintended food/material loop.
+- The current Hound is the first original Backrooms-inspired predator prototype, not a claim that every Fandom/Wikidot entity list is one unified canon. Additional creature types should be added individually after visual, AI and balance tests.
+
+### Shared rules
+- Level 0's Observer cannot attack, damage, chase or kill the player. Its disappearance is the only response to being noticed.
+- Level 1 may contain hostile entities and real survival risk, but the starter shelter, exits, room geometry and Agriculture systems remain unchanged.
+- Both biomes retain empty generic spawners and spawn_costs maps. The entity director enforces the dimension rules explicitly.
+- The independent JAR packages both GeckoLib models, animations and textures. No extra model pack is required.
 
 ## Horror identity preservation
 
