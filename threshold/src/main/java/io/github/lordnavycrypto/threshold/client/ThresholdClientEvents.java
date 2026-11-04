@@ -28,6 +28,7 @@ public final class ThresholdClientEvents {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ThresholdEntities.HOUND.get(), ThresholdHoundRenderer::new);
         event.registerEntityRenderer(ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new);
-        System.out.println("THRESHOLD_HOUND_AND_WATCHER_RENDERERS_REGISTERED");
+        event.registerEntityRenderer(ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new);
+        System.out.println("THRESHOLD_HOUND_WATCHER_PARTYGOER_RENDERERS_REGISTERED");
     }
 }
