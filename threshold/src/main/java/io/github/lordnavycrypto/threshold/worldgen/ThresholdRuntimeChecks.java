@@ -25,7 +25,11 @@ public final class ThresholdRuntimeChecks {
         System.out.println("THRESHOLD_DIMENSIONS_REGISTRY_READY_OK");
 
         level0.getChunk(0, 0);
+        level0.getChunk(0, 1);
         level1.getChunk(0, 0);
+        level1.getChunk(0, 1);
+        level1.getChunk(1, 0);
+        level1.getChunk(1, 1);
 
         System.out.println("THRESHOLD_LEVEL0_SAMPLE floor=" +
                 level0.getBlockState(new BlockPos(4, 63, 4)) +
@@ -49,5 +53,19 @@ public final class ThresholdRuntimeChecks {
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
         System.out.println(wallBuilt
                 ? "THRESHOLD_LEVEL0_TRANSITION_OK" : "THRESHOLD_LEVEL0_TRANSITION_FAIL");
+        boolean returnWallBuilt = level1.getBlockState(new BlockPos(0, 66, 23))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
+        System.out.println(returnWallBuilt
+                ? "THRESHOLD_LEVEL1_RETURN_OK" : "THRESHOLD_LEVEL1_RETURN_FAIL");
+
+        boolean supplyBuilt = level1.getBlockState(new BlockPos(8, 64, 8)).is(Blocks.BARREL);
+        System.out.println(supplyBuilt
+                ? "THRESHOLD_LEVEL1_STARTER_CACHE_OK" : "THRESHOLD_LEVEL1_STARTER_CACHE_FAIL");
+
+        boolean planterBuilt = level1.getBlockState(new BlockPos(14, 63, 14)).is(Blocks.FARMLAND)
+                && level1.getBlockState(new BlockPos(16, 63, 16)).is(Blocks.WATER)
+                && level1.getBlockState(new BlockPos(14, 67, 14)).is(Blocks.SEA_LANTERN);
+        System.out.println(planterBuilt
+                ? "THRESHOLD_LEVEL1_LIT_PLANTER_OK" : "THRESHOLD_LEVEL1_LIT_PLANTER_FAIL");
     }
 }

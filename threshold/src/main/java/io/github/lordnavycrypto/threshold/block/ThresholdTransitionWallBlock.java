@@ -22,19 +22,27 @@ public final class ThresholdTransitionWallBlock extends Block {
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos,
             Player player, BlockHitResult hit) {
-        if (!level.dimension().equals(ThresholdDimensions.LEVEL_0)) return InteractionResult.PASS;
+        boolean fromLevel0 = level.dimension().equals(ThresholdDimensions.LEVEL_0);
+        boolean fromLevel1 = level.dimension().equals(ThresholdDimensions.LEVEL_1);
+        if (!fromLevel0 && !fromLevel1) return InteractionResult.PASS;
         if (level.isClientSide) return InteractionResult.SUCCESS;
         if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.PASS;
-        ServerLevel destination = serverPlayer.getServer().getLevel(ThresholdDimensions.LEVEL_1);
+
+        ServerLevel destination = serverPlayer.getServer().getLevel(
+                fromLevel0 ? ThresholdDimensions.LEVEL_1 : ThresholdDimensions.LEVEL_0);
         if (destination == null) {
             serverPlayer.displayClientMessage(
-                    Component.literal("Level 1 is unavailable."), true);
+                    Component.literal("The passage is unavailable."), true);
             return InteractionResult.FAIL;
         }
-        serverPlayer.teleportTo(destination, 4.5, 64.0, 4.5,
+
+        double targetY = fromLevel0 ? 64.0 : 65.0;
+        String label = fromLevel0
+                ? "Level 1 — The Vulnerable Shelter"
+                : "Level 0 — Isolation";
+        serverPlayer.teleportTo(destination, 4.5, targetY, 4.5,
                 serverPlayer.getYRot(), serverPlayer.getXRot());
-        serverPlayer.displayClientMessage(
-                Component.literal("Level 1 — The Vulnerable Shelter"), true);
+        serverPlayer.displayClientMessage(Component.literal(label), true);
         return InteractionResult.SUCCESS;
     }
 }

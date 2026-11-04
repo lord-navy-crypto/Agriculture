@@ -152,9 +152,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 boolean boundary = isBoundary(localX, localZ, LEVEL_1_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
                         seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ);
+                boolean returnPassage = boundary
+                        && isLevel1ReturnWall(roomX, roomZ, localX, localZ);
 
                 for (int y = LEVEL_1_WALL_BOTTOM; y <= LEVEL_1_WALL_TOP; y++) {
-                    if (boundary && !(y <= 70 && doorway)) {
+                    if (returnPassage && y <= 68) {
+                        set(world, pos, x, y, z,
+                                ThresholdEnvironmentBlocks.TRANSITION_WALL.get().defaultBlockState());
+                    } else if (boundary && !(y <= 70 && doorway)) {
                         set(world, pos, x, y, z, wall);
                     } else if (!boundary && hasLevel1Divider(
                             seed, roomX, roomZ, localX, localZ, style) && y <= 71) {
@@ -177,7 +182,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // A small minority of storage rooms contain irrigated,
                 // harvestable Agriculture crops. The mod is a required
                 // runtime dependency; this lookup avoids compiling it into our JAR.
-                if (style == 1 && Math.floorMod(mix(seed, roomX, roomZ, 0xFA77L), 4) == 0
+                if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
                         && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18) {
                     if (localX == 16 && localZ == 16) {
                         set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
@@ -191,6 +196,13 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         if (cropBlock instanceof CropBlock crop) {
                             set(world, pos, x, FLOOR_Y + 1, z, crop.getStateForAge(5));
                         }
+                    }
+                    // A compact five-lamp array keeps every crop tile above the
+                    // vanilla light threshold while preserving the warehouse's
+                    // otherwise uneven, low-light atmosphere.
+                    if ((localX == 14 || localX == 18) && (localZ == 14 || localZ == 18)
+                            || (localX == 16 && localZ == 16)) {
+                        set(world, pos, x, 67, z, Blocks.SEA_LANTERN.defaultBlockState());
                     }
                 }
 
@@ -222,6 +234,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static int level1Style(long seed, int roomX, int roomZ) {
+        // The entry room is deliberately a stocked shelter, not a dead spawn.
+        if (roomX == 0 && roomZ == 0) return 1;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0x10A1L), 100);
         if (roll < 52) return 0;
         if (roll < 75) return 1;
@@ -313,8 +327,21 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 && (localZ == 8 || localZ == 24 || localZ == 40);
     }
 
+    private static boolean isLevel1ReturnWall(
+            int roomX, int roomZ, int localX, int localZ) {
+        return localX == 0 && (localZ == 23 || localZ == 24)
+                && ((roomX == 0 && roomZ == 0)
+                || Math.floorMod(roomX * 31 + roomZ * 17, 89) == 0);
+    }
+
+    private static boolean hasLevel1PlanterPatch(long seed, int roomX, int roomZ) {
+        return (roomX == 0 && roomZ == 0)
+                || Math.floorMod(mix(seed, roomX, roomZ, 0xFA77L), 4) == 0;
+    }
+
     private static boolean isLevel1CratePosition(
             long seed, int roomX, int roomZ, int localX, int localZ) {
+        if (roomX == 0 && roomZ == 0 && localX == 8 && localZ == 8) return true;
         boolean xAnchor = localX == 8 || localX == 24 || localX == 40;
         boolean zAnchor = localZ == 8 || localZ == 24 || localZ == 40;
         if (!xAnchor || !zAnchor) return false;
