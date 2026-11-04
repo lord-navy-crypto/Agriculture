@@ -101,7 +101,7 @@ def main() -> int:
     expected_routes = {
         "level_0_flickering_wall", "level_1_smooth_threshold",
         "level_2_fire_exit", "level_2_anomalous_branch",
-        "level_2_maintenance_door", "level_3_retrace_corridor",
+        "level_2_unlocked_door", "level_3_retrace_corridor",
         "level_3_office_sector", "level_4_service_elevator_return",
     }
     assert expected_routes <= set(implemented)
