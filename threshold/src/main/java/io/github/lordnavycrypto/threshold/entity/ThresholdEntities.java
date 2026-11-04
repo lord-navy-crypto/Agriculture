@@ -16,7 +16,7 @@ public final class ThresholdEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdWatcherEntity>> WATCHER =
             ENTITY_TYPES.register("watcher", () -> EntityType.Builder
                     .of(ThresholdWatcherEntity::new, MobCategory.MISC)
-                    .sized(0.55F, 2.15F)
+                    .sized(0.72F, 2.65F)
                     .clientTrackingRange(32)
                     .updateInterval(2)
                     .noSave()
