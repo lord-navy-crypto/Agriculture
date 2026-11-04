@@ -1006,6 +1006,29 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 70, z, Blocks.DEEPSLATE_TILES.defaultBlockState());
                         }
                     }
+                    case 6 -> {
+                        // Abandoned meeting-room fragments: scattered desks,
+                        // overturned chairs and paper clutter, never across routes.
+                        boolean desk = (localX == 9 || localX == 10 || localX == 22 || localX == 23)
+                                && (localZ == 12 || localZ == 20);
+                        if (!protectedRoute && desk) {
+                            set(world, pos, x, 65, z, Blocks.OAK_SLAB.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 2) == 0) {
+                                set(world, pos, x, 64, z, Blocks.OAK_FENCE.defaultBlockState());
+                            }
+                        }
+                        boolean chair = (localX == 7 || localX == 12 || localX == 20 || localX == 25)
+                                && (localZ == 10 || localZ == 22);
+                        if (!protectedRoute && chair) {
+                            set(world, pos, x, 65, z, Blocks.OAK_STAIRS.defaultBlockState());
+                        }
+                        if (!protectedRoute && localX == 16 && localZ == 16) {
+                            set(world, pos, x, 65, z, Blocks.COBWEB.defaultBlockState());
+                        }
+                        if ((localX == 8 || localX == 24) && (localZ == 8 || localZ == 24)) {
+                            set(world, pos, x, 70, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1109,6 +1132,23 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             }
                         }
                     }
+                    case 7 -> {
+                        // Cold-storage loading bay: sealed cargo stacks, rails
+                        // and overhead warning fittings make this warehouse feel operational.
+                        boolean cargo = (localX >= 6 && localX <= 10 || localX >= 37 && localX <= 41)
+                                && (localZ == 13 || localZ == 18 || localZ == 31 || localZ == 36);
+                        if (!protectedTile && cargo) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.BARREL.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 3) == 0) {
+                                set(world, pos, x, 66, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        if (localX == 7 || localX == 40) {
+                            set(world, pos, x, 72, z, Blocks.LANTERN.defaultBlockState());
+                            set(world, pos, x, 73, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1117,12 +1157,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static int level0Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 6);
+        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 7);
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 6);
+        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 7);
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
