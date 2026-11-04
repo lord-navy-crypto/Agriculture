@@ -29,8 +29,10 @@
 **Primary fear motif:** Cleithrophobia (fear of being trapped), supported by Nyctophobia (fear of darkness). The shelter offers supplies, but its partitions and uncertain exits undermine safety.
 - Native dimension `threshold:level_1`; custom biome and dimension type.
 - Chunk-aligned 48x48 concrete warehouse layout with halls, storage bays, pillars and partitions.
-- A guaranteed starter barrel plus scarce additional supply barrels use `threshold:chests/level_1_supply` loot drawing from real `gugugaga` foods.
-- The entry room guarantees a small watered, lit planter of actual Agriculture crops; other storage rooms have rare planters.
+- A guaranteed starter barrel plus scarcer additional supply barrels use separate starter, pantry and maintenance tables with real Agriculture crops, prepared meals, water bottles, seeds and occasional salt.
+- The entry room guarantees a small watered, lit planter with six different mature Agriculture crops (barley, corn, soybean, tomato, lettuce and spinach); other storage rooms have rare planters.
+- The central water source is a real freshwater source and can refill the Agriculture empty water flask.
+- One ceiling panel in the entry warehouse flickers; partitioned storage rooms can have similar faults that remain dark longer than Level 0's office lights.
 - Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them. The entry greenhouse is lit by five overhead sea lanterns so crops can grow without skylight. The warehouse ambience uses a intermittent mechanical vault crackle, contrasting with Level 0's cave-like emptiness.
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
@@ -75,8 +77,9 @@ The packaged-JAR validator enforces this invariant.
 ## Survival Horror integration (Agriculture required)
 
 - No duplicate nutrition bar or thirst/sodium mechanics: Agriculture owns the existing nutrition, hydration and salt physiology.
-- The Level 1 start cache **guarantees** a boiled drinking-water bottle and several kinds of real Agriculture foods/seeds, so players can begin exploring without immediate scarcity softlocks.
-- Other Level 1 storerooms use distinct pantry and maintenance loot tables with varied cereal, vegetable, legume, raw/boiled/filtered water, and occasional sea salt. Safe drinking water is valuable and not guaranteed in each ordinary cache.
+- The Level 1 start cache **guarantees** a boiled drinking-water bottle, a prepared Agriculture meal, raw produce, seeds and an empty flask, so players can begin without an immediate scarcity softlock.
+- The first planter now starts with six mature crop species ready for harvest; Agriculture handles subsequent regrowth and nutrition.
+- Other Level 1 storerooms use distinct pantry and maintenance loot tables with varied cereal, vegetable, legume, prepared meals, raw/boiled/filtered water, and occasional sea salt. Ordinary locker density is reduced and clean water is not guaranteed in each pantry cache.
 - Level 0 stays isolated: some distant dark/red offices contain a very rare forgotten cache, never in the entry room.
 - Floor wear, low-light industrial fittings, and extended overhead light panels reinforce the two contrasting environments without entities or surprise attacks.
 - New room generation applies only to newly explored chunks. For existing Level 0 test saves, OPs can repair the old carpet seam around themselves with `/threshold repair_floor`. This only touches loaded nearby chunks, never creates new ones.
@@ -88,3 +91,11 @@ The packaged-JAR validator enforces this invariant.
 - Survival: rare forgotten caches in distant dark Level 0 rooms; Level 1 has separate Agriculture food, maintenance and starter caches with real nutrient profiles, water treatment and salt supplies.
 - Atmosphere: carpet wear, warehouse floor patches, overhead fittings, and extended lighting panels.
 - CI checks actual Agriculture item IDs in loot tables, plus real registry presence in the dedicated-server smoke test.
+
+## Alpha 4 — survival and geometry pass
+
+- Level 0's existing footing design is checked across the complete 32×32 entry room: every wall-like block at Y=65 must have a matching base at Y=64 and solid concrete directly below at Y=63. The check covers dividers, pillars and the transition wall.
+- The `/threshold repair_floor` command remains available for already-generated Level 0 chunks from earlier builds; it only touches loaded chunks in a bounded 5×5 region.
+- Level 1 planters contain six mature, harvestable Agriculture species instead of a single immature crop type.
+- The Level 1 entry warehouse and partitioned storage rooms can contain a flickering ceiling panel; its recovery interval is longer than the Level 0 office panels.
+- Pantry loot now includes prepared meals that carry Agriculture's actual nutrient, hydration and sodium profiles. Ordinary supply lockers are less dense and their water pool is not guaranteed; the entry cache remains protected from a survival softlock.

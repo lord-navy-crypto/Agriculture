@@ -112,6 +112,8 @@ def main():
             "soybean", "pea", "spinach", "cucumber", "sea_salt",
             "empty_water_flask", "raw_water_bottle",
             "boiled_water_bottle", "filtered_water_bottle",
+            "barley_vegetable_soup", "grain_porridge", "vegetable_stew",
+            "bean_stew", "garden_salad",
         }
         for filename in ("level_1_supply", "level_1_starter",
                          "level_1_maintenance", "level_0_forgotten"):
@@ -129,7 +131,8 @@ def main():
         guaranteed = {e["name"] for pool in starter["pools"]
                       for e in pool["entries"] if e["type"] == "minecraft:item"}
         assert {"gugugaga:boiled_water_bottle", "gugugaga:barley",
-                "gugugaga:soybean", "gugugaga:tomato"} <= guaranteed
+                "gugugaga:soybean", "gugugaga:tomato",
+                "gugugaga:barley_vegetable_soup"} <= guaranteed
         assert modifier["step"]=="vegetal_decoration"
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0

@@ -239,12 +239,18 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     } else {
                         set(world, pos, x, FLOOR_Y, z, Blocks.FARMLAND.defaultBlockState()
                                 .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, 7));
-                        String[] crops = {"barley_crop", "corn_crop", "soybean_crop", "tomato_crop"};
-                        String id = crops[Math.floorMod(roomX + roomZ, crops.length)];
+                        String[] crops = {
+                                "barley_crop", "corn_crop", "soybean_crop",
+                                "tomato_crop", "lettuce_crop", "spinach_crop"
+                        };
+                        int cropIndex = Math.floorMod(
+                                localX + localZ - 28 + roomX * 3 + roomZ * 5, crops.length);
+                        String id = crops[cropIndex];
                         net.minecraft.world.level.block.Block cropBlock = BuiltInRegistries.BLOCK.get(
                                 ResourceLocation.fromNamespaceAndPath("gugugaga", id));
                         if (cropBlock instanceof CropBlock crop) {
-                            set(world, pos, x, FLOOR_Y + 1, z, crop.getStateForAge(5));
+                            // Start with real harvestable produce; Agriculture owns subsequent regrowth.
+                            set(world, pos, x, FLOOR_Y + 1, z, crop.getStateForAge(7));
                         }
                     }
                     // A compact five-lamp array keeps every crop tile above the
@@ -260,7 +266,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         ? Blocks.GRAY_CONCRETE.defaultBlockState()
                         : Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState();
                 if (style != 3 && isLevel1LightPosition(localX, localZ)) {
-                    ceiling = Blocks.SEA_LANTERN.defaultBlockState();
+                    boolean damagedFixture = localX == 24 && localZ == 24
+                            && ((roomX == 0 && roomZ == 0) || style == 2);
+                    ceiling = damagedFixture
+                            ? ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState()
+                            : Blocks.SEA_LANTERN.defaultBlockState();
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
             }
@@ -412,8 +422,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         boolean xAnchor = localX == 8 || localX == 24 || localX == 40;
         boolean zAnchor = localZ == 8 || localZ == 24 || localZ == 40;
         if (!xAnchor || !zAnchor) return false;
+        // One in three ordinary anchor positions; the entry cache remains guaranteed.
         return Math.floorMod(mix(
-                seed, roomX * 3 + localX, roomZ * 3 + localZ, 0xC8A7L), 3) != 0;
+                seed, roomX * 3 + localX, roomZ * 3 + localZ, 0xC8A7L), 3) == 0;
     }
 
     private static long mix(long seed, int x, int z, long salt) {

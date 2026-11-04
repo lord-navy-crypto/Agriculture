@@ -28,12 +28,18 @@ public final class FlickeringPanelBlock extends Block {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.dimension().equals(ThresholdDimensions.LEVEL_0)) return;
+        boolean level0 = level.dimension().equals(ThresholdDimensions.LEVEL_0);
+        boolean level1 = level.dimension().equals(ThresholdDimensions.LEVEL_1);
+        if (!level0 && !level1) return;
+
+        // Level 0 blinks briefly; Level 1 warehouse faults leave a longer dark interval.
+        int offChance = level0 ? 16 : 10;
+        int restoreChance = level0 ? 2 : 4;
         if (state.getValue(LIT)) {
-            if (random.nextInt(16) == 0) {
+            if (random.nextInt(offChance) == 0) {
                 level.setBlock(pos, state.setValue(LIT, false), 2);
             }
-        } else if (random.nextInt(2) == 0) {
+        } else if (random.nextInt(restoreChance) == 0) {
             level.setBlock(pos, state.setValue(LIT, true), 2);
         }
     }

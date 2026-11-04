@@ -143,6 +143,31 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:barley_vegetable_soup",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:grain_porridge",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:vegetable_stew",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:bean_stew",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:garden_salad",
+          "weight": 1
         }
       ]
     },
@@ -169,6 +194,12 @@
           "type": "minecraft:item",
           "name": "gugugaga:filtered_water_bottle",
           "weight": 1
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.55
         }
       ]
     },
