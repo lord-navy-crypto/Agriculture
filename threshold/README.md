@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.6.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.7.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -143,6 +143,38 @@ The packaged-JAR validator enforces this invariant.
 ### Phantom-inspired spatial variation
 - Some rooms preserve their signature architecture while mirroring its internal arrangement or changing its material/lighting rhythm. This borrows the broad design idea of a Phantom variant, not another creator's exact room blueprint or assets.
 - Exit topology, entry rooms and inter-level transitions are not mirrored or relocated. The variation is architectural and perceptual, not a silent route rewrite.
+
+
+## Alpha 7 — four-level traversal and original horror audio
+
+### Original Level 0 and Level 1 music
+- Level 0 now has an original, low-volume eerie office drone: slow detuned fluorescent hum, soft spectral movement and a distant tonal layer.
+- Level 1 has a separate original industrial ambience: low transformer resonance, rotating machinery rhythm and restrained metallic overtones.
+- Both tracks are original generated audio, packaged inside the independent JAR and selected by their own biome music entries. They do not replace the established flickering lights, cave/vault ambience or room layouts.
+
+### Level 3 — Electrical Station
+- A separate dimension built around narrow brick service corridors, overhead copper mains, cable runs, static electrical rooms and occasional barred black-glass observation slits.
+- Deterministic room archetypes include plain pipe tunnels, equipment bays, switchgear galleries, window-like observation rooms, cable trenches and transformer chambers.
+- Scarce supply barrels use real Agriculture hydration and food items. Generic biome spawning remains disabled; entity ecology can be added in a later pass.
+
+### Level 4 — Abandoned Office
+- A separate, quieter dimension of broad empty office cells, pale concrete, sparse desks, reception counters, meeting rooms, blacked-out windows and sealed water-cooler props.
+- Occasional caches provide more reliable Agriculture hydration and food than Level 3, while most rooms remain intentionally empty.
+- The ambient profile is softer and brighter than Level 3; windows are opaque and do not create unsafe openings.
+
+### Traversal network
+- Level 0 ↔ Level 1: the original validated transition remains unchanged.
+- Level 1 → Level 3: a fixed industrial service lift in a distant warehouse cell. This is an explicit bridge while Level 2 is not yet implemented.
+- Level 3 → Level 1: a return lift near the Level 3 entry sector.
+- Level 3 ↔ Level 4: an Office Sector door and a return elevator, matching the documented electrical-station/office-sector connection.
+- Each passage is an interactable in-world door block that transfers the player to a safe, authored arrival point. Operator travel commands are also available: /threshold travel level_3 and /threshold travel level_4.
+- The route graph is deliberately non-linear at the level of room layouts, but its authored inter-level links remain stable and discoverable. Level 2 is not silently fabricated; its future entrances can be added without moving these links.
+
+### Canon and spatial design
+- Wikidot remains the primary reference. Fandom contributes optional details such as Level 3's pipe-lined, shifting corridors, repeated machinery rooms and barred windows.
+- Level 3 keeps the electrical-facility identity; Level 4 keeps the mostly empty office identity and its lower entity density.
+- Phantom-inspired variation is limited to original mirrored room interiors and altered spatial rhythm. No external map, texture, model or exact room blueprint is copied.
+- Existing Level 0 / Level 1 room sizes, entry rooms, carpet/floor elevations, lighting character, Agriculture systems and validated transition coordinates remain protected.
 
 ## Horror identity preservation
 
