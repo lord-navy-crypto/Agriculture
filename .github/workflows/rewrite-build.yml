@@ -25,6 +25,8 @@ jobs:
         run: python3 qa/validate_threshold_graph.py
       - name: Protect original Threshold horror identity and spatial layout
         run: python3 qa/validate_threshold_horror_preservation.py
+      - name: Validate four-level music, worldgen and traversal expansion
+        run: python3 qa/validate_threshold_expansion.py
       - name: Validate Threshold Agriculture nutrition and hydration integration
         run: python3 qa/validate_threshold_survival_integration.py
       - name: Check actual Agriculture item IDs used by Backrooms survival loot
@@ -97,12 +99,12 @@ jobs:
       - name: Build independent Threshold horror mod
         run: gradle --no-daemon --stacktrace :threshold:build
       - name: Validate Threshold dimensions in packaged JAR
-        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.6.jar
+        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.7.jar
       - name: Upload independent Threshold JAR
         uses: actions/upload-artifact@v4
         with:
-          name: threshold-horror-alpha6
-          path: threshold/build/libs/threshold-0.1.0-alpha.6.jar
+          name: threshold-horror-alpha7
+          path: threshold/build/libs/threshold-0.1.0-alpha.7.jar
           if-no-files-found: error
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
