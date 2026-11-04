@@ -114,6 +114,7 @@ The packaged-JAR validator enforces this invariant.
 ### Level 1: first predator
 - The Hound is a real Monster with player targeting, pathfinding and melee behavior. It has explicit health, movement, damage and follow-range attributes.
 - Hounds are spawned by the Threshold entity director, not generic biome spawner tables. They are restricted to Level 1, prefer darker areas, and cannot spawn while the player remains inside the first 48×48 entry shelter.
+- In this first pass, the Hound is the only permitted Level 1 living creature besides players. Vanilla animals/monsters and unrelated modded creatures are rejected until they receive an explicit Backrooms design and whitelist entry.
 - A nearby active Hound suppresses another encounter, keeping the first pass controlled rather than turning the warehouse into a mob farm.
 - The Hound does not break blocks or alter the validated room graph. It uses a dedicated no-drop loot table so it does not create an unintended food/material loop.
 - The current Hound is the first original Backrooms-inspired predator prototype, not a claim that every Fandom/Wikidot entity list is one unified canon. Additional creature types should be added individually after visual, AI and balance tests.
