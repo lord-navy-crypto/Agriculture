@@ -188,3 +188,15 @@ jobs:
           name: agriculture-server-launch-log
           path: build/agriculture-server-boot.log
           if-no-files-found: warn
+      - name: Upload Threshold server diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: threshold-server-diagnostics
+          path: |
+            build/threshold-server-boot.log
+            threshold/runs/server/logs/latest.log
+            threshold/run/server/logs/latest.log
+            threshold/run/logs/latest.log
+            threshold/runs/logs/latest.log
+          if-no-files-found: warn

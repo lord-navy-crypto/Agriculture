@@ -6,7 +6,7 @@ import os, signal, subprocess, sys, time, shutil
 ROOT=Path(__file__).resolve().parents[1]
 PROJECT=ROOT/"threshold"
 LOG=ROOT/"build/threshold-server-boot.log"
-LIMIT=int(os.environ.get("THRESHOLD_SERVER_BOOT_TIMEOUT","420"))
+LIMIT=int(os.environ.get("THRESHOLD_SERVER_BOOT_TIMEOUT","210"))
 READY="Done ("
 MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY_OK",
          "THRESHOLD_LEVEL0_WORLDGEN_OK","THRESHOLD_LEVEL1_WORLDGEN_OK",
@@ -51,14 +51,23 @@ def run():
                     "THRESHOLD_LEVEL1_STARTER_CACHE_FAIL","THRESHOLD_LEVEL1_LIT_PLANTER_FAIL",
                     "THRESHOLD_LEVEL1_AGRICULTURE_CROP_FAIL","THRESHOLD_LITHOSTITCHED_VENT_FAIL")):
                     print("FAIL: a required Threshold dimension did not generate", flush=True)
-                    print(current[-14000:], flush=True)
+                    print(current[-90000:], flush=True)
+                    return 1
+                if any(fatal in current for fatal in (
+                    "Exception generating new chunk",
+                    "Exception ticking world",
+                    "Exception in server tick loop",
+                    "Report this crash to",
+                    "Crash report saved to:")):
+                    print("FAIL: Threshold server reported a fatal runtime problem", flush=True)
+                    print(current[-90000:], flush=True)
                     return 1
                 if process.poll() is not None:
                     print("FAIL: Threshold server exited early",flush=True)
                     break
             else:
                 print("FAIL: Threshold startup timed out",flush=True)
-            print(LOG.read_text(encoding="utf-8",errors="replace")[-16000:],flush=True)
+            print(LOG.read_text(encoding="utf-8",errors="replace")[-90000:],flush=True)
             return 1
         finally:
             if process.poll() is None:
