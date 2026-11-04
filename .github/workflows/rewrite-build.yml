@@ -84,6 +84,16 @@ jobs:
           gradle-version: '9.2.1'
       - name: Compile and package agriculture mod
         run: gradle --no-daemon --stacktrace build
+      - name: Build independent Threshold horror mod
+        run: gradle --no-daemon --stacktrace :threshold:build
+      - name: Validate Threshold dimensions in packaged JAR
+        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.1.jar
+      - name: Upload independent Threshold JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: threshold-horror-alpha1
+          path: threshold/build/libs/threshold-0.1.0-alpha.1.jar
+          if-no-files-found: error
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Validate kitchen icon generator and four-station recipes
@@ -167,6 +177,8 @@ jobs:
           gradle-version: '9.2.1'
       - name: Launch fresh real NeoForge 1.21.1 server
         run: python3 qa/smoke_rewrite_server.py
+      - name: Launch Threshold server and verify both dimensions and generated chunks
+        run: python3 qa/smoke_threshold_server.py
       - name: Upload launch logs
         if: always()
         uses: actions/upload-artifact@v4
