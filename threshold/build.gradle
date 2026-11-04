@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.lordnavycrypto.threshold'
-version = '0.1.0-alpha.2'
+version = '0.1.0-alpha.3'
 base { archivesName = 'threshold' }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
@@ -97,6 +97,9 @@ tasks.register('validateThresholdResources') {
             'data/threshold/worldgen/configured_feature/room_sequence.json',
             'data/threshold/worldgen/placed_feature/room_sequence.json',
             'data/threshold/loot_table/chests/level_1_supply.json',
+            'data/threshold/loot_table/chests/level_1_starter.json',
+            'data/threshold/loot_table/chests/level_1_maintenance.json',
+            'data/threshold/loot_table/chests/level_0_forgotten.json',
             'assets/threshold/blockstates/flickering_panel.json',
             'META-INF/neoforge.mods.toml'
         ].each { path ->

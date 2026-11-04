@@ -45,7 +45,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.2.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.3.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -80,3 +80,11 @@ The packaged-JAR validator enforces this invariant.
 - Level 0 stays isolated: some distant dark/red offices contain a very rare forgotten cache, never in the entry room.
 - Floor wear, low-light industrial fittings, and extended overhead light panels reinforce the two contrasting environments without entities or surprise attacks.
 - New room generation applies only to newly explored chunks. For existing Level 0 test saves, OPs can repair the old carpet seam around themselves with `/threshold repair_floor`. This only touches loaded nearby chunks, never creates new ones.
+
+## Upgrade notes: 0.1.0-alpha.3
+
+- Floor contact: Level 0 walls, pillars, dividers and transition walls now start at Y=64 with full-height blocks; walkable areas retain carpet.
+- Existing worlds: OP command /threshold repair_floor repairs carpet-under-wall seams in a bounded 5x5 region of already-loaded Level 0 chunks. Move and repeat as necessary, after backing up the save.
+- Survival: rare forgotten caches in distant dark Level 0 rooms; Level 1 has separate Agriculture food, maintenance and starter caches with real nutrient profiles, water treatment and salt supplies.
+- Atmosphere: carpet wear, warehouse floor patches, overhead fittings, and extended lighting panels.
+- CI checks actual Agriculture item IDs in loot tables, plus real registry presence in the dedicated-server smoke test.

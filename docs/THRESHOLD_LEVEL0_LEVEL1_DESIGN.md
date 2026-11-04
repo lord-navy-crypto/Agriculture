@@ -55,3 +55,9 @@ Distinct features:
 - The Level 1 starting cache is deterministic for water and diverse Agriculture foods; later supply and maintenance caches have different water safety and nutrition trade-offs.
 - No extra needs system is created: all foods and water are actual Agriculture items, so their registered profiles continue to determine water, sodium and other nutrients.
 - Level 1 gains subtle stone floor wear, suspended iron fittings and longer ceiling lamps. No monsters or AI.
+
+## Alpha 3 validation contract
+- Level 0 wall base (0,64,5) and transition footing (0,64,15) must be solid and flush with the blocks above; walkable carpet (4,64,4) remains.
+- Operator /threshold repair_floor repairs only a limited number of loaded existing Level 0 chunks and does not regenerate the saved world.
+- Loot item IDs are checked against actual Agriculture registrations and again against the live built-in item registry.
+- Nutrition, water, and sodium handling remain entirely owned by Agriculture.

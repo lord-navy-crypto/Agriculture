@@ -104,5 +104,23 @@ public final class ThresholdRuntimeChecks {
                     instanceof io.github.lordnavycrypto.threshold.block.ThresholdCeilingVentBlockEntity;
         System.out.println(ventBuilt
                 ? "THRESHOLD_LITHOSTITCHED_VENT_OK" : "THRESHOLD_LITHOSTITCHED_VENT_FAIL");
+        // Missing registry entries must not silently become empty loot.
+        String[] survivalItems = {
+                "barley", "soybean", "tomato", "barley_seeds", "spinach",
+                "sea_salt", "raw_water_bottle", "boiled_water_bottle",
+                "filtered_water_bottle", "empty_water_flask"
+        };
+        boolean agricultureItemsReady = true;
+        for (String id : survivalItems) {
+            if (!net.minecraft.core.registries.BuiltInRegistries.ITEM.containsKey(
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(
+                            "gugugaga", id))) {
+                System.err.println("THRESHOLD_MISSING_AGRICULTURE_ITEM: " + id);
+                agricultureItemsReady = false;
+            }
+        }
+        System.out.println(agricultureItemsReady
+                ? "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_OK"
+                : "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_FAIL");
     }
 }
