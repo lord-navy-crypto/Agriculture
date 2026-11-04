@@ -61,3 +61,38 @@ Distinct features:
 - Operator /threshold repair_floor repairs only a limited number of loaded existing Level 0 chunks and does not regenerate the saved world.
 - Loot item IDs are checked against actual Agriculture registrations and again against the live built-in item registry.
 - Nutrition, water, and sodium handling remain entirely owned by Agriculture.
+
+
+## Horror identity is a non-regression contract (Alpha 4 onward)
+
+**Survival Horror is an additive gameplay layer. It must never replace the original horror identity.** The environments, architecture, routes, atmosphere and visual language established before the survival integration remain the design baseline.
+
+### Level 0 — preserve isolation and spatial uncertainty
+
+- Keep the 32×32 yellow-office room scale, the Y=63 concrete foundation, Y=64 walkable carpet, Y=65–71 wall profile and Y=72 ceiling.
+- Keep the entry room as the recognizable yellow-office baseline: faded yellow wallpaper, carpet, fluorescent panels and a large amount of deliberately empty space.
+- Preserve the existing shared-edge doorway algorithm, rare closed boundaries, divider/column variants, rare red rooms and the established Level 0 ↔ Level 1 transition location.
+- Keep the cave-like ambient sound bed and brief, irregular fluorescent-light failures.
+- Agriculture supplies remain rare and unreliable here. Do not turn Level 0 into a farm, pantry network or decorated safe hub.
+
+### Level 1 — preserve the vulnerable industrial shelter
+
+- Keep the 48×48 warehouse room scale, concrete floor, industrial wall profile, high ceiling, storage partitions and established return-passage location.
+- Preserve the distinct vault-like industrial ambience, overhead ventilation unit and contrast between stable pools of light and longer lighting faults.
+- Keep the entrance shelter useful but visibly limited. The six-crop planter and guaranteed starter cache are localized features, not a reason to fill every room with crops, lights or supplies.
+- Preserve deterministic room exits. Resource scarcity must not create a generation-time sealed room or remove the existing return route.
+
+### Cross-level rules
+
+- Do not resize rooms, move established corridors or transitions, change dimension identifiers, or regenerate already explored rooms as part of a survival-balance pass.
+- Do not homogenize the two light profiles, ambient sound beds, palettes, architecture or resource distribution.
+- Do not fill empty areas with decorative clutter merely to make the spaces feel more alive. Empty space is part of Level 0's horror language.
+- Do not add mobs, combat, AI hunters or jump-scare events as a shortcut to horror in this phase.
+- Agriculture remains the sole owner of food, nutrition, hydration and sodium mechanics. Threshold may place and distribute real Agriculture content, but must not create parallel needs systems.
+- New atmosphere should be additive and restrained: it may deepen the existing theme, but must not obscure routes, change collision, or compromise the validated structure.
+
+### Automated preservation gate
+
+The qa/validate_threshold_horror_preservation.py script protects the room dimensions and vertical profiles, entry-room identities, transition locations, light-failure contrast, biome ambience, palette/architecture markers and no-mob scope. It runs in CI alongside the existing room-graph, Agriculture integration, packaged-JAR and dedicated-server checks.
+
+A deliberate change to one of these invariants requires an explicit design decision and a corresponding update to this contract and its tests. It must not happen accidentally as a side effect of adding survival features.
