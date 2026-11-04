@@ -82,7 +82,7 @@ The packaged-JAR validator enforces this invariant.
 - The first planter now starts with six mature crop species ready for harvest; Agriculture handles subsequent regrowth and nutrition.
 - Other Level 1 storerooms use distinct pantry and maintenance loot tables with varied cereal, vegetable, legume, prepared meals, raw/boiled/filtered water, and occasional sea salt. Ordinary locker density is reduced and clean water is not guaranteed in each pantry cache.
 - Level 0 stays isolated: some distant dark/red offices contain a very rare forgotten cache, never in the entry room.
-- Floor wear, low-light industrial fittings, and extended overhead light panels reinforce the two contrasting environments without entities or surprise attacks.
+- Floor wear, low-light industrial fittings, and extended overhead light panels reinforce the two contrasting environments without introducing extra entities or surprise attacks.
 - New room generation applies only to newly explored chunks. For existing Level 0 test saves, OPs can repair the old carpet seam around themselves with `/threshold repair_floor`. This only touches loaded nearby chunks, never creates new ones.
 
 ## Upgrade notes: 0.1.0-alpha.3
