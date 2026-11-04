@@ -96,6 +96,25 @@ def main() -> int:
         blockstate = read_json(RES / f"assets/threshold/blockstates/{passage_name}.json")
         assert blockstate["variants"][""]["model"] == model
 
+    catalog = read_json(RES / "data/threshold/transit/route_catalog.json")
+    implemented = {route["id"]: route for route in catalog["implemented_routes"]}
+    expected_routes = {
+        "level_0_flickering_wall", "level_1_smooth_threshold",
+        "level_2_fire_exit", "level_2_anomalous_branch",
+        "level_2_maintenance_door", "level_3_retrace_corridor",
+        "level_3_office_sector", "level_4_service_elevator_return",
+    }
+    assert expected_routes <= set(implemented)
+    assert implemented["level_2_fire_exit"]["profile"] == "fandom"
+    assert implemented["level_2_fire_exit"]["relative_weights"] == [1, 1]
+    assert implemented["level_2_anomalous_branch"]["profile"] == "wikidot"
+    assert implemented["level_2_anomalous_branch"]["relative_weights"] == [4, 4, 1]
+    assert all(route["status"] == "implemented" for route in implemented.values())
+    deferred = {route["id"]: route for route in catalog["deferred_routes"]}
+    assert "level_3_elevator_draw" in deferred
+    assert "level_5" in deferred["level_3_elevator_draw"]["to"]
+    assert "phantom" not in json.dumps(catalog).lower()
+
     modifier = read_json(RES / "data/threshold/neoforge/biome_modifier/room_layout.json")
     assert sorted(modifier["biomes"]) == [f"threshold:{level}" for level in levels]
     assert modifier["features"] == "threshold:room_sequence"
