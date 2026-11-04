@@ -161,7 +161,7 @@ The packaged-JAR validator enforces this invariant.
 - Broad, quiet office cells, pale concrete, sparse desks, reception counters, meeting rooms, blacked-out windows and sealed water-cooler props.
 - Occasional caches provide more reliable Agriculture hydration and food than Level 3, while most rooms remain intentionally empty.
 
-### Transit graph — no Phantom network
+### Source-backed transit graph
 - Level 0 → Level 1: preserve the original validated unstable-wall passage.
 - Level 1 → Level 2: a seamless corridor transition. Warehouse fittings gradually become copper pipes, chains and utility fixtures before the player crosses an invisible trigger into Level 2. This replaces the earlier non-canonical direct Level 1 → Level 3 lift.
 - Level 2 → Level 1 / Level 3: marked utility exits and fire exits. The fire-exit destination is selected from Level 1 or Level 3.
@@ -180,7 +180,7 @@ The packaged-JAR validator enforces this invariant.
 - Wikidot and Fandom are treated as separate source profiles, not flattened into one contradictory canon.
 - The current Wikidot pages define the main Level 0 → 1 → 2 progression and Level 2's broad links to Levels 1, 3 and 4.
 - Fandom contributes its own fire-exit, anomalous-corridor and Office Sector details. Where a page is being rewritten or differs from the other wiki, the route remains attributed to that version.
-- No Phantom-level network, Phantom travel rules, copied maps, sound recordings, textures or exact room blueprints are used.
+- Only source-documented ordinary-level connections are implemented; no separate mirrored level family is generated. No copied maps, sound recordings, textures or exact room blueprints are used.
 
 ### Protected invariants
 - Level 0 / Level 1 room sizes, entry rooms, floor elevations, original wall transition, lighting identity and Agriculture survival integration remain protected.
