@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
@@ -54,10 +53,11 @@ public final class ThresholdEntityDirector {
         }
 
         if (level.dimension().equals(ThresholdDimensions.LEVEL_1)
-                && event.getEntity() instanceof Mob mob
-                && !(mob instanceof ThresholdHoundEntity)) {
+                && event.getEntity() instanceof LivingEntity living
+                && !(living instanceof Player)
+                && !(living instanceof ThresholdHoundEntity)) {
             // Level 1's first pass uses authored Backrooms creatures only;
-            // vanilla animals/monsters and unrelated modded mobs stay out.
+            // vanilla animals/monsters and unrelated modded life stay out.
             event.setCanceled(true);
         }
     }
