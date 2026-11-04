@@ -1,0 +1,82 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+group = 'io.github.lordnavycrypto.threshold'
+version = '0.1.0-alpha.1'
+base { archivesName = 'threshold' }
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+def thresholdModId = 'threshold'
+def thresholdModName = 'Threshold: Backrooms'
+def thresholdMinecraftVersion = '1.21.1'
+def thresholdNeoVersion = '21.1.259'
+
+neoForge {
+    version = thresholdNeoVersion
+    parchment {
+        mappingsVersion = '2024.11.17'
+        minecraftVersion = thresholdMinecraftVersion
+    }
+    runs {
+        client { client() }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+    mods {
+        threshold {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+def generateThresholdModMetadata = tasks.register('generateThresholdModMetadata', ProcessResources) {
+    def vars = [
+        mod_id: thresholdModId,
+        mod_name: thresholdModName,
+        mod_version: project.version,
+        mod_license: 'MIT',
+        loader_version_range: '[1,)',
+        minecraft_version_range: '[1.21.1]',
+        neo_version: thresholdNeoVersion
+    ]
+    inputs.properties(vars)
+    expand(vars)
+    from 'src/main/templates'
+    into layout.buildDirectory.dir('generated/sources/thresholdModMetadata')
+}
+
+sourceSets.main.resources.srcDir(generateThresholdModMetadata)
+neoForge.ideSyncTask(generateThresholdModMetadata)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('validateThresholdResources') {
+    dependsOn tasks.named('processResources')
+    doLast {
+        def resources = sourceSets.main.output.resourcesDir
+        [
+            'data/threshold/dimension/level_0.json',
+            'data/threshold/dimension/level_1.json',
+            'data/threshold/dimension_type/level_0_type.json',
+            'data/threshold/dimension_type/level_1_type.json',
+            'data/threshold/worldgen/configured_feature/room_layout.json',
+            'data/threshold/worldgen/placed_feature/room_layout.json',
+            'data/threshold/neoforge/biome_modifier/room_layout.json',
+            'META-INF/neoforge.mods.toml'
+        ].each { path ->
+            if (!new File(resources, path).isFile()) {
+                throw new GradleException("Missing Threshold resource: ${path}")
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('validateThresholdResources')
+}

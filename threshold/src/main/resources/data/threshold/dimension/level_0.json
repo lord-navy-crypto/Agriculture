@@ -1,0 +1,13 @@
+{
+  "type": "threshold:level_0_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:the_void",
+      "features": true,
+      "lakes": false,
+      "layers": [],
+      "structure_overrides": []
+    }
+  }
+}
