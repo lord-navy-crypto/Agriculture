@@ -39,7 +39,7 @@ def item_ids(table: dict) -> set[str]:
 def main() -> None:
     nutrition = json.loads(NUTRITION.read_text(encoding="utf-8"))["foods"]
     water = json.loads(WATER.read_text(encoding="utf-8"))["foods"]
-    java_sources = "\\n".join(p.read_text(encoding="utf-8") for p in AGRI.glob("*.java"))
+    java_sources = "\n".join(p.read_text(encoding="utf-8") for p in AGRI.glob("*.java"))
     used = set()
     tables = {}
     for filename in TABLES:
