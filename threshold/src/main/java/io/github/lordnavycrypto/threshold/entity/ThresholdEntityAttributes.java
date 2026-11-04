@@ -16,5 +16,6 @@ public final class ThresholdEntityAttributes {
                 .build();
         event.put(ThresholdEntities.WATCHER.get(), watcherAttributes);
         event.put(ThresholdEntities.HOUND.get(), ThresholdHoundEntity.createAttributes().build());
+        event.put(ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerEntity.createAttributes().build());
     }
 }
