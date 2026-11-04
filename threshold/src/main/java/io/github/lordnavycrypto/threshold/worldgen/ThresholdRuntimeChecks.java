@@ -53,6 +53,10 @@ public final class ThresholdRuntimeChecks {
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
         System.out.println(wallBuilt
                 ? "THRESHOLD_LEVEL0_TRANSITION_OK" : "THRESHOLD_LEVEL0_TRANSITION_FAIL");
+        boolean level0LightingBuilt = level0.getBlockState(new BlockPos(8, 72, 8))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FLICKERING_PANEL.get());
+        System.out.println(level0LightingBuilt
+                ? "THRESHOLD_LEVEL0_LIGHTING_OK" : "THRESHOLD_LEVEL0_LIGHTING_FAIL");
         boolean returnWallBuilt = level1.getBlockState(new BlockPos(0, 66, 23))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
         System.out.println(returnWallBuilt

@@ -226,6 +226,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static int level0Style(long seed, int roomX, int roomZ) {
+        // The first room establishes the iconic empty yellow-office baseline.
+        if (roomX == 0 && roomZ == 0) return 0;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0x10A0L), 100);
         if (roll < 68) return 0;
         if (roll < 82) return 1;

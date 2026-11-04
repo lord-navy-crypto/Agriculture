@@ -11,7 +11,7 @@ The repo contains `Agriculture` and the separate `threshold` Gradle subproject, 
 **Fear mechanism:** uncertainty, isolation, loss of spatial confidence.
 
 Distinct features:
-- A ceiling-covered 32x32 office grid, not an overworld structure.
+- A ceiling-covered 32x32 office grid, not an overworld structure. The entry room is always the baseline yellow-office variant, so the opening experience is consistent.
 - Yellow wallpaper, damp-looking carpet and occasional stained walls.
 - Infrequent column/dim/red architectural variants.
 - Fluorescent panels flicker only in Level 0 via local random ticks, with no player health effect.

@@ -12,7 +12,7 @@
 
 **Primary fear motif:** Kenophobia (empty-space dread), supported by Monophobia (fear of being alone). These are creative themes, not clinical labels applied to players.
 - Native dimension `threshold:level_0`; custom biome and dimension type.
-- Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions.
+- Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
 - Random-tick fluorescent panels emit light and occasionally blink. No entity AI in this release.
 - Atmospheric cave ambience used as a provisional sound bed.
