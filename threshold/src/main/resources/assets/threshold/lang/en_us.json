@@ -18,5 +18,9 @@
   "block.threshold.level_5_elevator_panel": "Hotel Elevator Panel",
   "block.threshold.ceiling_vent": "Suspended Vent",
   "entity.threshold.watcher": "Distant Observer",
-  "entity.threshold.hound": "Hound"
+  "entity.threshold.hound": "Hound",
+  "item.threshold.almond_water": "Almond Water",
+  "item.threshold.flashlight": "Flashlight",
+  "item.threshold.battery": "Flashlight Battery",
+  "entity.threshold.partygoer": "Partygoer"
 }
