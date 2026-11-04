@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'feat/agriculture/**'
+      - 'feature/threshold-dimensions-level0-level1'
   pull_request:
     types: [opened, synchronize, reopened, edited]
 
