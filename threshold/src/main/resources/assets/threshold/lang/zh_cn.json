@@ -5,7 +5,7 @@
   "block.threshold.flickering_panel": "闪烁灯板",
   "block.threshold.transition_wall": "不稳定的墙壁",
   "block.threshold.level_1_to_2": "通往第二层的管道通道",
-  "block.threshold.level_2_to_1": "返回第一层的防火门",
+  "block.threshold.level_2_fire_exit": "未标记的防火门",
   "block.threshold.level_2_to_3": "通往第三层的维修门",
   "block.threshold.level_2_branch_door": "未标记的管道门",
   "block.threshold.level_3_to_2": "返回第二层的维修通道",
