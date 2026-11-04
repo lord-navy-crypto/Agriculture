@@ -8,6 +8,7 @@ import io.github.lordnavycrypto.threshold.worldgen.ThresholdRuntimeChecks;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityAttributes;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
+import io.github.lordnavycrypto.threshold.item.ThresholdItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -21,6 +22,7 @@ public final class ThresholdMod {
         ThresholdSounds.SOUNDS.register(modBus);
         ThresholdEnvironmentBlocks.BLOCKS.register(modBus);
         ThresholdEnvironmentBlocks.ITEMS.register(modBus);
+        ThresholdItems.ITEMS.register(modBus);
         ThresholdBlockEntities.TYPES.register(modBus);
         ThresholdFeatures.REGISTER.register(modBus);
         ThresholdEntities.ENTITY_TYPES.register(modBus);
