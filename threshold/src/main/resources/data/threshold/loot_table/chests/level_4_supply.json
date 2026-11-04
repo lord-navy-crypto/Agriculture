@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": { "min": 1, "max": 2 },
+      "entries": [
+        { "type": "minecraft:item", "name": "gugugaga:boiled_water_bottle", "weight": 5 },
+        { "type": "minecraft:item", "name": "gugugaga:filtered_water_bottle", "weight": 4 },
+        { "type": "minecraft:empty", "weight": 3 }
+      ]
+    },
+    {
+      "rolls": { "min": 1, "max": 2 },
+      "entries": [
+        { "type": "minecraft:item", "name": "gugugaga:grain_porridge", "weight": 2 },
+        { "type": "minecraft:item", "name": "gugugaga:vegetable_stew", "weight": 2 },
+        { "type": "minecraft:item", "name": "gugugaga:garden_salad", "weight": 1 },
+        { "type": "minecraft:empty", "weight": 3 }
+      ]
+    }
+  ]
+}
