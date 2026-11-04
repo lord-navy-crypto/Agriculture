@@ -294,6 +294,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             : Blocks.SEA_LANTERN.defaultBlockState();
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
+
+                if (roomX == 1 && roomZ == 0 && localX == 0 && localZ == 23) {
+                    set(world, pos, x, 64, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get().defaultBlockState());
+                    set(world, pos, x, 65, z, ThresholdEnvironmentBlocks.LEVEL_1_TO_3.get().defaultBlockState());
+                }
             }
         }
         buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
