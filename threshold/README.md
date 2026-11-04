@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.5.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.6.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -124,6 +124,25 @@ The packaged-JAR validator enforces this invariant.
 - Level 1 may contain hostile entities and real survival risk, but the starter shelter, exits, room geometry and Agriculture systems remain unchanged.
 - Both biomes retain empty generic spawners and spawn_costs maps. The entity director enforces the dimension rules explicitly.
 - The independent JAR packages both GeckoLib models, animations and textures. No extra model pack is required.
+
+
+## Alpha 6 — deterministic architectural complexes
+
+### Level 0 office structures
+- The original 32×32 room grid, entry office, carpet/floor elevations, doorway decisions and transition wall remain unchanged.
+- Distant rooms now select deterministic architectural archetypes from the world seed and room coordinates: open-plan cubicle clusters, staggered office partitions, repeated column bays, suspended service ducts and mirrored/echo office layouts.
+- Cubicle and partition geometry uses gaps and route reservations rather than sealing corridors. Every actual generated doorway reserves a continuous route back to the room hub.
+- The entry room is deliberately excluded from overlays so the first impression remains the familiar empty yellow office.
+
+### Level 1 industrial structures
+- The original 48×48 warehouse cells, starter shelter, planter footprint, supply caches, floor elevation and return passage remain unchanged.
+- Distant rooms can become pallet-rack aisles, copper service galleries, raised loading platforms, static machine bays, overhead gantries or mirrored rack layouts.
+- Rack spans, dock platforms and machine islands avoid the reserved circulation routes and the Agriculture resource footprints. Gantries remain above normal walking height; their supports also respect protected routes.
+- These are deterministic block assemblies, not ticking machinery or redstone contraptions. They add architectural scale without introducing extra server load from block entities.
+
+### Phantom-inspired spatial variation
+- Some rooms preserve their signature architecture while mirroring its internal arrangement or changing its material/lighting rhythm. This borrows the broad design idea of a Phantom variant, not another creator's exact room blueprint or assets.
+- Exit topology, entry rooms and inter-level transitions are not mirrored or relocated. The variation is architectural and perceptual, not a silent route rewrite.
 
 ## Horror identity preservation
 
