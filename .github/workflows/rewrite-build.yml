@@ -4,6 +4,7 @@ on:
     branches:
       - 'feat/agriculture/**'
   pull_request:
+    types: [opened, synchronize, reopened, edited]
 
 # Supersede stale asset-by-asset runs with the latest branch validation.
 # Push and pull-request events for the same head branch share one concurrency group.
