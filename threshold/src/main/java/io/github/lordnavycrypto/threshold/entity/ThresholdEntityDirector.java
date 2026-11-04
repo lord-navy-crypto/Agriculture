@@ -81,7 +81,7 @@ public final class ThresholdEntityDirector {
 
                 if (!isSafeStandingSpace(level, pos)) continue;
                 BlockHitResult sight = level.clip(new ClipContext(
-                        player.getEyePosition(), Vec3.atCenter(pos),
+                        player.getEyePosition(), new Vec3(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D),
                         ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
                 if (sight.getType() != HitResult.Type.MISS) continue;
 
