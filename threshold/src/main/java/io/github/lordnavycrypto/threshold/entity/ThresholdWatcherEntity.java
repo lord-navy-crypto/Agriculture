@@ -43,14 +43,14 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         setNoAi(true);
 
         Player nearest = level().getNearestPlayer(this, 32.0D);
-        if (nearest == null || tickCount > 110 || distanceToSqr(nearest) < 49.0D) {
+        if (nearest == null || tickCount > 180 || distanceToSqr(nearest) < 72.25D) {
             discard();
             return;
         }
 
         Vec3 toWatcher = position().subtract(nearest.getEyePosition()).normalize();
         boolean directlyNoticed = nearest.hasLineOfSight(this)
-                && nearest.getLookAngle().dot(toWatcher) > 0.985D;
+                && nearest.getLookAngle().dot(toWatcher) > 0.965D;
         if (directlyNoticed) discard();
     }
 
