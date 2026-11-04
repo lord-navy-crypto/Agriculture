@@ -4,5 +4,7 @@
   "block.threshold.warehouse_wall": "仓库混凝土",
   "block.threshold.flickering_panel": "闪烁灯板",
   "block.threshold.transition_wall": "不稳定的墙壁",
-  "block.threshold.ceiling_vent": "悬挂通风装置"
+  "block.threshold.ceiling_vent": "悬挂通风装置",
+  "entity.threshold.watcher": "远处的观察者",
+  "entity.threshold.hound": "猎犬"
 }
