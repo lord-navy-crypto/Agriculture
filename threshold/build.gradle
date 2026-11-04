@@ -98,6 +98,7 @@ tasks.register('validateThresholdResources') {
             'data/threshold/worldgen/biome/level_0.json',
             'data/threshold/worldgen/biome/level_1.json',
             'data/threshold/worldgen/biome/level_2.json',
+            'data/threshold/transit/route_catalog.json',
             'data/threshold/worldgen/biome/level_2.json',
             'data/threshold/neoforge/biome_modifier/room_layout.json',
             'data/threshold/worldgen/configured_feature/room_sequence.json',
