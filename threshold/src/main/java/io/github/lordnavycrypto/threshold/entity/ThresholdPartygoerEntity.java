@@ -29,7 +29,7 @@ public final class ThresholdPartygoerEntity extends PathfinderMob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return PathfinderMob.createMobAttributes()
+        return net.minecraft.world.entity.Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 24.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.19D)
                 .add(Attributes.FOLLOW_RANGE, 36.0D)
