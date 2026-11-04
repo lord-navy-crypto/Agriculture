@@ -4,8 +4,9 @@ import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -22,7 +23,6 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  * outside the entry shelter; no vanilla biome spawner tables are added.
  */
 public final class ThresholdEntityDirector {
-    private static final int LEVEL_0_ROOM_SIZE = 32;
     private static final int LEVEL_1_ROOM_SIZE = 48;
 
     private ThresholdEntityDirector() {}
@@ -32,11 +32,12 @@ public final class ThresholdEntityDirector {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
 
         if (level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            // No passive mobs, monsters, projectiles, or other modded creatures
-            // may turn Level 0 into a combat encounter. The watcher is the sole
-            // permitted Mob and has no AI, collision, or damage behavior.
-            if (event.getEntity() instanceof Mob
-                    && !(event.getEntity() instanceof ThresholdWatcherEntity)) {
+            // Level 0 admits no living creature or projectile except the
+            // harmless Observer. Players remain free to traverse the dimension.
+            if ((event.getEntity() instanceof LivingEntity living
+                    && !(living instanceof Player)
+                    && !(living instanceof ThresholdWatcherEntity))
+                    || event.getEntity() instanceof Projectile) {
                 event.setCanceled(true);
             }
             return;
