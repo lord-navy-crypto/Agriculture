@@ -1635,6 +1635,10 @@
     "minecraft:potion": {
       "water": 18,
       "sodium": 0
+    },
+    "threshold:almond_water": {
+      "water": 30,
+      "sodium": 0
     }
   }
 }
