@@ -26,6 +26,8 @@ NON_FOOD = {
     "gugugaga:barley_seeds",
     "gugugaga:sea_salt",
     "minecraft:glass_bottle",
+    "threshold:flashlight",
+    "threshold:battery",
 }
 
 def item_ids(table: dict) -> set[str]:
