@@ -12,6 +12,12 @@
       "tick_delay": 9000,
       "block_search_extent": 8,
       "offset": 2
+    },
+    "music": {
+      "sound": "threshold:level_1_ambient",
+      "min_delay": 30,
+      "max_delay": 60,
+      "replace_current_music": true
     }
   },
   "spawners": {},
