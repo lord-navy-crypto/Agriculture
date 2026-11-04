@@ -5,7 +5,8 @@
     "threshold:level_1",
     "threshold:level_2",
     "threshold:level_3",
-    "threshold:level_4"
+    "threshold:level_4",
+    "threshold:level_5"
   ],
   "features": "threshold:room_sequence",
   "step": "vegetal_decoration"
