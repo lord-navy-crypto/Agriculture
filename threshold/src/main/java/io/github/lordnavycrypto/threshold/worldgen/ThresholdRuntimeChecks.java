@@ -27,6 +27,14 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(0, 0);
         level1.getChunk(0, 0);
 
+        System.out.println("THRESHOLD_LEVEL0_SAMPLE floor=" +
+                level0.getBlockState(new BlockPos(4, 63, 4)) +
+                " carpet=" + level0.getBlockState(new BlockPos(4, 64, 4)) +
+                " biome=" + level0.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+        System.out.println("THRESHOLD_LEVEL1_SAMPLE floor=" +
+                level1.getBlockState(new BlockPos(4, 63, 4)) +
+                " biome=" + level1.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+
         boolean level0Built =
                 level0.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.GRAY_CONCRETE)
                 && level0.getBlockState(new BlockPos(4, 64, 4)).is(Blocks.YELLOW_CARPET);

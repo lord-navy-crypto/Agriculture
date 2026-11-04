@@ -40,6 +40,10 @@ def run():
                 if all(m in current for m in MARKERS) and READY in current:
                     print("THRESHOLD_REAL_SERVER_DIMENSIONS_AND_WORLDGEN_PASS",flush=True)
                     return 0
+                if "THRESHOLD_LEVEL0_WORLDGEN_FAIL" in current or "THRESHOLD_LEVEL1_WORLDGEN_FAIL" in current:
+                    print("FAIL: a required Threshold dimension did not generate", flush=True)
+                    print(current[-14000:], flush=True)
+                    return 1
                 if process.poll() is not None:
                     print("FAIL: Threshold server exited early",flush=True)
                     break
