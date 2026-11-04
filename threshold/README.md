@@ -131,11 +131,11 @@ The packaged-JAR validator enforces this invariant.
 - Level 0 remains the sparse 32×32 yellow-office maze: faded wallpaper, carpet, empty space, cave-like ambience, brief fluorescent flicker and occasional spatially isolating boundaries. It is not a farm or a reliable supply hub.
 - Level 1 remains the 48×48 industrial warehouse: concrete, partitions, storage bays, ventilation, vault-like ambience and longer industrial lighting faults. Its planter and starter cache stay localized.
 - Existing door decisions, the Level 0 → Level 1 transition and the Level 1 return passage are preserved. Survival balancing must not resize rooms, move routes or rewrite already generated spaces.
-- No mobs, combat, AI hunters or jump-scare events are added in this environment-first phase.
+- Level 0 has no hostile entities; only its harmless Observer is allowed. Level 1 now supports the controlled Hound predator. No combat behavior is added to Level 0.
 - Agriculture remains the only source of food, nutrition, hydration and sodium mechanics. Threshold only distributes real Agriculture content.
 
 The CI preservation gate runs the following command:
 
     python3 qa/validate_threshold_horror_preservation.py
 
-It protects room dimensions and vertical profiles, entry-room identity, transition positions, distinct lighting behavior, biome ambience, architecture markers and the current no-mob scope. Intentional design changes require an explicit update to the design contract and its tests.
+It protects room dimensions and vertical profiles, entry-room identity, transition positions, distinct lighting behavior, biome ambience, architecture markers and the Level 0 observer-only / Level 1 controlled-predator scope. Intentional design changes require an explicit update to the design contract and its tests.
