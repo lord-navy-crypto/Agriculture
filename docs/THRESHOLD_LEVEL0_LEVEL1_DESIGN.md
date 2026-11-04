@@ -52,7 +52,7 @@ Distinct features:
 
 ### Level 1: Hound predator
 - The Hound is a real Monster with a player target goal, pathfinding and melee behavior, plus explicit health, speed, attack damage and follow-range attributes.
-- The entity director spawns Hounds only in Level 1, prefers darker valid floor positions, and protects the first 48×48 entry shelter from encounters.
+- The entity director spawns Hounds only in Level 1, prefers darker valid floor positions, and protects the first 48×48 entry shelter from encounters. In this first pass, the Hound is the only permitted Level 1 Mob; vanilla animals/monsters and unrelated modded mobs are rejected.
 - A nearby active Hound suppresses additional spawns. The Hound cannot break blocks and uses a no-drop loot table.
 - Both biome JSON files retain empty generic spawner and spawn-cost maps. The entity director, rather than vanilla random spawning, owns the encounter rules.
 - The Hound is the first original Backrooms-inspired predator prototype. It is not intended to imply that different Fandom/Wikidot entity lists are one unified canon.
