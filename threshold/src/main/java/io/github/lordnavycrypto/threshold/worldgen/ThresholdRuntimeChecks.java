@@ -2,9 +2,11 @@ package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
+import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -66,11 +68,13 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level0Built
                 ? "THRESHOLD_LEVEL0_WORLDGEN_OK" : "THRESHOLD_LEVEL0_WORLDGEN_FAIL");
 
-        boolean level0NoHostileEntities = level0.getEntitiesOfClass(
-                Monster.class, new AABB(-32, 0, -32, 32, 128, 32)).isEmpty();
-        System.out.println(level0NoHostileEntities
-                ? "THRESHOLD_LEVEL0_NO_HOSTILE_ENTITIES_OK"
-                : "THRESHOLD_LEVEL0_NO_HOSTILE_ENTITIES_FAIL");
+        boolean level0NoOtherCreatures = level0.getEntitiesOfClass(
+                LivingEntity.class, new AABB(-32, 0, -32, 32, 128, 32)).stream()
+                .noneMatch(living -> !(living instanceof Player)
+                        && !(living instanceof ThresholdWatcherEntity));
+        System.out.println(level0NoOtherCreatures
+                ? "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_OK"
+                : "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_FAIL");
         // Scan every wall, divider, pillar and transition segment in the first 32x32 room.
         boolean wallFloorConnected = true;
         int wallCells = 0;
