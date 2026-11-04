@@ -72,6 +72,36 @@ public final class ThresholdEnvironmentBlocks {
                     ThresholdDimensions.LEVEL_4, 4.5, 64.0, 4.5,
                     "Level 4 — Abandoned Office", p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdRouteBlock> LEVEL_3_ELEVATOR =
+            BLOCKS.registerBlock("level_3_elevator", p -> new ThresholdRouteBlock(
+                    List.of(
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_4, 4.5, 64.0, 4.5,
+                                    "Level 4 — Abandoned Office", 9),
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_5, 4.5, 64.0, 4.5,
+                                    "Level 5 — Terror Hotel", 1)
+                    ), 0x5E1E7A70L, p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_4_TO_5 =
+            BLOCKS.registerBlock("level_4_to_5", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_5, 4.5, 64.0, 4.5,
+                    "Level 5 — Terror Hotel", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_DOOR));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_5_TO_3 =
+            BLOCKS.registerBlock("level_5_to_3", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
+                    "Level 3 — Electrical Station", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_DOOR));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_5_TO_4 =
+            BLOCKS.registerBlock("level_5_to_4", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_4, 4.5, 64.0, 4.5,
+                    "Level 4 — Abandoned Office", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_DOOR));
+    public static final DeferredBlock<ThresholdHotelElevatorBlock> LEVEL_5_ELEVATOR_PANEL =
+            BLOCKS.registerBlock("level_5_elevator_panel", ThresholdHotelElevatorBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+
     public static final DeferredBlock<ThresholdPassageBlock> LEVEL_4_TO_3 =
             BLOCKS.registerBlock("level_4_to_3", p -> new ThresholdPassageBlock(
                     ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
