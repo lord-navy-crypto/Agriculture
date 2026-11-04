@@ -23,6 +23,7 @@ def main() -> int:
     dimensions = (JAVA / "dimension/ThresholdDimensions.java").read_text(encoding="utf-8")
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
     passage = (JAVA / "block/ThresholdPassageBlock.java").read_text(encoding="utf-8")
+    seam = (JAVA / "block/ThresholdTransitionZoneBlock.java").read_text(encoding="utf-8")
     route_block = (JAVA / "block/ThresholdRouteBlock.java").read_text(encoding="utf-8")
     blocks = (JAVA / "block/ThresholdEnvironmentBlocks.java").read_text(encoding="utf-8")
     sounds_java = (JAVA / "ThresholdSounds.java").read_text(encoding="utf-8")
@@ -63,13 +64,15 @@ def main() -> int:
         require(layout, token, label)
 
     route_tokens = (
-        "LEVEL_1_TO_2", "LEVEL_2_TO_1", "LEVEL_2_TO_3",
+        "LEVEL_1_TO_2", "LEVEL_2_FIRE_EXIT", "LEVEL_2_TO_3",
         "LEVEL_2_BRANCH_DOOR", "LEVEL_3_TO_2", "LEVEL_3_TO_4",
         "LEVEL_4_TO_3",
     )
     for token in route_tokens:
         require(blocks, token, f"registered route {token}")
     require(passage, "teleportTo(destination", "fixed passage performs dimension travel")
+    require(seam, "entityInside", "Level 1 to Level 2 uses a seamless trigger zone")
+    require(seam, "ThresholdDimensions.LEVEL_2", "seam targets Level 2")
     require(route_block, "chooseRoute", "weighted route selection")
     require(route_block, "source.getSeed()", "route stable for a world seed")
     require(route_block, "pos.asLong()", "each doorway has its own route draw")
@@ -81,8 +84,8 @@ def main() -> int:
     assert "LEVEL_3_TO_1" not in blocks, "Level 3 return should follow the Level 2 service route"
 
     passage_models = {
-        "level_1_to_2": "minecraft:block/iron_block",
-        "level_2_to_1": "minecraft:block/redstone_lamp",
+        "level_1_to_2": "threshold:block/transition_zone",
+        "level_2_fire_exit": "minecraft:block/iron_door_bottom",
         "level_2_to_3": "minecraft:block/copper_block",
         "level_2_branch_door": "minecraft:block/iron_trapdoor",
         "level_3_to_2": "minecraft:block/deepslate_bricks",
