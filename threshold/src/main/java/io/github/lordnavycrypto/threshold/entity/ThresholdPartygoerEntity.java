@@ -9,6 +9,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -37,6 +38,7 @@ public final class ThresholdPartygoerEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 0.72D, true));
         goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.65D));
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 18.0F));
         goalSelector.addGoal(6, new RandomLookAroundGoal(this));
