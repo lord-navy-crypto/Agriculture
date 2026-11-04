@@ -55,6 +55,7 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(1, 0);
         level1.getChunk(1, 1);
         level1.getChunk(3, 1);
+        level1.getChunk(4, 1);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -90,10 +91,10 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level3Built ? "THRESHOLD_LEVEL3_WORLDGEN_OK" : "THRESHOLD_LEVEL3_WORLDGEN_FAIL");
         System.out.println(level4Built ? "THRESHOLD_LEVEL4_WORLDGEN_OK" : "THRESHOLD_LEVEL4_WORLDGEN_FAIL");
 
-        boolean route1To2 = level1.getBlockState(new BlockPos(48, 64, 23))
+        boolean route1To2 = level1.getBlockState(new BlockPos(64, 64, 23))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_1_TO_2.get());
-        boolean route2To1 = level2.getBlockState(new BlockPos(0, 64, 16))
-                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_2_TO_1.get());
+        boolean route2FireExit = level2.getBlockState(new BlockPos(0, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_2_FIRE_EXIT.get());
         boolean route2To3 = level2.getBlockState(new BlockPos(31, 64, 16))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_2_TO_3.get());
         boolean route2Branch = level2.getBlockState(new BlockPos(16, 64, 31))
@@ -105,7 +106,7 @@ public final class ThresholdRuntimeChecks {
         boolean route4To3 = level4.getBlockState(new BlockPos(0, 64, 16))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_4_TO_3.get());
         System.out.println(route1To2 ? "THRESHOLD_LEVEL1_TO_LEVEL2_PASSAGE_OK" : "THRESHOLD_LEVEL1_TO_LEVEL2_PASSAGE_FAIL");
-        System.out.println(route2To1 ? "THRESHOLD_LEVEL2_TO_LEVEL1_PASSAGE_OK" : "THRESHOLD_LEVEL2_TO_LEVEL1_PASSAGE_FAIL");
+        System.out.println(route2FireExit ? "THRESHOLD_LEVEL2_FIRE_EXIT_ROUTE_OK" : "THRESHOLD_LEVEL2_FIRE_EXIT_ROUTE_FAIL");
         System.out.println(route2To3 ? "THRESHOLD_LEVEL2_TO_LEVEL3_PASSAGE_OK" : "THRESHOLD_LEVEL2_TO_LEVEL3_PASSAGE_FAIL");
         System.out.println(route2Branch ? "THRESHOLD_LEVEL2_WEIGHTED_BRANCH_OK" : "THRESHOLD_LEVEL2_WEIGHTED_BRANCH_FAIL");
         System.out.println(route3To2 ? "THRESHOLD_LEVEL3_TO_LEVEL2_PASSAGE_OK" : "THRESHOLD_LEVEL3_TO_LEVEL2_PASSAGE_FAIL");
