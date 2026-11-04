@@ -43,8 +43,11 @@ REQUIRED = {
     "assets/threshold/textures/block/transition_wall.png",
     "assets/threshold/blockstates/transition_wall.json",
     "assets/threshold/blockstates/level_1_to_2.json",
+    "assets/threshold/models/block/transition_zone.json",
+    "io/github/lordnavycrypto/threshold/block/ThresholdTransitionZoneBlock.class",
     "assets/threshold/blockstates/level_2_to_1.json",
     "assets/threshold/blockstates/level_2_to_3.json",
+    "assets/threshold/blockstates/level_2_fire_exit.json",
     "assets/threshold/blockstates/level_2_branch_door.json",
     "assets/threshold/blockstates/level_3_to_2.json",
     "assets/threshold/blockstates/level_3_to_4.json",
@@ -191,7 +194,7 @@ def main():
                 "gugugaga:barley_vegetable_soup"} <= guaranteed
         assert modifier["step"]=="vegetal_decoration"
 
-        for passage in ("level_1_to_2", "level_2_to_1", "level_2_to_3",
+        for passage in ("level_2_fire_exit", "level_2_to_3",
                         "level_2_branch_door", "level_3_to_2",
                         "level_3_to_4", "level_4_to_3"):
             blockstate = read_json(z, f"assets/threshold/blockstates/{passage}.json")
