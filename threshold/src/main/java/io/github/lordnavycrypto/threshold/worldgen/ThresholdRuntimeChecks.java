@@ -28,8 +28,9 @@ public final class ThresholdRuntimeChecks {
         ServerLevel level2 = server.getLevel(ThresholdDimensions.LEVEL_2);
         ServerLevel level3 = server.getLevel(ThresholdDimensions.LEVEL_3);
         ServerLevel level4 = server.getLevel(ThresholdDimensions.LEVEL_4);
+        ServerLevel level5 = server.getLevel(ThresholdDimensions.LEVEL_5);
 
-        if (level0 == null || level1 == null || level2 == null || level3 == null || level4 == null) {
+        if (level0 == null || level1 == null || level2 == null || level3 == null || level4 == null || level5 == null) {
             System.err.println("THRESHOLD_DIMENSIONS_REGISTRY_FAIL");
             return;
         }
@@ -64,6 +65,13 @@ public final class ThresholdRuntimeChecks {
         level3.getChunk(1, 1);
         level4.getChunk(0, 0);
         level4.getChunk(0, 1);
+        level4.getChunk(2, 1);
+        level5.getChunk(0, 0);
+        level5.getChunk(1, 0);
+        level5.getChunk(0, 1);
+        level5.getChunk(1, 1);
+        level5.getChunk(3, 1);
+        level5.getChunk(1, 3);
 
         System.out.println("THRESHOLD_LEVEL0_SAMPLE floor=" +
                 level0.getBlockState(new BlockPos(4, 63, 4)) +
@@ -84,12 +92,23 @@ public final class ThresholdRuntimeChecks {
                 level4.getBlockState(new BlockPos(4, 63, 4)) +
                 " biome=" + level4.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
 
+        System.out.println("THRESHOLD_LEVEL5_SAMPLE floor=" +
+                level5.getBlockState(new BlockPos(4, 63, 4)) +
+                " biome=" + level5.getBiome(new BlockPos(4, 65, 4)).unwrapKey());
+
         boolean level2Built = level2.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.GRAY_CONCRETE);
         System.out.println(level2Built ? "THRESHOLD_LEVEL2_WORLDGEN_OK" : "THRESHOLD_LEVEL2_WORLDGEN_FAIL");
         boolean level3Built = level3.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.DEEPSLATE_TILES);
         boolean level4Built = level4.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.SMOOTH_STONE);
         System.out.println(level3Built ? "THRESHOLD_LEVEL3_WORLDGEN_OK" : "THRESHOLD_LEVEL3_WORLDGEN_FAIL");
         System.out.println(level4Built ? "THRESHOLD_LEVEL4_WORLDGEN_OK" : "THRESHOLD_LEVEL4_WORLDGEN_FAIL");
+
+        boolean level5MainHallBuilt = level5.getBlockState(new BlockPos(4, 63, 4)).is(Blocks.DARK_OAK_PLANKS);
+        boolean level5BeverlyBuilt = level5.getBlockState(new BlockPos(48, 63, 16)).is(Blocks.CALCITE);
+        boolean level5BoilerBuilt = level5.getBlockState(new BlockPos(16, 63, 48)).is(Blocks.POLISHED_BLACKSTONE);
+        System.out.println(level5MainHallBuilt ? "THRESHOLD_LEVEL5_MAIN_HALL_WORLDGEN_OK" : "THRESHOLD_LEVEL5_MAIN_HALL_WORLDGEN_FAIL");
+        System.out.println(level5BeverlyBuilt ? "THRESHOLD_LEVEL5_BEVERLY_ROOM_WORLDGEN_OK" : "THRESHOLD_LEVEL5_BEVERLY_ROOM_WORLDGEN_FAIL");
+        System.out.println(level5BoilerBuilt ? "THRESHOLD_LEVEL5_BOILER_ROOM_WORLDGEN_OK" : "THRESHOLD_LEVEL5_BOILER_ROOM_WORLDGEN_FAIL");
 
         boolean route1To2 = level1.getBlockState(new BlockPos(64, 64, 23))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_1_TO_2.get());
@@ -112,6 +131,24 @@ public final class ThresholdRuntimeChecks {
         System.out.println(route3To2 ? "THRESHOLD_LEVEL3_TO_LEVEL2_PASSAGE_OK" : "THRESHOLD_LEVEL3_TO_LEVEL2_PASSAGE_FAIL");
         System.out.println(route3To4 ? "THRESHOLD_LEVEL3_TO_LEVEL4_PASSAGE_OK" : "THRESHOLD_LEVEL3_TO_LEVEL4_PASSAGE_FAIL");
         System.out.println(route4To3 ? "THRESHOLD_LEVEL4_TO_LEVEL3_PASSAGE_OK" : "THRESHOLD_LEVEL4_TO_LEVEL3_PASSAGE_FAIL");
+
+        boolean route3Elevator = level3.getBlockState(new BlockPos(16, 64, 31))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_3_ELEVATOR.get());
+        boolean route4To5 = level4.getBlockState(new BlockPos(47, 68, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_4_TO_5.get());
+        boolean route5To3 = level5.getBlockState(new BlockPos(0, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_5_TO_3.get());
+        boolean route5To4 = level5.getBlockState(new BlockPos(31, 64, 16))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_5_TO_4.get());
+        boolean hotelElevatorPanel = level5.getBlockState(new BlockPos(28, 65, 8))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.LEVEL_5_ELEVATOR_PANEL.get())
+                && level5.getBlockState(new BlockPos(28, 65, 8))
+                    .getValue(io.github.lordnavycrypto.threshold.block.ThresholdHotelElevatorBlock.FLOOR) == 1;
+        System.out.println(route3Elevator ? "THRESHOLD_LEVEL3_ELEVATOR_TO_LEVEL5_ROUTE_OK" : "THRESHOLD_LEVEL3_ELEVATOR_TO_LEVEL5_ROUTE_FAIL");
+        System.out.println(route4To5 ? "THRESHOLD_LEVEL4_STAIRWAY_TO_LEVEL5_ROUTE_OK" : "THRESHOLD_LEVEL4_STAIRWAY_TO_LEVEL5_ROUTE_FAIL");
+        System.out.println(route5To3 ? "THRESHOLD_LEVEL5_TO_LEVEL3_ELEVATOR_RETURN_OK" : "THRESHOLD_LEVEL5_TO_LEVEL3_ELEVATOR_RETURN_FAIL");
+        System.out.println(route5To4 ? "THRESHOLD_LEVEL5_TO_LEVEL4_STAIRWAY_RETURN_OK" : "THRESHOLD_LEVEL5_TO_LEVEL4_STAIRWAY_RETURN_FAIL");
+        System.out.println(hotelElevatorPanel ? "THRESHOLD_LEVEL5_INTERNAL_ELEVATOR_PANEL_OK" : "THRESHOLD_LEVEL5_INTERNAL_ELEVATOR_PANEL_FAIL");
 
         boolean level0MusicReady = net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.containsKey(
                 ResourceLocation.fromNamespaceAndPath("threshold", "level_0_ambient"));
