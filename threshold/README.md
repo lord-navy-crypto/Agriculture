@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.8.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.9.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -57,6 +57,9 @@ Test commands (requires OP permissions):
 /threshold travel level_0
 /threshold travel level_1
 /threshold travel level_2
+/threshold travel level_3
+/threshold travel level_4
+/threshold travel level_5
 /threshold travel overworld
 /threshold whereami
 ```
