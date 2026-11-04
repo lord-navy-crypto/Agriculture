@@ -2,6 +2,8 @@ package io.github.lordnavycrypto.threshold.block;
 
 import io.github.lordnavycrypto.threshold.ThresholdMod;
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
+
+import java.util.List;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -25,16 +27,40 @@ public final class ThresholdEnvironmentBlocks {
             BLOCKS.registerBlock("transition_wall", ThresholdTransitionWallBlock::new,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_TERRACOTTA));
 
-    // Authored route doors: the existing Level 0 <-> Level 1 wall is unchanged.
-    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_1_TO_3 =
-            BLOCKS.registerBlock("level_1_to_3", p -> new ThresholdPassageBlock(
+    // Source-backed passages. Level 0 <-> Level 1 remains in its original transition wall.
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_1_TO_2 =
+            BLOCKS.registerBlock("level_1_to_2", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_2, 4.5, 64.0, 4.5,
+                    "Level 2 — Abandoned Utility Halls", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_2_TO_1 =
+            BLOCKS.registerBlock("level_2_to_1", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_1, 4.5, 64.0, 4.5,
+                    "Level 1 — The Habitable Zone", p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_2_TO_3 =
+            BLOCKS.registerBlock("level_2_to_3", p -> new ThresholdPassageBlock(
                     ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
                     "Level 3 — Electrical Station", p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
-    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_3_TO_1 =
-            BLOCKS.registerBlock("level_3_to_1", p -> new ThresholdPassageBlock(
-                    ThresholdDimensions.LEVEL_1, 8.5, 64.0, 8.5,
-                    "Level 1 — The Vulnerable Shelter", p),
+    public static final DeferredBlock<ThresholdRouteBlock> LEVEL_2_BRANCH_DOOR =
+            BLOCKS.registerBlock("level_2_branch_door", p -> new ThresholdRouteBlock(
+                    List.of(
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_1, 4.5, 64.0, 4.5,
+                                    "Level 1 — The Habitable Zone", 4),
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_3, 4.5, 64.0, 4.5,
+                                    "Level 3 — Electrical Station", 4),
+                            new ThresholdRouteBlock.RouteOption(
+                                    ThresholdDimensions.LEVEL_4, 4.5, 64.0, 4.5,
+                                    "Level 4 — Abandoned Office", 1)
+                    ), 0x2B4A6D31L, p),
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+    public static final DeferredBlock<ThresholdPassageBlock> LEVEL_3_TO_2 =
+            BLOCKS.registerBlock("level_3_to_2", p -> new ThresholdPassageBlock(
+                    ThresholdDimensions.LEVEL_2, 4.5, 64.0, 4.5,
+                    "Level 2 — Abandoned Utility Halls", p),
                     BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
     public static final DeferredBlock<ThresholdPassageBlock> LEVEL_3_TO_4 =
             BLOCKS.registerBlock("level_3_to_4", p -> new ThresholdPassageBlock(
