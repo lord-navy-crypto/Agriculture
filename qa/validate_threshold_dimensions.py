@@ -93,6 +93,10 @@ def main():
         assert sequence["config"]["features"]==["threshold:room_layout", "threshold:industrial_vent"]
         wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
         assert wrapper["feature"]=="threshold:room_sequence"
+        for child in ("room_layout", "industrial_vent"):
+            nested=read_json(z, f"data/threshold/worldgen/placed_feature/{child}.json")
+            assert all(p.get("type")!="minecraft:biome" for p in nested["placement"]), (
+                f"Nested Lithostitched feature {child} must not check its biome individually")
         assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
         clips=read_json(z, "assets/threshold/animations/ceiling_vent.animation.json")["animations"]
         assert "animation.ceiling_vent.spin" in clips

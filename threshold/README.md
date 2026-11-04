@@ -61,3 +61,13 @@ Test commands (requires OP permissions):
 - Level 1 has ceiling ventilation units distributed deterministically. The entrance room guarantees one at `(12, 73, 12)`.
 - No powered mechanics are simulated; GeckoLib animates the vent fan without changing block collision or other AI.
 - Additional tests verify the generated vent is backed by the expected GeckoLib BlockEntity.
+
+## Composite worldgen biome-check invariant
+
+The registered outer `threshold:room_sequence` feature is biome-filtered by NeoForge.
+Lithostitched executes its nested `threshold:room_layout` and `threshold:industrial_vent`
+placed features inside that biome-filtered context. **Neither nested feature may contain
+a `minecraft:biome` placement modifier**: such a modifier checks an unregistered
+nested feature against the outer biome generation step and crashes chunk generation
+with `IllegalStateException: Tried to biome check an unregistered feature`.
+The packaged-JAR validator enforces this invariant.
