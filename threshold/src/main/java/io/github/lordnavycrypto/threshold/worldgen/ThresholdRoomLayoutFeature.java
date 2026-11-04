@@ -1,6 +1,15 @@
 package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
+import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.CropBlock;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.WorldGenLevel;
@@ -17,6 +26,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  */
 public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfiguration> {
     private static final int FLOOR_Y = 63;
+    private static final ResourceKey<LootTable> SUPPLY_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_1_supply"));
 
     private static final int LEVEL_0_ROOM_SIZE = 32;
     private static final int LEVEL_0_CARPET_Y = 64;
@@ -76,7 +87,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 BlockState wall = switch (style) {
                     case 2 -> Blocks.GRAY_CONCRETE.defaultBlockState();
                     case 3 -> Blocks.RED_TERRACOTTA.defaultBlockState();
-                    default -> Blocks.YELLOW_TERRACOTTA.defaultBlockState();
+                    default -> ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState();
                 };
 
                 set(world, pos, x, FLOOR_Y, z, Blocks.GRAY_CONCRETE.defaultBlockState());
@@ -91,7 +102,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         set(world, pos, x, y, z, wall);
                     } else if (!boundary && hasLevel0Divider(seed, roomX, roomZ, localX, localZ)
                             && y <= 68) {
-                        set(world, pos, x, y, z, Blocks.YELLOW_TERRACOTTA.defaultBlockState());
+                        set(world, pos, x, y, z, ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
                     } else if (!boundary && style == 1 && isPillar(localX, localZ, LEVEL_0_ROOM_SIZE)) {
                         set(world, pos, x, y, z, Blocks.YELLOW_CONCRETE.defaultBlockState());
                     }
@@ -101,7 +112,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         ? Blocks.DEEPSLATE_TILES.defaultBlockState()
                         : Blocks.WHITE_CONCRETE.defaultBlockState();
                 if (style != 2 && isLevel0LightPosition(localX, localZ)) {
-                    ceiling = Blocks.SEA_LANTERN.defaultBlockState();
+                    ceiling = ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState();
                 }
                 set(world, pos, x, LEVEL_0_CEILING_Y, z, ceiling);
             }
@@ -130,7 +141,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         : Blocks.SMOOTH_STONE.defaultBlockState();
                 BlockState wall = style == 3
                         ? Blocks.GRAY_CONCRETE.defaultBlockState()
-                        : Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState();
+                        : ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState();
 
                 set(world, pos, x, FLOOR_Y, z, floor);
 
@@ -151,6 +162,32 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 if (style == 1 && isLevel1CratePosition(seed, roomX, roomZ, localX, localZ)) {
                     set(world, pos, x, LEVEL_1_WALL_BOTTOM, z, Blocks.BARREL.defaultBlockState());
+                    pos.set(x, LEVEL_1_WALL_BOTTOM, z);
+                    if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity container) {
+                        container.setLootTable(SUPPLY_LOOT);
+                        container.setLootTableSeed(mix(seed, x, z, 0xCACE1L));
+                        container.setChanged();
+                    }
+                }
+
+                // A small minority of storage rooms contain irrigated,
+                // harvestable Agriculture crops. The mod is a required
+                // runtime dependency; this lookup avoids compiling it into our JAR.
+                if (style == 1 && Math.floorMod(mix(seed, roomX, roomZ, 0xFA77L), 4) == 0
+                        && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18) {
+                    if (localX == 16 && localZ == 16) {
+                        set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
+                    } else {
+                        set(world, pos, x, FLOOR_Y, z, Blocks.FARMLAND.defaultBlockState()
+                                .setValue(net.minecraft.world.level.block.FarmBlock.MOISTURE, 7));
+                        String[] crops = {"barley_crop", "corn_crop", "soybean_crop", "tomato_crop"};
+                        String id = crops[Math.floorMod(roomX + roomZ, crops.length)];
+                        net.minecraft.world.level.block.Block cropBlock = BuiltInRegistries.BLOCK.get(
+                                ResourceLocation.fromNamespaceAndPath("gugugaga", id));
+                        if (cropBlock instanceof CropBlock crop) {
+                            set(world, pos, x, FLOOR_Y + 1, z, crop.getStateForAge(5));
+                        }
+                    }
                 }
 
                 BlockState ceiling = style == 3
