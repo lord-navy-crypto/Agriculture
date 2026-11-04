@@ -6,7 +6,7 @@
   "block.threshold.transition_wall": "Unstable Wall",
   "block.threshold.level_1_to_2": "Utility Hall Threshold",
   "block.threshold.level_2_fire_exit": "Unmarked Fire Exit",
-  "block.threshold.level_2_to_3": "Maintenance Door to Level 3",
+  "block.threshold.level_2_to_3": "Unmarked Door to Level 3",
   "block.threshold.level_2_branch_door": "Unmarked Utility Door",
   "block.threshold.level_3_to_2": "Return Maintenance Corridor",
   "block.threshold.level_3_to_1": "Return Lift to Level 1",
