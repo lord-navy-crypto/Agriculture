@@ -18,7 +18,7 @@ Distinct features:
 - Shared-edge doorway choices so neighboring rooms agree.
 - A paired anomalous wall passage connects Level 0 and Level 1 in both directions; the entry room on each level guarantees one. Interaction requires an empty hand. Future: Peripheral Shift and ambient electric buzzing.
 
-**No ordinary combat mobs** added at this stage.
+**No hostile or attacking mobs** are allowed in Level 0. The only permitted living presence is the non-combat Observer: a distant silhouette with no AI, damage, collision or attack behavior.
 
 ## L1 — The Vulnerable Shelter
 **Fear mechanism:** relief and vulnerability; supplies exist, but are sparse and unevenly distributed.
@@ -30,7 +30,7 @@ Distinct features:
 - The entry room guarantees one starter cache; additional barrels use weighted real Agriculture food loot.
 - The entry room guarantees a 5x5 watered planter area with a five-lamp array. Runtime smoke verifies the actual `gugugaga:barley_crop` block and lamp placement, so crops can grow despite the no-skylight dimension. Additional rooms may contain rare planters.
 - Low ambient light and intermittent industrial vault crackles contrast with Level 0's cave-like ambience. Stable pools of light make the entry shelter feel temporarily safe.
-- No ordinary enemy AI. Later: stable corridors, resource camps, erratic lights and route planning.
+- Level 1 now permits a controlled first predator: the Hound, with pathfinding and melee AI, spawned only in darker rooms after the player leaves the entry shelter. Later: additional entity archetypes after separate balance and visual tests.
 
 ## Generation invariants
 - One real Minecraft dimension per level.
@@ -40,6 +40,29 @@ Distinct features:
 - Feature placement is deterministic from world seed and room coordinate.
 - Block writes constrained to the current generation chunk.
 - Never rewrite already generated rooms upon reload.
+
+
+## Alpha 5 — dimension-specific entity ecology
+
+### Level 0: Observer only
+- The Observer is a short-lived, non-combat silhouette spawned at a visible distance in Level 0.
+- It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
+- It disappears when approached, directly noticed, or after a short timeout. It never chases, attacks, damages or kills the player.
+- The entity-join guard rejects all other Mob instances in Level 0, including vanilla and third-party creatures. This keeps Level 0 an isolation/observation experience rather than a combat map.
+
+### Level 1: Hound predator
+- The Hound is a real Monster with a player target goal, pathfinding and melee behavior, plus explicit health, speed, attack damage and follow-range attributes.
+- The entity director spawns Hounds only in Level 1, prefers darker valid floor positions, and protects the first 48×48 entry shelter from encounters.
+- A nearby active Hound suppresses additional spawns. The Hound cannot break blocks and uses a no-drop loot table.
+- Both biome JSON files retain empty generic spawner and spawn-cost maps. The entity director, rather than vanilla random spawning, owns the encounter rules.
+- The Hound is the first original Backrooms-inspired predator prototype. It is not intended to imply that different Fandom/Wikidot entity lists are one unified canon.
+
+### Runtime acceptance
+- Dedicated-server startup confirms both custom entity types are registered.
+- The loaded Level 0 entry area contains no hostile Monster entities.
+- The QA source gate verifies the Observer's non-combat invariants and the Hound's Level 1-only spawn guard.
+- Packaged-JAR validation verifies both GeckoLib models, animations, textures and the Hound's no-drop loot table.
+- Manual client testing must confirm the Observer reads as a distant silhouette, vanishes on notice, and never interferes with navigation; the Hound must remain readable, avoid the starter shelter and path through existing doorways without modifying blocks.
 
 ## Acceptance gates
 - Java compile and asset validation.
@@ -87,12 +110,12 @@ Distinct features:
 - Do not resize rooms, move established corridors or transitions, change dimension identifiers, or regenerate already explored rooms as part of a survival-balance pass.
 - Do not homogenize the two light profiles, ambient sound beds, palettes, architecture or resource distribution.
 - Do not fill empty areas with decorative clutter merely to make the spaces feel more alive. Empty space is part of Level 0's horror language.
-- Do not add mobs, combat, AI hunters or jump-scare events as a shortcut to horror in this phase.
+- Never add hostile or attacking entities to Level 0; its Observer remains purely atmospheric. Level 1 may contain controlled predators, but they must not replace its industrial atmosphere or alter the validated room graph.
 - Agriculture remains the sole owner of food, nutrition, hydration and sodium mechanics. Threshold may place and distribute real Agriculture content, but must not create parallel needs systems.
 - New atmosphere should be additive and restrained: it may deepen the existing theme, but must not obscure routes, change collision, or compromise the validated structure.
 
 ### Automated preservation gate
 
-The qa/validate_threshold_horror_preservation.py script protects the room dimensions and vertical profiles, entry-room identities, transition locations, light-failure contrast, biome ambience, palette/architecture markers and no-mob scope. It runs in CI alongside the existing room-graph, Agriculture integration, packaged-JAR and dedicated-server checks.
+The qa/validate_threshold_horror_preservation.py script protects the room dimensions and vertical profiles, entry-room identities, transition locations, light-failure contrast, biome ambience, palette/architecture markers and Level 0 no-hostile-entity / Level 1 controlled-predator scope. It runs in CI alongside the existing room-graph, Agriculture integration, packaged-JAR and dedicated-server checks.
 
 A deliberate change to one of these invariants requires an explicit design decision and a corresponding update to this contract and its tests. It must not happen accidentally as a side effect of adding survival features.
