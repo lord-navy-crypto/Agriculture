@@ -26,6 +26,7 @@ Distinct features:
 Distinct features:
 - 48x48 concrete warehouse cells, high ceilings, storage bays and short dividers.
 - Some rooms are intentionally dim, other rooms provide light and a small supply cache.
+- Each Level 1 room has at least one deterministic doorway; the maze can feel confining without generating sealed rooms.
 - The entry room guarantees one starter cache; additional barrels use weighted real Agriculture food loot.
 - The entry room guarantees a 5x5 watered planter area with a five-lamp array. Runtime smoke verifies the actual `gugugaga:barley_crop` block and lamp placement, so crops can grow despite the no-skylight dimension. Additional rooms may contain rare planters.
 - Low ambient light and a subdued industrial vault hum contrast with Level 0's cave-like ambience. Stable pools of light make the entry shelter feel temporarily safe.

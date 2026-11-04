@@ -95,7 +95,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_0_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ);
+                        seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ, false);
 
                 for (int y = LEVEL_0_WALL_BOTTOM; y <= LEVEL_0_WALL_TOP; y++) {
                     if (boundary && isTransitionWall(seed, roomX, roomZ, localX, localZ)
@@ -151,7 +151,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_1_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ);
+                        seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
                 boolean returnPassage = boundary
                         && isLevel1ReturnWall(seed, roomX, roomZ, localX, localZ);
 
@@ -251,38 +251,51 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static boolean isDoorway(
             long seed, int roomSize, int radius,
-            int roomX, int roomZ, int localX, int localZ) {
+            int roomX, int roomZ, int localX, int localZ, boolean guaranteeRoomExit) {
         if (localX == 0) {
-            return doorwayAlongZ(seed, roomSize, radius, roomX, roomZ, localZ);
+            return doorwayAlongZ(seed, roomSize, radius, roomX, roomZ, localZ, guaranteeRoomExit);
         }
         if (localX == roomSize - 1) {
-            return doorwayAlongZ(seed, roomSize, radius, roomX + 1, roomZ, localZ);
+            return doorwayAlongZ(seed, roomSize, radius, roomX + 1, roomZ, localZ, guaranteeRoomExit);
         }
         if (localZ == 0) {
-            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ, localX);
+            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ, localX, guaranteeRoomExit);
         }
         if (localZ == roomSize - 1) {
-            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ + 1, localX);
+            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ + 1, localX, guaranteeRoomExit);
         }
         return false;
     }
 
     private static boolean doorwayAlongZ(
-            long seed, int roomSize, int radius, int boundaryX, int roomZ, int along) {
+            long seed, int roomSize, int radius,
+            int boundaryX, int roomZ, int along, boolean guaranteeRoomExit) {
         long edge = mix(seed, boundaryX, roomZ, 0xE451L);
-        if (Math.floorMod(edge, 6) == 0) return false;
+        boolean primaryConnector = guaranteeRoomExit
+                && (isPrimaryExit(seed, boundaryX - 1, roomZ, 1)
+                || isPrimaryExit(seed, boundaryX, roomZ, 3));
+        if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
         return Math.abs(along - center) <= radius;
     }
 
     private static boolean doorwayAlongX(
-            long seed, int roomSize, int radius, int roomX, int boundaryZ, int along) {
+            long seed, int roomSize, int radius,
+            int roomX, int boundaryZ, int along, boolean guaranteeRoomExit) {
         long edge = mix(seed, roomX, boundaryZ, 0xE452L);
-        if (Math.floorMod(edge, 6) == 0) return false;
+        boolean primaryConnector = guaranteeRoomExit
+                && (isPrimaryExit(seed, roomX, boundaryZ - 1, 2)
+                || isPrimaryExit(seed, roomX, boundaryZ, 0));
+        if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
         return Math.abs(along - center) <= radius;
+    }
+
+    /** Each Level 1 room chooses one deterministic exit, preventing sealed cells. */
+    private static boolean isPrimaryExit(long seed, int roomX, int roomZ, int direction) {
+        return Math.floorMod(mix(seed, roomX, roomZ, 0xE453L), 4) == direction;
     }
 
     private static boolean hasLevel0Divider(
