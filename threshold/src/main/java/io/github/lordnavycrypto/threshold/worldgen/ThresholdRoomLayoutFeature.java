@@ -98,7 +98,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ);
 
                 for (int y = LEVEL_0_WALL_BOTTOM; y <= LEVEL_0_WALL_TOP; y++) {
-                    if (boundary && !(y <= 69 && doorway)) {
+                    if (boundary && isTransitionWall(seed, roomX, roomZ, localX, localZ)
+                            && y <= 68) {
+                        set(world, pos, x, y, z,
+                                ThresholdEnvironmentBlocks.TRANSITION_WALL.get().defaultBlockState());
+                    } else if (boundary && !(y <= 69 && doorway)) {
                         set(world, pos, x, y, z, wall);
                     } else if (!boundary && hasLevel0Divider(seed, roomX, roomZ, localX, localZ)
                             && y <= 68) {
@@ -199,6 +203,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
             }
         }
+    }
+
+    /** The first room always has an accessible wall; rare later ones vary by world seed. */
+    private static boolean isTransitionWall(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        return localX == 0 && (localZ == 15 || localZ == 16)
+                && ((roomX == 0 && roomZ == 0)
+                || Math.floorMod(mix(seed, roomX, roomZ, 0xE181L), 73) == 0);
     }
 
     private static int level0Style(long seed, int roomX, int roomZ) {

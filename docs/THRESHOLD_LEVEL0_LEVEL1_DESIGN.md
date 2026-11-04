@@ -14,7 +14,7 @@ Distinct features:
 - Infrequent column/dim/red architectural variants.
 - Fluorescent panels flicker only in Level 0 via local random ticks, with no player health effect.
 - Shared-edge doorway choices so neighboring rooms agree.
-- Future: Peripheral Shift, ambient electric buzzing, and the rare transition to Level 1.
+- A rare anomalous wall (guaranteed in the first room) opens the physical Level 1 passage. Future: Peripheral Shift and ambient electric buzzing.
 
 **No ordinary combat mobs** added at this stage.
 
@@ -40,6 +40,6 @@ Distinct features:
 ## Acceptance gates
 - Java compile and asset validation.
 - Separate `threshold` JAR, loading alongside required Agriculture.
-- Dedicated server registers two dimensions and confirms Level 0 carpet and Level 1 stone floor actually generated.
+- Dedicated server registers two dimensions and confirms Level 0 carpet, Level 1 stone floor and the first transition wall actually generated.
 - No console worldgen errors, missing models or missing loot IDs.
 - Manual client test for room visibility, lighting and resource availability before marking release ready.

@@ -20,6 +20,10 @@ public final class ThresholdEnvironmentBlocks {
             "stained_wallpaper", BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_CONCRETE));
     public static final DeferredBlock<Block> WAREHOUSE_WALL = BLOCKS.registerSimpleBlock(
             "warehouse_wall", BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_GRAY_CONCRETE));
+    public static final DeferredBlock<ThresholdTransitionWallBlock> TRANSITION_WALL =
+            BLOCKS.registerBlock("transition_wall", ThresholdTransitionWallBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_TERRACOTTA));
+
     public static final DeferredBlock<FlickeringPanelBlock> FLICKERING_PANEL =
             BLOCKS.registerBlock("flickering_panel", FlickeringPanelBlock::new,
                     BlockBehaviour.Properties.ofFullCopy(Blocks.SEA_LANTERN)
@@ -31,6 +35,7 @@ public final class ThresholdEnvironmentBlocks {
         ITEMS.registerSimpleBlockItem(STAINED_WALLPAPER);
         ITEMS.registerSimpleBlockItem(WAREHOUSE_WALL);
         ITEMS.registerSimpleBlockItem(FLICKERING_PANEL);
+        ITEMS.registerSimpleBlockItem(TRANSITION_WALL);
     }
 
     private ThresholdEnvironmentBlocks() {}

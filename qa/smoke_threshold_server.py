@@ -9,7 +9,8 @@ LOG=ROOT/"build/threshold-server-boot.log"
 LIMIT=int(os.environ.get("THRESHOLD_SERVER_BOOT_TIMEOUT","420"))
 READY="Done ("
 MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY_OK",
-         "THRESHOLD_LEVEL0_WORLDGEN_OK","THRESHOLD_LEVEL1_WORLDGEN_OK")
+         "THRESHOLD_LEVEL0_WORLDGEN_OK","THRESHOLD_LEVEL1_WORLDGEN_OK",
+         "THRESHOLD_LEVEL0_TRANSITION_OK")
 
 def run():
     # Dev launches use only the Threshold source set; copy the real Agriculture
@@ -40,7 +41,9 @@ def run():
                 if all(m in current for m in MARKERS) and READY in current:
                     print("THRESHOLD_REAL_SERVER_DIMENSIONS_AND_WORLDGEN_PASS",flush=True)
                     return 0
-                if "THRESHOLD_LEVEL0_WORLDGEN_FAIL" in current or "THRESHOLD_LEVEL1_WORLDGEN_FAIL" in current:
+                if any(marker in current for marker in (
+                    "THRESHOLD_LEVEL0_WORLDGEN_FAIL", "THRESHOLD_LEVEL1_WORLDGEN_FAIL",
+                    "THRESHOLD_LEVEL0_TRANSITION_FAIL")):
                     print("FAIL: a required Threshold dimension did not generate", flush=True)
                     print(current[-14000:], flush=True)
                     return 1

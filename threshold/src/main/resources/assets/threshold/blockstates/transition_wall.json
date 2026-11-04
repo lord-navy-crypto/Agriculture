@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "threshold:block/transition_wall"
+    }
+  }
+}

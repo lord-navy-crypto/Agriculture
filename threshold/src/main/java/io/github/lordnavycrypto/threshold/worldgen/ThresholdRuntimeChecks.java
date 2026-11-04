@@ -45,5 +45,9 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL0_WORLDGEN_OK" : "THRESHOLD_LEVEL0_WORLDGEN_FAIL");
         System.out.println(level1Built
                 ? "THRESHOLD_LEVEL1_WORLDGEN_OK" : "THRESHOLD_LEVEL1_WORLDGEN_FAIL");
+        boolean wallBuilt = level0.getBlockState(new BlockPos(0, 66, 15))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
+        System.out.println(wallBuilt
+                ? "THRESHOLD_LEVEL0_TRANSITION_OK" : "THRESHOLD_LEVEL0_TRANSITION_FAIL");
     }
 }

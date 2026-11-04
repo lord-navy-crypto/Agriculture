@@ -24,10 +24,10 @@
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
 ## Current scope / limitations
-- Development commands are operator-only; physical exit transitions are not yet implemented.
+- A rare Unstable Wall in Level 0 teleports players to Level 1 on right-click; the first Level 0 room always has one. Returning remains a developer command.
 - Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
 - No new mobs, no AI hunters, no sound jump scares or client-only shaders.
-- Five original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
+- Six original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
 - World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
 ## Test
