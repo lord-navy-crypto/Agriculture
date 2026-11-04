@@ -149,7 +149,7 @@ def main() -> int:
     require(r"Attributes\.ATTACK_DAMAGE", hound, "Hound has explicit attack tuning")
     require(r"Attributes\.FOLLOW_RANGE", hound, "Hound has bounded follow range")
 
-    # Dimension guardrails: Level 0 admits only the harmless watcher; Hounds
+    # Dimension guardrails: Level 0 admits only the harmless watcher and players; Hounds
     # are rejected outside Level 1 and are not spawned in the entry shelter.
     require(r"event\.getEntity\(\)\s+instanceof\s+LivingEntity\s+living", director,
             "Level 0 rejects every non-player living creature")
