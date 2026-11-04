@@ -18,5 +18,9 @@
   "block.threshold.level_5_elevator_panel": "酒店电梯控制面板",
   "block.threshold.ceiling_vent": "悬挂通风装置",
   "entity.threshold.watcher": "远处的观察者",
-  "entity.threshold.hound": "猎犬"
+  "entity.threshold.hound": "猎犬",
+  "item.threshold.almond_water": "杏仁水",
+  "item.threshold.flashlight": "手电筒",
+  "item.threshold.battery": "手电筒电池",
+  "entity.threshold.partygoer": "派对客"
 }
