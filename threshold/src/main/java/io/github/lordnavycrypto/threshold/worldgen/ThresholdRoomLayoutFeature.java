@@ -28,6 +28,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static final int FLOOR_Y = 63;
     private static final ResourceKey<LootTable> SUPPLY_LOOT = ResourceKey.create(
             Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_1_supply"));
+    private static final ResourceKey<LootTable> STARTER_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_1_starter"));
+    private static final ResourceKey<LootTable> MAINTENANCE_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_1_maintenance"));
+    private static final ResourceKey<LootTable> FORGOTTEN_LOOT = ResourceKey.create(
+            Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("threshold", "chests/level_0_forgotten"));
 
     private static final int LEVEL_0_ROOM_SIZE = 32;
     private static final int LEVEL_0_CARPET_Y = 64;
@@ -84,6 +90,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     case 3 -> Blocks.RED_CARPET.defaultBlockState();
                     default -> Blocks.YELLOW_CARPET.defaultBlockState();
                 };
+                // Rare damp-looking carpet patches amplify emptiness without
+                // spawning entities or changing walking/collision rules.
+                if (style == 0 && (roomX != 0 || roomZ != 0)
+                        && Math.floorMod(mix(seed, x, z, 0xDAA0L), 43) == 0) {
+                    carpet = Blocks.BROWN_CARPET.defaultBlockState();
+                }
                 BlockState wall = switch (style) {
                     case 2 -> Blocks.GRAY_CONCRETE.defaultBlockState();
                     case 3 -> Blocks.RED_TERRACOTTA.defaultBlockState();
@@ -135,6 +147,16 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     ceiling = ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState();
                 }
                 set(world, pos, x, LEVEL_0_CEILING_Y, z, ceiling);
+
+                // Exceptionally rare forgotten provisions. Level 0 remains
+                // fundamentally isolated; this isn't a reliable food source.
+                if ((style == 2 || style == 3) && (roomX != 0 || roomZ != 0)
+                        && localX == 6 && localZ == 6
+                        && Math.floorMod(mix(seed, roomX, roomZ, 0xCAFE0L), 11) == 0) {
+                    // Replace the carpet under the barrel; no floating prop.
+                    placeLootBarrel(world, pos, x, LEVEL_0_CARPET_Y, z,
+                            FORGOTTEN_LOOT, mix(seed, x, z, 0xF00DL));
+                }
             }
         }
     }
@@ -159,6 +181,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 BlockState floor = style == 3
                         ? Blocks.GRAY_CONCRETE.defaultBlockState()
                         : Blocks.SMOOTH_STONE.defaultBlockState();
+                // Low-cost worn patches on distant warehouse floors.
+                if ((roomX != 0 || roomZ != 0) && style != 3
+                        && Math.floorMod(mix(seed, x, z, 0xF100L), 37) == 0) {
+                    floor = Blocks.ANDESITE.defaultBlockState();
+                }
                 BlockState wall = style == 3
                         ? Blocks.GRAY_CONCRETE.defaultBlockState()
                         : ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState();
@@ -182,17 +209,24 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         set(world, pos, x, y, z, Blocks.GRAY_CONCRETE.defaultBlockState());
                     } else if (!boundary && style == 0 && isLevel1Pillar(localX, localZ)) {
                         set(world, pos, x, y, z, Blocks.POLISHED_ANDESITE.defaultBlockState());
+                    } else if (!boundary && y == 73 && style == 2
+                            && (localX == 12 || localX == 36)
+                            && (localZ == 8 || localZ == 24 || localZ == 40)) {
+                        // Overhead maintenance fittings: overhead only, so
+                        // corridors stay walkable and biome-safe.
+                        set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
                     }
                 }
 
                 if (style == 1 && isLevel1CratePosition(seed, roomX, roomZ, localX, localZ)) {
-                    set(world, pos, x, LEVEL_1_WALL_BOTTOM, z, Blocks.BARREL.defaultBlockState());
-                    pos.set(x, LEVEL_1_WALL_BOTTOM, z);
-                    if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity container) {
-                        container.setLootTable(SUPPLY_LOOT);
-                        container.setLootTableSeed(mix(seed, x, z, 0xCACE1L));
-                        container.setChanged();
-                    }
+                    // Starting cache always includes a safe drink and varied
+                    // Agriculture nutrition. Other caches keep uncertainty.
+                    ResourceKey<LootTable> table = roomX == 0 && roomZ == 0
+                            && localX == 8 && localZ == 8
+                            ? STARTER_LOOT
+                            : (localX == 40 || localZ == 40 ? MAINTENANCE_LOOT : SUPPLY_LOOT);
+                    placeLootBarrel(world, pos, x, LEVEL_1_WALL_BOTTOM, z,
+                            table, mix(seed, x, z, 0xCACE1L));
                 }
 
                 // A small minority of storage rooms contain irrigated,
@@ -354,7 +388,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean isLevel1LightPosition(int localX, int localZ) {
-        return (localX == 8 || localX == 24 || localX == 40)
+        // Long suspended light panels create stable islands of safety.
+        return (Math.abs(localX - 8) <= 1 || Math.abs(localX - 24) <= 1
+                || Math.abs(localX - 40) <= 1)
                 && (localZ == 8 || localZ == 24 || localZ == 40);
     }
 
@@ -389,6 +425,18 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         value ^= value >>> 27;
         value *= 0x94D049BB133111EBL;
         return value ^ (value >>> 31);
+    }
+
+    private static void placeLootBarrel(
+            WorldGenLevel world, BlockPos.MutableBlockPos pos,
+            int x, int y, int z, ResourceKey<LootTable> table, long lootSeed) {
+        set(world, pos, x, y, z, Blocks.BARREL.defaultBlockState());
+        pos.set(x, y, z);
+        if (world.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity container) {
+            container.setLootTable(table);
+            container.setLootTableSeed(lootSeed);
+            container.setChanged();
+        }
     }
 
     private static void set(

@@ -47,3 +47,11 @@ Distinct features:
 - Dedicated server registers two dimensions and confirms Level 0 carpet, Level 1 floor, both transition walls, the starter cache and a lit planter actually generated.
 - No console worldgen errors, missing models or missing loot IDs.
 - Manual client test for room visibility, lighting and resource availability before marking release ready.
+
+## Floor contact and survival regression (Alpha 3)
+- All Level 0 structural blocks use full block footing at Y=64; carpet is only used on traversable floor and door openings. This is a geometry correction, not a "carpet under walls" texture workaround.
+- `/threshold repair_floor` repairs only legacy wall columns over old carpet in a bounded five-by-five loaded chunk area in Level 0; it is never run automatically.
+- Level 0 isolated rooms may rarely contain forgotten supplies, but no reliable food source.
+- The Level 1 starting cache is deterministic for water and diverse Agriculture foods; later supply and maintenance caches have different water safety and nutrition trade-offs.
+- No extra needs system is created: all foods and water are actual Agriculture items, so their registered profiles continue to determine water, sodium and other nutrients.
+- Level 1 gains subtle stone floor wear, suspended iron fittings and longer ceiling lamps. No monsters or AI.

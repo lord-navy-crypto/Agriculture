@@ -71,3 +71,12 @@ a `minecraft:biome` placement modifier**: such a modifier checks an unregistered
 nested feature against the outer biome generation step and crashes chunk generation
 with `IllegalStateException: Tried to biome check an unregistered feature`.
 The packaged-JAR validator enforces this invariant.
+
+## Survival Horror integration (Agriculture required)
+
+- No duplicate nutrition bar or thirst/sodium mechanics: Agriculture owns the existing nutrition, hydration and salt physiology.
+- The Level 1 start cache **guarantees** a boiled drinking-water bottle and several kinds of real Agriculture foods/seeds, so players can begin exploring without immediate scarcity softlocks.
+- Other Level 1 storerooms use distinct pantry and maintenance loot tables with varied cereal, vegetable, legume, raw/boiled/filtered water, and occasional sea salt. Safe drinking water is valuable and not guaranteed in each ordinary cache.
+- Level 0 stays isolated: some distant dark/red offices contain a very rare forgotten cache, never in the entry room.
+- Floor wear, low-light industrial fittings, and extended overhead light panels reinforce the two contrasting environments without entities or surprise attacks.
+- New room generation applies only to newly explored chunks. For existing Level 0 test saves, OPs can repair the old carpet seam around themselves with `/threshold repair_floor`. This only touches loaded nearby chunks, never creates new ones.

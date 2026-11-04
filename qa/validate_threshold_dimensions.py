@@ -15,6 +15,9 @@ REQUIRED = {
     "data/threshold/worldgen/biome/level_0.json",
     "data/threshold/worldgen/biome/level_1.json",
     "data/threshold/loot_table/chests/level_1_supply.json",
+    "data/threshold/loot_table/chests/level_1_starter.json",
+    "data/threshold/loot_table/chests/level_1_maintenance.json",
+    "data/threshold/loot_table/chests/level_0_forgotten.json",
     "assets/threshold/blockstates/flickering_panel.json",
     "assets/threshold/models/block/faded_wallpaper.json",
     "assets/threshold/models/block/warehouse_wall.json",
@@ -102,6 +105,31 @@ def main():
         assert "animation.ceiling_vent.spin" in clips
         bones=read_json(z, "assets/threshold/geo/ceiling_vent.geo.json")["minecraft:geometry"][0]["bones"]
         assert "fan" in {bone["name"] for bone in bones}
+        # All survival loot must reference real Agriculture items, not
+        # decorative placeholder names or a duplicated nutrition system.
+        allowed_agriculture = {
+            "barley", "barley_seeds", "corn", "rice", "tomato",
+            "soybean", "pea", "spinach", "cucumber", "sea_salt",
+            "empty_water_flask", "raw_water_bottle",
+            "boiled_water_bottle", "filtered_water_bottle",
+        }
+        for filename in ("level_1_supply", "level_1_starter",
+                         "level_1_maintenance", "level_0_forgotten"):
+            loot = read_json(z, f"data/threshold/loot_table/chests/{filename}.json")
+            assert loot["type"] == "minecraft:chest"
+            for pool in loot["pools"]:
+                for entry in pool["entries"]:
+                    if entry["type"] == "minecraft:empty":
+                        continue
+                    name = entry["name"]
+                    if name.startswith("gugugaga:"):
+                        assert name.removeprefix("gugugaga:") in allowed_agriculture, (
+                            f"Unknown Agriculture loot item {name}")
+        starter = read_json(z, "data/threshold/loot_table/chests/level_1_starter.json")
+        guaranteed = {e["name"] for pool in starter["pools"]
+                      for e in pool["entries"] if e["type"] == "minecraft:item"}
+        assert {"gugugaga:boiled_water_bottle", "gugugaga:barley",
+                "gugugaga:soybean", "gugugaga:tomato"} <= guaranteed
         assert modifier["step"]=="vegetal_decoration"
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0

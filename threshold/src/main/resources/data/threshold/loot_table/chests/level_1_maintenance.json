@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:raw_water_bottle",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:boiled_water_bottle",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:filtered_water_bottle",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:empty_water_flask",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:glass_bottle",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:barley_seeds",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:sea_salt",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "gugugaga:soybean",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 4
+        }
+      ]
+    }
+  ]
+}
