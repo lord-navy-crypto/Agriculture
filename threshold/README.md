@@ -10,8 +10,8 @@
 
 ## Libraries (Phase II)
 
-- GeckoLib 4.9.3: used for animated industrial environment blocks; client rendering will be implemented in the next change.
-- Lithostitched 1.7.11: `threshold:room_sequence` now uses the library's `lithostitched:composite` feature for ordered room generation, preserving chunk boundaries.
+- GeckoLib 4.9.3: `threshold:ceiling_vent` is a real BlockEntity animated via GeckoLib 4, with a rotating fan model and a client-side renderer. It is presentation-only.
+- Lithostitched 1.7.11: `threshold:room_sequence` is a `lithostitched:composite` that places base room geometry first, then a second, chunk-safe `threshold:industrial_vent` feature.
 - Gugu-Gaga Agriculture remains a required survival mod.
 - No copy of any library is bundled inside the Threshold JAR.
 
@@ -56,3 +56,8 @@ Test commands (requires OP permissions):
 /threshold travel overworld
 /threshold whereami
 ```
+
+## Animated industrial details
+- Level 1 has ceiling ventilation units distributed deterministically. The entrance room guarantees one at `(12, 73, 12)`.
+- No powered mechanics are simulated; GeckoLib animates the vent fan without changing block collision or other AI.
+- Additional tests verify the generated vent is backed by the expected GeckoLib BlockEntity.

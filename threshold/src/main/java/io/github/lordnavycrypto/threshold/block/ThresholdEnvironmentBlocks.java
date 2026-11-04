@@ -30,7 +30,12 @@ public final class ThresholdEnvironmentBlocks {
                             .randomTicks()
                             .lightLevel(state -> state.getValue(FlickeringPanelBlock.LIT) ? 14 : 0));
 
+    public static final DeferredBlock<ThresholdCeilingVentBlock> CEILING_VENT =
+            BLOCKS.registerBlock("ceiling_vent", ThresholdCeilingVentBlock::new,
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
+
     static {
+        ITEMS.registerSimpleBlockItem(CEILING_VENT);
         ITEMS.registerSimpleBlockItem(FADED_WALLPAPER);
         ITEMS.registerSimpleBlockItem(STAINED_WALLPAPER);
         ITEMS.registerSimpleBlockItem(WAREHOUSE_WALL);

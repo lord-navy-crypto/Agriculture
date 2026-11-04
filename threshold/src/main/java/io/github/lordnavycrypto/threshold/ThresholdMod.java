@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.threshold;
 
 import io.github.lordnavycrypto.threshold.command.ThresholdCommands;
 import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
+import io.github.lordnavycrypto.threshold.block.ThresholdBlockEntities;
 import io.github.lordnavycrypto.threshold.worldgen.ThresholdFeatures;
 import io.github.lordnavycrypto.threshold.worldgen.ThresholdRuntimeChecks;
 import net.neoforged.bus.api.IEventBus;
@@ -16,6 +17,7 @@ public final class ThresholdMod {
     public ThresholdMod(IEventBus modBus, ModContainer container) {
         ThresholdEnvironmentBlocks.BLOCKS.register(modBus);
         ThresholdEnvironmentBlocks.ITEMS.register(modBus);
+        ThresholdBlockEntities.TYPES.register(modBus);
         ThresholdFeatures.REGISTER.register(modBus);
         NeoForge.EVENT_BUS.register(ThresholdCommands.class);
         NeoForge.EVENT_BUS.register(ThresholdRuntimeChecks.class);

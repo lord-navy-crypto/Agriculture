@@ -11,6 +11,7 @@ public final class ThresholdFeatures {
 
     static {
         REGISTER.register("room_layout", ThresholdRoomLayoutFeature::new);
+        REGISTER.register("industrial_vent", ThresholdIndustrialVentFeature::new);
     }
 
     private ThresholdFeatures() {

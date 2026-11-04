@@ -81,5 +81,12 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL1_LIT_PLANTER_OK" : "THRESHOLD_LEVEL1_LIT_PLANTER_FAIL");
         System.out.println(cropBuilt
                 ? "THRESHOLD_LEVEL1_AGRICULTURE_CROP_OK" : "THRESHOLD_LEVEL1_AGRICULTURE_CROP_FAIL");
+        // Lithostitched's composite feature must have run its second stage.
+        boolean ventBuilt = level1.getBlockState(new BlockPos(12, 73, 12))
+                .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.CEILING_VENT.get())
+                && level1.getBlockEntity(new BlockPos(12, 73, 12))
+                    instanceof io.github.lordnavycrypto.threshold.block.ThresholdCeilingVentBlockEntity;
+        System.out.println(ventBuilt
+                ? "THRESHOLD_LITHOSTITCHED_VENT_OK" : "THRESHOLD_LITHOSTITCHED_VENT_FAIL");
     }
 }

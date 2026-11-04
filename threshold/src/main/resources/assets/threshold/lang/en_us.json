@@ -3,5 +3,6 @@
   "block.threshold.stained_wallpaper": "Stained Wallpaper",
   "block.threshold.warehouse_wall": "Warehouse Concrete",
   "block.threshold.flickering_panel": "Flickering Panel",
-  "block.threshold.transition_wall": "Unstable Wall"
+  "block.threshold.transition_wall": "Unstable Wall",
+  "block.threshold.ceiling_vent": "Suspended Vent"
 }

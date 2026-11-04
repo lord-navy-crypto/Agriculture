@@ -33,6 +33,15 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/block/FlickeringPanelBlock.class",
     "data/threshold/worldgen/configured_feature/room_layout.json",
     "data/threshold/worldgen/placed_feature/room_layout.json",
+    "data/threshold/worldgen/configured_feature/industrial_vent.json",
+    "data/threshold/worldgen/placed_feature/industrial_vent.json",
+    "assets/threshold/geo/ceiling_vent.geo.json",
+    "assets/threshold/animations/ceiling_vent.animation.json",
+    "assets/threshold/blockstates/ceiling_vent.json",
+    "assets/threshold/models/item/ceiling_vent.json",
+    "io/github/lordnavycrypto/threshold/block/ThresholdCeilingVentBlockEntity.class",
+    "io/github/lordnavycrypto/threshold/client/ThresholdVentRenderer.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdIndustrialVentFeature.class",
     "data/threshold/worldgen/configured_feature/room_sequence.json",
     "data/threshold/worldgen/placed_feature/room_sequence.json",
     "io/github/lordnavycrypto/threshold/ThresholdMod.class",
@@ -81,9 +90,14 @@ def main():
         assert modifier["features"]=="threshold:room_sequence"
         sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
         assert sequence["type"]=="lithostitched:composite"
-        assert sequence["config"]["features"]==["threshold:room_layout"]
+        assert sequence["config"]["features"]==["threshold:room_layout", "threshold:industrial_vent"]
         wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
         assert wrapper["feature"]=="threshold:room_sequence"
+        assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
+        clips=read_json(z, "assets/threshold/animations/ceiling_vent.animation.json")["animations"]
+        assert "animation.ceiling_vent.spin" in clips
+        bones=read_json(z, "assets/threshold/geo/ceiling_vent.geo.json")["minecraft:geometry"][0]["bones"]
+        assert "fan" in {bone["name"] for bone in bones}
         assert modifier["step"]=="vegetal_decoration"
     print(f"THRESHOLD_DIMENSION_ASSET_VALIDATION_PASS: {jar}")
     return 0
