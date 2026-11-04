@@ -108,7 +108,7 @@ The packaged-JAR validator enforces this invariant.
 ### Level 0: Observer only
 - The Observer is a temporary, distant silhouette. It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
 - It appears only in Level 0, from a visible and unobstructed position at a distance. It disappears after a short interval, when the player approaches, or when the player directly looks at it.
-- Level 0 rejects every other Mob joining the dimension. This includes vanilla hostile mobs and other modded creatures. It is not a combat or chase level.
+- Level 0 rejects every other living creature and all projectiles joining the dimension, including vanilla and third-party mobs; players can still traverse normally. It is not a combat or chase level.
 - The Observer is atmosphere, not a threat: its purpose is to make the player question whether something is watching from the far end of an otherwise empty corridor.
 
 ### Level 1: first predator
