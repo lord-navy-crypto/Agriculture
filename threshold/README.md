@@ -24,7 +24,7 @@
 - Chunk-aligned 48x48 concrete warehouse layout with halls, storage bays, pillars and partitions.
 - A guaranteed starter barrel plus scarce additional supply barrels use `threshold:chests/level_1_supply` loot drawing from real `gugugaga` foods.
 - The entry room guarantees a small watered, lit planter of actual Agriculture crops; other storage rooms have rare planters.
-- Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them.
+- Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them. The entry greenhouse is lit by five overhead sea lanterns so crops can grow without skylight. The warehouse ambience uses a low mechanical vault hum, contrasting with Level 0's cave-like emptiness.
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
 ## Current scope / limitations

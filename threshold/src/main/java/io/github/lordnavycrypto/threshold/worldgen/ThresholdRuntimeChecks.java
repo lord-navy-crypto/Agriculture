@@ -62,10 +62,20 @@ public final class ThresholdRuntimeChecks {
         System.out.println(supplyBuilt
                 ? "THRESHOLD_LEVEL1_STARTER_CACHE_OK" : "THRESHOLD_LEVEL1_STARTER_CACHE_FAIL");
 
+        boolean cropBuilt = level1.getBlockState(new BlockPos(14, 64, 14)).is(
+                net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(
+                        net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(
+                                "gugugaga", "barley_crop")));
         boolean planterBuilt = level1.getBlockState(new BlockPos(14, 63, 14)).is(Blocks.FARMLAND)
                 && level1.getBlockState(new BlockPos(16, 63, 16)).is(Blocks.WATER)
+                && level1.getBlockState(new BlockPos(14, 64, 14)).is(
+                        net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(
+                                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(
+                                        "gugugaga", "barley_crop")))
                 && level1.getBlockState(new BlockPos(14, 67, 14)).is(Blocks.SEA_LANTERN);
         System.out.println(planterBuilt
                 ? "THRESHOLD_LEVEL1_LIT_PLANTER_OK" : "THRESHOLD_LEVEL1_LIT_PLANTER_FAIL");
+        System.out.println(cropBuilt
+                ? "THRESHOLD_LEVEL1_AGRICULTURE_CROP_OK" : "THRESHOLD_LEVEL1_AGRICULTURE_CROP_FAIL");
     }
 }

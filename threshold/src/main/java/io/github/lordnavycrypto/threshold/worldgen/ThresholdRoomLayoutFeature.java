@@ -153,7 +153,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 boolean doorway = boundary && isDoorway(
                         seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ);
                 boolean returnPassage = boundary
-                        && isLevel1ReturnWall(roomX, roomZ, localX, localZ);
+                        && isLevel1ReturnWall(seed, roomX, roomZ, localX, localZ);
 
                 for (int y = LEVEL_1_WALL_BOTTOM; y <= LEVEL_1_WALL_TOP; y++) {
                     if (returnPassage && y <= 68) {
@@ -328,10 +328,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean isLevel1ReturnWall(
-            int roomX, int roomZ, int localX, int localZ) {
+            long seed, int roomX, int roomZ, int localX, int localZ) {
         return localX == 0 && (localZ == 23 || localZ == 24)
                 && ((roomX == 0 && roomZ == 0)
-                || Math.floorMod(roomX * 31 + roomZ * 17, 89) == 0);
+                || Math.floorMod(mix(seed, roomX, roomZ, 0xE182L), 89) == 0);
     }
 
     private static boolean hasLevel1PlanterPatch(long seed, int roomX, int roomZ) {
