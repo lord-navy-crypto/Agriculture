@@ -1,4 +1,4 @@
-# THRESHOLD — Level 0–4 Environment Design Contract
+# THRESHOLD — Level 0–5 Environment Design Contract
 
 The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
@@ -93,12 +93,21 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Manual client testing must inspect each archetype, verify routes and resource areas remain accessible, and check that overhead structures do not clip the player camera or Hound navigation.
 
 
-## Alpha 8 — five-level source-backed transit design
+## Alpha 9 — six-level source-backed transit design
 
 ### Level 2 — Abandoned Utility Halls
 - Level 2 is a full playable dimension with 32×32 room cells, dense concrete service corridors, copper mains, pipe galleries, cable runs, maintenance trenches, valve bays and damp sump edges.
 - The room graph is deterministic and shared-edge. Each cell must retain at least one valid doorway; the route graph test now checks both Level 1 and Level 2.
 - Level 2 has fixed service routes plus multiple anomalous branch doors. It is a real exploration space, not merely a loading screen or teleport chamber.
+
+### Level 5 — Terror Hotel
+- Level 5 is a separate 32×32 deterministic hotel-room grid with three guaranteed accessible zones: Main Hall, Beverly Room and Boiler Room.
+- Main Hall uses dark timber flooring, red-and-gold wall details, carpet runners, antique-style furniture clusters and scarce Agriculture supply caches.
+- Beverly Room is a ballroom hub with a central table, chandelier and several exits that rejoin the Main Hall / Boiler Room room graph.
+- Boiler Room uses dark stone, copper mains, chains, machinery props and shallow leak channels. Its deeper descent remains catalogued but is not activated until Level 6 exists.
+- Additional cells may become guest suites, compressed hotel corridors or a rare unconfirmed Lobby Room.
+- The hotel elevator panel supports floors 1–12: sneak-use cycles the selected floor and normal use travels to the matching wing within Level 5.
+- Level 5 receives a quiet, irregular vanilla piano-note ambience cue. It does not replace or alter the original Level 0 / Level 1 OGG tracks.
 
 ### Level 0 / Level 1 preservation
 - Level 0's original yellow-office layout, entry room, harmless observer-only rule, flickering lights, music and Level 0 ↔ Level 1 transition remain unchanged.
@@ -113,17 +122,21 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Level 3 → Level 2: retracing the service corridor is retained as a practical return route for gameplay; this is not represented as a newly documented universal canon exit.
 - Level 3 → Level 4: the metallic Office Sector door is based on the Fandom Level 4 entrance description.
 - Level 4 → Level 3: a service elevator return is retained as an optional Wikidot/archived-version route variant. Current rewritten pages may differ.
+- Level 3 → Level 4 / Level 5: a seed-stable service-elevator draw. Relative weights 9:1 are gameplay tuning, not claimed canon probabilities.
+- Level 4 → Level 5: a climbable old-fashioned stairway.
+- Level 5 → Level 3 / Level 4: fixed hotel elevator and stairwell returns.
+- Level 5 → Level 5: the player selects one of twelve internal hotel wings with the elevator panel.
 
 ### Random destination implementation
 - Wiki pages commonly describe exits as random, occasional, rare or dependent on a particular door/area, but do not generally publish exact numeric probabilities.
 - Relative weights in the mod are gameplay tuning, not canon percentages. The current Level 2 branch uses 4:4:1 relative weights for Level 1, Level 3 and Level 4. The Level 2 fire exit uses equal relative weights for Level 1 and Level 3.
 - A door's result is calculated from the world seed and its coordinates. It remains stable after reload, while different doors can resolve to different destinations. This prevents repeated interaction from rerolling the same door.
-- Routes to unimplemented destinations (for example Level 5, Level 6, Level 14, Level 27 and other distant levels) are recorded as future candidates and are not redirected to an unrelated existing dimension.
+- Routes to unimplemented destinations (for example Level 6, Level 9, Level 14, Level 27 and other distant levels) are recorded as future candidates and are not redirected to an unrelated existing dimension.
 
 ### Source profiles and disagreements
 - Wikidot and Fandom remain separate source profiles. The mod combines compatible routes, but records conflicting descriptions as version-specific variants rather than pretending that every page describes one canon.
-- Wikidot Level 1 documents a smooth transition into Level 2. Wikidot Level 2 documents anomalous exits to Levels 1, 3 and 4. Wikidot Level 3 documents elevators that can lead to Level 4 or Level 5.
-- Fandom Level 2 describes fire exits to Levels 1 or 3 and certain hallways that may lead to Level 4 or Level 27. Fandom Level 4 describes the metal Office Sector entrance from Level 3 and several other destination-specific exits.
+- Wikidot Level 1 documents a smooth transition into Level 2. Wikidot Level 2 documents anomalous exits to Levels 1, 3 and 4. Wikidot Level 5 documents the hotel zones, Level 3 elevator, Level 4 stairway, return routes and internal elevator floors.
+- Fandom Level 2 describes fire exits to Levels 1 or 3 and certain hallways that may lead to Level 4 or Level 27. Fandom Level 3 describes elevators that commonly lead to Level 4 and may rarely reach Level 5. Fandom Level 4 describes the metal Office Sector entrance from Level 3.
 - The Fandom Level 3 page currently carries a rewrite notice; the Wikidot Level 4 page also carries a rewrite notice. Their current pages take priority over archived material, and disputed routes remain configurable.
 - Only the documented ordinary-level route graph is implemented; no separate mirrored level family is generated.
 
@@ -133,16 +146,18 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Wikidot: https://backrooms-wiki.wikidot.com/level-2
 - Wikidot: https://backrooms-wiki.wikidot.com/level-3
 - Wikidot: https://backrooms-wiki.wikidot.com/level-4
+- Wikidot: https://backrooms-wiki.wikidot.com/level-5
 - Fandom: https://backrooms.fandom.com/wiki/Level_0
 - Fandom: https://backrooms.fandom.com/wiki/Level_1
 - Fandom: https://backrooms.fandom.com/wiki/Level_2
 - Fandom: https://backrooms.fandom.com/wiki/Level_3
 - Fandom: https://backrooms.fandom.com/wiki/Level_4
+- Fandom: https://backrooms.fandom.com/wiki/Level_5
 
 ## Acceptance gates
 - Java compile and asset validation.
 - Separate `threshold` JAR, loading alongside required Agriculture.
-- Dedicated server registers all five dimensions and confirms the Level 0 carpet, Level 1 warehouse, Level 2 utility halls, Level 3 electrical station, Level 4 office, route blocks, starter cache and lit planter actually generated.
+- Dedicated server registers all six dimensions and confirms the Level 0 carpet, Level 1 warehouse, Level 2 utility halls, Level 3 electrical station, Level 4 office, Level 5 Main Hall / Beverly Room / Boiler Room, hotel elevator and every implemented route actually generated.
 - No console worldgen errors, missing models or missing loot IDs.
 - Manual client test for room visibility, lighting and resource availability before marking release ready.
 
