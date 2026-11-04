@@ -48,7 +48,7 @@ Distinct features:
 - The Observer is a short-lived, non-combat silhouette spawned at a visible distance in Level 0.
 - It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
 - It disappears when approached, directly noticed, or after a short timeout. It never chases, attacks, damages or kills the player.
-- The entity-join guard rejects all other Mob instances in Level 0, including vanilla and third-party creatures. This keeps Level 0 an isolation/observation experience rather than a combat map.
+- The entity-join guard rejects all other living creatures and projectiles in Level 0, including vanilla and third-party mobs; players remain allowed. This keeps Level 0 an isolation/observation experience rather than a combat map.
 
 ### Level 1: Hound predator
 - The Hound is a real Monster with a player target goal, pathfinding and melee behavior, plus explicit health, speed, attack damage and follow-range attributes.
