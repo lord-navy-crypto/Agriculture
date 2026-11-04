@@ -135,7 +135,9 @@ def main() -> int:
     assert implemented["level_2_anomalous_branch"]["relative_weights"] == [4, 4, 1]
     assert all(route["status"] == "implemented" for route in implemented.values())
     deferred = {route["id"]: route for route in catalog["deferred_routes"]}
-    assert "level_3_elevator_draw" in deferred
+    assert implemented["level_3_elevator_to_level5"]["relative_weights"] == [9, 1]
+    assert implemented["level_4_stairway_to_level5"]["to"] == ["level_5"]
+    assert implemented["level_5_internal_elevator_floors"]["to"] == ["level_5"]
     assert "level_6" in deferred["level_5_boiler_deep_exit"]["to"]
     assert "level_9" in deferred["level_5_dark_oak_door"]["to"]
     assert "phantom" not in json.dumps(catalog).lower()
