@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Boot Threshold with the Agriculture prerequisite and verify real dimension generation."""
+"""Boot Threshold with Agriculture and verify all six dimensions and their route graph."""
 from pathlib import Path
 import os, signal, subprocess, sys, time, shutil
 
@@ -25,6 +25,14 @@ MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY
          "THRESHOLD_LEVEL2_WORLDGEN_OK",
          "THRESHOLD_LEVEL3_WORLDGEN_OK",
          "THRESHOLD_LEVEL4_WORLDGEN_OK",
+         "THRESHOLD_LEVEL5_MAIN_HALL_WORLDGEN_OK",
+         "THRESHOLD_LEVEL5_BEVERLY_ROOM_WORLDGEN_OK",
+         "THRESHOLD_LEVEL5_BOILER_ROOM_WORLDGEN_OK",
+         "THRESHOLD_LEVEL3_ELEVATOR_TO_LEVEL5_ROUTE_OK",
+         "THRESHOLD_LEVEL4_STAIRWAY_TO_LEVEL5_ROUTE_OK",
+         "THRESHOLD_LEVEL5_TO_LEVEL3_ELEVATOR_RETURN_OK",
+         "THRESHOLD_LEVEL5_TO_LEVEL4_STAIRWAY_RETURN_OK",
+         "THRESHOLD_LEVEL5_INTERNAL_ELEVATOR_PANEL_OK",
          "THRESHOLD_LEVEL1_TO_LEVEL2_PASSAGE_OK",
          "THRESHOLD_LEVEL2_FIRE_EXIT_ROUTE_OK",
          "THRESHOLD_LEVEL2_TO_LEVEL3_PASSAGE_OK",
@@ -65,7 +73,7 @@ def run():
                 time.sleep(2)
                 current=LOG.read_text(encoding="utf-8",errors="replace")
                 if all(m in current for m in MARKERS) and READY in current:
-                    print("THRESHOLD_REAL_SERVER_DIMENSIONS_AND_WORLDGEN_PASS",flush=True)
+                    print("THRESHOLD_REAL_SERVER_SIX_DIMENSIONS_AND_WORLDGEN_PASS",flush=True)
                     return 0
                 if any(marker in current for marker in (
                     "THRESHOLD_ENTITY_REGISTRY_FAIL","THRESHOLD_LEVEL1_HOUND_REGISTRY_FAIL",
@@ -84,6 +92,14 @@ def run():
                     "THRESHOLD_LEVEL2_WORLDGEN_FAIL",
                     "THRESHOLD_LEVEL3_WORLDGEN_FAIL",
                     "THRESHOLD_LEVEL4_WORLDGEN_FAIL",
+                    "THRESHOLD_LEVEL5_MAIN_HALL_WORLDGEN_FAIL",
+                    "THRESHOLD_LEVEL5_BEVERLY_ROOM_WORLDGEN_FAIL",
+                    "THRESHOLD_LEVEL5_BOILER_ROOM_WORLDGEN_FAIL",
+                    "THRESHOLD_LEVEL3_ELEVATOR_TO_LEVEL5_ROUTE_FAIL",
+                    "THRESHOLD_LEVEL4_STAIRWAY_TO_LEVEL5_ROUTE_FAIL",
+                    "THRESHOLD_LEVEL5_TO_LEVEL3_ELEVATOR_RETURN_FAIL",
+                    "THRESHOLD_LEVEL5_TO_LEVEL4_STAIRWAY_RETURN_FAIL",
+                    "THRESHOLD_LEVEL5_INTERNAL_ELEVATOR_PANEL_FAIL",
                     "THRESHOLD_LEVEL1_TO_LEVEL2_PASSAGE_FAIL",
                     "THRESHOLD_LEVEL2_FIRE_EXIT_ROUTE_FAIL",
                     "THRESHOLD_LEVEL2_TO_LEVEL3_PASSAGE_FAIL",
