@@ -1584,7 +1584,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         boolean darkCeiling = localX >= 8 && localX <= 24
                                 && (localZ == 8 || localZ == 16 || localZ == 24)
                                 || localZ >= 8 && localZ <= 24
-                                && (localX == 8 || localX == 16 || localX == 24);
+                                && (localX == 8 || localX == 16 || localX == 24)
+                                || (localX == 12 || localX == 20)
+                                && (localZ == 12 || localZ == 20);
                         if (!upperWalkway && darkCeiling) {
                             set(world, pos, x, 71, z, Blocks.BLACK_CONCRETE.defaultBlockState());
                         }
