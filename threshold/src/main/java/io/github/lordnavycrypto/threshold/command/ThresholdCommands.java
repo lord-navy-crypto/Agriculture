@@ -165,10 +165,6 @@ public final class ThresholdCommands {
     private static int summonWatcher(CommandContext<CommandSourceStack> context)
             throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        if (!player.level().dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            context.getSource().sendFailure(Component.literal("Watcher can only be summoned in Level 0."));
-            return 0;
-        }
         ServerLevel level = player.serverLevel();
         if (ThresholdEntityDirector.hasNearbyWatcher(level, player)) {
             context.getSource().sendFailure(Component.literal("A Watcher is already lingering nearby."));
@@ -198,37 +194,48 @@ public final class ThresholdCommands {
     private static int summonHound(CommandContext<CommandSourceStack> context)
             throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        if (!player.level().dimension().equals(ThresholdDimensions.LEVEL_1)) {
-            context.getSource().sendFailure(Component.literal("Hound can only be summoned in Level 1."));
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = ThresholdEntityDirector.findShowcasePosition(level, player, 4, 10, 2);
+        if (pos == null) {
+            context.getSource().sendFailure(Component.literal(
+                    "No safe floor position is available in front of you. Move into an open area and retry."));
             return 0;
         }
-        ServerLevel level = player.serverLevel();
-        BlockPos pos = player.blockPosition().relative(player.getDirection(), 3);
         ThresholdHoundEntity hound = ThresholdEntities.HOUND.get().create(level);
         if (hound == null) return 0;
         hound.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot(), 0.0F);
         hound.setTarget(player);
-        level.addFreshEntity(hound);
-        context.getSource().sendSuccess(() -> Component.literal("A Hound has entered the warehouse."), false);
+        if (!level.addFreshEntity(hound)) {
+            context.getSource().sendFailure(Component.literal("The Hound could not be placed here."));
+            return 0;
+        }
+        context.getSource().sendSuccess(() -> Component.literal(
+                "Hound test summon created in " + level.dimension().location() + "."), false);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int summonPartygoer(CommandContext<CommandSourceStack> context)
             throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        if (!player.level().dimension().equals(Level.OVERWORLD)) {
-            context.getSource().sendFailure(Component.literal("Partygoer test summon is only available in the Overworld."));
+        ServerLevel level = player.serverLevel();
+        BlockPos pos = ThresholdEntityDirector.findShowcasePosition(level, player, 10, 18, 2);
+        if (pos == null) {
+            context.getSource().sendFailure(Component.literal(
+                    "No safe floor position is available in front of you. Move into an open area and retry."));
             return 0;
         }
-        ServerLevel level = player.serverLevel();
-        BlockPos pos = player.blockPosition().relative(player.getDirection(), 10);
         ThresholdPartygoerEntity partygoer = ThresholdEntities.PARTYGOER.get().create(level);
         if (partygoer == null) return 0;
-        partygoer.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot() + 180.0F, 0.0F);
+        partygoer.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
+                player.getYRot() + 180.0F, 0.0F);
         partygoer.setTarget(player);
-        level.addFreshEntity(partygoer);
+        if (!level.addFreshEntity(partygoer)) {
+            context.getSource().sendFailure(Component.literal("The Partygoer could not be placed here."));
+            return 0;
+        }
         context.getSource().sendSuccess(() -> Component.literal(
-                "Hostile Partygoer summoned. It will stalk, pursue, and attack."), false);
+                "Partygoer test summon created in " + level.dimension().location()
+                        + ". It will stalk, pursue, and attack."), false);
         return Command.SINGLE_SUCCESS;
     }
 
