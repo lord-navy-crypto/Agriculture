@@ -91,6 +91,9 @@ def main() -> int:
         ("case 16 ->", "Level 0 raised office mezzanine archetype"),
         ("case 17 ->", "Level 0 nested loop maze archetype"),
         ("case 18 ->", "Level 0 sunken conference pit archetype"),
+        ("case 19 ->", "Level 0 irregular pillar forest archetype"),
+        ("case 20 ->", "Level 0 multi-pocket floor-fold archetype"),
+        ("case 21 ->", "Level 0 stair tower archetype"),
         ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
         ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
         ("case 17 ->", "Level 1 overhead freight gantry archetype"),
@@ -99,6 +102,9 @@ def main() -> int:
         ("case 20 ->", "Level 1 raised loading-office mezzanine archetype"),
         ("case 21 ->", "Level 1 accessible pump sump archetype"),
         ("case 22 ->", "Level 1 stacked pallet-rack canyon archetype"),
+        ("case 23 ->", "Level 1 Gothic arcade archetype"),
+        ("case 24 ->", "Level 1 cross-dock crane hall archetype"),
+        ("case 25 ->", "Level 1 ventilation exchange archetype"),
         ("Blocks.BOOKSHELF", "Level 0 archive shelving"),
         ("Blocks.LECTERN", "Level 0 archive catalog furniture"),
         ("Blocks.SMOOTH_STONE_SLAB", "Level 1 accessible conveyor surfaces"),
@@ -112,16 +118,30 @@ def main() -> int:
         ("StairBlock.FACING", "walkable vertical stair connections"),
         ("ThresholdEnvironmentBlocks.CEILING_VENT", "original ceiling-vent block usage"),
         ("ThresholdEnvironmentBlocks.FLICKERING_PANEL", "original flickering light-panel usage"),
+        ("0xA19A1L", "Level 0 deterministic pillar heights"),
+        ("Blocks.WHITE_STAINED_GLASS_PANE", "Level 0 recessed pocket safety rims"),
+        ("Blocks.OAK_STAIRS", "Level 0 stair tower access"),
+        ("Blocks.STONE_BRICKS", "Level 1 Gothic arcade arch spans"),
+        ("Blocks.IRON_BLOCK", "Level 1 overhead crane tracks"),
+        ("Blocks.CUT_COPPER", "Level 1 ventilation cross-ducts"),
     ):
         require(layout, token, label)
     require(layout, "roomX == 1 && roomZ == 0) return 12", "guaranteed Level 0 sub-floor landmark")
     require(layout, "roomX == 0 && roomZ == 1) return 16", "guaranteed Level 0 mezzanine landmark")
     require(layout, "roomX == 1 && roomZ == 1) return 17", "guaranteed Level 0 nested-maze landmark")
     require(layout, "roomX == 2 && roomZ == 0) return 18", "guaranteed Level 0 sunken-pit landmark")
+    require(layout, "roomX == 2 && roomZ == 2) return 19", "guaranteed Level 0 pillar-forest landmark")
+    require(layout, "roomX == 3 && roomZ == 0) return 20", "guaranteed Level 0 floor-fold landmark")
+    require(layout, "roomX == 0 && roomZ == 2) return 21", "guaranteed Level 0 stair-tower landmark")
     require(layout, "roomX == 1 && roomZ == 1) return 16", "guaranteed Level 1 maintenance landmark")
     require(layout, "roomX == 0 && roomZ == 1) return 20", "guaranteed Level 1 mezzanine landmark")
     require(layout, "roomX == 1 && roomZ == 0) return 21", "guaranteed Level 1 pump-sump landmark")
     require(layout, "roomX == 2 && roomZ == 1) return 22", "guaranteed Level 1 stacked-rack landmark")
+    require(layout, "roomX == 2 && roomZ == 2) return 23", "guaranteed Level 1 Gothic-arcade landmark")
+    require(layout, "roomX == 3 && roomZ == 0) return 24", "guaranteed Level 1 crane-hall landmark")
+    require(layout, "roomX == 0 && roomZ == 2) return 25", "guaranteed Level 1 ventilation landmark")
+    require(layout, "level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark-specific vertical clearance")
+    require(layout, "level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark-specific overhead clearance")
 
     route_tokens = (
         "LEVEL_1_TO_2", "LEVEL_2_FIRE_EXIT", "LEVEL_2_TO_3",
@@ -272,6 +292,12 @@ def main() -> int:
         ("THRESHOLD_LEVEL1_MEZZANINE_OK", "Level 1 raised mezzanine and stair access runtime probe"),
         ("THRESHOLD_LEVEL1_PUMP_SUMP_OK", "Level 1 pump sump and stair access runtime probe"),
         ("THRESHOLD_LEVEL1_RACK_CANYON_OK", "Level 1 stacked rack canyon runtime probe"),
+        ("THRESHOLD_LEVEL0_PILLAR_FOREST_OK", "Level 0 irregular pillar forest runtime probe"),
+        ("THRESHOLD_LEVEL0_FLOOR_FOLD_OK", "Level 0 multi-pocket floor fold runtime probe"),
+        ("THRESHOLD_LEVEL0_STAIR_TOWER_OK", "Level 0 accessible stair tower runtime probe"),
+        ("THRESHOLD_LEVEL1_GOTHIC_ARCADE_OK", "Level 1 Gothic arcade runtime probe"),
+        ("THRESHOLD_LEVEL1_CRANE_HALL_OK", "Level 1 cross-dock crane hall runtime probe"),
+        ("THRESHOLD_LEVEL1_VENTILATION_HALL_OK", "Level 1 ventilation exchange runtime probe"),
     ):
         require(runtime_checks, token, label)
 
