@@ -22,6 +22,7 @@ def require(source: str, token: str, label: str) -> None:
 def main() -> int:
     dimensions = (JAVA / "dimension/ThresholdDimensions.java").read_text(encoding="utf-8")
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
+    lights = (JAVA / "block/FlickeringPanelBlock.java").read_text(encoding="utf-8")
     passage = (JAVA / "block/ThresholdPassageBlock.java").read_text(encoding="utf-8")
     seam = (JAVA / "block/ThresholdTransitionZoneBlock.java").read_text(encoding="utf-8")
     hotel_elevator = (JAVA / "block/ThresholdHotelElevatorBlock.java").read_text(encoding="utf-8")
@@ -94,6 +95,7 @@ def main() -> int:
         ("case 19 ->", "Level 0 irregular pillar forest archetype"),
         ("case 20 ->", "Level 0 multi-pocket floor-fold archetype"),
         ("case 21 ->", "Level 0 stair tower archetype"),
+        ("case 22 ->", "Level 0 dynamic blackout corridor archetype"),
         ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
         ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
         ("case 17 ->", "Level 1 overhead freight gantry archetype"),
@@ -105,6 +107,7 @@ def main() -> int:
         ("case 23 ->", "Level 1 Gothic arcade archetype"),
         ("case 24 ->", "Level 1 cross-dock crane hall archetype"),
         ("case 25 ->", "Level 1 ventilation exchange archetype"),
+        ("case 26 ->", "Level 1 generator plant archetype"),
         ("Blocks.BOOKSHELF", "Level 0 archive shelving"),
         ("Blocks.LECTERN", "Level 0 archive catalog furniture"),
         ("Blocks.SMOOTH_STONE_SLAB", "Level 1 accessible conveyor surfaces"),
@@ -133,6 +136,7 @@ def main() -> int:
     require(layout, "roomX == 2 && roomZ == 2) return 19", "guaranteed Level 0 pillar-forest landmark")
     require(layout, "roomX == 3 && roomZ == 0) return 20", "guaranteed Level 0 floor-fold landmark")
     require(layout, "roomX == 0 && roomZ == 2) return 21", "guaranteed Level 0 stair-tower landmark")
+    require(layout, "roomX == 3 && roomZ == 2) return 22", "guaranteed Level 0 blackout-corridor landmark")
     require(layout, "roomX == 1 && roomZ == 1) return 16", "guaranteed Level 1 maintenance landmark")
     require(layout, "roomX == 0 && roomZ == 1) return 20", "guaranteed Level 1 mezzanine landmark")
     require(layout, "roomX == 1 && roomZ == 0) return 21", "guaranteed Level 1 pump-sump landmark")
@@ -140,6 +144,9 @@ def main() -> int:
     require(layout, "roomX == 2 && roomZ == 2) return 23", "guaranteed Level 1 Gothic-arcade landmark")
     require(layout, "roomX == 3 && roomZ == 0) return 24", "guaranteed Level 1 crane-hall landmark")
     require(layout, "roomX == 0 && roomZ == 2) return 25", "guaranteed Level 1 ventilation landmark")
+    require(layout, "roomX == 2 && roomZ == 3) return 26", "guaranteed Level 1 generator-plant landmark")
+    require(lights, "blackoutPocket ? 12 : 2", "blackout ceiling panels recover slowly")
+    require(lights, "blackoutPocket ? 8 : 18", "blackout ceiling panels fail more often")
     require(layout, "level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark-specific vertical clearance")
     require(layout, "level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark-specific overhead clearance")
 
@@ -298,6 +305,8 @@ def main() -> int:
         ("THRESHOLD_LEVEL1_GOTHIC_ARCADE_OK", "Level 1 Gothic arcade runtime probe"),
         ("THRESHOLD_LEVEL1_CRANE_HALL_OK", "Level 1 cross-dock crane hall runtime probe"),
         ("THRESHOLD_LEVEL1_VENTILATION_HALL_OK", "Level 1 ventilation exchange runtime probe"),
+        ("THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_OK", "Level 0 localized blackout ceiling runtime probe"),
+        ("THRESHOLD_LEVEL1_GENERATOR_PLANT_OK", "Level 1 multi-engine generator plant runtime probe"),
     ):
         require(runtime_checks, token, label)
 
