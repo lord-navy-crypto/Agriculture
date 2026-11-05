@@ -200,7 +200,7 @@ def main() -> int:
 
     for summon_name in ("summonWatcher", "summonHound", "summonPartygoer"):
         start = commands.index(f"private static int {summon_name}")
-        end = commands.find("\\n    private static int ", start + 1)
+        end = commands.find("\n    private static int ", start + 1)
         body = commands[start:end if end >= 0 else len(commands)]
         assert "dimension()" not in body, f"{summon_name} must work in any dimension"
         require(body, "level.addFreshEntity(", f"{summon_name} must add the summoned entity to the world")
