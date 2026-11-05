@@ -14,6 +14,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import io.github.lordnavycrypto.threshold.item.FlashlightItem;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -35,6 +37,7 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     private static final RawAnimation RUN =
             RawAnimation.begin().thenLoop("animation.threshold_hound.run");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int lightRepelledTicks;
 
     public ThresholdHoundEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -48,6 +51,35 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, 3.0D)
                 .add(Attributes.FOLLOW_RANGE, 26.0D)
                 .add(Attributes.ARMOR, 1.0D);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide) return;
+
+        // The Level 1 Hound avoids an actively used flashlight. It retreats
+        // briefly rather than being defeated or deleted, preserving tension.
+        if (lightRepelledTicks > 0) {
+            lightRepelledTicks--;
+            if (getTarget() != null) setTarget(null);
+            return;
+        }
+
+        Player illuminated = level().getNearestPlayer(this, 12.0D);
+        if (illuminated == null || !FlashlightItem.isActive(illuminated)
+                || distanceToSqr(illuminated) > 144.0D) return;
+
+        Vec3 away = position().subtract(illuminated.position());
+        if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
+        away = away.normalize();
+        setTarget(null);
+        lightRepelledTicks = 60;
+        getNavigation().moveTo(
+                getX() + away.x * 8.0D,
+                getY(),
+                getZ() + away.z * 8.0D,
+                1.1D);
     }
 
     @Override
