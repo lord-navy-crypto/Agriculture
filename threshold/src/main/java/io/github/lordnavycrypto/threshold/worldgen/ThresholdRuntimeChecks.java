@@ -388,7 +388,10 @@ public final class ThresholdRuntimeChecks {
                 && acceptsEntityProbe(level, EntityType.ARROW, 12.5D)
                 && acceptsEntityProbe(level, EntityType.TRIDENT, 14.5D)
                 && acceptsEntityProbe(level, EntityType.MINECART, 16.5D)
-                && acceptsEntityProbe(level, EntityType.ITEM_FRAME, 18.5D);
+                && acceptsEntityProbe(level, EntityType.ITEM_FRAME, 18.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.WATCHER.get(), 20.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.HOUND.get(), 22.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.PARTYGOER.get(), 24.5D);
     }
 
     private static boolean acceptsEntityProbe(
