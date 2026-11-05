@@ -224,7 +224,7 @@ def main() -> int:
             raise AssertionError(f"Level 0 Watcher behavior contract missing: {label}")
 
     watcher_constructor = watcher[
-        watcher.index("public ThresholdWatcherEntity"):watcher.index("public void tick()")
+        watcher.index("public ThresholdWatcherEntity"):watcher.index("/** A harmless model/animation preview")
     ]
     assert "setNoAi(true)" not in watcher_constructor, "Natural Watcher must retain AI"
     assert "setNoGravity(true)" not in watcher_constructor, "Natural Watcher must use normal movement physics"
