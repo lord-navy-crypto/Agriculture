@@ -104,8 +104,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
     public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
-        this.observationStyle = ObservationStyle.values()[
-                Math.floorMod(getUUID().hashCode(), ObservationStyle.values().length)];
+        ObservationStyle[] soloStyles = {
+                ObservationStyle.PERIPHERAL, ObservationStyle.MIRROR, ObservationStyle.LISTENER
+        };
+        this.observationStyle = soloStyles[
+                Math.floorMod(getUUID().hashCode(), soloStyles.length)];
     }
 
     /** A harmless model/animation preview for artists and operators. */
