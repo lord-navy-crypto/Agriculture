@@ -118,9 +118,15 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             if (searchTicks == 0) lastKnownPlayerPosition = null;
         }
 
-        Player illuminated = level().getNearestPlayer(this, 12.0D);
-        if (illuminated == null || distanceToSqr(illuminated) > 144.0D
-                || !isIlluminatedByFlashlight(illuminated)) return;
+        Player illuminated = null;
+        for (Player candidate : level().players()) {
+            if (isValidHuntTarget(candidate) && distanceToSqr(candidate) <= 144.0D
+                    && isIlluminatedByFlashlight(candidate)) {
+                illuminated = candidate;
+                break;
+            }
+        }
+        if (illuminated == null) return;
 
         Vec3 away = position().subtract(illuminated.position());
         if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
