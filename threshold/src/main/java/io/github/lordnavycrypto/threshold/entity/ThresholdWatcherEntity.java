@@ -35,7 +35,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  */
 public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEntity {
     private enum EncounterState {
-        OBSERVE, OBSERVED, STALK, SEARCH, RUSH, STRIKE, RETREAT
+        OBSERVE, OBSERVED, STALK, SEARCH, RUSH, STRIKE, RETREAT, REPOSITION
     }
 
     private enum ObservationStyle {
@@ -69,6 +69,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenLoop("animation.threshold_watcher.lunge");
     private static final RawAnimation STRIKE =
             RawAnimation.begin().thenPlay("animation.threshold_watcher.strike");
+    private static final RawAnimation PEEK =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.peek");
 
     private static final int NATURAL_LIFETIME_TICKS = 600;
     private static final int SHOWCASE_LIFETIME_TICKS = 600;
@@ -89,6 +91,10 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private EncounterState encounterState = EncounterState.OBSERVE;
     private ObservationSnapshot observation;
     private Vec3 retreatDestination;
+    private Vec3 fakeRetreatDestination;
+    private Vec3 searchWaypoint;
+    private int searchWaypointIndex;
+    private int searchPauseTicks;
     private int stateTicks;
     private int stareTicks;
     private int playerNoiseTicks;
@@ -98,6 +104,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private int nextFlickerTick;
     private boolean nearMiss;
     private boolean attackConsumed;
+    private boolean fakeRetreat;
     private boolean flankerRole;
     private boolean showcaseMode;
     private boolean testEncounterMode;
@@ -182,6 +189,10 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             updateRetreat();
             return;
         }
+        if (encounterState == EncounterState.REPOSITION) {
+            updateFakeReposition(server);
+            return;
+        }
 
         Player player = findNearestValidPlayer(server);
         relayLocalObservation(server, player);
@@ -237,7 +248,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             getNavigation().stop();
             lookAtPlayer(player);
             // A sustained stare makes it fold away; a brief glance only freezes it.
-            if (stareTicks >= 40) beginRetreat(player);
+            if (stareTicks >= 40) beginRetreat(player, true);
             return;
         }
         stareTicks = Math.max(0, stareTicks - PERCEPTION_INTERVAL_TICKS);
@@ -401,7 +412,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             return;
         }
         if (visible && nearMiss && distanceToSqr(player) <= NEAR_MISS_RANGE_SQR) {
-            beginRetreat(player);
+            beginRetreat(player, true);
             return;
         }
         if (!visible && (observation == null
@@ -454,9 +465,16 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     private void beginRetreat(Player player) {
-        if (encounterState == EncounterState.RETREAT) return;
+        beginRetreat(player, false);
+    }
+
+    private void beginRetreat(Player player, boolean allowFakeRetreat) {
+        if (encounterState == EncounterState.RETREAT
+                || encounterState == EncounterState.REPOSITION) return;
         encounterState = EncounterState.RETREAT;
         stateTicks = 0;
+        fakeRetreat = allowFakeRetreat && !testEncounterMode
+                && level().getRandom().nextInt(4) == 0;
         setAggressive(false);
         setInvisible(false);
 
@@ -478,7 +496,61 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
                     retreatDestination.x, retreatDestination.y, retreatDestination.z, 1.18D);
         }
         if (stateTicks >= 24) setInvisible(true);
-        if (stateTicks >= 40) discard();
+        if (stateTicks >= 40) {
+            if (fakeRetreat && observation != null
+                    && observation.confidence(level().getGameTime()) > 0.25D) {
+                beginFakeReposition();
+            } else {
+                discard();
+            }
+        }
+    }
+
+    /** Repositions by ordinary path navigation using only the last sighting. */
+    private void beginFakeReposition() {
+        encounterState = EncounterState.REPOSITION;
+        stateTicks = 0;
+        setInvisible(true);
+        getNavigation().stop();
+
+        Vec3 base = predictedSearchPosition(level().getGameTime());
+        Vec3 away = position().subtract(base);
+        away = new Vec3(away.x, 0.0D, away.z);
+        if (away.lengthSqr() < 1.0E-4D) {
+            away = Math.floorMod(getUUID().hashCode(), 2) == 0
+                    ? new Vec3(1.0D, 0.0D, 0.0D) : new Vec3(0.0D, 0.0D, 1.0D);
+        }
+        away = away.normalize();
+        Vec3 side = new Vec3(-away.z, 0.0D, away.x);
+        double sign = Math.floorMod(getUUID().hashCode(), 2) == 0 ? 1.0D : -1.0D;
+        fakeRetreatDestination = base.add(side.scale(5.5D * sign)).add(away.scale(2.0D));
+        if (!getNavigation().moveTo(
+                fakeRetreatDestination.x, fakeRetreatDestination.y,
+                fakeRetreatDestination.z, 0.96D)) {
+            discard();
+        }
+    }
+
+    private void updateFakeReposition(ServerLevel server) {
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+        if (observation == null || observation.confidence(server.getGameTime()) <= 0.18D) {
+            discard();
+            return;
+        }
+        if (fakeRetreatDestination != null
+                && distanceToSqr(fakeRetreatDestination) <= 4.0D) {
+            getNavigation().stop();
+            setInvisible(false);
+            fakeRetreat = false;
+            encounterState = EncounterState.STALK;
+            stateTicks = 0;
+            stareTicks = 0;
+            rushCooldown = Math.max(rushCooldown, 80);
+            return;
+        }
+        // If a corridor is blocked or the path cannot be completed, do not
+        // teleport through geometry just to force the fake-retreat effect.
+        if (stateTicks >= 60) discard();
     }
 
     private void updateLostTarget(ServerLevel server) {
@@ -496,21 +568,71 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             return;
         }
         double confidence = observation.confidence(server.getGameTime());
-        if (confidence <= 0.12D || stateTicks > 60) {
+        if (confidence <= 0.12D || stateTicks > 80) {
             beginRetreat(null);
             return;
         }
 
-        encounterState = EncounterState.SEARCH;
+        if (encounterState != EncounterState.SEARCH) {
+            encounterState = EncounterState.SEARCH;
+            stateTicks = 0;
+            searchWaypointIndex = 0;
+            searchWaypoint = null;
+            searchPauseTicks = 0;
+        }
         stateTicks += PERCEPTION_INTERVAL_TICKS;
-        Vec3 searchPoint = predictedSearchPosition(server.getGameTime());
-        getLookControl().setLookAt(searchPoint.x, searchPoint.y, searchPoint.z, 12.0F, 12.0F);
-        if (getNavigation().isDone() || tickCount % 20 == 0) {
-            getNavigation().moveTo(searchPoint.x, searchPoint.y, searchPoint.z, 0.78D);
+        Vec3 lastKnown = predictedSearchPosition(server.getGameTime());
+        getLookControl().setLookAt(lastKnown.x, lastKnown.y, lastKnown.z, 12.0F, 12.0F);
+
+        if (searchPauseTicks > 0) {
+            searchPauseTicks = Math.max(0, searchPauseTicks - PERCEPTION_INTERVAL_TICKS);
+            getNavigation().stop();
+            return;
         }
-        if (distanceToSqr(searchPoint) < 4.0D && stateTicks > 24) {
-            beginRetreat(null);
+
+        if (searchWaypoint == null) {
+            if (searchWaypointIndex >= 3) {
+                beginRetreat(null);
+                return;
+            }
+            searchWaypoint = cornerPeekWaypoint(lastKnown, searchWaypointIndex);
+            if (!getNavigation().moveTo(
+                    searchWaypoint.x, searchWaypoint.y, searchWaypoint.z, 0.78D)) {
+                searchWaypoint = null;
+                searchWaypointIndex++;
+                searchPauseTicks = 8;
+            }
+            return;
         }
+
+        if (distanceToSqr(searchWaypoint) <= 2.25D || getNavigation().isDone()) {
+            getNavigation().stop();
+            searchWaypoint = null;
+            searchWaypointIndex++;
+            searchPauseTicks = 8 + server.getRandom().nextInt(13);
+        }
+    }
+
+    /**
+     * Sweeps both sides of the last sighting and then checks the approach line.
+     * Every waypoint is derived from the immutable snapshot, never a hidden
+     * live player position.
+     */
+    private Vec3 cornerPeekWaypoint(Vec3 lastKnown, int index) {
+        Vec3 forward = observation == null ? Vec3.ZERO : observation.velocity();
+        forward = new Vec3(forward.x, 0.0D, forward.z);
+        if (forward.lengthSqr() < 1.0E-4D) {
+            forward = position().subtract(lastKnown);
+            forward = new Vec3(forward.x, 0.0D, forward.z);
+        }
+        if (forward.lengthSqr() < 1.0E-4D) forward = new Vec3(0.0D, 0.0D, 1.0D);
+        forward = forward.normalize();
+        Vec3 side = new Vec3(-forward.z, 0.0D, forward.x);
+        return switch (index) {
+            case 0 -> lastKnown.add(side.scale(3.0D)).add(forward.scale(1.5D));
+            case 1 -> lastKnown.subtract(side.scale(3.0D)).add(forward.scale(1.5D));
+            default -> lastKnown.subtract(forward.scale(3.5D));
+        };
     }
 
     /**
@@ -605,6 +727,9 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             if (isAggressive()) {
                 if (getAttackAnim(0.0F) > 0.12F) return state.setAndContinue(STRIKE);
                 return state.setAndContinue(LUNGE);
+            }
+            if (encounterState == EncounterState.SEARCH && searchPauseTicks > 0) {
+                return state.setAndContinue(PEEK);
             }
             if (state.isMoving()) return state.setAndContinue(SHROUD_DRIFT);
 
