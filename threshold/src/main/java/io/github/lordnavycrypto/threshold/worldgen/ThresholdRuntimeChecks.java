@@ -5,6 +5,7 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdHoundEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -67,6 +68,23 @@ public final class ThresholdRuntimeChecks {
         System.out.println(watcherAdvancedAiReady
                 ? "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK"
                 : "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_FAIL");
+
+        ThresholdHoundEntity houndProbe = ThresholdEntities.HOUND.get().create(level1);
+        boolean houndAdvancedAiReady = houndProbe != null
+                && houndProbe.getNavigation() != null
+                && houndProbe.getAttribute(Attributes.MAX_HEALTH) != null
+                && houndProbe.getAttribute(Attributes.MAX_HEALTH).getBaseValue() >= 20.0D
+                && houndProbe.getAttribute(Attributes.MOVEMENT_SPEED) != null
+                && houndProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.285D
+                && houndProbe.getAttribute(Attributes.ATTACK_DAMAGE) != null
+                && houndProbe.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() >= 3.0D
+                && houndProbe.getAttribute(Attributes.FOLLOW_RANGE) != null
+                && houndProbe.getAttribute(Attributes.FOLLOW_RANGE).getBaseValue() >= 26.0D
+                && houndProbe.isPickable();
+        if (houndProbe != null) houndProbe.discard();
+        System.out.println(houndAdvancedAiReady
+                ? "THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK"
+                : "THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_FAIL");
 
         level0.getChunk(0, 0);
         level0.getChunk(0, 1);
