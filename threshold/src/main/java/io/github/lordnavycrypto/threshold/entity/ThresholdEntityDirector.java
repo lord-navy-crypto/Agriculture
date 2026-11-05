@@ -121,12 +121,22 @@ public final class ThresholdEntityDirector {
      * the entity behind the player or inside a wall.
      */
     public static BlockPos findWatcherShowcasePosition(ServerLevel level, Player player) {
-        for (int distance = 8; distance <= 16; distance += 2) {
+        return findShowcasePosition(level, player, 8, 16, 2);
+    }
+
+    /**
+     * Finds a safe, loaded, visible floor position for an operator test summon.
+     * It is dimension-agnostic and never changes the natural-spawn whitelist.
+     */
+    public static BlockPos findShowcasePosition(
+            ServerLevel level, Player player, int minimumDistance, int maximumDistance, int step) {
+        if (step <= 0 || minimumDistance < 1 || maximumDistance < minimumDistance) return null;
+        for (int distance = minimumDistance; distance <= maximumDistance; distance += step) {
             BlockPos pos = player.blockPosition().relative(player.getDirection(), distance);
             if (!isSafeStandingSpace(level, pos)) continue;
             BlockHitResult sight = level.clip(new ClipContext(
                     player.getEyePosition(),
-                    new Vec3(pos.getX() + 0.5D, pos.getY() + 1.25D, pos.getZ() + 0.5D),
+                    new Vec3(pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D),
                     ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
             if (sight.getType() == HitResult.Type.MISS) return pos;
         }
