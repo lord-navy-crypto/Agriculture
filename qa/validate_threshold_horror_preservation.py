@@ -72,6 +72,7 @@ def main() -> int:
         ("Blocks.RED_CARPET", "Level 0 rare red-room carpet"),
         ("ThresholdEnvironmentBlocks.FADED_WALLPAPER", "Level 0 faded wallpaper"),
         ("ThresholdEnvironmentBlocks.STAINED_WALLPAPER", "Level 0 stained partitions"),
+        ("ThresholdEnvironmentBlocks.FLICKERING_PANEL", "Level 0 animated fluorescent panels"),
         ("ThresholdEnvironmentBlocks.WAREHOUSE_WALL", "Level 1 warehouse walls"),
         ("Blocks.SMOOTH_STONE", "Level 1 industrial floor"),
         ("Blocks.IRON_BARS", "Level 1 overhead industrial fittings"),
