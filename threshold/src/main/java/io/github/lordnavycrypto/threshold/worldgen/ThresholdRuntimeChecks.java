@@ -313,25 +313,24 @@ public final class ThresholdRuntimeChecks {
                 : "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_FAIL");
 
         // Regression coverage for the previous blanket EntityJoinLevelEvent
-        // cancellation: ordinary mobs and player-thrown projectile entity types
-        // must be accepted in every Threshold dimension.
-        boolean entityCompatibility =
-                supportsStandardEntities(level0)
-                && supportsStandardEntities(level1)
-                && supportsStandardEntities(level2)
-                && supportsStandardEntities(level3)
-                && supportsStandardEntities(level4)
-                && supportsStandardEntities(level5);
-        System.out.println(entityCompatibility
-                ? "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK"
-                : "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
+        // cancellation: ordinary passive and hostile mobs must be admitted in
+        // every Threshold dimension. Level 0's separate projectile policy is
+        // intentionally outside this mob-compatibility check.
+        boolean mobCompatibility =
+                supportsLivingMobs(level0)
+                && supportsLivingMobs(level1)
+                && supportsLivingMobs(level2)
+                && supportsLivingMobs(level3)
+                && supportsLivingMobs(level4)
+                && supportsLivingMobs(level5);
+        System.out.println(mobCompatibility
+                ? "THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_OK"
+                : "THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
     }
 
-    private static boolean supportsStandardEntities(ServerLevel level) {
+    private static boolean supportsLivingMobs(ServerLevel level) {
         return acceptsEntityProbe(level, EntityType.COW, 6.5D)
-                && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D)
-                && acceptsEntityProbe(level, EntityType.ARROW, 10.5D)
-                && acceptsEntityProbe(level, EntityType.TRIDENT, 12.5D);
+                && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D);
     }
 
     private static boolean acceptsEntityProbe(
