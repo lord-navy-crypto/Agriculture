@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.server.MinecraftServer;
@@ -51,6 +52,18 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_ENTITY_REGISTRY_OK" : "THRESHOLD_ENTITY_REGISTRY_FAIL");
         System.out.println(houndRegistered
                 ? "THRESHOLD_LEVEL1_HOUND_REGISTRY_OK" : "THRESHOLD_LEVEL1_HOUND_REGISTRY_FAIL");
+
+        ThresholdWatcherEntity watcherProbe = ThresholdEntities.WATCHER.get().create(level0);
+        boolean watcherAdvancedAiReady = watcherProbe != null
+                && watcherProbe.getNavigation() != null
+                && watcherProbe.getAttribute(Attributes.MAX_HEALTH) != null
+                && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED) != null
+                && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE) != null
+                && watcherProbe.isPickable();
+        if (watcherProbe != null) watcherProbe.discard();
+        System.out.println(watcherAdvancedAiReady
+                ? "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK"
+                : "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_FAIL");
 
         level0.getChunk(0, 0);
         level0.getChunk(0, 1);
