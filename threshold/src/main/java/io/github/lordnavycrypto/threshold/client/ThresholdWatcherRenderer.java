@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-/** A distant, dark silhouette; it has no combat presentation or nameplate. */
+/** Dark silhouette renderer; the Watcher's lunge and strike are driven by GeckoLib states. */
 public final class ThresholdWatcherRenderer extends GeoEntityRenderer<ThresholdWatcherEntity> {
     public ThresholdWatcherRenderer(EntityRendererProvider.Context context) {
         super(context, new ThresholdWatcherModel());
