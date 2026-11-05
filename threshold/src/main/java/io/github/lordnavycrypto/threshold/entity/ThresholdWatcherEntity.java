@@ -568,6 +568,19 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean accepted = super.hurt(source, amount);
+        if (accepted && !level().isClientSide && isAlive()
+                && encounterState != EncounterState.RETREAT) {
+            Player attacker = source.getEntity() instanceof Player player ? player : null;
+            // Being hit breaks the Watcher's confidence: it withdraws rather than
+            // turning the encounter into a prolonged melee fight.
+            beginRetreat(attacker);
+        }
+        return accepted;
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ENDERMAN_HURT;
     }
