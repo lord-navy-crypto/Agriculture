@@ -192,8 +192,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             @Override
             public boolean canUse() {
                 return lightRepelledTicks == 0
-                        && !(getTarget() instanceof Player target
-                                && isIlluminatedByFlashlight(target))
+                        && !(ThresholdHoundEntity.this.getTarget() instanceof Player target
+                                && ThresholdHoundEntity.this.isIlluminatedByFlashlight(target))
                         && super.canUse();
             }
 
