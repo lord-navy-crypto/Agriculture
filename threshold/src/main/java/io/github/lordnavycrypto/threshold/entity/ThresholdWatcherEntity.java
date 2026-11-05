@@ -32,12 +32,21 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenLoop("animation.threshold_watcher.shroud_drift");
     private static final int MAX_LIFETIME_TICKS = 180;
     private static final int PERCEPTION_INTERVAL_TICKS = 2;
+    private static final int DIRECT_NOTICE_GRACE_CHECKS = 20;
+    private static final int SHOWCASE_LIFETIME_TICKS = 600;
     private static final double MAX_PLAYER_DISTANCE = 32.0D;
     private static final double MIN_PLAYER_DISTANCE_SQR = 72.25D;
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int flickerTicks;
     private int nextFlickerTick;
+    private int directlyObservedTicks;
+    private boolean showcaseMode;
+
+    /** Keeps an operator-spawned preview visible long enough to verify its model and animation. */
+    public void enableShowcaseMode() {
+        this.showcaseMode = true;
+    }
 
     public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -54,7 +63,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         if (!(level() instanceof ServerLevel)) return;
 
         // A hard lifetime bound prevents stale apparitions from accumulating.
-        if (tickCount > MAX_LIFETIME_TICKS) {
+        if (tickCount > (showcaseMode ? SHOWCASE_LIFETIME_TICKS : MAX_LIFETIME_TICKS)) {
             discard();
             return;
         }
@@ -66,7 +75,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;
 
         Player nearest = level().getNearestPlayer(this, MAX_PLAYER_DISTANCE);
-        if (nearest == null || distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR) {
+        if (nearest == null) {
+            if (!showcaseMode) discard();
+            return;
+        }
+        if (!showcaseMode && distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR) {
             discard();
             return;
         }
@@ -80,9 +93,18 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         setYBodyRot(trackedYaw);
 
         Vec3 toWatcher = position().subtract(nearest.getEyePosition()).normalize();
+        if (showcaseMode) return;
+
+        // Do not vanish on the very first frame the player looks at it. Give
+        // the player a clear 2-second sighting, then let it fold out of view.
         boolean directlyNoticed = nearest.hasLineOfSight(this)
                 && nearest.getLookAngle().dot(toWatcher) > 0.965D;
-        if (directlyNoticed) discard();
+        if (directlyNoticed) {
+            directlyObservedTicks++;
+            if (directlyObservedTicks >= DIRECT_NOTICE_GRACE_CHECKS) discard();
+        } else {
+            directlyObservedTicks = 0;
+        }
     }
 
     private void updateFlicker() {

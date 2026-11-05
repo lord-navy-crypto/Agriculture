@@ -93,6 +93,17 @@ public final class ThresholdEntityDirector {
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
 
                 if (!isSafeStandingSpace(level, pos)) continue;
+
+                // Keep the first appearance outside the player's forward view.
+                // The player should discover it in the periphery, not have it pop
+                // directly in front of the crosshair and vanish immediately.
+                Vec3 eye = player.getEyePosition();
+                Vec3 toSpawn = new Vec3(
+                        pos.getX() + 0.5D - eye.x,
+                        pos.getY() + 1.25D - eye.y,
+                        pos.getZ() + 0.5D - eye.z).normalize();
+                if (player.getLookAngle().dot(toSpawn) > 0.35D) continue;
+
                 BlockHitResult sight = level.clip(new ClipContext(
                         player.getEyePosition(), new Vec3(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D),
                         ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
@@ -108,6 +119,24 @@ public final class ThresholdEntityDirector {
                 if (level.addFreshEntity(watcher)) return;
             }
         }
+    }
+
+    /**
+     * Finds a safe, unobstructed floor position in front of the operator.
+     * The explicit summon command is a visual diagnostic, so it must not hide
+     * the entity behind the player or inside a wall.
+     */
+    public static BlockPos findWatcherShowcasePosition(ServerLevel level, Player player) {
+        for (int distance = 8; distance <= 16; distance += 2) {
+            BlockPos pos = player.blockPosition().relative(player.getDirection(), distance);
+            if (!isSafeStandingSpace(level, pos)) continue;
+            BlockHitResult sight = level.clip(new ClipContext(
+                    player.getEyePosition(),
+                    new Vec3(pos.getX() + 0.5D, pos.getY() + 1.25D, pos.getZ() + 0.5D),
+                    ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+            if (sight.getType() == HitResult.Type.MISS) return pos;
+        }
+        return null;
     }
 
     /**

@@ -28,6 +28,7 @@ def main() -> int:
     mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
     entities = (JAVA / "entity/ThresholdEntities.java").read_text(encoding="utf-8")
     watcher = (JAVA / "entity/ThresholdWatcherEntity.java").read_text(encoding="utf-8")
+    watcher_renderer = (JAVA / "client/ThresholdWatcherRenderer.java").read_text(encoding="utf-8")
     hound = (JAVA / "entity/ThresholdHoundEntity.java").read_text(encoding="utf-8")
     partygoer = (JAVA / "entity/ThresholdPartygoerEntity.java").read_text(encoding="utf-8")
     flashlight = (JAVA / "item/FlashlightItem.java").read_text(encoding="utf-8")
@@ -215,6 +216,21 @@ def main() -> int:
     assert "setNoAi(true)" not in watcher_tick, "Watcher must not reassert static AI flags every tick"
     assert "setNoGravity(true)" not in watcher_tick, "Watcher must not reassert static gravity flags every tick"
     assert "noPhysics = true" not in watcher_tick, "Watcher must not reassert static physics flags every tick"
+    require(r"DIRECT_NOTICE_GRACE_CHECKS = 20", watcher,
+            "Watcher remains visible for two seconds after being directly noticed")
+    require(r"directlyObservedTicks >= DIRECT_NOTICE_GRACE_CHECKS", watcher,
+            "Watcher only vanishes after a sustained direct sighting")
+    assert "if (directlyNoticed) discard();" not in watcher, "Watcher must not vanish on the first look frame"
+    require(r"SHOWCASE_LIFETIME_TICKS = 600", watcher,
+            "Operator preview has a 30-second inspection window")
+    require(r"enableShowcaseMode\(\)", commands,
+            "Summon command enables a stable visual preview")
+    require(r"findWatcherShowcasePosition\(level, player\)", commands,
+            "Summon command places the preview in front of the player")
+    require(r"player\.getLookAngle\(\)\.dot\(toSpawn\) > 0\.35D", director,
+            "Natural Watcher spawns outside the player's forward view")
+    require(r"LightTexture\.FULL_BRIGHT", watcher_renderer,
+            "Watcher silhouette remains visible in dark rooms")
     assert "Attributes.ATTACK_DAMAGE" not in watcher
 
     # Level 1's Hound is a real but bounded hostile encounter.
@@ -364,6 +380,8 @@ def main() -> int:
         assert png[:8] == b"\x89PNG\r\n\x1a\n", f"{name} texture is not PNG"
         width, height = struct.unpack(">II", png[16:24])
         assert (width, height) == (64, 64), f"{name} texture dimensions are wrong"
+        if name == "watcher":
+            assert len(png) > 1024, "Watcher texture must contain visible detail, not a near-black placeholder"
 
     partygoer_geometry = read_json(RESOURCES / "assets/threshold/geo/partygoer.geo.json")["minecraft:geometry"][0]
     partygoer_animation = read_json(RESOURCES / "assets/threshold/animations/partygoer.animation.json")["animations"]

@@ -174,17 +174,24 @@ public final class ThresholdCommands {
             context.getSource().sendFailure(Component.literal("A Watcher is already lingering nearby."));
             return 0;
         }
-        BlockPos pos = player.blockPosition().relative(player.getDirection().getOpposite(), 14);
+        BlockPos pos = ThresholdEntityDirector.findWatcherShowcasePosition(level, player);
+        if (pos == null) {
+            context.getSource().sendFailure(Component.literal(
+                    "No clear floor position is available in front of you. Move into an open hallway and retry."));
+            return 0;
+        }
         ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level);
         if (watcher == null) return 0;
         float yaw = (float) (Math.atan2(player.getZ() - pos.getZ(), player.getX() - pos.getX())
                 * (180.0D / Math.PI)) - 90.0F;
-        watcher.moveTo(pos.getX() + 0.5D, player.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+        watcher.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+        watcher.enableShowcaseMode();
         if (!level.addFreshEntity(watcher)) {
             context.getSource().sendFailure(Component.literal("The Watcher could not be placed here."));
             return 0;
         }
-        context.getSource().sendSuccess(() -> Component.literal("A distant presence has appeared behind you."), false);
+        context.getSource().sendSuccess(() -> Component.literal(
+                "Watcher preview spawned in front of you. It will remain visible for 30 seconds."), false);
         return Command.SINGLE_SUCCESS;
     }
 
