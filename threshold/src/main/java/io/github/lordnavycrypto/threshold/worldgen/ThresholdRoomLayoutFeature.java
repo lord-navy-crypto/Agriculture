@@ -1188,6 +1188,52 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 64, z, Blocks.BARREL.defaultBlockState());
                         }
                     }
+                    case 9 -> {
+                        // Parking-deck bays: painted floor lanes and concrete supports
+                        // create a broad industrial space unlike Level 0's office maze.
+                        boolean lane = (localX == 9 || localX == 10 || localX == 37 || localX == 38)
+                                && localZ >= 7 && localZ <= 41;
+                        if (!protectedTile && lane) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        boolean bayMark = (localZ == 10 || localZ == 38)
+                                && (localX >= 11 && localX <= 18 || localX >= 29 && localX <= 36);
+                        if (!protectedTile && bayMark) {
+                            set(world, pos, x, 64, z, Blocks.WHITE_CARPET.defaultBlockState());
+                        }
+                        boolean support = (localX == 15 || localX == 33)
+                                && (localZ == 14 || localZ == 34);
+                        if (!protectedTile && support) {
+                            for (int y = 65; y <= 71; y++) {
+                                set(world, pos, x, y, z, Blocks.POLISHED_ANDESITE.defaultBlockState());
+                            }
+                        }
+                        if (localX == 24 && (localZ == 8 || localZ == 40)) {
+                            set(world, pos, x, 72, z, Blocks.CHAIN.defaultBlockState());
+                            set(world, pos, x, 73, z, Blocks.LANTERN.defaultBlockState());
+                        }
+                    }
+                    case 10 -> {
+                        // Narrow maintenance spine: pipe runs and guarded service
+                        // channels create short claustrophobic sub-areas, not the whole floor.
+                        boolean sideRail = (localX == 13 || localX == 14 || localX == 33 || localX == 34)
+                                && localZ >= 8 && localZ <= 40;
+                        if (!protectedTile && sideRail) {
+                            for (int y = 65; y <= 68; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        if ((localX == 12 || localX == 35) && localZ >= 8 && localZ <= 40
+                                && Math.floorMod(localZ, 8) == 0) {
+                            set(world, pos, x, 70, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                        boolean serviceWalk = (localZ == 22 || localZ == 23)
+                                && localX >= 16 && localX <= 31;
+                        if (!protectedTile && serviceWalk) {
+                            set(world, pos, x, 64, z, Blocks.POLISHED_ANDESITE_SLAB.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1196,12 +1242,34 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static int level0Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 8);
+        int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
+        // Empty office space is the dominant visual. Architectural fragments
+        // become progressively rarer so the Lobby never reads like a furnished dungeon.
+        if (roll < 40) return 0;
+        if (roll < 56) return 1;
+        if (roll < 70) return 2;
+        if (roll < 80) return 3;
+        if (roll < 87) return 4;
+        if (roll < 93) return 5;
+        if (roll < 97) return 6;
+        return 7;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 8);
+        int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
+        // A warehouse grammar: racks and service infrastructure are common;
+        // parking-deck and narrow maintenance variants remain uncommon discoveries.
+        if (roll < 20) return 1;
+        if (roll < 30) return 6;
+        if (roll < 45) return 2;
+        if (roll < 58) return 3;
+        if (roll < 68) return 4;
+        if (roll < 78) return 5;
+        if (roll < 85) return 7;
+        if (roll < 92) return 8;
+        if (roll < 97) return 9;
+        return 10;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
@@ -1308,9 +1376,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         // The first room establishes the iconic empty yellow-office baseline.
         if (roomX == 0 && roomZ == 0) return 0;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0x10A0L), 100);
-        if (roll < 68) return 0;
-        if (roll < 82) return 1;
-        if (roll < 94) return 2;
+        // Preserve the original yellow identity: grey and red anomalies are rare.
+        if (roll < 82) return 0;
+        if (roll < 94) return 1;
+        if (roll < 99) return 2;
         return 3;
     }
 
