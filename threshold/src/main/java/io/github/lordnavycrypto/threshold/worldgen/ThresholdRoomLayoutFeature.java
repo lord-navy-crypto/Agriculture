@@ -1292,15 +1292,18 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 && localZ >= 21 && localZ <= 28;
                         boolean stair = (localX == 9 || localX == 10)
                                 && localZ >= 18 && localZ <= 20;
-                        if (!upperWalkway && !protectedRoute && platform) {
+                        boolean sideStair = localX >= 4 && localX <= 6
+                                && (localZ == 24 || localZ == 25);
+                        if (!upperWalkway && platform) {
                             set(world, pos, x, 66, z, Blocks.OAK_PLANKS.defaultBlockState());
-                            if (Math.floorMod(localX + localZ, 4) == 0) {
+                            if (!protectedRoute && Math.floorMod(localX + localZ, 4) == 0) {
                                 set(world, pos, x, 67, z, Blocks.YELLOW_CARPET.defaultBlockState());
                             }
                             boolean edge = localX == 7 || localX == 14
                                     || localZ == 21 || localZ == 28;
                             boolean stairOpening = localZ == 21
-                                    && (localX == 9 || localX == 10);
+                                    && (localX == 9 || localX == 10)
+                                    || localX == 7 && (localZ == 24 || localZ == 25);
                             if (edge && !stairOpening) {
                                 set(world, pos, x, 67, z,
                                         Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
@@ -1311,6 +1314,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY, z,
                                     Blocks.OAK_STAIRS.defaultBlockState()
                                             .setValue(StairBlock.FACING, Direction.SOUTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                        if (!upperWalkway && !protectedRoute && sideStair) {
+                            int stairY = 64 + localX - 4;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.OAK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.EAST));
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
@@ -1381,7 +1392,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 && localZ >= 22 && localZ <= 27;
                         boolean wall = pit && (localX == 22 || localX == 28
                                 || localZ == 21 || localZ == 28);
-                        boolean stairOpening = localX == 22
+                        boolean stairOpening = (localX == 22 || localX == 28)
                                 && (localZ == 23 || localZ == 24);
                         if (pit && !protectedRoute && !upperWalkway) {
                             set(world, pos, x, 60, z, Blocks.SMOOTH_STONE.defaultBlockState());
@@ -1405,6 +1416,16 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY, z,
                                     Blocks.OAK_STAIRS.defaultBlockState()
                                             .setValue(StairBlock.FACING, Direction.WEST));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                        if (!protectedRoute && !upperWalkway
+                                && (localZ == 23 || localZ == 24)
+                                && localX >= 29 && localX <= 31) {
+                            int stairY = 60 + localX - 28;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.OAK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.EAST));
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
@@ -1910,15 +1931,20 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 && localZ >= 31 && localZ <= 39;
                         boolean stair = (localX == 10 || localX == 11)
                                 && localZ >= 28 && localZ <= 30;
-                        if (!upperWalkway && !protectedTile && platform) {
-                            set(world, pos, x, 66, z, Blocks.IRON_BLOCK.defaultBlockState());
-                            if (Math.floorMod(localX + localZ, 5) == 0) {
-                                set(world, pos, x, 67, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        boolean sideStair = localX >= 4 && localX <= 6
+                                && (localZ == 35 || localZ == 36);
+                        if (!upperWalkway && platform) {
+                            if (!protectedTile) {
+                                set(world, pos, x, 66, z, Blocks.IRON_BLOCK.defaultBlockState());
+                                if (Math.floorMod(localX + localZ, 5) == 0) {
+                                    set(world, pos, x, 67, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                                }
                             }
                             boolean edge = localX == 7 || localX == 15
                                     || localZ == 31 || localZ == 39;
                             boolean stairOpening = localZ == 31
-                                    && (localX == 10 || localX == 11);
+                                    && (localX == 10 || localX == 11)
+                                    || localX == 7 && (localZ == 35 || localZ == 36);
                             if (edge && !stairOpening) {
                                 set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
                             }
@@ -1928,6 +1954,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
                                             .setValue(StairBlock.FACING, Direction.SOUTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                        if (!upperWalkway && !protectedTile && sideStair) {
+                            int stairY = 64 + localX - 4;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.EAST));
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
@@ -1953,7 +1987,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         boolean wall = sump && (localX == 7 || localX == 12
                                 || localZ == 17 || localZ == 22);
                         boolean stairOpening = localZ == 17
-                                && (localX == 9 || localX == 10);
+                                && (localX == 9 || localX == 10)
+                                || localX == 12 && (localZ == 20 || localZ == 21);
                         if (sump && !protectedTile && !upperWalkway) {
                             set(world, pos, x, 58, z, Blocks.SMOOTH_STONE.defaultBlockState());
                             for (int y = 59; y <= 73; y++) {
@@ -1985,6 +2020,16 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
                                             .setValue(StairBlock.FACING, Direction.NORTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                        if (!protectedTile && !upperWalkway
+                                && localX >= 13 && localX <= 17
+                                && (localZ == 20 || localZ == 21)) {
+                            int stairY = 59 + localX - 13;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.EAST));
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
