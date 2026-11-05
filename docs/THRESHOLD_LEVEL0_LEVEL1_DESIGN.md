@@ -2,6 +2,8 @@
 
 The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
+> **Current implementation override — Alpha 18:** Level 0's former harmless Observer has been replaced by the active but bounded Watcher. It uses four observation styles, honest short-lived sighting memory, a maximum two-entity local encounter, occasional near-miss or single-swipe jump scares, and retreat behavior. Earlier Alpha 5–15 notes describing a non-combat Observer are historical design records, not the current implementation.
+
 ## Architectural boundary
 The repo contains `Agriculture` and the separate `threshold` Gradle subproject, with different Mod IDs, packages, metadata and JARs. **Agriculture is now a mandatory runtime prerequisite**: its existing food, hydration, sodium and nutrition mechanisms provide survival constraints. Threshold itself does not import Agriculture Java classes or include them in its JAR. We resolve crop blocks and foods by registry ID when loaded.
 
@@ -18,7 +20,7 @@ Distinct features:
 - Shared-edge doorway choices so neighboring rooms agree.
 - A paired anomalous wall passage connects Level 0 and Level 1 in both directions; the entry room on each level guarantees one. Interaction requires an empty hand. Future: Peripheral Shift and ambient electric buzzing.
 
-**No hostile or attacking mobs** are allowed in Level 0. The only permitted living presence is the non-combat Observer: a distant silhouette with no AI, damage, collision or attack behavior.
+Level 0 admits only the Watcher as a natural encounter entity; generic vanilla and third-party natural mob spawning remains disabled. The Watcher is a limited predator, not a conventional mob swarm: it can stalk, flank, rush and perform one low-damage swipe before withdrawing. A local encounter is capped at two entities.
 
 ## L1 — The Vulnerable Shelter
 **Fear mechanism:** relief and vulnerability; supplies exist, but are sparse and unevenly distributed.
