@@ -184,7 +184,8 @@ def main() -> int:
     assert "MeleeAttackGoal" not in partygoer, "Partygoer must remain non-attacking"
     require(watcher, "MAX_LIFETIME_TICKS = 180", "Watcher lifetime remains bounded to nine seconds")
     require(watcher, "tickCount > MAX_LIFETIME_TICKS", "longer distant Watcher sightings")
-    require(watcher, "distanceToSqr(nearest) < 72.25D", "Watcher disappears when approached")
+    require(watcher, "MIN_PLAYER_DISTANCE_SQR = 72.25D", "Watcher retains its minimum approach distance")
+    require(watcher, "distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR", "Watcher disappears when approached")
     require(items, 'register("almond_water"', "Almond Water registry")
     require(items, 'register("flashlight"', "Flashlight registry")
     require(items, 'register("battery"', "Battery registry")
