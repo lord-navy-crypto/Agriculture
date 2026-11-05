@@ -57,8 +57,11 @@ public final class ThresholdRuntimeChecks {
         boolean watcherAdvancedAiReady = watcherProbe != null
                 && watcherProbe.getNavigation() != null
                 && watcherProbe.getAttribute(Attributes.MAX_HEALTH) != null
+                && watcherProbe.getAttribute(Attributes.MAX_HEALTH).getBaseValue() >= 14.0D
                 && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED) != null
+                && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.30D
                 && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE) != null
+                && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() >= 2.0D
                 && watcherProbe.isPickable();
         if (watcherProbe != null) watcherProbe.discard();
         System.out.println(watcherAdvancedAiReady
