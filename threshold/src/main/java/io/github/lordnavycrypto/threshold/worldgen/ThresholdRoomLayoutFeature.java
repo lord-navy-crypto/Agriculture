@@ -1520,12 +1520,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     case 21 -> {
                         // A compact stair tower climbs from the office floor to a
                         // raised landing. It is a real route, not a decorative shaft.
-                        boolean tower = localX >= 22 && localX <= 28
-                                && localZ >= 22 && localZ <= 28;
-                        boolean wall = tower && (localX == 22 || localX == 28
-                                || localZ == 22 || localZ == 28);
-                        boolean doorway = localZ == 28 && (localX == 24 || localX == 25)
-                                || localX == 22 && (localZ == 24 || localZ == 25);
+                        boolean tower = localX >= 4 && localX <= 11
+                                && localZ >= 4 && localZ <= 11;
+                        boolean wall = tower && (localX == 4 || localX == 11
+                                || localZ == 4 || localZ == 11);
+                        boolean doorway = localZ == 4 && localX == 7;
                         if (tower && !protectedRoute && !upperWalkway) {
                             if (wall && !doorway) {
                                 for (int y = 65; y <= 70; y++) {
@@ -1535,29 +1534,29 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                                     : ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState());
                                 }
                             }
-                            boolean landing = localX >= 25 && localX <= 27
-                                    && localZ >= 23 && localZ <= 25;
+                            boolean landing = localX >= 8 && localX <= 10
+                                    && localZ >= 7 && localZ <= 9;
                             if (landing) {
                                 set(world, pos, x, 67, z, Blocks.WHITE_CONCRETE.defaultBlockState());
                                 if (Math.floorMod(localX + localZ, 3) == 0) {
                                     set(world, pos, x, 68, z, Blocks.YELLOW_CARPET.defaultBlockState());
                                 }
                             }
-                            boolean rail = (localX == 25 || localX == 27)
-                                    && localZ >= 23 && localZ <= 25;
-                            if (rail && !protectedRoute) {
+                            boolean rail = (localX == 8 || localX == 10)
+                                    && localZ >= 7 && localZ <= 9;
+                            if (rail) {
                                 set(world, pos, x, 68, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
                             }
-                            if (localX == 26 && localZ == 24) {
+                            if (localX == 9 && localZ == 8) {
                                 set(world, pos, x, 70, z, Blocks.SEA_LANTERN.defaultBlockState());
                             }
                         }
                         if (!protectedRoute && !upperWalkway
-                                && localX == 24 && localZ >= 24 && localZ <= 27) {
-                            int stairY = 64 + 27 - localZ;
+                                && localX == 7 && localZ >= 4 && localZ <= 7) {
+                            int stairY = 64 + localZ - 4;
                             set(world, pos, x, stairY, z,
                                     Blocks.OAK_STAIRS.defaultBlockState()
-                                            .setValue(StairBlock.FACING, Direction.NORTH));
+                                            .setValue(StairBlock.FACING, Direction.SOUTH));
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
