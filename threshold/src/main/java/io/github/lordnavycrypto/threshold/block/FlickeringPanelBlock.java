@@ -33,8 +33,8 @@ public final class FlickeringPanelBlock extends Block {
         if (!level0 && !level1) return;
 
         // Level 0 blinks briefly; Level 1 warehouse faults leave a longer dark interval.
-        int offChance = level0 ? 16 : 10;
-        int restoreChance = level0 ? 2 : 4;
+        int offChance = level0 ? 18 : 8;
+        int restoreChance = level0 ? 2 : 8;
         if (state.getValue(LIT)) {
             if (random.nextInt(offChance) == 0) {
                 level.setBlock(pos, state.setValue(LIT, false), 2);
