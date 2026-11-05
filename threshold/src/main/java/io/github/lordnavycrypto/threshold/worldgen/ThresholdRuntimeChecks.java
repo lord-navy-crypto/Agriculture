@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
+import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import net.minecraft.core.BlockPos;
@@ -220,7 +221,9 @@ public final class ThresholdRuntimeChecks {
                 level0.getBlockState(new BlockPos(48, 64, 12)).is(Blocks.OAK_STAIRS)
                 && level0.getBlockState(new BlockPos(48, 68, 16)).is(Blocks.WHITE_CONCRETE)
                 && level0.getBlockState(new BlockPos(53, 58, 8)).is(Blocks.GRAY_CONCRETE)
-                && level0.getBlockState(new BlockPos(53, 59, 8)).is(Blocks.YELLOW_CARPET);
+                && level0.getBlockState(new BlockPos(53, 59, 8)).is(Blocks.YELLOW_CARPET)
+                && level0.getBlockState(new BlockPos(56, 62, 8))
+                        .is(ThresholdEnvironmentBlocks.FLICKERING_PANEL.get());
         System.out.println(level0VerticalLayout
                 ? "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_FAIL");
@@ -229,7 +232,9 @@ public final class ThresholdRuntimeChecks {
                 level1.getBlockState(new BlockPos(72, 64, 66)).is(Blocks.STONE_BRICK_STAIRS)
                 && level1.getBlockState(new BlockPos(72, 70, 72)).is(Blocks.IRON_BLOCK)
                 && level1.getBlockState(new BlockPos(78, 58, 64)).is(Blocks.SMOOTH_STONE)
-                && level1.getBlockState(new BlockPos(78, 59, 64)).is(Blocks.GRAY_CARPET);
+                && level1.getBlockState(new BlockPos(78, 59, 64)).is(Blocks.GRAY_CARPET)
+                && level1.getBlockState(new BlockPos(82, 63, 66))
+                        .is(ThresholdEnvironmentBlocks.CEILING_VENT.get());
         System.out.println(level1VerticalLayout
                 ? "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_FAIL");
