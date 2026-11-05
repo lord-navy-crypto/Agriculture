@@ -193,6 +193,9 @@ def main() -> int:
         ("EntityType.TRIDENT", "trident projectile admission probe"),
         ("EntityType.MINECART", "minecart admission probe"),
         ("EntityType.ITEM_FRAME", "item frame admission probe"),
+        ("ThresholdEntities.WATCHER.get()", "Watcher operator-summon admission probe"),
+        ("ThresholdEntities.HOUND.get()", "Hound operator-summon admission probe"),
+        ("ThresholdEntities.PARTYGOER.get()", "Partygoer operator-summon admission probe"),
         ("THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK", "all entity classes join all six dimensions"),
         ("THRESHOLD_NATURAL_SPAWN_POLICY_OK", "six-dimension natural spawn whitelist check"),
     ):
