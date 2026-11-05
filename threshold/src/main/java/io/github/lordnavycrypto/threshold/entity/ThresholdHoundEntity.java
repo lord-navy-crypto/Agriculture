@@ -77,6 +77,23 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!level().isClientSide && lightRepelledTicks == 0) {
+            Player illuminated = findIlluminatingPlayer();
+            if (illuminated != null) {
+                setTarget(null);
+                lastKnownPlayerPosition = null;
+                searchTicks = 0;
+                Vec3 away = position().subtract(illuminated.position());
+                if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
+                away = away.normalize();
+                lightRepelledTicks = 60;
+                getNavigation().moveTo(
+                        getX() + away.x * 8.0D,
+                        getY(),
+                        getZ() + away.z * 8.0D,
+                        1.1D);
+            }
+        }
         if (!level().isClientSide && noiseListenCooldown > 0) noiseListenCooldown--;
         if (!level().isClientSide && getTarget() == null && lightRepelledTicks == 0
                 && searchTicks == 0 && noiseListenCooldown == 0) {
@@ -121,28 +138,16 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             if (searchTicks == 0) lastKnownPlayerPosition = null;
         }
 
-        Player illuminated = null;
+    }
+
+    private Player findIlluminatingPlayer() {
         for (Player candidate : level().players()) {
             if (isValidHuntTarget(candidate) && distanceToSqr(candidate) <= 144.0D
                     && isIlluminatedByFlashlight(candidate)) {
-                illuminated = candidate;
-                break;
+                return candidate;
             }
         }
-        if (illuminated == null) return;
-
-        Vec3 away = position().subtract(illuminated.position());
-        if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
-        away = away.normalize();
-        setTarget(null);
-        lastKnownPlayerPosition = null;
-        searchTicks = 0;
-        lightRepelledTicks = 60;
-        getNavigation().moveTo(
-                getX() + away.x * 8.0D,
-                getY(),
-                getZ() + away.z * 8.0D,
-                1.1D);
+        return null;
     }
 
     private Player findNearestNoisyPlayer(double range) {
