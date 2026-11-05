@@ -100,6 +100,10 @@ def main() -> int:
             "Level 0 receives deterministic architectural overlays")
     require(r"buildLevel1ArchitecturalDetails\(world, chunkX, chunkZ, seed, pos\)", layout,
             "Level 1 receives deterministic architectural overlays")
+    require(r"buildLevel0EnvironmentalDressing\(world, chunkX, chunkZ, seed, pos\)", layout,
+            "Level 0 receives restrained carpet wear, vents and light details")
+    require(r"buildLevel1EnvironmentalDressing\(world, chunkX, chunkZ, seed, pos\)", layout,
+            "Level 1 receives industrial ventilation, cable and warning-lane details")
     require(r"private static int level0Architecture\(", layout,
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
