@@ -326,3 +326,43 @@ A deliberate change to one of these invariants requires an explicit design decis
 - Static QA checks the new archetypes, guaranteed room cells, blackout light-state logic and generator assembly blocks.
 - Dedicated-server runtime probes verify the unlit Level 0 panels and Level 1 generator cores.
 - NeoForge compilation, packaged-JAR validation and dedicated-server smoke tests remain mandatory before a new build can be called ready. Source checks alone are not a substitute for those tests.
+
+
+## Alpha 18 — coordinated Level 0 Watcher and jump-scare behavior
+
+### Behavioral architecture
+
+The Watcher is now an active, bounded encounter entity rather than a harmless apparition. Its server-authoritative state machine contains:
+- **OBSERVE / OBSERVED:** watches from the periphery, tracks the player's head direction and freezes during direct eye contact. A sustained stare causes it to fold away.
+- **STALK:** moves according to one of four stable observation styles: PERIPHERAL, FLANKER, MIRROR or LISTENER. Sprinting, swimming, jumping and fast movement contribute short-lived noise evidence.
+- **SEARCH:** when line of sight is broken, it searches only a recent last-known observation. It does not read a hidden live player position through walls.
+- **RUSH / STRIKE:** a short high-speed approach can become either a near-miss pass or one single low-damage swipe. The swipe deals 2 damage, applies mild knockback and has a 12-second cooldown.
+- **RETREAT:** after a scare or a sustained direct sighting, the Watcher withdraws and disappears. It does not chain attacks.
+
+A held flashlight aimed toward the Watcher interrupts the encounter. Natural Watchers have 14 health, normal collision and path navigation, and can be attacked. The harmless /threshold summon watcher preview remains available; /threshold summon watcher_hunt spawns an active test encounter.
+
+### Local hive-inspired coordination
+
+This design borrows the engineering principles from the separate SWARM-MOBS project without importing its code or making the Watcher an unrestricted swarm:
+- A local encounter is capped at two Watchers.
+- The second member receives a stable flanker role.
+- Nearby peers within 24 blocks can relay an immutable last-known snapshot for the same player.
+- Relaying preserves the original observation timestamp; confidence decays over a 120-tick memory horizon.
+- Only one peer may rush the same player at a time.
+- Position observations are refreshed only while the player is actually visible. A short, capped velocity extrapolation is used only while searching.
+
+The natural spawn director attempts a new encounter every 300 ticks. A first Watcher is more likely than a second; the 600-tick natural lifetime and local two-member cap bound encounter density.
+
+### Presentation and inspection
+
+- Added GeckoLib lunge and strike clips using the existing Watcher geometry.
+- The rush uses a Phantom swoop audio cue; the strike uses an Enderman scream sting. Vanilla hurt feedback provides the brief impact flash and camera response.
+- /threshold watcher status reports each nearby Watcher's observation style, state, memory confidence and memory age.
+- Use /threshold summon watcher_hunt for the active test encounter.
+
+### Alpha 18 acceptance
+
+- Static QA checks observation styles, confidence decay, local snapshot relay, attack cooldown, damage bounds, flashlight interruption and animation assets.
+- Server startup checks that the Watcher can be instantiated with navigation, health, movement and attack attributes.
+- The dedicated-server smoke test requires THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK.
+- NeoForge compilation, packaged-JAR validation and real client gameplay checks remain mandatory. The source update alone is not a claim that a new JAR has been built or tested.
