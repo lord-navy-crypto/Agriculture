@@ -240,6 +240,7 @@ def main() -> int:
     assert "getEncounterStateName" in watcher and "getObservationConfidence" in watcher and "getObservationAgeTicks" in watcher
     assert "watcherStatus" in commands, "local Watcher state and memory telemetry are inspectable in game"
     assert "ObservationStyle[] soloStyles" in watcher, "only the second member is assigned the FLANKER style"
+    assert watcher.index("if (encounterState == EncounterState.RETREAT)") < watcher.index("Player player = findNearestValidPlayer"), "retreat timer continues even when no player is in range"
     assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
     assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
