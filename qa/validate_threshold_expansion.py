@@ -79,6 +79,24 @@ def main() -> int:
     ):
         require(layout, token, label)
 
+    # Level 0/1 are intentionally multi-scale and vertically connected:
+    # narrow maze partitions, upper galleries, stairs, and accessible sub-floor rooms.
+    for token, label in (
+        ("case 11 ->", "Level 0 micro-maze archetype"),
+        ("case 12 ->", "Level 0 accessible sunken annex archetype"),
+        ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
+        ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
+        ("buildLevel0VerticalNetwork", "Level 0 upper gallery network"),
+        ("buildLevel1VerticalNetwork", "Level 1 upper catwalk network"),
+        ("hasLevel0UpperNeighbour", "Level 0 cross-room upper-deck connectivity"),
+        ("hasLevel1UpperNeighbour", "Level 1 cross-room upper-deck connectivity"),
+        ("StairBlock.FACING", "walkable vertical stair connections"),
+        ("ThresholdEnvironmentBlocks.CEILING_VENT", "original ceiling-vent block usage"),
+    ):
+        require(layout, token, label)
+    require(layout, "roomX == 1 && roomZ == 0) return 12", "guaranteed Level 0 sub-floor landmark")
+    require(layout, "roomX == 1 && roomZ == 1) return 16", "guaranteed Level 1 maintenance landmark")
+
     route_tokens = (
         "LEVEL_1_TO_2", "LEVEL_2_FIRE_EXIT", "LEVEL_2_TO_3",
         "LEVEL_2_BRANCH_DOOR", "LEVEL_3_TO_2", "LEVEL_3_TO_4",
@@ -162,6 +180,7 @@ def main() -> int:
         music = read_json(RES / f"data/threshold/worldgen/biome/{level}.json")["effects"]["music"]
         assert music["sound"] == f"threshold:{event}"
         assert music["replace_current_music"] is True
+        assert music["min_delay"] == 1 and music["max_delay"] == 5
         raw = (RES / f"assets/threshold/sounds/{event}.ogg").read_bytes()
         assert raw[:4] == b"OggS" and len(raw) > 4000
     require(sounds_java, "LEVEL_0_AMBIENT", "Level 0 sound registry entry")
@@ -213,6 +232,8 @@ def main() -> int:
         ("MobSpawnType.COMMAND", "command summons remain permitted"),
         ("MobSpawnType.BREEDING", "player-driven breeding remains permitted"),
         ("THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK", "natural spawn reasons are isolated from summons"),
+        ("THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK", "Level 0 stair, gallery, and sunken annex runtime probe"),
+        ("THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK", "Level 1 stair, catwalk, and maintenance trench runtime probe"),
     ):
         require(runtime_checks, token, label)
 
