@@ -346,7 +346,7 @@ A held flashlight aimed toward the Watcher interrupts the encounter. Natural Wat
 This design borrows the engineering principles from the separate SWARM-MOBS project without importing its code or making the Watcher an unrestricted swarm:
 - A local encounter is capped at two Watchers.
 - The second member receives a stable flanker role.
-- Nearby peers within 24 blocks can relay an immutable last-known snapshot for the same player.
+- Nearby peers within 48 blocks can relay an immutable last-known snapshot for the same player.
 - Relaying preserves the original observation timestamp; confidence decays over a 120-tick memory horizon.
 - Only one peer may rush the same player at a time.
 - Position observations are refreshed only while the player is actually visible. A short, capped velocity extrapolation is used only while searching.
