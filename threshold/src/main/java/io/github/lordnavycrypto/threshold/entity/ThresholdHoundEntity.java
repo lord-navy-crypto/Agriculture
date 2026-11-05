@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import io.github.lordnavycrypto.threshold.item.FlashlightItem;
+import java.util.EnumSet;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -86,12 +88,27 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.12D, true));
+        goalSelector.addGoal(4, new StalkPlayerGoal(this));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.78D));
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 12.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+            @Override
+            public boolean canUse() {
+                Player candidate = level().getNearestPlayer(ThresholdHoundEntity.this, 26.0D);
+                if (candidate == null || candidate.isSpectator() || candidate.isCreative()
+                        || FlashlightItem.isActive(candidate)) return false;
+
+                // Sprinting, swimming and fast movement give the Hound a reason
+                // to abandon stalking and begin a direct pursuit.
+                boolean noisy = candidate.isSprinting() || candidate.isSwimming()
+                        || candidate.isFallFlying()
+                        || candidate.getDeltaMovement().horizontalDistanceSqr() > 0.025D;
+                return (noisy || distanceToSqr(candidate) <= 36.0D) && super.canUse();
+            }
+        });
     }
 
     @Override
@@ -107,6 +124,62 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.WOLF_DEATH;
+    }
+
+    /**
+     * Quiet players are stalked at walking pace before the Hound commits to an
+     * attack. Sprinting or getting too close hands control to the target goal.
+     */
+    private static final class StalkPlayerGoal extends Goal {
+        private final ThresholdHoundEntity hound;
+        private Player player;
+
+        private StalkPlayerGoal(ThresholdHoundEntity hound) {
+            this.hound = hound;
+            setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (hound.getTarget() != null) return false;
+            Player candidate = hound.level().getNearestPlayer(hound, 24.0D);
+            if (candidate == null || !candidate.isAlive() || candidate.isSpectator()
+                    || candidate.isCreative() || FlashlightItem.isActive(candidate)) return false;
+            if (candidate.isSprinting() || candidate.isSwimming() || candidate.isFallFlying()) return false;
+            if (hound.distanceToSqr(candidate) <= 36.0D) return false;
+            player = candidate;
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return player != null && player.isAlive() && !player.isSpectator()
+                    && !player.isCreative() && !FlashlightItem.isActive(player)
+                    && hound.getTarget() == null && !player.isSprinting()
+                    && !player.isSwimming() && !player.isFallFlying()
+                    && hound.distanceToSqr(player) > 36.0D
+                    && hound.distanceToSqr(player) < 24.0D * 24.0D;
+        }
+
+        @Override
+        public void start() {
+            hound.getNavigation().moveTo(player, 0.68D);
+        }
+
+        @Override
+        public void tick() {
+            if (player == null) return;
+            hound.getLookControl().setLookAt(player, 12.0F, 12.0F);
+            if (hound.getNavigation().isDone()) {
+                hound.getNavigation().moveTo(player, 0.68D);
+            }
+        }
+
+        @Override
+        public void stop() {
+            player = null;
+            hound.getNavigation().stop();
+        }
     }
 
     @Override
