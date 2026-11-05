@@ -198,6 +198,11 @@ def main() -> int:
         ("ObservationStyle", "Watcher uses distinct observation styles"),
         ("ObservationSnapshot", "Watcher stores immutable last-known observations"),
         ("confidence(long now)", "Watcher memory confidence decays with age"),
+        ("cornerPeekWaypoint", "Watcher sweeps around the last sighting instead of walking straight to it"),
+        ("searchWaypointIndex", "Watcher search uses a bounded three-point sweep"),
+        ("searchPauseTicks", "Watcher pauses to peek around corners"),
+        ("EncounterState.REPOSITION", "Watcher can perform a fake retreat reposition"),
+        ("beginFakeReposition", "fake retreat uses ordinary navigation rather than teleporting"),
         ("MEMORY_TICKS = 120", "Watcher memory has a bounded lifetime"),
         ("relayLocalObservation", "nearby Watchers relay local observations"),
         ("peer.observation.observedAt() > observation.observedAt()", "relays preserve the original observation timestamp"),
@@ -219,6 +224,7 @@ def main() -> int:
         ("updateInterval(4)", "Watcher transform synchronization is bounded"),
         ("animation.threshold_watcher.lunge", "Watcher has a lunge animation"),
         ("animation.threshold_watcher.strike", "Watcher has a strike animation"),
+        ("animation.threshold_watcher.peek", "Watcher has a corner-peek animation"),
     ):
         if token not in watcher and token not in entities:
             raise AssertionError(f"Level 0 Watcher behavior contract missing: {label}")
@@ -244,6 +250,9 @@ def main() -> int:
     assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
     assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
+    assert "fakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
+    assert "distanceToSqr(fakeRetreatDestination) <= 4.0D" in watcher, "fake retreat reappears only after path navigation reaches its destination"
+    assert "if (stateTicks >= 60) discard()" in watcher, "failed fake-retreat paths do not teleport through walls"
     assert "public boolean hurt(DamageSource source, float amount)" in watcher and "beginRetreat(attacker)" in watcher
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
@@ -273,20 +282,26 @@ def main() -> int:
     require(r"lastKnownPlayerPosition", hound,
             "Hound retains a short-lived last-known player position")
     require(r"searchTicks", hound, "Hound search memory expires after a bounded interval")
-    require(r"lastKnown\.x \+ Math\.cos\(angle\) \* radius", hound,
-            "Hound searches around rather than standing still at the last known position")
+    require(r"double angle = step \* 2\.399963229728653D", hound,
+            "Hound searches with a widening golden-angle pattern")
+    require(r"searchPatternIndex", hound, "Hound advances through bounded search waypoints")
     require(r"new StalkPlayerGoal\(this\)", hound,
             "Hound stalks quiet players before committing to an attack")
     require(r"horizontalDistanceSqr\(\) > 0\.025D", hound,
             "Hound detects fast player movement as a noise cue")
+    require(r"noiseListenCooldown", hound, "Hound listening checks are rate-limited")
+    require(r"noisy\.position\(\)\.add\(uncertainty\)", hound,
+            "Hound hears an uncertain sound location instead of gaining live wall tracking")
+    require(r"searchTicks = 80", hound, "sound investigation has a short bounded memory")
+    require(r"SoundEvents\.WOLF_GROWL", hound, "Hound gives a restrained audio response to heard noise")
     require(r"candidate\.isSprinting\(\)", hound,
             "Sprinting escalates the Hound from stalking to pursuit")
     require(r"hound\.getNavigation\(\)\.moveTo\(player, 0\.68D\)", hound,
             "Hound approaches quietly at a slower stalking speed")
-    require(r"FlashlightItem\.isActive\(candidate\)", hound,
-            "Hound does not acquire a player actively using the flashlight")
-    require(r"FlashlightItem\.isActive\(illuminated\)", hound,
-            "Hound retreats from an actively used flashlight")
+    require(r"isIlluminatedByFlashlight\(candidate\)", hound,
+            "Hound only avoids players whose active flashlight is aimed at it")
+    require(r"player\.getLookAngle\(\)\.dot\(toHound\) > 0\.58D", hound,
+            "Hound flashlight defense checks the beam direction")
     require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
     require(r"getNavigation\(\)\.moveTo", hound, "Hound withdraws rather than despawning")
 
@@ -452,6 +467,7 @@ def main() -> int:
 
     for token, label in (
         ("THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK", "Level 0 Watcher attributes and navigation runtime probe"),
+        ("THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK", "Level 1 Hound attributes and navigation runtime probe"),
         ("new BlockPos(48, 68, 16)).is(Blocks.OAK_STAIRS)", "Level 0 upper stair landing"),
         ("new BlockPos(55, 58, 11)).is(Blocks.OAK_STAIRS)", "Level 0 lower stair landing"),
         ("new BlockPos(72, 70, 72)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 upper stair landing"),
@@ -501,6 +517,7 @@ def main() -> int:
                 "animation.threshold_watcher.shroud_drift",
                 "animation.threshold_watcher.lunge",
                 "animation.threshold_watcher.strike",
+                "animation.threshold_watcher.peek",
             },
             "hound": {
                 "animation.threshold_hound.idle",
@@ -510,6 +527,7 @@ def main() -> int:
                 "animation.threshold_hound.alert",
                 "animation.threshold_hound.stalk",
                 "animation.threshold_hound.retreat",
+                "animation.threshold_hound.bite",
             },
         }[name]
         assert required_clips.issubset(animation.keys()), f"{name} is missing a required animation state"
