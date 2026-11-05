@@ -1301,7 +1301,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         if ((localX == 8 || localX == 39) && localZ >= 10 && localZ <= 38
                                 && Math.floorMod(localZ, 8) == 0) {
                             set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
-                            set(world, pos, x, 71, z, Blocks.LANTERN.defaultBlockState());
+                            set(world, pos, x, 71, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
                     }
                     case 12 -> {
