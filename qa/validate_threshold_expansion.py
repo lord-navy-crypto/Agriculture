@@ -88,11 +88,17 @@ def main() -> int:
         ("case 13 ->", "Level 0 records archive archetype"),
         ("case 14 ->", "Level 0 offset false-corridor archetype"),
         ("case 15 ->", "Level 0 broken ceiling archetype"),
+        ("case 16 ->", "Level 0 raised office mezzanine archetype"),
+        ("case 17 ->", "Level 0 nested loop maze archetype"),
+        ("case 18 ->", "Level 0 sunken conference pit archetype"),
         ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
         ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
         ("case 17 ->", "Level 1 overhead freight gantry archetype"),
         ("case 18 ->", "Level 1 compressor hall archetype"),
         ("case 19 ->", "Level 1 sorting conveyor archetype"),
+        ("case 20 ->", "Level 1 raised loading-office mezzanine archetype"),
+        ("case 21 ->", "Level 1 accessible pump sump archetype"),
+        ("case 22 ->", "Level 1 stacked pallet-rack canyon archetype"),
         ("Blocks.BOOKSHELF", "Level 0 archive shelving"),
         ("Blocks.LECTERN", "Level 0 archive catalog furniture"),
         ("Blocks.SMOOTH_STONE_SLAB", "Level 1 accessible conveyor surfaces"),
@@ -109,7 +115,13 @@ def main() -> int:
     ):
         require(layout, token, label)
     require(layout, "roomX == 1 && roomZ == 0) return 12", "guaranteed Level 0 sub-floor landmark")
+    require(layout, "roomX == 0 && roomZ == 1) return 16", "guaranteed Level 0 mezzanine landmark")
+    require(layout, "roomX == 1 && roomZ == 1) return 17", "guaranteed Level 0 nested-maze landmark")
+    require(layout, "roomX == 2 && roomZ == 0) return 18", "guaranteed Level 0 sunken-pit landmark")
     require(layout, "roomX == 1 && roomZ == 1) return 16", "guaranteed Level 1 maintenance landmark")
+    require(layout, "roomX == 0 && roomZ == 1) return 20", "guaranteed Level 1 mezzanine landmark")
+    require(layout, "roomX == 1 && roomZ == 0) return 21", "guaranteed Level 1 pump-sump landmark")
+    require(layout, "roomX == 2 && roomZ == 1) return 22", "guaranteed Level 1 stacked-rack landmark")
 
     route_tokens = (
         "LEVEL_1_TO_2", "LEVEL_2_FIRE_EXIT", "LEVEL_2_TO_3",
