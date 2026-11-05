@@ -294,8 +294,8 @@ public final class ThresholdRuntimeChecks {
             }
         }
         for (int y = 64; y <= 67; y++) {
-            if (level0.getBlockState(new BlockPos(7, y, 4)).is(Blocks.OAK_STAIRS)
-                    || level0.getBlockState(new BlockPos(7, y, 7)).is(Blocks.OAK_STAIRS)) {
+            if (level0.getBlockState(new BlockPos(7, y, 68)).is(Blocks.OAK_STAIRS)
+                    || level0.getBlockState(new BlockPos(7, y, 71)).is(Blocks.OAK_STAIRS)) {
                 level0StairTowerBuilt = true;
             }
         }
