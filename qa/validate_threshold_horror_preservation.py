@@ -23,6 +23,7 @@ def read_json(path: Path) -> dict:
 
 def main() -> int:
     layout = (JAVA / "worldgen/ThresholdRoomLayoutFeature.java").read_text(encoding="utf-8")
+    runtime_checks = (JAVA / "worldgen/ThresholdRuntimeChecks.java").read_text(encoding="utf-8")
     lights = (JAVA / "block/FlickeringPanelBlock.java").read_text(encoding="utf-8")
     vent = (JAVA / "worldgen/ThresholdIndustrialVentFeature.java").read_text(encoding="utf-8")
     mod = (JAVA / "ThresholdMod.java").read_text(encoding="utf-8")
@@ -368,6 +369,26 @@ def main() -> int:
         raise AssertionError("THRESHOLD Level 0 crimson fragment must use its red-room palette")
     if "Blocks.LIGHTNING_ROD" not in l1_architecture:
         raise AssertionError("THRESHOLD Level 1 switchgear must include transformer details")
+
+    # Stairs must reach the actual walking surfaces, not stop one block short.
+    for pattern, label in (
+        (r"localZ >= 12 && localZ <= 16;", "Level 0 upper stair reaches the gallery landing"),
+        (r"localZ >= 11 && localZ <= 16", "Level 0 lower stair reaches the annex floor"),
+        (r"localZ >= 18 && localZ <= 24;", "Level 1 upper stair reaches the catwalk landing"),
+        (r"localZ >= 21 && localZ <= 26", "Level 1 lower stair reaches the maintenance floor"),
+        (r"set\(world, pos, x, 70, z, Blocks\.WHITE_STAINED_GLASS_PANE", "Level 0 railing sits above the carpet"),
+        (r"set\(world, pos, x, 72, z, Blocks\.IRON_BARS", "Level 1 railing sits above the catwalk surface"),
+    ):
+        require(pattern, layout, label)
+
+    for token, label in (
+        ("new BlockPos(48, 68, 16)).is(Blocks.OAK_STAIRS)", "Level 0 upper stair landing"),
+        ("new BlockPos(55, 58, 11)).is(Blocks.OAK_STAIRS)", "Level 0 lower stair landing"),
+        ("new BlockPos(72, 70, 72)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 upper stair landing"),
+        ("new BlockPos(81, 58, 69)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 lower stair landing"),
+    ):
+        if token not in runtime_checks:
+            raise AssertionError(f"THRESHOLD runtime vertical probe missing: {label}")
 
     # GeckoLib geometry/animation and the compact dark pixel textures ship in
     # the independent mod JAR; every animated bone must exist in the matching model.
