@@ -17,7 +17,7 @@
 
 ## Level 0 — Isolation
 
-**Primary fear motif:** Kenophobia (empty-space dread), supported by Monophobia (fear of being alone). These are creative themes, not clinical labels applied to players.
+**Primary fear motif:** isolation and liminal emptiness. Autophobia/Monophobia (fear of being alone) is a useful creative reference; “Kenophobia” is used descriptively for empty-space dread, not as a clinical label.
 - Native dimension `threshold:level_0`; custom biome and dimension type.
 - Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
@@ -26,7 +26,7 @@
 
 ## Level 1 — The Vulnerable Shelter
 
-**Primary fear motif:** Cleithrophobia (fear of being trapped), supported by Nyctophobia (fear of darkness). The shelter offers supplies, but its partitions and uncertain exits undermine safety.
+**Primary fear motif:** Nyctophobia (fear of darkness), with claustrophobic pressure reserved for narrow maintenance sub-areas. The main warehouse remains broad and industrial: the shelter offers supplies, but unstable power and uncertain routes undermine safety.
 - Native dimension `threshold:level_1`; custom biome and dimension type.
 - Chunk-aligned 48x48 concrete warehouse layout with halls, storage bays, pillars and partitions.
 - A guaranteed starter barrel plus scarcer additional supply barrels use separate starter, pantry and maintenance tables with real Agriculture crops, prepared meals, water bottles, seeds and occasional salt.
@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.11.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.13.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -249,5 +249,22 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - The first-pass flashlight beam is still represented by a short night-vision pulse, not a dynamic light source in the world.
 - Level 0 gains a rare blackout-annex room archetype. Level 1 gains an abandoned conveyor/service-cable archetype. Both keep the existing room dimensions, entry shelter, and reserved paths intact.
 - The CI resource gate and source/JAR validators now include the Partygoer model/animation and Alpha 12 artifact name.
+
+**Keep this PR Draft. Do not merge into main.**
+
+
+## Alpha 13 — distinct Level 0 / Level 1 identity pass
+
+- Level 0 generation now strongly favours the original yellow office baseline (82% of style rolls); grey rooms are uncommon and red rooms are exceptional. Empty architectural cells are more common than furnished/partitioned cells, so the Lobby remains defined by absence rather than clutter.
+- Level 1 now has weighted industrial room selection rather than uniform archetype selection. Two uncommon additions are a broad parking-deck bay with painted lanes and a narrow maintenance spine with overhead pipe runs. The reserved room routes, starter shelter and resource footprints remain protected.
+- Light behavior now has intentionally different rhythms: Level 0 fixtures fail less often and recover quickly; Level 1 fixtures fail more often and stay dark longer.
+- Observer sightings are slightly less frequent and remain visible at a distance; Hound encounters are less spammy, prefer dark rooms, and no longer materialize directly in the player's view.
+- The Hound now briefly retreats from a player actively using the Threshold flashlight. This gives the existing flashlight a distinct Level 1 survival purpose without making the Hound disappear or trivializing the encounter.
+- Room sizes, transition walls, entry positions, return passages and all six dimension registrations are unchanged.
+
+### Long-range design direction
+- Level 0: silence/absence, repeated yellow office grammar, subtle spatial anomalies, rare harmless Observer sightings, and almost no dependable supplies.
+- Level 1: industrial scale, low fog, parking/warehouse/maintenance sub-areas, intermittent power failures, scattered but useful caches, and Hound encounters in dark spaces.
+- Planned follow-up: a generator/breaker restoration loop for Level 1, then non-combat exploration tools such as a radio, field notes, map fragments and replacement cells. These are new implementations inspired by genre conventions; no commercial game's maps, models, audio or assets are copied.
 
 **Keep this PR Draft. Do not merge into main.**
