@@ -207,7 +207,7 @@ def main() -> int:
         ("beginRush", "Watcher can initiate a short charge"),
         ("nearMiss = server.getRandom().nextInt(4) == 0", "some charges become near-miss scares"),
         ("performStrike", "Watcher has a single-swipe attack state"),
-        ("player.hurt(damageSources().mobAttack(this), 2.0F)", "Watcher hit is deliberately low damage"),
+        ("getAttributeValue(Attributes.ATTACK_DAMAGE)", "Watcher swipe uses its registered attack-damage attribute"),
         ("player.knockback(0.22D", "Watcher hit has bounded knockback"),
         ("RUSH_COOLDOWN_TICKS = 240", "jump scares have a long cooldown"),
         ("beginRetreat", "Watcher withdraws after a scare"),
