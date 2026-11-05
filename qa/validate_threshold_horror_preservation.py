@@ -239,6 +239,10 @@ def main() -> int:
     require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
     assert "getEncounterStateName" in watcher and "getObservationConfidence" in watcher and "getObservationAgeTicks" in watcher
     assert "watcherStatus" in commands, "local Watcher state and memory telemetry are inspectable in game"
+    assert "ObservationStyle[] soloStyles" in watcher, "only the second member is assigned the FLANKER style"
+    assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
+    assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
+    assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
     assert "player.getLookAngle().dot(toSpawn) > 0.35D" in director, "natural Watcher spawns outside the player's forward view"
