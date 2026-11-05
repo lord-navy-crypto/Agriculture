@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -439,7 +440,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
         // One short, low-damage hit per scare. The vanilla hurt response supplies
         // the brief red flash and camera jolt; the Watcher never chains attacks.
-        if (player.hurt(damageSources().mobAttack(this), 2.0F)) {
+        float attackDamage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+        if (player.hurt(damageSources().mobAttack(this), attackDamage)) {
             player.knockback(0.22D, getX() - player.getX(), getZ() - player.getZ());
         }
         playSound(SoundEvents.ENDERMAN_SCREAM, 0.88F, 0.82F);
