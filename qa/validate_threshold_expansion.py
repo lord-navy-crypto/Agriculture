@@ -94,6 +94,7 @@ def main() -> int:
         ("hasLevel1UpperNeighbour", "Level 1 cross-room upper-deck connectivity"),
         ("StairBlock.FACING", "walkable vertical stair connections"),
         ("ThresholdEnvironmentBlocks.CEILING_VENT", "original ceiling-vent block usage"),
+        ("ThresholdEnvironmentBlocks.FLICKERING_PANEL", "original flickering light-panel usage"),
     ):
         require(layout, token, label)
     require(layout, "roomX == 1 && roomZ == 0) return 12", "guaranteed Level 0 sub-floor landmark")
