@@ -11,8 +11,13 @@ public final class ThresholdEntityAttributes {
 
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         AttributeSupplier watcherAttributes = Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 1.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.0D)
+                .add(Attributes.MAX_HEALTH, 14.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.30D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.35D)
+                .add(Attributes.FOLLOW_RANGE, 36.0D)
+                .add(Attributes.ARMOR, 1.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.20D)
                 .build();
         event.put(ThresholdEntities.WATCHER.get(), watcherAttributes);
         event.put(ThresholdEntities.HOUND.get(), ThresholdHoundEntity.createAttributes().build());
