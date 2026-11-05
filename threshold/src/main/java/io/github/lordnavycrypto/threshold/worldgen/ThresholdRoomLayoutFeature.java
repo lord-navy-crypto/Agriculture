@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
+import io.github.lordnavycrypto.threshold.block.FlickeringPanelBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -1561,6 +1562,52 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
                     }
+                    case 22 -> {
+                        // Blackout corridor: dark partitions, dead ceiling bays and
+                        // unlit flickering panels create a local light-failure pocket.
+                        boolean darkDivider = (localX == 9 || localX == 10 || localX == 22 || localX == 23)
+                                && localZ >= 7 && localZ <= 25;
+                        boolean crossDivider = (localZ == 9 || localZ == 23)
+                                && localX >= 7 && localX <= 25;
+                        int doorGap = 10 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA22A0L), 13);
+                        boolean doorway = darkDivider && Math.abs(localZ - doorGap) <= 1
+                                || crossDivider && Math.abs(localX - doorGap) <= 1;
+                        if (!protectedRoute && !upperWalkway && !doorway
+                                && (darkDivider || crossDivider)) {
+                            for (int y = 65; y <= 69; y++) {
+                                set(world, pos, x, y, z,
+                                        y == 68 ? Blocks.BLACK_STAINED_GLASS.defaultBlockState()
+                                                : Blocks.BLACK_CONCRETE.defaultBlockState());
+                            }
+                        }
+                        boolean darkCeiling = localX >= 8 && localX <= 24
+                                && (localZ == 8 || localZ == 16 || localZ == 24)
+                                || localZ >= 8 && localZ <= 24
+                                && (localX == 8 || localX == 16 || localX == 24);
+                        if (!upperWalkway && darkCeiling) {
+                            set(world, pos, x, 71, z, Blocks.BLACK_CONCRETE.defaultBlockState());
+                        }
+                        boolean deadPanel = (localX == 12 || localX == 20)
+                                && (localZ == 12 || localZ == 20);
+                        if (!upperWalkway && deadPanel) {
+                            set(world, pos, x, 72, z,
+                                    ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState()
+                                            .setValue(FlickeringPanelBlock.LIT, false));
+                        }
+                        if (!protectedRoute && !upperWalkway
+                                && localX >= 13 && localX <= 18
+                                && localZ >= 13 && localZ <= 18
+                                && Math.floorMod(localX + localZ, 3) != 0) {
+                            set(world, pos, x, 64, z, Blocks.BLACK_CARPET.defaultBlockState());
+                        }
+                        if (!upperWalkway && (localX == 14 || localX == 18)
+                                && (localZ == 14 || localZ == 18)) {
+                            for (int y = 68; y <= 70; y++) {
+                                set(world, pos, x, y, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -2298,6 +2345,58 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             }
                         }
                     }
+                    case 26 -> {
+                        // Generator plant: four static engine assemblies, exhaust
+                        // stacks, overhead copper busbars and protected breaker bays.
+                        boolean generatorCore = (localX == 10 || localX == 38)
+                                && (localZ == 10 || localZ == 38);
+                        if (!protectedTile && !upperWalkway && generatorCore) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.FURNACE.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.LIGHTNING_ROD.defaultBlockState());
+                            for (int y = 68; y <= 71; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        boolean engineBase = (localX >= 9 && localX <= 11
+                                || localX >= 37 && localX <= 39)
+                                && (localZ >= 9 && localZ <= 11
+                                || localZ >= 37 && localZ <= 39);
+                        if (!protectedTile && !upperWalkway && engineBase) {
+                            if (Math.floorMod(localX + localZ, 2) == 0) {
+                                set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            }
+                            if (localX == 9 || localX == 11 || localX == 37 || localX == 39) {
+                                set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        boolean busbar = (localZ == 14 || localZ == 34)
+                                && localX >= 10 && localX <= 38;
+                        if (!upperWalkway && busbar) {
+                            set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX, 6) == 0) {
+                                set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        boolean breaker = (localX == 20 || localX == 28)
+                                && (localZ == 20 || localZ == 28);
+                        if (!protectedTile && !upperWalkway && breaker) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.REDSTONE_LAMP.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                        boolean warningLane = (localZ == 12 || localZ == 36)
+                                && localX >= 8 && localX <= 40;
+                        if (!protectedTile && warningLane) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        if (!upperWalkway && localX == 24
+                                && (localZ == 14 || localZ == 34)) {
+                            set(world, pos, x, 72, z, Blocks.SEA_LANTERN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -2593,31 +2692,33 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roomX == 2 && roomZ == 2) return 19;
         if (roomX == 3 && roomZ == 0) return 20;
         if (roomX == 0 && roomZ == 2) return 21;
+        if (roomX == 3 && roomZ == 2) return 22;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
-        if (roll < 27) return 0;
-        if (roll < 39) return 1;
-        if (roll < 50) return 2;
-        if (roll < 59) return 3;
-        if (roll < 65) return 4;
-        if (roll < 70) return 5;
-        if (roll < 74) return 6;
-        if (roll < 77) return 7;
-        if (roll < 79) return 8;
-        if (roll < 81) return 9;
-        if (roll < 83) return 10;
-        if (roll < 86) return 11;
-        if (roll < 88) return 12;
-        if (roll < 91) return 13;
-        if (roll < 93) return 14;
-        if (roll < 94) return 15;
-        if (roll < 95) return 16;
-        if (roll < 96) return 17;
-        if (roll < 97) return 18;
-        if (roll < 98) return 19;
-        if (roll < 99) return 20;
-        return 21;
+        if (roll < 26) return 0;
+        if (roll < 38) return 1;
+        if (roll < 49) return 2;
+        if (roll < 58) return 3;
+        if (roll < 64) return 4;
+        if (roll < 69) return 5;
+        if (roll < 73) return 6;
+        if (roll < 76) return 7;
+        if (roll < 78) return 8;
+        if (roll < 80) return 9;
+        if (roll < 82) return 10;
+        if (roll < 85) return 11;
+        if (roll < 87) return 12;
+        if (roll < 90) return 13;
+        if (roll < 92) return 14;
+        if (roll < 93) return 15;
+        if (roll < 94) return 16;
+        if (roll < 95) return 17;
+        if (roll < 96) return 18;
+        if (roll < 97) return 19;
+        if (roll < 98) return 20;
+        if (roll < 99) return 21;
+        return 22;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -2631,6 +2732,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roomX == 2 && roomZ == 2) return 23;
         if (roomX == 3 && roomZ == 0) return 24;
         if (roomX == 0 && roomZ == 2) return 25;
+        if (roomX == 2 && roomZ == 3) return 26;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
@@ -2647,18 +2749,19 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roll < 73) return 11;
         if (roll < 77) return 12;
         if (roll < 81) return 13;
-        if (roll < 84) return 14;
-        if (roll < 87) return 15;
-        if (roll < 89) return 17;
-        if (roll < 91) return 18;
-        if (roll < 92) return 19;
-        if (roll < 94) return 20;
-        if (roll < 95) return 21;
-        if (roll < 96) return 22;
-        if (roll < 97) return 16;
-        if (roll < 98) return 23;
-        if (roll < 99) return 24;
-        return 25;
+        if (roll < 83) return 14;
+        if (roll < 85) return 15;
+        if (roll < 87) return 17;
+        if (roll < 89) return 18;
+        if (roll < 90) return 19;
+        if (roll < 92) return 20;
+        if (roll < 93) return 21;
+        if (roll < 94) return 22;
+        if (roll < 95) return 16;
+        if (roll < 96) return 23;
+        if (roll < 97) return 24;
+        if (roll < 98) return 25;
+        return 26;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
