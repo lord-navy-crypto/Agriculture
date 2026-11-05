@@ -7,7 +7,8 @@ import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-/** Entity registry for the two intentionally different horror layers. */
+/** Entity registry. Natural spawn locations are controlled by ThresholdEntityDirector;
+ * operator summons are deliberately allowed in every dimension. */
 public final class ThresholdEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(Registries.ENTITY_TYPE, ThresholdMod.MOD_ID);
