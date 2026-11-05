@@ -14,14 +14,6 @@ public final class ThresholdSounds {
             register("level_0_ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> LEVEL_1_AMBIENT =
             register("level_1_ambient");
-    public static final DeferredHolder<SoundEvent, SoundEvent> LEVEL_0_ROOMTONE =
-            register("level_0_roomtone");
-    public static final DeferredHolder<SoundEvent, SoundEvent> LEVEL_0_DISTANT =
-            register("level_0_distant");
-    public static final DeferredHolder<SoundEvent, SoundEvent> LEVEL_1_MACHINE =
-            register("level_1_machine");
-    public static final DeferredHolder<SoundEvent, SoundEvent> LEVEL_1_PIPE =
-            register("level_1_pipe");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, path);
