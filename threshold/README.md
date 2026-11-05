@@ -309,7 +309,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Four observation styles give each entity a different approach: peripheral watching, assigned flanking, movement mirroring and noise-led investigation.
 - Last-known player positions are recorded only when visible. Nearby Watchers can relay the original timestamped snapshot; confidence decays over 120 ticks and is never refreshed by a relay.
 - A local encounter is capped at two Watchers. The second receives the flanker role, and only one nearby Watcher may rush the same player at a time.
-- A rush has a 25% near-miss variant or a single 2-damage swipe with mild knockback. It then withdraws; the scare cooldown is 240 ticks. A held flashlight aimed at the Watcher interrupts even an active rush.
+- A rush has a 25% near-miss variant or a single 2-damage swipe with mild knockback. It then withdraws; the scare cooldown is 240 ticks. A successful player hit also makes it flee. A held flashlight aimed at the Watcher interrupts even an active rush.
 - Added GeckoLib lunge/strike clips and audio stings. No custom shader is required; the swipe uses vanilla damage feedback.
 - Test/inspection commands: /threshold summon watcher (harmless preview), /threshold summon watcher_hunt (active test encounter), and /threshold watcher status (local role/state/memory telemetry).
 - Static QA and dedicated-server startup markers now check the active Watcher profile. A new JAR is not considered ready until NeoForge compilation, packaging, dedicated-server smoke tests and client gameplay tests pass.
