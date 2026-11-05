@@ -237,3 +237,17 @@ The CI preservation gate runs the following command:
     python3 qa/validate_threshold_horror_preservation.py
 
 It protects room dimensions and vertical profiles, entry-room identity, transition positions, distinct lighting behavior, biome ambience, architecture markers and the Level 0 observer-only / Level 1 controlled-predator scope. Intentional design changes require an explicit update to the design contract and its tests.
+
+
+## Alpha 12 — entity presentation, rechargeable equipment and room variety
+
+- The Level 0 Observer slowly turns toward the nearest player, uses rare one-tick visual dropouts, and keeps its harmless, non-colliding, transient behavior.
+- The Hound now has a dedicated pursuit-run animation, distinct from its idle and walk cycles. It remains a Level 1-only hostile and still cannot break blocks.
+- Partygoer now uses its own geometry and animation resources with the existing smiling-mask texture. Its capture window is longer; creative and spectator players are excluded, and it has no attack goal.
+- Entity renderer registration is consolidated into one client-only MOD-bus subscriber. The former second subscriber is disabled to prevent duplicate renderer registration.
+- The flashlight now has persistent 8-minute charge represented by its durability bar. Holding it active consumes charge; a Battery restores up to 3 minutes when the flashlight is held in the other hand.
+- The first-pass flashlight beam is still represented by a short night-vision pulse, not a dynamic light source in the world.
+- Level 0 gains a rare blackout-annex room archetype. Level 1 gains an abandoned conveyor/service-cable archetype. Both keep the existing room dimensions, entry shelter, and reserved paths intact.
+- The CI resource gate and source/JAR validators now include the Partygoer model/animation and Alpha 12 artifact name.
+
+**Keep this PR Draft. Do not merge into main.**

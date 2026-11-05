@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.threshold.entity;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +23,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private static final RawAnimation STILL =
             RawAnimation.begin().thenLoop("animation.threshold_watcher.still");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int flickerTicks;
+    private int nextFlickerTick;
 
     public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -46,6 +49,29 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         if (nearest == null || tickCount > 180 || distanceToSqr(nearest) < 72.25D) {
             discard();
             return;
+        }
+
+        // Slowly turn toward the player without walking or becoming hostile.
+        float targetYaw = (float) (Mth.atan2(
+                nearest.getZ() - getZ(), nearest.getX() - getX()) * (180.0D / Math.PI)) - 90.0F;
+        float trackedYaw = Mth.rotLerp(0.08F, getYRot(), targetYaw);
+        setYRot(trackedYaw);
+        setYHeadRot(trackedYaw);
+        setYBodyRot(trackedYaw);
+
+        // A rare one-tick visual dropout makes the silhouette feel unstable.
+        if (nextFlickerTick == 0) {
+            nextFlickerTick = tickCount + 45 + level().getRandom().nextInt(55);
+        }
+        if (flickerTicks > 0) {
+            setInvisible(true);
+            flickerTicks--;
+        } else {
+            setInvisible(false);
+            if (tickCount >= nextFlickerTick) {
+                flickerTicks = 1;
+                nextFlickerTick = tickCount + 55 + level().getRandom().nextInt(85);
+            }
         }
 
         Vec3 toWatcher = position().subtract(nearest.getEyePosition()).normalize();

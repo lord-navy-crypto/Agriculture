@@ -4,7 +4,7 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdPartygoerEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-/** Reuses the dark silhouette presentation until the dedicated party mask asset is authored. */
+/** Uses its own geometry, animation and smiling-mask texture; it is visually separate from the Level 0 Observer. */
 public final class ThresholdPartygoerRenderer extends GeoEntityRenderer<ThresholdPartygoerEntity> {
     public ThresholdPartygoerRenderer(EntityRendererProvider.Context context) {
         super(context, new ThresholdPartygoerModel());

@@ -18,6 +18,7 @@ public final class ThresholdClientRenderers {
                 context -> new ThresholdVentRenderer());
         event.registerEntityRenderer(ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new);
         event.registerEntityRenderer(ThresholdEntities.HOUND.get(), ThresholdHoundRenderer::new);
+        event.registerEntityRenderer(ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new);
     }
 
     private ThresholdClientRenderers() {}

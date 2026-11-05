@@ -26,7 +26,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
  * player to the Level 0 entry after a sustained close-range encounter.
  */
 public final class ThresholdPartygoerEntity extends PathfinderMob implements GeoEntity {
-    private static final RawAnimation STILL = RawAnimation.begin().thenLoop("animation.threshold_watcher.still");
+    private static final int CAPTURE_TICKS = 160;
+    private static final double CLOSE_DISTANCE_SQR = 7.0D;
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("animation.threshold_partygoer.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.threshold_partygoer.walk");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int closeTicks;
 
@@ -59,12 +62,18 @@ public final class ThresholdPartygoerEntity extends PathfinderMob implements Geo
             closeTicks = 0;
             return;
         }
+        if (player.isSpectator() || player.getAbilities().instabuild) {
+            setTarget(null);
+            getNavigation().stop();
+            closeTicks = 0;
+            return;
+        }
 
         double distance = distanceToSqr(player);
-        if (distance <= 7.0D) {
+        if (distance <= CLOSE_DISTANCE_SQR) {
             getNavigation().stop();
             closeTicks++;
-            if (closeTicks >= 100) {
+            if (closeTicks >= CAPTURE_TICKS) {
                 ServerLevel destination = current.getServer().getLevel(ThresholdDimensions.LEVEL_0);
                 if (destination != null) {
                     player.teleportTo(destination, 4.5D, 65.0D, 4.5D,
@@ -84,8 +93,8 @@ public final class ThresholdPartygoerEntity extends PathfinderMob implements Geo
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "presence", 5,
-                state -> state.setAndContinue(STILL)));
+        controllers.add(new AnimationController<>(this, "movement", 5, state ->
+                state.isMoving() ? state.setAndContinue(WALK) : state.setAndContinue(IDLE)));
     }
 
     @Override

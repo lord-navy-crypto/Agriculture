@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.GeoModel;
 public final class ThresholdPartygoerModel extends GeoModel<ThresholdPartygoerEntity> {
     @Override
     public ResourceLocation getModelResource(ThresholdPartygoerEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "geo/watcher.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "geo/partygoer.geo.json");
     }
 
     @Override
@@ -18,6 +18,6 @@ public final class ThresholdPartygoerModel extends GeoModel<ThresholdPartygoerEn
 
     @Override
     public ResourceLocation getAnimationResource(ThresholdPartygoerEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "animations/watcher.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(ThresholdMod.MOD_ID, "animations/partygoer.animation.json");
     }
 }

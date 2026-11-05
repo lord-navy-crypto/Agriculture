@@ -32,6 +32,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             RawAnimation.begin().thenLoop("animation.threshold_hound.idle");
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("animation.threshold_hound.walk");
+    private static final RawAnimation RUN =
+            RawAnimation.begin().thenLoop("animation.threshold_hound.run");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public ThresholdHoundEntity(EntityType<? extends Monster> type, Level level) {
@@ -78,7 +80,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "movement", 4, state ->
-                state.isMoving() ? state.setAndContinue(WALK) : state.setAndContinue(IDLE)));
+                !state.isMoving() ? state.setAndContinue(IDLE)
+                        : getTarget() != null ? state.setAndContinue(RUN) : state.setAndContinue(WALK)));
     }
 
     @Override

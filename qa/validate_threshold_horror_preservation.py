@@ -29,6 +29,11 @@ def main() -> int:
     entities = (JAVA / "entity/ThresholdEntities.java").read_text(encoding="utf-8")
     watcher = (JAVA / "entity/ThresholdWatcherEntity.java").read_text(encoding="utf-8")
     hound = (JAVA / "entity/ThresholdHoundEntity.java").read_text(encoding="utf-8")
+    partygoer = (JAVA / "entity/ThresholdPartygoerEntity.java").read_text(encoding="utf-8")
+    flashlight = (JAVA / "item/FlashlightItem.java").read_text(encoding="utf-8")
+    battery = (JAVA / "item/BatteryItem.java").read_text(encoding="utf-8")
+    partygoer_model = (JAVA / "client/ThresholdPartygoerModel.java").read_text(encoding="utf-8")
+    client_events = (JAVA / "client/ThresholdClientEvents.java").read_text(encoding="utf-8")
     director = (JAVA / "entity/ThresholdEntityDirector.java").read_text(encoding="utf-8")
     attributes = (JAVA / "entity/ThresholdEntityAttributes.java").read_text(encoding="utf-8")
     renderers = (JAVA / "client/ThresholdClientRenderers.java").read_text(encoding="utf-8")
@@ -152,6 +157,12 @@ def main() -> int:
             renderers, "observer renderer is registered")
     require(r"registerEntityRenderer\(ThresholdEntities\.HOUND\.get\(\)",
             renderers, "Hound renderer is registered")
+    require(r"registerEntityRenderer\(ThresholdEntities\.PARTYGOER\.get\(\)",
+            renderers, "Partygoer renderer is registered")
+    assert renderers.count("registerEntityRenderer(ThresholdEntities.WATCHER.get()") == 1
+    assert renderers.count("registerEntityRenderer(ThresholdEntities.HOUND.get()") == 1
+    assert renderers.count("registerEntityRenderer(ThresholdEntities.PARTYGOER.get()") == 1
+    assert "@EventBusSubscriber" not in client_events, "second renderer subscriber must stay disabled"
     require(r"ThresholdEntities\.WATCHER\.get\(\)", attributes,
             "observer attributes are registered")
     require(r"ThresholdEntities\.HOUND\.get\(\)", attributes,
@@ -167,6 +178,9 @@ def main() -> int:
         ("public boolean isPushable()", "observer cannot push or be pushed"),
         ("public boolean isAttackable()", "observer is not attackable"),
         ("directlyNoticed", "observer disappears when directly noticed"),
+        ("Mth.rotLerp", "observer turns toward the player without pathfinding"),
+        ("setInvisible(true)", "observer has a rare visual dropout"),
+        ("nextFlickerTick", "observer flicker interval is bounded"),
     ):
         if token not in watcher:
             raise AssertionError(f"Level 0 observer safety invariant missing: {label}")
@@ -181,6 +195,14 @@ def main() -> int:
             "Hound can acquire players as targets")
     require(r"Attributes\.ATTACK_DAMAGE", hound, "Hound has explicit attack tuning")
     require(r"Attributes\.FOLLOW_RANGE", hound, "Hound has bounded follow range")
+    require(r"animation\.threshold_hound\.run", hound, "Hound has a distinct pursuit animation")
+
+    # Partygoer is a non-attacking Overworld lure with a sustained capture window.
+    assert "MeleeAttackGoal" not in partygoer, "Partygoer must not deal melee damage"
+    require(r"CAPTURE_TICKS\s*=\s*160", partygoer, "Partygoer capture window is sustained")
+    require(r"player\.isSpectator\(\)", partygoer, "Partygoer excludes spectators")
+    require(r"player\.getAbilities\(\)\.instabuild", partygoer, "Partygoer excludes creative players")
+    require(r"animation\.threshold_partygoer\.idle", partygoer, "Partygoer has its own idle animation")
 
     # Dimension guardrails: Level 0 admits only the harmless watcher and players; Hounds
     # are rejected outside Level 1 and are not spawned in the entry shelter.
@@ -221,6 +243,23 @@ def main() -> int:
         assert png[:8] == b"\x89PNG\r\n\x1a\n", f"{name} texture is not PNG"
         width, height = struct.unpack(">II", png[16:24])
         assert (width, height) == (64, 64), f"{name} texture dimensions are wrong"
+
+    partygoer_geometry = read_json(RESOURCES / "assets/threshold/geo/partygoer.geo.json")["minecraft:geometry"][0]
+    partygoer_animation = read_json(RESOURCES / "assets/threshold/animations/partygoer.animation.json")["animations"]
+    assert partygoer_geometry["description"]["identifier"] == "geometry.threshold.partygoer"
+    assert partygoer_geometry["description"]["texture_width"] == 64
+    assert partygoer_geometry["description"]["texture_height"] == 64
+    assert partygoer_geometry["bones"] and partygoer_animation
+    require(r"geo/partygoer\.geo\.json", partygoer_model, "Partygoer model uses dedicated geometry")
+    require(r"animations/partygoer\.animation\.json", partygoer_model, "Partygoer model uses dedicated animation")
+    require(r"durability\(MAX_CHARGE\)", flashlight, "Flashlight charge persists as item durability")
+    require(r"MAX_CHARGE\s*=\s*480", flashlight, "Flashlight has eight-minute charge capacity")
+    require(r"onUseTick", flashlight, "Flashlight consumes charge while active")
+    require(r"MobEffects\.NIGHT_VISION", flashlight, "Flashlight provides its short beam pulse")
+    require(r"getBarWidth", flashlight, "Flashlight shows remaining charge")
+    require(r"FlashlightItem\.RECHARGE_AMOUNT", battery, "Battery restores flashlight charge")
+    require(r"case 7 ->", layout, "Level 0 includes the blackout-annex archetype")
+    require(r"case 8 ->", layout, "Level 1 includes the conveyor/service-cable archetype")
 
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
     assert hound_loot["type"] == "minecraft:entity"

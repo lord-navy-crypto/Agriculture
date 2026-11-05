@@ -1029,6 +1029,25 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 70, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
                         }
                     }
+                    case 7 -> {
+                        // Rare blackout annex: dark-glass partitions and unsettling ceiling details.
+                        boolean darkDivider = (localX == 11 || localX == 12 || localX == 23 || localX == 24)
+                                && localZ >= 7 && localZ <= 25;
+                        if (!protectedRoute && darkDivider) {
+                            set(world, pos, x, 65, z, Blocks.BLACK_STAINED_GLASS_PANE.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.BLACK_STAINED_GLASS_PANE.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.BLACK_STAINED_GLASS_PANE.defaultBlockState());
+                        }
+                        if (!protectedRoute && localX == 16 && localZ == 16) {
+                            set(world, pos, x, 64, z, Blocks.RED_CARPET.defaultBlockState());
+                        }
+                        if ((localX == 8 || localX == 24) && (localZ == 8 || localZ == 24)) {
+                            set(world, pos, x, 70, z, Blocks.BLACK_CONCRETE.defaultBlockState());
+                        }
+                        if (localX == 16 && (localZ == 8 || localZ == 24)) {
+                            set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1149,6 +1168,26 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 73, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
                         }
                     }
+                    case 8 -> {
+                        // Abandoned conveyor aisle with overhead copper service lines.
+                        boolean belt = (localZ == 18 || localZ == 19)
+                                && localX >= 7 && localX <= 40;
+                        if (!protectedTile && belt) {
+                            set(world, pos, x, 64, z, Blocks.POLISHED_ANDESITE_SLAB.defaultBlockState());
+                            if (Math.floorMod(localX, 8) == 0) {
+                                set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        if ((localX == 8 || localX == 24 || localX == 40)
+                                && localZ >= 10 && localZ <= 38 && Math.floorMod(localZ, 6) == 0) {
+                            set(world, pos, x, 70, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                        if (!protectedTile && (localX == 10 || localX == 37)
+                                && (localZ == 14 || localZ == 24 || localZ == 34)) {
+                            set(world, pos, x, 64, z, Blocks.BARREL.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1157,12 +1196,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static int level0Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 7);
+        return Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 8);
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
-        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 7);
+        return 1 + Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 8);
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
