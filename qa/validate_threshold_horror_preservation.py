@@ -351,7 +351,8 @@ def main() -> int:
                          ("case 18 ->", "Level 0 sunken conference pit"),
                          ("case 19 ->", "Level 0 irregular pillar forest"),
                          ("case 20 ->", "Level 0 multi-pocket floor fold"),
-                         ("case 21 ->", "Level 0 accessible stair tower")):
+                         ("case 21 ->", "Level 0 accessible stair tower"),
+                         ("case 22 ->", "Level 0 dynamic blackout corridor")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
@@ -368,7 +369,8 @@ def main() -> int:
                          ("case 22 ->", "Level 1 stacked pallet-rack canyon"),
                          ("case 23 ->", "Level 1 Gothic concrete arcade"),
                          ("case 24 ->", "Level 1 overhead cross-dock crane hall"),
-                         ("case 25 ->", "Level 1 ventilation exchange hall")):
+                         ("case 25 ->", "Level 1 ventilation exchange hall"),
+                         ("case 26 ->", "Level 1 multi-engine generator plant")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
 
@@ -414,6 +416,12 @@ def main() -> int:
         ("Blocks.POLISHED_ANDESITE", "Level 1 Gothic arcade piers", l1_architecture),
         ("Blocks.IRON_BLOCK", "Level 1 overhead crane tracks", l1_architecture),
         ("Blocks.CUT_COPPER", "Level 1 ventilation exchange ducts", l1_architecture),
+        ("FlickeringPanelBlock.LIT, false", "Level 0 blackout panels start dark", l0_architecture),
+        ("Blocks.BLACK_CONCRETE", "Level 0 blackout ceiling absorbs light", l0_architecture),
+        ("Blocks.FURNACE", "Level 1 generator engine cores", l1_architecture),
+        ("Blocks.REDSTONE_LAMP", "Level 1 breaker-panel indicator lamps", l1_architecture),
+        ("blackoutPocket ? 12 : 2", "blackout panels recover more slowly", lights),
+        ("blackoutPocket ? 8 : 18", "blackout panels fail more often", lights),
         ("level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark rooms own their vertical clearance", layout),
         ("level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark rooms own their overhead clearance", layout),
     ):
