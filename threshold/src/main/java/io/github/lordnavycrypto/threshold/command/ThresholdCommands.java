@@ -36,11 +36,11 @@ public final class ThresholdCommands {
                         .then(Commands.literal("level_0")
                                 .executes(context -> travel(
                                         context, ThresholdDimensions.LEVEL_0, 4.5, 65.0, 4.5,
-                                        "Level 0 — Isolation")))
+                                        "Level 0 — The Lobby / Isolation")))
                         .then(Commands.literal("level_1")
                                 .executes(context -> travel(
                                         context, ThresholdDimensions.LEVEL_1, 4.5, 64.0, 4.5,
-                                        "Level 1 — The Vulnerable Shelter")))
+                                        "Level 1 — The Habitable Zone")))
                         .then(Commands.literal("level_2")
                                 .executes(context -> travel(
                                         context, ThresholdDimensions.LEVEL_2, 4.5, 64.0, 4.5,
