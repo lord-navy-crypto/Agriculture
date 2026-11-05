@@ -342,7 +342,10 @@ def main() -> int:
     for token, label in (("case 8 ->", "Level 0 arch gallery"), ("case 9 ->", "Level 0 false ceiling"),
                          ("case 10 ->", "Level 0 crimson room fragment"),
                          ("case 11 ->", "Level 0 micro-maze partitions"),
-                         ("case 12 ->", "Level 0 connected sub-floor annex")):
+                         ("case 12 ->", "Level 0 connected sub-floor annex"),
+                         ("case 13 ->", "Level 0 records archive aisles"),
+                         ("case 14 ->", "Level 0 offset false-corridor walls"),
+                         ("case 15 ->", "Level 0 broken ceiling grid")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
@@ -350,7 +353,10 @@ def main() -> int:
                          ("case 13 ->", "Level 1 concrete garden"),
                          ("case 14 ->", "Level 1 electrical switchgear"),
                          ("case 15 ->", "Level 1 warehouse micro-maze"),
-                         ("case 16 ->", "Level 1 sunken maintenance trench")):
+                         ("case 16 ->", "Level 1 sunken maintenance trench"),
+                         ("case 17 ->", "Level 1 overhead freight gantry"),
+                         ("case 18 ->", "Level 1 compressor hall"),
+                         ("case 19 ->", "Level 1 sorting conveyors")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
 
@@ -369,6 +375,18 @@ def main() -> int:
         raise AssertionError("THRESHOLD Level 0 crimson fragment must use its red-room palette")
     if "Blocks.LIGHTNING_ROD" not in l1_architecture:
         raise AssertionError("THRESHOLD Level 1 switchgear must include transformer details")
+
+    for token, label, source in (
+        ("Blocks.BOOKSHELF", "Level 0 archive shelf banks", l0_architecture),
+        ("Blocks.LECTERN", "Level 0 archive catalog stations", l0_architecture),
+        ("0xA14A0L", "Level 0 seed-stable false-corridor gaps", l0_architecture),
+        ("upperWalkway", "Level 0 ceiling details respect upper-gallery clearance", l0_architecture),
+        ("Blocks.CHAIN", "Level 1 gantry suspension", l1_architecture),
+        ("Blocks.LIGHTNING_ROD", "Level 1 compressor assemblies", l1_architecture),
+        ("Blocks.SMOOTH_STONE_SLAB", "Level 1 walkable conveyor belts", l1_architecture),
+    ):
+        if token not in source:
+            raise AssertionError(f"THRESHOLD architecture detail missing: {label}")
 
     # Stairs must reach the actual walking surfaces, not stop one block short.
     for pattern, label in (
