@@ -325,6 +325,7 @@ def main() -> int:
         ("MAX_LOCAL_WATCHERS = 2", director, "a local encounter is capped at two Watchers"),
         ("countNearbyWatchers", director, "local Watcher count is explicit"),
         ("nearbyWatchers == 0 ? 4 : 8", director, "second Watcher spawn is rarer than the first"),
+        ("12 + level.getRandom().nextInt(9)", director, "second Watcher enters closer for local coordination"),
         ("watcher.setFlankerRole(nearbyWatchers > 0)", director, "second Watcher is assigned as a flanker"),
     ):
         if token not in source:
