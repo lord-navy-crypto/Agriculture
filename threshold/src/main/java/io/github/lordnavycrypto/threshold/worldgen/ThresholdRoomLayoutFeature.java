@@ -1672,7 +1672,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static boolean hasLevel0UpperDeck(long seed, int roomX, int roomZ) {
         return !(roomX == 0 && roomZ == 0)
-                && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38;
+                && ((roomX == 1 && roomZ == 0)
+                || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38);
     }
 
     private static boolean isLevel0UpperPath(
@@ -1761,7 +1762,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static boolean hasLevel1UpperDeck(long seed, int roomX, int roomZ) {
         return !(roomX == 0 && roomZ == 0)
-                && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44;
+                && ((roomX == 1 && roomZ == 1)
+                || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44);
     }
 
     private static boolean isLevel1UpperPath(
@@ -1786,6 +1788,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static int level0Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
+        // A deterministic first-ring discovery guarantees one connected
+        // sub-floor annex for every world seed, without altering the entry room.
+        if (roomX == 1 && roomZ == 0) return 12;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
@@ -1806,6 +1811,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
         if (roomX == 0 && roomZ == 0) return 0;
+        // A distant maintenance sector guarantees a real lower service route
+        // for exploration and runtime validation in every world seed.
+        if (roomX == 1 && roomZ == 1) return 16;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
