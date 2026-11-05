@@ -233,16 +233,13 @@ def main() -> int:
     assert "public boolean isPickable()" not in watcher, "Natural Watcher must remain selectable"
     assert "public boolean isAttackable()" not in watcher, "Natural Watcher must remain attackable"
     assert "MeleeAttackGoal" not in watcher, "Watcher uses its bounded encounter state machine, not a generic chase loop"
-    require("setNoAi(true)", watcher[watcher.index("public void enableShowcaseMode"):watcher.index("public void enableTestEncounterMode")],
-            "only the harmless preview disables AI")
+    assert "setNoAi(true)" in watcher[watcher.index("public void enableShowcaseMode"):watcher.index("public void enableTestEncounterMode")], "only the harmless preview disables AI"
     require("SHOWCASE_LIFETIME_TICKS = 600", watcher, "operator preview has a 30-second inspection window")
     require("TEST_ENCOUNTER_LIFETIME_TICKS = 1200", watcher, "active test encounter has a bounded 60-second lifetime")
     require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
-    require("findShowcasePosition(level, player, 8, 16, 2)", commands,
-            "active test encounter uses a safe loaded floor position")
-    require("player.getLookAngle().dot(toSpawn) > 0.35D", director,
-            "natural Watcher spawns outside the player's forward view")
+    assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
+    assert "player.getLookAngle().dot(toSpawn) > 0.35D" in director, "natural Watcher spawns outside the player's forward view"
     require("LightTexture.FULL_BRIGHT", watcher_renderer,
             "Watcher silhouette remains visible in dark rooms")
     require("Attributes.ATTACK_DAMAGE", attributes, "Watcher has a registered attack attribute")
@@ -301,20 +298,20 @@ def main() -> int:
         assert f"animation.threshold_partygoer.{clip}" in partygoer, f"Partygoer missing {clip} controller state"
 
     # Dimension guardrails are based on natural-spawn reason, not blanket entity-join rejection.
-    require("event.getEntity() instanceof Projectile", director,
-            "Threshold entity-join guard is narrowly scoped to projectiles")
+    assert "event.getEntity() instanceof Projectile" in director, "Threshold entity-join guard is narrowly scoped to projectiles"
     assert "instanceof LivingEntity" not in director, "ordinary living entities must not be blanket-rejected"
-    require("return entityType == ThresholdEntities.WATCHER.get();", director,
-            "Level 0 natural-spawn whitelist is Watcher only")
-    require("return entityType == ThresholdEntities.HOUND.get();", director,
-            "Level 1 natural-spawn whitelist is Hound only")
+    assert "return entityType == ThresholdEntities.WATCHER.get();" in director, "Level 0 natural-spawn whitelist is Watcher only"
+    assert "return entityType == ThresholdEntities.HOUND.get();" in director, "Level 1 natural-spawn whitelist is Hound only"
     require("shouldBlockNaturalSpawn", director, "natural-spawn reason policy is explicit")
     require("MobSpawnEvent.SpawnPlacementCheck.Result.FAIL", director,
             "unapproved natural spawns are rejected before placement")
-    require("spawnObservers(level)", director, "Level 0 Watcher spawner exists")
-    require("spawnHounds(level)", director, "Level 1 Hound spawner exists")
+    assert "spawnObservers(level)" in director, "Level 0 Watcher spawner exists"
+    assert "spawnHounds(level)" in director, "Level 1 Hound spawner exists"
     require("quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
+    assert "hasNearbyWatcher(level, player)" in director, "natural spawns respect the two-Watcher cap"
+    assert "hasNearbyWatcher(level, player)" in commands, "operator summons respect the same cap"
+    assert "if (!level.addFreshEntity(watcher))" in commands, "operator summon reports rejected spawns rather than false success"
     for token, source, label in (
         ("WATCHER_SPAWN_INTERVAL_TICKS = 300", director, "Watcher spawn cadence remains bounded"),
         ("WATCHER_NEARBY_RADIUS = 42.0D", director, "Watcher encounters use a local spacing radius"),
@@ -322,9 +319,6 @@ def main() -> int:
         ("countNearbyWatchers", director, "local Watcher count is explicit"),
         ("nearbyWatchers == 0 ? 4 : 8", director, "second Watcher spawn is rarer than the first"),
         ("watcher.setFlankerRole(nearbyWatchers > 0)", director, "second Watcher is assigned as a flanker"),
-        ("hasNearbyWatcher(level, player)", director, "natural spawns respect the two-Watcher cap"),
-        ("hasNearbyWatcher(level, player)", commands, "operator summons respect the same cap"),
-        ("if (!level.addFreshEntity(watcher))", commands, "operator summon reports rejected spawns rather than false success"),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD Watcher coordination budget missing: {label}")
