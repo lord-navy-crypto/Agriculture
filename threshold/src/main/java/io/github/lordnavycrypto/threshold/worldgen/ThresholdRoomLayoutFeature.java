@@ -1794,18 +1794,18 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
-        if (roll < 32) return 0;
-        if (roll < 46) return 1;
-        if (roll < 58) return 2;
-        if (roll < 67) return 3;
-        if (roll < 73) return 4;
-        if (roll < 78) return 5;
-        if (roll < 82) return 6;
-        if (roll < 85) return 7;
-        if (roll < 87) return 8;
-        if (roll < 89) return 9;
-        if (roll < 91) return 10;
-        if (roll < 98) return 11;
+        if (roll < 30) return 0;
+        if (roll < 42) return 1;
+        if (roll < 53) return 2;
+        if (roll < 62) return 3;
+        if (roll < 68) return 4;
+        if (roll < 73) return 5;
+        if (roll < 77) return 6;
+        if (roll < 80) return 7;
+        if (roll < 82) return 8;
+        if (roll < 84) return 9;
+        if (roll < 86) return 10;
+        if (roll < 97) return 11;
         return 12;
     }
 
@@ -1817,21 +1817,21 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
-        if (roll < 14) return 1;
-        if (roll < 21) return 6;
-        if (roll < 31) return 2;
-        if (roll < 41) return 3;
-        if (roll < 49) return 4;
-        if (roll < 56) return 5;
-        if (roll < 62) return 7;
-        if (roll < 68) return 8;
-        if (roll < 73) return 9;
-        if (roll < 77) return 10;
-        if (roll < 81) return 11;
-        if (roll < 85) return 12;
-        if (roll < 89) return 13;
-        if (roll < 92) return 14;
-        if (roll < 98) return 15;
+        if (roll < 12) return 1;
+        if (roll < 18) return 6;
+        if (roll < 27) return 2;
+        if (roll < 36) return 3;
+        if (roll < 44) return 4;
+        if (roll < 51) return 5;
+        if (roll < 57) return 7;
+        if (roll < 63) return 8;
+        if (roll < 68) return 9;
+        if (roll < 72) return 10;
+        if (roll < 76) return 11;
+        if (roll < 80) return 12;
+        if (roll < 84) return 13;
+        if (roll < 87) return 14;
+        if (roll < 97) return 15;
         return 16;
     }
 
