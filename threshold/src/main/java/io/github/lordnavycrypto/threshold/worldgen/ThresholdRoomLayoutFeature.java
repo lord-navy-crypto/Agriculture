@@ -200,6 +200,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             }
         }
         buildLevel0ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
+        buildLevel0EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel0VerticalNetwork(world, chunkX, chunkZ, seed, pos);
     }
 
@@ -339,6 +340,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             }
         }
         buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
+        buildLevel1EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel1VerticalNetwork(world, chunkX, chunkZ, seed, pos);
     }
 
@@ -1600,6 +1602,97 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         }
                     }
                     default -> { }
+                }
+            }
+        }
+    }
+
+    /**
+     * Small environmental details make ordinary Level 0 rooms feel inhabited
+     * by the building rather than empty test cells: worn carpet, irregular
+     * fluorescent panels, vents and a few hanging cable runs.
+     */
+    private static void buildLevel0EnvironmentalDressing(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_0_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_0_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_0_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_0_ROOM_SIZE);
+                if (roomX == 0 && roomZ == 0) continue;
+                int archetype = level0Architecture(seed, roomX, roomZ);
+                if (archetype >= 10) continue;
+                int detail = Math.floorMod((int) mix(seed, x, z, 0xA0E5L), 100);
+                boolean reserved = isReservedRoomPath(
+                        seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
+
+                if (!reserved && localX % 4 == 1 && localZ % 4 == 1 && detail < 9) {
+                    set(world, pos, x, 64, z, Blocks.BROWN_CARPET.defaultBlockState());
+                }
+                if (localX % 8 == 4 && localZ % 8 == 4 && detail < 18) {
+                    set(world, pos, x, 72, z,
+                            ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState());
+                } else if (localX % 12 == 6 && localZ % 12 == 6 && detail < 10) {
+                    set(world, pos, x, 72, z,
+                            ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
+                }
+                if (!hasLevel0UpperDeck(seed, roomX, roomZ)
+                        && localX % 10 == 5 && localZ % 10 == 5 && detail < 6) {
+                    set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                    set(world, pos, x, 71, z, Blocks.CHAIN.defaultBlockState());
+                }
+            }
+        }
+    }
+
+    /**
+     * Level 1 dressing is more functional: irregular ventilation, suspended
+     * cable/pipe runs and worn warning-floor patches. It avoids upper catwalk
+     * walking surfaces, resource footprints and the untouched entrance shelter.
+     */
+    private static void buildLevel1EnvironmentalDressing(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_1_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_1_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_1_ROOM_SIZE);
+                if (roomX == 0 && roomZ == 0) continue;
+                int archetype = level1Architecture(seed, roomX, roomZ);
+                if (archetype >= 15) continue;
+                int detail = Math.floorMod((int) mix(seed, x, z, 0xA1E5L), 100);
+                boolean protectedTile = isLevel1ResourceFootprint(localX, localZ)
+                        || isReservedRoomPath(
+                        seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
+                boolean upperWalkway = hasLevel1UpperDeck(seed, roomX, roomZ)
+                        && isLevel1UpperPath(seed, roomX, roomZ, localX, localZ);
+
+                if (!protectedTile && localX % 6 == 2 && localZ % 6 == 2 && detail < 8) {
+                    set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                }
+                if (localX % 12 == 6 && localZ % 12 == 6 && detail < 24 && !upperWalkway) {
+                    set(world, pos, x, 73, z,
+                            ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
+                } else if (localX % 12 == 3 && localZ % 12 == 3 && detail < 13 && !upperWalkway) {
+                    set(world, pos, x, 73, z,
+                            ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState());
+                }
+                if (!upperWalkway && localX % 10 == 5 && localZ % 10 == 5 && detail < 9) {
+                    set(world, pos, x, 71, z, Blocks.CHAIN.defaultBlockState());
+                    set(world, pos, x, 72, z, Blocks.CHAIN.defaultBlockState());
+                }
+                if (!upperWalkway && localX % 16 == 8 && localZ % 16 == 8 && detail < 12) {
+                    set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
                 }
             }
         }
