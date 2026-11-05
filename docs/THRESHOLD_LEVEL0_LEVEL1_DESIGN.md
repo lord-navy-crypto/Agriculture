@@ -339,7 +339,7 @@ The Watcher is now an active, bounded encounter entity rather than a harmless ap
 - **STALK:** moves according to one of four stable observation styles: PERIPHERAL, FLANKER, MIRROR or LISTENER. Sprinting, swimming, jumping and fast movement contribute short-lived noise evidence.
 - **SEARCH:** when line of sight is broken, it searches only a recent last-known observation. It does not read a hidden live player position through walls.
 - **RUSH / STRIKE:** a short high-speed approach can become either a near-miss pass or one single low-damage swipe. The swipe deals 2 damage, applies mild knockback and has a 12-second cooldown.
-- **RETREAT:** after a scare or a sustained direct sighting, the Watcher withdraws and disappears. It does not chain attacks.
+- **RETREAT:** after a scare, a sustained direct sighting or a successful player hit, the Watcher withdraws and disappears. It does not chain attacks or stay in a prolonged melee.
 
 A held flashlight aimed toward the Watcher interrupts the encounter. Natural Watchers have 14 health, normal collision and path navigation, and can be attacked. The harmless /threshold summon watcher preview remains available; /threshold summon watcher_hunt spawns an active test encounter.
 
