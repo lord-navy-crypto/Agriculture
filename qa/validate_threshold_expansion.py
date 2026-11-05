@@ -307,6 +307,7 @@ def main() -> int:
         ("THRESHOLD_LEVEL1_VENTILATION_HALL_OK", "Level 1 ventilation exchange runtime probe"),
         ("THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_OK", "Level 0 localized blackout ceiling runtime probe"),
         ("THRESHOLD_LEVEL1_GENERATOR_PLANT_OK", "Level 1 multi-engine generator plant runtime probe"),
+        ("THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK", "Level 0 active Watcher runtime readiness probe"),
     ):
         require(runtime_checks, token, label)
 
