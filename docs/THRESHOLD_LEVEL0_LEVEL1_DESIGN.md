@@ -379,7 +379,7 @@ The natural spawn director attempts a new encounter every 300 ticks. A first Wat
 
 ### Level 1 — hearing and methodical search
 - When it has no target and no active search memory, the Hound listens for nearby noisy players within 18 blocks. It selects the nearest noisy player rather than blindly checking only the nearest player.
-- The heard position is deliberately offset by a small random uncertainty. This is an auditory clue, not omniscient tracking; the Hound investigates the estimate and must regain sight or close proximity before its normal target goal commits to melee.
+- The heard position is deliberately offset by a small random uncertainty. This is an auditory clue, not omniscient tracking; the Hound investigates the estimate and must regain sight, then noisy movement or close proximity must justify its normal target goal before it commits to melee.
 - Investigation waypoints follow a bounded golden-angle sweep around the last-known point. The Hound gives a restrained growl on hearing a noise and uses a dedicated GeckoLib bite animation when its melee swing occurs.
 - Flashlight defense is directional: the item must be active, the Hound must be in line of sight, and the player's look vector must point toward it. All nearby players are checked so one player's beam can protect another.
 
