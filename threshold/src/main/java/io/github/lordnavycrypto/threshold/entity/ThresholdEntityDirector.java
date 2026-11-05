@@ -26,8 +26,8 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  * horror creatures are introduced by Threshold's encounter director.
  *
  * Vanilla biome spawn lists are empty in Threshold dimensions, so ordinary
- * animals and monsters do not naturally spawn there. Items, projectiles,
- * vehicles, and other functional entities remain fully usable.
+ * animals and monsters do not naturally spawn there. Items, vehicles, and
+ * other non-mob functional entities remain fully usable.
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
@@ -38,8 +38,8 @@ public final class ThresholdEntityDirector {
 
     /**
      * Natural-spawn whitelist. This is intentionally not an entity-join
-     * restriction: commands, spawn eggs, projectiles, item drops, vehicles,
-     * and other functional entities are admitted independently.
+     * restriction: commands, spawn eggs, item drops, vehicles, and other
+     * functional entities are admitted independently.
      */
     public static boolean isNaturalSpawnAllowed(
             ResourceKey<Level> dimension, EntityType<?> entityType) {
