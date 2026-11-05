@@ -64,6 +64,7 @@ public final class ThresholdCommands {
                         .executes(ThresholdCommands::whereAmI))
                 .then(Commands.literal("summon")
                         .then(Commands.literal("watcher").executes(ThresholdCommands::summonWatcher))
+                        .then(Commands.literal("watcher_hunt").executes(ThresholdCommands::summonWatcherHunt))
                         .then(Commands.literal("hound").executes(ThresholdCommands::summonHound))
                         .then(Commands.literal("partygoer").executes(ThresholdCommands::summonPartygoer)))
                 .then(Commands.literal("repair_floor")
@@ -167,9 +168,11 @@ public final class ThresholdCommands {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerLevel level = player.serverLevel();
         if (ThresholdEntityDirector.hasNearbyWatcher(level, player)) {
-            context.getSource().sendFailure(Component.literal("A Watcher is already lingering nearby."));
+            context.getSource().sendFailure(Component.literal(
+                    "Two Watchers are already active in this local encounter area."));
             return 0;
         }
+        int nearbyWatchers = ThresholdEntityDirector.countNearbyWatchers(level, player);
         BlockPos pos = ThresholdEntityDirector.findWatcherShowcasePosition(level, player);
         if (pos == null) {
             context.getSource().sendFailure(Component.literal(
@@ -181,13 +184,45 @@ public final class ThresholdCommands {
         float yaw = (float) (Math.atan2(player.getZ() - pos.getZ(), player.getX() - pos.getX())
                 * (180.0D / Math.PI)) - 90.0F;
         watcher.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+        watcher.setFlankerRole(nearbyWatchers > 0);
         watcher.enableShowcaseMode();
         if (!level.addFreshEntity(watcher)) {
             context.getSource().sendFailure(Component.literal("The Watcher could not be placed here."));
             return 0;
         }
         context.getSource().sendSuccess(() -> Component.literal(
-                "Watcher preview spawned in front of you. It will remain visible for 30 seconds."), false);
+                "Harmless Watcher preview spawned. Two entities maximum are allowed in one encounter area."), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /** Spawns an active Watcher so its stalking and jump-scare behavior can be tested. */
+    private static int summonWatcherHunt(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        ServerLevel level = player.serverLevel();
+        if (ThresholdEntityDirector.hasNearbyWatcher(level, player)) {
+            context.getSource().sendFailure(Component.literal(
+                    "Two Watchers are already active in this local encounter area."));
+            return 0;
+        }
+        int nearbyWatchers = ThresholdEntityDirector.countNearbyWatchers(level, player);
+        BlockPos pos = ThresholdEntityDirector.findShowcasePosition(level, player, 8, 16, 2);
+        if (pos == null) {
+            context.getSource().sendFailure(Component.literal(
+                    "No safe floor position is available in front of you. Move into an open hallway and retry."));
+            return 0;
+        }
+        ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level);
+        if (watcher == null) return 0;
+        watcher.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot(), 0.0F);
+        watcher.setFlankerRole(nearbyWatchers > 0);
+        watcher.enableTestEncounterMode();
+        if (!level.addFreshEntity(watcher)) {
+            context.getSource().sendFailure(Component.literal("The active Watcher could not be placed here."));
+            return 0;
+        }
+        context.getSource().sendSuccess(() -> Component.literal(
+                "Active Watcher spawned. Turn away to test its stalking, rush, near-miss and single-swipe behaviors."), false);
         return Command.SINGLE_SUCCESS;
     }
 
