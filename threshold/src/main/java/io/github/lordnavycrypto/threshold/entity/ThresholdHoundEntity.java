@@ -216,7 +216,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             @Override
             public boolean canUse() {
                 Player candidate = level().getNearestPlayer(ThresholdHoundEntity.this, 26.0D);
-                if (!isValidHuntTarget(candidate)
+                if (ThresholdHoundEntity.this.lightRepelledTicks > 0
+                        || !isValidHuntTarget(candidate)
                         || ThresholdHoundEntity.this.isIlluminatedByFlashlight(candidate)) return false;
 
                 // Sprinting, swimming and fast movement give the Hound a reason
@@ -329,7 +330,7 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         public boolean canUse() {
             if (hound.getTarget() != null) return false;
             Player candidate = hound.level().getNearestPlayer(hound, 24.0D);
-            if (!isValidHuntTarget(candidate)
+            if (hound.lightRepelledTicks > 0 || !isValidHuntTarget(candidate)
                     || hound.isIlluminatedByFlashlight(candidate)) return false;
             if (candidate.isSprinting() || candidate.isSwimming() || candidate.isFallFlying()) return false;
             if (hound.distanceToSqr(candidate) <= 36.0D) return false;
@@ -339,7 +340,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
         @Override
         public boolean canContinueToUse() {
-            return player != null && player.isAlive() && !player.isSpectator()
+            return hound.lightRepelledTicks == 0
+                    && player != null && player.isAlive() && !player.isSpectator()
                     && !player.isCreative() && !hound.isIlluminatedByFlashlight(player)
                     && hound.getTarget() == null && !player.isSprinting()
                     && !player.isSwimming() && !player.isFallFlying()
