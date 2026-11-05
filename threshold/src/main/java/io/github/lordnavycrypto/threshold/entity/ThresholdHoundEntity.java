@@ -38,6 +38,14 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             RawAnimation.begin().thenLoop("animation.threshold_hound.walk");
     private static final RawAnimation RUN =
             RawAnimation.begin().thenLoop("animation.threshold_hound.run");
+    private static final RawAnimation SNIFF =
+            RawAnimation.begin().thenLoop("animation.threshold_hound.sniff");
+    private static final RawAnimation ALERT =
+            RawAnimation.begin().thenLoop("animation.threshold_hound.alert");
+    private static final RawAnimation STALK =
+            RawAnimation.begin().thenLoop("animation.threshold_hound.stalk");
+    private static final RawAnimation RETREAT =
+            RawAnimation.begin().thenLoop("animation.threshold_hound.retreat");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int lightRepelledTicks;
 
@@ -184,9 +192,22 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movement", 4, state ->
-                !state.isMoving() ? state.setAndContinue(IDLE)
-                        : getTarget() != null ? state.setAndContinue(RUN) : state.setAndContinue(WALK)));
+        controllers.add(new AnimationController<>(this, "movement", 4, state -> {
+            if (getTarget() != null) {
+                return state.isMoving() ? state.setAndContinue(RUN) : state.setAndContinue(ALERT);
+            }
+            if (!state.isMoving()) {
+                int idlePhase = Math.floorMod(tickCount + getId() * 19, 180);
+                return idlePhase < 128 ? state.setAndContinue(IDLE) : state.setAndContinue(SNIFF);
+            }
+
+            // Low horizontal speed is the crouched stalking gait; a sharp burst
+            // without a target is the flashlight retreat rather than a normal walk.
+            double horizontalSpeed = getDeltaMovement().horizontalDistanceSqr();
+            if (horizontalSpeed > 0.06D) return state.setAndContinue(RETREAT);
+            if (horizontalSpeed < 0.045D) return state.setAndContinue(STALK);
+            return state.setAndContinue(WALK);
+        }));
     }
 
     @Override
