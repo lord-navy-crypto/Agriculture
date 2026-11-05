@@ -138,7 +138,11 @@ public final class ThresholdEntityDirector {
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
-                int distance = 17 + level.getRandom().nextInt(11);
+                // The second member enters closer to the player so the
+                // local pair can coordinate without expanding the spawn footprint.
+                int distance = nearbyWatchers == 0
+                        ? 17 + level.getRandom().nextInt(11)
+                        : 12 + level.getRandom().nextInt(9);
                 int x = Mth.floor(player.getX() + Math.cos(angle) * distance);
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
