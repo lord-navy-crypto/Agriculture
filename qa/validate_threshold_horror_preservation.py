@@ -300,7 +300,7 @@ def main() -> int:
             "Hound hearing uses a movement-sensitive acoustic radius")
     require(r"player\.hasLineOfSight\(this\)", hound,
             "Hound hearing is attenuated when walls obstruct the sound path")
-    require(r"range \* 0\.55D", hound,
+    require(r"range \*= 0\.55D", hound,
             "solid obstruction substantially reduces hearing distance without making walls soundproof")
     require(r"player\.isSprinting\(\) \|\| player\.isFallFlying\(\)", hound,
             "sprinting and fall-flying use the longest hearing radius")
