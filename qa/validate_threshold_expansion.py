@@ -174,22 +174,37 @@ def main() -> int:
     require(client_renderers, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
     require(client_renderers, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
     assert "@EventBusSubscriber" not in client_events, "duplicate renderer subscriber must remain disabled"
-    # Ordinary living entities must not be blanket-rejected. Level 0 retains
-    # its isolated projectile rule, while custom Threshold mobs remain dimension-scoped.
-    join_handler = director.split(
-        "public static void onEntityJoin(EntityJoinLevelEvent event)", 1
-    )[1].split("@SubscribeEvent", 1)[0]
-    assert "instanceof LivingEntity" not in join_handler, "vanilla living entities must be admitted in Threshold dimensions"
-    require(director, "level.dimension().equals(ThresholdDimensions.LEVEL_0)", "Level 0-specific entity policy")
-    require(director, "event.getEntity() instanceof Projectile", "Level 0 projectile isolation remains scoped")
-    require(director, "instanceof ThresholdWatcherEntity", "Watcher remains Level 0-specific")
-    require(director, "instanceof ThresholdHoundEntity", "Hound remains Level 1-specific")
+    # Entity admission is universal. Natural spawning is controlled by a
+    # separate per-dimension whitelist, and operator test summons are dimension-agnostic.
+    assert "EntityJoinLevelEvent" not in director, "Threshold must not globally intercept entity admission"
+    assert "setCanceled(" not in director, "Threshold must not cancel functional or summoned entities"
+    require(director, "isNaturalSpawnAllowed", "explicit natural-spawn policy")
+    require(director, "return entityType == ThresholdEntities.WATCHER.get();", "Level 0 natural whitelist is Watcher only")
+    require(director, "return entityType == ThresholdEntities.HOUND.get();", "Level 1 natural whitelist is Hound only")
+    require(director, "return entityType == ThresholdEntities.PARTYGOER.get();", "Partygoer retains its Overworld encounter")
+    require(director, "isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())", "Watcher natural spawn policy is checked")
+    require(director, "isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.HOUND.get())", "Hound natural spawn policy is checked")
+    require(director, "isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.PARTYGOER.get())", "Partygoer natural spawn policy is checked")
     for token, label in (
-        ("EntityType.COW", "passive mob compatibility probe"),
-        ("EntityType.ZOMBIE", "hostile mob compatibility probe"),
-        ("THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_OK", "six-dimension runtime mob compatibility marker"),
+        ("EntityType.COW", "passive mob admission probe"),
+        ("EntityType.ZOMBIE", "hostile mob admission probe"),
+        ("EntityType.ITEM", "dropped item admission probe"),
+        ("EntityType.ARROW", "arrow projectile admission probe"),
+        ("EntityType.TRIDENT", "trident projectile admission probe"),
+        ("EntityType.MINECART", "minecart admission probe"),
+        ("EntityType.ITEM_FRAME", "item frame admission probe"),
+        ("THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK", "all entity classes join all six dimensions"),
+        ("THRESHOLD_NATURAL_SPAWN_POLICY_OK", "six-dimension natural spawn whitelist check"),
     ):
         require(runtime_checks, token, label)
+
+    for summon_name in ("summonWatcher", "summonHound", "summonPartygoer"):
+        start = commands.index(f"private static int {summon_name}")
+        end = commands.find("\\n    private static int ", start + 1)
+        body = commands[start:end if end >= 0 else len(commands)]
+        assert "dimension()" not in body, f"{summon_name} must work in any dimension"
+        require(body, "level.addFreshEntity(", f"{summon_name} must add the summoned entity to the world")
+    require(commands, "findShowcasePosition(level, player", "Hound and Partygoer use safe dimension-agnostic summon positions")
 
     require(director, "spawnPartygoers(level)", "rare Overworld Partygoer encounter")
     require(director, "gameTime % 600L", "Partygoer encounter cadence is more frequent")
