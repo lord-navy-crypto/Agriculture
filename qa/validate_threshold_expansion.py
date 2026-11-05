@@ -34,6 +34,7 @@ def main() -> int:
     watcher = (JAVA / "entity/ThresholdWatcherEntity.java").read_text(encoding="utf-8")
     partygoer = (JAVA / "entity/ThresholdPartygoerEntity.java").read_text(encoding="utf-8")
     director = (JAVA / "entity/ThresholdEntityDirector.java").read_text(encoding="utf-8")
+    runtime_checks = (JAVA / "worldgen/ThresholdRuntimeChecks.java").read_text(encoding="utf-8")
     items = (JAVA / "item/ThresholdItems.java").read_text(encoding="utf-8")
     flashlight = (JAVA / "item/FlashlightItem.java").read_text(encoding="utf-8")
     almond_water = (JAVA / "item/AlmondWaterItem.java").read_text(encoding="utf-8")
@@ -173,6 +174,24 @@ def main() -> int:
     require(client_renderers, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
     require(client_renderers, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
     assert "@EventBusSubscriber" not in client_events, "duplicate renderer subscriber must remain disabled"
+    # Entity admission must constrain only Threshold's own dimension-specific
+    # creatures. Vanilla mobs and player-created projectiles must remain usable.
+    join_handler = director.split(
+        "public static void onEntityJoin(EntityJoinLevelEvent event)", 1
+    )[1].split("@SubscribeEvent", 1)[0]
+    assert "instanceof Projectile" not in join_handler, "projectiles must be admitted in Threshold dimensions"
+    assert "instanceof LivingEntity" not in join_handler, "vanilla living entities must be admitted in Threshold dimensions"
+    require(director, "instanceof ThresholdWatcherEntity", "Watcher remains Level 0-specific")
+    require(director, "instanceof ThresholdHoundEntity", "Hound remains Level 1-specific")
+    for token, label in (
+        ("EntityType.COW", "passive mob compatibility probe"),
+        ("EntityType.ZOMBIE", "hostile mob compatibility probe"),
+        ("EntityType.ARROW", "arrow projectile compatibility probe"),
+        ("EntityType.TRIDENT", "trident projectile compatibility probe"),
+        ("THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK", "six-dimension runtime entity compatibility marker"),
+    ):
+        require(runtime_checks, token, label)
+
     require(director, "spawnPartygoers(level)", "rare Overworld Partygoer encounter")
     require(director, "gameTime % 600L", "Partygoer encounter cadence is more frequent")
     require(director, "level.isDay()", "Partygoer night-only encounter")
