@@ -265,6 +265,24 @@ def main() -> int:
     require(r"floor\.getCollisionShape\(level,\s*pos\.below\(\)\)\.isEmpty\(\)", director,
             "observer can stand on Level 0 carpet without requiring a full-cube floor")
 
+    # Check each dimension's new room variants in its own generator method.
+    l0_architecture = layout[
+        layout.index("private static void buildLevel0ArchitecturalDetails"):
+        layout.index("private static void buildLevel1ArchitecturalDetails")
+    ]
+    l1_architecture = layout[
+        layout.index("private static void buildLevel1ArchitecturalDetails"):
+        layout.index("private static int level0Architecture")
+    ]
+    for token, label in (("case 8 ->", "Level 0 arch gallery"), ("case 9 ->", "Level 0 false ceiling")):
+        if token not in l0_architecture:
+            raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
+    for token, label in (("case 11 ->", "Level 1 freight bays"),
+                         ("case 12 ->", "Level 1 parking circulation"),
+                         ("case 13 ->", "Level 1 concrete garden")):
+        if token not in l1_architecture:
+            raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
+
     # GeckoLib geometry/animation and the compact dark pixel textures ship in
     # the independent mod JAR; every animated bone must exist in the matching model.
     for name in ("watcher", "hound"):
