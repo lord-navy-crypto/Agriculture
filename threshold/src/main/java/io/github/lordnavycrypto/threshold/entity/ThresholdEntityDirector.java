@@ -178,7 +178,7 @@ public final class ThresholdEntityDirector {
                 if (hound == null) continue;
                 hound.moveTo(x + 0.5D, pos.getY(), z + 0.5D,
                         level.getRandom().nextFloat() * 360.0F, 0.0F);
-                hound.setTarget(player);
+                // The Hound begins in a quiet stalking state; noise and proximity trigger pursuit.
                 if (level.addFreshEntity(hound)) return;
             }
         }
