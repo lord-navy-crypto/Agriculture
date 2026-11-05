@@ -69,9 +69,9 @@ public final class ThresholdEntityDirector {
         long gameTime = level.getGameTime();
 
         if (level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            if (gameTime % 240L == 0L) spawnObservers(level);
+            if (gameTime % 300L == 0L) spawnObservers(level);
         } else if (level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
-            if (gameTime % 360L == 0L) spawnHounds(level);
+            if (gameTime % 480L == 0L) spawnHounds(level);
         } else if (level.dimension().equals(Level.OVERWORLD)) {
             if (gameTime % 1200L == 0L) spawnPartygoers(level);
         }
@@ -82,7 +82,7 @@ public final class ThresholdEntityDirector {
             if (!player.isAlive() || player.isSpectator()) continue;
             if (!level.getEntitiesOfClass(ThresholdWatcherEntity.class,
                     player.getBoundingBox().inflate(42.0D)).isEmpty()) continue;
-            if (level.getRandom().nextInt(3) != 0) continue;
+            if (level.getRandom().nextInt(4) != 0) continue;
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
@@ -151,7 +151,7 @@ public final class ThresholdEntityDirector {
 
             AABB nearby = player.getBoundingBox().inflate(48.0D);
             if (!level.getEntitiesOfClass(ThresholdHoundEntity.class, nearby).isEmpty()) continue;
-            if (level.getRandom().nextInt(3) != 0) continue;
+            if (level.getRandom().nextInt(4) != 0) continue;
 
             for (int attempt = 0; attempt < 12; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
@@ -165,6 +165,14 @@ public final class ThresholdEntityDirector {
                 if (roomX == 0 && roomZ == 0) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
                 if (level.getMaxLocalRawBrightness(pos) > 9) continue;
+
+                // Do not materialize a Hound directly in the player's view.
+                // Its first appearance should be discovered through movement or sound.
+                BlockHitResult sight = level.clip(new ClipContext(
+                        player.getEyePosition(),
+                        new Vec3(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D),
+                        ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+                if (sight.getType() == HitResult.Type.MISS) continue;
 
                 ThresholdHoundEntity hound = ThresholdEntities.HOUND.get().create(level);
                 if (hound == null) continue;
