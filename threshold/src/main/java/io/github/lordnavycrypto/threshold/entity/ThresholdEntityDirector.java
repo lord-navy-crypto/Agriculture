@@ -75,7 +75,7 @@ public final class ThresholdEntityDirector {
         } else if (level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
             if (gameTime % 480L == 0L) spawnHounds(level);
         } else if (level.dimension().equals(Level.OVERWORLD)) {
-            if (gameTime % 1200L == 0L) spawnPartygoers(level);
+            if (gameTime % 600L == 0L) spawnPartygoers(level);
         }
     }
 
@@ -156,11 +156,11 @@ public final class ThresholdEntityDirector {
             if (level.isDay()) continue;
             if (!level.getEntitiesOfClass(ThresholdPartygoerEntity.class,
                     player.getBoundingBox().inflate(64.0D)).isEmpty()) continue;
-            if (level.getRandom().nextInt(8) != 0) continue;
+            if (level.getRandom().nextInt(5) != 0) continue;
 
             for (int attempt = 0; attempt < 12; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
-                int distance = 24 + level.getRandom().nextInt(13);
+                int distance = 20 + level.getRandom().nextInt(11);
                 int x = Mth.floor(player.getX() + Math.cos(angle) * distance);
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = level.getHeightmapPos(
@@ -169,12 +169,22 @@ public final class ThresholdEntityDirector {
                 if (pos.distSqr(level.getSharedSpawnPos()) < 48.0D * 48.0D) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
 
+                // A Partygoer should be discovered in the periphery or behind
+                // cover, never materialize in the centre of the player's view.
+                Vec3 eye = player.getEyePosition();
+                Vec3 toSpawn = new Vec3(
+                        pos.getX() + 0.5D - eye.x,
+                        pos.getY() + 1.1D - eye.y,
+                        pos.getZ() + 0.5D - eye.z).normalize();
+                if (player.getLookAngle().dot(toSpawn) > 0.18D) continue;
+
                 ThresholdPartygoerEntity partygoer = ThresholdEntities.PARTYGOER.get().create(level);
                 if (partygoer == null) continue;
                 partygoer.moveTo(x + 0.5D, pos.getY(), z + 0.5D,
                         (float) (Mth.atan2(player.getZ() - z, player.getX() - x)
                                 * (180.0D / Math.PI)) - 90.0F, 0.0F);
-                partygoer.setTarget(player);
+                // Natural encounters begin in the stalking state. Looking back,
+                // sprinting, or getting close makes it commit to the hunt.
                 if (level.addFreshEntity(partygoer)) return;
             }
         }

@@ -227,7 +227,8 @@ public final class ThresholdCommands {
         partygoer.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot() + 180.0F, 0.0F);
         partygoer.setTarget(player);
         level.addFreshEntity(partygoer);
-        context.getSource().sendSuccess(() -> Component.literal("A Partygoer has noticed you. Keep your distance."), false);
+        context.getSource().sendSuccess(() -> Component.literal(
+                "Hostile Partygoer summoned. It will stalk, pursue, and attack."), false);
         return Command.SINGLE_SUCCESS;
     }
 

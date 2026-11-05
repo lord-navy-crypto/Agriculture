@@ -32,7 +32,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenLoop("animation.threshold_watcher.shroud_drift");
     private static final int MAX_LIFETIME_TICKS = 180;
     private static final int PERCEPTION_INTERVAL_TICKS = 2;
-    private static final int DIRECT_NOTICE_GRACE_CHECKS = 20;
+    private static final int DIRECT_NOTICE_GRACE_CHECKS = 3;
     private static final int SHOWCASE_LIFETIME_TICKS = 600;
     private static final double MAX_PLAYER_DISTANCE = 32.0D;
     private static final double MIN_PLAYER_DISTANCE_SQR = 72.25D;
