@@ -308,6 +308,7 @@ def main() -> int:
     require(r"player\.getLookAngle\(\)\.dot\(toHound\) > 0\.58D", hound,
             "Hound flashlight defense checks the beam direction")
     assert hound.index("findIlluminatingPlayer()") < hound.index("super.tick()"), "aimed flashlight interrupts before Hound target/attack AI runs"
+    assert "ThresholdHoundEntity.this.lightRepelledTicks > 0" in hound and "hound.lightRepelledTicks > 0" in hound and "hound.lightRepelledTicks == 0" in hound, "Hound remains in its retreat window after flashlight contact"
     melee_goal = hound[hound.index("new MeleeAttackGoal"):hound.index("new InvestigateLastKnownPositionGoal")]
     assert "lightRepelledTicks == 0" in melee_goal and "isIlluminatedByFlashlight(target)" in melee_goal, "Hound melee cannot override active flashlight defense"
     require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
