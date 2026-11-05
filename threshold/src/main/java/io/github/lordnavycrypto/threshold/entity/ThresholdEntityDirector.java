@@ -7,6 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -16,6 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -27,7 +29,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  *
  * Vanilla biome spawn lists are empty in Threshold dimensions, so ordinary
  * animals and monsters do not naturally spawn there. Items, vehicles, and
- * other non-mob functional entities remain fully usable.
+ * other non-combat functional entities remain admitted independently.
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
@@ -78,6 +80,20 @@ public final class ThresholdEntityDirector {
                 || dimension.equals(ThresholdDimensions.LEVEL_3)
                 || dimension.equals(ThresholdDimensions.LEVEL_4)
                 || dimension.equals(ThresholdDimensions.LEVEL_5);
+    }
+
+    /**
+     * Keeps weapon-like projectile entities outside the Threshold encounter
+     * space. This is deliberately separate from mob natural-spawn filtering;
+     * ordinary item, vehicle, display, and custom mob entities are unaffected.
+     */
+    @SubscribeEvent
+    public static void onEntityJoin(EntityJoinLevelEvent event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        if (isThresholdDimension(level.dimension())
+                && event.getEntity() instanceof Projectile) {
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
