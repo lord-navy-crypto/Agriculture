@@ -8,10 +8,14 @@
     "water_fog_color": 4159204,
     "sky_color": 9864092,
     "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
+      "sound": "threshold:level_0_roomtone",
+      "tick_delay": 1800,
+      "block_search_extent": 10,
       "offset": 2
+    },
+    "additions_sound": {
+      "sound": "threshold:level_0_distant",
+      "tick_chance": 0.0012
     },
     "music": {
       "sound": "threshold:level_0_ambient",
