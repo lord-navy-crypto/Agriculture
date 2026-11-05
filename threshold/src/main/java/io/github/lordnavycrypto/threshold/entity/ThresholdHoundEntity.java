@@ -47,11 +47,15 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             RawAnimation.begin().thenLoop("animation.threshold_hound.stalk");
     private static final RawAnimation RETREAT =
             RawAnimation.begin().thenLoop("animation.threshold_hound.retreat");
+    private static final RawAnimation BITE =
+            RawAnimation.begin().thenPlay("animation.threshold_hound.bite");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int lightRepelledTicks;
     private Vec3 lastKnownPlayerPosition;
     private int searchTicks;
     private int searchStepTicks;
+    private int searchPatternIndex;
+    private int noiseListenCooldown;
 
     public ThresholdHoundEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -69,10 +73,30 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!level().isClientSide && noiseListenCooldown > 0) noiseListenCooldown--;
+        if (!level().isClientSide && getTarget() == null && lightRepelledTicks == 0
+                && searchTicks == 0 && noiseListenCooldown == 0) {
+            Player noisy = level().getNearestPlayer(this, 18.0D);
+            if (isValidHuntTarget(noisy) && isPlayerNoisy(noisy)
+                    && distanceToSqr(noisy) <= 18.0D * 18.0D) {
+                // Sound is an uncertain clue, not live target tracking. The Hound
+                // investigates an offset estimate and must regain line of sight
+                // before its normal attack target goal can commit.
+                Vec3 uncertainty = new Vec3(
+                        (level().getRandom().nextDouble() - 0.5D) * 2.4D,
+                        0.0D,
+                        (level().getRandom().nextDouble() - 0.5D) * 2.4D);
+                lastKnownPlayerPosition = noisy.position().add(uncertainty);
+                searchTicks = 80;
+                searchPatternIndex = 0;
+                searchStepTicks = 0;
+                noiseListenCooldown = 40;
+                playSound(SoundEvents.WOLF_GROWL, 0.72F, 0.78F);
+            }
+        }
+
         if (getTarget() instanceof Player target && hasLineOfSight(target)) {
-            // Only refresh memory while the player is actually visible.
-            // The target goal may retain a target briefly after LOS is broken;
-            // during that interval the Hound must not track through walls.
+            // Only refresh exact memory while the player is actually visible.
             lastKnownPlayerPosition = target.position();
             searchTicks = 120;
         }
@@ -95,8 +119,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         }
 
         Player illuminated = level().getNearestPlayer(this, 12.0D);
-        if (illuminated == null || !FlashlightItem.isActive(illuminated)
-                || distanceToSqr(illuminated) > 144.0D) return;
+        if (illuminated == null || distanceToSqr(illuminated) > 144.0D
+                || !isIlluminatedByFlashlight(illuminated)) return;
 
         Vec3 away = position().subtract(illuminated.position());
         if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
@@ -110,6 +134,27 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                 getY(),
                 getZ() + away.z * 8.0D,
                 1.1D);
+    }
+
+    private static boolean isValidHuntTarget(Player player) {
+        return player != null && player.isAlive()
+                && !player.isSpectator() && !player.isCreative();
+    }
+
+    private static boolean isPlayerNoisy(Player player) {
+        return player != null && (player.isSprinting() || player.isSwimming()
+                || player.isFallFlying()
+                || player.getDeltaMovement().horizontalDistanceSqr() > 0.025D
+                || (!player.onGround() && Math.abs(player.getDeltaMovement().y) > 0.12D));
+    }
+
+    /** The flashlight only repels the Hound when its active beam is actually aimed at it. */
+    private boolean isIlluminatedByFlashlight(Player player) {
+        if (player == null || !FlashlightItem.isActive(player) || !player.hasLineOfSight(this)) {
+            return false;
+        }
+        Vec3 toHound = position().subtract(player.getEyePosition()).normalize();
+        return player.getLookAngle().dot(toHound) > 0.58D;
     }
 
     @Override
@@ -127,8 +172,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             @Override
             public boolean canUse() {
                 Player candidate = level().getNearestPlayer(ThresholdHoundEntity.this, 26.0D);
-                if (candidate == null || candidate.isSpectator() || candidate.isCreative()
-                        || FlashlightItem.isActive(candidate)) return false;
+                if (!isValidHuntTarget(candidate)
+                        || ThresholdHoundEntity.this.isIlluminatedByFlashlight(candidate)) return false;
 
                 // Sprinting, swimming and fast movement give the Hound a reason
                 // to abandon stalking and begin a direct pursuit.
@@ -195,9 +240,12 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             hound.getLookControl().setLookAt(lastKnown.x, lastKnown.y, lastKnown.z, 12.0F, 12.0F);
             if (hound.searchStepTicks > 0) hound.searchStepTicks--;
             if (hound.getNavigation().isDone() && hound.searchStepTicks == 0) {
-                hound.searchStepTicks = 18 + hound.level().getRandom().nextInt(18);
-                double angle = hound.level().getRandom().nextDouble() * (Math.PI * 2.0D);
-                double radius = 1.5D + hound.level().getRandom().nextDouble() * 4.0D;
+                // A widening golden-angle sweep makes the Hound search a small
+                // area methodically instead of repeatedly choosing random points.
+                int step = hound.searchPatternIndex++;
+                double angle = step * 2.399963229728653D;
+                double radius = 1.8D + Math.min(step, 5) * 0.85D;
+                hound.searchStepTicks = 16 + Math.min(step, 4) * 4;
                 hound.getNavigation().moveTo(
                         lastKnown.x + Math.cos(angle) * radius,
                         lastKnown.y,
@@ -237,8 +285,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         public boolean canUse() {
             if (hound.getTarget() != null) return false;
             Player candidate = hound.level().getNearestPlayer(hound, 24.0D);
-            if (candidate == null || !candidate.isAlive() || candidate.isSpectator()
-                    || candidate.isCreative() || FlashlightItem.isActive(candidate)) return false;
+            if (!isValidHuntTarget(candidate)
+                    || hound.isIlluminatedByFlashlight(candidate)) return false;
             if (candidate.isSprinting() || candidate.isSwimming() || candidate.isFallFlying()) return false;
             if (hound.distanceToSqr(candidate) <= 36.0D) return false;
             player = candidate;
@@ -248,7 +296,7 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         @Override
         public boolean canContinueToUse() {
             return player != null && player.isAlive() && !player.isSpectator()
-                    && !player.isCreative() && !FlashlightItem.isActive(player)
+                    && !player.isCreative() && !hound.isIlluminatedByFlashlight(player)
                     && hound.getTarget() == null && !player.isSprinting()
                     && !player.isSwimming() && !player.isFallFlying()
                     && hound.distanceToSqr(player) > 36.0D
@@ -282,6 +330,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             if (getTarget() != null) {
                 return state.isMoving() ? state.setAndContinue(RUN) : state.setAndContinue(ALERT);
             }
+            if (getAttackAnim(0.0F) > 0.12F) return state.setAndContinue(BITE);
+            if (searchTicks > 0 && getTarget() == null) return state.setAndContinue(SNIFF);
             if (!state.isMoving()) {
                 int idlePhase = Math.floorMod(tickCount + getId() * 19, 180);
                 return idlePhase < 128 ? state.setAndContinue(IDLE) : state.setAndContinue(SNIFF);
