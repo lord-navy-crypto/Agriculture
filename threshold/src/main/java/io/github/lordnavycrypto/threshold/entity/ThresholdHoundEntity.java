@@ -106,8 +106,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         super.tick();
         if (level().isClientSide) return;
 
-        // The Level 1 Hound avoids an actively used flashlight. It retreats
-        // briefly rather than being defeated or deleted, preserving tension.
+        // The Level 1 Hound retreats only when a lit flashlight is aimed
+        // at it with a clear line of sight; carrying it is not blanket immunity.
         if (lightRepelledTicks > 0) {
             lightRepelledTicks--;
             if (getTarget() != null) setTarget(null);
