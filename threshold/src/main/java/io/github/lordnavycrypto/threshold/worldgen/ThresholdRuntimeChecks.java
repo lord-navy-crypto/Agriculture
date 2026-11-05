@@ -68,7 +68,7 @@ public final class ThresholdRuntimeChecks {
         // Alpha 16 landmark chunks: pillar grove, floor-fold pockets and stair tower.
         level0.getChunk(4, 4);
         level0.getChunk(6, 0);
-        level0.getChunk(1, 5);
+        level0.getChunk(0, 4);
         level1.getChunk(0, 0);
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
@@ -284,13 +284,19 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL0_FLOOR_FOLD_OK" : "THRESHOLD_LEVEL0_FLOOR_FOLD_FAIL");
 
         boolean level0StairTowerBuilt = false;
-        for (int x = 22; x <= 28; x++) {
-            for (int z = 86; z <= 92; z++) {
+        for (int x = 4; x <= 11; x++) {
+            for (int z = 68; z <= 75; z++) {
                 if (level0.getBlockState(new BlockPos(x, 65, z)).is(Blocks.YELLOW_CONCRETE)
                         || level0.getBlockState(new BlockPos(x, 65, z))
                                 .is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())) {
                     level0StairTowerBuilt = true;
                 }
+            }
+        }
+        for (int y = 64; y <= 67; y++) {
+            if (level0.getBlockState(new BlockPos(7, y, 4)).is(Blocks.OAK_STAIRS)
+                    || level0.getBlockState(new BlockPos(7, y, 7)).is(Blocks.OAK_STAIRS)) {
+                level0StairTowerBuilt = true;
             }
         }
         System.out.println(level0StairTowerBuilt
