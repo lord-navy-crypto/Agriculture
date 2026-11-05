@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -15,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
@@ -51,6 +53,40 @@ public final class ThresholdEntityDirector {
             return entityType == ThresholdEntities.PARTYGOER.get();
         }
         return false;
+    }
+
+    /**
+     * Returns true only for automatic natural-world mob spawn attempts in
+     * Threshold dimensions that are outside the dimension's authored whitelist.
+     * Commands, spawn eggs, breeding, spawners, and direct entity creation are
+     * intentionally not classified as natural spawning.
+     */
+    public static boolean shouldBlockNaturalSpawn(
+            ResourceKey<Level> dimension, EntityType<?> entityType, MobSpawnType spawnType) {
+        if (spawnType != MobSpawnType.NATURAL
+                && spawnType != MobSpawnType.CHUNK_GENERATION) {
+            return false;
+        }
+        if (!isThresholdDimension(dimension)) return false;
+        return !isNaturalSpawnAllowed(dimension, entityType);
+    }
+
+    private static boolean isThresholdDimension(ResourceKey<Level> dimension) {
+        return dimension.equals(ThresholdDimensions.LEVEL_0)
+                || dimension.equals(ThresholdDimensions.LEVEL_1)
+                || dimension.equals(ThresholdDimensions.LEVEL_2)
+                || dimension.equals(ThresholdDimensions.LEVEL_3)
+                || dimension.equals(ThresholdDimensions.LEVEL_4)
+                || dimension.equals(ThresholdDimensions.LEVEL_5);
+    }
+
+    @SubscribeEvent
+    public static void onSpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+        if (!(event.getLevel() instanceof ServerLevel level)) return;
+        if (shouldBlockNaturalSpawn(
+                level.dimension(), event.getEntityType(), event.getSpawnType())) {
+            event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
+        }
     }
 
     @SubscribeEvent
