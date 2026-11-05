@@ -102,6 +102,12 @@ def main() -> int:
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
+    require(r"if \(roll < 40\) return 0", layout,
+            "Level 0 preserves empty rooms as its dominant architecture")
+    require(r"if \(roll < 82\) return 0", layout,
+            "Level 0 preserves the classic yellow-office palette")
+    require(r"case 9 ->", layout, "Level 1 includes parking-deck bays")
+    require(r"case 10 ->", layout, "Level 1 includes narrow maintenance spines")
     require(r"private static boolean isReservedRoomPath\(", layout,
             "architectural overlays reserve a route from each actual doorway to the room hub")
     require(r"doorwayCenterAlongZ", layout,
@@ -126,9 +132,9 @@ def main() -> int:
             raise AssertionError(f"THRESHOLD architecture contract missing: {label}")
 
     # The two lighting systems retain different failure and recovery profiles.
-    require(r"int offChance\s*=\s*level0\s*\?\s*16\s*:\s*10\s*;", lights,
+    require(r"int offChance\s*=\s*level0\s*\?\s*18\s*:\s*8\s*;", lights,
             "Level 0 and Level 1 retain distinct light-failure rates")
-    require(r"int restoreChance\s*=\s*level0\s*\?\s*2\s*:\s*4\s*;", lights,
+    require(r"int restoreChance\s*=\s*level0\s*\?\s*2\s*:\s*8\s*;", lights,
             "Level 1 retains its longer dark recovery interval")
 
     # Both biomes remain free of generic natural spawner tables. The entity
@@ -196,6 +202,10 @@ def main() -> int:
     require(r"Attributes\.ATTACK_DAMAGE", hound, "Hound has explicit attack tuning")
     require(r"Attributes\.FOLLOW_RANGE", hound, "Hound has bounded follow range")
     require(r"animation\.threshold_hound\.run", hound, "Hound has a distinct pursuit animation")
+    require(r"FlashlightItem\.isActive\(illuminated\)", hound,
+            "Hound retreats from an actively used flashlight")
+    require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
+    require(r"getNavigation\(\)\.moveTo", hound, "Hound withdraws rather than despawning")
 
     # Partygoer is a non-attacking Overworld lure with a sustained capture window.
     assert "MeleeAttackGoal" not in partygoer, "Partygoer must not deal melee damage"
@@ -220,6 +230,10 @@ def main() -> int:
             "Level 1 admits only players and authored Threshold creatures in this first pass")
     require(r"spawnObservers\(level\)", director, "Level 0 observer spawner exists")
     require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
+    require(r"gameTime % 300L == 0L", director, "Observer sightings use a slower cadence")
+    require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
+    require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
+            "Hounds do not materialize directly in the player's view")
     require(r"playerRoomX\s*==\s*0\s*&&\s*playerRoomZ\s*==\s*0", director,
             "Level 1 starter shelter is protected from Hound spawns")
     require(r"getMaxLocalRawBrightness\(pos\)\s*>\s*9", director,
