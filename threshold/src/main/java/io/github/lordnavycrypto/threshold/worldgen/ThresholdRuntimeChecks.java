@@ -69,6 +69,8 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(4, 4);
         level0.getChunk(6, 0);
         level0.getChunk(0, 4);
+        // Alpha 17: guaranteed Level 0 blackout corridor.
+        level0.getChunk(6, 4);
         level1.getChunk(0, 0);
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
@@ -87,6 +89,8 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(6, 6);
         level1.getChunk(10, 1);
         level1.getChunk(0, 6);
+        // Alpha 17: guaranteed Level 1 generator plant.
+        level1.getChunk(6, 9);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -265,6 +269,24 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level1VerticalLayout
                 ? "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_FAIL");
+
+        boolean level0BlackoutBuilt =
+                level0.getBlockState(new BlockPos(108, 71, 76)).is(Blocks.BLACK_CONCRETE)
+                && level0.getBlockState(new BlockPos(108, 72, 76))
+                        .is(ThresholdEnvironmentBlocks.FLICKERING_PANEL.get())
+                && !level0.getBlockState(new BlockPos(108, 72, 76))
+                        .getValue(io.github.lordnavycrypto.threshold.block.FlickeringPanelBlock.LIT);
+        System.out.println(level0BlackoutBuilt
+                ? "THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_OK"
+                : "THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_FAIL");
+
+        boolean level1GeneratorBuilt =
+                level1.getBlockState(new BlockPos(106, 65, 154)).is(Blocks.FURNACE)
+                && level1.getBlockState(new BlockPos(106, 66, 154)).is(Blocks.COPPER_BLOCK)
+                && level1.getBlockState(new BlockPos(106, 68, 154)).is(Blocks.IRON_BARS);
+        System.out.println(level1GeneratorBuilt
+                ? "THRESHOLD_LEVEL1_GENERATOR_PLANT_OK"
+                : "THRESHOLD_LEVEL1_GENERATOR_PLANT_FAIL");
 
         boolean level0PillarForestBuilt =
                 level0.getBlockState(new BlockPos(70, 65, 70)).is(Blocks.YELLOW_CONCRETE)
