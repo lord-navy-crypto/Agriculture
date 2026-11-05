@@ -1324,10 +1324,27 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 set(world, pos, x, y, z, Blocks.POLISHED_ANDESITE.defaultBlockState());
                             }
                         }
-                        boolean deck = localX >= 20 && localX <= 27 && localZ >= 12 && localZ <= 34;
-                        if (!protectedTile && deck && (localZ == 12 || localZ == 34)) {
+                        boolean deck = localX >= 20 && localX <= 27 && localZ >= 12 && localZ <= 32;
+                        if (!protectedTile && deck) {
                             set(world, pos, x, 68, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
-                            set(world, pos, x, 69, z, Blocks.IRON_BARS.defaultBlockState());
+                            if (localX == 20 || localX == 27) {
+                                set(world, pos, x, 69, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        boolean deckSupport = (localX == 20 || localX == 27)
+                                && (localZ == 16 || localZ == 24 || localZ == 32);
+                        if (!protectedTile && deckSupport) {
+                            for (int y = 65; y <= 67; y++) {
+                                set(world, pos, x, y, z, Blocks.POLISHED_ANDESITE.defaultBlockState());
+                            }
+                        }
+                        // A five-step concrete access ramp joins the lower deck to the raised platform.
+                        if (!protectedTile && localX >= 22 && localX <= 25
+                                && localZ >= 28 && localZ <= 32) {
+                            int step = localZ - 28;
+                            for (int y = 64; y <= 64 + step; y++) {
+                                set(world, pos, x, y, z, Blocks.SMOOTH_STONE.defaultBlockState());
+                            }
                         }
                     }
                     case 13 -> {
