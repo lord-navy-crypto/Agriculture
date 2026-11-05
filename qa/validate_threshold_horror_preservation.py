@@ -348,7 +348,10 @@ def main() -> int:
                          ("case 15 ->", "Level 0 broken ceiling grid"),
                          ("case 16 ->", "Level 0 raised office mezzanine"),
                          ("case 17 ->", "Level 0 nested loop maze"),
-                         ("case 18 ->", "Level 0 sunken conference pit")):
+                         ("case 18 ->", "Level 0 sunken conference pit"),
+                         ("case 19 ->", "Level 0 irregular pillar forest"),
+                         ("case 20 ->", "Level 0 multi-pocket floor fold"),
+                         ("case 21 ->", "Level 0 accessible stair tower")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
@@ -362,7 +365,10 @@ def main() -> int:
                          ("case 19 ->", "Level 1 sorting conveyors"),
                          ("case 20 ->", "Level 1 raised loading-office mezzanine"),
                          ("case 21 ->", "Level 1 accessible pump sump"),
-                         ("case 22 ->", "Level 1 stacked pallet-rack canyon")):
+                         ("case 22 ->", "Level 1 stacked pallet-rack canyon"),
+                         ("case 23 ->", "Level 1 Gothic concrete arcade"),
+                         ("case 24 ->", "Level 1 overhead cross-dock crane hall"),
+                         ("case 25 ->", "Level 1 ventilation exchange hall")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
 
@@ -402,6 +408,14 @@ def main() -> int:
         ("localX == 12", "Level 1 sump has an alternate stair opening", l1_architecture),
         ("localX >= 13 && localX <= 17", "Level 1 sump alternate stair flight", l1_architecture),
         ("!protectedTile && !upperWalkway", "Level 1 lower room preserves routes and catwalks", l1_architecture),
+        ("0xA19A0L", "Level 0 seed-stable pillar variation", l0_architecture),
+        ("Blocks.SMOOTH_STONE", "Level 0 recessed floor pockets", l0_architecture),
+        ("case 21 ->", "Level 0 stair tower and raised landing", l0_architecture),
+        ("Blocks.POLISHED_ANDESITE", "Level 1 Gothic arcade piers", l1_architecture),
+        ("Blocks.IRON_BLOCK", "Level 1 overhead crane tracks", l1_architecture),
+        ("Blocks.CUT_COPPER", "Level 1 ventilation exchange ducts", l1_architecture),
+        ("level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark rooms own their vertical clearance", layout),
+        ("level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark rooms own their overhead clearance", layout),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD architecture detail missing: {label}")
