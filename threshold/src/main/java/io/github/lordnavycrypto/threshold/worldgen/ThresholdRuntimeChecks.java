@@ -77,6 +77,8 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(0, 4);
         level1.getChunk(0, 5);
         level1.getChunk(6, 3);
+        level1.getChunk(6, 4);
+        level1.getChunk(6, 5);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -394,8 +396,10 @@ public final class ThresholdRuntimeChecks {
 
         boolean level1RackCanyonBuilt = false;
         for (int x = 104; x <= 110; x++) {
-            if (level1.getBlockState(new BlockPos(x, 66, 60)).is(Blocks.IRON_BLOCK)) {
-                level1RackCanyonBuilt = true;
+            for (int z = 60; z <= 84; z += 8) {
+                if (level1.getBlockState(new BlockPos(x, 66, z)).is(Blocks.IRON_BLOCK)) {
+                    level1RackCanyonBuilt = true;
+                }
             }
         }
         System.out.println(level1RackCanyonBuilt
