@@ -22,6 +22,14 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEntity {
     private static final RawAnimation STILL =
             RawAnimation.begin().thenLoop("animation.threshold_watcher.still");
+    private static final RawAnimation HEAD_TRACK =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.head_track");
+    private static final RawAnimation STUTTER =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.stutter");
+    private static final RawAnimation FOLD =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.fold");
+    private static final RawAnimation SHROUD_DRIFT =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.shroud_drift");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int flickerTicks;
     private int nextFlickerTick;
@@ -97,8 +105,16 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "presence", 5,
-                state -> state.setAndContinue(STILL)));
+        controllers.add(new AnimationController<>(this, "presence", 5, state -> {
+            // Long quiet intervals are interrupted by brief, non-combat gestures.
+            // The phase is deterministic per entity so client and server remain visually aligned.
+            int phase = Math.floorMod(tickCount + getId() * 31, 360);
+            if (phase < 190) return state.setAndContinue(STILL);
+            if (phase < 260) return state.setAndContinue(HEAD_TRACK);
+            if (phase < 278) return state.setAndContinue(STUTTER);
+            if (phase < 320) return state.setAndContinue(FOLD);
+            return state.setAndContinue(SHROUD_DRIFT);
+        }));
     }
 
     @Override
