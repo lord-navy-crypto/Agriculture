@@ -9,8 +9,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.StairBlock;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -198,6 +200,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             }
         }
         buildLevel0ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
+        buildLevel0VerticalNetwork(world, chunkX, chunkZ, seed, pos);
     }
 
     private static void buildLevel1Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
@@ -336,6 +339,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             }
         }
         buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
+        buildLevel1VerticalNetwork(world, chunkX, chunkZ, seed, pos);
     }
 
 
@@ -1112,6 +1116,85 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 69, z, Blocks.BLACK_CONCRETE.defaultBlockState());
                         }
                     }
+                    case 11 -> {
+                        // A true micro-maze: the room is subdivided into smaller
+                        // office cells, with the reserved route and a second
+                        // deterministic opening preserving loops and dead ends.
+                        boolean verticalWall = (localX == 8 || localX == 24)
+                                && localZ >= 4 && localZ <= 27;
+                        boolean horizontalWall = (localZ == 8 || localZ == 24)
+                                && localX >= 4 && localX <= 27;
+                        int secondaryVerticalGap = 5 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA11A0L), 22);
+                        int secondaryHorizontalGap = 5 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA11A1L), 22);
+                        boolean secondaryGap = verticalWall
+                                && Math.abs(localZ - secondaryVerticalGap) <= 1
+                                || horizontalWall
+                                && Math.abs(localX - secondaryHorizontalGap) <= 1;
+                        if (!protectedRoute && !secondaryGap && (verticalWall || horizontalWall)) {
+                            for (int y = 65; y <= 68; y++) {
+                                set(world, pos, x, y, z,
+                                        ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState());
+                            }
+                            if (Math.floorMod(localX + localZ, 7) == 0) {
+                                set(world, pos, x, 69, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                            }
+                        }
+                        // A few wall-mounted dead-end details make the small
+                        // cells read as abandoned offices rather than empty boxes.
+                        if (!protectedRoute && (localX == 6 || localX == 26)
+                                && (localZ == 6 || localZ == 26)) {
+                            set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.STONE_BUTTON.defaultBlockState());
+                        }
+                    }
+                    case 12 -> {
+                        // A rare sub-floor yellow annex. The open shaft and
+                        // five-step stair make the lower room genuinely reachable.
+                        boolean annex = localX >= 20 && localX <= 27
+                                && localZ >= 5 && localZ <= 12;
+                        if (annex) {
+                            boolean inner = localX >= 21 && localX <= 26
+                                    && localZ >= 6 && localZ <= 11;
+                            boolean wall = localX == 20 || localX == 27
+                                    || localZ == 5 || localZ == 12;
+                            boolean stairOpening = localZ == 12
+                                    && (localX == 23 || localX == 24);
+                            set(world, pos, x, 58, z, Blocks.GRAY_CONCRETE.defaultBlockState());
+                            for (int y = 60; y <= 71; y++) {
+                                set(world, pos, x, y, z, Blocks.AIR.defaultBlockState());
+                            }
+                            if (wall && !stairOpening) {
+                                for (int y = 59; y <= 63; y++) {
+                                    set(world, pos, x, y, z,
+                                            ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState());
+                                }
+                            } else {
+                                for (int y = 59; y <= 63; y++) {
+                                    set(world, pos, x, y, z, Blocks.AIR.defaultBlockState());
+                                }
+                                if (inner || stairOpening) {
+                                    set(world, pos, x, 59, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                                }
+                            }
+                            if (localX == 24 && localZ == 8) {
+                                set(world, pos, x, 62, z,
+                                        ThresholdEnvironmentBlocks.FLICKERING_PANEL.get().defaultBlockState());
+                            }
+                            if (localX == 23 && localZ == 8) {
+                                set(world, pos, x, 61, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        if ((localX == 23 || localX == 24) && localZ >= 12 && localZ <= 16) {
+                            int step = 16 - localZ;
+                            int stairY = 63 - step;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.OAK_STAIRS.defaultBlockState().setValue(StairBlock.FACING, Direction.SOUTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1437,10 +1520,268 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 72, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
                     }
+                    case 15 -> {
+                        // Narrow warehouse labyrinth: concrete partitions split
+                        // the large bay into storage cells and service aisles.
+                        boolean verticalWall = (localX == 12 || localX == 36)
+                                && localZ >= 6 && localZ <= 41;
+                        boolean horizontalWall = (localZ == 12 || localZ == 36)
+                                && localX >= 6 && localX <= 41;
+                        int secondaryVerticalGap = 7 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA1510L), 34);
+                        int secondaryHorizontalGap = 7 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA1511L), 34);
+                        boolean secondaryGap = verticalWall
+                                && Math.abs(localZ - secondaryVerticalGap) <= 1
+                                || horizontalWall
+                                && Math.abs(localX - secondaryHorizontalGap) <= 1;
+                        if (!protectedTile && !secondaryGap && (verticalWall || horizontalWall)) {
+                            for (int y = 65; y <= 70; y++) {
+                                set(world, pos, x, y, z,
+                                        ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState());
+                            }
+                            if (Math.floorMod(localX + localZ, 9) == 0) {
+                                set(world, pos, x, 71, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        if (!protectedTile && (localX == 10 || localX == 38)
+                                && (localZ == 10 || localZ == 38)) {
+                            set(world, pos, x, 64, z, Blocks.BARREL.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
+                    case 16 -> {
+                        // Sunken maintenance channel: a four-block lower service
+                        // level with an open stair entrance, retaining walls and pipework.
+                        boolean trench = localX >= 29 && localX <= 38
+                                && localZ >= 15 && localZ <= 21;
+                        if (trench) {
+                            boolean inner = localX >= 30 && localX <= 37
+                                    && localZ >= 16 && localZ <= 20;
+                            boolean wall = localX == 29 || localX == 38
+                                    || localZ == 15 || localZ == 21;
+                            boolean stairOpening = localZ == 21
+                                    && localX >= 32 && localX <= 35;
+                            set(world, pos, x, 58, z, Blocks.SMOOTH_STONE.defaultBlockState());
+                            for (int y = 60; y <= 73; y++) {
+                                set(world, pos, x, y, z, Blocks.AIR.defaultBlockState());
+                            }
+                            if (wall && !stairOpening) {
+                                for (int y = 59; y <= 63; y++) {
+                                    set(world, pos, x, y, z,
+                                            ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState());
+                                }
+                                set(world, pos, x, 64, z, Blocks.IRON_BARS.defaultBlockState());
+                            } else {
+                                for (int y = 59; y <= 63; y++) {
+                                    set(world, pos, x, y, z, Blocks.AIR.defaultBlockState());
+                                }
+                                if (inner || stairOpening) {
+                                    set(world, pos, x, 59, z, Blocks.GRAY_CARPET.defaultBlockState());
+                                }
+                            }
+                            if (inner && (localZ == 18 || localZ == 19)
+                                    && Math.floorMod(localX, 3) == 0) {
+                                set(world, pos, x, 62, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            }
+                            if (localX == 34 && localZ == 18) {
+                                set(world, pos, x, 63, z,
+                                        ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
+                            }
+                        }
+                        if ((localX == 33 || localX == 34) && localZ >= 22 && localZ <= 26) {
+                            int step = 26 - localZ;
+                            int stairY = 63 - step;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.SOUTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
         }
+    }
+
+    /**
+     * Level 0's upper galleries are connected to the ordinary room graph by
+     * a stair flight. Shared edge decisions make neighbouring upper decks line up
+     * even when chunks are generated in a different order.
+     */
+    private static void buildLevel0VerticalNetwork(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_0_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_0_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_0_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_0_ROOM_SIZE);
+                if (!hasLevel0UpperDeck(seed, roomX, roomZ)) continue;
+
+                boolean stair = isLevel0UpperStair(localX, localZ);
+                boolean upperPath = isLevel0UpperPath(seed, roomX, roomZ, localX, localZ);
+                if (upperPath && !stair) {
+                    set(world, pos, x, 68, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                    set(world, pos, x, 69, z,
+                            Math.floorMod(localX + localZ, 11) == 0
+                                    ? Blocks.BROWN_CARPET.defaultBlockState()
+                                    : Blocks.YELLOW_CARPET.defaultBlockState());
+                    boolean boundary = isBoundary(localX, localZ, LEVEL_0_ROOM_SIZE);
+                    boolean connected = hasLevel0UpperNeighbour(seed, roomX, roomZ,
+                            localX, localZ);
+                    if (!boundary || connected) {
+                        set(world, pos, x, 70, z, Blocks.AIR.defaultBlockState());
+                        set(world, pos, x, 71, z, Blocks.AIR.defaultBlockState());
+                    }
+                }
+
+                boolean rail = isReservedRoomPath(
+                        seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, false)
+                        && !isReservedRoomPath(
+                        seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false)
+                        && !isBoundary(localX, localZ, LEVEL_0_ROOM_SIZE)
+                        && !stair;
+                if (rail) {
+                    set(world, pos, x, 69, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                }
+
+                if (stair) {
+                    int step = localZ - 12;
+                    int stairY = 64 + step;
+                    set(world, pos, x, stairY, z,
+                            Blocks.OAK_STAIRS.defaultBlockState()
+                                    .setValue(StairBlock.FACING, Direction.SOUTH));
+                    set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                    set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                }
+
+                if (localX == 16 && localZ == 16
+                        && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0F0L), 3) == 0) {
+                    set(world, pos, x, 72, z,
+                            ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static boolean hasLevel0UpperDeck(long seed, int roomX, int roomZ) {
+        return !(roomX == 0 && roomZ == 0)
+                && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38;
+    }
+
+    private static boolean isLevel0UpperPath(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        return Math.abs(localX - 16) <= 2 && Math.abs(localZ - 16) <= 2
+                || isReservedRoomPath(seed, LEVEL_0_ROOM_SIZE,
+                roomX, roomZ, localX, localZ, 1, false);
+    }
+
+    private static boolean isLevel0UpperStair(int localX, int localZ) {
+        return (localX == 16 || localX == 17) && localZ >= 12 && localZ <= 15;
+    }
+
+    private static boolean hasLevel0UpperNeighbour(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        if (localX == 0) return hasLevel0UpperDeck(seed, roomX - 1, roomZ);
+        if (localX == LEVEL_0_ROOM_SIZE - 1) return hasLevel0UpperDeck(seed, roomX + 1, roomZ);
+        if (localZ == 0) return hasLevel0UpperDeck(seed, roomX, roomZ - 1);
+        if (localZ == LEVEL_0_ROOM_SIZE - 1) return hasLevel0UpperDeck(seed, roomX, roomZ + 1);
+        return false;
+    }
+
+    /**
+     * Level 1 uses a higher industrial catwalk network plus rare lower
+     * maintenance channels. Both are connected to the ground-floor circulation.
+     */
+    private static void buildLevel1VerticalNetwork(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed, BlockPos.MutableBlockPos pos) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            int roomX = Math.floorDiv(x, LEVEL_1_ROOM_SIZE);
+            int localX = Math.floorMod(x, LEVEL_1_ROOM_SIZE);
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
+                int localZ = Math.floorMod(z, LEVEL_1_ROOM_SIZE);
+                if (!hasLevel1UpperDeck(seed, roomX, roomZ)) continue;
+
+                boolean stair = isLevel1UpperStair(localX, localZ);
+                boolean upperPath = isLevel1UpperPath(seed, roomX, roomZ, localX, localZ);
+                if (upperPath && !stair) {
+                    set(world, pos, x, 70, z, Blocks.IRON_BLOCK.defaultBlockState());
+                    set(world, pos, x, 71, z,
+                            Math.floorMod(localX + localZ, 9) == 0
+                                    ? Blocks.YELLOW_CARPET.defaultBlockState()
+                                    : Blocks.GRAY_CARPET.defaultBlockState());
+                    boolean boundary = isBoundary(localX, localZ, LEVEL_1_ROOM_SIZE);
+                    boolean connected = hasLevel1UpperNeighbour(seed, roomX, roomZ,
+                            localX, localZ);
+                    if (!boundary || connected) {
+                        set(world, pos, x, 72, z, Blocks.AIR.defaultBlockState());
+                        set(world, pos, x, 73, z, Blocks.AIR.defaultBlockState());
+                    }
+                }
+
+                boolean rail = isReservedRoomPath(
+                        seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true)
+                        && !isReservedRoomPath(
+                        seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, true)
+                        && !isBoundary(localX, localZ, LEVEL_1_ROOM_SIZE)
+                        && !stair;
+                if (rail) {
+                    set(world, pos, x, 71, z, Blocks.IRON_BARS.defaultBlockState());
+                }
+
+                if (stair) {
+                    int step = localZ - 18;
+                    int stairY = 64 + step;
+                    set(world, pos, x, stairY, z,
+                            Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                                    .setValue(StairBlock.FACING, Direction.SOUTH));
+                    set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                    set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                }
+
+                if (localX == 24 && localZ == 24
+                        && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1F0L), 2) == 0) {
+                    set(world, pos, x, 74, z,
+                            ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private static boolean hasLevel1UpperDeck(long seed, int roomX, int roomZ) {
+        return !(roomX == 0 && roomZ == 0)
+                && Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44;
+    }
+
+    private static boolean isLevel1UpperPath(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        return Math.abs(localX - 24) <= 2 && Math.abs(localZ - 24) <= 2
+                || isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE,
+                roomX, roomZ, localX, localZ, 1, true);
+    }
+
+    private static boolean isLevel1UpperStair(int localX, int localZ) {
+        return (localX == 24 || localX == 25) && localZ >= 18 && localZ <= 23;
+    }
+
+    private static boolean hasLevel1UpperNeighbour(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        if (localX == 0) return hasLevel1UpperDeck(seed, roomX - 1, roomZ);
+        if (localX == LEVEL_1_ROOM_SIZE - 1) return hasLevel1UpperDeck(seed, roomX + 1, roomZ);
+        if (localZ == 0) return hasLevel1UpperDeck(seed, roomX, roomZ - 1);
+        if (localZ == LEVEL_1_ROOM_SIZE - 1) return hasLevel1UpperDeck(seed, roomX, roomZ + 1);
+        return false;
     }
 
     private static int level0Architecture(long seed, int roomX, int roomZ) {
@@ -1448,17 +1789,19 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
-        if (roll < 38) return 0;
-        if (roll < 54) return 1;
-        if (roll < 67) return 2;
-        if (roll < 77) return 3;
-        if (roll < 84) return 4;
-        if (roll < 90) return 5;
-        if (roll < 94) return 6;
-        if (roll < 97) return 7;
-        if (roll < 98) return 8;
-        if (roll < 99) return 9;
-        return 10;
+        if (roll < 32) return 0;
+        if (roll < 46) return 1;
+        if (roll < 58) return 2;
+        if (roll < 67) return 3;
+        if (roll < 73) return 4;
+        if (roll < 78) return 5;
+        if (roll < 82) return 6;
+        if (roll < 85) return 7;
+        if (roll < 87) return 8;
+        if (roll < 89) return 9;
+        if (roll < 91) return 10;
+        if (roll < 98) return 11;
+        return 12;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -1466,20 +1809,22 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
-        if (roll < 18) return 1;
-        if (roll < 27) return 6;
-        if (roll < 41) return 2;
-        if (roll < 53) return 3;
-        if (roll < 62) return 4;
-        if (roll < 70) return 5;
-        if (roll < 77) return 7;
-        if (roll < 84) return 8;
-        if (roll < 89) return 9;
-        if (roll < 92) return 10;
-        if (roll < 95) return 11;
-        if (roll < 97) return 12;
-        if (roll < 99) return 13;
-        return 14;
+        if (roll < 14) return 1;
+        if (roll < 21) return 6;
+        if (roll < 31) return 2;
+        if (roll < 41) return 3;
+        if (roll < 49) return 4;
+        if (roll < 56) return 5;
+        if (roll < 62) return 7;
+        if (roll < 68) return 8;
+        if (roll < 73) return 9;
+        if (roll < 77) return 10;
+        if (roll < 81) return 11;
+        if (roll < 85) return 12;
+        if (roll < 89) return 13;
+        if (roll < 92) return 14;
+        if (roll < 98) return 15;
+        return 16;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
