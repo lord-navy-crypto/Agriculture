@@ -8,14 +8,10 @@
     "water_fog_color": 4159204,
     "sky_color": 7842047,
     "mood_sound": {
-      "sound": "threshold:level_1_machine",
-      "tick_delay": 1400,
-      "block_search_extent": 12,
+      "sound": "minecraft:block.vault.ambient",
+      "tick_delay": 9000,
+      "block_search_extent": 8,
       "offset": 2
-    },
-    "additions_sound": {
-      "sound": "threshold:level_1_pipe",
-      "tick_chance": 0.0016
     },
     "music": {
       "sound": "threshold:level_1_ambient",
