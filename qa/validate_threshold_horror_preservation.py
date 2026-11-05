@@ -254,6 +254,7 @@ def main() -> int:
     assert "fakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
     assert "distanceToSqr(fakeRetreatDestination) <= 4.0D" in watcher, "fake retreat reappears only after path navigation reaches its destination"
     assert "if (stateTicks >= 60) discard()" in watcher, "failed fake-retreat paths do not teleport through walls"
+    assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "getNavigation().stop();\n                discard();" in watcher, "a successful player hit cancels a hidden fake retreat"
     assert "public boolean hurt(DamageSource source, float amount)" in watcher and "beginRetreat(attacker)" in watcher
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
