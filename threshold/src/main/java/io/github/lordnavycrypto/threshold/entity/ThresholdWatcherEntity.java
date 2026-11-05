@@ -681,8 +681,10 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private void updateFlicker() {
         if (encounterState == EncounterState.RUSH
                 || encounterState == EncounterState.STRIKE
-                || encounterState == EncounterState.RETREAT) {
-            if (encounterState != EncounterState.RETREAT) setInvisible(false);
+                || encounterState == EncounterState.RETREAT
+                || encounterState == EncounterState.REPOSITION) {
+            if (encounterState != EncounterState.RETREAT
+                    && encounterState != EncounterState.REPOSITION) setInvisible(false);
             return;
         }
         if (nextFlickerTick == 0) {
