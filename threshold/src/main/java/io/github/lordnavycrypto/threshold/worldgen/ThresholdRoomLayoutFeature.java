@@ -1374,7 +1374,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 65, z, Blocks.FERN.defaultBlockState());
                         }
                         if (localX == 13 && localZ == 13 || localX == 34 && localZ == 34) {
-                            set(world, pos, x, 71, z, Blocks.LANTERN.defaultBlockState());
+                            set(world, pos, x, 71, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
                     }
                     default -> { }
