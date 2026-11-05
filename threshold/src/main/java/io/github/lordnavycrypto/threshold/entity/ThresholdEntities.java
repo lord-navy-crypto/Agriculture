@@ -13,7 +13,7 @@ public final class ThresholdEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(Registries.ENTITY_TYPE, ThresholdMod.MOD_ID);
 
-    /** A non-combat visual presence used only by Level 0. */
+    /** Naturally appears only in Level 0; operator summons are dimension-agnostic. */
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdWatcherEntity>> WATCHER =
             ENTITY_TYPES.register("watcher", () -> EntityType.Builder
                     .of(ThresholdWatcherEntity::new, MobCategory.MISC)
@@ -23,7 +23,7 @@ public final class ThresholdEntities {
                     .noSave()
                     .build("threshold:watcher"));
 
-    /** A real hostile Backrooms predator, restricted to Level 1 by the director. */
+    /** A hostile Backrooms predator that naturally appears only in Level 1. */
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdHoundEntity>> HOUND =
             ENTITY_TYPES.register("hound", () -> EntityType.Builder
                     .of(ThresholdHoundEntity::new, MobCategory.MONSTER)
@@ -32,7 +32,7 @@ public final class ThresholdEntities {
                     .updateInterval(3)
                     .build("threshold:hound"));
 
-    /** A hostile Overworld predator that stalks and hunts players. */
+    /** A hostile predator with a natural night encounter in the Overworld. */
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdPartygoerEntity>> PARTYGOER =
             ENTITY_TYPES.register("partygoer", () -> EntityType.Builder
                     .of(ThresholdPartygoerEntity::new, MobCategory.MONSTER)
