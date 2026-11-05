@@ -266,6 +266,12 @@ def main() -> int:
         ("THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK", "natural spawn reasons are isolated from summons"),
         ("THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK", "Level 0 stair, gallery, and sunken annex runtime probe"),
         ("THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK", "Level 1 stair, catwalk, and maintenance trench runtime probe"),
+        ("THRESHOLD_LEVEL0_MEZZANINE_OK", "Level 0 raised mezzanine and stair access runtime probe"),
+        ("THRESHOLD_LEVEL0_NESTED_MAZE_OK", "Level 0 nested loop maze runtime probe"),
+        ("THRESHOLD_LEVEL0_SUNKEN_PIT_OK", "Level 0 sunken conference pit and stair access runtime probe"),
+        ("THRESHOLD_LEVEL1_MEZZANINE_OK", "Level 1 raised mezzanine and stair access runtime probe"),
+        ("THRESHOLD_LEVEL1_PUMP_SUMP_OK", "Level 1 pump sump and stair access runtime probe"),
+        ("THRESHOLD_LEVEL1_RACK_CANYON_OK", "Level 1 stacked rack canyon runtime probe"),
     ):
         require(runtime_checks, token, label)
 
