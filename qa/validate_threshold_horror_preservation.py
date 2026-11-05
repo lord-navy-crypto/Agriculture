@@ -102,12 +102,20 @@ def main() -> int:
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
-    require(r"if \(roll < 40\) return 0", layout,
+    require(r"if \(roll < 38\) return 0", layout,
             "Level 0 preserves empty rooms as its dominant architecture")
     require(r"if \(roll < 82\) return 0", layout,
             "Level 0 preserves the classic yellow-office palette")
     require(r"case 9 ->", layout, "Level 1 includes parking-deck bays")
     require(r"case 10 ->", layout, "Level 1 includes narrow maintenance spines")
+    require(r"case 8 ->", layout, "Level 0 includes a pale arch-gallery landmark")
+    require(r"case 9 ->", layout, "Level 0 includes a suspended false-ceiling anomaly")
+    require(r"case 11 ->", layout, "Level 1 includes freight loading bays")
+    require(r"case 12 ->", layout, "Level 1 includes multi-storey parking circulation")
+    require(r"case 13 ->", layout, "Level 1 includes a rare artificial-light concrete garden")
+    require(r"Blocks\.SMOOTH_SANDSTONE", layout, "Level 0 arch galleries use a distinct pale stone frame")
+    require(r"Blocks\.MOSS_BLOCK", layout, "Level 1 concrete gardens use restrained overgrowth")
+    require(r"Blocks\.AZALEA_LEAVES", layout, "Level 1 concrete gardens have layered foliage")
     require(r"private static boolean isReservedRoomPath\(", layout,
             "architectural overlays reserve a route from each actual doorway to the room hub")
     require(r"doorwayCenterAlongZ", layout,
@@ -202,6 +210,10 @@ def main() -> int:
     require(r"Attributes\.ATTACK_DAMAGE", hound, "Hound has explicit attack tuning")
     require(r"Attributes\.FOLLOW_RANGE", hound, "Hound has bounded follow range")
     require(r"animation\.threshold_hound\.run", hound, "Hound has a distinct pursuit animation")
+    require(r"animation\.threshold_hound\.sniff", hound, "Hound has a dedicated sniffing animation")
+    require(r"animation\.threshold_hound\.alert", hound, "Hound has a dedicated alert animation")
+    require(r"animation\.threshold_hound\.stalk", hound, "Hound has a low stalking gait")
+    require(r"animation\.threshold_hound\.retreat", hound, "Hound has a fast retreat animation")
     require(r"new StalkPlayerGoal\(this\)", hound,
             "Hound stalks quiet players before committing to an attack")
     require(r"horizontalDistanceSqr\(\) > 0\.025D", hound,
@@ -254,7 +266,7 @@ def main() -> int:
             "observer can stand on Level 0 carpet without requiring a full-cube floor")
 
     # GeckoLib geometry/animation and the compact dark pixel textures ship in
-    # the independent mod JAR; no external model pack is required.
+    # the independent mod JAR; every animated bone must exist in the matching model.
     for name in ("watcher", "hound"):
         geometry_path = RESOURCES / f"assets/threshold/geo/{name}.geo.json"
         animation_path = RESOURCES / f"assets/threshold/animations/{name}.animation.json"
@@ -265,6 +277,31 @@ def main() -> int:
         assert geometry["description"]["texture_height"] == 64
         assert geometry["bones"], f"{name} geometry has no bones"
         assert animation, f"{name} has no GeckoLib animations"
+        required_clips = {
+            "watcher": {
+                "animation.threshold_watcher.still",
+                "animation.threshold_watcher.head_track",
+                "animation.threshold_watcher.stutter",
+                "animation.threshold_watcher.fold",
+                "animation.threshold_watcher.shroud_drift",
+            },
+            "hound": {
+                "animation.threshold_hound.idle",
+                "animation.threshold_hound.walk",
+                "animation.threshold_hound.run",
+                "animation.threshold_hound.sniff",
+                "animation.threshold_hound.alert",
+                "animation.threshold_hound.stalk",
+                "animation.threshold_hound.retreat",
+            },
+        }[name]
+        assert required_clips.issubset(animation.keys()), f"{name} is missing a required animation state"
+        bone_names = {bone["name"] for bone in geometry["bones"]}
+        for animation_name, clip in animation.items():
+            for animated_bone in clip.get("bones", {}):
+                assert animated_bone in bone_names, (
+                    f"{name} animation {animation_name} references missing bone {animated_bone}"
+                )
         png = texture_path.read_bytes()
         assert png[:8] == b"\x89PNG\r\n\x1a\n", f"{name} texture is not PNG"
         width, height = struct.unpack(">II", png[16:24])
