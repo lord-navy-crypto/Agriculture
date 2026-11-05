@@ -76,9 +76,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
         if (!level().isClientSide && noiseListenCooldown > 0) noiseListenCooldown--;
         if (!level().isClientSide && getTarget() == null && lightRepelledTicks == 0
                 && searchTicks == 0 && noiseListenCooldown == 0) {
-            Player noisy = level().getNearestPlayer(this, 18.0D);
-            if (isValidHuntTarget(noisy) && isPlayerNoisy(noisy)
-                    && distanceToSqr(noisy) <= 18.0D * 18.0D) {
+            Player noisy = findNearestNoisyPlayer(18.0D);
+            if (noisy != null) {
                 // Sound is an uncertain clue, not live target tracking. The Hound
                 // investigates an offset estimate and must regain line of sight
                 // before its normal attack target goal can commit.
@@ -140,6 +139,20 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                 getY(),
                 getZ() + away.z * 8.0D,
                 1.1D);
+    }
+
+    private Player findNearestNoisyPlayer(double range) {
+        Player nearest = null;
+        double nearestDistance = range * range;
+        for (Player candidate : level().players()) {
+            if (!isValidHuntTarget(candidate) || !isPlayerNoisy(candidate)) continue;
+            double distance = distanceToSqr(candidate);
+            if (distance < nearestDistance) {
+                nearest = candidate;
+                nearestDistance = distance;
+            }
+        }
+        return nearest;
     }
 
     private static boolean isValidHuntTarget(Player player) {
