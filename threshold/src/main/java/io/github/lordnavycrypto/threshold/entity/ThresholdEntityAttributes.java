@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 
-/** Attribute registration for the non-combat observer and Level 1 Hound. */
+/** Attribute registration for the active Level 0 Watcher, Level 1 Hound and Overworld Partygoer. */
 public final class ThresholdEntityAttributes {
     private ThresholdEntityAttributes() {}
 
