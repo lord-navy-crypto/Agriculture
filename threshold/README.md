@@ -280,3 +280,15 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - The protected Level 1 entry shelter, Level 0 entity restrictions, room grid, transition coordinates and all six dimension registrations remain unchanged.
 
 **Keep this PR Draft. Do not merge into main.**
+
+
+## Alpha 15 — expanded Level 0/1 horror grammar and GeckoLib acting
+
+- Watcher: added head tracking, stutter, folded posture and trailing-shroud drift clips. Its presence controller uses long quiet intervals with short, staggered gesture windows; it remains harmless, non-colliding and transient in Level 0.
+- Hound: added sniff, alert, low stalking and fast retreat clips. The movement controller distinguishes idle observation, target alert, slow stalking gait, normal travel and high-speed retreat.
+- Level 0: added rare pale arch-gallery and suspended false-ceiling room archetypes. The entry room, room grid, floor profile and reserved circulation network remain unchanged.
+- Level 1: added freight loading bays, multi-storey parking circulation details and a rare artificial-light concrete garden. Resource footprints and reserved routes remain protected.
+- QA now checks that every animation clip exists, all animated bone names exist in the matching geometry, and the new room archetypes remain present.
+- Inspired by genre-level architectural motifs; no commercial game maps, models, textures, audio or prose are copied.
+
+**Keep this PR Draft. Do not merge into main.**
