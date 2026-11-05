@@ -258,3 +258,35 @@ A deliberate change to one of these invariants requires an explicit design decis
 - QA checks the new archetypes inside the correct level-specific generator methods.
 - QA checks the Hound's bounded search memory and flashlight cancellation.
 - Existing route reservations, entry shelters, dimensions, transition coordinates and room vertical profiles remain protected.
+
+
+## Alpha 15.3 — vertical maze grammar and environmental layering
+
+### Level 0 — the Lobby
+
+- Preserve the 32×32 room-cell graph and the existing entry room. The new work changes the internal grammar of selected rooms, not the dimension's base grid or established transition.
+- Add a micro-maze archetype: faded-wallpaper partitions divide selected rooms into smaller office cells. The reserved-route mask and secondary gaps preserve multiple ways through the room while allowing short dead ends and misleading loops.
+- Add a guaranteed first-ring sub-floor annex in room cell (1, 0). Its lower yellow chamber is at Y=58, with a stair connection from the ordinary floor and a restrained flickering ceiling panel.
+- Add upper galleries in selected cells at Y=68. A stair flight connects each gallery to the ground floor. Shared-edge decisions only open an elevated connection when both adjacent cells have galleries and the ordinary room graph already has a doorway.
+- Use the original Faded Wallpaper, Flickering Panel and Ceiling Vent blocks for the new spaces. Keep the original yellow office palette dominant; the new vertical routes should feel like improbable continuations of the same building.
+
+### Level 1 — the Habitable Zone
+
+- Preserve the 48×48 room-cell graph, the entrance shelter, the starter supplies and all established transitions.
+- Add a warehouse micro-maze archetype: tall Warehouse Wall partitions create smaller storage cells and narrow service aisles. Existing reserved routes remain open, with deterministic secondary gaps for loops and side rooms.
+- Add a guaranteed maintenance sector in room cell (1, 1). Its sunken service channel has a lower floor at Y=58, retaining walls, a stair entrance, overhead pipework and a ceiling vent.
+- Add elevated industrial catwalks at Y=70 in selected cells. Stairs connect them to the ground-floor circulation; neighbouring catwalks connect only across existing doorways and matching shared-edge decisions.
+- Use the original Warehouse Wall and Ceiling Vent blocks alongside concrete, iron, copper and warning-lane details. The industrial silhouette must remain distinct from Level 0.
+
+### Vertical connectivity contract
+
+- The established ground-floor room graph remains the guaranteed route network.
+- Every new upper gallery or lower annex has a physical stair connection to the ground floor; no decorative platform is allowed to become an unreachable island.
+- Elevated cross-room bridges are deterministic and symmetric across chunk boundaries. A bridge is generated on both sides of a shared edge or on neither side.
+- Existing dimension identifiers, room-cell dimensions, entry-room identities and transition coordinates remain unchanged.
+- Dedicated-server runtime checks explicitly inspect the Level 0 stair/gallery/sub-floor landmarks and Level 1 stair/catwalk/maintenance-trench landmarks.
+
+### Ambient audio follow-up
+
+- The biome music events are now scheduled with a very short inter-track delay so the existing original tracks do not leave long silent gaps.
+- The current OGG assets are still short clips (approximately six seconds for Level 0 and four seconds for Level 1). This is an identified audio-quality debt, not a completed long-form soundtrack. Replace them with longer original compositions before calling the music pass finished.
