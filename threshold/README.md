@@ -33,7 +33,7 @@
 - The entry room guarantees a small watered, lit planter with six different mature Agriculture crops (barley, corn, soybean, tomato, lettuce and spinach); other storage rooms have rare planters.
 - The central water source is a real freshwater source and can refill the Agriculture empty water flask.
 - One ceiling panel in the entry warehouse flickers; partitioned storage rooms can have similar faults that remain dark longer than Level 0's office lights.
-- The first real predator is the Hound: it uses GeckoLib movement animation and ordinary pathfinding/melee AI. It spawns only in darker Level 1 areas after the player leaves the 48x48 entry shelter; it cannot break blocks and has no special drops.
+- The first real predator is the Hound: it stalks quiet players, hears nearby sprinting/jumping as an uncertain clue, searches the last known area, and commits to melee only after sight or proximity. It spawns only in darker Level 1 areas after the player leaves the 48x48 entry shelter; it cannot break blocks and has no special drops. Its flashlight counter requires the active beam to be aimed at it.
 - Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them. The entry greenhouse is lit by five overhead sea lanterns so crops can grow without skylight. The warehouse ambience uses a intermittent mechanical vault crackle, contrasting with Level 0's cave-like emptiness.
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.18.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.19.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -260,7 +260,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Level 1 now has weighted industrial room selection rather than uniform archetype selection. Two uncommon additions are a broad parking-deck bay with painted lanes and a narrow maintenance spine with overhead pipe runs. The reserved room routes, starter shelter and resource footprints remain protected.
 - Light behavior now has intentionally different rhythms: Level 0 fixtures fail less often and recover quickly; Level 1 fixtures fail more often and stay dark longer.
 - Watcher sightings remain uncommon and begin outside the player's forward view; Hound encounters are less spammy, prefer dark rooms, and no longer materialize directly in the player's view.
-- The Hound now briefly retreats from a player actively using the Threshold flashlight. This gives the existing flashlight a distinct Level 1 survival purpose without making the Hound disappear or trivializing the encounter.
+- The Hound retreats only when a lit flashlight beam is actually aimed at it and has line of sight; merely holding the active flashlight while looking elsewhere no longer repels it.
 - Room sizes, transition walls, entry positions, return passages and all six dimension registrations are unchanged.
 
 ### Long-range design direction
@@ -313,3 +313,25 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Added GeckoLib lunge/strike clips and audio stings. No custom shader is required; the swipe uses vanilla damage feedback.
 - Test/inspection commands: /threshold summon watcher (harmless preview), /threshold summon watcher_hunt (active test encounter), and /threshold watcher status (local role/state/memory telemetry).
 - Static QA and dedicated-server startup markers now check the active Watcher profile. A new JAR is not considered ready until NeoForge compilation, packaging, dedicated-server smoke tests and client gameplay tests pass.
+
+
+## Alpha 19 — deceptive Watcher search and sensory Hound AI
+
+### Level 0 — Watcher
+- SEARCH now sweeps three waypoints around the last timestamped sighting: left, right and the previous approach line. It pauses at each point and plays a new GeckoLib peek animation.
+- After a sustained direct stare or a near-miss, a natural Watcher has a 25% chance to fake its retreat. It disappears, then uses ordinary path navigation to reposition around the last sighting before becoming visible again.
+- Fake retreat is disabled for the operator test encounter and is never triggered by flashlight defense or a successful player hit.
+- If the reposition path cannot be found or the observation memory expires, the Watcher is discarded. It never teleports through walls or refreshes hidden player coordinates.
+
+### Level 1 — Hound
+- Added a hearing phase: when no target or active search memory exists, the Hound can hear a nearby noisy player within 18 blocks, including through intervening walls.
+- Hearing stores a deliberately uncertain position offset, not the player's exact live coordinates. The Hound investigates that clue with a bounded golden-angle search pattern; its normal target goal still requires sight or close proximity before committing to melee.
+- Added a short growl when the Hound hears a noise and a dedicated GeckoLib bite animation synchronized to its attack swing.
+- The flashlight now works directionally: it repels the Hound only when active, in line of sight and aimed at it. Holding it while facing away no longer grants a blanket immunity.
+- The Hound checks every nearby player for an aimed beam, so a second player can still protect the group.
+
+### Verification
+- Added a dedicated-server runtime probe for the Hound's navigation and health/speed/damage/follow-range attributes.
+- Smoke tests and expansion QA now require both Level 0 Watcher and Level 1 Hound runtime-readiness markers.
+- Static QA checks the three-point Watcher search, rare path-based fake retreat, Hound sound memory, directional flashlight defense and both new animation clips.
+- NeoForge compilation, packaged-JAR validation, dedicated-server smoke tests and in-game client behavior remain required before Alpha 19 can be called tested or ready.
