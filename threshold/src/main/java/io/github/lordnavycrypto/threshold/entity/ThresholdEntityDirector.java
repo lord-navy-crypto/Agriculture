@@ -4,8 +4,9 @@ import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,16 +15,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
- * Controls Threshold-authored encounters and keeps custom horror entities in
- * their intended dimensions. Ordinary living entities are admitted; Level 0
- * retains its separate projectile-isolation rule.
+ * Owns natural encounter spawning only. Entity admission and operator summons
+ * are deliberately not filtered by this class: every entity type may join any
+ * dimension, while this explicit natural-spawn profile controls which authored
+ * horror creatures are introduced by Threshold's encounter director.
  *
- * Natural vanilla biome spawning is configured separately; an empty biome
- * spawn table does not prevent command- or spawn-egg-created mobs from joining.
+ * Vanilla biome spawn lists are empty in Threshold dimensions, so ordinary
+ * animals and monsters do not naturally spawn there. Items, projectiles,
+ * vehicles, and other functional entities remain fully usable.
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
@@ -32,27 +34,23 @@ public final class ThresholdEntityDirector {
 
     private ThresholdEntityDirector() {}
 
-    @SubscribeEvent
-    public static void onEntityJoin(EntityJoinLevelEvent event) {
-        if (!(event.getLevel() instanceof ServerLevel level)) return;
-
-        // Preserve Level 0's isolated atmosphere, but do not reject ordinary
-        // living entities. Its projectile restriction is deliberately scoped
-        // to Level 0 rather than applied as a global entity policy.
-        if (level.dimension().equals(ThresholdDimensions.LEVEL_0)
-                && event.getEntity() instanceof Projectile) {
-            event.setCanceled(true);
-            return;
+    /**
+     * Natural-spawn whitelist. This is intentionally not an entity-join
+     * restriction: commands, spawn eggs, projectiles, item drops, vehicles,
+     * and other functional entities are admitted independently.
+     */
+    public static boolean isNaturalSpawnAllowed(
+            ResourceKey<Level> dimension, EntityType<?> entityType) {
+        if (dimension.equals(ThresholdDimensions.LEVEL_0)) {
+            return entityType == ThresholdEntities.WATCHER.get();
         }
-        if (event.getEntity() instanceof ThresholdWatcherEntity
-                && !level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            event.setCanceled(true);
-            return;
+        if (dimension.equals(ThresholdDimensions.LEVEL_1)) {
+            return entityType == ThresholdEntities.HOUND.get();
         }
-        if (event.getEntity() instanceof ThresholdHoundEntity
-                && !level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
-            event.setCanceled(true);
+        if (dimension.equals(Level.OVERWORLD)) {
+            return entityType == ThresholdEntities.PARTYGOER.get();
         }
+        return false;
     }
 
     @SubscribeEvent
@@ -60,16 +58,22 @@ public final class ThresholdEntityDirector {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
         long gameTime = level.getGameTime();
 
-        if (level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            if (gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L) spawnObservers(level);
-        } else if (level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
-            if (gameTime % 480L == 0L) spawnHounds(level);
-        } else if (level.dimension().equals(Level.OVERWORLD)) {
-            if (gameTime % 600L == 0L) spawnPartygoers(level);
+        if (gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L
+                && isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())) {
+            spawnObservers(level);
+        }
+        if (gameTime % 480L == 0L
+                && isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.HOUND.get())) {
+            spawnHounds(level);
+        }
+        if (gameTime % 600L == 0L
+                && isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.PARTYGOER.get())) {
+            spawnPartygoers(level);
         }
     }
 
     private static void spawnObservers(ServerLevel level) {
+        if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())) return;
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
             if (hasNearbyWatcher(level, player)) continue;
@@ -140,6 +144,7 @@ public final class ThresholdEntityDirector {
     }
 
     private static void spawnPartygoers(ServerLevel level) {
+        if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.PARTYGOER.get())) return;
         // A rare encounter: one lure at a time, well away from the world spawn.
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
@@ -181,6 +186,7 @@ public final class ThresholdEntityDirector {
     }
 
     private static void spawnHounds(ServerLevel level) {
+        if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.HOUND.get())) return;
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
 
