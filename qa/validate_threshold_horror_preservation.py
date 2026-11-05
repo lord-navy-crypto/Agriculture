@@ -216,6 +216,8 @@ def main() -> int:
     require(r"animation\.threshold_hound\.retreat", hound, "Hound has a fast retreat animation")
     require(r"new InvestigateLastKnownPositionGoal\(this\)", hound,
             "Hound investigates the last known position after losing sight of a player")
+    require(r"getTarget\(\) instanceof Player target && hasLineOfSight\(target\)", hound,
+            "Hound updates its search memory only while it can see the player")
     require(r"lastKnownPlayerPosition", hound,
             "Hound retains a short-lived last-known player position")
     require(r"searchTicks", hound, "Hound search memory expires after a bounded interval")

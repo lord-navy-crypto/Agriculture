@@ -68,7 +68,10 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
-        if (getTarget() instanceof Player target) {
+        if (getTarget() instanceof Player target && hasLineOfSight(target)) {
+            // Only refresh memory while the player is actually visible.
+            // The target goal may retain a target briefly after LOS is broken;
+            // during that interval the Hound must not track through walls.
             lastKnownPlayerPosition = target.position();
             searchTicks = 120;
         }
