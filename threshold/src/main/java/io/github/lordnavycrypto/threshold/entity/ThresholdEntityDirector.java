@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,11 +19,11 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
  * Controls Threshold-authored encounters and keeps custom horror entities in
- * their intended dimensions. Vanilla mobs, dropped items, vehicles, and
- * player-created projectiles are not filtered here.
+ * their intended dimensions. Ordinary living entities are admitted; Level 0
+ * retains its separate projectile-isolation rule.
  *
  * Natural vanilla biome spawning is configured separately; an empty biome
- * spawn table does not prevent commands, spawn eggs, or projectiles from working.
+ * spawn table does not prevent command- or spawn-egg-created mobs from joining.
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
@@ -35,9 +36,14 @@ public final class ThresholdEntityDirector {
     public static void onEntityJoin(EntityJoinLevelEvent event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
 
-        // Never blanket-cancel vanilla entities, player-created projectiles,
-        // dropped items, vehicles, or modded entities in a Threshold dimension.
-        // The dimension director only constrains Threshold's own custom mobs.
+        // Preserve Level 0's isolated atmosphere, but do not reject ordinary
+        // living entities. Its projectile restriction is deliberately scoped
+        // to Level 0 rather than applied as a global entity policy.
+        if (level.dimension().equals(ThresholdDimensions.LEVEL_0)
+                && event.getEntity() instanceof Projectile) {
+            event.setCanceled(true);
+            return;
+        }
         if (event.getEntity() instanceof ThresholdWatcherEntity
                 && !level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
             event.setCanceled(true);
