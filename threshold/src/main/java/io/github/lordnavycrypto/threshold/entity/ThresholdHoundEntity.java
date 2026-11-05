@@ -106,7 +106,7 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                 boolean noisy = candidate.isSprinting() || candidate.isSwimming()
                         || candidate.isFallFlying()
                         || candidate.getDeltaMovement().horizontalDistanceSqr() > 0.025D;
-                return (noisy || distanceToSqr(candidate) <= 36.0D) && super.canUse();
+                return (noisy || ThresholdHoundEntity.this.distanceToSqr(candidate) <= 36.0D) && super.canUse();
             }
         });
     }
