@@ -174,21 +174,20 @@ def main() -> int:
     require(client_renderers, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
     require(client_renderers, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
     assert "@EventBusSubscriber" not in client_events, "duplicate renderer subscriber must remain disabled"
-    # Entity admission must constrain only Threshold's own dimension-specific
-    # creatures. Vanilla mobs and player-created projectiles must remain usable.
+    # Ordinary living entities must not be blanket-rejected. Level 0 retains
+    # its isolated projectile rule, while custom Threshold mobs remain dimension-scoped.
     join_handler = director.split(
         "public static void onEntityJoin(EntityJoinLevelEvent event)", 1
     )[1].split("@SubscribeEvent", 1)[0]
-    assert "instanceof Projectile" not in join_handler, "projectiles must be admitted in Threshold dimensions"
     assert "instanceof LivingEntity" not in join_handler, "vanilla living entities must be admitted in Threshold dimensions"
+    require(director, "level.dimension().equals(ThresholdDimensions.LEVEL_0)", "Level 0-specific entity policy")
+    require(director, "event.getEntity() instanceof Projectile", "Level 0 projectile isolation remains scoped")
     require(director, "instanceof ThresholdWatcherEntity", "Watcher remains Level 0-specific")
     require(director, "instanceof ThresholdHoundEntity", "Hound remains Level 1-specific")
     for token, label in (
         ("EntityType.COW", "passive mob compatibility probe"),
         ("EntityType.ZOMBIE", "hostile mob compatibility probe"),
-        ("EntityType.ARROW", "arrow projectile compatibility probe"),
-        ("EntityType.TRIDENT", "trident projectile compatibility probe"),
-        ("THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK", "six-dimension runtime entity compatibility marker"),
+        ("THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_OK", "six-dimension runtime mob compatibility marker"),
     ):
         require(runtime_checks, token, label)
 
