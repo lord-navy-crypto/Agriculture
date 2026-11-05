@@ -1,12 +1,16 @@
 {
   "level_0_ambient": {
     "sounds": [
-      { "name": "threshold:level_0_ambient", "stream": true, "volume": 0.52 }
+      { "name": "threshold:level_0_ambient", "stream": true, "volume": 0.58, "pitch": 0.92, "weight": 3 },
+      { "name": "threshold:level_0_ambient", "stream": true, "volume": 0.62, "pitch": 1.00, "weight": 4 },
+      { "name": "threshold:level_0_ambient", "stream": true, "volume": 0.54, "pitch": 1.07, "weight": 3 }
     ]
   },
   "level_1_ambient": {
     "sounds": [
-      { "name": "threshold:level_1_ambient", "stream": true, "volume": 0.46 }
+      { "name": "threshold:level_1_ambient", "stream": true, "volume": 0.52, "pitch": 0.93, "weight": 3 },
+      { "name": "threshold:level_1_ambient", "stream": true, "volume": 0.56, "pitch": 1.00, "weight": 4 },
+      { "name": "threshold:level_1_ambient", "stream": true, "volume": 0.50, "pitch": 1.06, "weight": 3 }
     ]
   }
 }
