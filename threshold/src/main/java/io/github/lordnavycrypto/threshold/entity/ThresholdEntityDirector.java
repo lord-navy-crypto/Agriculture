@@ -4,9 +4,7 @@ import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,33 +32,16 @@ public final class ThresholdEntityDirector {
     public static void onEntityJoin(EntityJoinLevelEvent event) {
         if (!(event.getLevel() instanceof ServerLevel level)) return;
 
-        if (level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            // Level 0 admits no living creature or projectile except the
-            // harmless Observer. Players remain free to traverse the dimension.
-            if ((event.getEntity() instanceof LivingEntity living
-                    && !(living instanceof Player)
-                    && !(living instanceof ThresholdWatcherEntity))
-                    || event.getEntity() instanceof Projectile) {
-                event.setCanceled(true);
-            }
-            return;
-        }
-
+        // Never blanket-cancel vanilla entities, player-created projectiles,
+        // dropped items, vehicles, or modded entities in a Threshold dimension.
+        // The dimension director only constrains Threshold's own custom mobs.
         if (event.getEntity() instanceof ThresholdWatcherEntity
                 && !level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
             event.setCanceled(true);
+            return;
         }
         if (event.getEntity() instanceof ThresholdHoundEntity
                 && !level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
-            event.setCanceled(true);
-        }
-
-        if (level.dimension().equals(ThresholdDimensions.LEVEL_1)
-                && event.getEntity() instanceof LivingEntity living
-                && !(living instanceof Player)
-                && !(living instanceof ThresholdHoundEntity)) {
-            // Level 1's first pass uses authored Backrooms creatures only;
-            // vanilla animals/monsters and unrelated modded life stay out.
             event.setCanceled(true);
         }
     }
