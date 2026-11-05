@@ -345,7 +345,10 @@ def main() -> int:
                          ("case 12 ->", "Level 0 connected sub-floor annex"),
                          ("case 13 ->", "Level 0 records archive aisles"),
                          ("case 14 ->", "Level 0 offset false-corridor walls"),
-                         ("case 15 ->", "Level 0 broken ceiling grid")):
+                         ("case 15 ->", "Level 0 broken ceiling grid"),
+                         ("case 16 ->", "Level 0 raised office mezzanine"),
+                         ("case 17 ->", "Level 0 nested loop maze"),
+                         ("case 18 ->", "Level 0 sunken conference pit")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
@@ -356,7 +359,10 @@ def main() -> int:
                          ("case 16 ->", "Level 1 sunken maintenance trench"),
                          ("case 17 ->", "Level 1 overhead freight gantry"),
                          ("case 18 ->", "Level 1 compressor hall"),
-                         ("case 19 ->", "Level 1 sorting conveyors")):
+                         ("case 19 ->", "Level 1 sorting conveyors"),
+                         ("case 20 ->", "Level 1 raised loading-office mezzanine"),
+                         ("case 21 ->", "Level 1 accessible pump sump"),
+                         ("case 22 ->", "Level 1 stacked pallet-rack canyon")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
 
@@ -384,6 +390,12 @@ def main() -> int:
         ("Blocks.CHAIN", "Level 1 gantry suspension", l1_architecture),
         ("Blocks.LIGHTNING_ROD", "Level 1 compressor assemblies", l1_architecture),
         ("Blocks.SMOOTH_STONE_SLAB", "Level 1 walkable conveyor belts", l1_architecture),
+        ("Blocks.OAK_PLANKS", "Level 0 raised mezzanine flooring", l0_architecture),
+        ("0xA17A0L", "Level 0 nested maze seed-stable door gaps", l0_architecture),
+        ("Blocks.SMOOTH_STONE", "Level 0 sunken conference floor", l0_architecture),
+        ("Blocks.IRON_BLOCK", "Level 1 raised mezzanine flooring", l1_architecture),
+        ("Blocks.LIGHTNING_ROD", "Level 1 sump pump equipment", l1_architecture),
+        ("rackProtected", "Level 1 rack canyon protects machinery footprints", l1_architecture),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD architecture detail missing: {label}")
