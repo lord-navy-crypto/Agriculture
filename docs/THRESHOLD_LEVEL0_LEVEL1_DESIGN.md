@@ -2,7 +2,7 @@
 
 The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
-> **Current implementation override — Alpha 18:** Level 0's former harmless Observer has been replaced by the active but bounded Watcher. It uses four observation styles, honest short-lived sighting memory, a maximum two-entity local encounter, occasional near-miss or single-swipe jump scares, and retreat behavior. Earlier Alpha 5–15 notes describing a non-combat Observer are historical design records, not the current implementation.
+> **Current implementation override — Alpha 19:** Level 0's former harmless Observer has been replaced by the active but bounded Watcher. It uses four observation styles, honest short-lived sighting memory, a maximum two-entity local encounter, corner-peek search, rare path-based fake retreats, and occasional near-miss or single-swipe jump scares. Level 1's Hound can hear nearby movement as an uncertain clue, investigate with a bounded search pattern, and be repelled only by an aimed flashlight beam. Earlier Alpha 5–15 notes describing a non-combat Observer are historical design records, not the current implementation.
 
 ## Architectural boundary
 The repo contains `Agriculture` and the separate `threshold` Gradle subproject, with different Mod IDs, packages, metadata and JARs. **Agriculture is now a mandatory runtime prerequisite**: its existing food, hydration, sodium and nutrition mechanisms provide survival constraints. Threshold itself does not import Agriculture Java classes or include them in its JAR. We resolve crop blocks and foods by registry ID when loaded.
@@ -367,3 +367,24 @@ The natural spawn director attempts a new encounter every 300 ticks. A first Wat
 - Server startup checks that the Watcher can be instantiated with navigation, health, movement and attack attributes.
 - The dedicated-server smoke test requires THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK.
 - NeoForge compilation, packaged-JAR validation and real client gameplay checks remain mandatory. The source update alone is not a claim that a new JAR has been built or tested.
+
+
+## Alpha 19 — deceptive Watcher search and sensory Hound AI
+
+### Level 0 — corner-peek search
+- When sight is broken, the Watcher sweeps three waypoints around the immutable last-known snapshot: one to each side and one along the previous approach line.
+- It pauses at each waypoint, stops its navigation and uses the new GeckoLib peek clip to suggest that it is checking around a corner.
+- After a sustained direct stare or a near-miss, a natural Watcher has a 25% chance to fake its retreat. It becomes invisible and pathfinds to a lateral position derived from the last sighting; it reappears only after reaching that destination.
+- Fake retreat is disabled for the active operator test encounter and is not allowed after flashlight defense or a successful player hit. A failed path or expired memory discards the entity rather than teleporting it through walls.
+
+### Level 1 — hearing and methodical search
+- When it has no target and no active search memory, the Hound listens for nearby noisy players within 18 blocks. It selects the nearest noisy player rather than blindly checking only the nearest player.
+- The heard position is deliberately offset by a small random uncertainty. This is an auditory clue, not omniscient tracking; the Hound investigates the estimate and must regain sight or close proximity before its normal target goal commits to melee.
+- Investigation waypoints follow a bounded golden-angle sweep around the last-known point. The Hound gives a restrained growl on hearing a noise and uses a dedicated GeckoLib bite animation when its melee swing occurs.
+- Flashlight defense is directional: the item must be active, the Hound must be in line of sight, and the player's look vector must point toward it. All nearby players are checked so one player's beam can protect another.
+
+### Alpha 19 acceptance
+- Server startup verifies the Watcher's and Hound's navigation and core attributes.
+- Dedicated-server smoke tests require THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK and THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK.
+- Static QA verifies the Watcher's three-point search, fake-retreat path constraints, Hound's noisy-player selection, uncertain memory, directional flashlight defense and GeckoLib animation assets.
+- Compile, packaged-JAR validation, server smoke and client gameplay checks remain mandatory. Source changes alone do not constitute a tested JAR.
