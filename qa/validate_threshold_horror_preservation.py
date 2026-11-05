@@ -104,10 +104,12 @@ def main() -> int:
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
-    require(r"if \(roll < 38\) return 0", layout,
-            "Level 0 preserves empty rooms as its dominant architecture")
-    require(r"if \(roll < 82\) return 0", layout,
-            "Level 0 preserves the classic yellow-office palette")
+    require(r"if \(roll < 30\) return 0", layout,
+            "Level 0 keeps its classic empty-office archetype as the largest single room variant")
+    require(r"if \(roll < 97\) return 11", layout,
+            "Level 0 includes a regular micro-maze share")
+    require(r"if \(roll < 97\) return 15", layout,
+            "Level 1 includes a regular warehouse micro-maze share")
     require(r"case 9 ->", layout, "Level 1 includes parking-deck bays")
     require(r"case 10 ->", layout, "Level 1 includes narrow maintenance spines")
     require(r"case 8 ->", layout, "Level 0 includes a pale arch-gallery landmark")
@@ -332,15 +334,30 @@ def main() -> int:
         layout.index("private static int level0Architecture")
     ]
     for token, label in (("case 8 ->", "Level 0 arch gallery"), ("case 9 ->", "Level 0 false ceiling"),
-                         ("case 10 ->", "Level 0 crimson room fragment")):
+                         ("case 10 ->", "Level 0 crimson room fragment"),
+                         ("case 11 ->", "Level 0 micro-maze partitions"),
+                         ("case 12 ->", "Level 0 connected sub-floor annex")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
                          ("case 12 ->", "Level 1 parking circulation"),
                          ("case 13 ->", "Level 1 concrete garden"),
-                         ("case 14 ->", "Level 1 electrical switchgear")):
+                         ("case 14 ->", "Level 1 electrical switchgear"),
+                         ("case 15 ->", "Level 1 warehouse micro-maze"),
+                         ("case 16 ->", "Level 1 sunken maintenance trench")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
+
+    for token, label in (
+        ("buildLevel0VerticalNetwork", "Level 0 connected upper galleries"),
+        ("buildLevel1VerticalNetwork", "Level 1 connected elevated catwalks"),
+        ("hasLevel0UpperNeighbour", "Level 0 shared-edge vertical bridge decisions"),
+        ("hasLevel1UpperNeighbour", "Level 1 shared-edge vertical bridge decisions"),
+        ("StairBlock.FACING", "walkable stair connections between elevations"),
+        ("set(world, pos, x, 58, z", "real lower-level floors below the base plane"),
+    ):
+        if token not in layout:
+            raise AssertionError(f"THRESHOLD vertical architecture contract missing: {label}")
 
     if "Blocks.RED_CONCRETE" not in l0_architecture:
         raise AssertionError("THRESHOLD Level 0 crimson fragment must use its red-room palette")
