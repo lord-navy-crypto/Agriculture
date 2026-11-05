@@ -1444,9 +1444,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     case 19 -> {
                         // Pillar forest: an irregular column grid changes sightlines and
                         // perceived scale while leaving the seed-stable route network open.
-                        boolean pillarAnchor = (localX == 8 || localX == 16 || localX == 24)
-                                && (localZ == 8 || localZ == 16 || localZ == 24);
-                        boolean guaranteedPillar = localX == 8 && localZ == 8;
+                        boolean pillarAnchor = (localX == 6 || localX == 14 || localX == 22 || localX == 26)
+                                && (localZ == 6 || localZ == 14 || localZ == 22 || localZ == 26);
+                        boolean guaranteedPillar = localX == 6 && localZ == 6;
                         boolean pillar = pillarAnchor && (guaranteedPillar
                                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA19A0L), 5) != 0);
                         if (!protectedRoute && !upperWalkway && pillar) {
@@ -2259,7 +2259,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
                             set(world, pos, x, 65, z, Blocks.IRON_BLOCK.defaultBlockState());
                             set(world, pos, x, 66, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
-                            set(world, pos, x, 67, z, Blocks.LEVER.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
                         }
                         if (!upperWalkway && localX == 24 && localZ == 18) {
                             set(world, pos, x, 73, z, Blocks.SEA_LANTERN.defaultBlockState());
@@ -2282,7 +2282,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 72, z, Blocks.CUT_COPPER.defaultBlockState());
                         }
                         boolean stack = (localX == 10 || localX == 38)
-                                && (localZ == 12 || localZ == 36);
+                                && (localZ == 10 || localZ == 38);
                         if (!protectedTile && !upperWalkway && stack) {
                             for (int y = 64; y <= 69; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
