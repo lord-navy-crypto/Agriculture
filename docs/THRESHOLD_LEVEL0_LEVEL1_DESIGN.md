@@ -290,3 +290,39 @@ A deliberate change to one of these invariants requires an explicit design decis
 
 - The biome music events are now scheduled with a very short inter-track delay so the existing original tracks do not leave long silent gaps.
 - The current OGG assets are still short clips (approximately six seconds for Level 0 and four seconds for Level 1). This is an identified audio-quality debt, not a completed long-form soundtrack. Replace them with longer original compositions before calling the music pass finished.
+
+
+## Alpha 16 — six additional landmark structures
+
+### Level 0 — the Lobby
+- **Pillar Forest:** an irregular grid of seed-stable columns with varied heights and cross-beams. The room keeps open floor-level circulation and does not inherit the generic upper-gallery network.
+- **Floor-Fold Field:** three offset shallow floor recesses with contrasting surfaces, guarded rims and stair cells. The pockets are one block below the ordinary floor, not lethal shafts.
+- **Stair Tower:** a compact enclosed tower with a four-step climb, raised landing, glazed guardrails and internal lighting. The stair run and entrance are placed outside the reserved route corridor so the access is seed-independent.
+
+### Level 1 — the Habitable Zone
+- **Gothic Arcade:** repeated polished-andesite piers, high stone arch spans and overhead lighting.
+- **Cross-Dock Crane Hall:** overhead tracks, cross-dock bridge, chain details and a loading-control booth.
+- **Ventilation Exchange:** large copper ducts, cross-ducts, inspection stacks and a service bay.
+- These landmark rooms own their vertical/overhead clearance. The generic catwalk network is suppressed in those cells to prevent collisions between independent structures.
+
+### Alpha 16 distribution and acceptance
+- All six landmarks have guaranteed discovery coordinates in every world seed, with rare weighted variants in ordinary room cells.
+- Level 0 remains mostly empty yellow-office space; Level 1 remains warehouse/industrial space.
+- Runtime probes inspect each landmark, including the stairs and lower floors. The dedicated-server smoke test requires explicit success and failure markers for all six.
+
+## Alpha 17 — localized blackout behavior and generator-plant sector
+
+### Level 0 — Blackout Corridor
+- Adds a rare room with offset dark partitions, deterministic door gaps, black ceiling panels, dark floor patches and hanging cable details.
+- Four ceiling panels begin unlit. A black-concrete ceiling marker gives those panels a local light profile: they fail more often and recover more slowly than ordinary Level 0 panels.
+- The room remains traversable. The lighting fault is an environmental anomaly, not a permanent sealed darkness mechanic.
+
+### Level 1 — Generator Plant
+- Adds four static engine assemblies, furnace cores, copper busbars, exhaust stacks, breaker-indicator lamps and warning lanes.
+- The generator/breaker installation is architectural in this pass. It is not yet an interactive power-restoration system; that is a separate gameplay phase.
+- The generator sector owns its overhead clearance and preserves the existing reserved routes and resource footprints.
+
+### Alpha 17 acceptance
+- Static QA checks the new archetypes, guaranteed room cells, blackout light-state logic and generator assembly blocks.
+- Dedicated-server runtime probes verify the unlit Level 0 panels and Level 1 generator cores.
+- NeoForge compilation, packaged-JAR validation and dedicated-server smoke tests remain mandatory before a new build can be called ready. Source checks alone are not a substitute for those tests.
