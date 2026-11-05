@@ -201,19 +201,20 @@ def main() -> int:
             raise AssertionError(f"Level 0 observer safety invariant missing: {label}")
     assert "MeleeAttackGoal" not in watcher
     assert "NearestAttackableTargetGoal" not in watcher
-    require(r"MAX_LIFETIME_TICKS\\s*=\\s*180", watcher,
-            "Watcher lifetime is hard-bounded to nine seconds")
-    require(r"PERCEPTION_INTERVAL_TICKS\\s*=\\s*2", watcher,
-            "Watcher perception runs at a bounded 10 Hz cadence")
-    require(r"if \\(tickCount % PERCEPTION_INTERVAL_TICKS != 0\\) return;", watcher,
-            "Watcher skips alternate expensive perception ticks")
-    require(r"updateFlicker\\(\\)", watcher, "Watcher flicker is updated independently of perception")
+    for token, source, label in (
+        ("MAX_LIFETIME_TICKS = 180", watcher, "Watcher lifetime is hard-bounded to nine seconds"),
+        ("PERCEPTION_INTERVAL_TICKS = 2", watcher, "Watcher perception runs at a bounded 10 Hz cadence"),
+        ("if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;", watcher,
+         "Watcher skips alternate expensive perception ticks"),
+        ("updateFlicker()", watcher, "Watcher flicker is updated independently of perception"),
+        ("updateInterval(4)", entities, "Watcher transform synchronization is reduced to five updates per second"),
+    ):
+        if token not in source:
+            raise AssertionError(f"THRESHOLD Watcher performance contract missing: {label}")
     watcher_tick = watcher[watcher.index("public void tick()"):watcher.index("public boolean isPickable()")]
     assert "setNoAi(true)" not in watcher_tick, "Watcher must not reassert static AI flags every tick"
     assert "setNoGravity(true)" not in watcher_tick, "Watcher must not reassert static gravity flags every tick"
     assert "noPhysics = true" not in watcher_tick, "Watcher must not reassert static physics flags every tick"
-    require(r"updateInterval\\(4\\)", entities,
-            "Watcher transform synchronization is reduced to five updates per second")
     assert "Attributes.ATTACK_DAMAGE" not in watcher
 
     # Level 1's Hound is a real but bounded hostile encounter.
@@ -277,18 +278,16 @@ def main() -> int:
     require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
     require(r"quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
-    require(r"WATCHER_SPAWN_INTERVAL_TICKS\\s*=\\s*300", director,
-            "Observer spawn cadence remains 15 seconds")
-    require(r"WATCHER_NEARBY_RADIUS\\s*=\\s*42\\.0D", director,
-            "Observer sightings retain local encounter spacing")
-    require(r"gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L", director,
-            "Observer sightings use the bounded cadence")
-    require(r"hasNearbyWatcher\\(level, player\\)", director,
-            "Natural spawns cannot stack Watchers around one player")
-    require(r"hasNearbyWatcher\\(level, player\\)", commands,
-            "Operator summons share the same local Watcher cap")
-    require(r"if \\(!level\\.addFreshEntity\\(watcher\\)\\)", commands,
-            "Operator summon reports a rejected duplicate rather than false success")
+    for token, source, label in (
+        ("WATCHER_SPAWN_INTERVAL_TICKS = 300", director, "Observer spawn cadence remains 15 seconds"),
+        ("WATCHER_NEARBY_RADIUS = 42.0D", director, "Observer sightings retain local encounter spacing"),
+        ("gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L", director, "Observer sightings use the bounded cadence"),
+        ("hasNearbyWatcher(level, player)", director, "Natural spawns cannot stack Watchers around one player"),
+        ("hasNearbyWatcher(level, player)", commands, "Operator summons share the same local Watcher cap"),
+        ("if (!level.addFreshEntity(watcher))", commands, "Operator summon reports rejected duplicates rather than false success"),
+    ):
+        if token not in source:
+            raise AssertionError(f"THRESHOLD Watcher budget contract missing: {label}")
     require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
     require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
             "Hounds do not materialize directly in the player's view")
