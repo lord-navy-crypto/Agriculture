@@ -214,6 +214,13 @@ def main() -> int:
     require(r"animation\.threshold_hound\.alert", hound, "Hound has a dedicated alert animation")
     require(r"animation\.threshold_hound\.stalk", hound, "Hound has a low stalking gait")
     require(r"animation\.threshold_hound\.retreat", hound, "Hound has a fast retreat animation")
+    require(r"new InvestigateLastKnownPositionGoal\(this\)", hound,
+            "Hound investigates the last known position after losing sight of a player")
+    require(r"lastKnownPlayerPosition", hound,
+            "Hound retains a short-lived last-known player position")
+    require(r"searchTicks", hound, "Hound search memory expires after a bounded interval")
+    require(r"lastKnown\.x \+ Math\.cos\(angle\) \* radius", hound,
+            "Hound searches around rather than standing still at the last known position")
     require(r"new StalkPlayerGoal\(this\)", hound,
             "Hound stalks quiet players before committing to an attack")
     require(r"horizontalDistanceSqr\(\) > 0\.025D", hound,
@@ -274,14 +281,21 @@ def main() -> int:
         layout.index("private static void buildLevel1ArchitecturalDetails"):
         layout.index("private static int level0Architecture")
     ]
-    for token, label in (("case 8 ->", "Level 0 arch gallery"), ("case 9 ->", "Level 0 false ceiling")):
+    for token, label in (("case 8 ->", "Level 0 arch gallery"), ("case 9 ->", "Level 0 false ceiling"),
+                         ("case 10 ->", "Level 0 crimson room fragment")):
         if token not in l0_architecture:
             raise AssertionError(f"THRESHOLD Level 0 architecture missing: {label}")
     for token, label in (("case 11 ->", "Level 1 freight bays"),
                          ("case 12 ->", "Level 1 parking circulation"),
-                         ("case 13 ->", "Level 1 concrete garden")):
+                         ("case 13 ->", "Level 1 concrete garden"),
+                         ("case 14 ->", "Level 1 electrical switchgear")):
         if token not in l1_architecture:
             raise AssertionError(f"THRESHOLD Level 1 architecture missing: {label}")
+
+    if "Blocks.RED_CONCRETE" not in l0_architecture:
+        raise AssertionError("THRESHOLD Level 0 crimson fragment must use its red-room palette")
+    if "Blocks.LIGHTNING_ROD" not in l1_architecture:
+        raise AssertionError("THRESHOLD Level 1 switchgear must include transformer details")
 
     # GeckoLib geometry/animation and the compact dark pixel textures ship in
     # the independent mod JAR; every animated bone must exist in the matching model.

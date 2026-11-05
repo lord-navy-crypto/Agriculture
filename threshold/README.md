@@ -292,3 +292,11 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Inspired by genre-level architectural motifs; no commercial game maps, models, textures, audio or prose are copied.
 
 **Keep this PR Draft. Do not merge into main.**
+
+
+### Alpha 15 refinement pass — sector identity and Hound search memory
+
+- Level 0 gains a very rare crimson-room fragment: red wall bands and carpet bleed into an otherwise familiar office cell. The fragment is not a sealed trap; the deterministic reserved-route mask remains clear.
+- Level 1 gains a rare electrical switchgear sector with transformer cabinets, copper busbars, warning lanes and breaker housings.
+- The Hound now investigates a short-lived last-known player position after losing sight, searching around the location before resuming its quieter patrol. An active flashlight still cancels the search and triggers the existing retreat window.
+- The additions reinforce Level 0's isolation/scopophobia and Level 1's industrial/claustrophobic atmosphere without adding new dimensions, changing transitions or expanding hostile spawns into Level 0.

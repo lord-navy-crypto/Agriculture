@@ -233,3 +233,28 @@ A deliberate change to one of these invariants requires an explicit design decis
 - Level 0 architectural motifs: arches, pillars, blackout areas, red rooms and unstable layouts, cross-checked against the Backrooms Wikidot Level 0 description and Escape the Backrooms Level 0.
 - Level 1 architectural motifs: warehouse, parking deck, loading/transport infrastructure and rare overgrown concrete sub-areas, cross-checked against Backrooms VR's Level 1 archive and community-made Minecraft Backrooms layouts.
 - All structures are original deterministic implementations; no external map, model, texture, sound recording or prose is imported.
+
+
+## Alpha 15 refinement — crimson bleed, switchgear and search memory
+
+### Level 0: the Lobby
+- Added a 1% crimson-room fragment archetype: red wall bands, red carpet patches and dark ceiling accents.
+- The fragment remains traversable. It is a visual and spatial warning, not a sealed room or damage mechanic.
+- The classic yellow-office empty-room majority is preserved, and the entry room is untouched.
+- Design focus: kenophobia (large empty spaces), isolation and scopophobia (the Observer's peripheral presence).
+
+### Level 1: the Habitable Zone
+- Added a rare electrical switchgear archetype with transformer cabinets, copper busbars, yellow warning lanes and breaker housings.
+- Existing warehouse, parking, loading, maintenance and garden sectors remain the dominant architectural language.
+- Design focus: mechanophobia, claustrophobia and uncertainty inside a working-looking but abandoned industrial system.
+
+### Hound behavior
+- When a player breaks line of sight, the Hound retains the last known position for a bounded six-second search window.
+- It moves to that position and searches a small surrounding area instead of immediately idling.
+- Flashlight repulsion clears the stored position and takes priority over investigation.
+- This remains bounded ordinary pathfinding: no block breaking, no changes to Level 0 entity restrictions and no persistent player tracking.
+
+### Alpha 15 refinement acceptance
+- QA checks the new archetypes inside the correct level-specific generator methods.
+- QA checks the Hound's bounded search memory and flashlight cancellation.
+- Existing route reservations, entry shelters, dimensions, transition coordinates and room vertical profiles remain protected.

@@ -1088,6 +1088,30 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
                         }
                     }
+                    case 10 -> {
+                        // Crimson bleed: a rare red-room fragment, not a sealed trap.
+                        // Its red carpet and wall panels stop at the protected route mask.
+                        boolean crimsonWall = (localX == 9 || localX == 22)
+                                && localZ >= 8 && localZ <= 23;
+                        if (!protectedRoute && crimsonWall) {
+                            for (int y = 65; y <= 67; y++) {
+                                set(world, pos, x, y, z, Blocks.RED_CONCRETE.defaultBlockState());
+                            }
+                            if (Math.floorMod(localZ, 4) == 0) {
+                                set(world, pos, x, 68, z, Blocks.RED_STAINED_GLASS_PANE.defaultBlockState());
+                            }
+                        }
+                        boolean crimsonCarpet = localX >= 12 && localX <= 19
+                                && localZ >= 11 && localZ <= 20
+                                && Math.floorMod(localX + localZ, 3) != 0;
+                        if (!protectedRoute && crimsonCarpet) {
+                            set(world, pos, x, 64, z, Blocks.RED_CARPET.defaultBlockState());
+                        }
+                        if (!protectedRoute && (localX == 10 || localX == 21)
+                                && (localZ == 10 || localZ == 21)) {
+                            set(world, pos, x, 69, z, Blocks.BLACK_CONCRETE.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1377,6 +1401,42 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 71, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
                     }
+                    case 14 -> {
+                        // Electrical switchgear bay: transformer cabinets, overhead
+                        // copper busbars and warning lanes create a distinct machine sector.
+                        boolean transformer = (localX == 10 || localX == 15 || localX == 32 || localX == 37)
+                                && (localZ == 13 || localZ == 35);
+                        if (!protectedTile && transformer) {
+                            for (int y = 64; y <= 66; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            }
+                            set(world, pos, x, 67, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            set(world, pos, x, 68, z, Blocks.LIGHTNING_ROD.defaultBlockState());
+                        }
+                        boolean warningLane = (localZ == 11 || localZ == 37)
+                                && (localX >= 8 && localX <= 17 || localX >= 30 && localX <= 39);
+                        if (!protectedTile && warningLane) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        boolean busbar = (localZ == 9 || localZ == 39)
+                                && localX >= 8 && localX <= 40;
+                        if (busbar) {
+                            set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX, 6) == 0) {
+                                set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        boolean breakerCabinet = (localX == 22 || localX == 27)
+                                && (localZ == 14 || localZ == 34);
+                        if (!protectedTile && breakerCabinet) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                        if (localX == 24 && (localZ == 12 || localZ == 36)) {
+                            set(world, pos, x, 72, z, Blocks.SEA_LANTERN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1396,8 +1456,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roll < 90) return 5;
         if (roll < 94) return 6;
         if (roll < 97) return 7;
-        if (roll < 99) return 8;
-        return 9;
+        if (roll < 98) return 8;
+        if (roll < 99) return 9;
+        return 10;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -1416,8 +1477,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roll < 89) return 9;
         if (roll < 92) return 10;
         if (roll < 95) return 11;
-        if (roll < 98) return 12;
-        return 13;
+        if (roll < 97) return 12;
+        if (roll < 99) return 13;
+        return 14;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
