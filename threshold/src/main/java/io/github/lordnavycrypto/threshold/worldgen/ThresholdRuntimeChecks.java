@@ -5,6 +5,8 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -309,6 +311,40 @@ public final class ThresholdRuntimeChecks {
         System.out.println(agricultureItemsReady
                 ? "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_OK"
                 : "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_FAIL");
+
+        // Regression coverage for the previous blanket EntityJoinLevelEvent
+        // cancellation: ordinary mobs and player-thrown projectile entity types
+        // must be accepted in every Threshold dimension.
+        boolean entityCompatibility =
+                supportsStandardEntities(level0)
+                && supportsStandardEntities(level1)
+                && supportsStandardEntities(level2)
+                && supportsStandardEntities(level3)
+                && supportsStandardEntities(level4)
+                && supportsStandardEntities(level5);
+        System.out.println(entityCompatibility
+                ? "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK"
+                : "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
+    }
+
+    private static boolean supportsStandardEntities(ServerLevel level) {
+        return acceptsEntityProbe(level, EntityType.COW, 6.5D)
+                && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D)
+                && acceptsEntityProbe(level, EntityType.ARROW, 10.5D)
+                && acceptsEntityProbe(level, EntityType.TRIDENT, 12.5D);
+    }
+
+    private static boolean acceptsEntityProbe(
+            ServerLevel level, EntityType<?> type, double x) {
+        Entity probe = type.create(level);
+        if (probe == null) return false;
+        probe.moveTo(x, 80.0D, 8.5D, 0.0F, 0.0F);
+        if (!level.addFreshEntity(probe)) {
+            probe.discard();
+            return false;
+        }
+        probe.discard();
+        return true;
     }
 
     private static boolean isLevel0Wall(BlockState state) {
