@@ -15,7 +15,8 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * Level 0's observer is an environmental apparition, not a combatant.
+ * Level 0's naturally generated observer is an environmental apparition,
+ * not a combatant. Operator test summons may preview it in any dimension.
  * It has no AI, collision, damage, drops, or persistent save data. It vanishes
  * when approached or directly noticed, preserving Level 0's uncertain presence.
  */
