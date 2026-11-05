@@ -27,9 +27,11 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * An Overworld predator disguised as a cheerful party mascot.
- * It shadows quiet players, commits to a fast pursuit when noticed or provoked,
- * and uses ordinary melee combat. It never teleports or captures the player.
+ * A predator disguised as a cheerful party mascot. Its natural encounter
+ * remains in the Overworld, while operator test summons may place it in any
+ * dimension. It shadows quiet players, commits to a fast pursuit when noticed
+ * or provoked, and uses ordinary melee combat. It never teleports or captures
+ * the player.
  */
 public final class ThresholdPartygoerEntity extends Monster implements GeoEntity {
     private static final double ACQUIRE_RANGE = 48.0D;
