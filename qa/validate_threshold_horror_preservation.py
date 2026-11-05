@@ -202,6 +202,7 @@ def main() -> int:
         ("searchWaypointIndex", "Watcher search uses a bounded three-point sweep"),
         ("searchPauseTicks", "Watcher pauses to peek around corners"),
         ("EncounterState.REPOSITION", "Watcher can perform a fake retreat reposition"),
+        ("encounterState != EncounterState.REPOSITION", "fake-retreat invisibility is protected from ambient flicker"),
         ("beginFakeReposition", "fake retreat uses ordinary navigation rather than teleporting"),
         ("MEMORY_TICKS = 120", "Watcher memory has a bounded lifetime"),
         ("relayLocalObservation", "nearby Watchers relay local observations"),
@@ -292,6 +293,8 @@ def main() -> int:
     require(r"horizontalDistanceSqr\(\) > 0\.025D", hound,
             "Hound detects fast player movement as a noise cue")
     require(r"noiseListenCooldown", hound, "Hound listening checks are rate-limited")
+    require(r"findNearestNoisyPlayer\(18\.0D\)", hound,
+            "Hound chooses the nearest noisy player rather than the nearest player overall")
     require(r"noisy\.position\(\)\.add\(uncertainty\)", hound,
             "Hound hears an uncertain sound location instead of gaining live wall tracking")
     require(r"searchTicks = 80", hound, "sound investigation has a short bounded memory")
