@@ -17,9 +17,12 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
- * Keeps the two dimensions' entity rules separate.
- * Level 0 allows only short-lived, harmless observers. Level 1 can spawn Hounds
- * outside the entry shelter; no vanilla biome spawner tables are added.
+ * Controls Threshold-authored encounters and keeps custom horror entities in
+ * their intended dimensions. Vanilla mobs, dropped items, vehicles, and
+ * player-created projectiles are not filtered here.
+ *
+ * Natural vanilla biome spawning is configured separately; an empty biome
+ * spawn table does not prevent commands, spawn eggs, or projectiles from working.
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
