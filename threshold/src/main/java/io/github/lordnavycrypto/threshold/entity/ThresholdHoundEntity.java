@@ -28,8 +28,9 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * A first-pass Backrooms Hound for Level 1. It uses ordinary pathfinding and
- * melee behavior, cannot break blocks, and is never permitted in Level 0.
+ * A first-pass Backrooms Hound whose natural encounter is restricted to
+ * Level 1. Operator test summons may place it in any dimension. It uses ordinary
+ * pathfinding and melee behavior and cannot break blocks.
  */
 public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     private static final RawAnimation IDLE =
