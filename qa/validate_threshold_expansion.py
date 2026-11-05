@@ -180,10 +180,16 @@ def main() -> int:
     for level in ("level_0", "level_1"):
         event = f"{level}_ambient"
         assert event in sound_definitions
-        music = read_json(RES / f"data/threshold/worldgen/biome/{level}.json")["effects"]["music"]
+        biome_effects = read_json(RES / f"data/threshold/worldgen/biome/{level}.json")["effects"]
+        music = biome_effects["music"]
         assert music["sound"] == f"threshold:{event}"
         assert music["replace_current_music"] is True
         assert music["min_delay"] == 1 and music["max_delay"] == 5
+        variants = sound_definitions[event]["sounds"]
+        assert len(variants) >= 3, f"{event} needs randomized ambience variants"
+        assert len({round(item.get("pitch", 1.0), 3) for item in variants}) >= 3
+        assert all(item.get("stream") is True for item in variants)
+        assert biome_effects["mood_sound"]["tick_delay"] <= 3600
         raw = (RES / f"assets/threshold/sounds/{event}.ogg").read_bytes()
         assert raw[:4] == b"OggS" and len(raw) > 4000
     require(sounds_java, "LEVEL_0_AMBIENT", "Level 0 sound registry entry")
