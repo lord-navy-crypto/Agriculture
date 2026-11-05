@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -315,8 +316,8 @@ public final class ThresholdRuntimeChecks {
 
         // Entity admission is intentionally universal: ordinary mobs and
         // functional entities must be able to join every dimension. These
-        // short-lived probes cover living mobs, dropped items, projectiles,
-        // minecarts and item frames.
+        // short-lived probes cover living mobs, dropped items, minecarts,
+        // item frames, and Threshold's own custom entities.
         boolean entityCompatibility =
                 supportsEntityCompatibility(level0)
                 && supportsEntityCompatibility(level1)
@@ -373,6 +374,41 @@ public final class ThresholdRuntimeChecks {
         System.out.println(naturalSpawnPolicy
                 ? "THRESHOLD_NATURAL_SPAWN_POLICY_OK"
                 : "THRESHOLD_NATURAL_SPAWN_POLICY_FAIL");
+
+        boolean spawnReasonPolicy =
+                ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_0, EntityType.COW, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_0, EntityType.ZOMBIE, MobSpawnType.CHUNK_GENERATION)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_0, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, EntityType.COW, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, EntityType.ZOMBIE, MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, ThresholdEntities.HOUND.get(), MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, ThresholdEntities.PARTYGOER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, EntityType.ZOMBIE, MobSpawnType.SPAWN_EGG)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, EntityType.ZOMBIE, MobSpawnType.COMMAND)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, EntityType.COW, MobSpawnType.BREEDING)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        net.minecraft.world.level.Level.OVERWORLD, EntityType.ZOMBIE, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_2, EntityType.ZOMBIE, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_3, EntityType.ZOMBIE, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_4, EntityType.ZOMBIE, MobSpawnType.NATURAL)
+                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_5, EntityType.ZOMBIE, MobSpawnType.NATURAL);
+        System.out.println(spawnReasonPolicy
+                ? "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK"
+                : "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_FAIL");
     }
 
     private static boolean naturalProfile(
@@ -385,13 +421,12 @@ public final class ThresholdRuntimeChecks {
         return acceptsEntityProbe(level, EntityType.COW, 6.5D)
                 && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D)
                 && acceptsEntityProbe(level, EntityType.ITEM, 10.5D)
-                && acceptsEntityProbe(level, EntityType.ARROW, 12.5D)
-                && acceptsEntityProbe(level, EntityType.TRIDENT, 14.5D)
-                && acceptsEntityProbe(level, EntityType.MINECART, 16.5D)
-                && acceptsEntityProbe(level, EntityType.ITEM_FRAME, 18.5D)
-                && acceptsEntityProbe(level, ThresholdEntities.WATCHER.get(), 20.5D)
-                && acceptsEntityProbe(level, ThresholdEntities.HOUND.get(), 22.5D)
-                && acceptsEntityProbe(level, ThresholdEntities.PARTYGOER.get(), 24.5D);
+                && acceptsEntityProbe(level, EntityType.MINECART, 12.5D)
+                && acceptsEntityProbe(level, EntityType.ITEM_FRAME, 14.5D)
+                && acceptsEntityProbe(level, EntityType.ARMOR_STAND, 16.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.WATCHER.get(), 18.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.HOUND.get(), 20.5D)
+                && acceptsEntityProbe(level, ThresholdEntities.PARTYGOER.get(), 22.5D);
     }
 
     private static boolean acceptsEntityProbe(
