@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.13.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.18.jar
 python3 qa/smoke_threshold_server.py
 ```
 
