@@ -21,7 +21,7 @@
 - Native dimension `threshold:level_0`; custom biome and dimension type.
 - Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
-- Random-tick fluorescent panels emit light and occasionally blink. Level 0 uses only the non-combat Observer: a distant silhouette with no AI, collision, damage or attack behavior; it vanishes when approached or directly noticed.
+- Random-tick fluorescent panels emit light and occasionally blink. Level 0's only natural entity is the Watcher: a bounded stalker with four observation styles, local last-known-position memory, rare rush/near-miss scares and a single low-damage swipe. A held flashlight can interrupt it.
 - Atmospheric cave ambience used as a provisional sound bed.
 
 ## Level 1 — The Vulnerable Shelter
@@ -40,7 +40,7 @@
 ## Current scope / limitations
 - A paired Unstable Wall passage connects Level 0 and Level 1 in both directions; each entry room has a guaranteed return wall. Interact with an empty hand.
 - Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
-- No Level 0 combat mobs. Level 0's Observer is a harmless visual presence; Level 1's Hound is the first real hostile entity. No sound jump scares or client-only shaders are added in this pass.
+- Level 0 has one authored encounter entity, the Watcher; it is not a conventional mob swarm. Local encounters are capped at two coordinated Watchers. Level 1 retains the Hound as its industrial predator. The Watcher uses short audio stings and ordinary vanilla hurt feedback rather than a custom screen shader.
 - Six original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
 - World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
@@ -63,6 +63,8 @@ Test commands (requires OP permissions):
 /threshold travel overworld
 /threshold whereami
 /threshold summon watcher
+/threshold summon watcher_hunt
+/threshold watcher status
 /threshold summon hound
 /threshold summon partygoer
 ```
@@ -112,11 +114,10 @@ The packaged-JAR validator enforces this invariant.
 
 ## Alpha 5 — dimension-specific entity ecology
 
-### Level 0: Observer only
-- The Observer is a temporary, distant silhouette. It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
-- It appears only in Level 0, from a visible and unobstructed position at a distance. It disappears after a short interval, when the player approaches, or when the player directly looks at it.
-- Level 0 rejects every other living creature and all projectiles joining the dimension, including vanilla and third-party mobs; players can still traverse normally. It is not a combat or chase level.
-- The Observer is atmosphere, not a threat: its purpose is to make the player question whether something is watching from the far end of an otherwise empty corridor.
+### Level 0: original Observer prototype (superseded by Alpha 18)
+- The first Observer implementation was a harmless, temporary silhouette with no AI, collision or attack behavior.
+- Alpha 18 replaces that passive prototype with the active Watcher state machine described below. The natural-spawn whitelist still admits only the Watcher in Level 0; unrelated natural mob spawns remain disabled.
+- The current Watcher has normal collision/path navigation, can be attacked, and may perform one limited scare attack before withdrawing. It does not break blocks or use hidden live player tracking.
 
 ### Level 1: first predator
 - The Hound is a real Monster with player targeting, pathfinding and melee behavior. It has explicit health, movement, damage and follow-range attributes.
@@ -229,7 +230,7 @@ The packaged-JAR validator enforces this invariant.
 - Level 0 remains the sparse 32×32 yellow-office maze: faded wallpaper, carpet, empty space, cave-like ambience, brief fluorescent flicker and occasional spatially isolating boundaries. It is not a farm or a reliable supply hub.
 - Level 1 remains the 48×48 industrial warehouse: concrete, partitions, storage bays, ventilation, vault-like ambience and longer industrial lighting faults. Its planter and starter cache stay localized.
 - Existing door decisions, the Level 0 → Level 1 transition and the Level 1 return passage are preserved. Survival balancing must not resize rooms, move routes or rewrite already generated spaces.
-- Level 0 has no hostile entities; only its harmless Observer is allowed. Level 1 now supports the controlled Hound predator. No combat behavior is added to Level 0.
+- Level 0 admits only the Watcher as a natural encounter entity; its active behavior is bounded and locally capped. Level 1 supports the controlled Hound predator. Neither level enables generic vanilla mob spawning.
 - Agriculture remains the only source of food, nutrition, hydration and sodium mechanics. Threshold only distributes real Agriculture content.
 
 The CI preservation gate runs the following command:
@@ -241,7 +242,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 
 ## Alpha 12 — entity presentation, rechargeable equipment and room variety
 
-- The Level 0 Observer slowly turns toward the nearest player, uses rare one-tick visual dropouts, and keeps its harmless, non-colliding, transient behavior.
+- The pre-Alpha18 Level 0 Observer slowly turned toward the nearest player and used rare one-tick visual dropouts. Alpha 18 supersedes its harmless behavior with the active Watcher encounter.
 - The Hound now has a dedicated pursuit-run animation, distinct from its idle and walk cycles. It remains a Level 1-only hostile and still cannot break blocks.
 - Partygoer now uses its own geometry and animation resources with the existing smiling-mask texture. Its capture window is longer; creative and spectator players are excluded, and it has no attack goal.
 - Entity renderer registration is consolidated into one client-only MOD-bus subscriber. The former second subscriber is disabled to prevent duplicate renderer registration.
@@ -263,7 +264,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Room sizes, transition walls, entry positions, return passages and all six dimension registrations are unchanged.
 
 ### Long-range design direction
-- Level 0: silence/absence, repeated yellow office grammar, subtle spatial anomalies, rare harmless Observer sightings, and almost no dependable supplies.
+- Level 0: silence/absence, repeated yellow office grammar, subtle spatial anomalies, rare Watcher sightings that can escalate into a limited encounter, and almost no dependable supplies.
 - Level 1: industrial scale, low fog, parking/warehouse/maintenance sub-areas, intermittent power failures, scattered but useful caches, and Hound encounters in dark spaces.
 - Planned follow-up: a generator/breaker restoration loop for Level 1, then non-combat exploration tools such as a radio, field notes, map fragments and replacement cells. These are new implementations inspired by genre conventions; no commercial game's maps, models, audio or assets are copied.
 
@@ -284,7 +285,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 
 ## Alpha 15 — expanded Level 0/1 horror grammar and GeckoLib acting
 
-- Watcher: added head tracking, stutter, folded posture and trailing-shroud drift clips. Its presence controller uses long quiet intervals with short, staggered gesture windows; it remains harmless, non-colliding and transient in Level 0.
+- Watcher: Alpha 15 added head tracking, stutter, folded posture and trailing-shroud drift clips. Alpha 18 later adds active stalking, local memory, rush/strike behavior and a bounded retreat.
 - Hound: added sniff, alert, low stalking and fast retreat clips. The movement controller distinguishes idle observation, target alert, slow stalking gait, normal travel and high-speed retreat.
 - Level 0: added rare pale arch-gallery and suspended false-ceiling room archetypes. The entry room, room grid, floor profile and reserved circulation network remain unchanged.
 - Level 1: added freight loading bays, multi-storey parking circulation details and a rare artificial-light concrete garden. Resource footprints and reserved routes remain protected.
@@ -300,3 +301,15 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Level 1 gains a rare electrical switchgear sector with transformer cabinets, copper busbars, warning lanes and breaker housings.
 - The Hound now investigates a short-lived last-known player position after losing sight, searching around the location before resuming its quieter patrol. An active flashlight still cancels the search and triggers the existing retreat window.
 - The additions reinforce Level 0's isolation/scopophobia and Level 1's industrial/claustrophobic atmosphere without adding new dimensions, changing transitions or expanding hostile spawns into Level 0.
+
+
+## Alpha 18 — coordinated Watcher and jump-scare behavior
+
+- The Level 0 Watcher now uses a server-authoritative state machine: OBSERVE, OBSERVED, STALK, SEARCH, RUSH, STRIKE and RETREAT.
+- Four observation styles give each entity a different approach: peripheral watching, assigned flanking, movement mirroring and noise-led investigation.
+- Last-known player positions are recorded only when visible. Nearby Watchers can relay the original timestamped snapshot; confidence decays over 120 ticks and is never refreshed by a relay.
+- A local encounter is capped at two Watchers. The second receives the flanker role, and only one nearby Watcher may rush the same player at a time.
+- A rush has a 25% near-miss variant or a single 2-damage swipe with mild knockback. It then withdraws; the scare cooldown is 240 ticks. A held flashlight aimed at the Watcher interrupts even an active rush.
+- Added GeckoLib lunge/strike clips and audio stings. No custom shader is required; the swipe uses vanilla damage feedback.
+- Test/inspection commands: /threshold summon watcher (harmless preview), /threshold summon watcher_hunt (active test encounter), and /threshold watcher status (local role/state/memory telemetry).
+- Static QA and dedicated-server startup markers now check the active Watcher profile. A new JAR is not considered ready until NeoForge compilation, packaging, dedicated-server smoke tests and client gameplay tests pass.
