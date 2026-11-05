@@ -268,3 +268,15 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Planned follow-up: a generator/breaker restoration loop for Level 1, then non-combat exploration tools such as a radio, field notes, map fragments and replacement cells. These are new implementations inspired by genre conventions; no commercial game's maps, models, audio or assets are copied.
 
 **Keep this PR Draft. Do not merge into main.**
+
+
+## Alpha 14 — Hound stalking and noise escalation
+
+- Hounds no longer receive the player as an instant target when they spawn.
+- A quiet player within stalking range is approached at a slower pace, giving the encounter a readable escalation phase.
+- Sprinting, swimming, fall-flying or moving rapidly can trigger direct pursuit; close proximity also escalates the encounter.
+- Creative/spectator players and players actively using the Threshold flashlight are excluded from normal target acquisition.
+- The existing flashlight retreat remains a short defensive window, not a permanent Hound-disable effect.
+- The protected Level 1 entry shelter, Level 0 entity restrictions, room grid, transition coordinates and all six dimension registrations remain unchanged.
+
+**Keep this PR Draft. Do not merge into main.**
