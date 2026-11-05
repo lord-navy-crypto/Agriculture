@@ -1140,7 +1140,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                         ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState());
                             }
                             if (Math.floorMod(localX + localZ, 7) == 0) {
-                                set(world, pos, x, 69, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                                set(world, pos, x, 70, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
                             }
                         }
                         // A few wall-mounted dead-end details make the small
@@ -1188,7 +1188,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 set(world, pos, x, 61, z, Blocks.CHAIN.defaultBlockState());
                             }
                         }
-                        if ((localX == 23 || localX == 24) && localZ >= 12 && localZ <= 16) {
+                        if ((localX == 23 || localX == 24) && localZ >= 11 && localZ <= 16) {
                             int step = 16 - localZ;
                             int stairY = 63 - step;
                             set(world, pos, x, stairY, z,
@@ -1543,7 +1543,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                         ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState());
                             }
                             if (Math.floorMod(localX + localZ, 9) == 0) {
-                                set(world, pos, x, 71, z, Blocks.IRON_BARS.defaultBlockState());
+                                set(world, pos, x, 72, z, Blocks.IRON_BARS.defaultBlockState());
                             }
                         }
                         if (!protectedTile && (localX == 10 || localX == 38)
@@ -1591,7 +1591,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                         ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
                             }
                         }
-                        if ((localX == 33 || localX == 34) && localZ >= 22 && localZ <= 26) {
+                        if ((localX == 33 || localX == 34) && localZ >= 21 && localZ <= 26) {
                             int step = 26 - localZ;
                             int stairY = 63 - step;
                             set(world, pos, x, stairY, z,
@@ -1777,7 +1777,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean isLevel0UpperStair(int localX, int localZ) {
-        return (localX == 16 || localX == 17) && localZ >= 12 && localZ <= 15;
+        return (localX == 16 || localX == 17) && localZ >= 12 && localZ <= 16;
     }
 
     private static boolean hasLevel0UpperNeighbour(
@@ -1867,7 +1867,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean isLevel1UpperStair(int localX, int localZ) {
-        return (localX == 24 || localX == 25) && localZ >= 18 && localZ <= 23;
+        return (localX == 24 || localX == 25) && localZ >= 18 && localZ <= 24;
     }
 
     private static boolean hasLevel1UpperNeighbour(
