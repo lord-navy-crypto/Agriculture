@@ -188,7 +188,23 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.12D, true));
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.12D, true) {
+            @Override
+            public boolean canUse() {
+                return lightRepelledTicks == 0
+                        && !(getTarget() instanceof Player target
+                                && isIlluminatedByFlashlight(target))
+                        && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return lightRepelledTicks == 0
+                        && !(getTarget() instanceof Player target
+                                && isIlluminatedByFlashlight(target))
+                        && super.canContinueToUse();
+            }
+        });
         goalSelector.addGoal(3, new InvestigateLastKnownPositionGoal(this));
         goalSelector.addGoal(4, new StalkPlayerGoal(this));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.78D));
