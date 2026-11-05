@@ -396,6 +396,12 @@ def main() -> int:
         ("Blocks.IRON_BLOCK", "Level 1 raised mezzanine flooring", l1_architecture),
         ("Blocks.LIGHTNING_ROD", "Level 1 sump pump equipment", l1_architecture),
         ("rackProtected", "Level 1 rack canyon protects machinery footprints", l1_architecture),
+        ("boolean sideStair", "alternate mezzanine access stair", l0_architecture),
+        ("Direction.EAST", "side stair direction and pit access", l0_architecture),
+        ("localX == 28", "Level 0 pit has an alternate stair opening", l0_architecture),
+        ("localX == 12", "Level 1 sump has an alternate stair opening", l1_architecture),
+        ("localX >= 13 && localX <= 17", "Level 1 sump alternate stair flight", l1_architecture),
+        ("!protectedTile && !upperWalkway", "Level 1 lower room preserves routes and catwalks", l1_architecture),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD architecture detail missing: {label}")
