@@ -58,6 +58,13 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(1, 1);
         level0.getChunk(3, 0);
         level0.getChunk(3, 1);
+        // Expanded Level 0 landmarks: raised mezzanine, nested maze and sunken pit.
+        level0.getChunk(0, 3);
+        level0.getChunk(2, 2);
+        level0.getChunk(2, 3);
+        level0.getChunk(3, 2);
+        level0.getChunk(3, 3);
+        level0.getChunk(5, 1);
         level1.getChunk(0, 0);
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
@@ -66,6 +73,9 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(4, 1);
         level1.getChunk(4, 4);
         level1.getChunk(5, 4);
+        // Expanded Level 1 landmarks: raised loading mezzanine and stacked rack canyon.
+        level1.getChunk(0, 4);
+        level1.getChunk(6, 3);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -244,6 +254,71 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level1VerticalLayout
                 ? "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_FAIL");
+
+        boolean level0MezzanineBuilt = false;
+        for (int x = 7; x <= 14; x++) {
+            for (int z = 53; z <= 60; z++) {
+                if (level0.getBlockState(new BlockPos(x, 66, z)).is(Blocks.OAK_PLANKS)) {
+                    level0MezzanineBuilt = true;
+                }
+            }
+        }
+        System.out.println(level0MezzanineBuilt
+                ? "THRESHOLD_LEVEL0_MEZZANINE_OK" : "THRESHOLD_LEVEL0_MEZZANINE_FAIL");
+
+        boolean level0NestedMazeBuilt = false;
+        for (int x = 39; x <= 56; x++) {
+            for (int z = 39; z <= 56; z++) {
+                if (level0.getBlockState(new BlockPos(x, 65, z))
+                        .is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())) {
+                    level0NestedMazeBuilt = true;
+                }
+            }
+        }
+        System.out.println(level0NestedMazeBuilt
+                ? "THRESHOLD_LEVEL0_NESTED_MAZE_OK" : "THRESHOLD_LEVEL0_NESTED_MAZE_FAIL");
+
+        boolean level0SunkenPitBuilt = false;
+        for (int x = 86; x <= 92; x++) {
+            for (int z = 21; z <= 28; z++) {
+                if (level0.getBlockState(new BlockPos(x, 60, z)).is(Blocks.SMOOTH_STONE)) {
+                    level0SunkenPitBuilt = true;
+                }
+            }
+        }
+        System.out.println(level0SunkenPitBuilt
+                ? "THRESHOLD_LEVEL0_SUNKEN_PIT_OK" : "THRESHOLD_LEVEL0_SUNKEN_PIT_FAIL");
+
+        boolean level1MezzanineBuilt = false;
+        for (int x = 7; x <= 15; x++) {
+            for (int z = 79; z <= 83; z++) {
+                if (level1.getBlockState(new BlockPos(x, 66, z)).is(Blocks.IRON_BLOCK)) {
+                    level1MezzanineBuilt = true;
+                }
+            }
+        }
+        System.out.println(level1MezzanineBuilt
+                ? "THRESHOLD_LEVEL1_MEZZANINE_OK" : "THRESHOLD_LEVEL1_MEZZANINE_FAIL");
+
+        boolean level1PumpSumpBuilt = false;
+        for (int x = 55; x <= 60; x++) {
+            for (int z = 17; z <= 22; z++) {
+                if (level1.getBlockState(new BlockPos(x, 58, z)).is(Blocks.SMOOTH_STONE)) {
+                    level1PumpSumpBuilt = true;
+                }
+            }
+        }
+        System.out.println(level1PumpSumpBuilt
+                ? "THRESHOLD_LEVEL1_PUMP_SUMP_OK" : "THRESHOLD_LEVEL1_PUMP_SUMP_FAIL");
+
+        boolean level1RackCanyonBuilt = false;
+        for (int x = 104; x <= 110; x++) {
+            if (level1.getBlockState(new BlockPos(x, 66, 60)).is(Blocks.IRON_BLOCK)) {
+                level1RackCanyonBuilt = true;
+            }
+        }
+        System.out.println(level1RackCanyonBuilt
+                ? "THRESHOLD_LEVEL1_RACK_CANYON_OK" : "THRESHOLD_LEVEL1_RACK_CANYON_FAIL");
         boolean wallBuilt = level0.getBlockState(new BlockPos(0, 66, 15))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
         System.out.println(wallBuilt
