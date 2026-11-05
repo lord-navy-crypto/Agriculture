@@ -67,6 +67,8 @@ public final class ThresholdCommands {
                         .then(Commands.literal("watcher_hunt").executes(ThresholdCommands::summonWatcherHunt))
                         .then(Commands.literal("hound").executes(ThresholdCommands::summonHound))
                         .then(Commands.literal("partygoer").executes(ThresholdCommands::summonPartygoer)))
+                .then(Commands.literal("watcher")
+                        .then(Commands.literal("status").executes(ThresholdCommands::watcherStatus)))
                 .then(Commands.literal("repair_floor")
                         .executes(ThresholdCommands::repairFloor)));
     }
@@ -223,6 +225,29 @@ public final class ThresholdCommands {
         }
         context.getSource().sendSuccess(() -> Component.literal(
                 "Active Watcher spawned. Turn away to test its stalking, rush, near-miss and single-swipe behaviors."), false);
+        return Command.SINGLE_SUCCESS;
+    }
+
+    /** Reports only local Watcher state and decaying last-observation confidence. */
+    private static int watcherStatus(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        ServerPlayer player = context.getSource().getPlayerOrException();
+        ServerLevel level = player.serverLevel();
+        var watchers = level.getEntitiesOfClass(
+                ThresholdWatcherEntity.class, player.getBoundingBox().inflate(42.0D));
+        if (watchers.isEmpty()) {
+            context.getSource().sendFailure(Component.literal("No Watchers are active nearby."));
+            return 0;
+        }
+        for (ThresholdWatcherEntity watcher : watchers) {
+            long confidence = Math.round(watcher.getObservationConfidence() * 100.0D);
+            long age = watcher.getObservationAgeTicks();
+            String report = "Watcher #" + watcher.getId()
+                    + " role=" + watcher.getObservationStyleName()
+                    + " state=" + watcher.getEncounterStateName()
+                    + " memory=" + confidence + "% age=" + age + "t";
+            context.getSource().sendSuccess(() -> Component.literal(report), false);
+        }
         return Command.SINGLE_SUCCESS;
     }
 
