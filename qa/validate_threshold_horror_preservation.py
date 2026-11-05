@@ -192,54 +192,62 @@ def main() -> int:
     require(r"ThresholdEntities\.HOUND\.get\(\)", attributes,
             "Hound attributes are registered")
 
-    # Level 0's observer is deliberately harmless and transient.
+    # Level 0's Watcher is a bounded, damageable stalker with honest local perception.
     for token, label in (
-        ("setNoAi(true)", "observer has no AI"),
-        ("setNoGravity(true)", "observer does not fall"),
-        ("setInvulnerable(true)", "observer cannot be damaged"),
-        ("noPhysics = true", "observer has no physical collision"),
-        ("public boolean isPickable()", "observer cannot be selected or hit"),
-        ("public boolean isPushable()", "observer cannot push or be pushed"),
-        ("public boolean isAttackable()", "observer is not attackable"),
-        ("directlyNoticed", "observer disappears when directly noticed"),
-        ("Mth.rotLerp", "observer turns toward the player without pathfinding"),
-        ("setInvisible(true)", "observer has a rare visual dropout"),
-        ("nextFlickerTick", "observer flicker interval is bounded"),
+        ("EncounterState", "Watcher has explicit encounter states"),
+        ("ObservationStyle", "Watcher uses distinct observation styles"),
+        ("ObservationSnapshot", "Watcher stores immutable last-known observations"),
+        ("confidence(long now)", "Watcher memory confidence decays with age"),
+        ("MEMORY_TICKS = 120", "Watcher memory has a bounded lifetime"),
+        ("relayLocalObservation", "nearby Watchers relay local observations"),
+        ("peer.observation.observedAt() > observation.observedAt()", "relays preserve the original observation timestamp"),
+        ("isPlayerNoisy", "Watcher distinguishes loud and quiet player movement"),
+        ("isBeingWatchedBy", "direct eye contact changes Watcher behavior"),
+        ("FlashlightItem.isActive(player)", "a held flashlight can interrupt a scare"),
+        ("beginRush", "Watcher can initiate a short charge"),
+        ("nearMiss = server.getRandom().nextInt(4) == 0", "some charges become near-miss scares"),
+        ("performStrike", "Watcher has a single-swipe attack state"),
+        ("player.hurt(damageSources().mobAttack(this), 2.0F)", "Watcher hit is deliberately low damage"),
+        ("player.knockback(0.22D", "Watcher hit has bounded knockback"),
+        ("RUSH_COOLDOWN_TICKS = 240", "jump scares have a long cooldown"),
+        ("beginRetreat", "Watcher withdraws after a scare"),
+        ("setFlankerRole", "a second local Watcher receives a flanker role"),
+        ("PEER_RELAY_RADIUS = 24.0D", "peer communication is local"),
+        ("NATURAL_LIFETIME_TICKS = 600", "natural Watcher lifetime is bounded"),
+        ("PERCEPTION_INTERVAL_TICKS = 4", "Watcher perception runs at five updates per second"),
+        ("updateFlicker()", "Watcher flicker is updated independently of perception"),
+        ("updateInterval(4)", "Watcher transform synchronization is bounded"),
+        ("animation.threshold_watcher.lunge", "Watcher has a lunge animation"),
+        ("animation.threshold_watcher.strike", "Watcher has a strike animation"),
     ):
-        if token not in watcher:
-            raise AssertionError(f"Level 0 observer safety invariant missing: {label}")
-    assert "MeleeAttackGoal" not in watcher
-    assert "NearestAttackableTargetGoal" not in watcher
-    for token, source, label in (
-        ("MAX_LIFETIME_TICKS = 180", watcher, "Watcher lifetime is hard-bounded to nine seconds"),
-        ("PERCEPTION_INTERVAL_TICKS = 2", watcher, "Watcher perception runs at a bounded 10 Hz cadence"),
-        ("if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;", watcher,
-         "Watcher skips alternate expensive perception ticks"),
-        ("updateFlicker()", watcher, "Watcher flicker is updated independently of perception"),
-        ("updateInterval(4)", entities, "Watcher transform synchronization is reduced to five updates per second"),
-    ):
-        if token not in source:
-            raise AssertionError(f"THRESHOLD Watcher performance contract missing: {label}")
-    watcher_tick = watcher[watcher.index("public void tick()"):watcher.index("public boolean isPickable()")]
-    assert "setNoAi(true)" not in watcher_tick, "Watcher must not reassert static AI flags every tick"
-    assert "setNoGravity(true)" not in watcher_tick, "Watcher must not reassert static gravity flags every tick"
-    assert "noPhysics = true" not in watcher_tick, "Watcher must not reassert static physics flags every tick"
-    require(r"DIRECT_NOTICE_GRACE_CHECKS = 3", watcher,
-            "Watcher vanishes within 0.3 seconds after being directly noticed")
-    require(r"directlyObservedTicks >= DIRECT_NOTICE_GRACE_CHECKS", watcher,
-            "Watcher only vanishes after a sustained direct sighting")
-    assert "if (directlyNoticed) discard();" not in watcher, "Watcher must not vanish on the first look frame"
-    require(r"SHOWCASE_LIFETIME_TICKS = 600", watcher,
-            "Operator preview has a 30-second inspection window")
-    require(r"enableShowcaseMode\(\)", commands,
-            "Summon command enables a stable visual preview")
-    require(r"findWatcherShowcasePosition\(level, player\)", commands,
-            "Summon command places the preview in front of the player")
-    require(r"player\.getLookAngle\(\)\.dot\(toSpawn\) > 0\.35D", director,
-            "Natural Watcher spawns outside the player's forward view")
-    require(r"LightTexture\.FULL_BRIGHT", watcher_renderer,
+        if token not in watcher and token not in entities:
+            raise AssertionError(f"Level 0 Watcher behavior contract missing: {label}")
+
+    watcher_constructor = watcher[
+        watcher.index("public ThresholdWatcherEntity"):watcher.index("public void tick()")
+    ]
+    assert "setNoAi(true)" not in watcher_constructor, "Natural Watcher must retain AI"
+    assert "setNoGravity(true)" not in watcher_constructor, "Natural Watcher must use normal movement physics"
+    assert "setInvulnerable(true)" not in watcher_constructor, "Natural Watcher must be damageable"
+    assert "noPhysics = true" not in watcher_constructor, "Natural Watcher must use collision and path navigation"
+    assert "public boolean isPickable()" not in watcher, "Natural Watcher must remain selectable"
+    assert "public boolean isAttackable()" not in watcher, "Natural Watcher must remain attackable"
+    assert "MeleeAttackGoal" not in watcher, "Watcher uses its bounded encounter state machine, not a generic chase loop"
+    require("setNoAi(true)", watcher[watcher.index("public void enableShowcaseMode"):watcher.index("public void enableTestEncounterMode")],
+            "only the harmless preview disables AI")
+    require("SHOWCASE_LIFETIME_TICKS = 600", watcher, "operator preview has a 30-second inspection window")
+    require("TEST_ENCOUNTER_LIFETIME_TICKS = 1200", watcher, "active test encounter has a bounded 60-second lifetime")
+    require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
+    require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
+    require("findShowcasePosition(level, player, 8, 16, 2)", commands,
+            "active test encounter uses a safe loaded floor position")
+    require("player.getLookAngle().dot(toSpawn) > 0.35D", director,
+            "natural Watcher spawns outside the player's forward view")
+    require("LightTexture.FULL_BRIGHT", watcher_renderer,
             "Watcher silhouette remains visible in dark rooms")
-    assert "Attributes.ATTACK_DAMAGE" not in watcher
+    require("Attributes.ATTACK_DAMAGE", attributes, "Watcher has a registered attack attribute")
+    require("Attributes.MOVEMENT_SPEED", attributes, "Watcher has a registered movement attribute")
+    require("Attributes.MAX_HEALTH", attributes, "Watcher has a bounded health pool")
 
     # Level 1's Hound is a real but bounded hostile encounter.
     require(r"extends\s+Monster", hound, "Hound is a real hostile mob")
@@ -292,34 +300,34 @@ def main() -> int:
     for clip in ("idle", "stalk", "run", "alert", "attack"):
         assert f"animation.threshold_partygoer.{clip}" in partygoer, f"Partygoer missing {clip} controller state"
 
-    # Dimension guardrails: Level 0 admits only the harmless watcher and players; Hounds
-    # are rejected outside Level 1 and are not spawned in the entry shelter.
-    require(r"event\.getEntity\(\)\s+instanceof\s+LivingEntity\s+living", director,
-            "Level 0 rejects every non-player living creature")
-    require(r"!\(living\s+instanceof\s+Player\)", director,
-            "Level 0 still allows players to traverse")
-    require(r"!\(living\s+instanceof\s+ThresholdWatcherEntity\)", director,
-            "Level 0 allows only its observer creature")
-    require(r"event\.getEntity\(\)\s+instanceof\s+Projectile", director,
-            "Level 0 rejects hostile projectiles")
-    require(r"event\.getEntity\(\)\s+instanceof\s+ThresholdHoundEntity", director,
-            "Hound dimension is explicitly restricted")
-    require(r"level\.dimension\(\)\.equals\(ThresholdDimensions\.LEVEL_1\)\s+&&\s+event\.getEntity\(\)\s+instanceof\s+LivingEntity\s+living\s+&&\s+!\(living\s+instanceof\s+Player\)\s+&&\s+!\(living\s+instanceof\s+ThresholdHoundEntity\)", director,
-            "Level 1 admits only players and authored Threshold creatures in this first pass")
-    require(r"spawnObservers\(level\)", director, "Level 0 observer spawner exists")
-    require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
-    require(r"quiet stalking state; noise and proximity trigger pursuit", director,
+    # Dimension guardrails are based on natural-spawn reason, not blanket entity-join rejection.
+    require("event.getEntity() instanceof Projectile", director,
+            "Threshold entity-join guard is narrowly scoped to projectiles")
+    assert "instanceof LivingEntity" not in director, "ordinary living entities must not be blanket-rejected"
+    require("return entityType == ThresholdEntities.WATCHER.get();", director,
+            "Level 0 natural-spawn whitelist is Watcher only")
+    require("return entityType == ThresholdEntities.HOUND.get();", director,
+            "Level 1 natural-spawn whitelist is Hound only")
+    require("shouldBlockNaturalSpawn", director, "natural-spawn reason policy is explicit")
+    require("MobSpawnEvent.SpawnPlacementCheck.Result.FAIL", director,
+            "unapproved natural spawns are rejected before placement")
+    require("spawnObservers(level)", director, "Level 0 Watcher spawner exists")
+    require("spawnHounds(level)", director, "Level 1 Hound spawner exists")
+    require("quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
     for token, source, label in (
-        ("WATCHER_SPAWN_INTERVAL_TICKS = 300", director, "Observer spawn cadence remains 15 seconds"),
-        ("WATCHER_NEARBY_RADIUS = 42.0D", director, "Observer sightings retain local encounter spacing"),
-        ("gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L", director, "Observer sightings use the bounded cadence"),
-        ("hasNearbyWatcher(level, player)", director, "Natural spawns cannot stack Watchers around one player"),
-        ("hasNearbyWatcher(level, player)", commands, "Operator summons share the same local Watcher cap"),
-        ("if (!level.addFreshEntity(watcher))", commands, "Operator summon reports rejected duplicates rather than false success"),
+        ("WATCHER_SPAWN_INTERVAL_TICKS = 300", director, "Watcher spawn cadence remains bounded"),
+        ("WATCHER_NEARBY_RADIUS = 42.0D", director, "Watcher encounters use a local spacing radius"),
+        ("MAX_LOCAL_WATCHERS = 2", director, "a local encounter is capped at two Watchers"),
+        ("countNearbyWatchers", director, "local Watcher count is explicit"),
+        ("nearbyWatchers == 0 ? 4 : 8", director, "second Watcher spawn is rarer than the first"),
+        ("watcher.setFlankerRole(nearbyWatchers > 0)", director, "second Watcher is assigned as a flanker"),
+        ("hasNearbyWatcher(level, player)", director, "natural spawns respect the two-Watcher cap"),
+        ("hasNearbyWatcher(level, player)", commands, "operator summons respect the same cap"),
+        ("if (!level.addFreshEntity(watcher))", commands, "operator summon reports rejected spawns rather than false success"),
     ):
         if token not in source:
-            raise AssertionError(f"THRESHOLD Watcher budget contract missing: {label}")
+            raise AssertionError(f"THRESHOLD Watcher coordination budget missing: {label}")
     require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
     require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
             "Hounds do not materialize directly in the player's view")
@@ -440,6 +448,7 @@ def main() -> int:
         require(pattern, layout, label)
 
     for token, label in (
+        ("THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK", "Level 0 Watcher attributes and navigation runtime probe"),
         ("new BlockPos(48, 68, 16)).is(Blocks.OAK_STAIRS)", "Level 0 upper stair landing"),
         ("new BlockPos(55, 58, 11)).is(Blocks.OAK_STAIRS)", "Level 0 lower stair landing"),
         ("new BlockPos(72, 70, 72)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 upper stair landing"),
@@ -487,6 +496,8 @@ def main() -> int:
                 "animation.threshold_watcher.stutter",
                 "animation.threshold_watcher.fold",
                 "animation.threshold_watcher.shroud_drift",
+                "animation.threshold_watcher.lunge",
+                "animation.threshold_watcher.strike",
             },
             "hound": {
                 "animation.threshold_hound.idle",
@@ -547,22 +558,23 @@ def main() -> int:
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
 
-    # Model the natural spawn schedule over five minutes. Each spawn pass
-    # returns immediately after one successful Watcher, and its lifetime is
-    # shorter than the next pass, so natural active count cannot exceed one.
+    # Model the bounded two-member encounter. One spawn attempt is possible
+    # per interval; a 30-second lifetime permits at most two overlapping members.
     spawn_interval = 300
-    lifetime = 180
+    lifetime = 600
+    local_cap = 2
     active_expiries: list[int] = []
     max_active = 0
     for game_time in range(0, 6000):
         active_expiries = [expiry for expiry in active_expiries if expiry > game_time]
-        if game_time % spawn_interval == 0:
+        if game_time % spawn_interval == 0 and len(active_expiries) < local_cap:
             active_expiries.append(game_time + lifetime)
         max_active = max(max_active, len(active_expiries))
-    assert max_active == 1, f"Natural Watcher budget exceeded: {max_active}"
-    assert lifetime < spawn_interval
+    assert max_active == local_cap, f"Natural Watcher budget mismatch: {max_active}"
+    assert lifetime == spawn_interval * 2
+    assert local_cap == 2
 
-    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=1 lifetime=180 spawn_interval=300 perception_hz=10")
+    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=600 spawn_interval=300 perception_hz=5 memory=120")
     return 0
 
 
