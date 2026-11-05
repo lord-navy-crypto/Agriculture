@@ -75,6 +75,7 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(5, 4);
         // Expanded Level 1 landmarks: raised loading mezzanine and stacked rack canyon.
         level1.getChunk(0, 4);
+        level1.getChunk(0, 5);
         level1.getChunk(6, 3);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
@@ -263,6 +264,26 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
+        boolean level0MezzanineStairBuilt = false;
+        for (int x = 9; x <= 10; x++) {
+            for (int z = 50; z <= 52; z++) {
+                for (int y = 64; y <= 66; y++) {
+                    if (level0.getBlockState(new BlockPos(x, y, z)).is(Blocks.OAK_STAIRS)) {
+                        level0MezzanineStairBuilt = true;
+                    }
+                }
+            }
+        }
+        for (int x = 4; x <= 6; x++) {
+            for (int z = 56; z <= 57; z++) {
+                for (int y = 64; y <= 66; y++) {
+                    if (level0.getBlockState(new BlockPos(x, y, z)).is(Blocks.OAK_STAIRS)) {
+                        level0MezzanineStairBuilt = true;
+                    }
+                }
+            }
+        }
+        level0MezzanineBuilt &= level0MezzanineStairBuilt;
         System.out.println(level0MezzanineBuilt
                 ? "THRESHOLD_LEVEL0_MEZZANINE_OK" : "THRESHOLD_LEVEL0_MEZZANINE_FAIL");
 
@@ -286,6 +307,26 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
+        boolean level0PitStairBuilt = false;
+        for (int x = 82; x <= 85; x++) {
+            for (int z = 23; z <= 24; z++) {
+                for (int y = 60; y <= 63; y++) {
+                    if (level0.getBlockState(new BlockPos(x, y, z)).is(Blocks.OAK_STAIRS)) {
+                        level0PitStairBuilt = true;
+                    }
+                }
+            }
+        }
+        for (int x = 93; x <= 95; x++) {
+            for (int z = 23; z <= 24; z++) {
+                for (int y = 61; y <= 63; y++) {
+                    if (level0.getBlockState(new BlockPos(x, y, z)).is(Blocks.OAK_STAIRS)) {
+                        level0PitStairBuilt = true;
+                    }
+                }
+            }
+        }
+        level0SunkenPitBuilt &= level0PitStairBuilt;
         System.out.println(level0SunkenPitBuilt
                 ? "THRESHOLD_LEVEL0_SUNKEN_PIT_OK" : "THRESHOLD_LEVEL0_SUNKEN_PIT_FAIL");
 
@@ -297,6 +338,26 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
+        boolean level1MezzanineStairBuilt = false;
+        for (int x = 10; x <= 11; x++) {
+            for (int z = 76; z <= 78; z++) {
+                for (int y = 64; y <= 66; y++) {
+                    if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
+                        level1MezzanineStairBuilt = true;
+                    }
+                }
+            }
+        }
+        for (int x = 4; x <= 6; x++) {
+            for (int z = 83; z <= 84; z++) {
+                for (int y = 64; y <= 66; y++) {
+                    if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
+                        level1MezzanineStairBuilt = true;
+                    }
+                }
+            }
+        }
+        level1MezzanineBuilt &= level1MezzanineStairBuilt;
         System.out.println(level1MezzanineBuilt
                 ? "THRESHOLD_LEVEL1_MEZZANINE_OK" : "THRESHOLD_LEVEL1_MEZZANINE_FAIL");
 
@@ -308,6 +369,26 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
+        boolean level1PumpSumpStairBuilt = false;
+        for (int x = 57; x <= 58; x++) {
+            for (int z = 12; z <= 16; z++) {
+                for (int y = 59; y <= 63; y++) {
+                    if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
+                        level1PumpSumpStairBuilt = true;
+                    }
+                }
+            }
+        }
+        for (int x = 61; x <= 65; x++) {
+            for (int z = 20; z <= 21; z++) {
+                for (int y = 59; y <= 63; y++) {
+                    if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
+                        level1PumpSumpStairBuilt = true;
+                    }
+                }
+            }
+        }
+        level1PumpSumpBuilt &= level1PumpSumpStairBuilt;
         System.out.println(level1PumpSumpBuilt
                 ? "THRESHOLD_LEVEL1_PUMP_SUMP_OK" : "THRESHOLD_LEVEL1_PUMP_SUMP_FAIL");
 
