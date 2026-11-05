@@ -108,7 +108,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         controllers.add(new AnimationController<>(this, "presence", 5, state -> {
             // Long quiet intervals are interrupted by brief, non-combat gestures.
             // The phase is deterministic per entity so client and server remain visually aligned.
-            int phase = Math.floorMod(tickCount + getId() * 31, 360);
+            int phase = Math.floorMod(tickCount + getId() * 31, 420);
             if (phase < 190) return state.setAndContinue(STILL);
             if (phase < 260) return state.setAndContinue(HEAD_TRACK);
             if (phase < 278) return state.setAndContinue(STUTTER);
