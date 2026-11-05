@@ -174,10 +174,17 @@ def main() -> int:
     require(client_renderers, "ThresholdEntities.WATCHER.get(), ThresholdWatcherRenderer::new", "Watcher renderer registration")
     require(client_renderers, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
     assert "@EventBusSubscriber" not in client_events, "duplicate renderer subscriber must remain disabled"
-    # Entity admission is universal. Natural spawning is controlled by a
-    # separate per-dimension whitelist, and operator test summons are dimension-agnostic.
-    assert "EntityJoinLevelEvent" not in director, "Threshold must not globally intercept entity admission"
-    assert "setCanceled(" not in director, "Threshold must not cancel functional or summoned entities"
+    # Entity admission is no longer blanket-filtered. Only the separately
+    # scoped projectile guard remains; ordinary mobs, utility entities, and
+    # custom operator summons must not be rejected by dimension.
+    require(director, "onEntityJoin(EntityJoinLevelEvent event)", "narrow entity-join policy")
+    join_handler = director.split(
+        "public static void onEntityJoin(EntityJoinLevelEvent event)", 1
+    )[1].split("@SubscribeEvent", 1)[0]
+    require(join_handler, "instanceof Projectile", "separate projectile-only admission rule")
+    assert "instanceof LivingEntity" not in join_handler, "ordinary living entities must be admitted"
+    assert "instanceof ItemEntity" not in join_handler, "dropped items must be admitted"
+    require(director, "isThresholdDimension(level.dimension())", "entity rule is scoped to Threshold dimensions")
     require(director, "isNaturalSpawnAllowed", "explicit natural-spawn policy")
     require(director, "shouldBlockNaturalSpawn", "natural spawn reason filter")
     require(director, "onSpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event)", "filter runs before natural mob placement")
