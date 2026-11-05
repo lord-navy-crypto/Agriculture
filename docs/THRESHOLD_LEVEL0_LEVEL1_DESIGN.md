@@ -46,11 +46,10 @@ Distinct features:
 
 ## Alpha 5 — dimension-specific entity ecology
 
-### Level 0: Observer only
-- The Observer is a short-lived, non-combat silhouette spawned at a visible distance in Level 0.
-- It has no AI, target selector, attack damage, collision, push behavior, selectable hitbox, drops or persistent save data.
-- It disappears when approached, directly noticed, or after a short timeout. It never chases, attacks, damages or kills the player.
-- The entity-join guard rejects all other living creatures and projectiles in Level 0, including vanilla and third-party mobs; players remain allowed. This keeps Level 0 an isolation/observation experience rather than a combat map.
+### Level 0: original Observer prototype (superseded by Alpha 18)
+- The first Observer was a short-lived, non-combat silhouette spawned at a visible distance in Level 0.
+- That prototype had no AI, target selector, attack damage, collision, push behavior or selectable hitbox.
+- Alpha 18 replaces it with the active but bounded Watcher. The current natural-spawn whitelist still admits only the Watcher in Level 0; it does not blanket-reject ordinary entities joining the dimension.
 
 ### Level 1: Hound predator
 - The Hound is a real Monster with a player target goal, pathfinding and melee behavior, plus explicit health, speed, attack damage and follow-range attributes.
@@ -61,10 +60,10 @@ Distinct features:
 
 ### Runtime acceptance
 - Dedicated-server startup confirms both custom entity types are registered.
-- The loaded Level 0 entry area contains no hostile Monster entities.
-- The QA source gate verifies the Observer's non-combat invariants and the Hound's Level 1-only spawn guard.
+- Dedicated-server startup verifies the Watcher and Hound registry entries, plus the Watcher's movement/health/attack attributes.
+- The QA source gate verifies the active Watcher state machine, local two-member cap, snapshot relay, bounded swipe and the Hound's Level 1-only natural-spawn rule.
 - Packaged-JAR validation verifies both GeckoLib models, animations, textures and the Hound's no-drop loot table.
-- Manual client testing must confirm the Observer reads as a distant silhouette, vanishes on notice, and never interferes with navigation; the Hound must remain readable, avoid the starter shelter and path through existing doorways without modifying blocks.
+- Manual client testing must confirm the Watcher stalks, freezes under direct gaze, performs occasional near-miss/single-swipe scares, responds to the flashlight and withdraws when damaged; the Hound must remain readable, avoid the starter shelter and path through existing doorways without modifying blocks.
 
 
 ## Alpha 6 — procedural architectural complexes
@@ -112,7 +111,7 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 - Level 5 receives a quiet, irregular vanilla piano-note ambience cue. It does not replace or alter the original Level 0 / Level 1 OGG tracks.
 
 ### Level 0 / Level 1 preservation
-- Level 0's original yellow-office layout, entry room, harmless observer-only rule, flickering lights, music and Level 0 ↔ Level 1 transition remain unchanged.
+- Level 0's original yellow-office layout, entry room, bounded Watcher encounter budget, flickering lights, music and Level 0 ↔ Level 1 transition remain unchanged.
 - Level 1's warehouse layout, starter shelter, Agriculture planter and supplies, Hound restrictions, lighting and industrial music remain unchanged.
 - The earlier direct Level 1 → Level 3 lift is removed. A seamless trigger zone is placed inside a dedicated warehouse corridor; pipes and service fittings become denser before the environment transitions into Level 2.
 
