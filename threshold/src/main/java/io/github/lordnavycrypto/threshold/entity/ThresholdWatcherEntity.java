@@ -176,6 +176,13 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         // Perception, peer relays and replanning are bounded to five updates/sec.
         if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;
 
+        // Retreat is self-timed and must continue even if the player leaves range
+        // or keeps the flashlight trained on the entity.
+        if (encounterState == EncounterState.RETREAT) {
+            updateRetreat();
+            return;
+        }
+
         Player player = findNearestValidPlayer(server);
         relayLocalObservation(server, player);
 
@@ -185,7 +192,12 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         }
 
         if (player == null) {
-            updateLostTarget(server);
+            if (encounterState == EncounterState.RUSH
+                    || encounterState == EncounterState.STRIKE) {
+                beginRetreat(null);
+            } else {
+                updateLostTarget(server);
+            }
             return;
         }
 
@@ -212,10 +224,6 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         }
         if (encounterState == EncounterState.STRIKE) {
             updateStrike(player);
-            return;
-        }
-        if (encounterState == EncounterState.RETREAT) {
-            updateRetreat();
             return;
         }
 
