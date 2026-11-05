@@ -212,7 +212,7 @@ def main() -> int:
         ("RUSH_COOLDOWN_TICKS = 240", "jump scares have a long cooldown"),
         ("beginRetreat", "Watcher withdraws after a scare"),
         ("setFlankerRole", "a second local Watcher receives a flanker role"),
-        ("PEER_RELAY_RADIUS = 24.0D", "peer communication is local"),
+        ("PEER_RELAY_RADIUS = 48.0D", "peer communication is local"),
         ("NATURAL_LIFETIME_TICKS = 600", "natural Watcher lifetime is bounded"),
         ("PERCEPTION_INTERVAL_TICKS = 4", "Watcher perception runs at five updates per second"),
         ("updateFlicker()", "Watcher flicker is updated independently of perception"),
