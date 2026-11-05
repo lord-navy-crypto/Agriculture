@@ -65,6 +65,10 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(3, 2);
         level0.getChunk(3, 3);
         level0.getChunk(5, 1);
+        // Alpha 16 landmark chunks: pillar grove, floor-fold pockets and stair tower.
+        level0.getChunk(4, 4);
+        level0.getChunk(6, 0);
+        level0.getChunk(1, 5);
         level1.getChunk(0, 0);
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
@@ -79,6 +83,10 @@ public final class ThresholdRuntimeChecks {
         level1.getChunk(6, 3);
         level1.getChunk(6, 4);
         level1.getChunk(6, 5);
+        // Alpha 16 Level 1 landmarks: Gothic arcade, crane hall and ventilation exchange.
+        level1.getChunk(6, 6);
+        level1.getChunk(10, 1);
+        level1.getChunk(0, 6);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -257,6 +265,51 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level1VerticalLayout
                 ? "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_FAIL");
+
+        boolean level0PillarForestBuilt =
+                level0.getBlockState(new BlockPos(70, 65, 70)).is(Blocks.YELLOW_CONCRETE)
+                || level0.getBlockState(new BlockPos(70, 65, 70)).is(Blocks.SMOOTH_SANDSTONE);
+        System.out.println(level0PillarForestBuilt
+                ? "THRESHOLD_LEVEL0_PILLAR_FOREST_OK" : "THRESHOLD_LEVEL0_PILLAR_FOREST_FAIL");
+
+        boolean level0FloorFoldBuilt = false;
+        for (int x = 102; x <= 107; x++) {
+            for (int z = 7; z <= 12; z++) {
+                if (level0.getBlockState(new BlockPos(x, 62, z)).is(Blocks.SMOOTH_STONE)) {
+                    level0FloorFoldBuilt = true;
+                }
+            }
+        }
+        System.out.println(level0FloorFoldBuilt
+                ? "THRESHOLD_LEVEL0_FLOOR_FOLD_OK" : "THRESHOLD_LEVEL0_FLOOR_FOLD_FAIL");
+
+        boolean level0StairTowerBuilt = false;
+        for (int x = 22; x <= 28; x++) {
+            for (int z = 86; z <= 92; z++) {
+                if (level0.getBlockState(new BlockPos(x, 65, z)).is(Blocks.YELLOW_CONCRETE)
+                        || level0.getBlockState(new BlockPos(x, 65, z))
+                                .is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())) {
+                    level0StairTowerBuilt = true;
+                }
+            }
+        }
+        System.out.println(level0StairTowerBuilt
+                ? "THRESHOLD_LEVEL0_STAIR_TOWER_OK" : "THRESHOLD_LEVEL0_STAIR_TOWER_FAIL");
+
+        boolean level1GothicArcadeBuilt =
+                level1.getBlockState(new BlockPos(106, 65, 106)).is(Blocks.POLISHED_ANDESITE);
+        System.out.println(level1GothicArcadeBuilt
+                ? "THRESHOLD_LEVEL1_GOTHIC_ARCADE_OK" : "THRESHOLD_LEVEL1_GOTHIC_ARCADE_FAIL");
+
+        boolean level1CraneHallBuilt =
+                level1.getBlockState(new BlockPos(168, 71, 18)).is(Blocks.IRON_BLOCK);
+        System.out.println(level1CraneHallBuilt
+                ? "THRESHOLD_LEVEL1_CRANE_HALL_OK" : "THRESHOLD_LEVEL1_CRANE_HALL_FAIL");
+
+        boolean level1VentilationHallBuilt =
+                level1.getBlockState(new BlockPos(10, 65, 106)).is(Blocks.IRON_BLOCK);
+        System.out.println(level1VentilationHallBuilt
+                ? "THRESHOLD_LEVEL1_VENTILATION_HALL_OK" : "THRESHOLD_LEVEL1_VENTILATION_HALL_FAIL");
 
         boolean level0MezzanineBuilt = false;
         for (int x = 7; x <= 14; x++) {
