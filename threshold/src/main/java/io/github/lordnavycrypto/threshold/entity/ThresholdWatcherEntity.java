@@ -197,6 +197,12 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             return;
         }
 
+        // A lit, aimed flashlight interrupts even an in-progress rush.
+        if (visible && FlashlightItem.isActive(player) && isInsideFlashlightCone(player)) {
+            beginRetreat(player);
+            return;
+        }
+
         if (encounterState == EncounterState.RUSH) {
             updateRush(server, player, visible);
             return;
@@ -211,11 +217,6 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         }
 
         boolean directlyObserved = visible && isBeingWatchedBy(player);
-        if (directlyObserved && FlashlightItem.isActive(player)
-                && isInsideFlashlightCone(player)) {
-            beginRetreat(player);
-            return;
-        }
 
         if (directlyObserved) {
             stareTicks += PERCEPTION_INTERVAL_TICKS;
