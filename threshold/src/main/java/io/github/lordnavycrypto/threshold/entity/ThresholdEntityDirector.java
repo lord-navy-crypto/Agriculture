@@ -25,6 +25,8 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  */
 public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
+    private static final int WATCHER_SPAWN_INTERVAL_TICKS = 300;
+    private static final double WATCHER_NEARBY_RADIUS = 42.0D;
 
     private ThresholdEntityDirector() {}
 
@@ -69,7 +71,7 @@ public final class ThresholdEntityDirector {
         long gameTime = level.getGameTime();
 
         if (level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
-            if (gameTime % 300L == 0L) spawnObservers(level);
+            if (gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L) spawnObservers(level);
         } else if (level.dimension().equals(ThresholdDimensions.LEVEL_1)) {
             if (gameTime % 480L == 0L) spawnHounds(level);
         } else if (level.dimension().equals(Level.OVERWORLD)) {
@@ -80,8 +82,7 @@ public final class ThresholdEntityDirector {
     private static void spawnObservers(ServerLevel level) {
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
-            if (!level.getEntitiesOfClass(ThresholdWatcherEntity.class,
-                    player.getBoundingBox().inflate(42.0D)).isEmpty()) continue;
+            if (hasNearbyWatcher(level, player)) continue;
             if (level.getRandom().nextInt(4) != 0) continue;
 
             for (int attempt = 0; attempt < 10; attempt++) {
@@ -107,6 +108,16 @@ public final class ThresholdEntityDirector {
                 if (level.addFreshEntity(watcher)) return;
             }
         }
+    }
+
+    /**
+     * Keeps one observer per local encounter area. This is shared by natural
+     * spawning and the operator summon command, so testing cannot stack them.
+     */
+    public static boolean hasNearbyWatcher(ServerLevel level, Player player) {
+        return !level.getEntitiesOfClass(
+                ThresholdWatcherEntity.class,
+                player.getBoundingBox().inflate(WATCHER_NEARBY_RADIUS)).isEmpty();
     }
 
     private static void spawnPartygoers(ServerLevel level) {

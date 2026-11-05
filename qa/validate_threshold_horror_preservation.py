@@ -35,6 +35,7 @@ def main() -> int:
     partygoer_model = (JAVA / "client/ThresholdPartygoerModel.java").read_text(encoding="utf-8")
     client_events = (JAVA / "client/ThresholdClientEvents.java").read_text(encoding="utf-8")
     director = (JAVA / "entity/ThresholdEntityDirector.java").read_text(encoding="utf-8")
+    commands = (JAVA / "command/ThresholdCommands.java").read_text(encoding="utf-8")
     attributes = (JAVA / "entity/ThresholdEntityAttributes.java").read_text(encoding="utf-8")
     renderers = (JAVA / "client/ThresholdClientRenderers.java").read_text(encoding="utf-8")
     level0 = read_json(RESOURCES / "data/threshold/worldgen/biome/level_0.json")
@@ -200,6 +201,19 @@ def main() -> int:
             raise AssertionError(f"Level 0 observer safety invariant missing: {label}")
     assert "MeleeAttackGoal" not in watcher
     assert "NearestAttackableTargetGoal" not in watcher
+    require(r"MAX_LIFETIME_TICKS\\s*=\\s*180", watcher,
+            "Watcher lifetime is hard-bounded to nine seconds")
+    require(r"PERCEPTION_INTERVAL_TICKS\\s*=\\s*2", watcher,
+            "Watcher perception runs at a bounded 10 Hz cadence")
+    require(r"if \\(tickCount % PERCEPTION_INTERVAL_TICKS != 0\\) return;", watcher,
+            "Watcher skips alternate expensive perception ticks")
+    require(r"updateFlicker\\(\\)", watcher, "Watcher flicker is updated independently of perception")
+    watcher_tick = watcher[watcher.index("public void tick()"):watcher.index("public boolean isPickable()")]
+    assert "setNoAi(true)" not in watcher_tick, "Watcher must not reassert static AI flags every tick"
+    assert "setNoGravity(true)" not in watcher_tick, "Watcher must not reassert static gravity flags every tick"
+    assert "noPhysics = true" not in watcher_tick, "Watcher must not reassert static physics flags every tick"
+    require(r"updateInterval\\(4\\)", entities,
+            "Watcher transform synchronization is reduced to five updates per second")
     assert "Attributes.ATTACK_DAMAGE" not in watcher
 
     # Level 1's Hound is a real but bounded hostile encounter.
@@ -263,7 +277,18 @@ def main() -> int:
     require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
     require(r"quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
-    require(r"gameTime % 300L == 0L", director, "Observer sightings use a slower cadence")
+    require(r"WATCHER_SPAWN_INTERVAL_TICKS\\s*=\\s*300", director,
+            "Observer spawn cadence remains 15 seconds")
+    require(r"WATCHER_NEARBY_RADIUS\\s*=\\s*42\\.0D", director,
+            "Observer sightings retain local encounter spacing")
+    require(r"gameTime % WATCHER_SPAWN_INTERVAL_TICKS == 0L", director,
+            "Observer sightings use the bounded cadence")
+    require(r"hasNearbyWatcher\\(level, player\\)", director,
+            "Natural spawns cannot stack Watchers around one player")
+    require(r"hasNearbyWatcher\\(level, player\\)", commands,
+            "Operator summons share the same local Watcher cap")
+    require(r"if \\(!level\\.addFreshEntity\\(watcher\\)\\)", commands,
+            "Operator summon reports a rejected duplicate rather than false success")
     require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
     require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
             "Hounds do not materialize directly in the player's view")
@@ -362,7 +387,22 @@ def main() -> int:
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
 
-    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS")
+    # Model the natural spawn schedule over five minutes. Each spawn pass
+    # returns immediately after one successful Watcher, and its lifetime is
+    # shorter than the next pass, so natural active count cannot exceed one.
+    spawn_interval = 300
+    lifetime = 180
+    active_expiries: list[int] = []
+    max_active = 0
+    for game_time in range(0, 6000):
+        active_expiries = [expiry for expiry in active_expiries if expiry > game_time]
+        if game_time % spawn_interval == 0:
+            active_expiries.append(game_time + lifetime)
+        max_active = max(max_active, len(active_expiries))
+    assert max_active == 1, f"Natural Watcher budget exceeded: {max_active}"
+    assert lifetime < spawn_interval
+
+    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=1 lifetime=180 spawn_interval=300 perception_hz=10")
     return 0
 
 

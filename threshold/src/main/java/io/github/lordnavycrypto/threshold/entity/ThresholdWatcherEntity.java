@@ -30,6 +30,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenLoop("animation.threshold_watcher.fold");
     private static final RawAnimation SHROUD_DRIFT =
             RawAnimation.begin().thenLoop("animation.threshold_watcher.shroud_drift");
+    private static final int MAX_LIFETIME_TICKS = 180;
+    private static final int PERCEPTION_INTERVAL_TICKS = 2;
+    private static final double MAX_PLAYER_DISTANCE = 32.0D;
+    private static final double MIN_PLAYER_DISTANCE_SQR = 72.25D;
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int flickerTicks;
     private int nextFlickerTick;
@@ -48,13 +53,20 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         super.tick();
         if (!(level() instanceof ServerLevel)) return;
 
-        // Reassert the non-interactive presentation contract after every tick.
-        noPhysics = true;
-        setNoGravity(true);
-        setNoAi(true);
+        // A hard lifetime bound prevents stale apparitions from accumulating.
+        if (tickCount > MAX_LIFETIME_TICKS) {
+            discard();
+            return;
+        }
 
-        Player nearest = level().getNearestPlayer(this, 32.0D);
-        if (nearest == null || tickCount > 180 || distanceToSqr(nearest) < 72.25D) {
+        updateFlicker();
+
+        // Perception and line-of-sight checks run at 10 Hz, not every server tick.
+        // The 50 ms response window is imperceptible for a distant, non-hostile apparition.
+        if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;
+
+        Player nearest = level().getNearestPlayer(this, MAX_PLAYER_DISTANCE);
+        if (nearest == null || distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR) {
             discard();
             return;
         }
@@ -67,25 +79,24 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         setYHeadRot(trackedYaw);
         setYBodyRot(trackedYaw);
 
-        // A rare one-tick visual dropout makes the silhouette feel unstable.
-        if (nextFlickerTick == 0) {
-            nextFlickerTick = tickCount + 45 + level().getRandom().nextInt(55);
-        }
-        if (flickerTicks > 0) {
-            setInvisible(true);
-            flickerTicks--;
-        } else {
-            setInvisible(false);
-            if (tickCount >= nextFlickerTick) {
-                flickerTicks = 1;
-                nextFlickerTick = tickCount + 55 + level().getRandom().nextInt(85);
-            }
-        }
-
         Vec3 toWatcher = position().subtract(nearest.getEyePosition()).normalize();
         boolean directlyNoticed = nearest.hasLineOfSight(this)
                 && nearest.getLookAngle().dot(toWatcher) > 0.965D;
         if (directlyNoticed) discard();
+    }
+
+    private void updateFlicker() {
+        if (nextFlickerTick == 0) {
+            nextFlickerTick = tickCount + 45 + level().getRandom().nextInt(55);
+        }
+        if (flickerTicks > 0) {
+            flickerTicks--;
+            if (flickerTicks == 0) setInvisible(false);
+        } else if (tickCount >= nextFlickerTick) {
+            setInvisible(true);
+            flickerTicks = 1;
+            nextFlickerTick = tickCount + 55 + level().getRandom().nextInt(85);
+        }
     }
 
     @Override

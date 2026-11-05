@@ -10,6 +10,7 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import io.github.lordnavycrypto.threshold.entity.ThresholdHoundEntity;
 import io.github.lordnavycrypto.threshold.entity.ThresholdPartygoerEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.CommandSourceStack;
@@ -169,13 +170,20 @@ public final class ThresholdCommands {
             return 0;
         }
         ServerLevel level = player.serverLevel();
+        if (ThresholdEntityDirector.hasNearbyWatcher(level, player)) {
+            context.getSource().sendFailure(Component.literal("A Watcher is already lingering nearby."));
+            return 0;
+        }
         BlockPos pos = player.blockPosition().relative(player.getDirection().getOpposite(), 14);
         ThresholdWatcherEntity watcher = ThresholdEntities.WATCHER.get().create(level);
         if (watcher == null) return 0;
         float yaw = (float) (Math.atan2(player.getZ() - pos.getZ(), player.getX() - pos.getX())
                 * (180.0D / Math.PI)) - 90.0F;
         watcher.moveTo(pos.getX() + 0.5D, player.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
-        level.addFreshEntity(watcher);
+        if (!level.addFreshEntity(watcher)) {
+            context.getSource().sendFailure(Component.literal("The Watcher could not be placed here."));
+            return 0;
+        }
         context.getSource().sendSuccess(() -> Component.literal("A distant presence has appeared behind you."), false);
         return Command.SINGLE_SUCCESS;
     }

@@ -18,7 +18,7 @@ public final class ThresholdEntities {
                     .of(ThresholdWatcherEntity::new, MobCategory.MISC)
                     .sized(0.72F, 2.65F)
                     .clientTrackingRange(32)
-                    .updateInterval(2)
+                    .updateInterval(4)
                     .noSave()
                     .build("threshold:watcher"));
 
