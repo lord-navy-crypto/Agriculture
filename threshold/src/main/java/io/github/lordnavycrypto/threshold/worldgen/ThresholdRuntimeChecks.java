@@ -55,12 +55,16 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(0, 1);
         level0.getChunk(1, 0);
         level0.getChunk(1, 1);
+        level0.getChunk(3, 0);
+        level0.getChunk(3, 1);
         level1.getChunk(0, 0);
         level1.getChunk(0, 1);
         level1.getChunk(1, 0);
         level1.getChunk(1, 1);
         level1.getChunk(3, 1);
         level1.getChunk(4, 1);
+        level1.getChunk(4, 4);
+        level1.getChunk(5, 4);
         level2.getChunk(0, 0);
         level2.getChunk(0, 1);
         level2.getChunk(1, 1);
@@ -211,6 +215,24 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL0_PASSAGE_FOOTING_OK" : "THRESHOLD_LEVEL0_PASSAGE_FOOTING_FAIL");
         System.out.println(level1Built
                 ? "THRESHOLD_LEVEL1_WORLDGEN_OK" : "THRESHOLD_LEVEL1_WORLDGEN_FAIL");
+
+        boolean level0VerticalLayout =
+                level0.getBlockState(new BlockPos(48, 64, 12)).is(Blocks.OAK_STAIRS)
+                && level0.getBlockState(new BlockPos(48, 68, 16)).is(Blocks.WHITE_CONCRETE)
+                && level0.getBlockState(new BlockPos(53, 58, 8)).is(Blocks.GRAY_CONCRETE)
+                && level0.getBlockState(new BlockPos(53, 59, 8)).is(Blocks.YELLOW_CARPET);
+        System.out.println(level0VerticalLayout
+                ? "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK"
+                : "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_FAIL");
+
+        boolean level1VerticalLayout =
+                level1.getBlockState(new BlockPos(72, 64, 66)).is(Blocks.STONE_BRICK_STAIRS)
+                && level1.getBlockState(new BlockPos(72, 70, 72)).is(Blocks.IRON_BLOCK)
+                && level1.getBlockState(new BlockPos(78, 58, 64)).is(Blocks.SMOOTH_STONE)
+                && level1.getBlockState(new BlockPos(78, 59, 64)).is(Blocks.GRAY_CARPET);
+        System.out.println(level1VerticalLayout
+                ? "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK"
+                : "THRESHOLD_LEVEL1_VERTICAL_LAYOUT_FAIL");
         boolean wallBuilt = level0.getBlockState(new BlockPos(0, 66, 15))
                 .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
         System.out.println(wallBuilt
