@@ -378,7 +378,7 @@ The natural spawn director attempts a new encounter every 300 ticks. A first Wat
 - Fake retreat is disabled for the active operator test encounter and is not allowed after flashlight defense or a successful player hit. A failed path or expired memory discards the entity rather than teleporting it through walls.
 
 ### Level 1 — hearing and methodical search
-- When it has no target and no active search memory, the Hound listens for nearby noisy players within 18 blocks. It selects the nearest noisy player rather than blindly checking only the nearest player.
+- When it has no target and no active search memory, the Hound listens for nearby noisy players. It selects the nearest audible noisy player rather than blindly checking only the nearest player. Sprinting and fall-flying carry farther than swimming, jumping or ordinary movement; a blocked line of sight reduces the hearing radius by 45%, while still allowing nearby sound through walls.
 - The heard position is deliberately offset by a small random uncertainty. This is an auditory clue, not omniscient tracking; the Hound investigates the estimate and must regain sight, then noisy movement or close proximity must justify its normal target goal before it commits to melee.
 - Investigation waypoints follow a bounded golden-angle sweep around the last-known point. The Hound gives a restrained growl on hearing a noise and uses a dedicated GeckoLib bite animation when its melee swing occurs.
 - Flashlight defense is directional: the item must be active, the Hound must be in line of sight, and the player's look vector must point toward it. All nearby players are checked so one player's beam can protect another.
@@ -386,5 +386,5 @@ The natural spawn director attempts a new encounter every 300 ticks. A first Wat
 ### Alpha 19 acceptance
 - Server startup verifies the Watcher's and Hound's navigation and core attributes.
 - Dedicated-server smoke tests require THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK and THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK.
-- Static QA verifies the Watcher's three-point search, fake-retreat path constraints, Hound's noisy-player selection, uncertain memory, directional flashlight defense and GeckoLib animation assets.
+- Static QA verifies the Watcher's three-point search and fake-retreat path constraints, plus Hound noisy-player selection, movement-sensitive sound radius, wall attenuation, uncertain memory, directional flashlight defense and GeckoLib animation assets.
 - Compile, packaged-JAR validation, server smoke and client gameplay checks remain mandatory. Source changes alone do not constitute a tested JAR.
