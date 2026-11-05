@@ -28,9 +28,13 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * A first-pass Backrooms Hound whose natural encounter is restricted to
- * Level 1. Operator test summons may place it in any dimension. It uses ordinary
- * pathfinding and melee behavior and cannot break blocks.
+ * Level 1's Hound is a bounded sensory predator. It stalks quiet players,
+ * listens for nearby movement when it has no visual target, and investigates
+ * uncertain sound estimates without tracking hidden live coordinates. Its
+ * flashlight counterplay is directional, and it cannot break blocks.
+ *
+ * Natural encounters are restricted to Level 1; operator test summons may
+ * place it in any dimension.
  */
 public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     private static final RawAnimation IDLE =
