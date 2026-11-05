@@ -954,6 +954,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 if (archetype == 0) continue;
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
+                boolean upperWalkway = hasLevel0UpperDeck(seed, roomX, roomZ)
+                        && isLevel0UpperPath(seed, roomX, roomZ, localX, localZ);
 
                 switch (archetype) {
                     case 1 -> {
@@ -1197,6 +1199,92 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
                     }
+                    case 13 -> {
+                        // Records archive: dense shelf banks form narrow, readable aisles.
+                        int westAisleGap = 8 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA13A0L), 17);
+                        int eastAisleGap = 8 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA13A1L), 17);
+                        boolean shelfBank = (localX == 8 || localX == 9
+                                || localX == 22 || localX == 23)
+                                && localZ >= 6 && localZ <= 25;
+                        boolean shelfGap = (localX == 8 || localX == 9)
+                                && Math.abs(localZ - westAisleGap) <= 1
+                                || (localX == 22 || localX == 23)
+                                && Math.abs(localZ - eastAisleGap) <= 1;
+                        if (!protectedRoute && shelfBank && !shelfGap) {
+                            set(world, pos, x, 65, z, Blocks.BOOKSHELF.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.BOOKSHELF.defaultBlockState());
+                            if (Math.floorMod(localZ, 6) == 0) {
+                                set(world, pos, x, 67, z, Blocks.BARREL.defaultBlockState());
+                            }
+                        }
+                        if (!protectedRoute && (localX == 6 || localX == 25)
+                                && (localZ == 7 || localZ == 24)) {
+                            set(world, pos, x, 65, z, Blocks.LECTERN.defaultBlockState());
+                        }
+                        if (!upperWalkway && (localZ == 7 || localZ == 24)
+                                && localX >= 7 && localX <= 24) {
+                            set(world, pos, x, 70, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                        }
+                    }
+                    case 14 -> {
+                        // Offset false-corridor walls create a second route illusion,
+                        // with deterministic door-sized breaks rather than sealed cells.
+                        boolean westWall = (localX == 10 || localX == 11)
+                                && localZ >= 7 && localZ <= 24;
+                        boolean northWall = (localZ == 10 || localZ == 11)
+                                && localX >= 11 && localX <= 24;
+                        boolean eastWall = (localX == 21 || localX == 22)
+                                && localZ >= 8 && localZ <= 25;
+                        boolean southWall = (localZ == 21 || localZ == 22)
+                                && localX >= 8 && localX <= 21;
+                        int westGap = 8 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA14A0L), 15);
+                        int northGap = 12 + Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA14A1L), 9);
+                        boolean gap = (westWall && Math.abs(localZ - westGap) <= 1)
+                                || (northWall && Math.abs(localX - northGap) <= 1)
+                                || (eastWall && localZ >= 15 && localZ <= 17)
+                                || (southWall && localX >= 14 && localX <= 16);
+                        if (!protectedRoute && !gap
+                                && (westWall || northWall || eastWall || southWall)) {
+                            for (int y = 65; y <= 68; y++) {
+                                set(world, pos, x, y, z,
+                                        ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
+                            }
+                            if (Math.floorMod(localX + localZ, 5) == 0) {
+                                set(world, pos, x, 69, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                            }
+                        }
+                        if (!protectedRoute && (localX == 9 || localX == 23)
+                                && (localZ == 9 || localZ == 23)) {
+                            set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                    }
+                    case 15 -> {
+                        // Broken ceiling grid: missing panels and dangling service runs
+                        // make the room feel larger without obstructing the upper gallery.
+                        boolean ceilingBeam = (localX == 8 || localX == 16 || localX == 24)
+                                && localZ >= 5 && localZ <= 26
+                                || (localZ == 8 || localZ == 24)
+                                && localX >= 5 && localX <= 26;
+                        int missingPanel = Math.floorMod(
+                                (int) mix(seed, roomX, roomZ, 0xA15A0L), 5);
+                        if (!upperWalkway && ceilingBeam
+                                && Math.floorMod(localX + localZ, 7) != missingPanel) {
+                            set(world, pos, x, 70, z, Blocks.GRAY_CONCRETE.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 4) == 0) {
+                                set(world, pos, x, 71, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                        if (!upperWalkway && !protectedRoute
+                                && (localX == 8 || localX == 24)
+                                && (localZ == 8 || localZ == 24)) {
+                            set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                            set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1223,6 +1311,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
                 boolean protectedResource = isLevel1ResourceFootprint(localX, localZ);
                 boolean protectedTile = protectedRoute || protectedResource;
+                boolean upperWalkway = hasLevel1UpperDeck(seed, roomX, roomZ)
+                        && isLevel1UpperPath(seed, roomX, roomZ, localX, localZ);
 
                 switch (archetype) {
                     case 1, 6 -> {
@@ -1601,6 +1691,83 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
                     }
+                    case 17 -> {
+                        // Overhead freight gantry: paired rails, cross-members and
+                        // suspended hooks form a tall machine hall without blocking walkways.
+                        boolean rail = (localX == 9 || localX == 38)
+                                && localZ >= 8 && localZ <= 40;
+                        boolean crossMember = (localZ == 12 || localZ == 36)
+                                && localX >= 9 && localX <= 38;
+                        if (!upperWalkway && (rail || crossMember)) {
+                            set(world, pos, x, 72, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 7) == 0) {
+                                set(world, pos, x, 71, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        boolean trolley = (localX == 23 || localX == 24)
+                                && (localZ == 16 || localZ == 24 || localZ == 32);
+                        if (!protectedTile && !upperWalkway && trolley) {
+                            set(world, pos, x, 69, z, Blocks.IRON_BARS.defaultBlockState());
+                            set(world, pos, x, 68, z, Blocks.CHAIN.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                        if (!protectedTile && (localX == 12 || localX == 35)
+                                && (localZ == 10 || localZ == 38)) {
+                            set(world, pos, x, 64, z, Blocks.BARREL.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
+                    case 18 -> {
+                        // Compressor hall: paired machine plinths, service lanes and
+                        // overhead headers distinguish this sector from ordinary racks.
+                        boolean plinth = (localX >= 10 && localX <= 15
+                                || localX >= 32 && localX <= 37)
+                                && (localZ >= 12 && localZ <= 17
+                                || localZ >= 30 && localZ <= 35);
+                        if (!protectedTile && plinth) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            if ((localX == 10 || localX == 15 || localX == 32 || localX == 37)
+                                    && (localZ == 12 || localZ == 17 || localZ == 30 || localZ == 35)) {
+                                set(world, pos, x, 65, z, Blocks.IRON_BLOCK.defaultBlockState());
+                                set(world, pos, x, 66, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                                set(world, pos, x, 67, z, Blocks.LIGHTNING_ROD.defaultBlockState());
+                            }
+                        }
+                        boolean serviceLane = (localZ == 20 || localZ == 27)
+                                && localX >= 8 && localX <= 39;
+                        if (!protectedTile && serviceLane) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        if (!upperWalkway && (localX == 8 || localX == 39)
+                                && localZ >= 8 && localZ <= 40) {
+                            set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localZ, 6) == 0) {
+                                set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                    }
+                    case 19 -> {
+                        // Sorting conveyors: low slab belts, side guides and transfer
+                        // nodes make long industrial sightlines with walkable crossings.
+                        boolean belt = (localZ == 16 || localZ == 17
+                                || localZ == 31 || localZ == 32)
+                                && localX >= 8 && localX <= 40;
+                        if (!protectedTile && belt) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            if ((localZ == 16 || localZ == 31)
+                                    && (localX == 8 || localX == 40)) {
+                                set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                            if (Math.floorMod(localX, 8) == 0) {
+                                set(world, pos, x, 65, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            }
+                        }
+                        boolean transferHub = (localX == 24 || localX == 25)
+                                && (localZ == 16 || localZ == 17 || localZ == 31 || localZ == 32);
+                        if (!protectedTile && transferHub) {
+                            set(world, pos, x, 66, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1898,8 +2065,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roll < 82) return 8;
         if (roll < 84) return 9;
         if (roll < 86) return 10;
-        if (roll < 97) return 11;
-        return 12;
+        if (roll < 91) return 11;
+        if (roll < 93) return 12;
+        if (roll < 96) return 13;
+        if (roll < 98) return 14;
+        return 15;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -1924,7 +2094,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roll < 80) return 12;
         if (roll < 84) return 13;
         if (roll < 87) return 14;
-        if (roll < 97) return 15;
+        if (roll < 92) return 15;
+        if (roll < 94) return 17;
+        if (roll < 96) return 18;
+        if (roll < 97) return 19;
         return 16;
     }
 
