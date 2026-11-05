@@ -15,8 +15,8 @@
     },
     "music": {
       "sound": "threshold:level_0_ambient",
-      "min_delay": 20,
-      "max_delay": 40,
+      "min_delay": 1,
+      "max_delay": 5,
       "replace_current_music": true
     }
   },
