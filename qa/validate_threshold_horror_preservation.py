@@ -307,6 +307,7 @@ def main() -> int:
             "Hound only avoids players whose active flashlight is aimed at it")
     require(r"player\.getLookAngle\(\)\.dot\(toHound\) > 0\.58D", hound,
             "Hound flashlight defense checks the beam direction")
+    assert hound.index("findIlluminatingPlayer()") < hound.index("super.tick()"), "aimed flashlight interrupts before Hound target/attack AI runs"
     require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
     require(r"getNavigation\(\)\.moveTo", hound, "Hound withdraws rather than despawning")
 
