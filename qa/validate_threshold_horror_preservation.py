@@ -275,6 +275,8 @@ def main() -> int:
     require(r"animation\.threshold_hound\.alert", hound, "Hound has a dedicated alert animation")
     require(r"animation\.threshold_hound\.stalk", hound, "Hound has a low stalking gait")
     require(r"animation\.threshold_hound\.retreat", hound, "Hound has a fast retreat animation")
+    require(r"animation\.threshold_hound\.bite", hound, "Hound has a dedicated bite attack animation")
+    require(r"getAttackAnim\(0\.0F\) > 0\.12F", hound, "Hound bite animation follows the real attack swing")
     require(r"new InvestigateLastKnownPositionGoal\(this\)", hound,
             "Hound investigates the last known position after losing sight of a player")
     require(r"getTarget\(\) instanceof Player target && hasLineOfSight\(target\)", hound,
