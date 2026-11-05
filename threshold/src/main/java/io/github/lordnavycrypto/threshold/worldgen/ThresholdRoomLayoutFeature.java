@@ -1441,6 +1441,127 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                             .setValue(StairBlock.FACING, Direction.NORTH));
                         }
                     }
+                    case 19 -> {
+                        // Pillar forest: an irregular column grid changes sightlines and
+                        // perceived scale while leaving the seed-stable route network open.
+                        boolean pillarAnchor = (localX == 8 || localX == 16 || localX == 24)
+                                && (localZ == 8 || localZ == 16 || localZ == 24);
+                        boolean guaranteedPillar = localX == 8 && localZ == 8;
+                        boolean pillar = pillarAnchor && (guaranteedPillar
+                                || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA19A0L), 5) != 0);
+                        if (!protectedRoute && !upperWalkway && pillar) {
+                            int height = 66 + Math.floorMod(
+                                    (int) mix(seed, roomX * 32 + localX, roomZ * 32 + localZ, 0xA19A1L), 6);
+                            BlockState column = Math.floorMod(localX + localZ, 3) == 0
+                                    ? Blocks.SMOOTH_SANDSTONE.defaultBlockState()
+                                    : Blocks.YELLOW_CONCRETE.defaultBlockState();
+                            for (int y = 65; y <= height; y++) {
+                                set(world, pos, x, y, z, column);
+                            }
+                            if (height >= 69) {
+                                set(world, pos, x, height, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                            }
+                        }
+                        boolean crossBeam = (localZ == 16 || localZ == 24)
+                                && localX >= 8 && localX <= 24
+                                && Math.floorMod(localX, 8) != 0;
+                        if (!protectedRoute && !upperWalkway && crossBeam) {
+                            set(world, pos, x, 70, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                        }
+                        if (!protectedRoute && !upperWalkway
+                                && (localX == 8 || localX == 24)
+                                && (localZ == 8 || localZ == 24)) {
+                            set(world, pos, x, 71, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                    }
+                    case 20 -> {
+                        // Floor-fold field: several shallow recessed pockets sit at
+                        // different offsets. Each has a stair entrance and a guarded rim.
+                        boolean pocketA = localX >= 6 && localX <= 11
+                                && localZ >= 7 && localZ <= 12;
+                        boolean pocketB = localX >= 20 && localX <= 26
+                                && localZ >= 7 && localZ <= 13;
+                        boolean pocketC = localX >= 20 && localX <= 26
+                                && localZ >= 21 && localZ <= 27;
+                        boolean pocket = pocketA || pocketB || pocketC;
+                        if (pocket && !protectedRoute && !upperWalkway) {
+                            set(world, pos, x, 62, z, Blocks.SMOOTH_STONE.defaultBlockState());
+                            set(world, pos, x, 63, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, 64, z, Blocks.AIR.defaultBlockState());
+                            boolean edge = pocketA && (localX == 6 || localX == 11
+                                    || localZ == 7 || localZ == 12)
+                                    || pocketB && (localX == 20 || localX == 26
+                                    || localZ == 7 || localZ == 13)
+                                    || pocketC && (localX == 20 || localX == 26
+                                    || localZ == 21 || localZ == 27);
+                            boolean stairCell = pocketA && localZ == 12
+                                    && (localX == 8 || localX == 9)
+                                    || pocketB && localX == 20
+                                    && (localZ == 9 || localZ == 10)
+                                    || pocketC && localZ == 27
+                                    && (localX == 23 || localX == 24);
+                            if (edge && !stairCell) {
+                                set(world, pos, x, 63, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                            } else if (!stairCell) {
+                                set(world, pos, x, 63, z,
+                                        Math.floorMod(localX + localZ, 4) == 0
+                                                ? Blocks.YELLOW_CARPET.defaultBlockState()
+                                                : Blocks.GRAY_CARPET.defaultBlockState());
+                            }
+                            if (stairCell) {
+                                Direction facing = pocketA ? Direction.NORTH
+                                        : pocketB ? Direction.EAST : Direction.NORTH;
+                                set(world, pos, x, 62, z,
+                                        Blocks.OAK_STAIRS.defaultBlockState()
+                                                .setValue(StairBlock.FACING, facing));
+                            }
+                        }
+                    }
+                    case 21 -> {
+                        // A compact stair tower climbs from the office floor to a
+                        // raised landing. It is a real route, not a decorative shaft.
+                        boolean tower = localX >= 22 && localX <= 28
+                                && localZ >= 22 && localZ <= 28;
+                        boolean wall = tower && (localX == 22 || localX == 28
+                                || localZ == 22 || localZ == 28);
+                        boolean doorway = localZ == 28 && (localX == 24 || localX == 25)
+                                || localX == 22 && (localZ == 24 || localZ == 25);
+                        if (tower && !protectedRoute && !upperWalkway) {
+                            if (wall && !doorway) {
+                                for (int y = 65; y <= 70; y++) {
+                                    set(world, pos, x, y, z,
+                                            Math.floorMod(localX + localZ, 2) == 0
+                                                    ? Blocks.YELLOW_CONCRETE.defaultBlockState()
+                                                    : ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState());
+                                }
+                            }
+                            boolean landing = localX >= 25 && localX <= 27
+                                    && localZ >= 23 && localZ <= 25;
+                            if (landing) {
+                                set(world, pos, x, 67, z, Blocks.WHITE_CONCRETE.defaultBlockState());
+                                if (Math.floorMod(localX + localZ, 3) == 0) {
+                                    set(world, pos, x, 68, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                                }
+                            }
+                            boolean rail = (localX == 25 || localX == 27)
+                                    && localZ >= 23 && localZ <= 25;
+                            if (rail && !protectedRoute) {
+                                set(world, pos, x, 68, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
+                            }
+                            if (localX == 26 && localZ == 24) {
+                                set(world, pos, x, 70, z, Blocks.SEA_LANTERN.defaultBlockState());
+                            }
+                        }
+                        if (!protectedRoute && !upperWalkway
+                                && localX == 24 && localZ >= 24 && localZ <= 27) {
+                            int stairY = 64 + 27 - localZ;
+                            set(world, pos, x, stairY, z,
+                                    Blocks.OAK_STAIRS.defaultBlockState()
+                                            .setValue(StairBlock.FACING, Direction.NORTH));
+                            set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
+                            set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -2072,6 +2193,112 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 69, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
                     }
+                    case 23 -> {
+                        // Gothic arcade: repeated heavy piers and high stone arches
+                        // turn one warehouse cell into a long, monumental hall.
+                        boolean pier = (localX == 10 || localX == 11 || localX == 36 || localX == 37)
+                                && (localZ == 10 || localZ == 11 || localZ == 24 || localZ == 25
+                                || localZ == 37 || localZ == 38);
+                        if (!protectedTile && !upperWalkway && pier) {
+                            for (int y = 64; y <= 70; y++) {
+                                set(world, pos, x, y, z,
+                                        y >= 69 ? Blocks.SMOOTH_STONE.defaultBlockState()
+                                                : Blocks.POLISHED_ANDESITE.defaultBlockState());
+                            }
+                        }
+                        boolean archSpan = (localZ == 12 || localZ == 26 || localZ == 39)
+                                && localX >= 12 && localX <= 35;
+                        if (!protectedTile && !upperWalkway && archSpan) {
+                            set(world, pos, x, 70, z, Blocks.STONE_BRICKS.defaultBlockState());
+                            if (localX == 13 || localX == 34) {
+                                set(world, pos, x, 69, z,
+                                        Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                                                .setValue(StairBlock.FACING, Direction.NORTH));
+                            }
+                        }
+                        if (!protectedTile && !upperWalkway
+                                && (localX == 14 || localX == 34)
+                                && (localZ == 16 || localZ == 32)) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                        if (!upperWalkway && localX == 24
+                                && (localZ == 12 || localZ == 26 || localZ == 39)) {
+                            set(world, pos, x, 72, z, Blocks.LANTERN.defaultBlockState());
+                        }
+                    }
+                    case 24 -> {
+                        // Cross-dock crane hall: high tracks, a travelling bridge,
+                        // suspended chain hook and side loading-control booth.
+                        boolean track = (localZ == 18 || localZ == 30)
+                                && localX >= 8 && localX <= 40;
+                        if (!upperWalkway && track) {
+                            set(world, pos, x, 71, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX, 8) == 0) {
+                                set(world, pos, x, 72, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        boolean support = (localX == 8 || localX == 40)
+                                && (localZ == 18 || localZ == 30);
+                        if (!protectedTile && !upperWalkway && support) {
+                            for (int y = 64; y <= 70; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        boolean bridge = localX >= 22 && localX <= 26
+                                && localZ >= 23 && localZ <= 25;
+                        if (!protectedTile && !upperWalkway && bridge) {
+                            set(world, pos, x, 70, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            if (localZ == 24 && (localX == 23 || localX == 25)) {
+                                set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        if (!protectedTile && !upperWalkway
+                                && (localX == 18 || localX == 19)
+                                && (localZ == 9 || localZ == 10)) {
+                            set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 65, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                            set(world, pos, x, 67, z, Blocks.LEVER.defaultBlockState());
+                        }
+                        if (!upperWalkway && localX == 24 && localZ == 18) {
+                            set(world, pos, x, 73, z, Blocks.SEA_LANTERN.defaultBlockState());
+                        }
+                    }
+                    case 25 -> {
+                        // Ventilation exchange hall: large static air ducts,
+                        // inspection stacks and overhead copper mains.
+                        boolean duct = (localX == 10 || localX == 24 || localX == 38)
+                                && localZ >= 8 && localZ <= 40;
+                        if (!upperWalkway && duct) {
+                            set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localZ, 8) == 0) {
+                                set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                            }
+                        }
+                        boolean crossDuct = (localZ == 10 || localZ == 38)
+                                && localX >= 10 && localX <= 38;
+                        if (!upperWalkway && crossDuct) {
+                            set(world, pos, x, 72, z, Blocks.CUT_COPPER.defaultBlockState());
+                        }
+                        boolean stack = (localX == 10 || localX == 38)
+                                && (localZ == 12 || localZ == 36);
+                        if (!protectedTile && !upperWalkway && stack) {
+                            for (int y = 64; y <= 69; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
+                            }
+                            set(world, pos, x, 70, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                        boolean inspectionBay = localX >= 20 && localX <= 28
+                                && localZ >= 20 && localZ <= 28;
+                        if (!protectedTile && !upperWalkway && inspectionBay
+                                && (localX == 20 || localX == 28 || localZ == 20 || localZ == 28)) {
+                            set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 4) == 0) {
+                                set(world, pos, x, 65, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -2235,6 +2462,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean hasLevel0UpperDeck(long seed, int roomX, int roomZ) {
+        // Landmark rooms 19-21 own their vertical architecture and keep the
+        // generic gallery from overwriting their stairs, pits or column clearances.
+        if (level0Architecture(seed, roomX, roomZ) >= 19) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 0)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38);
@@ -2325,6 +2555,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean hasLevel1UpperDeck(long seed, int roomX, int roomZ) {
+        // The new landmark sectors provide their own overhead structures;
+        // suppressing the generic catwalk here prevents ceiling collisions.
+        if (level1Architecture(seed, roomX, roomZ) >= 23) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 1)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44);
@@ -2358,28 +2591,34 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roomX == 0 && roomZ == 1) return 16;
         if (roomX == 1 && roomZ == 1) return 17;
         if (roomX == 2 && roomZ == 0) return 18;
+        if (roomX == 2 && roomZ == 2) return 19;
+        if (roomX == 3 && roomZ == 0) return 20;
+        if (roomX == 0 && roomZ == 2) return 21;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
-        if (roll < 30) return 0;
-        if (roll < 42) return 1;
-        if (roll < 53) return 2;
-        if (roll < 62) return 3;
-        if (roll < 68) return 4;
-        if (roll < 73) return 5;
-        if (roll < 77) return 6;
-        if (roll < 80) return 7;
-        if (roll < 82) return 8;
-        if (roll < 84) return 9;
-        if (roll < 86) return 10;
-        if (roll < 89) return 11;
-        if (roll < 91) return 12;
-        if (roll < 94) return 13;
-        if (roll < 96) return 14;
-        if (roll < 97) return 15;
-        if (roll < 98) return 16;
-        if (roll < 99) return 17;
-        return 18;
+        if (roll < 27) return 0;
+        if (roll < 39) return 1;
+        if (roll < 50) return 2;
+        if (roll < 59) return 3;
+        if (roll < 65) return 4;
+        if (roll < 70) return 5;
+        if (roll < 74) return 6;
+        if (roll < 77) return 7;
+        if (roll < 79) return 8;
+        if (roll < 81) return 9;
+        if (roll < 83) return 10;
+        if (roll < 86) return 11;
+        if (roll < 88) return 12;
+        if (roll < 91) return 13;
+        if (roll < 93) return 14;
+        if (roll < 94) return 15;
+        if (roll < 95) return 16;
+        if (roll < 96) return 17;
+        if (roll < 97) return 18;
+        if (roll < 98) return 19;
+        if (roll < 99) return 20;
+        return 21;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -2390,31 +2629,37 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (roomX == 0 && roomZ == 1) return 20;
         if (roomX == 1 && roomZ == 0) return 21;
         if (roomX == 2 && roomZ == 1) return 22;
+        if (roomX == 2 && roomZ == 2) return 23;
+        if (roomX == 3 && roomZ == 0) return 24;
+        if (roomX == 0 && roomZ == 2) return 25;
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
-        if (roll < 12) return 1;
-        if (roll < 18) return 6;
-        if (roll < 27) return 2;
-        if (roll < 36) return 3;
-        if (roll < 44) return 4;
-        if (roll < 51) return 5;
-        if (roll < 57) return 7;
-        if (roll < 63) return 8;
-        if (roll < 68) return 9;
-        if (roll < 72) return 10;
-        if (roll < 76) return 11;
-        if (roll < 80) return 12;
-        if (roll < 84) return 13;
-        if (roll < 87) return 14;
-        if (roll < 90) return 15;
-        if (roll < 92) return 17;
-        if (roll < 94) return 18;
-        if (roll < 95) return 19;
-        if (roll < 97) return 20;
-        if (roll < 98) return 21;
-        if (roll < 99) return 22;
-        return 16;
+        if (roll < 9) return 1;
+        if (roll < 15) return 6;
+        if (roll < 24) return 2;
+        if (roll < 33) return 3;
+        if (roll < 41) return 4;
+        if (roll < 48) return 5;
+        if (roll < 54) return 7;
+        if (roll < 60) return 8;
+        if (roll < 65) return 9;
+        if (roll < 69) return 10;
+        if (roll < 73) return 11;
+        if (roll < 77) return 12;
+        if (roll < 81) return 13;
+        if (roll < 84) return 14;
+        if (roll < 87) return 15;
+        if (roll < 89) return 17;
+        if (roll < 91) return 18;
+        if (roll < 92) return 19;
+        if (roll < 94) return 20;
+        if (roll < 95) return 21;
+        if (roll < 96) return 22;
+        if (roll < 97) return 16;
+        if (roll < 98) return 23;
+        if (roll < 99) return 24;
+        return 25;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
