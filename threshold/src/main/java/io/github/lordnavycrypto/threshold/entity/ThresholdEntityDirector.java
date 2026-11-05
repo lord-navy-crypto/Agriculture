@@ -22,10 +22,10 @@ import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 /**
- * Owns natural encounter spawning only. Entity admission and operator summons
- * are deliberately not filtered by this class: every entity type may join any
- * dimension, while this explicit natural-spawn profile controls which authored
- * horror creatures are introduced by Threshold's encounter director.
+ * Owns natural encounter spawning and its explicit per-dimension profile.
+ * Non-combat utility entities and operator-summoned Threshold mobs are kept
+ * separate from that profile; a narrowly scoped entity-join rule is maintained
+ * independently from the natural mob-spawn placement check.
  *
  * Vanilla biome spawn lists are empty in Threshold dimensions, so ordinary
  * animals and monsters do not naturally spawn there. Items, vehicles, and
