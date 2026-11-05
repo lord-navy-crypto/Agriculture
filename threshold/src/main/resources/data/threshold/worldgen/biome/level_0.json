@@ -9,7 +9,7 @@
     "sky_color": 9864092,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
+      "tick_delay": 2400,
       "block_search_extent": 8,
       "offset": 2
     },
