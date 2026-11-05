@@ -140,6 +140,18 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         return flankerRole ? ObservationStyle.FLANKER.name() : observationStyle.name();
     }
 
+    public String getEncounterStateName() {
+        return encounterState.name();
+    }
+
+    public double getObservationConfidence() {
+        return observation == null ? 0.0D : observation.confidence(level().getGameTime());
+    }
+
+    public long getObservationAgeTicks() {
+        return observation == null ? -1L : Math.max(0L, level().getGameTime() - observation.observedAt());
+    }
+
     @Override
     public void tick() {
         super.tick();
