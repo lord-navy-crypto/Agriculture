@@ -179,6 +179,9 @@ def main() -> int:
     assert "EntityJoinLevelEvent" not in director, "Threshold must not globally intercept entity admission"
     assert "setCanceled(" not in director, "Threshold must not cancel functional or summoned entities"
     require(director, "isNaturalSpawnAllowed", "explicit natural-spawn policy")
+    require(director, "shouldBlockNaturalSpawn", "natural spawn reason filter")
+    require(director, "onSpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event)", "filter runs before natural mob placement")
+    require(director, "MobSpawnEvent.SpawnPlacementCheck.Result.FAIL", "unapproved natural spawns are denied")
     require(director, "return entityType == ThresholdEntities.WATCHER.get();", "Level 0 natural whitelist is Watcher only")
     require(director, "return entityType == ThresholdEntities.HOUND.get();", "Level 1 natural whitelist is Hound only")
     require(director, "return entityType == ThresholdEntities.PARTYGOER.get();", "Partygoer retains its Overworld encounter")
@@ -189,15 +192,20 @@ def main() -> int:
         ("EntityType.COW", "passive mob admission probe"),
         ("EntityType.ZOMBIE", "hostile mob admission probe"),
         ("EntityType.ITEM", "dropped item admission probe"),
-        ("EntityType.ARROW", "arrow projectile admission probe"),
-        ("EntityType.TRIDENT", "trident projectile admission probe"),
         ("EntityType.MINECART", "minecart admission probe"),
         ("EntityType.ITEM_FRAME", "item frame admission probe"),
+        ("EntityType.ARMOR_STAND", "armor stand admission probe"),
         ("ThresholdEntities.WATCHER.get()", "Watcher operator-summon admission probe"),
         ("ThresholdEntities.HOUND.get()", "Hound operator-summon admission probe"),
         ("ThresholdEntities.PARTYGOER.get()", "Partygoer operator-summon admission probe"),
         ("THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK", "all entity classes join all six dimensions"),
         ("THRESHOLD_NATURAL_SPAWN_POLICY_OK", "six-dimension natural spawn whitelist check"),
+        ("MobSpawnType.NATURAL", "natural spawn reason filtering"),
+        ("MobSpawnType.CHUNK_GENERATION", "chunk-generation spawn reason filtering"),
+        ("MobSpawnType.SPAWN_EGG", "spawn egg summons remain permitted"),
+        ("MobSpawnType.COMMAND", "command summons remain permitted"),
+        ("MobSpawnType.BREEDING", "player-driven breeding remains permitted"),
+        ("THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK", "natural spawn reasons are isolated from summons"),
     ):
         require(runtime_checks, token, label)
 
