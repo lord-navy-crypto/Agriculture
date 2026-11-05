@@ -296,6 +296,16 @@ def main() -> int:
     require(r"noiseListenCooldown", hound, "Hound listening checks are rate-limited")
     require(r"findNearestNoisyPlayer\(18\.0D\)", hound,
             "Hound chooses the nearest noisy player rather than the nearest player overall")
+    require(r"noiseDetectionRange\(candidate, range\)", hound,
+            "Hound hearing uses a movement-sensitive acoustic radius")
+    require(r"player\.hasLineOfSight\(this\)", hound,
+            "Hound hearing is attenuated when walls obstruct the sound path")
+    require(r"range \* 0\.55D", hound,
+            "solid obstruction substantially reduces hearing distance without making walls soundproof")
+    require(r"maximumRange \* 0\.78D", hound,
+            "swimming creates a shorter hearing radius than sprinting")
+    require(r"maximumRange \* 0\.62D", hound,
+            "ordinary movement has a shorter hearing radius than sprinting")
     require(r"noisy\.position\(\)\.add\(uncertainty\)", hound,
             "Hound hears an uncertain sound location instead of gaining live wall tracking")
     require(r"searchTicks = 80", hound, "sound investigation has a short bounded memory")
