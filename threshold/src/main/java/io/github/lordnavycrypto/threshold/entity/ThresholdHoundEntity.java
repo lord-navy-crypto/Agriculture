@@ -152,16 +152,38 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
 
     private Player findNearestNoisyPlayer(double range) {
         Player nearest = null;
-        double nearestDistance = range * range;
+        double nearestDistance = Double.MAX_VALUE;
         for (Player candidate : level().players()) {
             if (!isValidHuntTarget(candidate) || !isPlayerNoisy(candidate)) continue;
+            double audibleRange = noiseDetectionRange(candidate, range);
             double distance = distanceToSqr(candidate);
-            if (distance < nearestDistance) {
+            if (distance <= audibleRange * audibleRange && distance < nearestDistance) {
                 nearest = candidate;
                 nearestDistance = distance;
             }
         }
         return nearest;
+    }
+
+    /**
+     * Strong, deliberate movement carries farther than ordinary movement.
+     * Walls do not make sound impossible, but they substantially reduce the
+     * distance at which the Hound can localize it.
+     */
+    private double noiseDetectionRange(Player player, double maximumRange) {
+        double range;
+        if (player.isSprinting() || player.isFallFlying()) {
+            range = maximumRange;
+        } else if (player.isSwimming()) {
+            range = maximumRange * 0.78D;
+        } else if (!player.onGround()
+                && Math.abs(player.getDeltaMovement().y) > 0.12D) {
+            range = maximumRange * 0.72D;
+        } else {
+            range = maximumRange * 0.62D;
+        }
+        if (!player.hasLineOfSight(this)) range *= 0.55D;
+        return range;
     }
 
     private static boolean isValidHuntTarget(Player player) {
