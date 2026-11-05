@@ -18,6 +18,11 @@ import net.minecraft.world.level.Level;
  * by a short night-vision pulse rather than changing the world light map.
  */
 public final class FlashlightItem extends Item {
+    /** True only while the player is actively holding the flashlight on. */
+    public static boolean isActive(Player player) {
+        return player.isUsingItem() && player.getUseItem().getItem() instanceof FlashlightItem;
+    }
+
     public static final int MAX_CHARGE = 480; // eight minutes at one unit per second
     public static final int CHARGE_INTERVAL_TICKS = 20;
     public static final int RECHARGE_AMOUNT = 180; // three minutes
