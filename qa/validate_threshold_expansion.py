@@ -86,6 +86,8 @@ def main() -> int:
         ("case 12 ->", "Level 0 accessible sunken annex archetype"),
         ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
         ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
+        ("buildLevel0EnvironmentalDressing", "Level 0 ambient environmental dressing"),
+        ("buildLevel1EnvironmentalDressing", "Level 1 industrial environmental dressing"),
         ("buildLevel0VerticalNetwork", "Level 0 upper gallery network"),
         ("buildLevel1VerticalNetwork", "Level 1 upper catwalk network"),
         ("hasLevel0UpperNeighbour", "Level 0 cross-room upper-deck connectivity"),
