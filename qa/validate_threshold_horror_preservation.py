@@ -202,6 +202,16 @@ def main() -> int:
     require(r"Attributes\.ATTACK_DAMAGE", hound, "Hound has explicit attack tuning")
     require(r"Attributes\.FOLLOW_RANGE", hound, "Hound has bounded follow range")
     require(r"animation\.threshold_hound\.run", hound, "Hound has a distinct pursuit animation")
+    require(r"new StalkPlayerGoal\(this\)", hound,
+            "Hound stalks quiet players before committing to an attack")
+    require(r"horizontalDistanceSqr\(\) > 0\.025D", hound,
+            "Hound detects fast player movement as a noise cue")
+    require(r"candidate\.isSprinting\(\)", hound,
+            "Sprinting escalates the Hound from stalking to pursuit")
+    require(r"hound\.getNavigation\(\)\.moveTo\(player, 0\.68D\)", hound,
+            "Hound approaches quietly at a slower stalking speed")
+    require(r"FlashlightItem\.isActive\(candidate\)", hound,
+            "Hound does not acquire a player actively using the flashlight")
     require(r"FlashlightItem\.isActive\(illuminated\)", hound,
             "Hound retreats from an actively used flashlight")
     require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
@@ -230,6 +240,8 @@ def main() -> int:
             "Level 1 admits only players and authored Threshold creatures in this first pass")
     require(r"spawnObservers\(level\)", director, "Level 0 observer spawner exists")
     require(r"spawnHounds\(level\)", director, "Level 1 Hound spawner exists")
+    require(r"quiet stalking state; noise and proximity trigger pursuit", director,
+            "Hound spawns into its stalking state rather than receiving an instant target")
     require(r"gameTime % 300L == 0L", director, "Observer sightings use a slower cadence")
     require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
     require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
