@@ -216,8 +216,8 @@ def main() -> int:
     assert "setNoAi(true)" not in watcher_tick, "Watcher must not reassert static AI flags every tick"
     assert "setNoGravity(true)" not in watcher_tick, "Watcher must not reassert static gravity flags every tick"
     assert "noPhysics = true" not in watcher_tick, "Watcher must not reassert static physics flags every tick"
-    require(r"DIRECT_NOTICE_GRACE_CHECKS = 20", watcher,
-            "Watcher remains visible for two seconds after being directly noticed")
+    require(r"DIRECT_NOTICE_GRACE_CHECKS = 3", watcher,
+            "Watcher vanishes within 0.3 seconds after being directly noticed")
     require(r"directlyObservedTicks >= DIRECT_NOTICE_GRACE_CHECKS", watcher,
             "Watcher only vanishes after a sustained direct sighting")
     assert "if (directlyNoticed) discard();" not in watcher, "Watcher must not vanish on the first look frame"
@@ -269,12 +269,20 @@ def main() -> int:
     require(r"lightRepelledTicks", hound, "Hound remains repelled for a short, bounded interval")
     require(r"getNavigation\(\)\.moveTo", hound, "Hound withdraws rather than despawning")
 
-    # Partygoer is a non-attacking Overworld lure with a sustained capture window.
-    assert "MeleeAttackGoal" not in partygoer, "Partygoer must not deal melee damage"
-    require(r"CAPTURE_TICKS\s*=\s*160", partygoer, "Partygoer capture window is sustained")
-    require(r"player\.isSpectator\(\)", partygoer, "Partygoer excludes spectators")
-    require(r"player\.getAbilities\(\)\.instabuild", partygoer, "Partygoer excludes creative players")
-    require(r"animation\.threshold_partygoer\.idle", partygoer, "Partygoer has its own idle animation")
+    # Partygoer is now a hostile predator with a stalk-to-hunt escalation.
+    assert "extends Monster" in partygoer, "Partygoer must be a hostile mob"
+    assert "new MeleeAttackGoal" in partygoer, "Partygoer must have real melee attacks"
+    assert "Attributes.ATTACK_DAMAGE" in partygoer, "Partygoer must have tuned attack damage"
+    assert "Attributes.FOLLOW_RANGE" in partygoer, "Partygoer must have a bounded pursuit range"
+    assert "new StalkPlayerGoal(this)" in partygoer, "Partygoer must stalk quiet players"
+    assert "new NearestAttackableTargetGoal<>(this, Player.class, true)" in partygoer
+    assert "isBeingWatchedBy(candidate)" in partygoer, "Direct eye contact must trigger a hunt"
+    assert "candidate.isSprinting()" in partygoer, "Sprinting must trigger pursuit"
+    assert "SoundEvents.ENDERMAN_SCREAM" in partygoer, "Hunt escalation must have an audio sting"
+    assert "CAPTURE_TICKS" not in partygoer, "Old passive capture mechanic must be removed"
+    assert "player.teleportTo" not in partygoer, "Partygoer must attack rather than teleport players"
+    for clip in ("idle", "stalk", "run", "alert", "attack"):
+        assert f"animation.threshold_partygoer.{clip}" in partygoer, f"Partygoer missing {clip} controller state"
 
     # Dimension guardrails: Level 0 admits only the harmless watcher and players; Hounds
     # are rejected outside Level 1 and are not spawned in the entry shelter.
@@ -389,6 +397,20 @@ def main() -> int:
     assert partygoer_geometry["description"]["texture_width"] == 64
     assert partygoer_geometry["description"]["texture_height"] == 64
     assert partygoer_geometry["bones"] and partygoer_animation
+    required_partygoer_clips = {
+        "animation.threshold_partygoer.idle",
+        "animation.threshold_partygoer.stalk",
+        "animation.threshold_partygoer.run",
+        "animation.threshold_partygoer.alert",
+        "animation.threshold_partygoer.attack",
+    }
+    assert required_partygoer_clips.issubset(partygoer_animation.keys()), "Partygoer animation states are incomplete"
+    partygoer_bones = {bone["name"] for bone in partygoer_geometry["bones"]}
+    for animation_name, clip in partygoer_animation.items():
+        for animated_bone in clip.get("bones", {}):
+            assert animated_bone in partygoer_bones, (
+                f"Partygoer animation {animation_name} references missing bone {animated_bone}"
+            )
     require(r"geo/partygoer\.geo\.json", partygoer_model, "Partygoer model uses dedicated geometry")
     require(r"animations/partygoer\.animation\.json", partygoer_model, "Partygoer model uses dedicated animation")
     require(r"durability\(MAX_CHARGE\)", flashlight, "Flashlight charge persists as item durability")

@@ -174,15 +174,19 @@ def main() -> int:
     require(client_renderers, "ThresholdEntities.PARTYGOER.get(), ThresholdPartygoerRenderer::new", "Partygoer renderer registration")
     assert "@EventBusSubscriber" not in client_events, "duplicate renderer subscriber must remain disabled"
     require(director, "spawnPartygoers(level)", "rare Overworld Partygoer encounter")
-    require(director, "gameTime % 1200L", "slow Partygoer encounter cadence")
+    require(director, "gameTime % 600L", "Partygoer encounter cadence is more frequent")
     require(director, "level.isDay()", "Partygoer night-only encounter")
-    require(partygoer, "CAPTURE_TICKS = 160", "Partygoer sustained close-range capture")
+    require(partygoer, "extends Monster", "Partygoer is a hostile mob")
+    require(partygoer, "new MeleeAttackGoal(this, 1.28D, true)", "Partygoer uses fast persistent melee pursuit")
+    require(partygoer, "Attributes.ATTACK_DAMAGE", "Partygoer has real attack damage")
+    require(partygoer, "new StalkPlayerGoal(this)", "Partygoer stalks before committing to a hunt")
+    require(partygoer, "isBeingWatchedBy(candidate)", "Direct eye contact escalates the encounter")
+    assert "CAPTURE_TICKS" not in partygoer, "Old passive capture behavior must be removed"
+    assert "partygoer.setTarget(player)" not in director, "Natural Partygoers begin stalking instead of instantly aggroing"
     require(partygoer, "implements GeoEntity", "Partygoer uses GeckoLib entity rendering")
     require(partygoer, "registerControllers", "Partygoer has an animation controller")
-    require(partygoer, "ThresholdDimensions.LEVEL_0", "Partygoer sends player into Level 0")
-    require(partygoer, "getNavigation().moveTo(player, 0.72D)", "Partygoer follows without an attack goal")
-    assert "MeleeAttackGoal" not in partygoer, "Partygoer must remain non-attacking"
     require(watcher, "MAX_LIFETIME_TICKS = 180", "Watcher lifetime remains bounded to nine seconds")
+    require(watcher, "DIRECT_NOTICE_GRACE_CHECKS = 3", "Watcher vanishes rapidly after being noticed")
     require(watcher, "tickCount > (showcaseMode ? SHOWCASE_LIFETIME_TICKS : MAX_LIFETIME_TICKS)", "natural and showcase Watcher lifetimes remain bounded")
     require(watcher, "MIN_PLAYER_DISTANCE_SQR = 72.25D", "Watcher retains its minimum approach distance")
     require(watcher, "distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR", "Watcher disappears when approached")
