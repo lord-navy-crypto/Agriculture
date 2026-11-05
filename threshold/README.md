@@ -324,7 +324,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - If the reposition path cannot be found or the observation memory expires, the Watcher is discarded. It never teleports through walls or refreshes hidden player coordinates.
 
 ### Level 1 — Hound
-- Added a hearing phase: when no target or active search memory exists, the Hound can hear a nearby noisy player within 18 blocks, including through intervening walls.
+- Added a hearing phase: when no target or active search memory exists, the Hound can hear nearby noisy players. Sprinting and fall-flying carry farther than swimming, jumping or ordinary movement; walls attenuate the hearing radius instead of making sound either omniscient or impossible.
 - Hearing stores a deliberately uncertain position offset, not the player's exact live coordinates. The Hound investigates that clue with a bounded golden-angle search pattern; its normal target goal still requires sight or close proximity before committing to melee.
 - Added a short growl when the Hound hears a noise and a dedicated GeckoLib bite animation synchronized to its attack swing.
 - The flashlight now works directionally: it repels the Hound only when active, in line of sight and aimed at it. Holding it while facing away no longer grants a blanket immunity.
