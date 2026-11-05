@@ -2,6 +2,7 @@ package io.github.lordnavycrypto.threshold.worldgen;
 
 import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntities;
+import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -312,25 +313,82 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_OK"
                 : "THRESHOLD_AGRICULTURE_SURVIVAL_ITEMS_FAIL");
 
-        // Regression coverage for the previous blanket EntityJoinLevelEvent
-        // cancellation: ordinary passive and hostile mobs must be admitted in
-        // every Threshold dimension. Level 0's separate projectile policy is
-        // intentionally outside this mob-compatibility check.
-        boolean mobCompatibility =
-                supportsLivingMobs(level0)
-                && supportsLivingMobs(level1)
-                && supportsLivingMobs(level2)
-                && supportsLivingMobs(level3)
-                && supportsLivingMobs(level4)
-                && supportsLivingMobs(level5);
-        System.out.println(mobCompatibility
-                ? "THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_OK"
-                : "THRESHOLD_MOB_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
+        // Entity admission is intentionally universal: ordinary mobs and
+        // functional entities must be able to join every dimension. These
+        // short-lived probes cover living mobs, dropped items, projectiles,
+        // minecarts and item frames.
+        boolean entityCompatibility =
+                supportsEntityCompatibility(level0)
+                && supportsEntityCompatibility(level1)
+                && supportsEntityCompatibility(level2)
+                && supportsEntityCompatibility(level3)
+                && supportsEntityCompatibility(level4)
+                && supportsEntityCompatibility(level5);
+        System.out.println(entityCompatibility
+                ? "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK"
+                : "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
+
+        // Natural spawning has a separate explicit whitelist. The Partygoer
+        // keeps its pre-existing night encounter in the Overworld; it is not
+        // part of Level 0 or Level 1's natural spawn profile.
+        boolean naturalSpawnPolicy =
+                naturalProfile(ThresholdDimensions.LEVEL_0,
+                        ThresholdEntities.WATCHER.get(), true)
+                && naturalProfile(ThresholdDimensions.LEVEL_0,
+                        ThresholdEntities.HOUND.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_0,
+                        ThresholdEntities.PARTYGOER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_1,
+                        ThresholdEntities.WATCHER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_1,
+                        ThresholdEntities.HOUND.get(), true)
+                && naturalProfile(ThresholdDimensions.LEVEL_1,
+                        ThresholdEntities.PARTYGOER.get(), false)
+                && naturalProfile(net.minecraft.world.level.Level.OVERWORLD,
+                        ThresholdEntities.PARTYGOER.get(), true)
+                && naturalProfile(ThresholdDimensions.LEVEL_2,
+                        ThresholdEntities.WATCHER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_2,
+                        ThresholdEntities.HOUND.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_2,
+                        ThresholdEntities.PARTYGOER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_3,
+                        ThresholdEntities.WATCHER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_3,
+                        ThresholdEntities.HOUND.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_3,
+                        ThresholdEntities.PARTYGOER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_4,
+                        ThresholdEntities.WATCHER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_4,
+                        ThresholdEntities.HOUND.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_4,
+                        ThresholdEntities.PARTYGOER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_5,
+                        ThresholdEntities.WATCHER.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_5,
+                        ThresholdEntities.HOUND.get(), false)
+                && naturalProfile(ThresholdDimensions.LEVEL_5,
+                        ThresholdEntities.PARTYGOER.get(), false);
+        System.out.println(naturalSpawnPolicy
+                ? "THRESHOLD_NATURAL_SPAWN_POLICY_OK"
+                : "THRESHOLD_NATURAL_SPAWN_POLICY_FAIL");
     }
 
-    private static boolean supportsLivingMobs(ServerLevel level) {
+    private static boolean naturalProfile(
+            net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension,
+            EntityType<?> type, boolean expected) {
+        return ThresholdEntityDirector.isNaturalSpawnAllowed(dimension, type) == expected;
+    }
+
+    private static boolean supportsEntityCompatibility(ServerLevel level) {
         return acceptsEntityProbe(level, EntityType.COW, 6.5D)
-                && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D);
+                && acceptsEntityProbe(level, EntityType.ZOMBIE, 8.5D)
+                && acceptsEntityProbe(level, EntityType.ITEM, 10.5D)
+                && acceptsEntityProbe(level, EntityType.ARROW, 12.5D)
+                && acceptsEntityProbe(level, EntityType.TRIDENT, 14.5D)
+                && acceptsEntityProbe(level, EntityType.MINECART, 16.5D)
+                && acceptsEntityProbe(level, EntityType.ITEM_FRAME, 18.5D);
     }
 
     private static boolean acceptsEntityProbe(
