@@ -21,7 +21,7 @@
 - Native dimension `threshold:level_0`; custom biome and dimension type.
 - Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
-- Random-tick fluorescent panels emit light and occasionally blink. Level 0's only natural entity is the Watcher: a bounded stalker with four observation styles, local last-known-position memory, rare rush/near-miss scares and a single low-damage swipe. A held flashlight can interrupt it.
+- Random-tick fluorescent panels emit light and occasionally blink. Level 0's only natural entity is the Watcher: a bounded stalker with four observation styles, timestamped local memory, three-point corner-peek searches, rare path-based fake retreats, and occasional rush/near-miss scares with a single low-damage swipe. An aimed flashlight can interrupt it.
 - Atmospheric cave ambience used as a provisional sound bed.
 
 ## Level 1 — The Vulnerable Shelter
@@ -33,7 +33,7 @@
 - The entry room guarantees a small watered, lit planter with six different mature Agriculture crops (barley, corn, soybean, tomato, lettuce and spinach); other storage rooms have rare planters.
 - The central water source is a real freshwater source and can refill the Agriculture empty water flask.
 - One ceiling panel in the entry warehouse flickers; partitioned storage rooms can have similar faults that remain dark longer than Level 0's office lights.
-- The first real predator is the Hound: it stalks quiet players, hears nearby sprinting/jumping as an uncertain clue, searches the last known area, and commits to melee only after sight or proximity. It spawns only in darker Level 1 areas after the player leaves the 48x48 entry shelter; it cannot break blocks and has no special drops. Its flashlight counter requires the active beam to be aimed at it.
+- The first real predator is the Hound: it stalks quiet players, hears nearby sprinting/jumping as an uncertain clue, searches with a bounded golden-angle pattern, and commits to melee only after sight or close proximity. Its bite has a dedicated GeckoLib animation. It spawns only in darker Level 1 areas after the player leaves the 48x48 entry shelter; it cannot break blocks and has no special drops. Its flashlight counter requires an active beam aimed at it with line of sight.
 - Agriculture owns hydration/nutrition/water/food systems. The horror mod does not duplicate them. The entry greenhouse is lit by five overhead sea lanterns so crops can grow without skylight. The warehouse ambience uses a intermittent mechanical vault crackle, contrasting with Level 0's cave-like emptiness.
 - This prototype does not yet guarantee Agriculture crop re-growth in the no-sky biome; harvestable patches are an initial resource source.
 
