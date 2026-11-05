@@ -78,7 +78,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private static final int RUSH_COOLDOWN_TICKS = 240;
     private static final int RUSH_MAX_TICKS = 32;
     private static final double MAX_PLAYER_DISTANCE = 36.0D;
-    private static final double PEER_RELAY_RADIUS = 24.0D;
+    private static final double PEER_RELAY_RADIUS = 48.0D;
     private static final double DIRECT_LOOK_DOT = 0.86D;
     private static final double FLASHLIGHT_LOOK_DOT = 0.58D;
     private static final double STRIKE_RANGE_SQR = 3.5D;
