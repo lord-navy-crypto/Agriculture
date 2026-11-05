@@ -80,12 +80,23 @@ def main() -> int:
         require(layout, token, label)
 
     # Level 0/1 are intentionally multi-scale and vertically connected:
-    # narrow maze partitions, upper galleries, stairs, and accessible sub-floor rooms.
+    # room-specific landmarks, archive/false-corridor layouts, industrial gantries,
+    # machinery, conveyors, upper galleries, stairs, and accessible sub-floor rooms.
     for token, label in (
         ("case 11 ->", "Level 0 micro-maze archetype"),
         ("case 12 ->", "Level 0 accessible sunken annex archetype"),
+        ("case 13 ->", "Level 0 records archive archetype"),
+        ("case 14 ->", "Level 0 offset false-corridor archetype"),
+        ("case 15 ->", "Level 0 broken ceiling archetype"),
         ("case 15 ->", "Level 1 warehouse micro-maze archetype"),
         ("case 16 ->", "Level 1 accessible maintenance trench archetype"),
+        ("case 17 ->", "Level 1 overhead freight gantry archetype"),
+        ("case 18 ->", "Level 1 compressor hall archetype"),
+        ("case 19 ->", "Level 1 sorting conveyor archetype"),
+        ("Blocks.BOOKSHELF", "Level 0 archive shelving"),
+        ("Blocks.LECTERN", "Level 0 archive catalog furniture"),
+        ("Blocks.SMOOTH_STONE_SLAB", "Level 1 accessible conveyor surfaces"),
+        ("Blocks.LIGHTNING_ROD", "Level 1 compressor details"),
         ("buildLevel0EnvironmentalDressing", "Level 0 ambient environmental dressing"),
         ("buildLevel1EnvironmentalDressing", "Level 1 industrial environmental dressing"),
         ("buildLevel0VerticalNetwork", "Level 0 upper gallery network"),
