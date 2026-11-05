@@ -237,6 +237,8 @@ def main() -> int:
     require("SHOWCASE_LIFETIME_TICKS = 600", watcher, "operator preview has a 30-second inspection window")
     require("TEST_ENCOUNTER_LIFETIME_TICKS = 1200", watcher, "active test encounter has a bounded 60-second lifetime")
     require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
+    assert "getEncounterStateName" in watcher and "getObservationConfidence" in watcher and "getObservationAgeTicks" in watcher
+    assert "watcherStatus" in commands, "local Watcher state and memory telemetry are inspectable in game"
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
     assert "player.getLookAngle().dot(toSpawn) > 0.35D" in director, "natural Watcher spawns outside the player's forward view"
