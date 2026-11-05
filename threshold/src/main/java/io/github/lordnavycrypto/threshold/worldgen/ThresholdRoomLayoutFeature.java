@@ -1048,6 +1048,46 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 69, z, Blocks.CHAIN.defaultBlockState());
                         }
                     }
+                    case 8 -> {
+                        // Pale arch gallery: two repeated openings create a calmer,
+                        // more stable-looking landmark inside the otherwise uncertain maze.
+                        boolean archLine = localZ == 8 || localZ == 24;
+                        boolean archPier = archLine && (localX == 8 || localX == 16 || localX == 24);
+                        boolean archSpan = archLine && localX >= 8 && localX <= 24
+                                && Math.floorMod(localX, 8) != 0;
+                        if (!protectedRoute && archPier) {
+                            for (int y = 65; y <= 69; y++) {
+                                set(world, pos, x, y, z, Blocks.SMOOTH_SANDSTONE.defaultBlockState());
+                            }
+                        }
+                        if (!protectedRoute && archSpan) {
+                            set(world, pos, x, 69, z, Blocks.CUT_SANDSTONE.defaultBlockState());
+                        }
+                        if (!protectedRoute && (localX == 8 || localX == 24)
+                                && (localZ == 12 || localZ == 20)) {
+                            set(world, pos, x, 65, z, Blocks.SANDSTONE.defaultBlockState());
+                            set(world, pos, x, 66, z, Blocks.SANDSTONE.defaultBlockState());
+                        }
+                    }
+                    case 9 -> {
+                        // False-ceiling anomaly: suspended dark panels break the ceiling rhythm
+                        // while remaining well above the player's normal head clearance.
+                        boolean ceilingRail = (localX == 8 || localX == 16 || localX == 24)
+                                && localZ >= 7 && localZ <= 25;
+                        if (!protectedRoute && ceilingRail) {
+                            set(world, pos, x, 70, z, Blocks.GRAY_CONCRETE.defaultBlockState());
+                            if (Math.floorMod(localZ + localX, 5) == 0) {
+                                set(world, pos, x, 71, z, Blocks.BLACK_CONCRETE.defaultBlockState());
+                            }
+                        }
+                        if (!protectedRoute && (localX == 11 || localX == 21)
+                                && (localZ == 11 || localZ == 21)) {
+                            set(world, pos, x, 69, z, Blocks.IRON_TRAPDOOR.defaultBlockState());
+                        }
+                        if (localX == 16 && localZ == 16) {
+                            set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1234,6 +1274,92 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, 64, z, Blocks.POLISHED_ANDESITE_SLAB.defaultBlockState());
                         }
                     }
+                    case 11 -> {
+                        // Freight loading bay: pallet stacks, dock markings and suspended
+                        // service chains make this feel like a working logistics facility.
+                        boolean dockLane = (localX >= 7 && localX <= 14 || localX >= 33 && localX <= 40)
+                                && localZ >= 8 && localZ <= 40;
+                        if (!protectedTile && dockLane && Math.floorMod(localZ, 6) == 0) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        boolean pallet = !protectedTile && dockLane
+                                && (localX == 9 || localX == 12 || localX == 35 || localX == 38)
+                                && (localZ == 12 || localZ == 20 || localZ == 28 || localZ == 36);
+                        if (pallet) {
+                            set(world, pos, x, 65, z, Blocks.BARREL.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 2) == 0) {
+                                set(world, pos, x, 66, z, Blocks.BARREL.defaultBlockState());
+                            }
+                        }
+                        boolean dockPost = (localX == 7 || localX == 14 || localX == 33 || localX == 40)
+                                && (localZ == 10 || localZ == 22 || localZ == 34);
+                        if (!protectedTile && dockPost) {
+                            for (int y = 65; y <= 69; y++) {
+                                set(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
+                            }
+                        }
+                        if ((localX == 8 || localX == 39) && localZ >= 10 && localZ <= 38
+                                && Math.floorMod(localZ, 8) == 0) {
+                            set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
+                            set(world, pos, x, 71, z, Blocks.LANTERN.defaultBlockState());
+                        }
+                    }
+                    case 12 -> {
+                        // Multi-storey parking circulation: painted turning lanes,
+                        // heavy supports and a short raised inspection deck.
+                        boolean lane = (localX >= 8 && localX <= 12 || localX >= 35 && localX <= 39)
+                                && localZ >= 8 && localZ <= 40;
+                        if (!protectedTile && lane && Math.floorMod(localZ, 5) == 0) {
+                            set(world, pos, x, 64, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                        }
+                        boolean bay = (localZ == 10 || localZ == 38)
+                                && (localX >= 13 && localX <= 19 || localX >= 28 && localX <= 34);
+                        if (!protectedTile && bay) {
+                            set(world, pos, x, 64, z, Blocks.WHITE_CARPET.defaultBlockState());
+                        }
+                        boolean support = (localX == 16 || localX == 32)
+                                && (localZ == 14 || localZ == 34);
+                        if (!protectedTile && support) {
+                            for (int y = 65; y <= 71; y++) {
+                                set(world, pos, x, y, z, Blocks.POLISHED_ANDESITE.defaultBlockState());
+                            }
+                        }
+                        boolean deck = localX >= 20 && localX <= 27 && localZ >= 12 && localZ <= 34;
+                        if (!protectedTile && deck && (localZ == 12 || localZ == 34)) {
+                            set(world, pos, x, 68, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
+                            set(world, pos, x, 69, z, Blocks.IRON_BARS.defaultBlockState());
+                        }
+                    }
+                    case 13 -> {
+                        // Rare concrete garden: artificial-light overgrowth interrupts
+                        // the warehouse palette without turning the whole level into a forest.
+                        boolean gardenPatch = localX >= 8 && localX <= 18 && localZ >= 8 && localZ <= 18
+                                || localX >= 29 && localX <= 39 && localZ >= 29 && localZ <= 39;
+                        boolean mossTile = gardenPatch && Math.floorMod(localX * 7 + localZ * 11, 5) != 0;
+                        if (!protectedTile && mossTile) {
+                            set(world, pos, x, 64, z, Blocks.MOSS_BLOCK.defaultBlockState());
+                            if (Math.floorMod(localX + localZ, 4) == 0) {
+                                set(world, pos, x, 65, z, Blocks.MOSS_CARPET.defaultBlockState());
+                            }
+                        }
+                        boolean overgrowth = !protectedTile && gardenPatch
+                                && (localX == 10 || localX == 16 || localX == 31 || localX == 37)
+                                && (localZ == 10 || localZ == 16 || localZ == 31 || localZ == 37);
+                        if (overgrowth) {
+                            for (int y = 65; y <= 67; y++) {
+                                set(world, pos, x, y, z, Blocks.MOSSY_STONE_BRICKS.defaultBlockState());
+                            }
+                            set(world, pos, x, 68, z, Blocks.AZALEA_LEAVES.defaultBlockState());
+                        }
+                        boolean fern = !protectedTile && gardenPatch
+                                && Math.floorMod((int) mix(seed, x, z, 0x6A12L), 13) == 0;
+                        if (fern && mossTile) {
+                            set(world, pos, x, 65, z, Blocks.FERN.defaultBlockState());
+                        }
+                        if (localX == 13 && localZ == 13 || localX == 34 && localZ == 34) {
+                            set(world, pos, x, 71, z, Blocks.LANTERN.defaultBlockState());
+                        }
+                    }
                     default -> { }
                 }
             }
@@ -1245,14 +1371,16 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C0L), 100);
         // Empty office space is the dominant visual. Architectural fragments
         // become progressively rarer so the Lobby never reads like a furnished dungeon.
-        if (roll < 40) return 0;
-        if (roll < 56) return 1;
-        if (roll < 70) return 2;
-        if (roll < 80) return 3;
-        if (roll < 87) return 4;
-        if (roll < 93) return 5;
-        if (roll < 97) return 6;
-        return 7;
+        if (roll < 38) return 0;
+        if (roll < 54) return 1;
+        if (roll < 67) return 2;
+        if (roll < 77) return 3;
+        if (roll < 84) return 4;
+        if (roll < 90) return 5;
+        if (roll < 94) return 6;
+        if (roll < 97) return 7;
+        if (roll < 99) return 8;
+        return 9;
     }
 
     private static int level1Architecture(long seed, int roomX, int roomZ) {
@@ -1260,16 +1388,19 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int roll = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA2C1L), 100);
         // A warehouse grammar: racks and service infrastructure are common;
         // parking-deck and narrow maintenance variants remain uncommon discoveries.
-        if (roll < 20) return 1;
-        if (roll < 30) return 6;
-        if (roll < 45) return 2;
-        if (roll < 58) return 3;
-        if (roll < 68) return 4;
-        if (roll < 78) return 5;
-        if (roll < 85) return 7;
-        if (roll < 92) return 8;
-        if (roll < 97) return 9;
-        return 10;
+        if (roll < 18) return 1;
+        if (roll < 27) return 6;
+        if (roll < 41) return 2;
+        if (roll < 53) return 3;
+        if (roll < 62) return 4;
+        if (roll < 70) return 5;
+        if (roll < 77) return 7;
+        if (roll < 84) return 8;
+        if (roll < 89) return 9;
+        if (roll < 92) return 10;
+        if (roll < 95) return 11;
+        if (roll < 98) return 12;
+        return 13;
     }
 
     private static boolean isLevel0CubiclePanel(int localX, int localZ, boolean mirrored) {
