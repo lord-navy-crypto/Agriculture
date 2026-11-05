@@ -128,7 +128,7 @@ The packaged-JAR validator enforces this invariant.
 - The current Hound is the first original Backrooms-inspired predator prototype, not a claim that every Fandom/Wikidot entity list is one unified canon. Additional creature types should be added individually after visual, AI and balance tests.
 
 ### Shared rules
-- Level 0's Observer cannot attack, damage, chase or kill the player. Its disappearance is the only response to being noticed.
+- The original Alpha 5 Observer could not attack, damage or chase. Alpha 18 supersedes that behavior with the bounded Watcher encounter; the current entity does not chain attacks or break blocks.
 - Level 1 may contain hostile entities and real survival risk, but the starter shelter, exits, room geometry and Agriculture systems remain unchanged.
 - Both biomes retain empty generic spawners and spawn_costs maps. The entity director enforces the dimension rules explicitly.
 - The independent JAR packages both GeckoLib models, animations and textures. No extra model pack is required.
@@ -150,7 +150,7 @@ The packaged-JAR validator enforces this invariant.
 
 ## Alpha 11 — entity expansion and classic survival equipment
 
-- Level 0 Watcher silhouette is taller and more elongated, with irregular head/arm/shroud animation and longer distant sightings. It remains harmless and disappears when approached or noticed.
+- The pre-Alpha18 Watcher silhouette was taller and more elongated, with irregular head/arm/shroud animation. Alpha 18 adds path navigation, observation styles, rush/strike and retreat behavior.
 - Level 1 Hound remains the only hostile entity inside the Backrooms.
 - A rare night-time Overworld Partygoer encounter slowly follows a player and relocates them to the Level 0 entry after sustained close proximity. It does not deal damage. It has a dedicated 64×64 yellow smiling-mask texture; its first-pass geometry reuses the tall humanoid silhouette rig.
 - Added `/threshold summon watcher`, `/threshold summon hound`, and `/threshold summon partygoer` test commands, each restricted to its intended dimension.
@@ -237,7 +237,7 @@ The CI preservation gate runs the following command:
 
     python3 qa/validate_threshold_horror_preservation.py
 
-It protects room dimensions and vertical profiles, entry-room identity, transition positions, distinct lighting behavior, biome ambience, architecture markers and the Level 0 observer-only / Level 1 controlled-predator scope. Intentional design changes require an explicit update to the design contract and its tests.
+It protects room dimensions and vertical profiles, entry-room identity, transition positions, distinct lighting behavior, biome ambience, architecture markers and the Level 0 bounded-Watcher / Level 1 controlled-predator scope. Intentional design changes require an explicit update to the design contract and its tests.
 
 
 ## Alpha 12 — entity presentation, rechargeable equipment and room variety
@@ -259,7 +259,7 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Level 0 generation now strongly favours the original yellow office baseline (82% of style rolls); grey rooms are uncommon and red rooms are exceptional. Empty architectural cells are more common than furnished/partitioned cells, so the Lobby remains defined by absence rather than clutter.
 - Level 1 now has weighted industrial room selection rather than uniform archetype selection. Two uncommon additions are a broad parking-deck bay with painted lanes and a narrow maintenance spine with overhead pipe runs. The reserved room routes, starter shelter and resource footprints remain protected.
 - Light behavior now has intentionally different rhythms: Level 0 fixtures fail less often and recover quickly; Level 1 fixtures fail more often and stay dark longer.
-- Observer sightings are slightly less frequent and remain visible at a distance; Hound encounters are less spammy, prefer dark rooms, and no longer materialize directly in the player's view.
+- Watcher sightings remain uncommon and begin outside the player's forward view; Hound encounters are less spammy, prefer dark rooms, and no longer materialize directly in the player's view.
 - The Hound now briefly retreats from a player actively using the Threshold flashlight. This gives the existing flashlight a distinct Level 1 survival purpose without making the Hound disappear or trivializing the encounter.
 - Room sizes, transition walls, entry positions, return passages and all six dimension registrations are unchanged.
 
