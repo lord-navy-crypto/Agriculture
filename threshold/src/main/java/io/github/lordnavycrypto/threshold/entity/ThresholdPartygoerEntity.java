@@ -98,12 +98,14 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
         if (level().isClientSide) return;
 
         if (getTarget() instanceof Player player && isValidTarget(player)) {
+            setAggressive(true);
             if (player != announcedTarget) {
                 announcedTarget = player;
                 // A sudden, low-pitched sting announces the moment the disguise drops.
                 playSound(SoundEvents.ENDERMAN_SCREAM, 1.15F, 0.62F);
             }
         } else {
+            setAggressive(false);
             announcedTarget = null;
         }
     }
@@ -137,7 +139,7 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "movement", 3, state -> {
-            if (getTarget() != null) {
+            if (isAggressive()) {
                 if (getAttackAnim(0.0F) > 0.12F) return state.setAndContinue(ATTACK);
                 return state.isMoving()
                         ? state.setAndContinue(RUN)
