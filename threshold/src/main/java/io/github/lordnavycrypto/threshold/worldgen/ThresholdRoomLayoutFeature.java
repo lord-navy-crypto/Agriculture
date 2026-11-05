@@ -1325,7 +1325,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && platform
+                        if (!upperWalkway && !protectedRoute && platform
                                 && (localX == 7 || localX == 14)
                                 && (localZ == 21 || localZ == 28)) {
                             for (int y = 64; y <= 65; y++) {
@@ -1945,7 +1945,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             boolean stairOpening = localZ == 31
                                     && (localX == 10 || localX == 11)
                                     || localX == 7 && (localZ == 35 || localZ == 36);
-                            if (edge && !stairOpening) {
+                            if (edge && !stairOpening && !protectedTile) {
                                 set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
                             }
                         }
@@ -1965,7 +1965,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && platform
+                        if (!upperWalkway && !protectedTile && platform
                                 && (localX == 7 || localX == 15)
                                 && (localZ == 31 || localZ == 39)) {
                             for (int y = 64; y <= 65; y++) {
