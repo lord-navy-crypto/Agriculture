@@ -35,6 +35,7 @@ public final class ThresholdEntityDirector {
     private static final int LEVEL_1_ROOM_SIZE = 48;
     private static final int WATCHER_SPAWN_INTERVAL_TICKS = 300;
     private static final double WATCHER_NEARBY_RADIUS = 42.0D;
+    private static final int MAX_LOCAL_WATCHERS = 2;
 
     private ThresholdEntityDirector() {}
 
@@ -127,9 +128,13 @@ public final class ThresholdEntityDirector {
     private static void spawnObservers(ServerLevel level) {
         if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())) return;
         for (Player player : level.players()) {
-            if (!player.isAlive() || player.isSpectator()) continue;
-            if (hasNearbyWatcher(level, player)) continue;
-            if (level.getRandom().nextInt(4) != 0) continue;
+            if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
+            int nearbyWatchers = countNearbyWatchers(level, player);
+            if (nearbyWatchers >= MAX_LOCAL_WATCHERS) continue;
+            // A first sighting is more likely than a second. The second entity
+            // is a rare local flanker, not an unrestricted mob swarm.
+            int spawnChance = nearbyWatchers == 0 ? 4 : 8;
+            if (level.getRandom().nextInt(spawnChance) != 0) continue;
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
@@ -162,6 +167,7 @@ public final class ThresholdEntityDirector {
                 watcher.moveTo(x + 0.5D, pos.getY(), z + 0.5D, yaw, 0.0F);
                 watcher.setYHeadRot(yaw);
                 watcher.setYBodyRot(yaw);
+                watcher.setFlankerRole(nearbyWatchers > 0);
                 if (level.addFreshEntity(watcher)) return;
             }
         }
@@ -196,13 +202,18 @@ public final class ThresholdEntityDirector {
     }
 
     /**
-     * Keeps one observer per local encounter area. This is shared by natural
-     * spawning and the operator summon command, so testing cannot stack them.
+     * Caps a local encounter at two Watchers. The second member is assigned
+     * the flanker role and can relay only fresh, same-player observations.
+     * Natural spawning and operator summons share this exact budget.
      */
-    public static boolean hasNearbyWatcher(ServerLevel level, Player player) {
-        return !level.getEntitiesOfClass(
+    public static int countNearbyWatchers(ServerLevel level, Player player) {
+        return level.getEntitiesOfClass(
                 ThresholdWatcherEntity.class,
-                player.getBoundingBox().inflate(WATCHER_NEARBY_RADIUS)).isEmpty();
+                player.getBoundingBox().inflate(WATCHER_NEARBY_RADIUS)).size();
+    }
+
+    public static boolean hasNearbyWatcher(ServerLevel level, Player player) {
+        return countNearbyWatchers(level, player) >= MAX_LOCAL_WATCHERS;
     }
 
     private static void spawnPartygoers(ServerLevel level) {
