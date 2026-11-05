@@ -1155,7 +1155,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     }
                     case 12 -> {
                         // A rare sub-floor yellow annex. The open shaft and
-                        // five-step stair make the lower room genuinely reachable.
+                        // six-step stair make the lower room genuinely reachable.
                         boolean annex = localX >= 20 && localX <= 27
                                 && localZ >= 5 && localZ <= 12;
                         if (annex) {
@@ -1643,8 +1643,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         }
                     }
                     case 16 -> {
-                        // Sunken maintenance channel: a four-block lower service
-                        // level with an open stair entrance, retaining walls and pipework.
+                        // Sunken maintenance channel: a five-block lower service
+                        // level with a six-step stair entrance, retaining walls and pipework.
                         boolean trench = localX >= 29 && localX <= 38
                                 && localZ >= 15 && localZ <= 21;
                         if (trench) {
