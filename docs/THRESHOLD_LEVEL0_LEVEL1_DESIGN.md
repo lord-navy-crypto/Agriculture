@@ -209,3 +209,27 @@ Complexity comes from a readable building grammar, not indiscriminate clutter. B
 The qa/validate_threshold_horror_preservation.py script protects the room dimensions and vertical profiles, entry-room identities, transition locations, light-failure contrast, biome ambience, palette/architecture markers and Level 0 no-hostile-entity / Level 1 controlled-predator scope. It runs in CI alongside the existing room-graph, Agriculture integration, packaged-JAR and dedicated-server checks.
 
 A deliberate change to one of these invariants requires an explicit design decision and a corresponding update to this contract and its tests. It must not happen accidentally as a side effect of adding survival features.
+
+
+## Alpha 15 — richer acting and room grammar
+
+### Level 0
+- Adds a rare pale arch-gallery landmark and a suspended false-ceiling anomaly to the existing deterministic room archetypes.
+- The entry room remains the untouched yellow-office baseline.
+- All new structures use the existing reserved-route mask; no doorway, return passage, floor height or ceiling profile is moved.
+- The Observer remains non-hostile, non-colliding and transient. Its GeckoLib presence controller now alternates long stillness with short head-tracking, stutter, folded-posture and shroud-drift gestures.
+
+### Level 1
+- Adds freight loading bays, parking circulation details and a rare concrete-garden sub-area under artificial lighting.
+- The new layouts remain inside the existing 48×48 room cell and respect both reserved paths and resource footprints.
+- The Hound gains sniff, alert, stalking-gait and retreat animations, selected from its current movement/target state. It remains restricted to Level 1 and cannot break blocks.
+
+### Alpha 15 acceptance
+- JSON parsing and geometry/animation bone-reference checks pass for Watcher and Hound.
+- QA confirms the new Level 0 and Level 1 archetypes, original entry-room identities, route protections, entity restrictions and transition coordinates.
+- NeoForge 1.21.1 compile, packaged-JAR validation and dedicated-server smoke tests must pass before this build is considered ready for in-game testing.
+
+### Research inspiration
+- Level 0 architectural motifs: arches, pillars, blackout areas, red rooms and unstable layouts, cross-checked against the Backrooms Wikidot Level 0 description and Escape the Backrooms Level 0.
+- Level 1 architectural motifs: warehouse, parking deck, loading/transport infrastructure and rare overgrown concrete sub-areas, cross-checked against Backrooms VR's Level 1 archive and community-made Minecraft Backrooms layouts.
+- All structures are original deterministic implementations; no external map, model, texture, sound recording or prose is imported.
