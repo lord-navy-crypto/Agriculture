@@ -243,6 +243,7 @@ def main() -> int:
     assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
     assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
+    assert "public boolean hurt(DamageSource source, float amount)" in watcher and "beginRetreat(attacker)" in watcher
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
     assert "player.getLookAngle().dot(toSpawn) > 0.35D" in director, "natural Watcher spawns outside the player's forward view"
