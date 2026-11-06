@@ -631,6 +631,9 @@ def main() -> int:
         ("PASSIVE, AGGRESSIVE", "Watcher defines both supported behavior modes"),
         ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
         ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
+        ("enableObserverTestMode", "operators can summon a stable observer-only Watcher test"),
+        ("observerTestMode", "observer test mode is tracked independently and persisted"),
+        ("updateObserverTest", "observer test remains visible, stationary and line-of-sight limited"),
         ("enableAggressiveTestMode", "operators can summon a stable aggressive Watcher"),
         ("setPersistenceRequired()", "operator test Watchers resist vanilla distance despawn"),
         ("MAX_PLAYER_DISTANCE = 64.0D", "Watcher can perceive players at a more testable distance"),
@@ -646,7 +649,15 @@ def main() -> int:
     require(r"if \(!testEncounterMode && tickCount > lifetimeLimit\)", watcher,
             "operator test Watchers do not expire on the natural lifetime timer")
     require("watcher_passive", commands, "operators can summon a passive Watcher")
+    require("watcher_observer_test", commands, "operators can summon a persistent observer-only test Watcher")
     require("watcher_aggressive", commands, "operators can summon an aggressive Watcher")
+    observer_method = watcher.split("private void updateObserverTest(", 1)[1].split(
+        "private void updateLostTarget", 1)[0]
+    assert "beginRetreat(" not in observer_method, "observer test mode never hides or retreats"
+    assert "teleportTo(" not in observer_method and "player.hurt(" not in observer_method, (
+        "observer test mode never captures or damages players")
+    assert "getNavigation().stop()" in observer_method, "observer test mode remains stationary"
+
     require("setBehaviorMode", commands, "operators can switch a nearby Watcher between modes")
 
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
