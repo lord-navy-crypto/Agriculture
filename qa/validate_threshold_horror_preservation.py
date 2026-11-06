@@ -599,6 +599,31 @@ def main() -> int:
     require(r"case 7 ->", layout, "Level 0 includes the blackout-annex archetype")
     require(r"case 8 ->", layout, "Level 1 includes the conveyor/service-cable archetype")
 
+    # Alpha 20 Partygoer-specific death/respawn contract. This intentionally
+    # fails until the server-side player event handler is implemented.
+    player_events_path = JAVA / "entity/ThresholdPlayerEvents.java"
+    player_events = player_events_path.read_text(encoding="utf-8") if player_events_path.exists() else ""
+    for token, label in (
+        ("LivingDeathEvent", "Partygoer inventory is captured before death cleanup"),
+        ("LivingDropsEvent", "Partygoer-caused player drops are intercepted"),
+        ("PlayerEvent.Clone", "inventory restoration is bound to player cloning"),
+        ("isWasDeath()", "non-death clones are excluded"),
+        ("PlayerEvent.PlayerRespawnEvent", "respawn routing runs after player respawn"),
+        ("ThresholdPartygoerEntity", "the special rule is scoped to Partygoer damage"),
+        ("getPersistentData()", "inventory snapshot and one-shot marker survive entity cloning"),
+        ("getInventory().save(new ListTag())", "main inventory, armor and offhand are snapshotted"),
+        ("getInventory().load", "the inventory snapshot is restored"),
+        ("getInventory().selected", "the selected hotbar slot is preserved"),
+        ("event.setCanceled(true)", "Partygoer-caused inventory drops are suppressed"),
+        ("ThresholdDimensions.LEVEL_0", "Partygoer victims return to Level 0"),
+        ("4.5D, 65.0D, 4.5D", "Partygoer victims return to the original Level 0 entry"),
+    ):
+        if token not in player_events:
+            raise AssertionError(f"THRESHOLD Partygoer respawn contract missing: {label}")
+    assert "keepInventory" not in player_events, "Partygoer preservation must not change the global keepInventory gamerule"
+    require(r"NeoForge\\.EVENT_BUS\\.register\\(ThresholdPlayerEvents\\.class\\)", mod,
+            "Partygoer player event handlers are registered on the game event bus")
+
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
