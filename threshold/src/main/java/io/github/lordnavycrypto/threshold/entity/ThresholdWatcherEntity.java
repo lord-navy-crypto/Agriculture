@@ -275,7 +275,9 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         } else if (observation == null
                 || !observation.playerId().equals(player.getUUID())
                 || observation.confidence(server.getGameTime()) <= 0.0D) {
-            beginRetreat(null);
+            // A distant or occluded player is not a reason to vanish. Without
+            // a valid sighting, remain visible and inspect the local area.
+            updateUnobservedIdle();
             return;
         }
 
@@ -686,15 +688,45 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
     private void updateLostTarget(ServerLevel server) {
         if (showcaseMode) return;
+        if (observation == null || observation.confidence(server.getGameTime()) <= 0.0D) {
+            updateUnobservedIdle();
+            return;
+        }
+        updateSearch(server);
+    }
+
+    /**
+     * A Watcher without a valid sighting waits visibly and makes a small local
+     * patrol. It never uses the hidden live player position to navigate.
+     */
+    private void updateUnobservedIdle() {
         if (testEncounterMode) {
             resetTestEncounterToIdle();
             return;
         }
-        if (observation == null || observation.confidence(server.getGameTime()) <= 0.0D) {
-            discard();
-            return;
+        setInvisible(false);
+        if (encounterState != EncounterState.OBSERVE) {
+            getNavigation().stop();
+            encounterState = EncounterState.OBSERVE;
+            stateTicks = 0;
         }
-        updateSearch(server);
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+
+        if (getNavigation().isDone() && tickCount % 80 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            double distance = 3.0D + level().getRandom().nextDouble() * 4.0D;
+            Vec3 localPatrol = position().add(
+                    Math.cos(angle) * distance, 0.0D, Math.sin(angle) * distance);
+            getNavigation().moveTo(localPatrol.x, localPatrol.y, localPatrol.z, 0.58D);
+        }
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
     }
 
     private void updateSearch(ServerLevel server) {
