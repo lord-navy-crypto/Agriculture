@@ -150,9 +150,9 @@ def main() -> int:
             raise AssertionError(f"THRESHOLD architecture contract missing: {label}")
 
     # The two lighting systems retain different failure and recovery profiles.
-    require(r"int offChance\s*=\s*level0\s*\?\s*18\s*:\s*8\s*;", lights,
+    require(r"int offChance\s*=\s*level0\s*\?\s*\(blackoutPocket\s*\?\s*8\s*:\s*18\)\s*:\s*8\s*;", lights,
             "Level 0 and Level 1 retain distinct light-failure rates")
-    require(r"int restoreChance\s*=\s*level0\s*\?\s*2\s*:\s*8\s*;", lights,
+    require(r"int restoreChance\s*=\s*level0\s*\?\s*\(blackoutPocket\s*\?\s*12\s*:\s*2\)\s*:\s*8\s*;", lights,
             "Level 1 retains its longer dark recovery interval")
 
     # Both biomes remain free of generic natural spawner tables. The entity
