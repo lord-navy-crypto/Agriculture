@@ -6,6 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -81,6 +84,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenPlay("animation.threshold_watcher.strike");
     private static final RawAnimation PEEK =
             RawAnimation.begin().thenLoop("animation.threshold_watcher.peek");
+    private static final EntityDataAccessor<Boolean> DATA_AGGRESSIVE_MODE =
+            SynchedEntityData.defineId(ThresholdWatcherEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final int NATURAL_LIFETIME_TICKS = 1800;
     private static final int SHOWCASE_LIFETIME_TICKS = 600;
@@ -98,7 +103,6 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final ObservationStyle observationStyle;
     private EncounterState encounterState = EncounterState.OBSERVE;
-    private BehaviorMode behaviorMode = BehaviorMode.PASSIVE;
     private ObservationSnapshot observation;
     private Vec3 retreatDestination;
     private Vec3 fakeRetreatDestination;
@@ -126,6 +130,12 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         };
         this.observationStyle = soloStyles[
                 Math.floorMod(getUUID().hashCode(), soloStyles.length)];
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_AGGRESSIVE_MODE, false);
     }
 
     /** A harmless model/animation preview for artists and operators. */
@@ -169,7 +179,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     /** Switches this Watcher between its non-lethal and capture behaviors. */
     public void setBehaviorMode(BehaviorMode mode) {
         if (mode == null) return;
-        behaviorMode = mode;
+        entityData.set(DATA_AGGRESSIVE_MODE, mode == BehaviorMode.AGGRESSIVE);
         encounterState = EncounterState.OBSERVE;
         observation = null;
         searchWaypoint = null;
@@ -185,11 +195,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     public BehaviorMode getBehaviorMode() {
-        return behaviorMode;
+        return entityData.get(DATA_AGGRESSIVE_MODE) ? BehaviorMode.AGGRESSIVE : BehaviorMode.PASSIVE;
     }
 
     public String getBehaviorModeName() {
-        return behaviorMode.name();
+        return getBehaviorMode().name();
     }
 
     public boolean isTestEncounterMode() {
@@ -289,7 +299,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             return;
         }
 
-        if (behaviorMode == BehaviorMode.AGGRESSIVE) {
+        if (getBehaviorMode() == BehaviorMode.AGGRESSIVE) {
             updateAggressiveHunt(server, player, visible);
             return;
         }
@@ -536,7 +546,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
         // Passive mode may stage a close-range scare, but never damages or
         // captures the player. Aggressive mode performs a server-side capture.
-        if (behaviorMode == BehaviorMode.PASSIVE) {
+        if (getBehaviorMode() == BehaviorMode.PASSIVE) {
             beginRetreat(player);
             return;
         }
@@ -891,20 +901,22 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("BehaviorMode", behaviorMode.name());
+        tag.putString("BehaviorMode", getBehaviorMode().name());
         tag.putBoolean("TestEncounterMode", testEncounterMode);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        BehaviorMode savedMode = BehaviorMode.PASSIVE;
         if (tag.contains("BehaviorMode")) {
             try {
-                behaviorMode = BehaviorMode.valueOf(tag.getString("BehaviorMode"));
+                savedMode = BehaviorMode.valueOf(tag.getString("BehaviorMode"));
             } catch (IllegalArgumentException ignored) {
-                behaviorMode = BehaviorMode.PASSIVE;
+                savedMode = BehaviorMode.PASSIVE;
             }
         }
+        entityData.set(DATA_AGGRESSIVE_MODE, savedMode == BehaviorMode.AGGRESSIVE);
         testEncounterMode = tag.getBoolean("TestEncounterMode");
         if (testEncounterMode) setPersistenceRequired();
         setAggressive(false);
@@ -923,7 +935,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "presence", 3, state -> {
-            boolean committed = (behaviorMode == BehaviorMode.AGGRESSIVE
+            boolean committed = (getBehaviorMode() == BehaviorMode.AGGRESSIVE
                     && encounterState != EncounterState.RETREAT
                     && encounterState != EncounterState.REPOSITION) || isRushing();
             if (committed) {
