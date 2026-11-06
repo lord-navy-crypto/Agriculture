@@ -899,14 +899,14 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putString("BehaviorMode", getBehaviorMode().name());
         tag.putBoolean("TestEncounterMode", testEncounterMode);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         BehaviorMode savedMode = BehaviorMode.PASSIVE;
         if (tag.contains("BehaviorMode")) {
