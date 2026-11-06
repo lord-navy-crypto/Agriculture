@@ -251,7 +251,7 @@ def main() -> int:
     assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
     assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
-    assert "fakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
+    assert "allowFakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
     assert "distanceToSqr(fakeRetreatDestination) <= 4.0D" in watcher, "fake retreat reappears only after path navigation reaches its destination"
     assert "if (stateTicks >= 60) discard()" in watcher, "failed fake-retreat paths do not teleport through walls"
     assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "getNavigation().stop();\n                discard();" in watcher, "a successful player hit cancels a hidden fake retreat"
