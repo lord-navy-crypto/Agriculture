@@ -112,9 +112,9 @@ def main() -> int:
             "Level 1 has a deterministic room-archetype selector")
     require(r"if \(roll < 26\) return 0", layout,
             "Level 0 keeps its classic empty-office archetype as the largest single room variant")
-    require(r"if \(roll < 97\) return 11", layout,
+    require(r"if \(roll < 85\) return 11", layout,
             "Level 0 includes a regular micro-maze share")
-    require(r"if \(roll < 97\) return 15", layout,
+    require(r"if \(roll < 85\) return 15", layout,
             "Level 1 includes a regular warehouse micro-maze share")
     require(r"case 9 ->", layout, "Level 1 includes parking-deck bays")
     require(r"case 10 ->", layout, "Level 1 includes narrow maintenance spines")
