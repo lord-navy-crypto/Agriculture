@@ -619,7 +619,7 @@ def main() -> int:
     ):
         if token not in player_events:
             raise AssertionError(f"THRESHOLD Partygoer respawn contract missing: {label}")
-    assert "keepInventory" not in player_events, "Partygoer preservation must not change the global keepInventory gamerule"
+    assert "setGameRule" not in player_events and "RULE_KEEPINVENTORY" not in player_events, "Partygoer preservation must not mutate the global inventory rule"
     require(r"NeoForge\.EVENT_BUS\.register\(ThresholdPlayerEvents\.class\)", mod,
             "Partygoer player event handlers are registered on the game event bus")
 
