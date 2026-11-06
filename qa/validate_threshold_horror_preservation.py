@@ -626,6 +626,8 @@ def main() -> int:
     # Alpha 20 Watcher mode and testability contract.
     for token, label in (
         ("public enum BehaviorMode", "Watcher exposes explicit passive and aggressive modes"),
+        ("DATA_AGGRESSIVE_MODE", "Watcher mode is synchronized to client-side animation state"),
+        ("defineSynchedData(SynchedEntityData.Builder builder)", "Watcher mode synchronization is registered on the entity"),
         ("PASSIVE, AGGRESSIVE", "Watcher defines both supported behavior modes"),
         ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
         ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
