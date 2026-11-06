@@ -599,8 +599,7 @@ def main() -> int:
     require(r"case 7 ->", layout, "Level 0 includes the blackout-annex archetype")
     require(r"case 8 ->", layout, "Level 1 includes the conveyor/service-cable archetype")
 
-    # Alpha 20 Partygoer-specific death/respawn contract. This intentionally
-    # fails until the server-side player event handler is implemented.
+    # Alpha 20 Partygoer-specific death/respawn contract.
     player_events_path = JAVA / "entity/ThresholdPlayerEvents.java"
     player_events = player_events_path.read_text(encoding="utf-8") if player_events_path.exists() else ""
     for token, label in (
@@ -624,8 +623,7 @@ def main() -> int:
     require(r"NeoForge\.EVENT_BUS\.register\(ThresholdPlayerEvents\.class\)", mod,
             "Partygoer player event handlers are registered on the game event bus")
 
-    # Alpha 20 Watcher mode and testability contract. This intentionally
-    # fails until explicit modes and stable operator encounters are implemented.
+    # Alpha 20 Watcher mode and testability contract.
     for token, label in (
         ("public enum BehaviorMode { PASSIVE, AGGRESSIVE }", "Watcher exposes explicit passive and aggressive modes"),
         ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
@@ -635,7 +633,7 @@ def main() -> int:
         ("MAX_PLAYER_DISTANCE = 64.0D", "Watcher can perceive players at a more testable distance"),
         ("MEMORY_TICKS = 300", "Watcher retains bounded last-known observations for longer"),
         ("abortFakeReposition", "failed fake-retreat paths recover instead of discarding the Watcher"),
-        ("destination, 4.5D, 65.0D, 4.5D"
+        ("destination, 4.5D, 65.0D, 4.5D", "aggressive capture returns players to the original Level 0 entry"),
         ("getBehaviorModeName", "Watcher status can report its behavior mode"),
         ("updateUnobservedIdle", "distant Watchers remain visible while searching without a valid sighting"),
     ):
@@ -668,7 +666,7 @@ def main() -> int:
     assert lifetime == spawn_interval * 6
     assert local_cap == 2
 
-    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=600 spawn_interval=300 perception_hz=5 memory=120")
+    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=1800 spawn_interval=300 perception_hz=5 memory=300")
     return 0
 
 
