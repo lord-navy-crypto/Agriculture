@@ -621,7 +621,7 @@ def main() -> int:
         if token not in player_events:
             raise AssertionError(f"THRESHOLD Partygoer respawn contract missing: {label}")
     assert "keepInventory" not in player_events, "Partygoer preservation must not change the global keepInventory gamerule"
-    require(r"NeoForge\\.EVENT_BUS\\.register\\(ThresholdPlayerEvents\\.class\\)", mod,
+    require(r"NeoForge\.EVENT_BUS\.register\(ThresholdPlayerEvents\.class\)", mod,
             "Partygoer player event handlers are registered on the game event bus")
 
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
