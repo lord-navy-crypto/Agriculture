@@ -26,15 +26,17 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * Level 0's Watcher is a bounded, locally coordinated predator.
+ * Level 0's Watcher is a bounded, locally coordinated liminal encounter.
+ *
+ * Natural Watchers default to PASSIVE: they observe, stalk, search, peek and
+ * withdraw without damaging or capturing players. AGGRESSIVE mode uses normal
+ * navigation and captures only after visible close contact, returning the
+ * player to the original Level 0 entrance.
  *
  * It does not have omniscient tracking: a position is recorded only while
  * the player is actually visible, and nearby Watchers may relay that immutable
  * last-known snapshot with its original timestamp. Confidence decays with age.
  * Its four observation styles use different stalking and flanking patterns.
- *
- * Jump scares are deliberately brief and limited: a fast approach can either
- * pass the player or deliver one low-damage swipe, then the Watcher withdraws.
  * A held flashlight aimed at the entity interrupts the encounter.
  */
 public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEntity {
