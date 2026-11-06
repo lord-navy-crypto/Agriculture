@@ -122,6 +122,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private boolean flankerRole;
     private boolean showcaseMode;
     private boolean testEncounterMode;
+    private boolean observerTestMode;
 
     public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -153,6 +154,21 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         enableTestMode(BehaviorMode.PASSIVE);
     }
 
+    /**
+     * Stable observer-only test entity: it stays visible and stationary,
+     * tracks only players it can actually see, and never retreats or captures.
+     */
+    public void enableObserverTestMode() {
+        enableTestMode(BehaviorMode.PASSIVE);
+        observerTestMode = true;
+        setInvisible(false);
+        getNavigation().stop();
+    }
+
+    public boolean isObserverTestMode() {
+        return observerTestMode;
+    }
+
     /** Stable capture-mode operator encounter. */
     public void enableAggressiveTestMode() {
         enableTestMode(BehaviorMode.AGGRESSIVE);
@@ -180,6 +196,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     public void setBehaviorMode(BehaviorMode mode) {
         if (mode == null) return;
         entityData.set(DATA_AGGRESSIVE_MODE, mode == BehaviorMode.AGGRESSIVE);
+        if (mode == BehaviorMode.AGGRESSIVE) observerTestMode = false;
         encounterState = EncounterState.OBSERVE;
         observation = null;
         searchWaypoint = null;
@@ -264,6 +281,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
         Player player = findNearestValidPlayer(server);
         relayLocalObservation(server, player);
+
+        if (observerTestMode) {
+            updateObserverTest(player, server);
+            return;
+        }
 
         if (showcaseMode) {
             if (player != null) lookAtPlayer(player);
@@ -698,6 +720,35 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         stareTicks = 0;
     }
 
+    private void updateObserverTest(Player player, ServerLevel server) {
+        setInvisible(false);
+        setAggressive(false);
+        getNavigation().stop();
+        encounterState = EncounterState.OBSERVE;
+        stateTicks = 0;
+        stareTicks = 0;
+        attackConsumed = false;
+        fakeRetreat = false;
+
+        if (player != null && player.hasLineOfSight(this)) {
+            observation = new ObservationSnapshot(
+                    player.getUUID(), server.getGameTime(), player.position(), player.getDeltaMovement());
+            lookAtPlayer(player);
+            return;
+        }
+
+        // No through-wall tracking: clear stale memory and calmly scan the room.
+        observation = null;
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
+    }
+
     private void updateLostTarget(ServerLevel server) {
         if (showcaseMode) return;
         if (observation == null || observation.confidence(server.getGameTime()) <= 0.0D) {
@@ -903,6 +954,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         super.addAdditionalSaveData(tag);
         tag.putString("BehaviorMode", getBehaviorMode().name());
         tag.putBoolean("TestEncounterMode", testEncounterMode);
+        tag.putBoolean("ObserverTestMode", observerTestMode);
     }
 
     @Override
@@ -918,6 +970,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         }
         entityData.set(DATA_AGGRESSIVE_MODE, savedMode == BehaviorMode.AGGRESSIVE);
         testEncounterMode = tag.getBoolean("TestEncounterMode");
+        observerTestMode = tag.getBoolean("ObserverTestMode");
+        if (observerTestMode) testEncounterMode = true;
         if (testEncounterMode) setPersistenceRequired();
         setAggressive(false);
     }
