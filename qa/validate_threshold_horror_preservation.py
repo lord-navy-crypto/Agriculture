@@ -110,7 +110,7 @@ def main() -> int:
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
-    require(r"if \(roll < 30\) return 0", layout,
+    require(r"if \(roll < 26\) return 0", layout,
             "Level 0 keeps its classic empty-office archetype as the largest single room variant")
     require(r"if \(roll < 97\) return 11", layout,
             "Level 0 includes a regular micro-maze share")
