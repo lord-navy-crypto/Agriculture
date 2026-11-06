@@ -63,6 +63,7 @@ Test commands (requires OP permissions):
 /threshold travel overworld
 /threshold whereami
 /threshold summon watcher
+/threshold summon watcher_observer_test
 /threshold summon watcher_passive
 /threshold summon watcher_aggressive
 /threshold summon watcher_hunt
@@ -371,3 +372,10 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Static QA checks Partygoer-only inventory snapshot/drop suppression/clone restoration/Level 0 routing, Watcher mode behavior, stable test summons and the bounded natural encounter cap.
 - Dedicated-server probes verify the Partygoer damage-source predicate and Watcher mode/range readiness.
 - A new JAR is not considered ready until NeoForge compilation, packaged-JAR validation and dedicated-server smoke tests pass. Actual player death/respawn, capture, and GeckoLib animation behavior still require in-game testing.
+
+
+### Persistent observer-only Watcher test
+- `/threshold summon watcher_observer_test` creates a passive, stationary Watcher for model and animation inspection.
+- It remains visible and persistent through distance changes, line-of-sight loss, and sustained player attention; it never retreats, captures, or damages.
+- It only turns to track a player when that player is directly visible. When sight is blocked, it clears its observation and slowly scans the room without tracking through walls.
+- The test flag is saved with the entity. Use `/threshold watcher status` to confirm `observerTest=true`; remove it manually with the normal entity-removal command when finished.
