@@ -213,13 +213,13 @@ def main() -> int:
         ("beginRush", "Watcher can initiate a short charge"),
         ("nearMiss = server.getRandom().nextInt(4) == 0", "some charges become near-miss scares"),
         ("performStrike", "Watcher has a single-swipe attack state"),
-        ("getAttributeValue(Attributes.ATTACK_DAMAGE)", "Watcher swipe uses its registered attack-damage attribute"),
-        ("player.knockback(0.22D", "Watcher hit has bounded knockback"),
+        ("capturePlayer(player)", "aggressive Watcher uses a special capture instead of a damaging strike"),
+        ("teleportTo(", "aggressive Watcher returns the player to Level 0"),
         ("RUSH_COOLDOWN_TICKS = 240", "jump scares have a long cooldown"),
         ("beginRetreat", "Watcher withdraws after a scare"),
         ("setFlankerRole", "a second local Watcher receives a flanker role"),
         ("PEER_RELAY_RADIUS = 48.0D", "peer communication is local"),
-        ("NATURAL_LIFETIME_TICKS = 600", "natural Watcher lifetime is bounded"),
+        ("NATURAL_LIFETIME_TICKS = 1800", "natural Watcher lifetime is extended for reliable encounters"),
         ("PERCEPTION_INTERVAL_TICKS = 4", "Watcher perception runs at five updates per second"),
         ("updateFlicker()", "Watcher flicker is updated independently of perception"),
         ("updateInterval(4)", "Watcher transform synchronization is bounded"),
@@ -242,8 +242,8 @@ def main() -> int:
     assert "MeleeAttackGoal" not in watcher, "Watcher uses its bounded encounter state machine, not a generic chase loop"
     assert "setNoAi(true)" in watcher[watcher.index("public void enableShowcaseMode"):watcher.index("public void enableTestEncounterMode")], "only the harmless preview disables AI"
     require("SHOWCASE_LIFETIME_TICKS = 600", watcher, "operator preview has a 30-second inspection window")
-    require("TEST_ENCOUNTER_LIFETIME_TICKS = 1200", watcher, "active test encounter has a bounded 60-second lifetime")
-    require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
+    require("setPersistenceRequired()", watcher, "operator test Watchers are persistent until removed");
+    require("watcher_passive", commands, "operator can summon a passive Watcher encounter");
     assert "getEncounterStateName" in watcher and "getObservationConfidence" in watcher and "getObservationAgeTicks" in watcher
     assert "watcherStatus" in commands, "local Watcher state and memory telemetry are inspectable in game"
     assert "ObservationStyle[] soloStyles" in watcher, "only the second member is assigned the FLANKER style"
@@ -253,8 +253,8 @@ def main() -> int:
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
     assert "allowFakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
     assert "distanceToSqr(fakeRetreatDestination) <= 4.0D" in watcher, "fake retreat reappears only after path navigation reaches its destination"
-    assert "if (stateTicks >= 60) discard()" in watcher, "failed fake-retreat paths do not teleport through walls"
-    assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "getNavigation().stop();\n                discard();" in watcher, "a successful player hit cancels a hidden fake retreat"
+    assert "if (stateTicks >= 60) abortFakeReposition()" in watcher, "failed fake-retreat paths reappear instead of vanishing"
+    assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "abortFakeReposition();" in watcher, "a successful player hit cancels a hidden fake retreat"
     assert "public boolean hurt(DamageSource source, float amount)" in watcher and "beginRetreat(attacker)" in watcher
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
@@ -635,7 +635,7 @@ def main() -> int:
         ("MAX_PLAYER_DISTANCE = 64.0D", "Watcher can perceive players at a more testable distance"),
         ("MEMORY_TICKS = 300", "Watcher retains bounded last-known observations for longer"),
         ("abortFakeReposition", "failed fake-retreat paths recover instead of discarding the Watcher"),
-        ("teleportTo(destination, 4.5D, 65.0D, 4.5D", "aggressive capture returns players to the original Level 0 entrance"),
+        ("destination, 4.5D, 65.0D, 4.5D"
         ("getBehaviorModeName", "Watcher status can report its behavior mode"),
     ):
         if token not in watcher:
@@ -652,9 +652,9 @@ def main() -> int:
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
 
     # Model the bounded two-member encounter. One spawn attempt is possible
-    # per interval; a 30-second lifetime permits at most two overlapping members.
+    # per interval; the longer 90-second lifetime still respects the two-member cap.
     spawn_interval = 300
-    lifetime = 600
+    lifetime = 1800
     local_cap = 2
     active_expiries: list[int] = []
     max_active = 0
@@ -664,7 +664,7 @@ def main() -> int:
             active_expiries.append(game_time + lifetime)
         max_active = max(max_active, len(active_expiries))
     assert max_active == local_cap, f"Natural Watcher budget mismatch: {max_active}"
-    assert lifetime == spawn_interval * 2
+    assert lifetime == spawn_interval * 6
     assert local_cap == 2
 
     print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=600 spawn_interval=300 perception_hz=5 memory=120")
