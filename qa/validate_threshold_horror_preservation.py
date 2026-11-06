@@ -624,6 +624,29 @@ def main() -> int:
     require(r"NeoForge\.EVENT_BUS\.register\(ThresholdPlayerEvents\.class\)", mod,
             "Partygoer player event handlers are registered on the game event bus")
 
+    # Alpha 20 Watcher mode and testability contract. This intentionally
+    # fails until explicit modes and stable operator encounters are implemented.
+    for token, label in (
+        ("public enum BehaviorMode { PASSIVE, AGGRESSIVE }", "Watcher exposes explicit passive and aggressive modes"),
+        ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
+        ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
+        ("enableAggressiveTestMode", "operators can summon a stable aggressive Watcher"),
+        ("setPersistenceRequired()", "operator test Watchers resist vanilla distance despawn"),
+        ("MAX_PLAYER_DISTANCE = 64.0D", "Watcher can perceive players at a more testable distance"),
+        ("MEMORY_TICKS = 300", "Watcher retains bounded last-known observations for longer"),
+        ("abortFakeReposition", "failed fake-retreat paths recover instead of discarding the Watcher"),
+        ("teleportTo(destination, 4.5D, 65.0D, 4.5D", "aggressive capture returns players to the original Level 0 entrance"),
+        ("getBehaviorModeName", "Watcher status can report its behavior mode"),
+    ):
+        if token not in watcher:
+            raise AssertionError(f"THRESHOLD Watcher mode contract missing: {label}")
+    assert "player.hurt(" not in watcher, "Watcher modes use passive scares or capture, not ordinary damage"
+    require(r"if \(!testEncounterMode && tickCount > lifetimeLimit\)", watcher,
+            "operator test Watchers do not expire on the natural lifetime timer")
+    require("watcher_passive", commands, "operators can summon a passive Watcher")
+    require("watcher_aggressive", commands, "operators can summon an aggressive Watcher")
+    require("setBehaviorMode", commands, "operators can switch a nearby Watcher between modes")
+
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
