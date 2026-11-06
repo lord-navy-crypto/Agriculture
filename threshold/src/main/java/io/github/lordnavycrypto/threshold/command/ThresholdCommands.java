@@ -64,6 +64,7 @@ public final class ThresholdCommands {
                         .executes(ThresholdCommands::whereAmI))
                 .then(Commands.literal("summon")
                         .then(Commands.literal("watcher").executes(ThresholdCommands::summonWatcher))
+                        .then(Commands.literal("watcher_observer_test").executes(ThresholdCommands::summonWatcherObserverTest))
                         .then(Commands.literal("watcher_passive").executes(ThresholdCommands::summonWatcherPassive))
                         .then(Commands.literal("watcher_aggressive").executes(ThresholdCommands::summonWatcherAggressive))
                         .then(Commands.literal("watcher_hunt").executes(ThresholdCommands::summonWatcherHunt))
@@ -210,6 +211,11 @@ public final class ThresholdCommands {
         return summonWatcherAggressive(context);
     }
 
+    private static int summonWatcherObserverTest(CommandContext<CommandSourceStack> context)
+            throws CommandSyntaxException {
+        return summonWatcherMode(context, ThresholdWatcherEntity.BehaviorMode.PASSIVE, true);
+    }
+
     private static int summonWatcherPassive(CommandContext<CommandSourceStack> context)
             throws CommandSyntaxException {
         return summonWatcherMode(context, ThresholdWatcherEntity.BehaviorMode.PASSIVE);
@@ -223,6 +229,14 @@ public final class ThresholdCommands {
     private static int summonWatcherMode(
             CommandContext<CommandSourceStack> context,
             ThresholdWatcherEntity.BehaviorMode mode
+    ) throws CommandSyntaxException {
+        return summonWatcherMode(context, mode, false);
+    }
+
+    private static int summonWatcherMode(
+            CommandContext<CommandSourceStack> context,
+            ThresholdWatcherEntity.BehaviorMode mode,
+            boolean observerTest
     ) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerLevel level = player.serverLevel();
@@ -242,7 +256,9 @@ public final class ThresholdCommands {
         if (watcher == null) return 0;
         watcher.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, player.getYRot(), 0.0F);
         watcher.setFlankerRole(nearbyWatchers > 0);
-        if (mode == ThresholdWatcherEntity.BehaviorMode.PASSIVE) {
+        if (observerTest) {
+            watcher.enableObserverTestMode();
+        } else if (mode == ThresholdWatcherEntity.BehaviorMode.PASSIVE) {
             watcher.enablePassiveTestMode();
         } else {
             watcher.enableAggressiveTestMode();
@@ -251,8 +267,9 @@ public final class ThresholdCommands {
             context.getSource().sendFailure(Component.literal("The Watcher could not be placed here."));
             return 0;
         }
+        String spawnLabel = observerTest ? "OBSERVER TEST Watcher" : mode.name() + " Watcher";
         context.getSource().sendSuccess(() -> Component.literal(
-                mode.name() + " Watcher spawned. Use /threshold watcher status to inspect its state."), false);
+                spawnLabel + " spawned and will persist until manually removed. Use /threshold watcher status to inspect it."), false);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -301,6 +318,7 @@ public final class ThresholdCommands {
             String report = "Watcher #" + watcher.getId()
                     + " mode=" + watcher.getBehaviorModeName()
                     + " test=" + watcher.isTestEncounterMode()
+                    + " observerTest=" + watcher.isObserverTestMode()
                     + " role=" + watcher.getObservationStyleName()
                     + " state=" + watcher.getEncounterStateName()
                     + " memory=" + confidence + "% age=" + age + "t";
