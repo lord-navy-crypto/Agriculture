@@ -63,6 +63,8 @@ public final class ThresholdRuntimeChecks {
                 && watcherProbe.getAttribute(Attributes.MAX_HEALTH).getBaseValue() >= 14.0D
                 && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED) != null
                 && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.30D
+                && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE) != null
+                && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE).getBaseValue() >= 64.0D
                 && watcherProbe.isPickable();
         boolean watcherModesReady = watcherProbe != null
                 && "PASSIVE".equals(watcherProbe.getBehaviorModeName());
