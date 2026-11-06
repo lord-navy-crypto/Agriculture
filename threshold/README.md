@@ -342,6 +342,15 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - NeoForge compilation, packaged-JAR validation, dedicated-server smoke tests and in-game client behavior remain required before Alpha 19 can be called tested or ready.
 
 
+## Alpha 20 — Additional AI and environmental refinements
+
+- **Watcher (Level 0):** /threshold summon watcher_observer_test is now genuinely stable for visual inspection: no flicker invisibility, no damage interruption, no lifetime expiry, and no combat/capture. Switching to aggressive mode restores normal vulnerability.
+- **Hound (Level 1):** directional flashlight defense samples supported, dark floor locations using block-light data. A failed path falls back to a bounded retreat. The Hound stops tracking unseen live player positions after 32 ticks and investigates only the last visible clue.
+- **Partygoer:** maintains a bounded last-seen player position after broken line of sight and inspects it for a short interval before giving up. Stalking now requires real line of sight; its death/respawn and inventory preservation behavior stays unchanged.
+- **Level 0:** sparse faded-wall stains and ceiling discoloration add subtle environmental storytelling without replacing doorways or increasing monster density.
+- **Level 1:** infrequent floor safety marks and high oxidized duct brackets add industrial identity, guarded by existing route, shelter, and upper-walkway constraints.
+- **Regression protection:** extended source QA asserts these behaviors while preserving the six-dimension network and original Level 0/1 entry coordinates.
+
 ## Alpha 20 — Partygoer respawn and Watcher behavior modes
 
 ### Partygoer

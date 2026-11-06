@@ -81,6 +81,25 @@ def main() -> int:
         if token not in layout:
             raise AssertionError(f"THRESHOLD horror-preservation contract changed: {label}")
 
+    # Verify new changes strengthen each existing entity without adding new
+    # natural-spawn species, overriding protected paths, or weakening tests.
+    for snippet, source, purpose in (
+        ("chooseDarkCover", hound, "Hound samples dark cover on flashlight exposure"),
+        ("LightLayer.BLOCK", hound, "Hound uses actual block lighting"),
+        ("lostSightTicks", hound, "Hound abandons stale through-wall pursuits"),
+        ("InvestigateLastSightingGoal", partygoer, "Partygoer investigates a prior sighting"),
+        ("lastVisiblePlayerPosition", partygoer, "Partygoer uses last visible location"),
+        ("partygoer.hasLineOfSight(observedPlayer)", partygoer, "Partygoer stalking respects line of sight"),
+        ("if (observerTestMode) return false;", watcher, "Watcher inspection entity cannot be interrupted by hits"),
+        ("flickerTicks = 0;", watcher, "Watcher inspection entity cannot disappear during flicker"),
+        ("Blocks.ORANGE_CARPET", layout, "Level 1 has restrained safety markings"),
+        ("Blocks.OXIDIZED_COPPER", layout, "Level 1 has oxidized industrial fittings"),
+        ("pos.set(x, LEVEL_0_CEILING_Y, z)).is(Blocks.WHITE_CONCRETE)", layout,
+         "Level 0 ceiling wear overlays only existing ceiling blocks"),
+    ):
+        if snippet not in source:
+            raise AssertionError("THRESHOLD refinement missing: " + purpose)
+
     require("ThresholdEnvironmentBlocks.CEILING_VENT", vent,
             "Level 1 retains its authored animated ventilation unit")
     require(r"new BlockPos\(\(chunkX << 4\) \+ 12, 73, \(chunkZ << 4\) \+ 12\)",

@@ -2439,6 +2439,20 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     set(world, pos, x, 72, z,
                             ThresholdEnvironmentBlocks.CEILING_VENT.get().defaultBlockState());
                 }
+                // Only repaint existing wall/ceiling cells: this can never
+                // obstruct a doorway, footpath, or the entry-room transition.
+                if (!reserved && localX % 11 == 0 && localZ % 11 == 0
+                        && detail < 14 && world.getBlockState(
+                        pos.set(x, 67, z)).is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())) {
+                    set(world, pos, x, 67, z,
+                            ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState());
+                }
+                if (!reserved && localX % 9 == 3 && localZ % 9 == 3
+                        && detail < 13 && world.getBlockState(
+                        pos.set(x, LEVEL_0_CEILING_Y, z)).is(Blocks.WHITE_CONCRETE)) {
+                    set(world, pos, x, LEVEL_0_CEILING_Y, z,
+                            Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState());
+                }
                 if (!hasLevel0UpperDeck(seed, roomX, roomZ)
                         && localX % 10 == 5 && localZ % 10 == 5 && detail < 6) {
                     set(world, pos, x, 70, z, Blocks.CHAIN.defaultBlockState());
@@ -2491,6 +2505,22 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
                 if (!upperWalkway && localX % 16 == 8 && localZ % 16 == 8 && detail < 12) {
                     set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
+                }
+                // Faded safety markings appear only on empty, unprotected
+                // floor cells; stored supplies, doors and catwalks stay clear.
+                if (!protectedTile && !upperWalkway
+                        && localX % 10 == 4 && localZ % 10 == 4 && detail < 17
+                        && world.getBlockState(pos.set(x, 64, z)).isAir()) {
+                    set(world, pos, x, 64, z, Blocks.ORANGE_CARPET.defaultBlockState());
+                }
+                // High-mounted oxidized duct brackets create a different
+                // silhouette from Level 0 without lowering player headroom.
+                if (!upperWalkway && localX % 12 == 0 && localZ % 12 == 5
+                        && detail < 16
+                        && world.getBlockState(pos.set(x, 73, z)).isAir()
+                        && world.getBlockState(pos.set(x, LEVEL_1_CEILING_Y, z))
+                                .is(Blocks.LIGHT_GRAY_CONCRETE)) {
+                    set(world, pos, x, 73, z, Blocks.OXIDIZED_COPPER.defaultBlockState());
                 }
             }
         }

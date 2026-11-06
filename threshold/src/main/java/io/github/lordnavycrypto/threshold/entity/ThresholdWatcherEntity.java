@@ -161,6 +161,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     public void enableObserverTestMode() {
         enableTestMode(BehaviorMode.PASSIVE);
         observerTestMode = true;
+        setInvulnerable(true);
         setInvisible(false);
         getNavigation().stop();
     }
@@ -196,7 +197,10 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     public void setBehaviorMode(BehaviorMode mode) {
         if (mode == null) return;
         entityData.set(DATA_AGGRESSIVE_MODE, mode == BehaviorMode.AGGRESSIVE);
-        if (mode == BehaviorMode.AGGRESSIVE) observerTestMode = false;
+        if (mode == BehaviorMode.AGGRESSIVE) {
+            observerTestMode = false;
+            setInvulnerable(false);
+        }
         encounterState = EncounterState.OBSERVE;
         observation = null;
         searchWaypoint = null;
@@ -911,6 +915,13 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     private void updateFlicker() {
+        if (observerTestMode) {
+            // Never apply the one-tick invisibility flicker to the stationary
+            // model-inspection entity: testers must see every frame.
+            setInvisible(false);
+            flickerTicks = 0;
+            return;
+        }
         if (encounterState == EncounterState.RUSH
                 || encounterState == EncounterState.STRIKE
                 || encounterState == EncounterState.RETREAT
@@ -934,6 +945,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (observerTestMode) return false;
         boolean accepted = super.hurt(source, amount);
         if (accepted && !level().isClientSide && isAlive()) {
             Player attacker = source.getEntity() instanceof Player player ? player : null;
@@ -971,7 +983,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         entityData.set(DATA_AGGRESSIVE_MODE, savedMode == BehaviorMode.AGGRESSIVE);
         testEncounterMode = tag.getBoolean("TestEncounterMode");
         observerTestMode = tag.getBoolean("ObserverTestMode");
-        if (observerTestMode) testEncounterMode = true;
+        if (observerTestMode) {
+            testEncounterMode = true;
+            setInvulnerable(true);
+            setInvisible(false);
+        }
         if (testEncounterMode) setPersistenceRequired();
         setAggressive(false);
     }
