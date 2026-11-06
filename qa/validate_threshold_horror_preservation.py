@@ -625,7 +625,8 @@ def main() -> int:
 
     # Alpha 20 Watcher mode and testability contract.
     for token, label in (
-        ("public enum BehaviorMode { PASSIVE, AGGRESSIVE }", "Watcher exposes explicit passive and aggressive modes"),
+        ("public enum BehaviorMode", "Watcher exposes explicit passive and aggressive modes"),
+        ("PASSIVE, AGGRESSIVE", "Watcher defines both supported behavior modes"),
         ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
         ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
         ("enableAggressiveTestMode", "operators can summon a stable aggressive Watcher"),
