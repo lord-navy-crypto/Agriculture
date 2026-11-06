@@ -21,7 +21,7 @@
 - Native dimension `threshold:level_0`; custom biome and dimension type.
 - Chunk-aligned deterministic yellow office grid, 32x32 room cells with shared door decisions. The entry room is guaranteed to use the classic yellow-office variant.
 - Faded wallpaper and stained wallpaper blocks, carpet, column rooms, dark rooms and rare red rooms.
-- Random-tick fluorescent panels emit light and occasionally blink. Level 0's only natural entity is the Watcher: a bounded stalker with four observation styles, timestamped local memory, three-point corner-peek searches, rare path-based fake retreats, and occasional rush/near-miss scares with a single low-damage swipe. An aimed flashlight can interrupt it.
+- Random-tick fluorescent panels emit light and occasionally blink. Level 0's only natural entity is the Watcher: natural encounters default to a non-damaging passive observer with four observation styles, timestamped local memory, three-point corner-peek searches and rare path-based feints. Operators can switch it to aggressive capture mode; it returns a player to the original Level 0 entrance only after visible close contact. An aimed flashlight can interrupt it.
 - Atmospheric cave ambience used as a provisional sound bed.
 
 ## Level 1 — The Vulnerable Shelter
@@ -40,7 +40,7 @@
 ## Current scope / limitations
 - A paired Unstable Wall passage connects Level 0 and Level 1 in both directions; each entry room has a guaranteed return wall. Interact with an empty hand.
 - Rooms are deterministic and static on reload; Peripheral Shift is a future event system, not present yet.
-- Level 0 has one authored encounter entity, the Watcher; it is not a conventional mob swarm. Local encounters are capped at two coordinated Watchers. Level 1 retains the Hound as its industrial predator. The Watcher uses short audio stings and ordinary vanilla hurt feedback rather than a custom screen shader.
+- Level 0 has one authored encounter entity, the Watcher; it is not a conventional mob swarm. Local encounters are capped at two coordinated Watchers. Passive mode never damages or captures players; aggressive mode performs a special return-to-Level-0 capture on visible close contact. Level 1 retains the Hound as its industrial predator.
 - Six original 16×16 pixel textures are included for wallpaper, stained wallpaper, warehouse concrete and both light-panel states.
 - World generation must be verified with the real dedicated-server smoke test before claiming playability.
 
@@ -48,7 +48,7 @@
 
 ```bash
 gradle --no-daemon --stacktrace :threshold:build
-python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.19.jar
+python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.20.jar
 python3 qa/smoke_threshold_server.py
 ```
 
@@ -63,7 +63,12 @@ Test commands (requires OP permissions):
 /threshold travel overworld
 /threshold whereami
 /threshold summon watcher
+/threshold summon watcher_observer_test
+/threshold summon watcher_passive
+/threshold summon watcher_aggressive
 /threshold summon watcher_hunt
+/threshold watcher mode passive
+/threshold watcher mode aggressive
 /threshold watcher status
 /threshold summon hound
 /threshold summon partygoer
@@ -335,3 +340,51 @@ It protects room dimensions and vertical profiles, entry-room identity, transiti
 - Smoke tests and expansion QA now require both Level 0 Watcher and Level 1 Hound runtime-readiness markers.
 - Static QA checks the three-point Watcher search, rare path-based fake retreat, Hound sound memory, directional flashlight defense and both new animation clips.
 - NeoForge compilation, packaged-JAR validation, dedicated-server smoke tests and in-game client behavior remain required before Alpha 19 can be called tested or ready.
+
+
+## Alpha 20 — Additional AI and environmental refinements
+
+- **Watcher (Level 0):** /threshold summon watcher_observer_test is now genuinely stable for visual inspection: no flicker invisibility, no damage interruption, no lifetime expiry, and no combat/capture. Switching to aggressive mode restores normal vulnerability.
+- **Hound (Level 1):** directional flashlight defense samples supported, dark floor locations using block-light data. A failed path falls back to a bounded retreat. The Hound stops tracking unseen live player positions after 32 ticks and investigates only the last visible clue.
+- **Partygoer:** maintains a bounded last-seen player position after broken line of sight and inspects it for a short interval before giving up. Stalking now requires real line of sight; its death/respawn and inventory preservation behavior stays unchanged.
+- **Level 0:** sparse faded-wall stains and ceiling discoloration add subtle environmental storytelling without replacing doorways or increasing monster density.
+- **Level 1:** infrequent floor safety marks and high oxidized duct brackets add industrial identity, guarded by existing route, shelter, and upper-walkway constraints.
+- **Regression protection:** extended source QA asserts these behaviors while preserving the six-dimension network and original Level 0/1 entry coordinates.
+
+## Alpha 20 — Partygoer respawn and Watcher behavior modes
+
+### Partygoer
+- A player killed by a Threshold Partygoer has their carried inventory restored on respawn, including main inventory, armor and offhand slots; the selected hotbar slot is retained.
+- Only Partygoer-caused deaths receive the special rule. Other death sources keep normal Minecraft behavior, and the global `keepInventory` gamerule is never changed.
+- The respawned player is routed to the original Level 0 entrance at X=4.5, Y=65.0, Z=4.5.
+
+### Watcher
+- Natural Watchers default to PASSIVE: they observe, stalk, peek, search and withdraw without damaging or capturing players.
+- AGGRESSIVE Watchers pursue using normal navigation and timestamped visible observations. They capture only on visible close contact and return the player to the original Level 0 entrance; they do not kill the player.
+- Player sensing extends to 64 blocks, observation memory to 300 ticks, and the natural lifetime to 90 seconds. A Watcher without a valid sighting remains visible and patrols locally rather than disappearing immediately.
+- Failed fake-retreat paths cause the Watcher to reappear where navigation stopped. They never teleport through walls.
+- Operator test Watchers are persistent until removed. They remain available when the player moves out of range or loses line of sight.
+
+### Operator commands
+```mcfunction
+/threshold summon watcher                 # harmless model preview
+/threshold summon watcher_passive          # persistent passive test
+/threshold summon watcher_aggressive       # persistent capture-mode test
+/threshold summon watcher_hunt             # compatibility alias for aggressive test
+/threshold watcher mode passive            # switch the nearest Watcher
+/threshold watcher mode aggressive         # switch the nearest Watcher
+/threshold watcher status                  # inspect mode, state and memory
+/threshold summon partygoer                # test Partygoer death/respawn behavior
+```
+
+### Verification
+- Static QA checks Partygoer-only inventory snapshot/drop suppression/clone restoration/Level 0 routing, Watcher mode behavior, stable test summons and the bounded natural encounter cap.
+- Dedicated-server probes verify the Partygoer damage-source predicate and Watcher mode/range readiness.
+- A new JAR is not considered ready until NeoForge compilation, packaged-JAR validation and dedicated-server smoke tests pass. Actual player death/respawn, capture, and GeckoLib animation behavior still require in-game testing.
+
+
+### Persistent observer-only Watcher test
+- `/threshold summon watcher_observer_test` creates a passive, stationary Watcher for model and animation inspection.
+- It remains visible and persistent through distance changes, line-of-sight loss, and sustained player attention; it never retreats, captures, or damages.
+- It only turns to track a player when that player is directly visible. When sight is blocked, it clears its observation and slowly scans the room without tracking through walls.
+- The test flag is saved with the entity. Use `/threshold watcher status` to confirm `observerTest=true`; remove it manually with the normal entity-removal command when finished.

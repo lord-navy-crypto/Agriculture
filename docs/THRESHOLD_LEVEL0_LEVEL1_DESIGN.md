@@ -2,7 +2,7 @@
 
 The first two environments are **inspired by** both Backrooms Wikidot and Fandom, but the layout, architecture variants and custom gameplay are ours. Neither wiki version is treated as a single unified canon. We do not copy their prose, textures or sound recordings.
 
-> **Current implementation override — Alpha 19:** Level 0's former harmless Observer has been replaced by the active but bounded Watcher. It uses four observation styles, honest short-lived sighting memory, a maximum two-entity local encounter, corner-peek search, rare path-based fake retreats, and occasional near-miss or single-swipe jump scares. Level 1's Hound can hear nearby movement as an uncertain clue, investigate with a bounded search pattern, and be repelled only by an aimed flashlight beam. Earlier Alpha 5–15 notes describing a non-combat Observer are historical design records, not the current implementation.
+> **Current implementation override — Alpha 20:** Natural Level 0 Watchers default to PASSIVE, non-damaging behavior; AGGRESSIVE mode captures only after visible close contact and returns the player to the original Level 0 entry. Partygoer-caused deaths preserve carried inventory and route the respawned player to that same entry. Operators can summon a dedicated `watcher_observer_test`: a persistent, stationary, visible observer that only tracks players in direct line of sight and never retreats, captures or damages. Level 1's Hound retains movement-sensitive hearing, bounded search and directional flashlight defense. Earlier Alpha 5–19 notes are historical where they conflict with this override.
 
 ## Architectural boundary
 The repo contains `Agriculture` and the separate `threshold` Gradle subproject, with different Mod IDs, packages, metadata and JARs. **Agriculture is now a mandatory runtime prerequisite**: its existing food, hydration, sodium and nutrition mechanisms provide survival constraints. Threshold itself does not import Agriculture Java classes or include them in its JAR. We resolve crop blocks and foods by registry ID when loaded.
@@ -20,7 +20,7 @@ Distinct features:
 - Shared-edge doorway choices so neighboring rooms agree.
 - A paired anomalous wall passage connects Level 0 and Level 1 in both directions; the entry room on each level guarantees one. Interaction requires an empty hand. Future: Peripheral Shift and ambient electric buzzing.
 
-Level 0 admits only the Watcher as a natural encounter entity; generic vanilla and third-party natural mob spawning remains disabled. The Watcher is a limited predator, not a conventional mob swarm: it can stalk, flank, rush and perform one low-damage swipe before withdrawing. A local encounter is capped at two entities.
+Level 0 admits only the Watcher as a natural encounter entity; generic vanilla and third-party natural mob spawning remains disabled. Natural Watchers default to a passive observer role and do not damage or capture players. Operators can switch a nearby Watcher to aggressive capture mode, which requires visible close contact and returns the player to the Level 0 entry. A local encounter is capped at two entities.
 
 ## L1 — The Vulnerable Shelter
 **Fear mechanism:** relief and vulnerability; supplies exist, but are sparse and unevenly distributed.
@@ -388,3 +388,14 @@ The natural spawn director attempts a new encounter every 300 ticks. A first Wat
 - Dedicated-server smoke tests require THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK and THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK.
 - Static QA verifies the Watcher's three-point search and fake-retreat path constraints, plus Hound noisy-player selection, movement-sensitive sound radius, wall attenuation, uncertain memory, directional flashlight defense and GeckoLib animation assets.
 - Compile, packaged-JAR validation, server smoke and client gameplay checks remain mandatory. Source changes alone do not constitute a tested JAR.
+
+
+## Alpha 20.1 — persistent observer-only Watcher test
+
+- `/threshold summon watcher_observer_test` creates a passive, stationary test entity for model and animation inspection.
+- The test encounter bypasses the natural lifetime timer and sets the persistence flag, so it does not despawn because the player moves away or waits.
+- It remains visible when watched and never starts a retreat, capture or damage action.
+- It tracks a player only while direct line of sight exists. When sight is blocked or no valid player is nearby, it clears the old observation and slowly scans the local room without tracking through walls.
+- `ObserverTestMode` is stored in entity NBT so the mode survives a chunk save/reload. `/threshold watcher status` reports `observerTest=true`.
+- The operator can remove the test entity manually after inspection; persistence is not intended to make it impossible to remove.
+- Static QA checks that the observer update method contains no retreat, capture, or damage path and that the command is registered.

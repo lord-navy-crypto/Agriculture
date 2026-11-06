@@ -1,7 +1,14 @@
 package io.github.lordnavycrypto.threshold.entity;
 
+import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
 import io.github.lordnavycrypto.threshold.item.FlashlightItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -22,18 +29,24 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * Level 0's Watcher is a bounded, locally coordinated predator.
+ * Level 0's Watcher is a bounded, locally coordinated liminal encounter.
+ *
+ * Natural Watchers default to PASSIVE: they observe, stalk, search, peek and
+ * withdraw without damaging or capturing players. AGGRESSIVE mode uses normal
+ * navigation and captures only after visible close contact, returning the
+ * player to the original Level 0 entrance.
  *
  * It does not have omniscient tracking: a position is recorded only while
  * the player is actually visible, and nearby Watchers may relay that immutable
  * last-known snapshot with its original timestamp. Confidence decays with age.
  * Its four observation styles use different stalking and flanking patterns.
- *
- * Jump scares are deliberately brief and limited: a fast approach can either
- * pass the player or deliver one low-damage swipe, then the Watcher withdraws.
  * A held flashlight aimed at the entity interrupts the encounter.
  */
 public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEntity {
+    public enum BehaviorMode {
+        PASSIVE, AGGRESSIVE
+    }
+
     private enum EncounterState {
         OBSERVE, OBSERVED, STALK, SEARCH, RUSH, STRIKE, RETREAT, REPOSITION
     }
@@ -71,15 +84,16 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             RawAnimation.begin().thenPlay("animation.threshold_watcher.strike");
     private static final RawAnimation PEEK =
             RawAnimation.begin().thenLoop("animation.threshold_watcher.peek");
+    private static final EntityDataAccessor<Boolean> DATA_AGGRESSIVE_MODE =
+            SynchedEntityData.defineId(ThresholdWatcherEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final int NATURAL_LIFETIME_TICKS = 600;
+    private static final int NATURAL_LIFETIME_TICKS = 1800;
     private static final int SHOWCASE_LIFETIME_TICKS = 600;
-    private static final int TEST_ENCOUNTER_LIFETIME_TICKS = 1200;
     private static final int PERCEPTION_INTERVAL_TICKS = 4;
-    private static final int MEMORY_TICKS = 120;
+    private static final int MEMORY_TICKS = 300;
     private static final int RUSH_COOLDOWN_TICKS = 240;
     private static final int RUSH_MAX_TICKS = 32;
-    private static final double MAX_PLAYER_DISTANCE = 36.0D;
+    private static final double MAX_PLAYER_DISTANCE = 64.0D;
     private static final double PEER_RELAY_RADIUS = 48.0D;
     private static final double DIRECT_LOOK_DOT = 0.86D;
     private static final double FLASHLIGHT_LOOK_DOT = 0.58D;
@@ -108,6 +122,7 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     private boolean flankerRole;
     private boolean showcaseMode;
     private boolean testEncounterMode;
+    private boolean observerTestMode;
 
     public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -116,6 +131,12 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         };
         this.observationStyle = soloStyles[
                 Math.floorMod(getUUID().hashCode(), soloStyles.length)];
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_AGGRESSIVE_MODE, false);
     }
 
     /** A harmless model/animation preview for artists and operators. */
@@ -128,12 +149,82 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         noPhysics = true;
     }
 
-    /** An extended active encounter used by the operator test command. */
+    /** Stable, non-damaging operator encounter for passive behavior inspection. */
+    public void enablePassiveTestMode() {
+        enableTestMode(BehaviorMode.PASSIVE);
+    }
+
+    /**
+     * Stable observer-only test entity: it stays visible and stationary,
+     * tracks only players it can actually see, and never retreats or captures.
+     */
+    public void enableObserverTestMode() {
+        enableTestMode(BehaviorMode.PASSIVE);
+        observerTestMode = true;
+        setInvulnerable(true);
+        setInvisible(false);
+        getNavigation().stop();
+    }
+
+    public boolean isObserverTestMode() {
+        return observerTestMode;
+    }
+
+    /** Stable capture-mode operator encounter. */
+    public void enableAggressiveTestMode() {
+        enableTestMode(BehaviorMode.AGGRESSIVE);
+    }
+
+    /** Compatibility alias for the previous active-hunt test command. */
     public void enableTestEncounterMode() {
+        enableAggressiveTestMode();
+    }
+
+    private void enableTestMode(BehaviorMode mode) {
         testEncounterMode = true;
-        encounterState = EncounterState.STALK;
-        stateTicks = 0;
+        setPersistenceRequired();
+        setNoAi(false);
+        setNoGravity(false);
+        setInvulnerable(false);
+        setSilent(false);
+        noPhysics = false;
+        setInvisible(false);
+        setBehaviorMode(mode);
         rushCooldown = 20;
+    }
+
+    /** Switches this Watcher between its non-lethal and capture behaviors. */
+    public void setBehaviorMode(BehaviorMode mode) {
+        if (mode == null) return;
+        entityData.set(DATA_AGGRESSIVE_MODE, mode == BehaviorMode.AGGRESSIVE);
+        if (mode == BehaviorMode.AGGRESSIVE) {
+            observerTestMode = false;
+            setInvulnerable(false);
+        }
+        encounterState = EncounterState.OBSERVE;
+        observation = null;
+        searchWaypoint = null;
+        searchWaypointIndex = 0;
+        searchPauseTicks = 0;
+        stateTicks = 0;
+        stareTicks = 0;
+        attackConsumed = false;
+        fakeRetreat = false;
+        getNavigation().stop();
+        setAggressive(false);
+        setInvisible(false);
+    }
+
+    public BehaviorMode getBehaviorMode() {
+        return entityData.get(DATA_AGGRESSIVE_MODE) ? BehaviorMode.AGGRESSIVE : BehaviorMode.PASSIVE;
+    }
+
+    public String getBehaviorModeName() {
+        return getBehaviorMode().name();
+    }
+
+    public boolean isTestEncounterMode() {
+        return testEncounterMode;
     }
 
     /** The second member of a local pair takes the flanking role. */
@@ -167,10 +258,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         super.tick();
         if (!(level() instanceof ServerLevel server)) return;
 
-        int lifetimeLimit = showcaseMode ? SHOWCASE_LIFETIME_TICKS
-                : testEncounterMode ? TEST_ENCOUNTER_LIFETIME_TICKS
-                : NATURAL_LIFETIME_TICKS;
-        if (tickCount > lifetimeLimit) {
+        int lifetimeLimit = showcaseMode ? SHOWCASE_LIFETIME_TICKS : NATURAL_LIFETIME_TICKS;
+        if (!testEncounterMode && tickCount > lifetimeLimit) {
             discard();
             return;
         }
@@ -197,6 +286,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         Player player = findNearestValidPlayer(server);
         relayLocalObservation(server, player);
 
+        if (observerTestMode) {
+            updateObserverTest(player, server);
+            return;
+        }
+
         if (showcaseMode) {
             if (player != null) lookAtPlayer(player);
             return;
@@ -219,13 +313,20 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         } else if (observation == null
                 || !observation.playerId().equals(player.getUUID())
                 || observation.confidence(server.getGameTime()) <= 0.0D) {
-            beginRetreat(null);
+            // A distant or occluded player is not a reason to vanish. Without
+            // a valid sighting, remain visible and inspect the local area.
+            updateUnobservedIdle();
             return;
         }
 
         // A lit, aimed flashlight interrupts even an in-progress rush.
         if (visible && FlashlightItem.isActive(player) && isInsideFlashlightCone(player)) {
             beginRetreat(player);
+            return;
+        }
+
+        if (getBehaviorMode() == BehaviorMode.AGGRESSIVE) {
+            updateAggressiveHunt(server, player, visible);
             return;
         }
 
@@ -356,6 +457,25 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         }
     }
 
+    /** Pursues only a visible player or the bounded last-known observation. */
+    private void updateAggressiveHunt(ServerLevel server, Player player, boolean visible) {
+        if (!visible) {
+            updateSearch(server);
+            return;
+        }
+
+        lookAtPlayer(player);
+        encounterState = EncounterState.STALK;
+        stateTicks = 0;
+        if (distanceToSqr(player) <= STRIKE_RANGE_SQR) {
+            performStrike(player);
+            return;
+        }
+        if (getNavigation().isDone() || tickCount % 8 == 0) {
+            getNavigation().moveTo(player, 1.18D);
+        }
+    }
+
     private Vec3 observationPoint(Player player, ObservationStyle style) {
         Vec3 forward = player.getLookAngle();
         forward = new Vec3(forward.x, 0.0D, forward.z);
@@ -448,14 +568,36 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         stateTicks = 0;
         setAggressive(true);
         swing(InteractionHand.MAIN_HAND);
-
-        // One short, low-damage hit per scare. The vanilla hurt response supplies
-        // the brief red flash and camera jolt; the Watcher never chains attacks.
-        float attackDamage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
-        if (player.hurt(damageSources().mobAttack(this), attackDamage)) {
-            player.knockback(0.22D, getX() - player.getX(), getZ() - player.getZ());
-        }
         playSound(SoundEvents.ENDERMAN_SCREAM, 0.88F, 0.82F);
+
+        // Passive mode may stage a close-range scare, but never damages or
+        // captures the player. Aggressive mode performs a server-side capture.
+        if (getBehaviorMode() == BehaviorMode.PASSIVE) {
+            beginRetreat(player);
+            return;
+        }
+        capturePlayer(player);
+    }
+
+    private void capturePlayer(Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            beginRetreat(player);
+            return;
+        }
+        ServerLevel destination = serverPlayer.getServer().getLevel(ThresholdDimensions.LEVEL_0);
+        if (destination == null) {
+            beginRetreat(player);
+            return;
+        }
+
+        serverPlayer.teleportTo(
+                destination, 4.5D, 65.0D, 4.5D,
+                serverPlayer.getYRot(), serverPlayer.getXRot());
+        serverPlayer.setDeltaMovement(Vec3.ZERO);
+        serverPlayer.fallDistance = 0.0F;
+        serverPlayer.sendSystemMessage(Component.literal(
+                "The Watcher caught you and returned you to the Level 0 entrance."));
+        discard();
     }
 
     private void updateStrike(Player player) {
@@ -500,6 +642,8 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             if (fakeRetreat && observation != null
                     && observation.confidence(level().getGameTime()) > 0.25D) {
                 beginFakeReposition();
+            } else if (testEncounterMode) {
+                resetTestEncounterToIdle();
             } else {
                 discard();
             }
@@ -527,14 +671,15 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         if (!getNavigation().moveTo(
                 fakeRetreatDestination.x, fakeRetreatDestination.y,
                 fakeRetreatDestination.z, 0.96D)) {
-            discard();
+            abortFakeReposition();
         }
     }
 
     private void updateFakeReposition(ServerLevel server) {
         stateTicks += PERCEPTION_INTERVAL_TICKS;
         if (observation == null || observation.confidence(server.getGameTime()) <= 0.18D) {
-            discard();
+            abortFakeReposition();
+            if (!testEncounterMode) beginRetreat(null);
             return;
         }
         if (fakeRetreatDestination != null
@@ -542,34 +687,125 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
             getNavigation().stop();
             setInvisible(false);
             fakeRetreat = false;
+            fakeRetreatDestination = null;
             encounterState = EncounterState.STALK;
             stateTicks = 0;
             stareTicks = 0;
             rushCooldown = Math.max(rushCooldown, 80);
             return;
         }
-        // If a corridor is blocked or the path cannot be completed, do not
-        // teleport through geometry just to force the fake-retreat effect.
-        if (stateTicks >= 60) discard();
+        // If a corridor is blocked or the path cannot be completed, reappear
+        // where navigation stopped. Never teleport through geometry or vanish.
+        if (stateTicks >= 60) abortFakeReposition();
+    }
+
+    private void abortFakeReposition() {
+        getNavigation().stop();
+        setInvisible(false);
+        fakeRetreat = false;
+        fakeRetreatDestination = null;
+        encounterState = EncounterState.STALK;
+        stateTicks = 0;
+        searchWaypoint = null;
+        searchPauseTicks = 0;
+    }
+
+    private void resetTestEncounterToIdle() {
+        getNavigation().stop();
+        setInvisible(false);
+        fakeRetreat = false;
+        fakeRetreatDestination = null;
+        encounterState = EncounterState.OBSERVE;
+        observation = null;
+        searchWaypoint = null;
+        searchWaypointIndex = 0;
+        searchPauseTicks = 0;
+        stateTicks = 0;
+        stareTicks = 0;
+    }
+
+    private void updateObserverTest(Player player, ServerLevel server) {
+        setInvisible(false);
+        setAggressive(false);
+        getNavigation().stop();
+        encounterState = EncounterState.OBSERVE;
+        stateTicks = 0;
+        stareTicks = 0;
+        attackConsumed = false;
+        fakeRetreat = false;
+
+        if (player != null && player.hasLineOfSight(this)) {
+            observation = new ObservationSnapshot(
+                    player.getUUID(), server.getGameTime(), player.position(), player.getDeltaMovement());
+            lookAtPlayer(player);
+            return;
+        }
+
+        // No through-wall tracking: clear stale memory and calmly scan the room.
+        observation = null;
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
     }
 
     private void updateLostTarget(ServerLevel server) {
         if (showcaseMode) return;
         if (observation == null || observation.confidence(server.getGameTime()) <= 0.0D) {
-            discard();
+            updateUnobservedIdle();
             return;
         }
         updateSearch(server);
     }
 
+    /**
+     * A Watcher without a valid sighting waits visibly and makes a small local
+     * patrol. It never uses the hidden live player position to navigate.
+     */
+    private void updateUnobservedIdle() {
+        if (testEncounterMode) {
+            resetTestEncounterToIdle();
+            return;
+        }
+        setInvisible(false);
+        if (encounterState != EncounterState.OBSERVE) {
+            getNavigation().stop();
+            encounterState = EncounterState.OBSERVE;
+            stateTicks = 0;
+        }
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+
+        if (getNavigation().isDone() && tickCount % 80 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            double distance = 3.0D + level().getRandom().nextDouble() * 4.0D;
+            Vec3 localPatrol = position().add(
+                    Math.cos(angle) * distance, 0.0D, Math.sin(angle) * distance);
+            getNavigation().moveTo(localPatrol.x, localPatrol.y, localPatrol.z, 0.58D);
+        }
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
+    }
+
     private void updateSearch(ServerLevel server) {
         if (observation == null) {
-            beginRetreat(null);
+            if (testEncounterMode) resetTestEncounterToIdle();
+            else beginRetreat(null);
             return;
         }
         double confidence = observation.confidence(server.getGameTime());
-        if (confidence <= 0.12D || stateTicks > 80) {
-            beginRetreat(null);
+        if (confidence <= 0.12D || stateTicks > 200) {
+            if (testEncounterMode) resetTestEncounterToIdle();
+            else beginRetreat(null);
             return;
         }
 
@@ -679,6 +915,13 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     }
 
     private void updateFlicker() {
+        if (observerTestMode) {
+            // Never apply the one-tick invisibility flicker to the stationary
+            // model-inspection entity: testers must see every frame.
+            setInvisible(false);
+            flickerTicks = 0;
+            return;
+        }
         if (encounterState == EncounterState.RUSH
                 || encounterState == EncounterState.STRIKE
                 || encounterState == EncounterState.RETREAT
@@ -702,21 +945,51 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (observerTestMode) return false;
         boolean accepted = super.hurt(source, amount);
         if (accepted && !level().isClientSide && isAlive()) {
+            Player attacker = source.getEntity() instanceof Player player ? player : null;
             if (encounterState == EncounterState.REPOSITION) {
-                // A hit exposes the fake retreat. Do not let an invisible
-                // reposition continue after the player has successfully struck it.
-                getNavigation().stop();
-                discard();
+                // A hit exposes the fake retreat. Reappear at the current position
+                // rather than discarding the entity or teleporting through a wall.
+                abortFakeReposition();
+                if (!testEncounterMode) beginRetreat(attacker);
             } else if (encounterState != EncounterState.RETREAT) {
-                Player attacker = source.getEntity() instanceof Player player ? player : null;
-                // Being hit breaks the Watcher's confidence: it withdraws rather than
-                // turning the encounter into a prolonged melee fight.
                 beginRetreat(attacker);
             }
         }
         return accepted;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putString("BehaviorMode", getBehaviorMode().name());
+        tag.putBoolean("TestEncounterMode", testEncounterMode);
+        tag.putBoolean("ObserverTestMode", observerTestMode);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        BehaviorMode savedMode = BehaviorMode.PASSIVE;
+        if (tag.contains("BehaviorMode")) {
+            try {
+                savedMode = BehaviorMode.valueOf(tag.getString("BehaviorMode"));
+            } catch (IllegalArgumentException ignored) {
+                savedMode = BehaviorMode.PASSIVE;
+            }
+        }
+        entityData.set(DATA_AGGRESSIVE_MODE, savedMode == BehaviorMode.AGGRESSIVE);
+        testEncounterMode = tag.getBoolean("TestEncounterMode");
+        observerTestMode = tag.getBoolean("ObserverTestMode");
+        if (observerTestMode) {
+            testEncounterMode = true;
+            setInvulnerable(true);
+            setInvisible(false);
+        }
+        if (testEncounterMode) setPersistenceRequired();
+        setAggressive(false);
     }
 
     @Override
@@ -732,7 +1005,10 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "presence", 3, state -> {
-            if (isAggressive()) {
+            boolean committed = (getBehaviorMode() == BehaviorMode.AGGRESSIVE
+                    && encounterState != EncounterState.RETREAT
+                    && encounterState != EncounterState.REPOSITION) || isRushing();
+            if (committed) {
                 if (getAttackAnim(0.0F) > 0.12F) return state.setAndContinue(STRIKE);
                 return state.setAndContinue(LUNGE);
             }

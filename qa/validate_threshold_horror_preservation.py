@@ -81,6 +81,25 @@ def main() -> int:
         if token not in layout:
             raise AssertionError(f"THRESHOLD horror-preservation contract changed: {label}")
 
+    # Verify new changes strengthen each existing entity without adding new
+    # natural-spawn species, overriding protected paths, or weakening tests.
+    for snippet, source, purpose in (
+        ("chooseDarkCover", hound, "Hound samples dark cover on flashlight exposure"),
+        ("LightLayer.BLOCK", hound, "Hound uses actual block lighting"),
+        ("lostSightTicks", hound, "Hound abandons stale through-wall pursuits"),
+        ("InvestigateLastSightingGoal", partygoer, "Partygoer investigates a prior sighting"),
+        ("lastVisiblePlayerPosition", partygoer, "Partygoer uses last visible location"),
+        ("partygoer.hasLineOfSight(observedPlayer)", partygoer, "Partygoer stalking respects line of sight"),
+        ("if (observerTestMode) return false;", watcher, "Watcher inspection entity cannot be interrupted by hits"),
+        ("flickerTicks = 0;", watcher, "Watcher inspection entity cannot disappear during flicker"),
+        ("Blocks.ORANGE_CARPET", layout, "Level 1 has restrained safety markings"),
+        ("Blocks.OXIDIZED_COPPER", layout, "Level 1 has oxidized industrial fittings"),
+        ("pos.set(x, LEVEL_0_CEILING_Y, z)).is(Blocks.WHITE_CONCRETE)", layout,
+         "Level 0 ceiling wear overlays only existing ceiling blocks"),
+    ):
+        if snippet not in source:
+            raise AssertionError("THRESHOLD refinement missing: " + purpose)
+
     require("ThresholdEnvironmentBlocks.CEILING_VENT", vent,
             "Level 1 retains its authored animated ventilation unit")
     require(r"new BlockPos\(\(chunkX << 4\) \+ 12, 73, \(chunkZ << 4\) \+ 12\)",
@@ -110,11 +129,11 @@ def main() -> int:
             "Level 0 has a deterministic room-archetype selector")
     require(r"private static int level1Architecture\(", layout,
             "Level 1 has a deterministic room-archetype selector")
-    require(r"if \(roll < 30\) return 0", layout,
+    require(r"if \(roll < 26\) return 0", layout,
             "Level 0 keeps its classic empty-office archetype as the largest single room variant")
-    require(r"if \(roll < 97\) return 11", layout,
+    require(r"if \(roll < 85\) return 11", layout,
             "Level 0 includes a regular micro-maze share")
-    require(r"if \(roll < 97\) return 15", layout,
+    require(r"if \(roll < 85\) return 15", layout,
             "Level 1 includes a regular warehouse micro-maze share")
     require(r"case 9 ->", layout, "Level 1 includes parking-deck bays")
     require(r"case 10 ->", layout, "Level 1 includes narrow maintenance spines")
@@ -150,9 +169,9 @@ def main() -> int:
             raise AssertionError(f"THRESHOLD architecture contract missing: {label}")
 
     # The two lighting systems retain different failure and recovery profiles.
-    require(r"int offChance\s*=\s*level0\s*\?\s*18\s*:\s*8\s*;", lights,
+    require(r"int offChance\s*=\s*level0\s*\?\s*\(blackoutPocket\s*\?\s*8\s*:\s*18\)\s*:\s*8\s*;", lights,
             "Level 0 and Level 1 retain distinct light-failure rates")
-    require(r"int restoreChance\s*=\s*level0\s*\?\s*2\s*:\s*8\s*;", lights,
+    require(r"int restoreChance\s*=\s*level0\s*\?\s*\(blackoutPocket\s*\?\s*12\s*:\s*2\)\s*:\s*8\s*;", lights,
             "Level 1 retains its longer dark recovery interval")
 
     # Both biomes remain free of generic natural spawner tables. The entity
@@ -204,7 +223,7 @@ def main() -> int:
         ("EncounterState.REPOSITION", "Watcher can perform a fake retreat reposition"),
         ("encounterState != EncounterState.REPOSITION", "fake-retreat invisibility is protected from ambient flicker"),
         ("beginFakeReposition", "fake retreat uses ordinary navigation rather than teleporting"),
-        ("MEMORY_TICKS = 120", "Watcher memory has a bounded lifetime"),
+        ("MEMORY_TICKS = 300", "Watcher memory has a bounded lifetime"),
         ("relayLocalObservation", "nearby Watchers relay local observations"),
         ("peer.observation.observedAt() > observation.observedAt()", "relays preserve the original observation timestamp"),
         ("isPlayerNoisy", "Watcher distinguishes loud and quiet player movement"),
@@ -212,14 +231,14 @@ def main() -> int:
         ("FlashlightItem.isActive(player)", "a held flashlight can interrupt a scare"),
         ("beginRush", "Watcher can initiate a short charge"),
         ("nearMiss = server.getRandom().nextInt(4) == 0", "some charges become near-miss scares"),
-        ("performStrike", "Watcher has a single-swipe attack state"),
-        ("getAttributeValue(Attributes.ATTACK_DAMAGE)", "Watcher swipe uses its registered attack-damage attribute"),
-        ("player.knockback(0.22D", "Watcher hit has bounded knockback"),
+        ("performStrike", "Watcher has a single close-contact scare or capture state"),
+        ("capturePlayer(player)", "aggressive Watcher uses a special capture instead of a damaging strike"),
+        ("teleportTo(", "aggressive Watcher returns the player to Level 0"),
         ("RUSH_COOLDOWN_TICKS = 240", "jump scares have a long cooldown"),
         ("beginRetreat", "Watcher withdraws after a scare"),
         ("setFlankerRole", "a second local Watcher receives a flanker role"),
         ("PEER_RELAY_RADIUS = 48.0D", "peer communication is local"),
-        ("NATURAL_LIFETIME_TICKS = 600", "natural Watcher lifetime is bounded"),
+        ("NATURAL_LIFETIME_TICKS = 1800", "natural Watcher lifetime is extended for reliable encounters"),
         ("PERCEPTION_INTERVAL_TICKS = 4", "Watcher perception runs at five updates per second"),
         ("updateFlicker()", "Watcher flicker is updated independently of perception"),
         ("updateInterval(4)", "Watcher transform synchronization is bounded"),
@@ -242,8 +261,8 @@ def main() -> int:
     assert "MeleeAttackGoal" not in watcher, "Watcher uses its bounded encounter state machine, not a generic chase loop"
     assert "setNoAi(true)" in watcher[watcher.index("public void enableShowcaseMode"):watcher.index("public void enableTestEncounterMode")], "only the harmless preview disables AI"
     require("SHOWCASE_LIFETIME_TICKS = 600", watcher, "operator preview has a 30-second inspection window")
-    require("TEST_ENCOUNTER_LIFETIME_TICKS = 1200", watcher, "active test encounter has a bounded 60-second lifetime")
-    require("enableTestEncounterMode", commands, "operator can summon an active Watcher encounter")
+    require("setPersistenceRequired()", watcher, "operator test Watchers are persistent until removed");
+    require("watcher_passive", commands, "operator can summon a passive Watcher encounter");
     assert "getEncounterStateName" in watcher and "getObservationConfidence" in watcher and "getObservationAgeTicks" in watcher
     assert "watcherStatus" in commands, "local Watcher state and memory telemetry are inspectable in game"
     assert "ObservationStyle[] soloStyles" in watcher, "only the second member is assigned the FLANKER style"
@@ -251,10 +270,10 @@ def main() -> int:
     assert watcher.index("if (visible && FlashlightItem.isActive(player)") < watcher.index("if (encounterState == EncounterState.RUSH)"), "flashlight can interrupt an active rush"
     assert "if (!peerAlreadyRushing" in watcher, "nearby Watchers do not rush the same player simultaneously"
     assert "attackConsumed" in watcher, "a scare cannot chain multiple swipes"
-    assert "fakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
+    assert "allowFakeRetreat && !testEncounterMode" in watcher, "fake retreats are rare and disabled for operator test encounters"
     assert "distanceToSqr(fakeRetreatDestination) <= 4.0D" in watcher, "fake retreat reappears only after path navigation reaches its destination"
-    assert "if (stateTicks >= 60) discard()" in watcher, "failed fake-retreat paths do not teleport through walls"
-    assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "getNavigation().stop();\n                discard();" in watcher, "a successful player hit cancels a hidden fake retreat"
+    assert "if (stateTicks >= 60) abortFakeReposition()" in watcher, "failed fake-retreat paths reappear instead of vanishing"
+    assert "if (encounterState == EncounterState.REPOSITION)" in watcher and "abortFakeReposition();" in watcher, "a successful player hit cancels a hidden fake retreat"
     assert "public boolean hurt(DamageSource source, float amount)" in watcher and "beginRetreat(attacker)" in watcher
     require("watcher_hunt", commands, "active Watcher summon has a dedicated command")
     assert "findShowcasePosition(level, player, 8, 16, 2)" in commands, "active test encounter uses a safe loaded floor position"
@@ -281,7 +300,7 @@ def main() -> int:
     require(r"getAttackAnim\(0\.0F\) > 0\.12F", hound, "Hound bite animation follows the real attack swing")
     require(r"new InvestigateLastKnownPositionGoal\(this\)", hound,
             "Hound investigates the last known position after losing sight of a player")
-    require(r"getTarget\(\) instanceof Player target && hasLineOfSight\(target\)", hound,
+    require(r"if \(hasLineOfSight\(target\)\)", hound,
             "Hound updates its search memory only while it can see the player")
     require(r"lastKnownPlayerPosition", hound,
             "Hound retains a short-lived last-known player position")
@@ -356,7 +375,7 @@ def main() -> int:
     assert "spawnHounds(level)" in director, "Level 1 Hound spawner exists"
     require("quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
-    assert "hasNearbyWatcher(level, player)" in director, "natural spawns respect the two-Watcher cap"
+    assert "nearbyWatchers >= MAX_LOCAL_WATCHERS" in director and "countNearbyWatchers(level, player)" in director, "natural spawns respect the two-Watcher cap"
     assert "hasNearbyWatcher(level, player)" in commands, "operator summons respect the same cap"
     assert "if (!level.addFreshEntity(watcher))" in commands, "operator summon reports rejected spawns rather than false success"
     for token, source, label in (
@@ -599,14 +618,75 @@ def main() -> int:
     require(r"case 7 ->", layout, "Level 0 includes the blackout-annex archetype")
     require(r"case 8 ->", layout, "Level 1 includes the conveyor/service-cable archetype")
 
+    # Alpha 20 Partygoer-specific death/respawn contract.
+    player_events_path = JAVA / "entity/ThresholdPlayerEvents.java"
+    player_events = player_events_path.read_text(encoding="utf-8") if player_events_path.exists() else ""
+    for token, label in (
+        ("LivingDeathEvent", "Partygoer inventory is captured before death cleanup"),
+        ("LivingDropsEvent", "Partygoer-caused player drops are intercepted"),
+        ("PlayerEvent.Clone", "inventory restoration is bound to player cloning"),
+        ("isWasDeath()", "non-death clones are excluded"),
+        ("PlayerEvent.PlayerRespawnEvent", "respawn routing runs after player respawn"),
+        ("ThresholdPartygoerEntity", "the special rule is scoped to Partygoer damage"),
+        ("getPersistentData()", "inventory snapshot and one-shot marker survive entity cloning"),
+        ("getInventory().save(new ListTag())", "main inventory, armor and offhand are snapshotted"),
+        ("getInventory().load", "the inventory snapshot is restored"),
+        ("getInventory().selected", "the selected hotbar slot is preserved"),
+        ("event.setCanceled(true)", "Partygoer-caused inventory drops are suppressed"),
+        ("ThresholdDimensions.LEVEL_0", "Partygoer victims return to Level 0"),
+        ("4.5D, 65.0D, 4.5D", "Partygoer victims return to the original Level 0 entry"),
+    ):
+        if token not in player_events:
+            raise AssertionError(f"THRESHOLD Partygoer respawn contract missing: {label}")
+    assert "setGameRule" not in player_events and "RULE_KEEPINVENTORY" not in player_events, "Partygoer preservation must not mutate the global inventory rule"
+    require(r"NeoForge\.EVENT_BUS\.register\(ThresholdPlayerEvents\.class\)", mod,
+            "Partygoer player event handlers are registered on the game event bus")
+
+    # Alpha 20 Watcher mode and testability contract.
+    for token, label in (
+        ("public enum BehaviorMode", "Watcher exposes explicit passive and aggressive modes"),
+        ("DATA_AGGRESSIVE_MODE", "Watcher mode is synchronized to client-side animation state"),
+        ("defineSynchedData(SynchedEntityData.Builder builder)", "Watcher mode synchronization is registered on the entity"),
+        ("PASSIVE, AGGRESSIVE", "Watcher defines both supported behavior modes"),
+        ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
+        ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
+        ("enableObserverTestMode", "operators can summon a stable observer-only Watcher test"),
+        ("observerTestMode", "observer test mode is tracked independently and persisted"),
+        ("updateObserverTest", "observer test remains visible, stationary and line-of-sight limited"),
+        ("enableAggressiveTestMode", "operators can summon a stable aggressive Watcher"),
+        ("setPersistenceRequired()", "operator test Watchers resist vanilla distance despawn"),
+        ("MAX_PLAYER_DISTANCE = 64.0D", "Watcher can perceive players at a more testable distance"),
+        ("MEMORY_TICKS = 300", "Watcher retains bounded last-known observations for longer"),
+        ("abortFakeReposition", "failed fake-retreat paths recover instead of discarding the Watcher"),
+        ("destination, 4.5D, 65.0D, 4.5D", "aggressive capture returns players to the original Level 0 entry"),
+        ("getBehaviorModeName", "Watcher status can report its behavior mode"),
+        ("updateUnobservedIdle", "distant Watchers remain visible while searching without a valid sighting"),
+    ):
+        if token not in watcher:
+            raise AssertionError(f"THRESHOLD Watcher mode contract missing: {label}")
+    assert "player.hurt(" not in watcher, "Watcher modes use passive scares or capture, not ordinary damage"
+    require(r"if \(!testEncounterMode && tickCount > lifetimeLimit\)", watcher,
+            "operator test Watchers do not expire on the natural lifetime timer")
+    require("watcher_passive", commands, "operators can summon a passive Watcher")
+    require("watcher_observer_test", commands, "operators can summon a persistent observer-only test Watcher")
+    require("watcher_aggressive", commands, "operators can summon an aggressive Watcher")
+    observer_method = watcher.split("private void updateObserverTest(", 1)[1].split(
+        "private void updateLostTarget", 1)[0]
+    assert "beginRetreat(" not in observer_method, "observer test mode never hides or retreats"
+    assert "teleportTo(" not in observer_method and "player.hurt(" not in observer_method, (
+        "observer test mode never captures or damages players")
+    assert "getNavigation().stop()" in observer_method, "observer test mode remains stationary"
+
+    require("setBehaviorMode", commands, "operators can switch a nearby Watcher between modes")
+
     hound_loot = read_json(RESOURCES / "data/threshold/loot_table/entities/hound.json")
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
 
     # Model the bounded two-member encounter. One spawn attempt is possible
-    # per interval; a 30-second lifetime permits at most two overlapping members.
+    # per interval; the longer 90-second lifetime still respects the two-member cap.
     spawn_interval = 300
-    lifetime = 600
+    lifetime = 1800
     local_cap = 2
     active_expiries: list[int] = []
     max_active = 0
@@ -616,10 +696,10 @@ def main() -> int:
             active_expiries.append(game_time + lifetime)
         max_active = max(max_active, len(active_expiries))
     assert max_active == local_cap, f"Natural Watcher budget mismatch: {max_active}"
-    assert lifetime == spawn_interval * 2
+    assert lifetime == spawn_interval * 6
     assert local_cap == 2
 
-    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=600 spawn_interval=300 perception_hz=5 memory=120")
+    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=1800 spawn_interval=300 perception_hz=5 memory=300")
     return 0
 
 

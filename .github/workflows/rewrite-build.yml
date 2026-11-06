@@ -99,12 +99,12 @@ jobs:
       - name: Build independent Threshold horror mod
         run: gradle --no-daemon --stacktrace :threshold:build
       - name: Validate Threshold dimensions in packaged JAR
-        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.19.jar
+        run: python3 qa/validate_threshold_dimensions.py threshold/build/libs/threshold-0.1.0-alpha.20.jar
       - name: Upload independent Threshold JAR
         uses: actions/upload-artifact@v4
         with:
-          name: threshold-horror-alpha19
-          path: threshold/build/libs/threshold-0.1.0-alpha.19.jar
+          name: threshold-horror-alpha20
+          path: threshold/build/libs/threshold-0.1.0-alpha.20.jar
           if-no-files-found: error
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
