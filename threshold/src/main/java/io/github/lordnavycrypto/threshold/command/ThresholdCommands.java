@@ -278,8 +278,9 @@ public final class ThresholdCommands {
             return 0;
         }
         nearest.setBehaviorMode(mode);
+        int watcherId = nearest.getId();
         context.getSource().sendSuccess(() -> Component.literal(
-                "Watcher #" + nearest.getId() + " switched to " + mode.name() + " mode."), false);
+                "Watcher #" + watcherId + " switched to " + mode.name() + " mode."), false);
         return Command.SINGLE_SUCCESS;
     }
 
