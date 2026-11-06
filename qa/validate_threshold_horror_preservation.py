@@ -637,6 +637,7 @@ def main() -> int:
         ("abortFakeReposition", "failed fake-retreat paths recover instead of discarding the Watcher"),
         ("destination, 4.5D, 65.0D, 4.5D"
         ("getBehaviorModeName", "Watcher status can report its behavior mode"),
+        ("updateUnobservedIdle", "distant Watchers remain visible while searching without a valid sighting"),
     ):
         if token not in watcher:
             raise AssertionError(f"THRESHOLD Watcher mode contract missing: {label}")
