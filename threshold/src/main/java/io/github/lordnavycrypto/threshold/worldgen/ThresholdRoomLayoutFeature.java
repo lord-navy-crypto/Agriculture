@@ -2111,7 +2111,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         boolean sideStair = localX >= 4 && localX <= 6
                                 && (localZ == 35 || localZ == 36);
                         if (!upperWalkway && platform) {
-                            if (!protectedTile) {
+                            // Overhead flooring at Y=66 leaves the full ground-floor passage
+                            // below it accessible, even where the old grid reserves an exit path.
+                            {
                                 set(world, pos, x, 66, z, Blocks.IRON_BLOCK.defaultBlockState());
                                 if (Math.floorMod(localX + localZ, 5) == 0) {
                                     set(world, pos, x, 67, z, Blocks.YELLOW_CARPET.defaultBlockState());
@@ -2122,11 +2124,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             boolean stairOpening = localZ == 31
                                     && (localX == 10 || localX == 11)
                                     || localX == 7 && (localZ == 35 || localZ == 36);
-                            if (edge && !stairOpening && !protectedTile) {
+                            if (edge && !stairOpening && !protectedResource) {
                                 set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
                             }
                         }
-                        if (!upperWalkway && !protectedTile && stair) {
+                        if (!upperWalkway && !protectedResource && stair) {
                             int stairY = 64 + localZ - 28;
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
@@ -2134,7 +2136,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && !protectedTile && sideStair) {
+                        if (!upperWalkway && !protectedResource && sideStair) {
                             int stairY = 64 + localX - 4;
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
@@ -2142,7 +2144,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && !protectedTile && platform
+                        if (!upperWalkway && !protectedResource && platform
                                 && (localX == 7 || localX == 15)
                                 && (localZ == 31 || localZ == 39)) {
                             for (int y = 64; y <= 65; y++) {
@@ -2665,7 +2667,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static boolean hasLevel1UpperDeck(long seed, int roomX, int roomZ) {
         // The new landmark sectors provide their own overhead structures;
         // suppressing the generic catwalk here prevents ceiling collisions.
-        if (level1Architecture(seed, roomX, roomZ) >= 23) return false;
+        // The authored loading-office mezzanine (20) also has its own stair and deck.
+        // A generic upper catwalk can mask its stairway and make the landmark unreachable.
+        int landmark = level1Architecture(seed, roomX, roomZ);
+        if (landmark == 20 || landmark >= 23) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 1)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44);

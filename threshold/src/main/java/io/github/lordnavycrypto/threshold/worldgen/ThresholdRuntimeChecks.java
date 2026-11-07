@@ -474,6 +474,10 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
+        if (!level1MezzanineBuilt || !level1MezzanineStairBuilt) {
+            System.err.println("THRESHOLD_LEVEL1_MEZZANINE_DEBUG platform="
+                    + level1MezzanineBuilt + " stairs=" + level1MezzanineStairBuilt);
+        }
         level1MezzanineBuilt &= level1MezzanineStairBuilt;
         System.out.println(level1MezzanineBuilt
                 ? "THRESHOLD_LEVEL1_MEZZANINE_OK" : "THRESHOLD_LEVEL1_MEZZANINE_FAIL");
