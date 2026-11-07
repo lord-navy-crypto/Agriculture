@@ -51,6 +51,9 @@ def main():
                 p=parent((x,z))
                 assert p is not None and abs(x-p[0])+abs(z-p[1])==1
     assert "isGuaranteedSpine(seed, x, z, spacing, jitter, salt)" in source
+    assert "isLevel0EntryPerimeter(x, z)" in source
+    assert "!isLevel0TransitionFootprint(x, z)" in source
+    assert "x == 0 && z >= 13 && z <= 17" in source
     assert "private static boolean isGuaranteedSpine" in source
     assert "if (!spine && !sample.boundary" in source
     assert "hasLevel0Divider" in feature and "hasLevel1Divider" in feature
@@ -85,7 +88,35 @@ def main():
                         x=round(ax+(bx-ax)*t)
                         z=round(az+(bz-az)*t)
                         assert spine(seed,x,z,spacing,jitter,salt), (seed,spacing,gx,gz,step)
-    print("THRESHOLD_IRREGULAR_MAZE_V4_1_PASS: jittered rooms, seed-stable voxel-connected parent corridors")
+    # Sample the same deterministic finite-width spine as the Java generator
+    # around the four Level 0 starting room borders. The old blanket wall
+    # protection disconnected entire negative-axis sectors on some world seeds.
+    def crosses(seed, x, z, spacing, jitter, salt):
+        bx,bz=x//spacing,z//spacing
+        for gx in range(bx-1,bx+2):
+            for gz in range(bz-1,bz+2):
+                if gx==gz==0:continue
+                px,pz=parent((gx,gz))
+                ax,az=center(seed,gx,gz,spacing,jitter,salt)
+                cx,cz=center(seed,px,pz,spacing,jitter,salt)
+                vx,vz=cx-ax,cz-az
+                d=vx*vx+vz*vz
+                if not d:continue
+                t=min(1.0,max(0.0,((x-ax)*vx+(z-az)*vz)/d))
+                if (x-ax-t*vx)**2 + (z-az-t*vz)**2 <= 5.0:
+                    return True
+        return False
+
+    for seed in (0,1,42,2026,-17):
+        west=sum(crosses(seed,0,z,22,6,0x4D415A45304C)
+                 for z in range(1,32) if not 13<=z<=17)
+        north=sum(crosses(seed,x,0,22,6,0x4D415A45304C)
+                  for x in range(1,32))
+        south=sum(crosses(seed,x,31,22,6,0x4D415A45304C)
+                  for x in range(1,31))
+        assert west+north+south>=2,(seed,west,north,south)
+
+    print("THRESHOLD_IRREGULAR_MAZE_V4_2_PASS: variable rooms, connected spine and entry perimeter seams")
 
 if __name__=="__main__":
     main()
