@@ -57,7 +57,6 @@ def main():
     assert "private static boolean isGuaranteedSpine" in source
     assert "if (!spine && !sample.boundary" in source
     assert "public static boolean isGuaranteedCorridor" in source
-    assert "int mergeRate = level0 ? 10 : 23" in source
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
     assert "int openRate = level0 ? 54 : 46" in source
