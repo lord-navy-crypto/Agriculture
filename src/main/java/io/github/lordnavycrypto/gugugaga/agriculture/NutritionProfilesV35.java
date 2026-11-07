@@ -66,6 +66,28 @@ public final class NutritionProfilesV35 {
                 }
                 result.put(entry.getKey(),values);
             }
+            // Optional per-food gameplay adjustments preserve the old catalog
+            // keys but distinguish crops and prepared meals within a category.
+            // Water and sodium are intentionally excluded: the separate water
+            // balance table is the sole source of those contributions.
+            if (doc.has("overrides")) {
+                for (Map.Entry<String,JsonElement> food
+                        : doc.getAsJsonObject("overrides").entrySet()) {
+                    int[] values = result.get(food.getKey());
+                    if (values == null)
+                        throw new IllegalStateException("Override refers to unknown food: " + food.getKey());
+                    for (Map.Entry<String,JsonElement> field
+                            : food.getValue().getAsJsonObject().entrySet()) {
+                        int nutrient = index(field.getKey());
+                        int points = field.getValue().getAsInt();
+                        if (nutrient < 0 || nutrient == 4 || nutrient == 26
+                                || points < 0 || points > 10)
+                            throw new IllegalStateException("Invalid per-food game nutrition override: "
+                                    + food.getKey() + " / " + field.getKey());
+                        values[nutrient] = points;
+                    }
+                }
+            }
             if(result.size()<400) throw new IllegalStateException("Incomplete food catalog");
             return Map.copyOf(result);
         } catch (Exception e) {

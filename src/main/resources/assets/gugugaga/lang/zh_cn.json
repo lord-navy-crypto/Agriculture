@@ -1175,11 +1175,13 @@
   "feedback.gugugaga.effect_pair": "正面效果：%s | 储备不足效果：%s",
   "feedback.gugugaga.water_salt_tooltip": "%s %s。%s",
   "feedback.gugugaga.effects_note": "27 项指标均有正面/负面效果映射。最多同时生效五种增益和四种减益；高盐状态也会触发轻度警示。水盐惩罚优先。",
-  "tooltip.gugugaga.nutrition_profile": "每件食物的营养构成（游戏点数）",
+  "tooltip.gugugaga.nutrition_profile": "本食物主要补充的营养（每份）",
   "tooltip.gugugaga.nutrition_generic": "未收录食物使用通用营养配置。",
   "tooltip.gugugaga.nutrient_line": "• %1$s：+%2$d",
   "tooltip.gugugaga.nutrition_note": "仅为游戏数值，不代表现实营养含量。",
-  "tooltip.gugugaga.nutrition_expand": "按住 Shift 查看其余 %s 项营养指标。",
+  "tooltip.gugugaga.nutrition_expand": "按 Shift 查看其余 %s 项营养",
   "message.gugugaga.partygoer_level0_missing": "派对客将你卷入异空间，但 Level 0 暂时不可用。",
-  "message.gugugaga.partygoer_capture_success": "你在 Level 0 醒来，背包物品已经保留。"
+  "message.gugugaga.partygoer_capture_success": "你在 Level 0 醒来，背包物品已经保留。",
+  "tooltip.gugugaga.nutrition_balance": "补水 +%1$s｜盐分 +%2$s（即时结算）",
+  "tooltip.gugugaga.nutrition_daily": "营养储备在下一个游戏日结算，水盐由独立系统即时处理。"
 }

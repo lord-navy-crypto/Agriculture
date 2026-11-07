@@ -84,7 +84,7 @@ public final class NutritionV34 {
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
         NutritionPhysiologyV39.advance(values,
-                Math.floorDiv(player.level().getDayTime(),24000L));
+                Math.floorDiv(player.getServer().overworld().getDayTime(),24000L));
         // Each of the 27 nutrition indicators has an explicit positive and
         // low-reserve potion mapping. Resolve overlaps in the effect matrix.
         NutritionFeedbackV38.apply(player,values,false);

@@ -15,13 +15,13 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 
 /**
- * Client-only preview of the shipped gameplay nutrition profile.
- * Show the six largest contributions by default instead of 27 tiny rows.
- * Holding Shift expands every nonzero indicator, without copying food data.
+ * Per-food client hint; resolves the very same server nutrition catalog.
+ * The main nutrient panel processes 25 reserves per game day. Hydration and
+ * sodium are updated immediately from their own independent v3.7 catalog.
  */
 @EventBusSubscriber(modid = GuguGagaMod.MOD_ID, value = Dist.CLIENT)
 public final class NutritionTooltipV40 {
-    private static final int MAX_PREVIEW_ROWS = 6;
+    private static final int MAX_PREVIEW_ROWS = 3;
 
     private NutritionTooltipV40() {}
 
@@ -34,7 +34,12 @@ public final class NutritionTooltipV40 {
         boolean catalogued = NutritionProfilesV35.hasProfile(itemId);
         int[] values = NutritionProfilesV35.contribution(itemId);
         List<Integer> indices = new ArrayList<>();
-        for (int i = 0; i < values.length; i++) if (values[i] > 0) indices.add(i);
+        for (int i = 0; i < values.length; i++) {
+            // Never display water/sodium from a nutrient profile: those
+            // gameplay meters are owned by WaterSaltProfilesV37.
+            if (NutritionPhysiologyV39.linked(i)) continue;
+            if (values[i] > 0) indices.add(i);
+        }
         indices.sort((a, b) -> Integer.compare(values[b], values[a]));
 
         List<Component> tooltip = event.getToolTip();
@@ -58,6 +63,11 @@ public final class NutritionTooltipV40 {
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_expand",
                     indices.size() - rows).withStyle(ChatFormatting.YELLOW));
         }
+        tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
+                WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
+                .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_daily")
+                .withStyle(ChatFormatting.DARK_GRAY));
         tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_note")
                 .withStyle(ChatFormatting.DARK_GRAY));
     }
