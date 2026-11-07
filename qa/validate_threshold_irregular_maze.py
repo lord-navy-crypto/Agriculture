@@ -76,6 +76,11 @@ def main():
     assert "topRoll < 82 ? 71" in source
     assert "topRoll < 76 ? 73" in source
     assert "variableDoorwayRadius(edge, radius, roomSize)" in feature
+    assert "variableWidths ? variableDoorwayRadius(edge, radius, roomSize) : radius" in feature
+    assert "LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ, false, true)" in feature
+    assert "LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, true)" in feature
+    for size in ("LEVEL_2_ROOM_SIZE","LEVEL_3_ROOM_SIZE","LEVEL_4_ROOM_SIZE","LEVEL_5_ROOM_SIZE"):
+        assert f"{size}, 2, roomX, roomZ, localX, localZ, true, false)" in feature
     assert "Math.max(Math.max(0, baseRadius - 1), selected)" in feature
     assert "Math.max(Math.max(1, baseRadius - 1), selected)" in feature
     assert "merged || (open && isDoorway" in source
