@@ -145,7 +145,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_0_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ, false);
+                        seed, LEVEL_0_ROOM_SIZE, 1, roomX, roomZ, localX, localZ, false, true);
                 boolean transition = boundary && isTransitionWall(seed, roomX, roomZ, localX, localZ);
                 boolean divider = !boundary && hasLevel0Divider(seed, roomX, roomZ, localX, localZ);
                 boolean pillar = !boundary && style == 1 && isPillar(localX, localZ, LEVEL_0_ROOM_SIZE);
@@ -239,7 +239,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_1_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                        seed, LEVEL_1_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, true);
                 boolean returnPassage = boundary
                         && isLevel1ReturnWall(seed, roomX, roomZ, localX, localZ);
 
@@ -395,7 +395,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_2_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_2_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                        seed, LEVEL_2_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, false);
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_2_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
 
@@ -523,7 +523,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_3_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_3_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                        seed, LEVEL_3_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, false);
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_3_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
 
@@ -634,7 +634,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_4_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_4_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                        seed, LEVEL_4_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, false);
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_4_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
 
@@ -772,7 +772,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 boolean boundary = isBoundary(localX, localZ, LEVEL_5_ROOM_SIZE);
                 boolean doorway = boundary && isDoorway(
-                        seed, LEVEL_5_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true);
+                        seed, LEVEL_5_ROOM_SIZE, 2, roomX, roomZ, localX, localZ, true, false);
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_5_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
 
@@ -2832,25 +2832,25 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         int mid = roomSize / 2;
         int westCenter = doorwayCenterAlongZ(seed, roomSize, roomX, roomZ);
         if (doorwayAlongZ(seed, roomSize, radius == 1 ? 1 : 2,
-                roomX, roomZ, westCenter, guaranteeRoomExit)
+                roomX, roomZ, westCenter, guaranteeRoomExit, false)
                 && (nearHorizontalSegment(localX, localZ, 0, mid, westCenter, radius)
                 || nearVerticalSegment(localX, localZ, mid, westCenter, mid, radius))) return true;
 
         int eastCenter = doorwayCenterAlongZ(seed, roomSize, roomX + 1, roomZ);
         if (doorwayAlongZ(seed, roomSize, radius == 1 ? 1 : 2,
-                roomX + 1, roomZ, eastCenter, guaranteeRoomExit)
+                roomX + 1, roomZ, eastCenter, guaranteeRoomExit, false)
                 && (nearHorizontalSegment(localX, localZ, mid, roomSize - 1, eastCenter, radius)
                 || nearVerticalSegment(localX, localZ, mid, eastCenter, mid, radius))) return true;
 
         int northCenter = doorwayCenterAlongX(seed, roomSize, roomX, roomZ);
         if (doorwayAlongX(seed, roomSize, radius == 1 ? 1 : 2,
-                roomX, roomZ, northCenter, guaranteeRoomExit)
+                roomX, roomZ, northCenter, guaranteeRoomExit, false)
                 && (nearVerticalSegment(localX, localZ, northCenter, 0, mid, radius)
                 || nearHorizontalSegment(localX, localZ, northCenter, mid, mid, radius))) return true;
 
         int southCenter = doorwayCenterAlongX(seed, roomSize, roomX, roomZ + 1);
         if (doorwayAlongX(seed, roomSize, radius == 1 ? 1 : 2,
-                roomX, roomZ + 1, southCenter, guaranteeRoomExit)
+                roomX, roomZ + 1, southCenter, guaranteeRoomExit, false)
                 && (nearVerticalSegment(localX, localZ, southCenter, mid, roomSize - 1, radius)
                 || nearHorizontalSegment(localX, localZ, mid, southCenter, mid, radius))) return true;
         return false;
@@ -2915,25 +2915,27 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static boolean isDoorway(
             long seed, int roomSize, int radius,
-            int roomX, int roomZ, int localX, int localZ, boolean guaranteeRoomExit) {
+            int roomX, int roomZ, int localX, int localZ,
+            boolean guaranteeRoomExit, boolean variableWidths) {
         if (localX == 0) {
-            return doorwayAlongZ(seed, roomSize, radius, roomX, roomZ, localZ, guaranteeRoomExit);
+            return doorwayAlongZ(seed, roomSize, radius, roomX, roomZ, localZ, guaranteeRoomExit, variableWidths);
         }
         if (localX == roomSize - 1) {
-            return doorwayAlongZ(seed, roomSize, radius, roomX + 1, roomZ, localZ, guaranteeRoomExit);
+            return doorwayAlongZ(seed, roomSize, radius, roomX + 1, roomZ, localZ, guaranteeRoomExit, variableWidths);
         }
         if (localZ == 0) {
-            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ, localX, guaranteeRoomExit);
+            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ, localX, guaranteeRoomExit, variableWidths);
         }
         if (localZ == roomSize - 1) {
-            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ + 1, localX, guaranteeRoomExit);
+            return doorwayAlongX(seed, roomSize, radius, roomX, roomZ + 1, localX, guaranteeRoomExit, variableWidths);
         }
         return false;
     }
 
     private static boolean doorwayAlongZ(
             long seed, int roomSize, int radius,
-            int boundaryX, int roomZ, int along, boolean guaranteeRoomExit) {
+            int boundaryX, int roomZ, int along, boolean guaranteeRoomExit,
+            boolean variableWidths) {
         long edge = mix(seed, boundaryX, roomZ, 0xE451L);
         boolean primaryConnector = guaranteeRoomExit
                 && (isPrimaryExit(seed, boundaryX - 1, roomZ, 1)
@@ -2941,13 +2943,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
-        int openingRadius = variableDoorwayRadius(edge, radius, roomSize);
+        int openingRadius = variableWidths ? variableDoorwayRadius(edge, radius, roomSize) : radius;
         return Math.abs(along - center) <= openingRadius;
     }
 
     private static boolean doorwayAlongX(
             long seed, int roomSize, int radius,
-            int roomX, int boundaryZ, int along, boolean guaranteeRoomExit) {
+            int roomX, int boundaryZ, int along, boolean guaranteeRoomExit,
+            boolean variableWidths) {
         long edge = mix(seed, roomX, boundaryZ, 0xE452L);
         boolean primaryConnector = guaranteeRoomExit
                 && (isPrimaryExit(seed, roomX, boundaryZ - 1, 2)
@@ -2955,7 +2958,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
-        int openingRadius = variableDoorwayRadius(edge, radius, roomSize);
+        int openingRadius = variableWidths ? variableDoorwayRadius(edge, radius, roomSize) : radius;
         return Math.abs(along - center) <= openingRadius;
     }
 
