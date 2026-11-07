@@ -348,7 +348,7 @@ def main() -> int:
     assert "event.getEntity() instanceof Projectile" in director, "Threshold entity-join guard is narrowly scoped to projectiles"
     assert "instanceof LivingEntity" not in director, "ordinary living entities must not be blanket-rejected"
     assert "return entityType == ThresholdEntities.WATCHER.get();" in director, "Level 0 natural-spawn whitelist is Watcher only"
-    assert "return entityType == ThresholdEntities.HOUND.get();" in director, "Level 1 natural-spawn whitelist is Hound only"
+    assert "return entityType == ThresholdEntities.HOUND.get()" in director and "|| entityType == ThresholdEntities.PARTYGOER.get()" in director, "Level 1 whitelist includes Hound and rare Partygoer"
     require("shouldBlockNaturalSpawn", director, "natural-spawn reason policy is explicit")
     require("MobSpawnEvent.SpawnPlacementCheck.Result.FAIL", director,
             "unapproved natural spawns are rejected before placement")
@@ -373,8 +373,10 @@ def main() -> int:
     require(r"gameTime % 480L == 0L", director, "Hound encounters use a slower cadence")
     require(r"if \(sight\.getType\(\) == HitResult\.Type\.MISS\) continue", director,
             "Hounds do not materialize directly in the player's view")
-    require(r"playerRoomX\s*==\s*0\s*&&\s*playerRoomZ\s*==\s*0", director,
-            "Level 1 starter shelter is protected from Hound spawns")
+    require("isInsideLevel1StarterShelter", director,
+            "Level 1 starter shelter is protected without reserving a whole 48x48 grid cell")
+    require("pos.getX() < 20", director, "Level 1 starter shelter has a 20-block X boundary")
+    require("pos.getZ() < 20", director, "Level 1 starter shelter has a 20-block Z boundary")
     require(r"getMaxLocalRawBrightness\(pos\)\s*>\s*9", director,
             "Hounds prefer darker industrial areas")
     require(r"floor\.getCollisionShape\(level,\s*pos\.below\(\)\)\.isEmpty\(\)", director,
