@@ -1,4 +1,4 @@
-# Backroom Agriculture
+# Backroom Agriculture（后室农业）
 
 A unified agriculture and liminal-horror survival mod for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
