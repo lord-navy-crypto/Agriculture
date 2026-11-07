@@ -69,16 +69,19 @@ public final class ThresholdIrregularMazeLayout {
             for (int dz = 0; dz < 16; dz++) {
                 int x = minX + dx;
                 int z = minZ + dz;
-                if (isProtectedPassageOrEntry(x, z, level0)) continue;
+                // Keep the iconic Level 0 entrance interior and its transition
+                // intact. A seed-stable maze spine may pierce perimeter walls,
+                // or the entire negative-axis maze can be sealed from spawn.
+                boolean spine = isGuaranteedSpine(seed, x, z, spacing, jitter, salt);
+                if (isProtectedPassageOrEntry(x, z, level0)
+                        && !(level0 && spine && isLevel0EntryPerimeter(x, z)
+                        && !isLevel0TransitionFootprint(x, z))) continue;
                 if (isResourceAnchor(world, pos, x, z)) continue;
 
                 Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate);
                 boolean legacyBoundary = isLegacyBoundary(x, z, legacySize);
-                // Parent-child Voronoi cells are topologically connected, but a
-                // narrow sampled doorway can miss both voxel sides of the edge.
-                // Carve a deterministic two-wide physical spine between jittered
-                // cell centers so all regions have an actual traversable route.
-                boolean spine = isGuaranteedSpine(seed, x, z, spacing, jitter, salt);
+                // Carve a deterministic physical spine between jittered cells,
+                // before adding discretionary interior walls.
 
                 if (spine) {
                     clearWall(world, pos, x, z, maxWallY, level0, seed, sample.first, salt);
@@ -106,6 +109,19 @@ public final class ThresholdIrregularMazeLayout {
                 }
             }
         }
+    }
+
+    private static boolean isLevel0EntryPerimeter(int x, int z) {
+        return x >= 0 && x < LEVEL_0_LEGACY_SIZE
+                && z >= 0 && z < LEVEL_0_LEGACY_SIZE
+                && (x == 0 || z == 0
+                || x == LEVEL_0_LEGACY_SIZE - 1
+                || z == LEVEL_0_LEGACY_SIZE - 1);
+    }
+
+    private static boolean isLevel0TransitionFootprint(int x, int z) {
+        // Never replace the original Level 0 to Level 1 transition.
+        return x == 0 && z >= 13 && z <= 17;
     }
 
     private static boolean isProtectedPassageOrEntry(int x, int z, boolean level0) {
