@@ -19,7 +19,9 @@ A unified agriculture and liminal-horror survival mod for **Minecraft 1.21.1 / N
 ## Backrooms and sustainable survival (v4.0)
 
 - Agriculture and THRESHOLD compile into one NeoForge mod and one distributable JAR named **Backroom Agriculture**. Level 0 through Level 5, agriculture, food, water, salt, nutrition, bees, and kitchen systems share one runtime.
-- The 27-indicator food catalog covers 404 food resource IDs. Hovering an edible item displays its per-item game-point contributions; uncatalogued third-party foods are clearly marked as generic fallback profiles.
+- The 27-indicator food catalog covers 404 food resource IDs. The v4.1 review reclassifies 24 formerly generic foods and fine-tunes 40 specific food profiles. Hovering an edible item shows the three strongest daily nutrient contributors; hold Shift for the full nonzero list. Hydration and sodium are shown separately from the water/salt catalog, matching the actual instant-use balance system. Uncatalogued third-party foods use an explicitly marked neutral fallback.
+- Nutrition day rollover uses the server Overworld clock, not the current dimension's local day, so crossing Backrooms dimensions does not reset the reserve-update schedule.
+- Level 0/1 geography now prioritizes intact walls and mixed-width openings. Room fusion is intentionally uncommon (1% / 4% candidate adjacency), with rare 7–10-block apertures, short partitions and preserved landmark access.
 - Level 1 greenhouse crops use a stable rule: farmland, adequate block light, and nearby source water. A composter beside the starter planter lets players recycle seeds and crop residues into bone meal, closing the seed → crop → food/nutrition → compost → crop loop.
 - GeckoLib and Lithostitched are required runtime dependencies for animated details and composite world generation. Fusion remains optional.
 

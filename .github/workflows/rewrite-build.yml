@@ -33,6 +33,8 @@ jobs:
         run: python3 qa/validate_backroom_agriculture_v4_0.py
       - name: Validate per-food 27-nutrient hover profiles
         run: python3 qa/validate_nutrition_tooltips_v4_0.py
+      - name: Validate v4.1 per-food overrides, safe limits and cross-dimensional nutrition clock
+        run: python3 qa/validate_nutrition_v4_1.py
       - name: Validate irregular Level 0 and Level 1 room geometry
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn

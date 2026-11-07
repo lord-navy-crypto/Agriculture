@@ -19,15 +19,18 @@ def main():
     assert "NutritionProfilesV35.contribution(itemId)" in tooltip
     assert "ItemTooltipEvent" in tooltip and "DataComponents.FOOD" in tooltip
     assert "tooltip.gugugaga.nutrition_generic" in tooltip
-    assert "MAX_PREVIEW_ROWS = 6" in tooltip and "Screen.hasShiftDown()" in tooltip
+    assert "MAX_PREVIEW_ROWS = 3" in tooltip and "Screen.hasShiftDown()" in tooltip
+    assert "NutritionPhysiologyV39.linked(i)" in tooltip
+    assert "WaterSaltProfilesV37.water(itemId)" in tooltip
+    assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
     assert "value = Dist.CLIENT" in tooltip, "nutrition tooltip must remain client-only"
     for locale in ("en_us.json","zh_cn.json"):
         strings=json.loads((LANG/locale).read_text("utf8"))
-        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand"):
+        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand","tooltip.gugugaga.nutrition_balance","tooltip.gugugaga.nutrition_daily"):
             assert strings.get(key), (locale,key)
         for nutrient in nutrients:
             assert strings.get("nutrition.gugugaga."+nutrient), (locale,nutrient)
-    print("BACKROOM_NUTRITION_TOOLTIP_V4_0_PASS: 404 food IDs, 27 indicators, bilingual tooltips")
+    print("BACKROOM_NUTRITION_TOOLTIP_V4_0_PASS: 404 food IDs, 27 indicators, bilingual top-three + water/salt truth")
 
 if __name__=="__main__":
     main()
