@@ -709,7 +709,7 @@ public final class ThresholdRuntimeChecks {
                         ThresholdDimensions.LEVEL_1, EntityType.ZOMBIE, MobSpawnType.NATURAL)
                 && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
                         ThresholdDimensions.LEVEL_1, ThresholdEntities.HOUND.get(), MobSpawnType.NATURAL)
-                && ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
                         ThresholdDimensions.LEVEL_1, ThresholdEntities.PARTYGOER.get(), MobSpawnType.NATURAL)
                 && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
                         ThresholdDimensions.LEVEL_1, EntityType.ZOMBIE, MobSpawnType.SPAWN_EGG)

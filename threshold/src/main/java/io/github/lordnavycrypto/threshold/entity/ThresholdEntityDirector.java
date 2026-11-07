@@ -238,7 +238,10 @@ public final class ThresholdEntityDirector {
                 BlockPos pos = level.getHeightmapPos(
                         net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                         new BlockPos(x, player.blockPosition().getY(), z));
-                if (pos.distSqr(level.getSharedSpawnPos()) < 24.0D * 24.0D) continue;
+                boolean level1 = level.dimension().equals(ThresholdDimensions.LEVEL_1);
+                if (level1 && isInsideLevel1StarterShelter(pos)) continue;
+                double safeRadius = level1 ? 24.0D : 48.0D;
+                if (pos.distSqr(level.getSharedSpawnPos()) < safeRadius * safeRadius) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
 
                 // A Partygoer should be discovered in the periphery or behind
