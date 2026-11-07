@@ -13,7 +13,7 @@ Build from the repository root:
 
 ```sh
 gradle --no-daemon --stacktrace build
-python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-4.0.0-alpha.1.jar
+python3 qa/validate_threshold_dimensions.py build/libs/backroom-agriculture-4.0.0-alpha.1.jar
 python3 qa/smoke_threshold_server.py
 ```
 
