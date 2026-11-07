@@ -1178,5 +1178,6 @@
   "tooltip.gugugaga.nutrition_profile": "Nutrition per item (game points)",
   "tooltip.gugugaga.nutrition_generic": "Generic fallback profile for uncatalogued food.",
   "tooltip.gugugaga.nutrient_line": "• %1$s: +%2$d",
-  "tooltip.gugugaga.nutrition_note": "Abstract game values; not real-world nutrition measurements."
+  "tooltip.gugugaga.nutrition_note": "Abstract game values; not real-world nutrition measurements.",
+  "tooltip.gugugaga.nutrition_expand": "Hold Shift for %s more nutrition indicators."
 }

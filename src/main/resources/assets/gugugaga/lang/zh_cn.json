@@ -1178,5 +1178,6 @@
   "tooltip.gugugaga.nutrition_profile": "每件食物的营养构成（游戏点数）",
   "tooltip.gugugaga.nutrition_generic": "未收录食物使用通用营养配置。",
   "tooltip.gugugaga.nutrient_line": "• %1$s：+%2$d",
-  "tooltip.gugugaga.nutrition_note": "仅为游戏数值，不代表现实营养含量。"
+  "tooltip.gugugaga.nutrition_note": "仅为游戏数值，不代表现实营养含量。",
+  "tooltip.gugugaga.nutrition_expand": "按住 Shift 查看其余 %s 项营养指标。"
 }

@@ -28,7 +28,7 @@ def main():
     assert "ThresholdMod.register(modBus)" in main_mod
     assert "@Mod(" not in threshold_mod and "static void register(IEventBus modBus)" in threshold_mod
     assert "BackroomCultivationV40.isLevel1(level)" in crop
-    for token in ("Blocks.FARMLAND","getMaxLocalRawBrightness","hasNearbyFreshWater","random.nextInt(2)"):
+    for token in ("Blocks.FARMLAND","getMaxLocalRawBrightness","hasNearbyFreshWater","random.nextInt(2)","ComposterBlock.LEVEL","FarmBlock.MOISTURE","hasActiveComposterNearby"):
         assert token in cultivation, token
     assert "Blocks.COMPOSTER" in layout and "THRESHOLD_LEVEL1_COMPOSTER_OK" in runtime
     compost=json.loads((ROOT/"src/main/resources/data/neoforge/data_maps/item/compostables.json").read_text("utf8"))["values"]

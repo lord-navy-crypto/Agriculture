@@ -356,7 +356,7 @@ def main() -> int:
     assert "spawnHounds(level)" in director, "Level 1 Hound spawner exists"
     require("quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
-    assert "hasNearbyWatcher(level, player)" in director, "natural spawns respect the two-Watcher cap"
+    assert "countNearbyWatchers(level, player)" in director and "MAX_LOCAL_WATCHERS = 2" in director, "natural spawns respect the two-Watcher cap"
     assert "hasNearbyWatcher(level, player)" in commands, "operator summons respect the same cap"
     assert "if (!level.addFreshEntity(watcher))" in commands, "operator summon reports rejected spawns rather than false success"
     for token, source, label in (

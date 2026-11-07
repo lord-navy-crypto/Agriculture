@@ -19,9 +19,11 @@ def main():
     assert "NutritionProfilesV35.contribution(itemId)" in tooltip
     assert "ItemTooltipEvent" in tooltip and "DataComponents.FOOD" in tooltip
     assert "tooltip.gugugaga.nutrition_generic" in tooltip
+    assert "MAX_PREVIEW_ROWS = 6" in tooltip and "Screen.hasShiftDown()" in tooltip
+    assert "value = Dist.CLIENT" in tooltip, "nutrition tooltip must remain client-only"
     for locale in ("en_us.json","zh_cn.json"):
         strings=json.loads((LANG/locale).read_text("utf8"))
-        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note"):
+        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand"):
             assert strings.get(key), (locale,key)
         for nutrient in nutrients:
             assert strings.get("nutrition.gugugaga."+nutrient), (locale,nutrient)
