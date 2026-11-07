@@ -40,7 +40,12 @@ public final class NutritionTooltipV40 {
             if (NutritionPhysiologyV39.linked(i)) continue;
             if (values[i] > 0) indices.add(i);
         }
-        indices.sort((a, b) -> Integer.compare(values[b], values[a]));
+        // Rank by fraction of the abstract game-day target covered, not
+        // raw points alone. This avoids hiding a smaller but more targeted
+        // micronutrient contribution behind a large macro score.
+        indices.sort((a, b) -> Integer.compare(
+                values[b] * NutritionPhysiologyV39.dailyTarget(a),
+                values[a] * NutritionPhysiologyV39.dailyTarget(b)));
 
         List<Component> tooltip = event.getToolTip();
         tooltip.add(Component.empty());
@@ -55,17 +60,24 @@ public final class NutritionTooltipV40 {
         int rows = expanded ? indices.size() : Math.min(MAX_PREVIEW_ROWS, indices.size());
         for (int row = 0; row < rows; row++) {
             int i = indices.get(row);
-            tooltip.add(Component.translatable("tooltip.gugugaga.nutrient_line",
+            tooltip.add(Component.translatable("tooltip.gugugaga.nutrient_target_line",
                     Component.translatable("nutrition.gugugaga." + NutritionProfilesV35.NUTRIENTS[i]),
-                    values[i]).withStyle(ChatFormatting.GRAY));
+                    values[i], NutritionPhysiologyV39.dailyTarget(i))
+                    .withStyle(ChatFormatting.GRAY));
         }
         if (!expanded && indices.size() > rows) {
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_expand",
                     indices.size() - rows).withStyle(ChatFormatting.YELLOW));
         }
-        tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
-                WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
-                .withStyle(ChatFormatting.AQUA));
+        if (WaterSaltProfilesV37.hasProfile(itemId)) {
+            tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
+                    WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
+                    .withStyle(ChatFormatting.AQUA));
+        } else {
+            tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance_fallback",
+                    WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
+                    .withStyle(ChatFormatting.GRAY));
+        }
         tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_daily")
                 .withStyle(ChatFormatting.DARK_GRAY));
         tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_note")

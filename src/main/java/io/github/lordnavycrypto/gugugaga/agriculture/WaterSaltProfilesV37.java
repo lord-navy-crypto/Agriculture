@@ -34,6 +34,9 @@ public final class WaterSaltProfilesV37 {
             return Map.copyOf(result);
         }catch(Exception e){throw new IllegalStateException("Invalid food hydration catalog",e);}
     }
+    public static boolean hasProfile(String id) {
+        return FOODS.containsKey(id);
+    }
     public static int water(String id) {
         Contribution c=FOODS.get(id);
         return c==null?1:c.water();
