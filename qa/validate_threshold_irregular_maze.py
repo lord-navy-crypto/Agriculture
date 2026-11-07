@@ -50,8 +50,42 @@ def main():
                 if (x,z)==(0,0): continue
                 p=parent((x,z))
                 assert p is not None and abs(x-p[0])+abs(z-p[1])==1
+    assert "isGuaranteedSpine(seed, x, z, spacing, jitter, salt)" in source
+    assert "private static boolean isGuaranteedSpine" in source
+    assert "if (!spine && !sample.boundary" in source
     assert "hasLevel0Divider" in feature and "hasLevel1Divider" in feature
-    print("THRESHOLD_IRREGULAR_MAZE_V4_0_PASS: jittered room sizes, deterministic parent corridors, Level 0/1 integration")
+    # Ensure each seed-stable parent edge has a physical two-wide path, not
+    # merely a declared logical edge. Sample every quarter block of each link.
+    def spine(seed, x, z, spacing, jitter, salt):
+        bx, bz = x // spacing, z // spacing
+        for gx in range(bx-1, bx+2):
+            for gz in range(bz-1, bz+2):
+                if gx == 0 and gz == 0: continue
+                px = gx if gx == 0 else gx - (1 if gx > 0 else -1)
+                pz = gz - (1 if gz > 0 else -1) if gx == 0 else gz
+                ax, az = center(seed,gx,gz,spacing,jitter,salt)
+                bx2, bz2 = center(seed,px,pz,spacing,jitter,salt)
+                vx, vz = bx2-ax, bz2-az
+                denom = vx*vx+vz*vz
+                t = min(1,max(0,((x-ax)*vx+(z-az)*vz)/denom))
+                if (x-ax-t*vx)**2+(z-az-t*vz)**2 <= 5.0:
+                    return True
+        return False
+
+    for seed in (0,42,-17):
+        for spacing,jitter,salt in ((22,6,0x4D415A45304C),(28,7,0x4D415A45314C)):
+            for gx in range(-3,4):
+                for gz in range(-3,4):
+                    p=parent((gx,gz))
+                    if p is None: continue
+                    ax,az=center(seed,gx,gz,spacing,jitter,salt)
+                    bx,bz=center(seed,p[0],p[1],spacing,jitter,salt)
+                    for step in range(101):
+                        t=step/100
+                        x=round(ax+(bx-ax)*t)
+                        z=round(az+(bz-az)*t)
+                        assert spine(seed,x,z,spacing,jitter,salt), (seed,spacing,gx,gz,step)
+    print("THRESHOLD_IRREGULAR_MAZE_V4_1_PASS: jittered rooms, seed-stable voxel-connected parent corridors")
 
 if __name__=="__main__":
     main()

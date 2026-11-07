@@ -74,8 +74,15 @@ public final class ThresholdIrregularMazeLayout {
 
                 Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate);
                 boolean legacyBoundary = isLegacyBoundary(x, z, legacySize);
+                // Parent-child Voronoi cells are topologically connected, but a
+                // narrow sampled doorway can miss both voxel sides of the edge.
+                // Carve a deterministic two-wide physical spine between jittered
+                // cell centers so all regions have an actual traversable route.
+                boolean spine = isGuaranteedSpine(seed, x, z, spacing, jitter, salt);
 
-                if (sample.boundary && !sample.doorway) {
+                if (spine) {
+                    clearWall(world, pos, x, z, maxWallY, level0, seed, sample.first, salt);
+                } else if (sample.boundary && !sample.doorway) {
                     placeBoundaryWall(world, pos, x, z, sample, seed, salt, maxWallY, level0);
                 } else if (legacyBoundary || sample.boundary) {
                     clearWall(world, pos, x, z, maxWallY, level0, seed, sample.first, salt);
@@ -84,13 +91,16 @@ public final class ThresholdIrregularMazeLayout {
                 repaintFloor(world, pos, x, z, sample.first, seed, salt, level0);
                 repaintCeiling(world, pos, x, z, sample.first, seed, salt, level0);
 
-                if (!sample.boundary && isInteriorPartition(seed, sample.first, x, z, level0, salt)) {
+                if (!spine && !sample.boundary
+                        && isInteriorPartition(seed, sample.first, x, z, level0, salt)) {
                     placeInteriorPartition(world, pos, x, z, sample.first, seed, salt, level0);
                 }
-                if (!sample.boundary && level0 && hasLowFalseCeiling(seed, sample.first, x, z, salt)) {
+                if (!spine && !sample.boundary && level0
+                        && hasLowFalseCeiling(seed, sample.first, x, z, salt)) {
                     set(world, pos, x, 70, z, Blocks.WHITE_CONCRETE.defaultBlockState());
                 }
-                if (!sample.boundary && !level0 && hasWarehouseDuct(seed, sample.first, x, z, salt)) {
+                if (!spine && !sample.boundary && !level0
+                        && hasWarehouseDuct(seed, sample.first, x, z, salt)) {
                     set(world, pos, x, 71, z, Blocks.COPPER_BLOCK.defaultBlockState());
                     set(world, pos, x, 72, z, Blocks.CUT_COPPER.defaultBlockState());
                 }
@@ -99,7 +109,9 @@ public final class ThresholdIrregularMazeLayout {
     }
 
     private static boolean isProtectedPassageOrEntry(int x, int z, boolean level0) {
-        if (level0) return x >= 0 && x < 32 && z >= 0 && z < 32;
+        // Keep the iconic 31x32 entry interior. The outer east wall may
+        // receive one new spine doorway, connecting it to the irregular maze.
+        if (level0) return x >= 0 && x < 31 && z >= 0 && z < 32;
         return (x >= 0 && x < 20 && z >= 0 && z < 20)
                 || (x == 0 && (z == 23 || z == 24))
                 || (Math.abs(x - 64) <= 1 && Math.abs(z - 23) <= 2);
@@ -158,6 +170,39 @@ public final class ThresholdIrregularMazeLayout {
 
     private static int centerX(long seed, int gx, int gz, int spacing, int jitter, long salt) {
         return cellCenter(seed, gx, gz, spacing, jitter, salt).x;
+    }
+
+    /**
+     * Explicit, chunk-independent walkable spanning tree. Every jittered cell
+     * is joined to one cell closer to the origin (X first, then Z). This
+     * prevents graph-level "connected" rooms being sealed by voxel rounding,
+     * and never loads or reads a neighboring chunk.
+     */
+    private static boolean isGuaranteedSpine(long seed, int x, int z,
+                                             int spacing, int jitter, long salt) {
+        int bx = Math.floorDiv(x, spacing);
+        int bz = Math.floorDiv(z, spacing);
+        // A line crossing this block can originate in any of the nine local
+        // lattice cells. Nine bounded candidates keep all chunk seams stable.
+        for (int gx = bx - 1; gx <= bx + 1; gx++) {
+            for (int gz = bz - 1; gz <= bz + 1; gz++) {
+                if (gx == 0 && gz == 0) continue;
+                int px = gx == 0 ? gx : gx - Integer.signum(gx);
+                int pz = gx == 0 ? gz - Integer.signum(gz) : gz;
+                Cell child = cellCenter(seed, gx, gz, spacing, jitter, salt);
+                Cell parent = cellCenter(seed, px, pz, spacing, jitter, salt);
+                double vx = parent.x - child.x;
+                double vz = parent.z - child.z;
+                double denom = vx * vx + vz * vz;
+                if (denom < 1.0D) continue;
+                double t = ((x - child.x) * vx + (z - child.z) * vz) / denom;
+                t = Math.max(0.0D, Math.min(1.0D, t));
+                double offX = x - (child.x + t * vx);
+                double offZ = z - (child.z + t * vz);
+                if (offX * offX + offZ * offZ <= 5.0D) return true;
+            }
+        }
+        return false;
     }
 
     private static boolean isOpenEdge(Cell a, Cell b, long edgeHash, int openRate) {
