@@ -2966,7 +2966,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
      * Convert the deterministic edge hash into a real opening width. Level 0
      * favors 1/3/5-block breaks with occasional broad arches; Level 1 has
      * larger loading/service openings. Adjacent room faces and reserved-route
-     * masks use the same edge hash, so chunk order cannot change the doorway.
+     * masks retain a conservative centerline; adjacent room faces use the
+     * same edge hash, so chunk order cannot change the actual doorway.
      */
     private static int variableDoorwayRadius(long edge, int baseRadius, int roomSize) {
         int roll = (int) Math.floorMod(edge >>> 40, 100L);

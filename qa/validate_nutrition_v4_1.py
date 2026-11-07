@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 AG = ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/agriculture"
 CATALOG = ROOT / "src/main/resources/data/gugugaga/nutrition/food_profiles_v3_5.json"
+WATER_CATALOG = ROOT / "src/main/resources/data/gugugaga/nutrition/water_salt_profiles_v3_7.json"
 LANG = ROOT / "src/main/resources/assets/gugugaga/lang"
 
 def main():
@@ -21,6 +22,12 @@ def main():
     assert len(overrides) >= 40
     assert sum(groups == ["general"] for groups in foods.values()) <= 5
     assert all(id in foods for id in overrides)
+    water_doc = json.loads(WATER_CATALOG.read_text("utf-8"))
+    water_foods = water_doc["foods"]
+    # Every one of the 404 foods has an explicit water/salt profile. The only
+    # additional entries are drinks that are not part of the nutrient catalog.
+    assert set(foods).issubset(water_foods)
+    assert len(water_foods) >= len(foods) + 4
 
     # Per-food override values always resolve to a real index and are bounded.
     for item_id, adjustments in overrides.items():
@@ -48,6 +55,8 @@ def main():
     nutrition = (AG / "NutritionV34.java").read_text("utf-8")
     tooltip = (AG / "NutritionTooltipV40.java").read_text("utf-8")
     water = (AG / "WaterSaltV37.java").read_text("utf-8")
+    water_profiles = (AG / "WaterSaltProfilesV37.java").read_text("utf-8")
+    tooltip_source = tooltip
     for token in ('doc.has("overrides")', 'result.get(food.getKey())',
                   'nutrient == 4 || nutrient == 26', 'values[nutrient] = points'):
         assert token in parser, token
@@ -55,6 +64,8 @@ def main():
     assert "NutritionPhysiologyV39.consume(values,contribution)" in nutrition
     assert "WaterSaltProfilesV37.water(name)" in water
     assert "WaterSaltProfilesV37.sodium(name)" in water
+    assert "public static boolean hasProfile(String id)" in water_profiles
+    assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip_source
     assert "NutritionPhysiologyV39.linked(i)" in tooltip
     assert "WaterSaltProfilesV37.water(itemId)" in tooltip
     assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
@@ -62,7 +73,7 @@ def main():
         lang = json.loads((LANG / locale).read_text("utf-8"))
         assert lang.get("tooltip.gugugaga.nutrition_balance"), locale
         assert lang.get("tooltip.gugugaga.nutrition_daily"), locale
-    print("BACKROOM_NUTRITION_V4_1_PASS: 404 foods, 40 curated overrides, separate water/salt, common clock")
+    print("BACKROOM_NUTRITION_V4_2_PASS: 404 foods, 40 curated overrides, complete water/salt coverage, common clock")
 
 if __name__ == "__main__":
     main()

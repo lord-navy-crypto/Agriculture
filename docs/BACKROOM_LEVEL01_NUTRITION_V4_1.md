@@ -64,8 +64,8 @@ Shift tooltip behavior, food intake, day rollovers and localized wording.
 
 - The original 32/48 room-grid doorway selector now varies widths by edge hash:
   Level 0 ranges from 1 to 11 blocks (mostly 3–5); Level 1 ranges from 3 to
-  13 blocks (mostly 5–9). Adjacent room faces and protected-route masks share
-  the same deterministic selector.
+  13 blocks (mostly 5–9). Adjacent room faces and are evaluated from the same edge hash. Protected-route masks retain a
+  conservative centerline, while the actual doorway may be wider.
 - Voronoi-cell interiors now support jogged main dividers, optional cross
   dividers, short return walls, L-shaped side pockets and paired warehouse
   bay partitions. Door gaps vary by level rather than remaining a fixed
@@ -78,3 +78,12 @@ Shift tooltip behavior, food intake, day rollovers and localized wording.
   third-party food receives an explicit water/salt fallback label instead of
   appearing to have a curated profile. The legacy chat-page display now uses
   the same authoritative snapshot as the GUI, including real water and salt.
+
+
+## v4.2 verification note
+
+The 404 food IDs in the nutrient catalog are all present in the independent
+water/salt catalog. That catalog also contains the raw/boiled/filtered drink
+items and the vanilla potion entry. The client tooltip checks profile presence
+before describing a value as a curated item contribution; third-party foods
+that are not mapped receive an explicit fallback label.
