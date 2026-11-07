@@ -59,6 +59,13 @@ def main():
     assert "public static boolean isGuaranteedCorridor" in source
     assert "int mergeRate = level0 ? 10 : 23" in source
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
+    assert "int mergeRate = level0 ? 1 : 4" in source
+    assert "int openRate = level0 ? 54 : 46" in source
+    assert "doorwayWidth(edgeHash, level0)" in source
+    assert "if (roll < 96) return 5" in source
+    assert "if (roll < 98) return 8" in source
+    assert "roll < 77 ? 71" in source
+    assert "roll < 68 ? 73" in source
     assert "merged || (open && isDoorway" in source
     assert "Math.abs(a.gx - b.gx) + Math.abs(a.gz - b.gz) != 1" in source
     assert "archetype <= 11 && ThresholdIrregularMazeLayout" in feature
@@ -125,7 +132,7 @@ def main():
                   for x in range(1,31))
         assert west+north+south>=2,(seed,west,north,south)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_2_PASS: variable rooms, connected spine and entry perimeter seams")
+    print("THRESHOLD_IRREGULAR_MAZE_V4_3_PASS: variable rooms, connected spine and entry perimeter seams")
 
 if __name__=="__main__":
     main()

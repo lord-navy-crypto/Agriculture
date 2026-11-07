@@ -69,11 +69,11 @@ public final class ThresholdIrregularMazeLayout {
         int legacySize = level0 ? LEVEL_0_LEGACY_SIZE : LEVEL_1_LEGACY_SIZE;
         int maxWallY = level0 ? LEVEL_0_MAX_WALL_Y : LEVEL_1_MAX_WALL_Y;
         long salt = level0 ? LEVEL_0_SALT : LEVEL_1_SALT;
-        int openRate = level0 ? 64 : 52;
-        // Actually merge selected adjacent cells into broad open halls,
-        // rather than turning every "open" edge into the same narrow doorway.
-        // Level 0 remains maze-dense; Level 1 favors larger storage bays.
-        int mergeRate = level0 ? 10 : 23;
+        // Small rooms and long intact walls are the default; openings, not
+        // wholesale room fusion, create the familiar liminal circulation.
+        int openRate = level0 ? 54 : 46;
+        // Merged halls are rare landmarks, never the dominant architecture.
+        int mergeRate = level0 ? 1 : 4;
         int minX = chunkX << 4;
         int minZ = chunkZ << 4;
 
@@ -90,7 +90,7 @@ public final class ThresholdIrregularMazeLayout {
                         && !isLevel0TransitionFootprint(x, z))) continue;
                 if (isResourceAnchor(world, pos, x, z)) continue;
 
-                Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate, mergeRate);
+                Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate, mergeRate, level0);
                 boolean legacyBoundary = isLegacyBoundary(x, z, legacySize);
                 // Carve a deterministic physical spine between jittered cells,
                 // before adding discretionary interior walls.
@@ -161,7 +161,7 @@ public final class ThresholdIrregularMazeLayout {
     }
 
     private static Sample sample(long seed, int x, int z, int spacing, int jitter,
-                                 long salt, int openRate, int mergeRate) {
+                                 long salt, int openRate, int mergeRate, boolean level0) {
         int baseX = Math.floorDiv(x, spacing);
         int baseZ = Math.floorDiv(z, spacing);
         Cell first = null;
@@ -188,7 +188,7 @@ public final class ThresholdIrregularMazeLayout {
         // A merged edge removes the shared partition completely. Remaining
         // edges retain narrow doors, sealed dead ends, and spine guarantees.
         return new Sample(first, second, true,
-                merged || (open && isDoorway(x, z, first, second, edge)), edge);
+                merged || (open && isDoorway(x, z, first, second, edge, level0)), edge);
     }
 
     private static Cell cellCenter(long seed, int gx, int gz, int spacing, int jitter, long salt) {
@@ -259,7 +259,13 @@ public final class ThresholdIrregularMazeLayout {
                 && parent.gz == child.gz - Integer.signum(child.gz);
     }
 
-    private static boolean isDoorway(int x, int z, Cell a, Cell b, long edgeHash) {
+    /**
+     * A break in the wall, not a Minecraft door block. A few connections are
+     * broad 7-10 block openings; many are two to four blocks. Each shared
+     * edge samples its width and offset once, so chunk borders agree.
+     */
+    private static boolean isDoorway(int x, int z, Cell a, Cell b,
+                                     long edgeHash, boolean level0) {
         double vx = b.x - a.x;
         double vz = b.z - a.z;
         double length = Math.sqrt(vx * vx + vz * vz);
@@ -267,9 +273,29 @@ public final class ThresholdIrregularMazeLayout {
         double midX = (a.x + b.x) * 0.5D;
         double midZ = (a.z + b.z) * 0.5D;
         double along = ((x - midX) * -vz + (z - midZ) * vx) / length;
-        int offset = (int) Math.floorMod(edgeHash >>> 21, 7L) - 3;
-        int width = 2 + (int) Math.floorMod(edgeHash >>> 29, 4L);
+        int offset = (int) Math.floorMod(edgeHash >>> 21, 13L) - 6;
+        int width = doorwayWidth(edgeHash, level0);
         return Math.abs(along - offset) <= width * 0.5D;
+    }
+
+    private static int doorwayWidth(long edgeHash, boolean level0) {
+        int roll = (int) Math.floorMod(edgeHash >>> 29, 100L);
+        if (level0) {
+            if (roll < 12) return 1;
+            if (roll < 46) return 2;
+            if (roll < 74) return 3;
+            if (roll < 90) return 4;
+            if (roll < 96) return 5;
+            if (roll < 99) return 7;
+            return 9;
+        }
+        if (roll < 9) return 2;
+        if (roll < 35) return 3;
+        if (roll < 65) return 4;
+        if (roll < 82) return 5;
+        if (roll < 92) return 6;
+        if (roll < 98) return 8;
+        return 10;
     }
 
     private static long edgeHash(long seed, Cell a, Cell b, long salt) {
@@ -328,9 +354,11 @@ public final class ThresholdIrregularMazeLayout {
     private static BlockState wallState(long seed, Cell cell, long edgeHash, boolean level0) {
         int roll = (int) Math.floorMod(edgeHash, 100L);
         if (level0) {
-            if (roll < 3) return Blocks.RED_TERRACOTTA.defaultBlockState();
+            // Mono-yellow dominates; unusual red and gray fragments are
+            // genuinely rare rather than every third hallway.
+            if (roll < 1) return Blocks.RED_TERRACOTTA.defaultBlockState();
             if (roll < 12) return ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState();
-            if (roll < 19) return Blocks.GRAY_CONCRETE.defaultBlockState();
+            if (roll < 15) return Blocks.GRAY_CONCRETE.defaultBlockState();
             return ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState();
         }
         if (roll < 12) return Blocks.GRAY_CONCRETE.defaultBlockState();
@@ -339,8 +367,11 @@ public final class ThresholdIrregularMazeLayout {
     }
 
     private static int wallTop(long edgeHash, boolean level0) {
-        return level0 ? 67 + (int) Math.floorMod(edgeHash, 5L)
-                : 68 + (int) Math.floorMod(edgeHash, 6L);
+        // Ordinary partitions meet the ceiling. A minority stop short to
+        // produce unnerving overhead sightlines or industrial half walls.
+        int roll = (int) Math.floorMod(edgeHash >>> 18, 100L);
+        if (level0) return roll < 77 ? 71 : roll < 94 ? 69 : 67;
+        return roll < 68 ? 73 : roll < 91 ? 70 : 68;
     }
 
     private static void clearWall(WorldGenLevel world, BlockPos.MutableBlockPos pos,
