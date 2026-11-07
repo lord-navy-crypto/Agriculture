@@ -318,6 +318,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
 
+                // A composter beside the maintained planter recycles seeds and crop residues.
+                if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
+                        && localX == 20 && localZ == 16) {
+                    set(world, pos, x, FLOOR_Y, z, Blocks.COMPOSTER.defaultBlockState());
+                }
+
                 // Smooth threshold toward Level 2: warehouse fittings gradually
                 // become utility pipes before the corridor seamlessly changes dimension.
                 if (roomX == 1 && roomZ == 0) {
