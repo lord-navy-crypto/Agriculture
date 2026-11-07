@@ -23,14 +23,24 @@ def main():
     assert "NutritionPhysiologyV39.linked(i)" in tooltip
     assert "WaterSaltProfilesV37.water(itemId)" in tooltip
     assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
+    assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip
+    assert "nutrition_target_line" in tooltip
+    assert "dailyTarget(i)" in tooltip
+    assert "nutrition_balance_fallback" in tooltip
+    physiology=(JAVA/"NutritionPhysiologyV39.java").read_text("utf8")
+    water=(JAVA/"WaterSaltProfilesV37.java").read_text("utf8")
+    nutrition=(JAVA/"NutritionV34.java").read_text("utf8")
+    assert "public static int dailyTarget(int i)" in physiology
+    assert "return FOODS.containsKey(id);" in water
+    assert "int[] scores = snapshot(player);" in nutrition
     assert "value = Dist.CLIENT" in tooltip, "nutrition tooltip must remain client-only"
     for locale in ("en_us.json","zh_cn.json"):
         strings=json.loads((LANG/locale).read_text("utf8"))
-        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand","tooltip.gugugaga.nutrition_balance","tooltip.gugugaga.nutrition_daily"):
+        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand","tooltip.gugugaga.nutrition_balance","tooltip.gugugaga.nutrition_balance_fallback","tooltip.gugugaga.nutrition_target_line","tooltip.gugugaga.nutrition_daily"):
             assert strings.get(key), (locale,key)
         for nutrient in nutrients:
             assert strings.get("nutrition.gugugaga."+nutrient), (locale,nutrient)
-    print("BACKROOM_NUTRITION_TOOLTIP_V4_0_PASS: 404 food IDs, 27 indicators, bilingual top-three + water/salt truth")
+    print("BACKROOM_NUTRITION_TOOLTIP_V4_2_PASS: 404 food IDs, 27 indicators, target coverage and explicit unmapped fallback")
 
 if __name__=="__main__":
     main()

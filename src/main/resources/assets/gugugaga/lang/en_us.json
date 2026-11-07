@@ -1183,5 +1183,7 @@
   "message.gugugaga.partygoer_level0_missing": "The Partygoer pulled you away, but Level 0 is unavailable.",
   "message.gugugaga.partygoer_capture_success": "You awaken in Level 0. Your inventory has been preserved.",
   "tooltip.gugugaga.nutrition_balance": "Water balance +%1$s | Salt balance +%2$s (immediate)",
-  "tooltip.gugugaga.nutrition_daily": "Nutrients are applied at the next game-day reserve update."
+  "tooltip.gugugaga.nutrition_daily": "Nutrients are applied at the next game-day reserve update.",
+  "tooltip.gugugaga.nutrient_target_line": "• %1$s: +%2$d points (game-day target %3$d)",
+  "tooltip.gugugaga.nutrition_balance_fallback": "Water +%1$s | Salt +%2$s (default fallback; no item profile)"
 }

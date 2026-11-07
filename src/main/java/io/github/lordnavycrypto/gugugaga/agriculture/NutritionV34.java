@@ -128,9 +128,10 @@ public final class NutritionV34 {
         player.sendSystemMessage(Component.translatable("message.gugugaga.v35_title",
                 page+1,PAGE_COUNT,Component.translatable(
                     "message.gugugaga.v35_page_"+page)));
+        int[] scores = snapshot(player);
         for(int i=range[0];i<range[1];i++) {
             String nutrient=NutritionProfilesV35.NUTRIENTS[i];
-            int score=clamp(values.getInt(nutrient));
+            int score=clamp(scores[i]);
             String bar="■".repeat(score/10)+"·".repeat(10-score/10);
             player.sendSystemMessage(Component.translatable(
                     "message.gugugaga.v34_nutrition_row",
