@@ -87,5 +87,6 @@ public final class NutritionProfilesV35 {
         }
         return Arrays.copyOf(values,values.length);
     }
+    public static boolean hasProfile(String itemId) { return VALUES.containsKey(itemId); }
     public static int catalogSize() {return VALUES.size();}
 }
