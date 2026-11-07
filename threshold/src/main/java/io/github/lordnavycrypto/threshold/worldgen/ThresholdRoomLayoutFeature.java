@@ -200,6 +200,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
             }
         }
+        ThresholdIrregularMazeLayout.refineLevel0(world, chunkX, chunkZ, seed, pos);
         buildLevel0ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
         buildLevel0EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel0VerticalNetwork(world, chunkX, chunkZ, seed, pos);
@@ -346,6 +347,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
             }
         }
+        ThresholdIrregularMazeLayout.refineLevel1(world, chunkX, chunkZ, seed, pos);
         buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
         buildLevel1EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel1VerticalNetwork(world, chunkX, chunkZ, seed, pos);
@@ -2948,20 +2950,14 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
     private static boolean hasLevel0Divider(
             long seed, int roomX, int roomZ, int localX, int localZ) {
-        long hash = mix(seed, roomX, roomZ, 0xD1A0L);
-        if (Math.floorMod(hash, 4) != 0) return false;
-        return (hash & 1L) == 0L
-                ? localX == 16 && (localZ < 13 || localZ > 18)
-                : localZ == 16 && (localX < 13 || localX > 18);
+        // Legacy room-aligned dividers are replaced by the irregular maze overlay.
+        return false;
     }
 
     private static boolean hasLevel1Divider(
             long seed, int roomX, int roomZ, int localX, int localZ, int style) {
-        if (style != 2) return false;
-        long hash = mix(seed, roomX, roomZ, 0xD1A1L);
-        return (hash & 1L) == 0L
-                ? localX == 24 && (localZ < 21 || localZ > 27)
-                : localZ == 24 && (localX < 21 || localX > 27);
+        // Level 1 uses offset warehouse aisles from ThresholdIrregularMazeLayout.
+        return false;
     }
 
     private static boolean isPillar(int localX, int localZ, int roomSize) {
