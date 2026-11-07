@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Boot Threshold with Agriculture and verify all six dimensions and their route graph."""
+"""Boot the unified Backroom Agriculture mod and verify all six dimensions."""
 from pathlib import Path
-import os, signal, subprocess, sys, time, shutil
+import os, signal, subprocess, sys, time
 
 ROOT=Path(__file__).resolve().parents[1]
-PROJECT=ROOT/"threshold"
+PROJECT=ROOT
 LOG=ROOT/"build/threshold-server-boot.log"
 LIMIT=int(os.environ.get("THRESHOLD_SERVER_BOOT_TIMEOUT","210"))
 READY="Done ("
@@ -57,28 +57,20 @@ MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY
          "THRESHOLD_LEVEL1_MUSIC_REGISTRY_OK",
          "THRESHOLD_LEVEL1_HORROR_IDENTITY_OK",
          "THRESHOLD_LEVEL1_FRESHWATER_REFILL_OK",
-         "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_OK")
+         "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_OK",
+         "THRESHOLD_LEVEL1_COMPOSTER_OK")
 
 def run():
-    # Dev launches use only the Threshold source set; copy the real Agriculture
-    # mod into the run's mods directory so its mandatory dependency is exercised.
-    subprocess.run(["gradle","--no-daemon","--console=plain",":jar"],
+    # Build and launch one integrated mod; libraries are runtime dependencies.
+    subprocess.run(["gradle","--no-daemon","--console=plain","build"],
                    cwd=ROOT,check=True)
-    agriculture=sorted((ROOT/"build/libs").glob("gugugaga-*.jar"))
-    if not agriculture:
-        raise RuntimeError("Agriculture prerequisite JAR missing")
-    for folder in (PROJECT/"run",PROJECT/"run/server",
-                   PROJECT/"runs/server",PROJECT/"runs"):
-        folder.mkdir(parents=True,exist_ok=True)
-        (folder/"eula.txt").write_text("eula=true\n",encoding="utf-8")
-        mods=folder/"mods"
-        mods.mkdir(parents=True,exist_ok=True)
-        shutil.copy2(agriculture[-1],mods/agriculture[-1].name)
-
+    server_dir=ROOT/"run/server"
+    server_dir.mkdir(parents=True,exist_ok=True)
+    (server_dir/"eula.txt").write_text("eula=true\\n",encoding="utf-8")
     LOG.parent.mkdir(parents=True,exist_ok=True)
     with LOG.open("wb") as stream:
         process=subprocess.Popen(
-            ["gradle","--no-daemon","--console=plain",":threshold:runServer"],
+            ["gradle","--no-daemon","--console=plain","runServer"],
             cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
         try:
             deadline=time.monotonic()+LIMIT
@@ -137,7 +129,8 @@ def run():
                     "THRESHOLD_LEVEL1_MUSIC_REGISTRY_FAIL",
                     "THRESHOLD_LEVEL1_HORROR_IDENTITY_FAIL",
                     "THRESHOLD_LEVEL1_FRESHWATER_REFILL_FAIL",
-                    "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_FAIL")):
+                    "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_FAIL",
+                    "THRESHOLD_LEVEL1_COMPOSTER_FAIL")):
                     print("FAIL: a required Threshold dimension did not generate", flush=True)
                     print(current[-90000:], flush=True)
                     return 1
