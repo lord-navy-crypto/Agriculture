@@ -88,6 +88,7 @@ REQUIRED = {
     "data/threshold/worldgen/placed_feature/room_sequence.json",
     "io/github/lordnavycrypto/threshold/ThresholdMod.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdRoomLayoutFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdIrregularMazeLayout.class",
     "io/github/lordnavycrypto/threshold/command/ThresholdCommands.class",
     "io/github/lordnavycrypto/threshold/entity/ThresholdEntities.class",
     "io/github/lordnavycrypto/threshold/entity/ThresholdWatcherEntity.class",

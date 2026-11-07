@@ -59,7 +59,8 @@ MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY
          "THRESHOLD_LEVEL1_HORROR_IDENTITY_OK",
          "THRESHOLD_LEVEL1_FRESHWATER_REFILL_OK",
          "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_OK",
-         "THRESHOLD_LEVEL1_COMPOSTER_OK")
+         "THRESHOLD_LEVEL1_COMPOSTER_OK","THRESHOLD_LEVEL1_ENTITY_VARIETY_OK",
+         "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_OK")
 
 def run():
     # Build and launch one integrated mod; libraries are runtime dependencies.
@@ -132,7 +133,8 @@ def run():
                     "THRESHOLD_LEVEL1_HORROR_IDENTITY_FAIL",
                     "THRESHOLD_LEVEL1_FRESHWATER_REFILL_FAIL",
                     "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_FAIL",
-                    "THRESHOLD_LEVEL1_COMPOSTER_FAIL")):
+                    "THRESHOLD_LEVEL1_COMPOSTER_FAIL","THRESHOLD_LEVEL1_ENTITY_VARIETY_FAIL",
+                    "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_FAIL")):
                     print("FAIL: a required Threshold dimension did not generate", flush=True)
                     print(current[-90000:], flush=True)
                     return 1

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Boundary agreement, deterministic room exits and Level 1, Level 2 and Level 5 no-sealed-cell invariants."""
+"""Legacy 32-block boundary agreement and Level 2/5 no-sealed-cell invariants; Level 0/1 use irregular mazes."""
 MASK=(1<<64)-1
 
 def mix(seed,x,z,salt):
@@ -47,7 +47,7 @@ def room_has_exit(seed,size,rx,rz):
 
 def check():
     for seed in (0,1,42,-19,123456):
-        for size,rad in ((32,1),(48,2)):
+        for size,rad in ((32,1),):
             for rx in range(-8,9):
                 for rz in range(-8,9):
                     for along_coord in range(1,size-1):
@@ -57,13 +57,12 @@ def check():
                             seed,size,rad,rx,rz+1,along_coord,0,True)
         for rx in range(-24,25):
             for rz in range(-24,25):
-                assert room_has_exit(seed,48,rx,rz), f"sealed Level 1 room at {(rx,rz)}"
                 assert room_has_exit(seed,32,rx,rz), f"sealed Level 2 room at {(rx,rz)}"
                 assert room_has_exit(seed,32,rx,rz), f"sealed Level 5 room at {(rx,rz)}"
 
-    # Level 0 retains occasional fully closed boundaries as part of its isolation motif.
+    # The legacy edge primitive retains closed segments for the remaining grid-based levels.
     assert any(not edge_open(seed, x, z, "z", False)
                for seed in (0,1,42) for x in range(-8,9) for z in range(-8,9))
-    print("THRESHOLD_ROOM_EDGE_AND_LEVEL1_LEVEL2_LEVEL5_ESCAPE_INVARIANTS_PASS")
+    print("THRESHOLD_GRID_LEVEL2_LEVEL5_ESCAPE_INVARIANTS_PASS")
 
 if __name__=="__main__": check()
