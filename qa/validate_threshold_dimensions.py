@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Threshold's independent JAR, registered biomes, required Agriculture dependency and safe generation."""
+"""Validate the unified Backroom Agriculture JAR, six dimensions and packaged worldgen."""
 from __future__ import annotations
 import json
 import sys
@@ -127,20 +127,23 @@ def read_json(z, path):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: validate_threshold_dimensions.py <threshold-jar>")
+        print("Usage: validate_threshold_dimensions.py <backroom-agriculture-jar>")
         return 2
     jar = Path(sys.argv[1])
     if not jar.is_file():
-        print("FAIL: no Threshold JAR", jar)
+        print("FAIL: no Backroom Agriculture JAR", jar)
         return 1
     with zipfile.ZipFile(jar) as z:
         names=set(z.namelist())
         assert REQUIRED <= names, f"Missing resources: {sorted(REQUIRED - names)}"
         meta=z.read("META-INF/neoforge.mods.toml").decode("utf-8")
-        assert 'modId="threshold"' in meta
-        assert 'modId="gugugaga"' in meta and 'type="required"' in meta
+        assert meta.count('[[mods]]') == 1, "Backroom Agriculture must be one installed mod"
+        assert 'modId="gugugaga"' in meta
+        assert 'displayName="Backroom Agriculture"' in meta
+        assert 'modId="threshold"' not in meta, "threshold is an internal resource namespace"
         assert 'modId="geckolib"' in meta and 'versionRange="[4.9.3,5)"' in meta
         assert 'modId="lithostitched"' in meta and 'versionRange="[1.7.11,2)"' in meta
+        assert 'modId="neoforge"' in meta and 'modId="minecraft"' in meta
         for level in ("level_0","level_1","level_2","level_3","level_4","level_5"):
             dim=read_json(z,f"data/threshold/dimension/{level}.json")
             assert dim["type"] == f"threshold:{level}_type"
