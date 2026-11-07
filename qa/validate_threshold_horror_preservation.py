@@ -375,8 +375,8 @@ def main() -> int:
             "Hounds do not materialize directly in the player's view")
     require("isInsideLevel1StarterShelter", director,
             "Level 1 starter shelter is protected without reserving a whole 48x48 grid cell")
-    require("pos.getX() < 20", director, "Level 1 starter shelter has a 20-block X boundary")
-    require("pos.getZ() < 20", director, "Level 1 starter shelter has a 20-block Z boundary")
+    require(r"pos\.getX\(\)\s*<\s*20", director, "Level 1 starter shelter has a 20-block X boundary")
+    require(r"pos\.getZ\(\)\s*<\s*20", director, "Level 1 starter shelter has a 20-block Z boundary")
     require(r"getMaxLocalRawBrightness\(pos\)\s*>\s*9", director,
             "Hounds prefer darker industrial areas")
     require(r"floor\.getCollisionShape\(level,\s*pos\.below\(\)\)\.isEmpty\(\)", director,
