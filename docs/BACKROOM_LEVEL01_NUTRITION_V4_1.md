@@ -58,3 +58,23 @@ Run static audits, compiled JAR validation, live NeoForge server with all
 six dimensions, original-world migration and a client exploration pass. Verify
 wall contact, width distribution, no sealed sectors, nonduplicated items,
 Shift tooltip behavior, food intake, day rollovers and localized wording.
+
+
+## v4.2 refinement
+
+- The original 32/48 room-grid doorway selector now varies widths by edge hash:
+  Level 0 ranges from 1 to 11 blocks (mostly 3–5); Level 1 ranges from 3 to
+  13 blocks (mostly 5–9). Adjacent room faces and protected-route masks share
+  the same deterministic selector.
+- Voronoi-cell interiors now support jogged main dividers, optional cross
+  dividers, short return walls, L-shaped side pockets and paired warehouse
+  bay partitions. Door gaps vary by level rather than remaining a fixed
+  two-block interruption.
+- Most internal walls reach the ceiling; a minority remain partial-height.
+  Materials vary within each floor's established yellow-office / industrial
+  palette. The guaranteed spine remains carved after the mask is evaluated.
+- Nutrition item hints now sort by the fraction of the abstract game-day
+  target covered and show the target beside each contribution. Uncatalogued
+  third-party food receives an explicit water/salt fallback label instead of
+  appearing to have a curated profile. The legacy chat-page display now uses
+  the same authoritative snapshot as the GUI, including real water and salt.

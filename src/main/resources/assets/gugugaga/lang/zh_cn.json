@@ -1183,5 +1183,7 @@
   "message.gugugaga.partygoer_level0_missing": "派对客将你卷入异空间，但 Level 0 暂时不可用。",
   "message.gugugaga.partygoer_capture_success": "你在 Level 0 醒来，背包物品已经保留。",
   "tooltip.gugugaga.nutrition_balance": "补水 +%1$s｜盐分 +%2$s（即时结算）",
-  "tooltip.gugugaga.nutrition_daily": "营养储备在下一个游戏日结算，水盐由独立系统即时处理。"
+  "tooltip.gugugaga.nutrition_daily": "营养储备在下一个游戏日结算，水盐由独立系统即时处理。",
+  "tooltip.gugugaga.nutrient_target_line": "• %1$s：+%2$d 点（游戏日目标 %3$d 点）",
+  "tooltip.gugugaga.nutrition_balance_fallback": "补水 +%1$s｜盐分 +%2$s（默认值；该物品没有独立配置）"
 }

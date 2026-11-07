@@ -82,3 +82,6 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [v3.5 comprehensive gameplay nutrition: 27 indicators, 403 foods, N-key graphical panel and saved-data migration](docs/FULL_NUTRITION_V3_5.md)
 - [v3.6 32-day lunar seasons: 4×8 days, habitat-specific calendars, greenhouse overwintering](docs/LUNAR_SEASONS_V3_6.md)
 - [v3.7 fixed nutrition inventory button, survival drinking water, hydration and sodium balance](docs/WATER_AND_SALT_V3_7.md)
+
+- Level 0/1 room entrances now use deterministic variable-width openings on both the legacy room grid and the Voronoi overlay. Interior partitions form jogged subrooms, cross-corridors, side returns and wider industrial loading gaps; most walls meet the ceiling, with a minority of partial-height dividers.
+- Food tooltips now show abstract per-item points alongside the game-day target, sort by target coverage, and label third-party water/salt fallback values explicitly. The legacy chat view shares the same authoritative nutrition snapshot as the GUI.
