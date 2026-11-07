@@ -705,10 +705,26 @@ public final class ThresholdRuntimeChecks {
                 : "THRESHOLD_LEVEL1_ENTITY_VARIETY_FAIL");
         boolean irregularMazeGeometry =
                 ThresholdIrregularMazeLayout.hasVariableCellSpacing(0L, true)
-                && ThresholdIrregularMazeLayout.hasVariableCellSpacing(0L, false);
+                && ThresholdIrregularMazeLayout.hasVariableCellSpacing(0L, false)
+                && ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, true)
+                && ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, false)
+                && ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, true)
+                && ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, false);
         System.out.println(irregularMazeGeometry
                 ? "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_OK"
                 : "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_FAIL");
+        System.out.println(ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, true)
+                ? "THRESHOLD_LEVEL0_VARIABLE_DOORWAYS_OK"
+                : "THRESHOLD_LEVEL0_VARIABLE_DOORWAYS_FAIL");
+        System.out.println(ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, false)
+                ? "THRESHOLD_LEVEL1_VARIABLE_DOORWAYS_OK"
+                : "THRESHOLD_LEVEL1_VARIABLE_DOORWAYS_FAIL");
+        System.out.println(ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, true)
+                ? "THRESHOLD_LEVEL0_MICRO_ROOM_GRAMMAR_OK"
+                : "THRESHOLD_LEVEL0_MICRO_ROOM_GRAMMAR_FAIL");
+        System.out.println(ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, false)
+                ? "THRESHOLD_LEVEL1_STORAGE_BAY_GRAMMAR_OK"
+                : "THRESHOLD_LEVEL1_STORAGE_BAY_GRAMMAR_FAIL");
 
         boolean spawnReasonPolicy =
                 ThresholdEntityDirector.shouldBlockNaturalSpawn(

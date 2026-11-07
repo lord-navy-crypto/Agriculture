@@ -20,6 +20,13 @@ def center(seed,gx,gz,spacing,jitter,salt):
     jz=mix(seed,gx,gz,salt^0xA73D)%(jitter*2+1)-jitter
     return gx*spacing+spacing//2+jx, gz*spacing+spacing//2+jz
 
+def edge_hash(seed,a,b,salt):
+    if a[0]<b[0] or (a[0]==b[0] and a[1]<=b[1]):
+        left,right=a,b
+    else:
+        left,right=b,a
+    return mix(seed,left[0]*31+right[0],left[1]*31+right[1],salt^0xED63)
+
 def parent(cell):
     x,z=cell
     if x:
@@ -146,17 +153,34 @@ def main():
         return max(max(1,base_radius-1),selected)
 
     for seed in (0,1,42,2026,-17):
-        for level0,base_radius in ((True,1),(False,2)):
-            widths=set()
+        for level0,base_radius,spacing,jitter,salt in (
+                (True,1,22,6,0x4D415A45304C),
+                (False,2,28,7,0x4D415A45314C)):
+            legacy_widths=set()
             for gx in range(-12,13):
                 for gz in range(-12,13):
                     edge=mix(seed,gx,gz,0xE451)
-                    widths.add(2*doorway_radius(edge,base_radius,level0)+1)
-            assert any(w<=3 for w in widths), (seed,level0,widths)
-            assert any(5<=w<=7 for w in widths), (seed,level0,widths)
-            assert any(w>=9 for w in widths), (seed,level0,widths)
+                    legacy_widths.add(2*doorway_radius(edge,base_radius,level0)+1)
+            assert any(w<=3 for w in legacy_widths), (seed,level0,legacy_widths)
+            assert any(5<=w<=7 for w in legacy_widths), (seed,level0,legacy_widths)
+            assert any(w>=9 for w in legacy_widths), (seed,level0,legacy_widths)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_4_PASS: variable rooms, doorway distributions, micro-room and storage-bay grammar")
+            # Mirror the Voronoi shared-edge hash and its level-specific width table.
+            widths=set()
+            for gx in range(-6,7):
+                for gz in range(-6,7):
+                    h=edge_hash(seed,(gx,gz),(gx+1,gz),salt)
+                    roll=(h>>29)%100
+                    if level0:
+                        width=1 if roll<12 else 2 if roll<46 else 3 if roll<74 else 4 if roll<90 else 5 if roll<96 else 7 if roll<99 else 9
+                    else:
+                        width=2 if roll<9 else 3 if roll<35 else 4 if roll<65 else 5 if roll<82 else 6 if roll<92 else 8 if roll<98 else 10
+                    widths.add(width)
+            assert any(w<= (2 if level0 else 3) for w in widths), (seed,level0,widths)
+            assert any((3 if level0 else 4)<=w<=(5 if level0 else 6) for w in widths), (seed,level0,widths)
+            assert any(w>=(7 if level0 else 8) for w in widths), (seed,level0,widths)
+
+    print("THRESHOLD_IRREGULAR_MAZE_V4_5_PASS: variable legacy/Voronoi door widths, connected spine and multi-segment room grammar")
 
 if __name__=="__main__":
     main()
