@@ -123,6 +123,49 @@ public final class ThresholdIrregularMazeLayout {
         }
     }
 
+    /** Confirms each floor keeps narrow, medium and genuinely wide doorways. */
+    public static boolean hasDoorwayWidthVariety(long seed, boolean level0) {
+        int spacing = level0 ? LEVEL_0_SPACING : LEVEL_1_SPACING;
+        int jitter = level0 ? LEVEL_0_JITTER : LEVEL_1_JITTER;
+        long salt = level0 ? LEVEL_0_SALT : LEVEL_1_SALT;
+        boolean narrow = false;
+        boolean medium = false;
+        boolean broad = false;
+        for (int gx = -6; gx <= 6; gx++) {
+            for (int gz = -6; gz <= 6; gz++) {
+                Cell a = cellCenter(seed, gx, gz, spacing, jitter, salt);
+                Cell b = cellCenter(seed, gx + 1, gz, spacing, jitter, salt);
+                int width = doorwayWidth(edgeHash(seed, a, b, salt), level0);
+                narrow |= width <= (level0 ? 2 : 3);
+                medium |= width >= (level0 ? 3 : 4) && width <= (level0 ? 5 : 6);
+                broad |= width >= (level0 ? 7 : 8);
+            }
+        }
+        return narrow && medium && broad;
+    }
+
+    /** Checks that the room grammar creates both partitions and open floor area. */
+    public static boolean hasInteriorPartitionVariety(long seed, boolean level0) {
+        int spacing = level0 ? LEVEL_0_SPACING : LEVEL_1_SPACING;
+        int jitter = level0 ? LEVEL_0_JITTER : LEVEL_1_JITTER;
+        long salt = level0 ? LEVEL_0_SALT : LEVEL_1_SALT;
+        int walls = 0;
+        int open = 0;
+        for (int gx = -3; gx <= 3; gx++) {
+            for (int gz = -3; gz <= 3; gz++) {
+                Cell cell = cellCenter(seed, gx, gz, spacing, jitter, salt);
+                for (int lx = -spacing / 2 + 1; lx < spacing / 2; lx++) {
+                    for (int lz = -spacing / 2 + 1; lz < spacing / 2; lz++) {
+                        if (isInteriorPartition(seed, cell, cell.x + lx, cell.z + lz,
+                                level0, salt)) walls++;
+                        else open++;
+                    }
+                }
+            }
+        }
+        return walls >= 80 && open >= 1200;
+    }
+
     private static boolean isLevel0EntryPerimeter(int x, int z) {
         return x >= 0 && x < LEVEL_0_LEGACY_SIZE
                 && z >= 0 && z < LEVEL_0_LEGACY_SIZE
@@ -310,23 +353,59 @@ public final class ThresholdIrregularMazeLayout {
         int roll = (int) Math.floorMod(h, 100L);
         int lx = x - cell.x;
         int lz = z - cell.z;
+
         if (level0) {
-            if (roll >= 58) return false;
-            int line = (int) Math.floorMod(h >>> 8, 9L) - 4;
-            int gap = (int) Math.floorMod(h >>> 16, 13L) - 6;
-            boolean vertical = lx == line && Math.abs(lz) <= 9 && Math.abs(lz - gap) > 1;
-            boolean horizontal = roll < 22 && lz == -line
-                    && Math.abs(lx) <= 8 && Math.abs(lx - gap) > 1;
-            return vertical || horizontal;
+            // Most cells receive one long, slightly jogged divider. A minority
+            // add a cross-wall or short return to form alcoves and side rooms.
+            if (roll >= 72) return false;
+            int lineX = (int) Math.floorMod(h >>> 8, 11L) - 5;
+            int lineZ = (int) Math.floorMod(h >>> 16, 11L) - 5;
+            int gapZ = (int) Math.floorMod(h >>> 24, 17L) - 8;
+            int gapX = (int) Math.floorMod(h >>> 32, 17L) - 8;
+            int width = 1 + 2 * (int) Math.floorMod(h >>> 40, 3L);
+            int jogX = Math.floorMod(Math.floorDiv(lz + 12, 6), 2);
+            int jogZ = Math.floorMod(Math.floorDiv(lx + 12, 6), 2);
+            boolean mainDivider = Math.abs(lx - lineX - jogX) <= (roll < 18 ? 1 : 0)
+                    && Math.abs(lz) <= 10 && !insideDoorGap(lz, gapZ, width);
+            boolean crossDivider = roll < 36
+                    && Math.abs(lz - lineZ + jogZ) == 0
+                    && Math.abs(lx) <= 9 && !insideDoorGap(lx, gapX, width);
+            int returnX = lineX + (Math.floorMod((int) (h >>> 47), 2) == 0 ? 4 : -4);
+            int returnGap = (int) Math.floorMod(h >>> 52, 13L) - 6;
+            boolean sideReturn = roll < 27 && Math.abs(lx - returnX) == 0
+                    && lz >= -8 && lz <= 8 && !insideDoorGap(lz, returnGap, 3);
+            int returnZ = lineZ + (Math.floorMod((int) (h >>> 49), 2) == 0 ? 4 : -4);
+            boolean shortCrossReturn = roll < 19 && Math.abs(lz - returnZ) == 0
+                    && lx >= -7 && lx <= 7 && !insideDoorGap(lx, gapX, 3);
+            return mainDivider || crossDivider || sideReturn || shortCrossReturn;
         }
-        if (roll >= 68) return false;
-        int lineX = (int) Math.floorMod(h >>> 8, 11L) - 5;
-        int lineZ = (int) Math.floorMod(h >>> 16, 11L) - 5;
-        int gapZ = (int) Math.floorMod(h >>> 24, 13L) - 6;
-        int gapX = (int) Math.floorMod(h >>> 32, 13L) - 6;
-        boolean rackAisle = lx == lineX && Math.abs(lz) <= 11 && Math.abs(lz - gapZ) > 2;
-        boolean crossAisle = lz == lineZ && Math.abs(lx) <= 10 && Math.abs(lx - gapX) > 2;
-        return rackAisle || (roll < 34 && crossAisle);
+
+        // Level 1 uses warehouse bay walls, offset rack dividers and occasional
+        // paired partitions. Doorways are wider to read as loading/service bays.
+        if (roll >= 80) return false;
+        int lineX = (int) Math.floorMod(h >>> 8, 17L) - 8;
+        int lineZ = (int) Math.floorMod(h >>> 16, 17L) - 8;
+        int gapZ = (int) Math.floorMod(h >>> 24, 21L) - 10;
+        int gapX = (int) Math.floorMod(h >>> 32, 21L) - 10;
+        int width = 3 + 2 * (int) Math.floorMod(h >>> 40, 3L);
+        int jogX = Math.floorMod(Math.floorDiv(lz + 14, 7), 2);
+        int jogZ = Math.floorMod(Math.floorDiv(lx + 14, 7), 2);
+        boolean bayDivider = Math.abs(lx - lineX - jogX) <= (roll < 16 ? 1 : 0)
+                && Math.abs(lz) <= 13 && !insideDoorGap(lz, gapZ, width);
+        boolean crossAisle = roll < 43 && Math.abs(lz - lineZ + jogZ) == 0
+                && Math.abs(lx) <= 12 && !insideDoorGap(lx, gapX, width);
+        int rackX = lineX + (Math.floorMod((int) (h >>> 48), 2) == 0 ? 5 : -5);
+        int rackGap = (int) Math.floorMod(h >>> 53, 17L) - 8;
+        boolean rackReturn = roll < 34 && Math.abs(lx - rackX) == 0
+                && lz >= -10 && lz <= 10 && !insideDoorGap(lz, rackGap, 5);
+        int bayZ = lineZ + (Math.floorMod((int) (h >>> 50), 2) == 0 ? 5 : -5);
+        boolean shortBay = roll < 25 && Math.abs(lz - bayZ) == 0
+                && lx >= -9 && lx <= 9 && !insideDoorGap(lx, gapX, 5);
+        return bayDivider || crossAisle || rackReturn || shortBay;
+    }
+
+    private static boolean insideDoorGap(int along, int center, int width) {
+        return Math.abs(along - center) <= (width - 1) / 2;
     }
 
     private static void placeBoundaryWall(WorldGenLevel world, BlockPos.MutableBlockPos pos,
@@ -343,10 +422,22 @@ public final class ThresholdIrregularMazeLayout {
                                                int x, int z, Cell cell, long seed, long salt,
                                                boolean level0) {
         long h = mix(seed, cell.gx, cell.gz, salt ^ 0x1A7E10L);
-        BlockState wall = level0
-                ? ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState()
-                : ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState();
-        int top = level0 ? 67 + (int) Math.floorMod(h, 3L) : 69 + (int) Math.floorMod(h, 3L);
+        int materialRoll = (int) Math.floorMod(h >>> 33, 100L);
+        BlockState wall;
+        int topRoll = (int) Math.floorMod(h >>> 39, 100L);
+        int top;
+        if (level0) {
+            wall = materialRoll < 4 ? Blocks.GRAY_CONCRETE.defaultBlockState()
+                    : materialRoll < 17
+                    ? ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get().defaultBlockState()
+                    : ThresholdEnvironmentBlocks.FADED_WALLPAPER.get().defaultBlockState();
+            top = topRoll < 82 ? 71 : topRoll < 95 ? 69 : 67;
+        } else {
+            wall = materialRoll < 17 ? Blocks.GRAY_CONCRETE.defaultBlockState()
+                    : materialRoll < 28 ? Blocks.POLISHED_ANDESITE.defaultBlockState()
+                    : ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get().defaultBlockState();
+            top = topRoll < 76 ? 73 : topRoll < 93 ? 70 : 68;
+        }
         set(world, pos, x, 64, z, wall);
         for (int y = 65; y <= top; y++) set(world, pos, x, y, z, wall);
     }

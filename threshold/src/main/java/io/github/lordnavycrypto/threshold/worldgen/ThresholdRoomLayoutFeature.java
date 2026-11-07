@@ -2941,7 +2941,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
-        return Math.abs(along - center) <= radius;
+        int openingRadius = variableDoorwayRadius(edge, radius, roomSize);
+        return Math.abs(along - center) <= openingRadius;
     }
 
     private static boolean doorwayAlongX(
@@ -2954,7 +2955,26 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         if (Math.floorMod(edge, 6) == 0 && !primaryConnector) return false;
         int margin = roomSize / 4;
         int center = margin + Math.floorMod((int) (edge >>> 16), roomSize - margin * 2);
-        return Math.abs(along - center) <= radius;
+        int openingRadius = variableDoorwayRadius(edge, radius, roomSize);
+        return Math.abs(along - center) <= openingRadius;
+    }
+
+    /**
+     * Convert the deterministic edge hash into a real opening width. Level 0
+     * favors 1/3/5-block breaks with occasional broad arches; Level 1 has
+     * larger loading/service openings. Adjacent room faces and reserved-route
+     * masks use the same edge hash, so chunk order cannot change the doorway.
+     */
+    private static int variableDoorwayRadius(long edge, int baseRadius, int roomSize) {
+        int roll = (int) Math.floorMod(edge >>> 40, 100L);
+        if (roomSize == LEVEL_0_ROOM_SIZE) {
+            int selected = roll < 12 ? 0 : roll < 42 ? 1 : roll < 70 ? 2
+                    : roll < 88 ? 3 : roll < 97 ? 4 : 5;
+            return Math.max(Math.max(0, baseRadius - 1), selected);
+        }
+        int selected = roll < 10 ? 1 : roll < 34 ? 2 : roll < 60 ? 3
+                : roll < 82 ? 4 : roll < 95 ? 5 : 6;
+        return Math.max(Math.max(1, baseRadius - 1), selected);
     }
 
     /** Level 1 and Level 2 rooms choose deterministic exits, preventing sealed cells. */

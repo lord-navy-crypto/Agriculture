@@ -61,10 +61,16 @@ def main():
     assert "int mergeRate = level0 ? 1 : 4" in source
     assert "int openRate = level0 ? 54 : 46" in source
     assert "doorwayWidth(edgeHash, level0)" in source
-    assert "if (roll < 96) return 5" in source
-    assert "if (roll < 98) return 8" in source
-    assert "roll < 77 ? 71" in source
-    assert "roll < 68 ? 73" in source
+    assert "hasDoorwayWidthVariety" in source
+    assert "hasInteriorPartitionVariety" in source
+    assert "insideDoorGap(lz, gapZ, width)" in source
+    assert "insideDoorGap(lx, gapX, width)" in source
+    assert "sideReturn" in source and "rackReturn" in source
+    assert "topRoll < 82 ? 71" in source
+    assert "topRoll < 76 ? 73" in source
+    assert "variableDoorwayRadius(edge, radius, roomSize)" in feature
+    assert "Math.max(Math.max(0, baseRadius - 1), selected)" in feature
+    assert "Math.max(Math.max(1, baseRadius - 1), selected)" in feature
     assert "merged || (open && isDoorway" in source
     assert "Math.abs(a.gx - b.gx) + Math.abs(a.gz - b.gz) != 1" in source
     assert "archetype <= 11 && ThresholdIrregularMazeLayout" in feature
@@ -131,7 +137,26 @@ def main():
                   for x in range(1,31))
         assert west+north+south>=2,(seed,west,north,south)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_3_PASS: variable rooms, connected spine and entry perimeter seams")
+    def doorway_radius(edge, base_radius, level0):
+        roll=(edge>>40)%100
+        if level0:
+            selected=0 if roll<12 else 1 if roll<42 else 2 if roll<70 else 3 if roll<88 else 4 if roll<97 else 5
+            return max(max(0,base_radius-1),selected)
+        selected=1 if roll<10 else 2 if roll<34 else 3 if roll<60 else 4 if roll<82 else 5 if roll<95 else 6
+        return max(max(1,base_radius-1),selected)
+
+    for seed in (0,1,42,2026,-17):
+        for level0,base_radius in ((True,1),(False,2)):
+            widths=set()
+            for gx in range(-12,13):
+                for gz in range(-12,13):
+                    edge=mix(seed,gx,gz,0xE451)
+                    widths.add(2*doorway_radius(edge,base_radius,level0)+1)
+            assert any(w<=3 for w in widths), (seed,level0,widths)
+            assert any(5<=w<=7 for w in widths), (seed,level0,widths)
+            assert any(w>=9 for w in widths), (seed,level0,widths)
+
+    print("THRESHOLD_IRREGULAR_MAZE_V4_4_PASS: variable rooms, doorway distributions, micro-room and storage-bay grammar")
 
 if __name__=="__main__":
     main()
