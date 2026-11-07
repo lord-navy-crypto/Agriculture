@@ -32,7 +32,6 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  * other non-combat functional entities remain admitted independently.
  */
 public final class ThresholdEntityDirector {
-    private static final int LEVEL_1_ROOM_SIZE = 48;
     private static final int WATCHER_SPAWN_INTERVAL_TICKS = 300;
     private static final double WATCHER_NEARBY_RADIUS = 42.0D;
     private static final int MAX_LOCAL_WATCHERS = 2;
@@ -50,7 +49,8 @@ public final class ThresholdEntityDirector {
             return entityType == ThresholdEntities.WATCHER.get();
         }
         if (dimension.equals(ThresholdDimensions.LEVEL_1)) {
-            return entityType == ThresholdEntities.HOUND.get();
+            return entityType == ThresholdEntities.HOUND.get()
+                    || entityType == ThresholdEntities.PARTYGOER.get();
         }
         if (dimension.equals(Level.OVERWORLD)) {
             return entityType == ThresholdEntities.PARTYGOER.get();
@@ -238,7 +238,7 @@ public final class ThresholdEntityDirector {
                 BlockPos pos = level.getHeightmapPos(
                         net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                         new BlockPos(x, player.blockPosition().getY(), z));
-                if (pos.distSqr(level.getSharedSpawnPos()) < 48.0D * 48.0D) continue;
+                if (pos.distSqr(level.getSharedSpawnPos()) < 24.0D * 24.0D) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
 
                 // A Partygoer should be discovered in the periphery or behind
@@ -267,10 +267,8 @@ public final class ThresholdEntityDirector {
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator()) continue;
 
-            // The first 48x48 room remains a protected onboarding shelter.
-            int playerRoomX = Math.floorDiv(player.blockPosition().getX(), LEVEL_1_ROOM_SIZE);
-            int playerRoomZ = Math.floorDiv(player.blockPosition().getZ(), LEVEL_1_ROOM_SIZE);
-            if (playerRoomX == 0 && playerRoomZ == 0) continue;
+            // Keep the authored 20x20 greenhouse shelter safe, not an entire 48x48 grid cell.
+            if (isInsideLevel1StarterShelter(player.blockPosition())) continue;
 
             AABB nearby = player.getBoundingBox().inflate(48.0D);
             if (!level.getEntitiesOfClass(ThresholdHoundEntity.class, nearby).isEmpty()) continue;
@@ -283,9 +281,7 @@ public final class ThresholdEntityDirector {
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
 
-                int roomX = Math.floorDiv(x, LEVEL_1_ROOM_SIZE);
-                int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
-                if (roomX == 0 && roomZ == 0) continue;
+                if (isInsideLevel1StarterShelter(pos)) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
                 if (level.getMaxLocalRawBrightness(pos) > 9) continue;
 
@@ -305,6 +301,11 @@ public final class ThresholdEntityDirector {
                 if (level.addFreshEntity(hound)) return;
             }
         }
+    }
+
+    private static boolean isInsideLevel1StarterShelter(BlockPos pos) {
+        return pos.getX() >= 0 && pos.getX() < 20
+                && pos.getZ() >= 0 && pos.getZ() < 20;
     }
 
     private static boolean isSafeStandingSpace(ServerLevel level, BlockPos pos) {

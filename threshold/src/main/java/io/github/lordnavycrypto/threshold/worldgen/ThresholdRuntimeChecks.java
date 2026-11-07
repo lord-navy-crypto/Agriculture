@@ -639,9 +639,8 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK"
                 : "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
 
-        // Natural spawning has a separate explicit whitelist. The Partygoer
-        // keeps its pre-existing night encounter in the Overworld; it is not
-        // part of Level 0 or Level 1's natural spawn profile.
+        // Level 0 remains Watcher-only. Level 1 now has Hounds plus rare
+        // peripheral Partygoer encounters outside the 20x20 starter shelter.
         boolean naturalSpawnPolicy =
                 naturalProfile(ThresholdDimensions.LEVEL_0,
                         ThresholdEntities.WATCHER.get(), true)
@@ -654,7 +653,7 @@ public final class ThresholdRuntimeChecks {
                 && naturalProfile(ThresholdDimensions.LEVEL_1,
                         ThresholdEntities.HOUND.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_1,
-                        ThresholdEntities.PARTYGOER.get(), false)
+                        ThresholdEntities.PARTYGOER.get(), true)
                 && naturalProfile(net.minecraft.world.level.Level.OVERWORLD,
                         ThresholdEntities.PARTYGOER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_2,
@@ -684,6 +683,18 @@ public final class ThresholdRuntimeChecks {
         System.out.println(naturalSpawnPolicy
                 ? "THRESHOLD_NATURAL_SPAWN_POLICY_OK"
                 : "THRESHOLD_NATURAL_SPAWN_POLICY_FAIL");
+        boolean level1EntityVariety =
+                naturalProfile(ThresholdDimensions.LEVEL_1, ThresholdEntities.HOUND.get(), true)
+                && naturalProfile(ThresholdDimensions.LEVEL_1, ThresholdEntities.PARTYGOER.get(), true);
+        System.out.println(level1EntityVariety
+                ? "THRESHOLD_LEVEL1_ENTITY_VARIETY_OK"
+                : "THRESHOLD_LEVEL1_ENTITY_VARIETY_FAIL");
+        boolean irregularMazeGeometry =
+                ThresholdIrregularMazeLayout.hasVariableCellSpacing(0L, true)
+                && ThresholdIrregularMazeLayout.hasVariableCellSpacing(0L, false);
+        System.out.println(irregularMazeGeometry
+                ? "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_OK"
+                : "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_FAIL");
 
         boolean spawnReasonPolicy =
                 ThresholdEntityDirector.shouldBlockNaturalSpawn(
