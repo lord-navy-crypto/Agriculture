@@ -475,7 +475,7 @@ def main() -> int:
         ("blackoutPocket ? 12 : 2", "blackout panels recover more slowly", lights),
         ("blackoutPocket ? 8 : 18", "blackout panels fail more often", lights),
         ("level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark rooms own their vertical clearance", layout),
-        ("level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark rooms own their overhead clearance", layout),
+        ("landmark == 20 || landmark >= 23", "Level 1 landmark rooms and raised mezzanine reserve overhead clearance", layout),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD architecture detail missing: {label}")

@@ -186,6 +186,10 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                         getX() + Math.cos(baseAngle + offset) * radius,
                         getY(),
                         getZ() + Math.sin(baseAngle + offset) * radius);
+                // Do not trigger chunk generation while choosing cover.
+                // A flashlight encounter must inspect loaded blocks only.
+                if (!level().hasChunkAt(feet) || !level().hasChunkAt(feet.above())
+                        || !level().hasChunkAt(feet.below())) continue;
                 if (!level().isEmptyBlock(feet)
                         || !level().isEmptyBlock(feet.above())
                         || level().isEmptyBlock(feet.below())) continue;

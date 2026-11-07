@@ -15,7 +15,9 @@ def main():
     party=read("entity/ThresholdPartygoerEntity.java")
     handler=read("entity/ThresholdPlayerEvents.java")
     mod=read("ThresholdMod.java")
-    for token in ("chooseDarkCover","LightLayer.BLOCK","lostSightTicks","hasLineOfSight(target)"):
+    for token in ("chooseDarkCover","LightLayer.BLOCK","lostSightTicks","hasLineOfSight(target)",
+                  "level().hasChunkAt(feet)","level().hasChunkAt(feet.above())",
+                  "level().hasChunkAt(feet.below())"):
         assert token in hound, f"Hound sensory recovery missing {token}"
     for token in ("lastVisiblePlayerPosition","InvestigateLastSightingGoal","sightMemoryTicks",
                   "hasLineOfSight(observedPlayer)"):
