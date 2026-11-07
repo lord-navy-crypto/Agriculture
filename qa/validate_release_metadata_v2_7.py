@@ -23,7 +23,7 @@ assert "100 plantable crops" in template and "108 plantable crops" in template
 assert "50 honey varieties" in template
 assert "Fusion" in template
 assert "100 plantable crops" in readme
-jars = list(build_dir.glob("backroom-agriculture-*.jar"))
+jars = list(build_dir.glob("gugugaga-*.jar"))
 assert len(jars) == 1, f"expected one mod JAR in {build_dir}, got {jars}"
 jar = jars[0]
 assert VERSION in jar.name, f"wrong JAR name {jar.name}"

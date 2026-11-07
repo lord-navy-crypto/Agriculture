@@ -103,7 +103,7 @@ jobs:
       - name: Compile and package Backroom Agriculture
         run: gradle --no-daemon --stacktrace build
       - name: Validate all six Backrooms dimensions in the unified JAR
-        run: python3 qa/validate_threshold_dimensions.py build/libs/backroom-agriculture-4.0.0-alpha.1.jar
+        run: python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-4.0.0-alpha.1.jar
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Validate kitchen icon generator and four-station recipes

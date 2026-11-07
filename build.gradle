@@ -6,7 +6,7 @@ plugins {
 
 version = mod_version
 group = mod_group_id
-base { archivesName = 'backroom-agriculture' }
+base { archivesName = mod_id }
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
