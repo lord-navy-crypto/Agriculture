@@ -24,7 +24,7 @@ def main():
     assert "WaterSaltProfilesV37.water(itemId)" in tooltip
     assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
     assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip
-    assert "nutrition_target_line" in tooltip
+    assert "nutrient_target_line" in tooltip
     assert "dailyTarget(i)" in tooltip
     assert "nutrition_balance_fallback" in tooltip
     physiology=(JAVA/"NutritionPhysiologyV39.java").read_text("utf8")
