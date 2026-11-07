@@ -1,8 +1,8 @@
-# Gugu Gaga Agriculture & Apiaries
+# Backroom Agriculture
 
-A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
+A unified agriculture and liminal-horror survival mod for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.9 evidence-informed nutrition release candidate)
+## Current content (v4.0 unified release candidate)
 
 - **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
 - Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
@@ -16,13 +16,20 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 - Four organized Creative Mode tabs: Agriculture, Beekeeping, Cuisine, and Marine & Fungi.
 - English and Chinese item names.
 
+## Backrooms and sustainable survival (v4.0)
+
+- Agriculture and THRESHOLD compile into one NeoForge mod and one distributable JAR named **Backroom Agriculture**. Level 0 through Level 5, agriculture, food, water, salt, nutrition, bees, and kitchen systems share one runtime.
+- The 27-indicator food catalog covers 404 food resource IDs. Hovering an edible item displays its per-item game-point contributions; uncatalogued third-party foods are clearly marked as generic fallback profiles.
+- Level 1 greenhouse crops use a stable rule: farmland, adequate block light, and nearby source water. A composter beside the starter planter lets players recycle seeds and crop residues into bone meal, closing the seed → crop → food/nutrition → compost → crop loop.
+- GeckoLib and Lithostitched are required runtime dependencies for animated details and composite world generation. Fusion remains optional.
+
 ## Optional Fusion visual enhancement
 
-The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
+The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**. The historical `gugugaga:` and `threshold:` registry namespaces are intentionally retained for existing-world compatibility; players install one mod.
 
-**One downloadable Gugu Gaga JAR includes both standard art and the full enhanced Fusion pack.** Its 1,240 stage-model overrides retain original crop/plant model geometry and are kept under the embedded `resourcepacks/fusion/` directory, separate from the default vanilla-compatible assets.
+**One downloadable Backroom Agriculture JAR includes both standard art and the full enhanced Fusion pack.** Its 1,240 stage-model overrides retain original crop/plant model geometry and are kept under the embedded `resourcepacks/fusion/` directory, separate from the default vanilla-compatible assets.
 
-1. Install **only the Gugu Gaga Agriculture JAR** in `mods` for all standard visuals and gameplay.
+1. Install **only the Backroom Agriculture JAR** in `mods` for all standard visuals and gameplay.
 2. **Optional:** install [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 in the client's `mods` folder. When Fusion is present, the already-bundled enhanced visuals automatically activate. There is no second Agriculture resource pack to install or enable.
 3. Without Fusion, the advanced pack is never registered, so all original vanilla-compatible models and textures are used.
 
