@@ -1,0 +1,10 @@
+{
+  "type": "lithostitched:composite",
+  "config": {
+    "features": [
+      "threshold:room_layout",
+      "threshold:industrial_vent"
+    ],
+    "placement_type": "never_cancel"
+  }
+}

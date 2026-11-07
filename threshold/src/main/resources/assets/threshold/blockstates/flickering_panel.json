@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=true": {
+      "model": "threshold:block/flickering_panel"
+    },
+    "lit=false": {
+      "model": "threshold:block/flickering_panel_off"
+    }
+  }
+}

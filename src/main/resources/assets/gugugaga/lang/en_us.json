@@ -1174,5 +1174,9 @@
   "message.gugugaga.v310_effects_active": "Potion feedback: all 27 nutrition indicators have mapped positive and low-reserve effects. Open the effect matrix page for details.",
   "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",
   "feedback.gugugaga.water_salt_tooltip": "%s %s. %s",
-  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority."
+  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority.",
+  "tooltip.gugugaga.nutrition_profile": "Nutrition per item (game points)",
+  "tooltip.gugugaga.nutrition_generic": "Generic fallback profile for uncatalogued food.",
+  "tooltip.gugugaga.nutrient_line": "• %1$s: +%2$d",
+  "tooltip.gugugaga.nutrition_note": "Abstract game values; not real-world nutrition measurements."
 }

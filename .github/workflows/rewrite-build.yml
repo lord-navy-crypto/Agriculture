@@ -1,14 +1,16 @@
-name: Agriculture & Apiaries (NeoForge 1.21.1)
+name: Backroom Agriculture (NeoForge 1.21.1)
 on:
   push:
     branches:
       - 'feat/agriculture/**'
+      - 'feature/threshold-dimensions-level0-level1'
   pull_request:
+    types: [opened, synchronize, reopened, edited]
 
 # Supersede stale asset-by-asset runs with the latest branch validation.
 # Push and pull-request events for the same head branch share one concurrency group.
 concurrency:
-  group: agriculture-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  group: backroom-agriculture-${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -19,6 +21,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Validate Threshold dimension architecture contracts
+        run: python3 qa/validate_threshold_graph.py
+      - name: Protect original Threshold horror identity and spatial layout
+        run: python3 qa/validate_threshold_horror_preservation.py
+      - name: Validate six-level source-backed transit and hotel expansion
+        run: python3 qa/validate_threshold_expansion.py
+      - name: Validate Threshold Agriculture nutrition and hydration integration
+        run: python3 qa/validate_threshold_survival_integration.py
+      - name: Validate unified Backroom Agriculture architecture and greenhouse loop
+        run: python3 qa/validate_backroom_agriculture_v4_0.py
+      - name: Validate per-food 27-nutrient hover profiles
+        run: python3 qa/validate_nutrition_tooltips_v4_0.py
+      - name: Validate irregular Level 0 and Level 1 room geometry
+        run: python3 qa/validate_threshold_irregular_maze.py
+      - name: Check actual Agriculture item IDs used by Backrooms survival loot
+        run: python3 qa/validate_threshold_agriculture_loot.py
       - name: Validate crop resources, loot tables, translations, and recipes
         run: |
           python3 qa/validate_agriculture_assets.py
@@ -82,8 +100,10 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '9.2.1'
-      - name: Compile and package agriculture mod
+      - name: Compile and package Backroom Agriculture
         run: gradle --no-daemon --stacktrace build
+      - name: Validate all six Backrooms dimensions in the unified JAR
+        run: python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-4.0.0-alpha.1.jar
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Validate kitchen icon generator and four-station recipes
@@ -137,7 +157,7 @@ jobs:
         run: python3 qa/validate_generated_crop_cuisine_art.py build/generated/resources/cropCuisineAssets build/reports/agriculture/crop-cuisine-item-contact-sheet.png
       - uses: actions/upload-artifact@v4
         with:
-          name: gugu-gaga-agriculture
+          name: backroom-agriculture
           path: build/libs/*.jar
           if-no-files-found: error
       - name: Upload agriculture visual proof sheets
@@ -167,10 +187,21 @@ jobs:
           gradle-version: '9.2.1'
       - name: Launch fresh real NeoForge 1.21.1 server
         run: python3 qa/smoke_rewrite_server.py
+      - name: Launch unified Backroom Agriculture server and verify all six dimensions and generated chunks
+        run: python3 qa/smoke_threshold_server.py
       - name: Upload launch logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agriculture-server-launch-log
           path: build/agriculture-server-boot.log
+          if-no-files-found: warn
+      - name: Upload Threshold server diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: threshold-server-diagnostics
+          path: |
+            build/threshold-server-boot.log
+            run/server/logs/latest.log
           if-no-files-found: warn

@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.0.0-alpha.1 — Backroom Agriculture unified release
+
+- Merge Agriculture and THRESHOLD into one installed NeoForge mod and one JAR; retain the historical registry namespaces for existing-world compatibility.
+- Add per-food hover nutrition details from the 27-indicator, 404-food catalog, with a generic fallback for uncatalogued foods.
+- Establish maintained Level 1 greenhouse growth using farmland, block light and nearby source water; add a composter beside the planter.
+- Extend compostability to the eight newer climate-profiled crops so seeds and harvests can re-enter the crop cycle.
+- GeckoLib and Lithostitched become required dependencies of the unified mod; Fusion remains optional.
+
 ## v3.10.0-rc.1 — Complete positive/negative potion mapping for all 27 indicators
 
 - Added a 27-entry positive/negative potion-effect matrix. Every macronutrient, fiber, vitamin, mineral, hydration and sodium indicator has its own mapped pair.

@@ -13,11 +13,20 @@ def main():
     crops={p["crop"] for fname in profiles
            for p in read("data/gugugaga/agronomy/"+fname)["crops"]}
     assert len(crops)==100
+    ecology=(ROOT.parents[2]/"src/main/java/io/github/lordnavycrypto/gugugaga/agriculture/FoodEcologyV33Climate.java").read_text("utf8")
+    new_crops={line.split('"')[1][:-6] for line in ecology.splitlines()
+               if '_seeds' in line and '", "' in line}
+    assert new_crops=={"black_pepper","lemongrass","wasabi","cumin","cardamom","fenugreek","sugar_beet","daikon"}
     catalog=read("data/gugugaga/agronomy/marine_fungi_catalog_v1_0.json")
     records=read("data/neoforge/data_maps/item/compostables.json")["values"]
     expected={f"gugugaga:{name}{suffix}" for name in crops for suffix in ("","_seeds")}
     expected_chance={f"gugugaga:{name}{suffix}":(0.30 if suffix=="_seeds" else 0.65)
                      for name in crops for suffix in ("","_seeds")}
+    for name in new_crops:
+        for suffix,chance in (("_seeds",0.30),("",0.65)):
+            item_id=f"gugugaga:{name}{suffix}"
+            expected.add(item_id)
+            expected_chance[item_id]=chance
     for row in catalog["items"]:
         item_id=f"gugugaga:{row['id']}"
         expected.add(item_id)

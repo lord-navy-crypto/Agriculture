@@ -34,7 +34,7 @@ def main():
         assert values and set(values).issubset(nutrients), profile
         assert all(isinstance(v,int) and 0<=v<=8 for v in values.values()),profile
     for id,names in foods.items():
-        assert re.fullmatch(r"(minecraft|gugugaga):[a-z_0-9]+",id),id
+        assert re.fullmatch(r"(minecraft|gugugaga|threshold):[a-z_0-9]+",id),id
         assert 1<=len(names)<=4,id
         assert all(n in profiles for n in names),id
 
