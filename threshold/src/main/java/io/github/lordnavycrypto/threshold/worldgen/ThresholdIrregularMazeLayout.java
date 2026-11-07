@@ -70,6 +70,10 @@ public final class ThresholdIrregularMazeLayout {
         int maxWallY = level0 ? LEVEL_0_MAX_WALL_Y : LEVEL_1_MAX_WALL_Y;
         long salt = level0 ? LEVEL_0_SALT : LEVEL_1_SALT;
         int openRate = level0 ? 64 : 52;
+        // Actually merge selected adjacent cells into broad open halls,
+        // rather than turning every "open" edge into the same narrow doorway.
+        // Level 0 remains maze-dense; Level 1 favors larger storage bays.
+        int mergeRate = level0 ? 10 : 23;
         int minX = chunkX << 4;
         int minZ = chunkZ << 4;
 
@@ -86,7 +90,7 @@ public final class ThresholdIrregularMazeLayout {
                         && !isLevel0TransitionFootprint(x, z))) continue;
                 if (isResourceAnchor(world, pos, x, z)) continue;
 
-                Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate);
+                Sample sample = sample(seed, x, z, spacing, jitter, salt, openRate, mergeRate);
                 boolean legacyBoundary = isLegacyBoundary(x, z, legacySize);
                 // Carve a deterministic physical spine between jittered cells,
                 // before adding discretionary interior walls.
@@ -157,7 +161,7 @@ public final class ThresholdIrregularMazeLayout {
     }
 
     private static Sample sample(long seed, int x, int z, int spacing, int jitter,
-                                 long salt, int openRate) {
+                                 long salt, int openRate, int mergeRate) {
         int baseX = Math.floorDiv(x, spacing);
         int baseZ = Math.floorDiv(z, spacing);
         Cell first = null;
@@ -179,8 +183,12 @@ public final class ThresholdIrregularMazeLayout {
         boolean boundary = second != null && second.distance - first.distance <= spacing * 3L;
         if (!boundary) return new Sample(first, second, false, false, 0L);
         long edge = edgeHash(seed, first, second, salt);
+        boolean merged = isMergedEdge(first, second, edge, mergeRate);
         boolean open = isOpenEdge(first, second, edge, openRate);
-        return new Sample(first, second, true, open && isDoorway(x, z, first, second, edge), edge);
+        // A merged edge removes the shared partition completely. Remaining
+        // edges retain narrow doors, sealed dead ends, and spine guarantees.
+        return new Sample(first, second, true,
+                merged || (open && isDoorway(x, z, first, second, edge)), edge);
     }
 
     private static Cell cellCenter(long seed, int gx, int gz, int spacing, int jitter, long salt) {
@@ -227,6 +235,13 @@ public final class ThresholdIrregularMazeLayout {
             }
         }
         return false;
+    }
+
+    private static boolean isMergedEdge(Cell a, Cell b, long edgeHash, int mergeRate) {
+        // Only true axis-neighbors merge. Diagonal/three-way junctions keep
+        // their separator to preserve smaller rooms and readable silhouettes.
+        if (Math.abs(a.gx - b.gx) + Math.abs(a.gz - b.gz) != 1) return false;
+        return Math.floorMod(edgeHash >>> 37, 100L) < mergeRate;
     }
 
     private static boolean isOpenEdge(Cell a, Cell b, long edgeHash, int openRate) {

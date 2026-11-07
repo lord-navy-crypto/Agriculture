@@ -57,6 +57,10 @@ def main():
     assert "private static boolean isGuaranteedSpine" in source
     assert "if (!spine && !sample.boundary" in source
     assert "public static boolean isGuaranteedCorridor" in source
+    assert "int mergeRate = level0 ? 10 : 23" in source
+    assert "isMergedEdge(first, second, edge, mergeRate)" in source
+    assert "merged || (open && isDoorway" in source
+    assert "Math.abs(a.gx - b.gx) + Math.abs(a.gz - b.gz) != 1" in source
     assert "archetype <= 11 && ThresholdIrregularMazeLayout" in feature
     assert "archetype <= 10 && ThresholdIrregularMazeLayout" in feature
     assert ".isGuaranteedCorridor(seed, x, z, true)" in feature
