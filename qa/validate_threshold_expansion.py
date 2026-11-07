@@ -148,7 +148,7 @@ def main() -> int:
     require(lights, "blackoutPocket ? 12 : 2", "blackout ceiling panels recover slowly")
     require(lights, "blackoutPocket ? 8 : 18", "blackout ceiling panels fail more often")
     require(layout, "level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark-specific vertical clearance")
-    require(layout, "level1Architecture(seed, roomX, roomZ) >= 23", "Level 1 landmark-specific overhead clearance")
+    require(layout, "landmark == 20 || landmark >= 23", "Level 1 landmarks and authored mezzanine reserve overhead clearance")
 
     route_tokens = (
         "LEVEL_1_TO_2", "LEVEL_2_FIRE_EXIT", "LEVEL_2_TO_3",
@@ -333,11 +333,15 @@ def main() -> int:
     assert "partygoer.setTarget(player)" not in director, "Natural Partygoers begin stalking instead of instantly aggroing"
     require(partygoer, "implements GeoEntity", "Partygoer uses GeckoLib entity rendering")
     require(partygoer, "registerControllers", "Partygoer has an animation controller")
-    require(watcher, "MAX_LIFETIME_TICKS = 180", "Watcher lifetime remains bounded to nine seconds")
-    require(watcher, "DIRECT_NOTICE_GRACE_CHECKS = 3", "Watcher vanishes rapidly after being noticed")
-    require(watcher, "tickCount > (showcaseMode ? SHOWCASE_LIFETIME_TICKS : MAX_LIFETIME_TICKS)", "natural and showcase Watcher lifetimes remain bounded")
-    require(watcher, "MIN_PLAYER_DISTANCE_SQR = 72.25D", "Watcher retains its minimum approach distance")
-    require(watcher, "distanceToSqr(nearest) < MIN_PLAYER_DISTANCE_SQR", "Watcher disappears when approached")
+    # Alpha 20 replaced the old short-lived disappearing silhouette with a
+    # bounded, observable stalker. Keep the real expiry and memory budgets.
+    require(watcher, "NATURAL_LIFETIME_TICKS = 600", "natural Watcher has a bounded 30-second lifetime")
+    require(watcher, "SHOWCASE_LIFETIME_TICKS = 600", "operator model preview has a bounded lifetime")
+    require(watcher, "TEST_ENCOUNTER_LIFETIME_TICKS = 1200", "active test encounter has a 60-second lifetime")
+    require(watcher, "tickCount > lifetimeLimit", "all Watcher modes eventually expire")
+    require(watcher, "MEMORY_TICKS = 120", "Watcher sightings have a bounded memory duration")
+    require(watcher, "RUSH_COOLDOWN_TICKS = 240", "Watcher rush attacks have a cooldown")
+    require(watcher, "beginFakeReposition", "fake retreat uses a finite navigation state instead of teleporting")
     require(items, 'register("almond_water"', "Almond Water registry")
     require(items, 'register("flashlight"', "Flashlight registry")
     require(items, 'register("battery"', "Battery registry")

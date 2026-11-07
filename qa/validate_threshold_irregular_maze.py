@@ -56,6 +56,11 @@ def main():
     assert "x == 0 && z >= 13 && z <= 17" in source
     assert "private static boolean isGuaranteedSpine" in source
     assert "if (!spine && !sample.boundary" in source
+    assert "public static boolean isGuaranteedCorridor" in source
+    assert "archetype <= 11 && ThresholdIrregularMazeLayout" in feature
+    assert "archetype <= 10 && ThresholdIrregularMazeLayout" in feature
+    assert ".isGuaranteedCorridor(seed, x, z, true)" in feature
+    assert ".isGuaranteedCorridor(seed, x, z, false)" in feature
     assert "hasLevel0Divider" in feature and "hasLevel1Divider" in feature
     # Ensure each seed-stable parent edge has a physical two-wide path, not
     # merely a declared logical edge. Sample every quarter block of each link.

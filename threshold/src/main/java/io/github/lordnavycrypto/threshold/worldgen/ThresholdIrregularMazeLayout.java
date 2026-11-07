@@ -54,6 +54,14 @@ public final class ThresholdIrregularMazeLayout {
         return max - min >= 3;
     }
 
+    /** Shared protected corridor mask for later architectural decoration. */
+    public static boolean isGuaranteedCorridor(long seed, int x, int z, boolean level0) {
+        return isGuaranteedSpine(seed, x, z,
+                level0 ? LEVEL_0_SPACING : LEVEL_1_SPACING,
+                level0 ? LEVEL_0_JITTER : LEVEL_1_JITTER,
+                level0 ? LEVEL_0_SALT : LEVEL_1_SALT);
+    }
+
     private static void refine(WorldGenLevel world, int chunkX, int chunkZ, long seed,
                                BlockPos.MutableBlockPos pos, boolean level0) {
         int spacing = level0 ? LEVEL_0_SPACING : LEVEL_1_SPACING;

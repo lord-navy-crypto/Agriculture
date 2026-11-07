@@ -542,9 +542,19 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL1_FLICKERING_LIGHT_OK"
                 : "THRESHOLD_LEVEL1_FLICKERING_LIGHT_FAIL");
 
+        // The irregular maze intentionally carves occasional openings in the
+        // old 32x32 entry perimeter. Verify that its original wallpaper still
+        // survives elsewhere instead of requiring one specific wall voxel.
+        boolean level0PerimeterWallpaper = false;
+        for (int z = 1; z < 32; z++) {
+            if (level0.getBlockState(new BlockPos(0, 65, z))
+                    .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())) {
+                level0PerimeterWallpaper = true;
+                break;
+            }
+        }
         boolean level0HorrorIdentity =
-                level0.getBlockState(new BlockPos(0, 65, 4))
-                        .is(io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())
+                level0PerimeterWallpaper
                 && level0.getBlockState(new BlockPos(4, 64, 4)).is(Blocks.YELLOW_CARPET)
                 && level0.getBlockState(new BlockPos(0, 63, 4)).is(Blocks.GRAY_CONCRETE)
                 && level0.getBlockState(new BlockPos(8, 72, 8))

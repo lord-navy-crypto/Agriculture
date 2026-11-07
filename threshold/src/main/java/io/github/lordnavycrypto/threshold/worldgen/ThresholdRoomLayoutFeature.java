@@ -961,6 +961,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 int archetype = level0Architecture(seed, roomX, roomZ);
                 if (archetype == 0) continue;
+                // Common office furniture and dividers must not undo the
+                // connected irregular maze carved in the base geometry.
+                // Landmark rooms (12+) retain their authored stairs and pits.
+                if (archetype <= 11 && ThresholdIrregularMazeLayout
+                        .isGuaranteedCorridor(seed, x, z, true)) continue;
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
                 boolean upperWalkway = hasLevel0UpperDeck(seed, roomX, roomZ)
@@ -1640,6 +1645,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 int archetype = level1Architecture(seed, roomX, roomZ);
                 if (archetype == 0) continue;
+                // The common warehouse overlays may not reseal guaranteed
+                // corridors. Elevated authored landmarks remain exempt.
+                if (archetype <= 10 && ThresholdIrregularMazeLayout
+                        .isGuaranteedCorridor(seed, x, z, false)) continue;
                 boolean protectedRoute = isReservedRoomPath(
                         seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
                 boolean protectedResource = isLevel1ResourceFootprint(localX, localZ);
