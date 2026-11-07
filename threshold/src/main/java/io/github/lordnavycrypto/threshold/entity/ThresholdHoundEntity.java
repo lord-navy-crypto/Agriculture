@@ -1,5 +1,7 @@
 package io.github.lordnavycrypto.threshold.entity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -60,6 +62,8 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
     private int searchStepTicks;
     private int searchPatternIndex;
     private int noiseListenCooldown;
+    private int lostSightTicks;
+    private Vec3 lightCoverDestination;
 
     public ThresholdHoundEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -87,11 +91,20 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
                 if (away.lengthSqr() < 1.0E-4D) away = new Vec3(0.0D, 0.0D, 1.0D);
                 away = away.normalize();
                 lightRepelledTicks = 60;
-                getNavigation().moveTo(
-                        getX() + away.x * 8.0D,
-                        getY(),
-                        getZ() + away.z * 8.0D,
-                        1.1D);
+                // Sample walkable dark corners instead of running blindly into
+                // the nearest wall. Never teleport or dig through geometry.
+                lightCoverDestination = chooseDarkCover(illuminated);
+                if (lightCoverDestination == null
+                        || !getNavigation().moveTo(
+                                lightCoverDestination.x,
+                                lightCoverDestination.y,
+                                lightCoverDestination.z, 1.1D)) {
+                    lightCoverDestination = position().add(away.scale(6.0D));
+                    getNavigation().moveTo(
+                            lightCoverDestination.x,
+                            lightCoverDestination.y,
+                            lightCoverDestination.z, 1.1D);
+                }
             }
         }
         if (!level().isClientSide && noiseListenCooldown > 0) noiseListenCooldown--;
@@ -115,10 +128,20 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             }
         }
 
-        if (getTarget() instanceof Player target && hasLineOfSight(target)) {
-            // Only refresh exact memory while the player is actually visible.
-            lastKnownPlayerPosition = target.position();
-            searchTicks = 120;
+        if (getTarget() instanceof Player target) {
+            if (hasLineOfSight(target)) {
+                // The Hound remembers the last *visible* location; it never
+                // continually tracks the player's exact location through walls.
+                lastKnownPlayerPosition = target.position();
+                searchTicks = 120;
+                lostSightTicks = 0;
+            } else if (++lostSightTicks >= 32) {
+                setTarget(null);
+                if (lastKnownPlayerPosition != null) searchTicks = Math.max(searchTicks, 90);
+                lostSightTicks = 0;
+            }
+        } else {
+            lostSightTicks = 0;
         }
         super.tick();
         if (level().isClientSide) return;
@@ -130,6 +153,12 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             if (getTarget() != null) setTarget(null);
             lastKnownPlayerPosition = null;
             searchTicks = 0;
+            if (lightCoverDestination != null && lightRepelledTicks > 16
+                    && lightRepelledTicks % 16 == 0 && getNavigation().isDone()) {
+                getNavigation().moveTo(lightCoverDestination.x,
+                        lightCoverDestination.y, lightCoverDestination.z, 0.94D);
+            }
+            if (lightRepelledTicks == 0) lightCoverDestination = null;
             return;
         }
 
@@ -138,6 +167,42 @@ public final class ThresholdHoundEntity extends Monster implements GeoEntity {
             if (searchTicks == 0) lastKnownPlayerPosition = null;
         }
 
+    }
+
+    /**
+     * Dark-cover sampling is invoked only on a confirmed flashlight hit, not
+     * every tick. Candidates must have open headroom and supported footing;
+     * the darkness score uses the real block-light map of Level 1.
+     */
+    private Vec3 chooseDarkCover(Player illuminated) {
+        Vec3 away = position().subtract(illuminated.position());
+        double baseAngle = Math.atan2(away.z, away.x);
+        Vec3 best = null;
+        double bestScore = -Double.MAX_VALUE;
+        for (int radius : new int[]{5, 8, 11}) {
+            for (int sector = -3; sector <= 3; sector++) {
+                double offset = sector * 0.32D;
+                BlockPos feet = BlockPos.containing(
+                        getX() + Math.cos(baseAngle + offset) * radius,
+                        getY(),
+                        getZ() + Math.sin(baseAngle + offset) * radius);
+                if (!level().isEmptyBlock(feet)
+                        || !level().isEmptyBlock(feet.above())
+                        || level().isEmptyBlock(feet.below())) continue;
+
+                int blockLight = level().getBrightness(LightLayer.BLOCK, feet);
+                // Stay broadly away from the beam; among safe candidates,
+                // prefer the darkest pathable industrial floor.
+                double score = (15.0D - blockLight)
+                        + 4.0D * Math.cos(offset) - Math.abs(sector) * 0.2D;
+                if (score > bestScore) {
+                    bestScore = score;
+                    best = new Vec3(feet.getX() + 0.5D,
+                            feet.getY(), feet.getZ() + 0.5D);
+                }
+            }
+        }
+        return best;
     }
 
     private Player findIlluminatingPlayer() {

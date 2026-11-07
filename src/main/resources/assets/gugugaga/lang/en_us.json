@@ -1179,5 +1179,7 @@
   "tooltip.gugugaga.nutrition_generic": "Generic fallback profile for uncatalogued food.",
   "tooltip.gugugaga.nutrient_line": "• %1$s: +%2$d",
   "tooltip.gugugaga.nutrition_note": "Abstract game values; not real-world nutrition measurements.",
-  "tooltip.gugugaga.nutrition_expand": "Hold Shift for %s more nutrition indicators."
+  "tooltip.gugugaga.nutrition_expand": "Hold Shift for %s more nutrition indicators.",
+  "message.gugugaga.partygoer_level0_missing": "The Partygoer pulled you away, but Level 0 is unavailable.",
+  "message.gugugaga.partygoer_capture_success": "You awaken in Level 0. Your inventory has been preserved."
 }
