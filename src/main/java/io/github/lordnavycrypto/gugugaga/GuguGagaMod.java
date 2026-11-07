@@ -1,5 +1,7 @@
 package io.github.lordnavycrypto.gugugaga;
 
+import io.github.lordnavycrypto.threshold.ThresholdMod;
+
 import io.github.lordnavycrypto.gugugaga.agriculture.AgricultureContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.AgricultureCuisineContent;
 import io.github.lordnavycrypto.gugugaga.agriculture.BeeContent;
@@ -50,6 +52,8 @@ public final class GuguGagaMod {
         BeeWildlife.ENTITIES.register(modBus);
         modBus.addListener(BeeWildlife::onAttributes);
         modBus.addListener(BeeWildlife::onSpawnPlacements);
+        // threshold: remains an internal resource namespace, not a second mod.
+        ThresholdMod.register(modBus);
         GuguGagaCreativeTabs.TABS.register(modBus);
         System.out.println("GUGUGAGA_AGRICULTURE_RUNTIME_INIT_OK");
         System.out.println("GUGUGAGA_MARINE_FUNGI_RUNTIME_INIT_OK");

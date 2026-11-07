@@ -10,15 +10,15 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdEntityAttributes;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import io.github.lordnavycrypto.threshold.item.ThresholdItems;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 
-@Mod(ThresholdMod.MOD_ID)
 public final class ThresholdMod {
     public static final String MOD_ID = "threshold";
 
-    public ThresholdMod(IEventBus modBus, ModContainer container) {
+    private ThresholdMod() {}
+
+    /** Register the Backrooms subsystem inside the single Backroom Agriculture mod. */
+    public static void register(IEventBus modBus) {
         ThresholdSounds.SOUNDS.register(modBus);
         ThresholdEnvironmentBlocks.BLOCKS.register(modBus);
         ThresholdEnvironmentBlocks.ITEMS.register(modBus);

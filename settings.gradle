@@ -8,8 +8,4 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
-rootProject.name = 'Gugu-Gaga-Agriculture'
-
-// Threshold is a separate NeoForge mod subproject with its own Mod ID and JAR.
-include('threshold')
-project(':threshold').name = 'threshold-horror'
+rootProject.name = 'Backroom-Agriculture'
