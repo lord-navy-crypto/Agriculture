@@ -372,12 +372,12 @@ public final class ThresholdRuntimeChecks {
             }
         }
         boolean level0FloorFoldStairBuilt =
-                level0.getBlockState(new BlockPos(124, 62, 27)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(125, 62, 27)).is(Blocks.OAK_STAIRS)
+                level0.getBlockState(new BlockPos(104, 62, 12)).is(Blocks.OAK_STAIRS)
+                || level0.getBlockState(new BlockPos(105, 62, 12)).is(Blocks.OAK_STAIRS)
                 || level0.getBlockState(new BlockPos(116, 62, 9)).is(Blocks.OAK_STAIRS)
                 || level0.getBlockState(new BlockPos(116, 62, 10)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(110, 62, 12)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(111, 62, 12)).is(Blocks.OAK_STAIRS);
+                || level0.getBlockState(new BlockPos(119, 62, 27)).is(Blocks.OAK_STAIRS)
+                || level0.getBlockState(new BlockPos(120, 62, 27)).is(Blocks.OAK_STAIRS);
         level0FloorFoldBuilt &= level0FloorFoldStairBuilt;
         System.out.println(level0FloorFoldBuilt
                 ? "THRESHOLD_LEVEL0_FLOOR_FOLD_OK" : "THRESHOLD_LEVEL0_FLOOR_FOLD_FAIL");
