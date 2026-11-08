@@ -1509,6 +1509,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         boolean pocketC = localX >= 20 && localX <= 26
                                 && localZ >= 21 && localZ <= 27;
                         boolean pocket = pocketA || pocketB || pocketC;
+                        Direction stairFacing = pocket
+                                ? level0FloorFoldStairFacing(seed, roomX, roomZ, localX, localZ) : null;
+                        boolean stairCell = stairFacing != null;
                         if (pocket && !protectedRoute && !upperWalkway) {
                             set(world, pos, x, 62, z, Blocks.SMOOTH_STONE.defaultBlockState());
                             set(world, pos, x, 63, z, Blocks.AIR.defaultBlockState());
@@ -1519,12 +1522,6 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                     || localZ == 7 || localZ == 13)
                                     || pocketC && (localX == 20 || localX == 26
                                     || localZ == 21 || localZ == 27);
-                            boolean stairCell = pocketA && localZ == 12
-                                    && (localX == 8 || localX == 9)
-                                    || pocketB && localX == 20
-                                    && (localZ == 9 || localZ == 10)
-                                    || pocketC && localZ == 27
-                                    && (localX == 23 || localX == 24);
                             if (edge && !stairCell) {
                                 set(world, pos, x, 63, z, Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
                             } else if (!stairCell) {
@@ -1534,11 +1531,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                                 : Blocks.GRAY_CARPET.defaultBlockState());
                             }
                             if (stairCell) {
-                                Direction facing = pocketA ? Direction.NORTH
-                                        : pocketB ? Direction.EAST : Direction.NORTH;
                                 set(world, pos, x, 62, z,
                                         Blocks.OAK_STAIRS.defaultBlockState()
-                                                .setValue(StairBlock.FACING, facing));
+                                                .setValue(StairBlock.FACING, stairFacing));
                             }
                         }
                     }
@@ -2832,6 +2827,89 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     private static boolean isLevel0Column(int localX, int localZ) {
         return (localX == 8 || localX == 9 || localX == 22 || localX == 23)
                 && (localZ == 8 || localZ == 9 || localZ == 22 || localZ == 23);
+    }
+
+    /**
+     * Choose a seed-stable floor-fold entrance that does not intersect the
+     * guaranteed spine or a reserved room exit. Each pocket searches all four
+     * edges, so a corridor crossing one side cannot erase every way down.
+     */
+    private static Direction level0FloorFoldStairFacing(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        Direction facing = findFloorFoldStairFacing(
+                seed, roomX, roomZ, localX, localZ, 6, 11, 7, 12, 0xA20A0L);
+        if (facing != null) return facing;
+        facing = findFloorFoldStairFacing(
+                seed, roomX, roomZ, localX, localZ, 20, 26, 7, 13, 0xA20B0L);
+        if (facing != null) return facing;
+        return findFloorFoldStairFacing(
+                seed, roomX, roomZ, localX, localZ, 20, 26, 21, 27, 0xA20C0L);
+    }
+
+    private static Direction findFloorFoldStairFacing(
+            long seed, int roomX, int roomZ, int localX, int localZ,
+            int minX, int maxX, int minZ, int maxZ, long salt) {
+        int horizontalPairs = maxX - minX - 2;
+        int verticalPairs = maxZ - minZ - 2;
+        int horizontalTotal = horizontalPairs * 2;
+        int total = horizontalTotal + verticalPairs * 2;
+        int start = Math.floorMod((int) mix(seed, roomX, roomZ, salt), total);
+        for (int offset = 0; offset < total; offset++) {
+            int candidate = (start + offset) % total;
+            int firstX;
+            int firstZ;
+            int secondX;
+            int secondZ;
+            Direction facing;
+            if (candidate < horizontalPairs) {
+                firstX = minX + 1 + candidate;
+                firstZ = minZ;
+                secondX = firstX + 1;
+                secondZ = firstZ;
+                facing = Direction.SOUTH;
+            } else if (candidate < horizontalTotal) {
+                int index = candidate - horizontalPairs;
+                firstX = minX + 1 + index;
+                firstZ = maxZ;
+                secondX = firstX + 1;
+                secondZ = firstZ;
+                facing = Direction.NORTH;
+            } else if (candidate < horizontalTotal + verticalPairs) {
+                int index = candidate - horizontalTotal;
+                firstX = minX;
+                firstZ = minZ + 1 + index;
+                secondX = firstX;
+                secondZ = firstZ + 1;
+                facing = Direction.EAST;
+            } else {
+                int index = candidate - horizontalTotal - verticalPairs;
+                firstX = maxX;
+                firstZ = minZ + 1 + index;
+                secondX = firstX;
+                secondZ = firstZ + 1;
+                facing = Direction.WEST;
+            }
+
+            if (isFloorFoldProtectedRoute(seed, roomX, roomZ, firstX, firstZ)
+                    || isFloorFoldProtectedRoute(seed, roomX, roomZ, secondX, secondZ)) {
+                continue;
+            }
+            if ((localX == firstX && localZ == firstZ)
+                    || (localX == secondX && localZ == secondZ)) {
+                return facing;
+            }
+            return null;
+        }
+        return null;
+    }
+
+    private static boolean isFloorFoldProtectedRoute(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        int x = roomX * LEVEL_0_ROOM_SIZE + localX;
+        int z = roomZ * LEVEL_0_ROOM_SIZE + localZ;
+        return ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, true)
+                || isReservedRoomPath(seed, LEVEL_0_ROOM_SIZE,
+                        roomX, roomZ, localX, localZ, 1, false);
     }
 
     private static boolean isLevel1VentilationStackCell(
