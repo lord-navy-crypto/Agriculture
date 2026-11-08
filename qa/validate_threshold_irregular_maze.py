@@ -43,6 +43,11 @@ def main():
     assert "refineLevel1(world, chunkX, chunkZ, seed, pos)" in feature
     assert "isParent(Cell child, Cell parent)" in source and "isDoorway" in source
     for seed in (0,1,42,2026,-17):
+        for level0,salt in ((True,0x4D415A45304C),(False,0x4D415A45314C)):
+            pocket_count=sum((40<=mix(seed,x,z,salt^0x1A7E10)%100<64) if level0
+                             else (36<=mix(seed,x,z,salt^0x1A7E10)%100<69)
+                             for x in range(-5,6) for z in range(-5,6))
+            assert 8 <= pocket_count <= 113,(seed,level0,pocket_count)
         for spacing,jitter,salt in ((22,6,0x4D415A45304C),(28,7,0x4D415A45314C)):
             widths=[]
             for gz in range(-5,6):
@@ -70,6 +75,9 @@ def main():
     assert "doorwayWidth(edgeHash, level0)" in source
     assert "hasDoorwayWidthVariety" in source
     assert "hasInteriorPartitionVariety" in source
+    assert "hasNestedAlcoveVariety" in source
+    assert "isNestedAlcove(h,lx,lz,true)" in source
+    assert "isNestedAlcove(h,lx,lz,false)" in source
     assert "insideDoorGap(lz, gapZ, width)" in source
     assert "insideDoorGap(lx, gapX, width)" in source
     assert "sideReturn" in source and "rackReturn" in source
@@ -185,7 +193,7 @@ def main():
             assert any((3 if level0 else 4)<=w<=(5 if level0 else 6) for w in widths), (seed,level0,widths)
             assert any(w>=(7 if level0 else 8) for w in widths), (seed,level0,widths)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_5_PASS: variable legacy/Voronoi door widths, connected spine and multi-segment room grammar")
+    print("THRESHOLD_IRREGULAR_MAZE_V4_6_PASS: variable legacy/Voronoi door widths, connected spine and multi-segment room grammar")
 
 if __name__=="__main__":
     main()
