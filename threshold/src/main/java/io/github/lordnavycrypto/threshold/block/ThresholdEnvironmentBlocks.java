@@ -125,6 +125,21 @@ public final class ThresholdEnvironmentBlocks {
         ITEMS.registerSimpleBlockItem(WAREHOUSE_WALL);
         ITEMS.registerSimpleBlockItem(FLICKERING_PANEL);
         ITEMS.registerSimpleBlockItem(TRANSITION_WALL);
+
+        // Make every authored Backrooms route, door, panel and transition block
+        // available as a real BlockItem in the dedicated creative inventory.
+        ITEMS.registerSimpleBlockItem(LEVEL_1_TO_2);
+        ITEMS.registerSimpleBlockItem(LEVEL_2_FIRE_EXIT);
+        ITEMS.registerSimpleBlockItem(LEVEL_2_TO_3);
+        ITEMS.registerSimpleBlockItem(LEVEL_2_BRANCH_DOOR);
+        ITEMS.registerSimpleBlockItem(LEVEL_3_TO_2);
+        ITEMS.registerSimpleBlockItem(LEVEL_3_TO_4);
+        ITEMS.registerSimpleBlockItem(LEVEL_4_TO_3);
+        ITEMS.registerSimpleBlockItem(LEVEL_3_ELEVATOR);
+        ITEMS.registerSimpleBlockItem(LEVEL_4_TO_5);
+        ITEMS.registerSimpleBlockItem(LEVEL_5_TO_3);
+        ITEMS.registerSimpleBlockItem(LEVEL_5_TO_4);
+        ITEMS.registerSimpleBlockItem(LEVEL_5_ELEVATOR_PANEL);
     }
 
     private ThresholdEnvironmentBlocks() {}

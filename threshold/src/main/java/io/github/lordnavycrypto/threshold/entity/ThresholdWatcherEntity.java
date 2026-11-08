@@ -131,6 +131,11 @@ public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEn
         };
         this.observationStyle = soloStyles[
                 Math.floorMod(getUUID().hashCode(), soloStyles.length)];
+        // Level 0 is the Watcher's capture territory. In every other Backrooms
+        // level it remains an unnerving but non-lethal observer by default.
+        if (!level.isClientSide && level.dimension().equals(ThresholdDimensions.LEVEL_0)) {
+            setBehaviorMode(BehaviorMode.AGGRESSIVE);
+        }
     }
 
     @Override

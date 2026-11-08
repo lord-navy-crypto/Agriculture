@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import java.util.EnumSet;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -27,15 +28,15 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * A predator disguised as a cheerful party mascot. Its natural encounter
- * remains in the Overworld, while operator test summons may place it in any
- * dimension. It shadows quiet players, commits to a fast pursuit when noticed
- * or provoked, and uses ordinary melee combat. It never teleports or captures
- * the player.
+ * A predator disguised as a cheerful party mascot. Natural encounters occur
+ * in the Overworld and Level 1; operator summons may place it in any dimension.
+ * It shadows quiet players, uses bounded sight memory, coordinates real
+ * sightings with nearby pack members, and commits to a fast melee pursuit.
+ * It never teleports or captures the player.
  */
 public final class ThresholdPartygoerEntity extends Monster implements GeoEntity {
-    private static final double ACQUIRE_RANGE = 48.0D;
-    private static final double COMMIT_RANGE_SQR = 100.0D;
+    private static final double ACQUIRE_RANGE = 56.0D;
+    private static final double COMMIT_RANGE_SQR = 144.0D;
     private static final RawAnimation IDLE =
             RawAnimation.begin().thenLoop("animation.threshold_partygoer.idle");
     private static final RawAnimation STALK =
@@ -61,19 +62,19 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 34.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.32D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0D)
-                .add(Attributes.ATTACK_KNOCKBACK, 0.7D)
+                .add(Attributes.MAX_HEALTH, 42.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.35D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 0.9D)
                 .add(Attributes.FOLLOW_RANGE, ACQUIRE_RANGE)
-                .add(Attributes.ARMOR, 1.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.3D);
+                .add(Attributes.ARMOR, 2.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4D);
     }
 
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.28D, true));
+        goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.36D, true));
         goalSelector.addGoal(3, new InvestigateLastSightingGoal(this));
         goalSelector.addGoal(4, new StalkPlayerGoal(this));
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.58D));
@@ -106,9 +107,9 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
         if (getTarget() instanceof Player player && isValidTarget(player)) {
             if (hasLineOfSight(player)) {
                 lastVisiblePlayerPosition = player.position();
-                sightMemoryTicks = 100;
+                sightMemoryTicks = 160;
                 lostSightTicks = 0;
-            } else if (++lostSightTicks > 30) {
+            } else if (++lostSightTicks > 45) {
                 // Return to the last seen location rather than pursuing an
                 // unseen player's live coordinates through several walls.
                 setTarget(null);
@@ -128,10 +129,32 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
                 announcedTarget = player;
                 // A sudden, low-pitched sting announces the moment the disguise drops.
                 playSound(SoundEvents.ENDERMAN_SCREAM, 1.15F, 0.62F);
+                alertNearbyPack(player);
             }
         } else {
             setAggressive(false);
             announcedTarget = null;
+        }
+    }
+
+    /**
+     * Partygoers share only a real, recent sighting with nearby pack members.
+     * Allies with their own line of sight join the pursuit; occluded allies
+     * investigate the last observed position instead of receiving live player coordinates.
+     */
+    private void alertNearbyPack(Player target) {
+        if (target == null || level().isClientSide) return;
+        Vec3 sharedSighting = lastVisiblePlayerPosition;
+        int sharedMemory = Math.min(sightMemoryTicks, 80);
+        for (ThresholdPartygoerEntity ally : level().getEntitiesOfClass(
+                ThresholdPartygoerEntity.class, getBoundingBox().inflate(36.0D))) {
+            if (ally == this || !ally.isAlive() || ally.getTarget() != null) continue;
+            if (ally.hasLineOfSight(target)) {
+                ally.setTarget(target);
+            } else if (sharedSighting != null && sharedMemory > 0) {
+                ally.lastVisiblePlayerPosition = sharedSighting;
+                ally.sightMemoryTicks = Math.max(ally.sightMemoryTicks, sharedMemory);
+            }
         }
     }
 
@@ -220,7 +243,7 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
             if (--repathTicks <= 0) {
                 repathTicks = 20;
                 partygoer.getNavigation().moveTo(
-                        sighting.x, sighting.y, sighting.z, 0.96D);
+                        sighting.x, sighting.y, sighting.z, 1.08D);
             }
             // Once the search reaches the remembered spot, remaining memory
             // fades instead of extending indefinitely or acquiring wall vision.
@@ -238,14 +261,17 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
 
     /**
      * Quiet players are shadowed at a measured pace. Looking directly at the
-     * Partygoer, moving loudly, or getting within ten blocks hands control to
+     * Partygoer, moving loudly, or getting within twelve blocks hands control to
      * the target goal and turns the encounter into a committed hunt.
      */
     private static final class StalkPlayerGoal extends Goal {
         private final ThresholdPartygoerEntity partygoer;
         private Player observedPlayer;
+        private int repathTicks;
+        private final double flankSign;
 
         private StalkPlayerGoal(ThresholdPartygoerEntity partygoer) {
+            this.flankSign = Math.floorMod(partygoer.getUUID().hashCode(), 2) == 0 ? 1.0D : -1.0D;
             this.partygoer = partygoer;
             setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
@@ -279,7 +305,7 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
 
         @Override
         public void start() {
-            partygoer.getNavigation().moveTo(observedPlayer, 0.88D);
+            repathTicks = 0;
         }
 
         @Override
@@ -287,17 +313,23 @@ public final class ThresholdPartygoerEntity extends Monster implements GeoEntity
             if (observedPlayer == null) return;
             if (partygoer.hasLineOfSight(observedPlayer)) {
                 partygoer.lastVisiblePlayerPosition = observedPlayer.position();
-                partygoer.sightMemoryTicks = 100;
+                partygoer.sightMemoryTicks = 160;
             }
             partygoer.getLookControl().setLookAt(observedPlayer, 12.0F, 12.0F);
             double distance = partygoer.distanceToSqr(observedPlayer);
-            if (distance > 196.0D) {
-                if (partygoer.getNavigation().isDone()) {
-                    partygoer.getNavigation().moveTo(observedPlayer, 0.90D);
-                }
-            } else if (distance > COMMIT_RANGE_SQR) {
-                if (partygoer.getNavigation().isDone()) {
-                    partygoer.getNavigation().moveTo(observedPlayer, 0.72D);
+            if (distance > COMMIT_RANGE_SQR) {
+                if (--repathTicks <= 0 || partygoer.getNavigation().isDone()) {
+                    repathTicks = 18;
+                    Vec3 forward = observedPlayer.getLookAngle();
+                    forward = new Vec3(forward.x, 0.0D, forward.z);
+                    if (forward.lengthSqr() < 1.0E-4D) forward = new Vec3(0.0D, 0.0D, 1.0D);
+                    forward = forward.normalize();
+                    Vec3 side = new Vec3(-forward.z, 0.0D, forward.x).scale(flankSign);
+                    Vec3 flank = observedPlayer.position()
+                            .subtract(forward.scale(5.0D))
+                            .add(side.scale(3.5D));
+                    double speed = distance > 20.0D * 20.0D ? 0.96D : 0.80D;
+                    partygoer.getNavigation().moveTo(flank.x, flank.y, flank.z, speed);
                 }
             } else {
                 partygoer.getNavigation().stop();

@@ -17,10 +17,15 @@
   "block.threshold.level_5_to_4": "Hotel Stairwell Return",
   "block.threshold.level_5_elevator_panel": "Hotel Elevator Panel",
   "block.threshold.ceiling_vent": "Suspended Vent",
-  "entity.threshold.watcher": "Distant Observer",
+  "entity.threshold.watcher": "Distant Watcher",
   "entity.threshold.hound": "Hound",
   "item.threshold.almond_water": "Almond Water",
   "item.threshold.flashlight": "Flashlight",
   "item.threshold.battery": "Flashlight Battery",
-  "entity.threshold.partygoer": "Partygoer"
+  "entity.threshold.partygoer": "Partygoer",
+  "item.threshold.watcher_spawn_egg": "Distant Watcher Spawn Egg",
+  "item.threshold.hound_spawn_egg": "Hound Spawn Egg",
+  "item.threshold.partygoer_spawn_egg": "Partygoer Spawn Egg",
+  "itemGroup.threshold.backrooms_blocks": "Backrooms Blocks",
+  "itemGroup.threshold.backrooms_entities": "Backrooms Entities & Supplies"
 }

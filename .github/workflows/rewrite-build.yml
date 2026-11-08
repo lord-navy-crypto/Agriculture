@@ -41,6 +41,8 @@ jobs:
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
         run: python3 qa/validate_backroom_entity_ai_v4_1.py
+      - name: Validate Distant Watcher encounters, Partygoer pack AI and Backrooms creative tabs
+        run: python3 qa/validate_threshold_entities_creative_v1.py
       - name: Check actual Agriculture item IDs used by Backrooms survival loot
         run: python3 qa/validate_threshold_agriculture_loot.py
       - name: Validate crop resources, loot tables, translations, and recipes

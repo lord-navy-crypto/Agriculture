@@ -13,7 +13,7 @@ public final class ThresholdEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
             DeferredRegister.create(Registries.ENTITY_TYPE, ThresholdMod.MOD_ID);
 
-    /** Naturally appears only in Level 0; operator summons are dimension-agnostic. */
+    /** Naturally appears throughout Levels 0-5; it is aggressive in Level 0 and passive elsewhere. */
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdWatcherEntity>> WATCHER =
             ENTITY_TYPES.register("watcher", () -> EntityType.Builder
                     .of(ThresholdWatcherEntity::new, MobCategory.MISC)
@@ -32,7 +32,7 @@ public final class ThresholdEntities {
                     .updateInterval(3)
                     .build("threshold:hound"));
 
-    /** A hostile predator with a natural night encounter in the Overworld. */
+    /** A hostile predator with natural night encounters in Level 1 and the Overworld. */
     public static final DeferredHolder<EntityType<?>, EntityType<ThresholdPartygoerEntity>> PARTYGOER =
             ENTITY_TYPES.register("partygoer", () -> EntityType.Builder
                     .of(ThresholdPartygoerEntity::new, MobCategory.MONSTER)
