@@ -310,6 +310,7 @@ def main() -> int:
         ("THRESHOLD_LEVEL1_GENERATOR_PLANT_OK", "Level 1 multi-engine generator plant runtime probe"),
         ("int feetY = level0 ? 65 : 64;", "floor-specific physical maze player clearance height"),
         ("pos.set(x, headY, z)", "two-block head clearance above the actual player feet position"),
+        ("clear==spine", "every sampled guaranteed corridor tile is physically clear"),
         ("THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK", "Level 0 active Watcher runtime readiness probe"),
         ("THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK", "Level 1 advanced Hound runtime readiness probe"),
     ):
