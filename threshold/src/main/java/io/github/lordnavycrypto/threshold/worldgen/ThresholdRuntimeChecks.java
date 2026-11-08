@@ -314,6 +314,22 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_OK"
                 : "THRESHOLD_LEVEL0_BLACKOUT_CORRIDOR_FAIL");
 
+        // Report all four guaranteed engine cores before deciding whether the
+        // landmark is complete. This makes a failed block assertion actionable
+        // instead of hiding which stage overwrote the authored assembly.
+        StringBuilder generatorDebug = new StringBuilder();
+        for (int gx : new int[] {106, 134}) {
+            for (int gz : new int[] {154, 182}) {
+                generatorDebug.append(" [").append(gx).append(',').append(gz).append("]=")
+                        .append(level1.getBlockState(new BlockPos(gx, 64, gz))).append('/')
+                        .append(level1.getBlockState(new BlockPos(gx, 65, gz))).append('/')
+                        .append(level1.getBlockState(new BlockPos(gx, 66, gz))).append('/')
+                        .append(level1.getBlockState(new BlockPos(gx, 67, gz))).append('/')
+                        .append(level1.getBlockState(new BlockPos(gx, 68, gz)));
+            }
+        }
+        System.out.println("THRESHOLD_LEVEL1_GENERATOR_PLANT_DEBUG seed="
+                + level1.getSeed() + generatorDebug);
         boolean level1GeneratorBuilt =
                 level1.getBlockState(new BlockPos(106, 65, 154)).is(Blocks.FURNACE)
                 && level1.getBlockState(new BlockPos(106, 66, 154)).is(Blocks.COPPER_BLOCK)
