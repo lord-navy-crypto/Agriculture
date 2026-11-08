@@ -138,6 +138,9 @@ def main():
     assert "either the whole patch exists intact or the room simply has no patch." in feature
     assert "boolean pocketC = x >= 116 && x <= 122 && z >= 21 && z <= 27;" in runtime
     assert "level0FloorFoldStairBuilt" in runtime
+    assert "level0.getChunk(7, 0)" in runtime and "level0.getChunk(7, 1)" in runtime
+    assert "level0FloorFoldStairFacing(seed, roomX, roomZ, localX, localZ)" in feature
+    assert "isFloorFoldProtectedRoute" in feature
     assert "if (!ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)" in feature
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
