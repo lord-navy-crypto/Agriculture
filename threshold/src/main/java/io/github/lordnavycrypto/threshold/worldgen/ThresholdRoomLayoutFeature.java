@@ -266,7 +266,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
 
                 if (style == 1 && isLevel1CratePosition(seed, roomX, roomZ, localX, localZ)
-                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
+                        && (ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)
+                        || !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false))) {
                     // Starting cache always includes a safe drink and varied
                     // Agriculture nutrition. Other caches keep uncertainty.
                     ResourceKey<LootTable> table = roomX == 0 && roomZ == 0
@@ -281,8 +282,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // harvestable Agriculture crops. The mod is a required
                 // runtime dependency; this lookup avoids compiling it into our JAR.
                 if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
-                        && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18
-                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
+                        && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18) {
                     if (localX == 16 && localZ == 16) {
                         set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
                     } else {
@@ -326,7 +326,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // A composter beside the maintained planter recycles seeds and crop residues.
                 if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
                         && localX == 20 && localZ == 16
-                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
+                        && (ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)
+                        || !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false))) {
                     set(world, pos, x, FLOOR_Y, z, Blocks.COMPOSTER.defaultBlockState());
                 }
 
@@ -2360,9 +2361,15 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         if (!upperWalkway && crossDuct) {
                             set(world, pos, x, 72, z, Blocks.CUT_COPPER.defaultBlockState());
                         }
-                        boolean stack = (localX == 10 || localX == 38)
-                                && (localZ == 10 || localZ == 38);
-                        if (!protectedTile && !upperWalkway && stack) {
+                        boolean stack = isLevel1VentilationStackCell(
+                                seed, roomX, roomZ, localX, localZ, 10, 10)
+                                || isLevel1VentilationStackCell(
+                                seed, roomX, roomZ, localX, localZ, 38, 10)
+                                || isLevel1VentilationStackCell(
+                                seed, roomX, roomZ, localX, localZ, 10, 38)
+                                || isLevel1VentilationStackCell(
+                                seed, roomX, roomZ, localX, localZ, 38, 38);
+                        if (stack) {
                             for (int y = 64; y <= 69; y++) {
                                 set(world, pos, x, y, z, Blocks.IRON_BLOCK.defaultBlockState());
                             }
@@ -2827,6 +2834,36 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 && (localZ == 8 || localZ == 9 || localZ == 22 || localZ == 23);
     }
 
+    private static boolean isLevel1VentilationStackCell(
+            long seed, int roomX, int roomZ, int localX, int localZ,
+            int anchorX, int anchorZ) {
+        int[][] offsets = {
+                {0, 0}, {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+                {-2, 0}, {2, 0}, {0, -2}, {0, 2},
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1},
+                {-2, -1}, {-2, 1}, {2, -1}, {2, 1},
+                {-1, -2}, {1, -2}, {-1, 2}, {1, 2}
+        };
+        for (int[] offset : offsets) {
+            int candidateX = anchorX + offset[0];
+            int candidateZ = anchorZ + offset[1];
+            if (candidateX < 1 || candidateX > LEVEL_1_ROOM_SIZE - 2
+                    || candidateZ < 1 || candidateZ > LEVEL_1_ROOM_SIZE - 2) continue;
+            int x = roomX * LEVEL_1_ROOM_SIZE + candidateX;
+            int z = roomZ * LEVEL_1_ROOM_SIZE + candidateZ;
+            boolean protectedTile = isLevel1ResourceFootprint(candidateX, candidateZ)
+                    || ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)
+                    || isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE, roomX, roomZ,
+                            candidateX, candidateZ, 2, true);
+            boolean upperWalkway = hasLevel1UpperDeck(seed, roomX, roomZ)
+                    && isLevel1UpperPath(seed, roomX, roomZ, candidateX, candidateZ);
+            if (!protectedTile && !upperWalkway) {
+                return localX == candidateX && localZ == candidateZ;
+            }
+        }
+        return false;
+    }
+
     private static boolean isLevel1ResourceFootprint(int localX, int localZ) {
         boolean planter = localX >= 13 && localX <= 19 && localZ >= 13 && localZ <= 19;
         boolean crate = (localX == 8 || localX == 24 || localX == 40)
@@ -3050,8 +3087,22 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean hasLevel1PlanterPatch(long seed, int roomX, int roomZ) {
-        return (roomX == 0 && roomZ == 0)
-                || Math.floorMod(mix(seed, roomX, roomZ, 0xFA77L), 4) == 0;
+        // The starter shelter always keeps its complete 5x5 planter. In other
+        // rooms, do not place a resource patch across a guaranteed corridor:
+        // either the whole patch exists intact or the room simply has no patch.
+        if (roomX == 0 && roomZ == 0) return true;
+        if (Math.floorMod(mix(seed, roomX, roomZ, 0xFA77L), 4) != 0) return false;
+        for (int localX = 14; localX <= 18; localX++) {
+            for (int localZ = 14; localZ <= 18; localZ++) {
+                int x = roomX * LEVEL_1_ROOM_SIZE + localX;
+                int z = roomZ * LEVEL_1_ROOM_SIZE + localZ;
+                if (!ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)
+                        && ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private static boolean isLevel1CratePosition(
@@ -3113,11 +3164,21 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         || ThresholdIrregularMazeLayout.isResourceAnchor(world, pos, x, z)) {
                     continue;
                 }
-                set(world, pos, x, FLOOR_Y, z, floor);
-                if (level0) {
-                    set(world, pos, x, LEVEL_0_CARPET_Y, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                BlockState existingFloor = world.getBlockState(pos.set(x, FLOOR_Y, z));
+                if (existingFloor.isAir()) {
+                    set(world, pos, x, FLOOR_Y, z, floor);
                 }
-                set(world, pos, x, feetY, z, Blocks.AIR.defaultBlockState());
+                if (level0) {
+                    BlockState carpetOrStep = world.getBlockState(pos.set(x, LEVEL_0_CARPET_Y, z));
+                    if (!(carpetOrStep.getBlock() instanceof StairBlock)) {
+                        set(world, pos, x, LEVEL_0_CARPET_Y, z,
+                                Blocks.YELLOW_CARPET.defaultBlockState());
+                    }
+                }
+                BlockState feet = world.getBlockState(pos.set(x, feetY, z));
+                if (!(feet.getBlock() instanceof StairBlock)) {
+                    set(world, pos, x, feetY, z, Blocks.AIR.defaultBlockState());
+                }
                 set(world, pos, x, headY, z, Blocks.AIR.defaultBlockState());
             }
         }
