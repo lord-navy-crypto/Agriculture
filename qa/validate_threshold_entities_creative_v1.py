@@ -21,6 +21,7 @@ def main():
     blocks = read("block/ThresholdEnvironmentBlocks.java")
     tabs = read("ThresholdCreativeTabs.java")
     mod = read("ThresholdMod.java")
+    runtime = read("worldgen/ThresholdRuntimeChecks.java")
 
     assert "isThresholdDimension(dimension) && entityType == ThresholdEntities.WATCHER.get()" in director
     assert "WATCHER_SPAWN_INTERVAL_TICKS = 100" in director
@@ -68,6 +69,10 @@ def main():
                   "ALMOND_WATER", "FLASHLIGHT", "BATTERY"):
         assert token in tabs, f"Backrooms entities/supplies tab missing {token}"
     assert "ThresholdCreativeTabs.TABS.register(modBus)" in mod
+    assert '"AGGRESSIVE".equals(watcherProbe.getBehaviorModeName())' in runtime
+    assert 'new ServerLevel[] {level1, level2, level3, level4, level5}' in runtime
+    assert 'naturalProfile(ThresholdDimensions.LEVEL_5' in runtime
+    assert 'THRESHOLD_NATURAL_SPAWN_POLICY_OK' in runtime
 
     for locale in ("en_us.json", "zh_cn.json"):
         data = json.loads((RES / "lang" / locale).read_text(encoding="utf8"))
