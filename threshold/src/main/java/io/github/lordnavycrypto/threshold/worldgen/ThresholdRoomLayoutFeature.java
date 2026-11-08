@@ -1473,7 +1473,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                         // perceived scale while leaving the seed-stable route network open.
                         boolean pillarAnchor = (localX == 6 || localX == 14 || localX == 22 || localX == 26)
                                 && (localZ == 6 || localZ == 14 || localZ == 22 || localZ == 26);
-                        boolean guaranteedPillar = localX == 6 && localZ == 6;
+                        boolean guaranteedPillar = pillarAnchor
+                                && isGuaranteedLevel0PillarCell(seed, roomX, roomZ, localX, localZ);
                         boolean pillar = pillarAnchor && (guaranteedPillar
                                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA19A0L), 5) != 0);
                         if (!protectedRoute && !upperWalkway && pillar) {
@@ -2840,6 +2841,33 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
      * The starter composter uses a deterministic nearby tile that is not part
      * of either the physical maze spine or the reserved room-exit route.
      */
+    /**
+     * Select one deterministic pillar-forest anchor outside both the physical
+     * spine and the reserved room-exit route. The landmark always retains at
+     * least one column without placing a pillar in a guaranteed passage.
+     */
+    private static boolean isGuaranteedLevel0PillarCell(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        int[] anchors = {6, 14, 22, 26};
+        int total = anchors.length * anchors.length;
+        int start = Math.floorMod((int) mix(seed, roomX, roomZ, 0xA19A2L), total);
+        for (int offset = 0; offset < total; offset++) {
+            int index = (start + offset) % total;
+            int candidateX = anchors[index / anchors.length];
+            int candidateZ = anchors[index % anchors.length];
+            int x = roomX * LEVEL_0_ROOM_SIZE + candidateX;
+            int z = roomZ * LEVEL_0_ROOM_SIZE + candidateZ;
+            boolean protectedRoute = ThresholdIrregularMazeLayout
+                    .isGuaranteedCorridor(seed, x, z, true)
+                    || isReservedRoomPath(seed, LEVEL_0_ROOM_SIZE,
+                            roomX, roomZ, candidateX, candidateZ, 1, false);
+            if (!protectedRoute) {
+                return localX == candidateX && localZ == candidateZ;
+            }
+        }
+        return false;
+    }
+
     private static boolean isLevel1StarterComposterCell(
             long seed, int localX, int localZ) {
         int minX = 20;
