@@ -166,6 +166,19 @@ public final class ThresholdIrregularMazeLayout {
         return walls >= 80 && open >= 1200;
     }
 
+    /** Both floors contain compact side-room pockets and open cells. */
+    public static boolean hasNestedAlcoveVariety(long seed, boolean level0) {
+        long salt = level0 ? LEVEL_0_SALT : LEVEL_1_SALT;
+        int pockets=0, open=0;
+        for(int gx=-5;gx<=5;gx++) for(int gz=-5;gz<=5;gz++) {
+            long h=mix(seed,gx,gz,salt ^ 0x1A7E10L);
+            int roll=(int)Math.floorMod(h,100L);
+            boolean pocket=level0 ? roll>=40 && roll<64 : roll>=36 && roll<69;
+            if(pocket) pockets++; else open++;
+        }
+        return pockets>=8 && open>=8;
+    }
+
     private static boolean isLevel0EntryPerimeter(int x, int z) {
         return x >= 0 && x < LEVEL_0_LEGACY_SIZE
                 && z >= 0 && z < LEVEL_0_LEGACY_SIZE
@@ -377,7 +390,8 @@ public final class ThresholdIrregularMazeLayout {
             int returnZ = lineZ + (Math.floorMod((int) (h >>> 49), 2) == 0 ? 4 : -4);
             boolean shortCrossReturn = roll < 19 && Math.abs(lz - returnZ) == 0
                     && lx >= -7 && lx <= 7 && !insideDoorGap(lx, gapX, 3);
-            return mainDivider || crossDivider || sideReturn || shortCrossReturn;
+            boolean pocket=roll>=40 && roll<64 && isNestedAlcove(h,lx,lz,true);
+            return mainDivider || crossDivider || sideReturn || shortCrossReturn || pocket;
         }
 
         // Level 1 uses warehouse bay walls, offset rack dividers and occasional
@@ -401,7 +415,29 @@ public final class ThresholdIrregularMazeLayout {
         int bayZ = lineZ + (Math.floorMod((int) (h >>> 50), 2) == 0 ? 5 : -5);
         boolean shortBay = roll < 25 && Math.abs(lz - bayZ) == 0
                 && lx >= -9 && lx <= 9 && !insideDoorGap(lx, gapX, 5);
-        return bayDivider || crossAisle || rackReturn || shortBay;
+        boolean maintenancePocket=roll>=36 && roll<69 && isNestedAlcove(h,lx,lz,false);
+        return bayDivider || crossAisle || rackReturn || shortBay || maintenancePocket;
+    }
+
+    /**
+     * Inset side-room wall with two distinct, wide entrances. Its geometry is
+     * deterministic for the owning cell, including at chunk boundaries.
+     */
+    private static boolean isNestedAlcove(long hash,int lx,int lz,boolean level0) {
+        int ox=(int)Math.floorMod(hash >>> 10,5L)-2;
+        int oz=(int)Math.floorMod(hash >>> 18,5L)-2;
+        int hx=(level0?3:5)+(int)Math.floorMod(hash >>> 25,2L);
+        int hz=(level0?4:5)+(int)Math.floorMod(hash >>> 34,2L);
+        int dx=lx-ox,dz=lz-oz;
+        boolean vertical=Math.abs(dx)==hx && Math.abs(dz)<=hz;
+        boolean horizontal=Math.abs(dz)==hz && Math.abs(dx)<=hx;
+        if(!vertical && !horizontal)return false;
+        int northGap=(int)Math.floorMod(hash >>> 43,5L)-2;
+        int sideGap=(int)Math.floorMod(hash >>> 51,5L)-2;
+        int width=level0?3:5;
+        if(vertical && insideDoorGap(dz,sideGap,width))return false;
+        if(horizontal && insideDoorGap(dx,northGap,width))return false;
+        return true;
     }
 
     private static boolean insideDoorGap(int along, int center, int width) {
