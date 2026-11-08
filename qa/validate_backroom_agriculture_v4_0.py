@@ -21,7 +21,9 @@ def main():
     runtime=read("threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdRuntimeChecks.java")
     assert "include('threshold')" not in settings
     assert "threshold/src/main/java" in build and "threshold/src/main/resources" in build
-    assert "geckolib-neoforge-1.21.1:4.9.3" in build and "XaDC71GB:a9fuYUVh" in build
+    assert 'implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"' in build
+    assert 'implementation \'maven.modrinth:XaDC71GB:a9fuYUVh\'' in build
+    assert "minecraft_version=1.21.1" in props and "geckolib_version=4.9.3" in props
     assert "mod_name=Backroom Agriculture" in props and "mod_version=4.0.0-alpha.1" in props
     assert 'modId="${mod_id}"' in metadata
     assert 'modId="geckolib"' in metadata and 'modId="lithostitched"' in metadata

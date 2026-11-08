@@ -349,10 +349,19 @@ public final class ThresholdRuntimeChecks {
         }
         System.out.println("THRESHOLD_LEVEL1_GENERATOR_PLANT_DEBUG seed="
                 + level1.getSeed() + generatorDebug);
-        boolean level1GeneratorBuilt =
-                level1.getBlockState(new BlockPos(106, 65, 154)).is(Blocks.FURNACE)
-                && level1.getBlockState(new BlockPos(106, 66, 154)).is(Blocks.COPPER_BLOCK)
-                && level1.getBlockState(new BlockPos(106, 68, 154)).is(Blocks.IRON_BARS);
+        int level1GeneratorCoreCount = 0;
+        for (int gx : new int[] {106, 134}) {
+            for (int gz : new int[] {154, 182}) {
+                if (level1.getBlockState(new BlockPos(gx, 64, gz)).is(Blocks.IRON_BLOCK)
+                        && level1.getBlockState(new BlockPos(gx, 65, gz)).is(Blocks.FURNACE)
+                        && level1.getBlockState(new BlockPos(gx, 66, gz)).is(Blocks.COPPER_BLOCK)
+                        && level1.getBlockState(new BlockPos(gx, 67, gz)).is(Blocks.LIGHTNING_ROD)) {
+                    level1GeneratorCoreCount++;
+                }
+            }
+        }
+        boolean level1GeneratorBuilt = level1GeneratorCoreCount == 4;
+        System.out.println("THRESHOLD_LEVEL1_GENERATOR_PLANT_CORES=" + level1GeneratorCoreCount);
         System.out.println(level1GeneratorBuilt
                 ? "THRESHOLD_LEVEL1_GENERATOR_PLANT_OK"
                 : "THRESHOLD_LEVEL1_GENERATOR_PLANT_FAIL");

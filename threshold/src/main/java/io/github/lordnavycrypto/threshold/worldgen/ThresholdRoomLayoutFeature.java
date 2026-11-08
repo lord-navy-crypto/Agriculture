@@ -1334,7 +1334,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                         Blocks.WHITE_STAINED_GLASS_PANE.defaultBlockState());
                             }
                         }
-                        if (!upperWalkway && !protectedRoute && stair) {
+                        if (!upperWalkway && stair) {
                             int stairY = 64 + localZ - 18;
                             set(world, pos, x, stairY, z,
                                     Blocks.OAK_STAIRS.defaultBlockState()
@@ -2602,9 +2602,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean hasLevel0UpperDeck(long seed, int roomX, int roomZ) {
-        // Landmark rooms 18-22 own their vertical architecture. An upper
-        // gallery must not erase the guaranteed sub-floor conference-pit stair.
-        if (level0Architecture(seed, roomX, roomZ) >= 18) return false;
+        // Landmark rooms 16-22 own their vertical architecture. Their
+        // mezzanines, blackout corridor and sub-floor structures must not be
+        // overlaid by the generic upper-gallery network.
+        if (level0Architecture(seed, roomX, roomZ) >= 16) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 0)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38);
@@ -3291,6 +3292,16 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
      * landmark can leave a wall, railing, prop or stair inside a guaranteed
      * two-block passage. Resource anchors and dimension entrances stay intact.
      */
+    private static boolean isLevel1GeneratorCore(long seed, int x, int z) {
+        int roomX = Math.floorDiv(x, LEVEL_1_ROOM_SIZE);
+        int roomZ = Math.floorDiv(z, LEVEL_1_ROOM_SIZE);
+        int localX = Math.floorMod(x, LEVEL_1_ROOM_SIZE);
+        int localZ = Math.floorMod(z, LEVEL_1_ROOM_SIZE);
+        return level1Architecture(seed, roomX, roomZ) == 26
+                && (localX == 10 || localX == 38)
+                && (localZ == 10 || localZ == 38);
+    }
+
     private static void clearGuaranteedSpine(
             WorldGenLevel world, int chunkX, int chunkZ, long seed,
             BlockPos.MutableBlockPos pos, boolean level0) {
@@ -3307,7 +3318,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 int z = minZ + dz;
                 if (!ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, level0)
                         || ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, level0)
-                        || ThresholdIrregularMazeLayout.isResourceAnchor(world, pos, x, z)) {
+                        || ThresholdIrregularMazeLayout.isResourceAnchor(world, pos, x, z)
+                        || (!level0 && isLevel1GeneratorCore(seed, x, z))) {
                     continue;
                 }
                 BlockState existingFloor = world.getBlockState(pos.set(x, FLOOR_Y, z));
@@ -3325,7 +3337,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 if (!(feet.getBlock() instanceof StairBlock)) {
                     set(world, pos, x, feetY, z, Blocks.AIR.defaultBlockState());
                 }
-                set(world, pos, x, headY, z, Blocks.AIR.defaultBlockState());
+                BlockState head = world.getBlockState(pos.set(x, headY, z));
+                if (!(head.getBlock() instanceof StairBlock)) {
+                    set(world, pos, x, headY, z, Blocks.AIR.defaultBlockState());
+                }
             }
         }
     }

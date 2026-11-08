@@ -191,7 +191,12 @@ def main():
     pit=feature.split("case 18 -> {",1)[1].split("case 19 -> {",1)[0]
     assert "!protectedRoute && !upperWalkway" not in pit
     assert "if (pit && !upperWalkway)" in pit
-    assert "if (level0Architecture(seed, roomX, roomZ) >= 18)" in feature
+    assert "if (level0Architecture(seed, roomX, roomZ) >= 16)" in feature
+    mezzanine=feature.split("case 16 -> {",1)[1].split("case 17 -> {",1)[0]
+    assert "if (!upperWalkway && stair)" in mezzanine
+    assert "head.getBlock() instanceof StairBlock" in feature
+    assert "isLevel1GeneratorCore(seed, x, z)" in feature
+    assert "private static boolean isLevel1GeneratorCore" in feature
     # Ensure each seed-stable parent edge has a physical two-wide path, not
     # merely a declared logical edge. Sample every quarter block of each link.
     def spine(seed, x, z, spacing, jitter, salt):
