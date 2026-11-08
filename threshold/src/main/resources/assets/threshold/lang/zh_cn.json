@@ -17,10 +17,15 @@
   "block.threshold.level_5_to_4": "酒店楼梯返回通道",
   "block.threshold.level_5_elevator_panel": "酒店电梯控制面板",
   "block.threshold.ceiling_vent": "悬挂通风装置",
-  "entity.threshold.watcher": "远处的观察者",
+  "entity.threshold.watcher": "远距观察者",
   "entity.threshold.hound": "猎犬",
   "item.threshold.almond_water": "杏仁水",
   "item.threshold.flashlight": "手电筒",
   "item.threshold.battery": "手电筒电池",
-  "entity.threshold.partygoer": "派对客"
+  "entity.threshold.partygoer": "派对客",
+  "item.threshold.watcher_spawn_egg": "远距观察者刷怪蛋",
+  "item.threshold.hound_spawn_egg": "猎犬刷怪蛋",
+  "item.threshold.partygoer_spawn_egg": "派对客刷怪蛋",
+  "itemGroup.threshold.backrooms_blocks": "后室方块",
+  "itemGroup.threshold.backrooms_entities": "后室实体与生存物品"
 }

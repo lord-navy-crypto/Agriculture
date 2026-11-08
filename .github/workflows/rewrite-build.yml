@@ -41,6 +41,8 @@ jobs:
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
         run: python3 qa/validate_backroom_entity_ai_v4_1.py
+      - name: Validate Distant Watcher encounters, Partygoer pack AI and Backrooms creative tabs
+        run: python3 qa/validate_threshold_entities_creative_v1.py
       - name: Check actual Agriculture item IDs used by Backrooms survival loot
         run: python3 qa/validate_threshold_agriculture_loot.py
       - name: Validate crop resources, loot tables, translations, and recipes
@@ -104,9 +106,35 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.2.1'
+      - name: Install verified Gradle 9.2.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="9.2.1"
+          ZIP="$RUNNER_TEMP/gradle-$VERSION-bin.zip"
+          EXPECTED_SHA256="72f44c9f8ebcb1af43838f45ee5c4aa9c5444898b3468ab3f4af7b6076c5bc3f"
+
+          download_gradle() {
+            local url="$1"
+            echo "Downloading Gradle $VERSION from $url"
+            curl --fail --location --show-error --silent \
+              --retry 3 --retry-all-errors --retry-delay 5 \
+              --connect-timeout 30 --max-time 900 \
+              "$url" --output "$ZIP"
+          }
+
+          if ! download_gradle "https://downloads.gradle.org/distributions/gradle-$VERSION-bin.zip"; then
+            rm -f "$ZIP"
+            if ! download_gradle "https://repo.huaweicloud.com/repository/toolkit/gradle/gradle-$VERSION-bin.zip"; then
+              rm -f "$ZIP"
+              download_gradle "https://mirrors.nju.edu.cn/gradle/gradle-$VERSION-bin.zip"
+            fi
+          fi
+
+          echo "$EXPECTED_SHA256  $ZIP" | sha256sum --check --status
+          unzip -q "$ZIP" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-$VERSION/bin" >> "$GITHUB_PATH"
+          gradle --version
       - name: Compile and package Backroom Agriculture
         run: gradle --no-daemon --stacktrace build
       - name: Validate all six Backrooms dimensions in the unified JAR
@@ -193,9 +221,35 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.2.1'
+      - name: Install verified Gradle 9.2.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="9.2.1"
+          ZIP="$RUNNER_TEMP/gradle-$VERSION-bin.zip"
+          EXPECTED_SHA256="72f44c9f8ebcb1af43838f45ee5c4aa9c5444898b3468ab3f4af7b6076c5bc3f"
+
+          download_gradle() {
+            local url="$1"
+            echo "Downloading Gradle $VERSION from $url"
+            curl --fail --location --show-error --silent \
+              --retry 3 --retry-all-errors --retry-delay 5 \
+              --connect-timeout 30 --max-time 900 \
+              "$url" --output "$ZIP"
+          }
+
+          if ! download_gradle "https://downloads.gradle.org/distributions/gradle-$VERSION-bin.zip"; then
+            rm -f "$ZIP"
+            if ! download_gradle "https://repo.huaweicloud.com/repository/toolkit/gradle/gradle-$VERSION-bin.zip"; then
+              rm -f "$ZIP"
+              download_gradle "https://mirrors.nju.edu.cn/gradle/gradle-$VERSION-bin.zip"
+            fi
+          fi
+
+          echo "$EXPECTED_SHA256  $ZIP" | sha256sum --check --status
+          unzip -q "$ZIP" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-$VERSION/bin" >> "$GITHUB_PATH"
+          gradle --version
       - name: Launch fresh real NeoForge 1.21.1 server
         run: python3 qa/smoke_rewrite_server.py
       - name: Launch unified Backroom Agriculture server and verify all six dimensions and generated chunks

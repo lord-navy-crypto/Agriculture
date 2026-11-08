@@ -61,24 +61,32 @@ public final class ThresholdRuntimeChecks {
         boolean watcherAdvancedAiReady = watcherProbe != null
                 && watcherProbe.getNavigation() != null
                 && watcherProbe.getAttribute(Attributes.MAX_HEALTH) != null
-                && watcherProbe.getAttribute(Attributes.MAX_HEALTH).getBaseValue() >= 14.0D
+                && watcherProbe.getAttribute(Attributes.MAX_HEALTH).getBaseValue() >= 22.0D
                 && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED) != null
-                && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.30D
+                && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.34D
                 && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE) != null
-                && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() >= 2.0D
+                && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() >= 3.0D
                 && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE) != null
                 && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE).getBaseValue() >= 64.0D
                 && watcherProbe.isPickable();
+        // Level 0 Watchers must default to capture mode; every other Backrooms
+        // level must default to passive observation.
         boolean watcherModesReady = watcherProbe != null
-                && "PASSIVE".equals(watcherProbe.getBehaviorModeName());
+                && "AGGRESSIVE".equals(watcherProbe.getBehaviorModeName());
         if (watcherProbe != null) {
-            watcherProbe.setBehaviorMode(ThresholdWatcherEntity.BehaviorMode.AGGRESSIVE);
-            watcherModesReady = watcherModesReady
-                    && "AGGRESSIVE".equals(watcherProbe.getBehaviorModeName());
             watcherProbe.setBehaviorMode(ThresholdWatcherEntity.BehaviorMode.PASSIVE);
             watcherModesReady = watcherModesReady
                     && "PASSIVE".equals(watcherProbe.getBehaviorModeName());
+            watcherProbe.setBehaviorMode(ThresholdWatcherEntity.BehaviorMode.AGGRESSIVE);
+            watcherModesReady = watcherModesReady
+                    && "AGGRESSIVE".equals(watcherProbe.getBehaviorModeName());
             watcherProbe.discard();
+        }
+        for (ServerLevel passiveLevel : new ServerLevel[] {level1, level2, level3, level4, level5}) {
+            ThresholdWatcherEntity passiveProbe = ThresholdEntities.WATCHER.get().create(passiveLevel);
+            watcherModesReady = watcherModesReady && passiveProbe != null
+                    && "PASSIVE".equals(passiveProbe.getBehaviorModeName());
+            if (passiveProbe != null) passiveProbe.discard();
         }
         System.out.println(watcherAdvancedAiReady
                 ? "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK"
@@ -775,8 +783,9 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_OK"
                 : "THRESHOLD_ENTITY_COMPATIBILITY_ALL_DIMENSIONS_FAIL");
 
-        // Level 0 remains Watcher-only. Level 1 now has Hounds plus rare
-        // peripheral Partygoer encounters outside the 20x20 starter shelter.
+        // Distant Watchers appear in all six levels. Only Level 0 defaults to
+        // capture behavior; Levels 1-5 use passive observation. Level 1 also
+        // has Hounds and rare Partygoer encounters outside the starter shelter.
         boolean naturalSpawnPolicy =
                 naturalProfile(ThresholdDimensions.LEVEL_0,
                         ThresholdEntities.WATCHER.get(), true)
@@ -785,7 +794,7 @@ public final class ThresholdRuntimeChecks {
                 && naturalProfile(ThresholdDimensions.LEVEL_0,
                         ThresholdEntities.PARTYGOER.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_1,
-                        ThresholdEntities.WATCHER.get(), false)
+                        ThresholdEntities.WATCHER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_1,
                         ThresholdEntities.HOUND.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_1,
@@ -793,25 +802,25 @@ public final class ThresholdRuntimeChecks {
                 && naturalProfile(net.minecraft.world.level.Level.OVERWORLD,
                         ThresholdEntities.PARTYGOER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_2,
-                        ThresholdEntities.WATCHER.get(), false)
+                        ThresholdEntities.WATCHER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_2,
                         ThresholdEntities.HOUND.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_2,
                         ThresholdEntities.PARTYGOER.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_3,
-                        ThresholdEntities.WATCHER.get(), false)
+                        ThresholdEntities.WATCHER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_3,
                         ThresholdEntities.HOUND.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_3,
                         ThresholdEntities.PARTYGOER.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_4,
-                        ThresholdEntities.WATCHER.get(), false)
+                        ThresholdEntities.WATCHER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_4,
                         ThresholdEntities.HOUND.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_4,
                         ThresholdEntities.PARTYGOER.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_5,
-                        ThresholdEntities.WATCHER.get(), false)
+                        ThresholdEntities.WATCHER.get(), true)
                 && naturalProfile(ThresholdDimensions.LEVEL_5,
                         ThresholdEntities.HOUND.get(), false)
                 && naturalProfile(ThresholdDimensions.LEVEL_5,
@@ -881,6 +890,16 @@ public final class ThresholdRuntimeChecks {
                         ThresholdDimensions.LEVEL_0, EntityType.ZOMBIE, MobSpawnType.CHUNK_GENERATION)
                 && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
                         ThresholdDimensions.LEVEL_0, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_1, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_2, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_3, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_4, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
+                && !ThresholdEntityDirector.shouldBlockNaturalSpawn(
+                        ThresholdDimensions.LEVEL_5, ThresholdEntities.WATCHER.get(), MobSpawnType.NATURAL)
                 && ThresholdEntityDirector.shouldBlockNaturalSpawn(
                         ThresholdDimensions.LEVEL_1, EntityType.COW, MobSpawnType.NATURAL)
                 && ThresholdEntityDirector.shouldBlockNaturalSpawn(

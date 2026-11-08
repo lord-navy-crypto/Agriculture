@@ -347,26 +347,28 @@ def main() -> int:
     # Dimension guardrails are based on natural-spawn reason, not blanket entity-join rejection.
     assert "event.getEntity() instanceof Projectile" in director, "Threshold entity-join guard is narrowly scoped to projectiles"
     assert "instanceof LivingEntity" not in director, "ordinary living entities must not be blanket-rejected"
-    assert "return entityType == ThresholdEntities.WATCHER.get();" in director, "Level 0 natural-spawn whitelist is Watcher only"
+    assert "isThresholdDimension(dimension) && entityType == ThresholdEntities.WATCHER.get()" in director, "Distant Watchers naturally spawn across Levels 0-5"
     assert "return entityType == ThresholdEntities.HOUND.get()" in director and "|| entityType == ThresholdEntities.PARTYGOER.get()" in director, "Level 1 whitelist includes Hound and rare Partygoer"
     require("shouldBlockNaturalSpawn", director, "natural-spawn reason policy is explicit")
     require("MobSpawnEvent.SpawnPlacementCheck.Result.FAIL", director,
             "unapproved natural spawns are rejected before placement")
-    assert "spawnObservers(level)" in director, "Level 0 Watcher spawner exists"
+    assert "spawnObservers(level)" in director and "isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())" in director, "Distant Watcher spawner is enabled across all six levels"
     assert "spawnHounds(level)" in director, "Level 1 Hound spawner exists"
     require("quiet stalking state; noise and proximity trigger pursuit", director,
             "Hound spawns into its stalking state rather than receiving an instant target")
-    assert "countNearbyWatchers(level, player)" in director and "MAX_LOCAL_WATCHERS = 2" in director, "natural spawns respect the two-Watcher cap"
+    assert "countNearbyWatchers(level, player)" in director and "MAX_LOCAL_WATCHERS = 3" in director, "natural spawns respect the three-Watcher local cap"
     assert "hasNearbyWatcher(level, player)" in commands, "operator summons respect the same cap"
     assert "if (!level.addFreshEntity(watcher))" in commands, "operator summon reports rejected spawns rather than false success"
     for token, source, label in (
-        ("WATCHER_SPAWN_INTERVAL_TICKS = 300", director, "Watcher spawn cadence remains bounded"),
+        ("WATCHER_SPAWN_INTERVAL_TICKS = 100", director, "Watcher sightings are checked every five seconds"),
         ("WATCHER_NEARBY_RADIUS = 42.0D", director, "Watcher encounters use a local spacing radius"),
-        ("MAX_LOCAL_WATCHERS = 2", director, "a local encounter is capped at two Watchers"),
+        ("MAX_LOCAL_WATCHERS = 3", director, "a local encounter is capped at three Watchers"),
         ("countNearbyWatchers", director, "local Watcher count is explicit"),
-        ("nearbyWatchers == 0 ? 4 : 8", director, "second Watcher spawn is rarer than the first"),
+        ("case 0 -> 2", director, "first Watcher has a common one-in-two spawn roll"),
+        ("case 1 -> 3", director, "second Watcher has a one-in-three spawn roll"),
+        ("default -> 5", director, "third Watcher has a one-in-five spawn roll"),
         ("12 + level.getRandom().nextInt(9)", director, "second Watcher enters closer for local coordination"),
-        ("watcher.setFlankerRole(nearbyWatchers > 0)", director, "second Watcher is assigned as a flanker"),
+        ("watcher.setFlankerRole(nearbyWatchers > 0)", director, "additional Watchers are assigned a flanker role"),
     ):
         if token not in source:
             raise AssertionError(f"THRESHOLD Watcher coordination budget missing: {label}")
@@ -635,7 +637,7 @@ def main() -> int:
         ("DATA_AGGRESSIVE_MODE", "Watcher mode is synchronized to client-side animation state"),
         ("defineSynchedData(SynchedEntityData.Builder builder)", "Watcher mode synchronization is registered on the entity"),
         ("PASSIVE, AGGRESSIVE", "Watcher defines both supported behavior modes"),
-        ("BehaviorMode.PASSIVE", "natural Watchers default to passive behavior"),
+        ("BehaviorMode.PASSIVE", "Watchers in Levels 1-5 use passive behavior by default"),
         ("enablePassiveTestMode", "operators can summon a stable passive Watcher"),
         ("enableObserverTestMode", "operators can summon a stable observer-only Watcher test"),
         ("observerTestMode", "observer test mode is tracked independently and persisted"),
@@ -670,11 +672,11 @@ def main() -> int:
     assert hound_loot["type"] == "minecraft:entity"
     assert hound_loot["pools"] == [], "Hound should not drop unrelated survival resources"
 
-    # Model the bounded two-member encounter. One spawn attempt is possible
+    # Model the bounded three-member encounter. One spawn attempt is possible
     # per interval; the extended 90-second lifetime still respects the local cap.
-    spawn_interval = 300
+    spawn_interval = 100
     lifetime = 1800
-    local_cap = 2
+    local_cap = 3
     active_expiries: list[int] = []
     max_active = 0
     for game_time in range(0, 6000):
@@ -683,10 +685,16 @@ def main() -> int:
             active_expiries.append(game_time + lifetime)
         max_active = max(max_active, len(active_expiries))
     assert max_active == local_cap, f"Natural Watcher budget mismatch: {max_active}"
-    assert lifetime == spawn_interval * 6
-    assert local_cap == 2
+    assert lifetime == spawn_interval * 18
+    assert local_cap == 3
 
-    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=2 lifetime=1800 spawn_interval=300 perception_hz=5 memory=300")
+    watcher_constructor = watcher[
+        watcher.index("public ThresholdWatcherEntity"):watcher.index("/** A harmless model/animation preview")
+    ]
+    assert "ThresholdDimensions.LEVEL_0" in watcher_constructor
+    assert "setBehaviorMode(BehaviorMode.AGGRESSIVE)" in watcher_constructor
+
+    print("THRESHOLD_HORROR_IDENTITY_AND_ENTITY_RULES_PASS watcher_budget=3 lifetime=1800 spawn_interval=100 perception_hz=5 memory=300")
     return 0
 
 

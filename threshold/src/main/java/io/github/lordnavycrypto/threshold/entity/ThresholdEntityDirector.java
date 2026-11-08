@@ -32,9 +32,10 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
  * other non-combat functional entities remain admitted independently.
  */
 public final class ThresholdEntityDirector {
-    private static final int WATCHER_SPAWN_INTERVAL_TICKS = 300;
+    // Frequent sightings are intentional, but the local cap prevents a swarm.
+    private static final int WATCHER_SPAWN_INTERVAL_TICKS = 100;
     private static final double WATCHER_NEARBY_RADIUS = 42.0D;
-    private static final int MAX_LOCAL_WATCHERS = 2;
+    private static final int MAX_LOCAL_WATCHERS = 3;
 
     private ThresholdEntityDirector() {}
 
@@ -45,8 +46,9 @@ public final class ThresholdEntityDirector {
      */
     public static boolean isNaturalSpawnAllowed(
             ResourceKey<Level> dimension, EntityType<?> entityType) {
-        if (dimension.equals(ThresholdDimensions.LEVEL_0)) {
-            return entityType == ThresholdEntities.WATCHER.get();
+        // Distant Watchers are a signature encounter throughout all six Backrooms levels.
+        if (isThresholdDimension(dimension) && entityType == ThresholdEntities.WATCHER.get()) {
+            return true;
         }
         if (dimension.equals(ThresholdDimensions.LEVEL_1)) {
             return entityType == ThresholdEntities.HOUND.get()
@@ -127,19 +129,27 @@ public final class ThresholdEntityDirector {
 
     private static void spawnObservers(ServerLevel level) {
         if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())) return;
+        boolean level1 = level.dimension().equals(ThresholdDimensions.LEVEL_1);
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
+            // Preserve Level 1's authored starter shelter while making the
+            // rest of the level eligible for frequent Distant Watcher encounters.
+            if (level1 && isInsideLevel1StarterShelter(player.blockPosition())) continue;
             int nearbyWatchers = countNearbyWatchers(level, player);
             if (nearbyWatchers >= MAX_LOCAL_WATCHERS) continue;
-            // A first sighting is more likely than a second. The second entity
-            // is a rare local flanker, not an unrestricted mob swarm.
-            int spawnChance = nearbyWatchers == 0 ? 4 : 8;
+            // Keep encounters common across every level, while progressively
+            // reducing the chance of adding a second or third local Watcher.
+            int spawnChance = switch (nearbyWatchers) {
+                case 0 -> 2;  // 1/2 chance for the first Watcher
+                case 1 -> 3;  // 1/3 chance for a second
+                default -> 5; // 1/5 chance for a third
+            };
             if (level.getRandom().nextInt(spawnChance) != 0) continue;
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
-                // The second member enters closer to the player so the
-                // local pair can coordinate without expanding the spawn footprint.
+                // Additional members enter closer to the player so the
+                // local group can coordinate without expanding the spawn footprint.
                 int distance = nearbyWatchers == 0
                         ? 17 + level.getRandom().nextInt(11)
                         : 12 + level.getRandom().nextInt(9);
@@ -147,6 +157,8 @@ public final class ThresholdEntityDirector {
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
 
+                if (level1 && isInsideLevel1StarterShelter(pos)) continue;
+                if (level1 && pos.distSqr(level.getSharedSpawnPos()) < 24.0D * 24.0D) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
 
                 // Keep the first appearance outside the player's forward view.
