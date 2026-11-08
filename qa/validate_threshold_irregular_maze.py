@@ -145,6 +145,8 @@ def main():
     assert "isGuaranteedLevel0PillarCell(seed, roomX, roomZ, localX, localZ)" in feature
     assert "private static boolean isGuaranteedLevel0PillarCell" in feature
     assert "boolean level0PillarForestBuilt = level0PillarCount >= 1" in runtime
+    assert all(f"level0.getChunk({x}, {z})" in runtime
+               for x, z in ((4, 4), (5, 4), (4, 5), (5, 5)))
     assert "isLevel1ComposterRouteProtected" in feature
     assert "isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE" in feature
     assert "for (int x = 20; x <= 31; x++)" in runtime
