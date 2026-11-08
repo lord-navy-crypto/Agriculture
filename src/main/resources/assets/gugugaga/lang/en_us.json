@@ -1175,6 +1175,7 @@
   "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",
   "feedback.gugugaga.water_salt_tooltip": "%s %s. %s",
   "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority.",
+  "tooltip.gugugaga.hydration_only": "Hydration item — no food nutrients; water and salt balance only.",
   "tooltip.gugugaga.nutrition_profile": "Main nutrient contributions (per item)",
   "tooltip.gugugaga.nutrition_generic": "Generic fallback profile for uncatalogued food.",
   "tooltip.gugugaga.nutrient_line": "• %1$s: +%2$d",
