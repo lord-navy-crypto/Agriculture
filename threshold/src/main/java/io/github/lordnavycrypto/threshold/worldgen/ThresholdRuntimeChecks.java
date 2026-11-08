@@ -6,6 +6,8 @@ import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
 import io.github.lordnavycrypto.threshold.entity.ThresholdEntityDirector;
 import io.github.lordnavycrypto.threshold.entity.ThresholdWatcherEntity;
 import io.github.lordnavycrypto.threshold.entity.ThresholdHoundEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdPartygoerEntity;
+import io.github.lordnavycrypto.threshold.entity.ThresholdPlayerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -64,11 +66,35 @@ public final class ThresholdRuntimeChecks {
                 && watcherProbe.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() >= 0.30D
                 && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE) != null
                 && watcherProbe.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() >= 2.0D
+                && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE) != null
+                && watcherProbe.getAttribute(Attributes.FOLLOW_RANGE).getBaseValue() >= 64.0D
                 && watcherProbe.isPickable();
-        if (watcherProbe != null) watcherProbe.discard();
+        boolean watcherModesReady = watcherProbe != null
+                && "PASSIVE".equals(watcherProbe.getBehaviorModeName());
+        if (watcherProbe != null) {
+            watcherProbe.setBehaviorMode(ThresholdWatcherEntity.BehaviorMode.AGGRESSIVE);
+            watcherModesReady = watcherModesReady
+                    && "AGGRESSIVE".equals(watcherProbe.getBehaviorModeName());
+            watcherProbe.setBehaviorMode(ThresholdWatcherEntity.BehaviorMode.PASSIVE);
+            watcherModesReady = watcherModesReady
+                    && "PASSIVE".equals(watcherProbe.getBehaviorModeName());
+            watcherProbe.discard();
+        }
         System.out.println(watcherAdvancedAiReady
                 ? "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK"
                 : "THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_FAIL");
+        System.out.println(watcherModesReady
+                ? "THRESHOLD_LEVEL0_WATCHER_MODES_READY_OK"
+                : "THRESHOLD_LEVEL0_WATCHER_MODES_READY_FAIL");
+
+        ThresholdPartygoerEntity partygoerProbe = ThresholdEntities.PARTYGOER.get().create(level0);
+        boolean partygoerRespawnHandlerReady = partygoerProbe != null
+                && ThresholdPlayerEvents.isPartygoerDamageSource(
+                        partygoerProbe.damageSources().mobAttack(partygoerProbe));
+        if (partygoerProbe != null) partygoerProbe.discard();
+        System.out.println(partygoerRespawnHandlerReady
+                ? "THRESHOLD_PARTYGOER_RESPAWN_HANDLER_READY_OK"
+                : "THRESHOLD_PARTYGOER_RESPAWN_HANDLER_READY_FAIL");
 
         ThresholdHoundEntity houndProbe = ThresholdEntities.HOUND.get().create(level1);
         boolean houndAdvancedAiReady = houndProbe != null

@@ -337,15 +337,15 @@ def main() -> int:
     assert "partygoer.setTarget(player)" not in director, "Natural Partygoers begin stalking instead of instantly aggroing"
     require(partygoer, "implements GeoEntity", "Partygoer uses GeckoLib entity rendering")
     require(partygoer, "registerControllers", "Partygoer has an animation controller")
-    # Alpha 20 replaced the old short-lived disappearing silhouette with a
-    # bounded, observable stalker. Keep the real expiry and memory budgets.
-    require(watcher, "NATURAL_LIFETIME_TICKS = 600", "natural Watcher has a bounded 30-second lifetime")
+    # Alpha 20 keeps natural Watchers visible longer and makes operator tests persistent.
+    require(watcher, "NATURAL_LIFETIME_TICKS = 1800", "natural Watcher has an extended 90-second lifetime")
     require(watcher, "SHOWCASE_LIFETIME_TICKS = 600", "operator model preview has a bounded lifetime")
-    require(watcher, "TEST_ENCOUNTER_LIFETIME_TICKS = 1200", "active test encounter has a 60-second lifetime")
-    require(watcher, "tickCount > lifetimeLimit", "all Watcher modes eventually expire")
-    require(watcher, "MEMORY_TICKS = 120", "Watcher sightings have a bounded memory duration")
-    require(watcher, "RUSH_COOLDOWN_TICKS = 240", "Watcher rush attacks have a cooldown")
-    require(watcher, "beginFakeReposition", "fake retreat uses a finite navigation state instead of teleporting")
+    require(watcher, "MEMORY_TICKS = 300", "Watcher sightings retain bounded last-known memory")
+    require(watcher, "MAX_PLAYER_DISTANCE = 64.0D", "Watcher sensing radius matches its follow range")
+    require(watcher, "updateUnobservedIdle", "Watcher remains visible when it lacks a valid sighting")
+    require(watcher, "if (!testEncounterMode && tickCount > lifetimeLimit)", "test encounters persist while natural and preview lifetimes remain bounded")
+    require(watcher, "setPersistenceRequired()", "operator Watcher test summons resist distance despawn")
+    require(watcher, "abortFakeReposition()", "failed fake-retreat navigation recovers instead of vanishing")
     require(items, 'register("almond_water"', "Almond Water registry")
     require(items, 'register("flashlight"', "Flashlight registry")
     require(items, 'register("battery"', "Battery registry")
