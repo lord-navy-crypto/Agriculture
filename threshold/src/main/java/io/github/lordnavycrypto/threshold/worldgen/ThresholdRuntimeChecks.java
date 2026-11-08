@@ -290,6 +290,17 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level0VerticalLayout
                 ? "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK"
                 : "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_FAIL");
+        if (!level0VerticalLayout) {
+            System.out.println("THRESHOLD_LEVEL0_VERTICAL_LAYOUT_DEBUG "
+                    + level0.getBlockState(new BlockPos(48, 64, 12)) + " | "
+                    + level0.getBlockState(new BlockPos(48, 68, 16)) + " | "
+                    + level0.getBlockState(new BlockPos(50, 68, 16)) + " | "
+                    + level0.getBlockState(new BlockPos(55, 63, 16)) + " | "
+                    + level0.getBlockState(new BlockPos(55, 58, 11)) + " | "
+                    + level0.getBlockState(new BlockPos(53, 58, 8)) + " | "
+                    + level0.getBlockState(new BlockPos(53, 59, 8)) + " | "
+                    + level0.getBlockState(new BlockPos(56, 62, 8)));
+        }
 
         boolean level1VerticalLayout =
                 level1.getBlockState(new BlockPos(72, 64, 66)).is(Blocks.STONE_BRICK_STAIRS)
@@ -395,6 +406,16 @@ public final class ThresholdRuntimeChecks {
         }
         System.out.println(level1VentilationHallBuilt
                 ? "THRESHOLD_LEVEL1_VENTILATION_HALL_OK" : "THRESHOLD_LEVEL1_VENTILATION_HALL_FAIL");
+        if (!level1VentilationHallBuilt) {
+            StringBuilder ventilationDebug = new StringBuilder();
+            for (int x = 8; x <= 12; x++) {
+                for (int z = 104; z <= 108; z++) {
+                    ventilationDebug.append(" [").append(x).append(',').append(z).append("]=")
+                            .append(level1.getBlockState(new BlockPos(x, 65, z)));
+                }
+            }
+            System.out.println("THRESHOLD_LEVEL1_VENTILATION_HALL_DEBUG" + ventilationDebug);
+        }
 
         boolean level0MezzanineBuilt = false;
         for (int x = 7; x <= 14; x++) {
