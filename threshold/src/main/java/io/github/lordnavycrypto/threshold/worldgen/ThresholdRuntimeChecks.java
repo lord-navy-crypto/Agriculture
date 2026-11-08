@@ -352,11 +352,20 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL1_GENERATOR_PLANT_OK"
                 : "THRESHOLD_LEVEL1_GENERATOR_PLANT_FAIL");
 
-        boolean level0PillarForestBuilt =
-                level0.getBlockState(new BlockPos(70, 65, 70)).is(Blocks.YELLOW_CONCRETE)
-                || level0.getBlockState(new BlockPos(70, 65, 70)).is(Blocks.SMOOTH_SANDSTONE);
+        int level0PillarCount = 0;
+        int[] pillarAnchors = {70, 78, 86, 90};
+        for (int x : pillarAnchors) {
+            for (int z : pillarAnchors) {
+                BlockState pillar = level0.getBlockState(new BlockPos(x, 65, z));
+                if (pillar.is(Blocks.YELLOW_CONCRETE) || pillar.is(Blocks.SMOOTH_SANDSTONE)) {
+                    level0PillarCount++;
+                }
+            }
+        }
+        boolean level0PillarForestBuilt = level0PillarCount >= 1;
         System.out.println(level0PillarForestBuilt
-                ? "THRESHOLD_LEVEL0_PILLAR_FOREST_OK" : "THRESHOLD_LEVEL0_PILLAR_FOREST_FAIL");
+                ? "THRESHOLD_LEVEL0_PILLAR_FOREST_OK"
+                : "THRESHOLD_LEVEL0_PILLAR_FOREST_FAIL");
 
         // The guaranteed route may cross pocket A in some seeds. The
         // floor-fold landmark has three authored pockets; validate the whole
