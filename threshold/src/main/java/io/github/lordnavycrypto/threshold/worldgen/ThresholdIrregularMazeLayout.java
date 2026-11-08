@@ -437,8 +437,10 @@ public final class ThresholdIrregularMazeLayout {
         boolean vertical=Math.abs(dx)==hx && Math.abs(dz)<=hz;
         boolean horizontal=Math.abs(dz)==hz && Math.abs(dx)<=hx;
         if(!vertical && !horizontal)return 0;
-        int northGap=(int)Math.floorMod(hash >>> 43,5L)-2;
-        int sideGap=(int)Math.floorMod(hash >>> 51,5L)-2;
+        // Compact Level 0 openings must not erase the ring's corner piers.
+        int offsetRange=level0?3:5;
+        int northGap=(int)Math.floorMod(hash >>> 43,(long)offsetRange)-offsetRange/2;
+        int sideGap=(int)Math.floorMod(hash >>> 51,(long)offsetRange)-offsetRange/2;
         int width=level0?3:5;
         if(vertical && insideDoorGap(dz,sideGap,width))return 2;
         if(horizontal && insideDoorGap(dx,northGap,width))return 2;

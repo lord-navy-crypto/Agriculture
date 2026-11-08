@@ -211,8 +211,9 @@ def main():
                     hz=(4 if level0 else 5)+(h>>34)%2
                     ox=(h>>10)%5-2
                     oz=(h>>18)%5-2
-                    ng=(h>>43)%5-2
-                    sg=(h>>51)%5-2
+                    offset_range=3 if level0 else 5
+                    ng=(h>>43)%offset_range-offset_range//2
+                    sg=(h>>51)%offset_range-offset_range//2
                     width=3 if level0 else 5
                     def tile(lx,lz):
                         dx,dz=lx-ox,lz-oz
