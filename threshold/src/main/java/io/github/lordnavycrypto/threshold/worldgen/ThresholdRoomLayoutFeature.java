@@ -2371,9 +2371,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     case 26 -> {
                         // Generator plant: four static engine assemblies, exhaust
                         // stacks, overhead copper busbars and protected breaker bays.
+                        // Primary engines are mandatory fixtures; a legacy
+                        // navigation mask must not erase their actual cores.
                         boolean generatorCore = (localX == 10 || localX == 38)
                                 && (localZ == 10 || localZ == 38);
-                        if (!protectedTile && !upperWalkway && generatorCore) {
+                        if (!upperWalkway && generatorCore) {
                             set(world, pos, x, 64, z, Blocks.IRON_BLOCK.defaultBlockState());
                             set(world, pos, x, 65, z, Blocks.FURNACE.defaultBlockState());
                             set(world, pos, x, 66, z, Blocks.COPPER_BLOCK.defaultBlockState());
@@ -2386,7 +2388,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 || localX >= 37 && localX <= 39)
                                 && (localZ >= 9 && localZ <= 11
                                 || localZ >= 37 && localZ <= 39);
-                        if (!protectedTile && !upperWalkway && engineBase) {
+                        if (!protectedTile && !upperWalkway && engineBase && !generatorCore) {
                             if (Math.floorMod(localX + localZ, 2) == 0) {
                                 set(world, pos, x, 64, z, Blocks.SMOOTH_STONE_SLAB.defaultBlockState());
                             }

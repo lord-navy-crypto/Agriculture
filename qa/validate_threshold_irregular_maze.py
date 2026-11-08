@@ -101,6 +101,10 @@ def main():
     assert ".isGuaranteedCorridor(seed, x, z, true)" in feature
     assert ".isGuaranteedCorridor(seed, x, z, false)" in feature
     assert "hasLevel0Divider" in feature and "hasLevel1Divider" in feature
+    # The fixed Level 1 generator-plant landmark cannot lose its furnace core.
+    generator=feature.split("case 26 -> {",1)[1].split("default ->",1)[0]
+    assert "if (!upperWalkway && generatorCore)" in generator
+    assert "engineBase && !generatorCore" in generator
     # Authored sunken conference pit keeps both stairs on every world seed.
     pit=feature.split("case 18 -> {",1)[1].split("case 19 -> {",1)[0]
     assert "!protectedRoute && !upperWalkway" not in pit
