@@ -27,6 +27,13 @@ def main():
     # Every one of the 404 foods has an explicit water/salt profile. The only
     # additional entries are drinks that are not part of the nutrient catalog.
     assert set(foods).issubset(water_foods)
+    hydration_only = {
+        "gugugaga:raw_water_bottle",
+        "gugugaga:boiled_water_bottle",
+        "gugugaga:filtered_water_bottle",
+    }
+    assert hydration_only.isdisjoint(foods)
+    assert hydration_only.issubset(water_foods)
     assert len(water_foods) >= len(foods) + 4
 
     # Per-food override values always resolve to a real index and are bounded.
@@ -66,12 +73,19 @@ def main():
     assert "WaterSaltProfilesV37.sodium(name)" in water
     assert "public static boolean hasProfile(String id)" in water_profiles
     assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip_source
+    assert "HYDRATION_ONLY" in parser
+    assert "isHydrationOnly(String itemId)" in parser
+    assert "if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];" in parser
+    assert "NutritionProfilesV35.isHydrationOnly(id)" in nutrition
+    assert "NutritionProfilesV35.isHydrationOnly(itemId)" in tooltip
+    assert "tooltip.gugugaga.hydration_only" in tooltip
     assert "NutritionPhysiologyV39.linked(i)" in tooltip
     assert "WaterSaltProfilesV37.water(itemId)" in tooltip
     assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
     for locale in ("en_us.json", "zh_cn.json"):
         lang = json.loads((LANG / locale).read_text("utf-8"))
         assert lang.get("tooltip.gugugaga.nutrition_balance"), locale
+        assert lang.get("tooltip.gugugaga.hydration_only"), locale
         assert lang.get("tooltip.gugugaga.nutrition_daily"), locale
     print("BACKROOM_NUTRITION_V4_2_PASS: 404 foods, 40 curated overrides, complete water/salt coverage, common clock")
 
