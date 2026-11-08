@@ -71,6 +71,10 @@ public final class CropClimate {
     }
     /** Returns if one normal vanilla growth roll is permitted; does not force chunk loads. */
     public static boolean allowGrowth(String seedName, ServerLevel level, BlockPos pos, RandomSource random) {
+        // Level 1 greenhouse: farmland, block light and freshwater enable sustainable growth.
+        if (BackroomCultivationV40.isLevel1(level)) {
+            return BackroomCultivationV40.allowGrowth(seedName, level, pos, random);
+        }
         if (FoodEcologyV33Climate.isNewCrop(seedName)) {
             return FoodEcologyV33Climate.allowGrowth(seedName, level, pos, random);
         }

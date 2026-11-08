@@ -3,7 +3,8 @@
   "textures": {
     "stone": "minecraft:block/polished_andesite",
     "water": "minecraft:block/water_still",
-    "salt": "minecraft:block/calcite"
+    "salt": "minecraft:block/calcite",
+    "motion": "gugugaga:block/kitchen_motion/salt_pan_crystals"
   },
   "elements": [
     {
@@ -179,7 +180,7 @@
       ],
       "faces": {
         "up": {
-          "texture": "#salt"
+          "texture": "#motion"
         },
         "down": {
           "texture": "#salt"

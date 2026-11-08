@@ -8,15 +8,18 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "3.10.0-rc.1"
+VERSION = "4.0.0-alpha.1"
 build_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "build/libs"
 props = (ROOT / "gradle.properties").read_text(encoding="utf-8")
 template = (ROOT / "src/main/templates/META-INF/neoforge.mods.toml").read_text(encoding="utf-8")
 readme = (ROOT / "README.md").read_text(encoding="utf-8")
 assert f"mod_version={VERSION}" in props
 assert "Gugu-Gaga-horror" not in template
+assert "mod_name=Backroom Agriculture" in props
+assert 'displayName="${mod_name}"' in template
+assert "Backroom Agriculture" in template
 assert "ten plantable crops" not in template.lower()
-assert "100 plantable crops" in template
+assert "100 plantable crops" in template and "108 plantable crops" in template
 assert "50 honey varieties" in template
 assert "Fusion" in template
 assert "100 plantable crops" in readme
@@ -28,8 +31,10 @@ with zipfile.ZipFile(jar) as source:
     assert source.testzip() is None, "mod JAR has invalid ZIP CRC"
     info = source.read("META-INF/neoforge.mods.toml").decode("utf-8")
 assert f'version="{VERSION}"' in info, f"JAR embedded version not {VERSION}"
+assert 'displayName="Backroom Agriculture"' in info
+assert info.count("[[mods]]") == 1
 assert 'modId="gugugaga"' in info
 assert "100 plantable crops" in info and "50 honey varieties" in info
 assert "https://github.com/lord-navy-crypto/Agriculture" in info
 assert "ten plantable crops" not in info.lower()
-print(f"RELEASE_METADATA_V2_7_PASS: {jar.name}, version {VERSION}, updated content and URLs.")
+print(f"BACKROOM_AGRICULTURE_RELEASE_METADATA_PASS: {jar.name}, version {VERSION}.")

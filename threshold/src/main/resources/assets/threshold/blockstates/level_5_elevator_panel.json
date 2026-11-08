@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "floor=1": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=2": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=3": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=4": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=5": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=6": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=7": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=8": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=9": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=10": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=11": {
+      "model": "minecraft:block/iron_block"
+    },
+    "floor=12": {
+      "model": "minecraft:block/iron_block"
+    }
+  }
+}

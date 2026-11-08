@@ -204,21 +204,56 @@ tasks.register('generateFusionVisualPack') {
         List<File> cropFiles = project.fileTree(cropSourceRoot).matching { include '*.png' }.files.toList().sort { a, b -> a.name <=> b.name }
         if (cropFiles.size() != 1200)
             throw new GradleException('Expected 1200 generated crop-stage textures for Fusion overlays, found ' + cropFiles.size())
-        def shadeArgb = { int argb, double factor ->
-            int alpha=(argb >>> 24) & 255
-            if (alpha == 0) return 0
-            int red=(int)Math.max(0,Math.min(255,Math.round(((argb >>> 16) & 255) * factor)))
-            int green=(int)Math.max(0,Math.min(255,Math.round(((argb >>> 8) & 255) * factor)))
-            int blue=(int)Math.max(0,Math.min(255,Math.round((argb & 255) * factor)))
-            (alpha << 24) | (red << 16) | (green << 8) | blue
-        }
-        def cropVariant = { BufferedImage source, int variant ->
+        // Four deterministic botanical treatments. Unlike the old mirror/brightness-only
+        // pass, variants now add restrained leaf-vein highlights and shadow pixels while
+        // preserving the source alpha silhouette and each crop's underlying species art.
+        def cropVariant = { BufferedImage source, int variant, String textureName ->
             BufferedImage tile = new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB)
             boolean mirror = variant == 1 || variant == 3
-            double factor = variant == 0 ? 1.0d : variant == 1 ? 1.04d : variant == 2 ? 0.90d : 1.10d
+            double factor = variant == 0 ? 1.0d : variant == 1 ? 1.025d : variant == 2 ? 0.965d : 1.045d
+            int textureSeed = 0
+            textureName.getBytes('UTF-8').each { byte value ->
+                textureSeed = (textureSeed + (value & 0xFF)) & 0x7FFFFFFF
+            }
             for (int y=0;y<16;y++) for (int x=0;x<16;x++) {
                 int sourceX = mirror ? 15-x : x
-                tile.setRGB(x,y,(int)shadeArgb.call(source.getRGB(sourceX,y),factor))
+                int argb = source.getRGB(sourceX,y)
+                int alpha = (argb >>> 24) & 255
+                if (alpha == 0) {
+                    tile.setRGB(x,y,0)
+                    continue
+                }
+                int sourceRed = (argb >>> 16) & 255
+                int sourceGreen = (argb >>> 8) & 255
+                int sourceBlue = argb & 255
+                boolean foliage = sourceGreen > sourceRed * 1.10d
+                        && sourceGreen > sourceBlue * 1.05d
+                double redFactor = factor
+                double greenFactor = factor
+                double blueFactor = factor
+                if (foliage && variant == 1
+                        && Math.floorMod(x * 7 + y * 11 + textureSeed + variant * 17, 19) == 0) {
+                    redFactor *= 0.96d
+                    greenFactor *= 1.10d
+                    blueFactor *= 0.97d
+                } else if (foliage && variant == 2
+                        && Math.floorMod(x * 7 + y * 11 + textureSeed + variant * 17, 17) == 0) {
+                    redFactor *= 0.82d
+                    greenFactor *= 0.84d
+                    blueFactor *= 0.82d
+                } else if (foliage && variant == 3
+                        && Math.floorMod(x * 7 + y * 11 + textureSeed + variant * 17, 13) == 0) {
+                    redFactor *= 1.03d
+                    greenFactor *= 1.10d
+                    blueFactor *= 0.98d
+                }
+                int redOffset = variant == 1 ? -1 : variant == 2 ? 1 : variant == 3 ? -1 : 0
+                int greenOffset = variant == 1 ? 1 : variant == 2 ? -1 : variant == 3 ? 2 : 0
+                int blueOffset = variant == 1 ? -1 : variant == 2 ? 1 : variant == 3 ? 1 : 0
+                int red = (int)Math.max(0,Math.min(255,Math.round(sourceRed * redFactor) + redOffset))
+                int green = (int)Math.max(0,Math.min(255,Math.round(sourceGreen * greenFactor) + greenOffset))
+                int blue = (int)Math.max(0,Math.min(255,Math.round(sourceBlue * blueFactor) + blueOffset))
+                tile.setRGB(x,y,(alpha << 24) | (red << 16) | (green << 8) | blue)
             }
             tile
         }
@@ -228,7 +263,7 @@ tasks.register('generateFusionVisualPack') {
                 throw new GradleException('Crop stage source must be 16x16: ' + sourceFile.name)
             BufferedImage atlas = new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB)
             for (int variant=0;variant<4;variant++) {
-                BufferedImage tile=cropVariant.call(sourceImage,variant)
+                BufferedImage tile=cropVariant.call(sourceImage,variant,sourceFile.name)
                 int ox=(variant%2)*16, oy=variant.intdiv(2)*16
                 for (int y=0;y<16;y++) for (int x=0;x<16;x++)
                     atlas.setRGB(ox+x,oy+y,tile.getRGB(x,y))
@@ -265,7 +300,7 @@ tasks.register('generateFusionVisualPack') {
             cropGraphics.setColor(new Color(238,240,232,255))
             cropGraphics.drawString(sourceFile.name.replace('_stage7.png',''),x+4,y+12)
             for(int variant=0;variant<4;variant++) {
-                BufferedImage tile=cropVariant.call(sourceImage,variant)
+                BufferedImage tile=cropVariant.call(sourceImage,variant,sourceFile.name)
                 cropGraphics.drawImage(tile,x+78+variant*36,y+18,32,32,null)
             }
         }
@@ -287,7 +322,7 @@ tasks.register('generateFusionVisualPack') {
                     throw new GradleException('Marine/fungal stage source must be 16x16: '+category+'/'+sourceFile.name)
                 BufferedImage atlas=new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB)
                 for(int variant=0;variant<4;variant++) {
-                    BufferedImage tile=cropVariant.call(sourceImage,variant)
+                    BufferedImage tile=cropVariant.call(sourceImage,variant,sourceFile.name)
                     int ox=(variant%2)*16,oy=variant.intdiv(2)*16
                     for(int y=0;y<16;y++) for(int x=0;x<16;x++)
                         atlas.setRGB(ox+x,oy+y,tile.getRGB(x,y))
@@ -328,7 +363,7 @@ tasks.register('generateFusionVisualPack') {
             marineGraphics.setColor(new Color(238,240,232,255))
             marineGraphics.drawString(entry.category+'/'+sourceFile.name.replace('_stage3.png',''),x+4,y+12)
             for(int variant=0;variant<4;variant++) {
-                BufferedImage tile=cropVariant.call(sourceImage,variant)
+                BufferedImage tile=cropVariant.call(sourceImage,variant,sourceFile.name)
                 marineGraphics.drawImage(tile,x+78+variant*36,y+18,32,32,null)
             }
         }

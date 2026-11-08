@@ -54,6 +54,11 @@ public final class NutritionPhysiologyV39 {
     public static int requiredDays(int i) {
         return LATENCY[i];
     }
+    /** Abstract food points needed to meet one in-game day of this reserve. */
+    public static int dailyTarget(int i) {
+        if (i < 0 || i >= COUNT) throw new IndexOutOfBoundsException("nutrient index " + i);
+        return TARGET[i];
+    }
     private static String key(int i) {return NutritionProfilesV35.NUTRIENTS[i];}
     private static int clamp(int value) {return Math.max(0,Math.min(100,value));}
     private static int clampDays(int days) {return Math.max(0,Math.min(60,days));}

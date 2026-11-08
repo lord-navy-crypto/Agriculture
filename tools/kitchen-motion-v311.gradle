@@ -1,0 +1,118 @@
+import groovy.json.JsonOutput
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+/*
+ * Deterministic four-frame visual atlases for active kitchen equipment,
+ * fermentation surfaces and evaporating brine. These are ordinary animated
+ * textures: no block entities, renderer hooks, server particle loops or scans.
+ */
+def motionAssets = layout.buildDirectory.dir('generated/resources/kitchenMotionV311')
+sourceSets.main.resources.srcDir(motionAssets)
+
+tasks.register('generateKitchenMotionV311') {
+    outputs.dir(motionAssets)
+    outputs.file(layout.buildDirectory.file('reports/agriculture/agriculture-motion-v311-contact-sheet.png'))
+    doLast {
+        File root = motionAssets.get().asFile
+        project.delete(root)
+        root.mkdirs()
+        def colors = [
+            dough_bench:[base:0xBCA57C, dark:0x927B58, light:0xE5D4A9, detail:0xF8EDCC],
+            skillet_station:[base:0x3D3834, dark:0x242626, light:0x745945, detail:0xE3A25A],
+            bamboo_steamer:[base:0xAE8754, dark:0x755936, light:0xD7B47B, detail:0xE4D9B6],
+            fermentation_vat_stage1:[base:0x79523B, dark:0x493025, light:0xB78B5A, detail:0xE0B77D],
+            fermentation_vat_stage2:[base:0x9A913E, dark:0x5E592A, light:0xD5C66A, detail:0xF1E7A2],
+            fermentation_vat_stage3:[base:0x526B3B, dark:0x2E4328, light:0x8BAA60, detail:0xC5D88A],
+            salt_pan_brine:[base:0x4D8796, dark:0x28525D, light:0x85C8D1, detail:0xD8F2EC],
+            salt_pan_concentrated:[base:0x82958A, dark:0x465A51, light:0xCBD8BE, detail:0xF1E7BB],
+            salt_pan_crystals:[base:0xC9C8BA, dark:0x7D8179, light:0xE6E3D2, detail:0xFFFFFF],
+            bee_habitat_active:[base:0x30251C, dark:0x17120E, light:0x66503A, detail:0xE5C76A]
+        ]
+        int rows = colors.size()
+        BufferedImage sheet = new BufferedImage(256, rows * 64, BufferedImage.TYPE_INT_ARGB)
+        for (int y=0;y<sheet.height;y++) for (int x=0;x<sheet.width;x++)
+            sheet.setRGB(x,y,(int)0xFF26302A)
+        colors.eachWithIndex { String id, Map pal, int row ->
+            BufferedImage atlas = new BufferedImage(16, 64, BufferedImage.TYPE_INT_ARGB)
+            for (int frame=0;frame<4;frame++) {
+                for (int y=0;y<16;y++) for (int x=0;x<16;x++) {
+                    int rgb = pal.base
+                    boolean rim = x<2 || x>13 || y<2 || y>13
+                    if (rim) rgb = pal.dark
+                    else if ((x+2*y)%7==0) rgb = pal.light
+
+                    if (id=='dough_bench') {
+                        int ridge = 4 + frame*2
+                        if (Math.abs(x-ridge)<=1 && y>=4 && y<=11)
+                            rgb = Math.abs(x-ridge)==0 ? pal.detail : pal.light
+                        if (x>=3 && x<=12 && y>=5 && y<=10 && (x+y+frame)%11==0)
+                            rgb = pal.dark
+                    } else if (id=='skillet_station') {
+                        if (x>=3 && x<=12 && y>=3 && y<=12 && (x*7+y*11+frame*5)%17==0)
+                            rgb=pal.detail
+                        if (x>=4 && x<=11 && y>=4 && y<=11 && (x*3+y*5+frame*3)%13==0)
+                            rgb=pal.light
+                    } else if (id=='bamboo_steamer') {
+                        if (x>=2 && x<=13 && y>=2 && y<=13 && ((x+y)%5==0))
+                            rgb=pal.light
+                        if (x>=3 && x<=12 && y>=3 && y<=12 && (x*5+y*7+frame*11)%19==0)
+                            rgb=pal.detail
+                    } else if (id.startsWith('fermentation_vat')) {
+                        // Rising bubbles and small surface rings; each maturation stage
+                        // has its own palette but retains the same slow motion cadence.
+                        int bubbleX = 3 + ((frame*3 + (id.endsWith('stage2') ? 2 : id.endsWith('stage3') ? 4 : 0)) % 10)
+                        int bubbleY = 4 + ((frame*2 + x) % 8)
+                        if (Math.abs(x-bubbleX)<=1 && Math.abs(y-bubbleY)<=1)
+                            rgb = (x==bubbleX && y==bubbleY) ? pal.detail : pal.light
+                        if (y>=5 && y<=12 && ((x + frame*2 + y/3) % 7 == 0))
+                            rgb = pal.light
+                    } else if (id=='salt_pan_brine') {
+                        // Broad, low-contrast ripple bands across the brine.
+                        int ripple = (x + frame*2 + (y/4)) % 7
+                        if (y>=4 && y<=11 && (ripple==0 || ripple==1))
+                            rgb = ripple==0 ? pal.detail : pal.light
+                    } else if (id=='salt_pan_concentrated') {
+                        // Denser, slower highlights as the brine concentrates.
+                        if (x>=3 && x<=12 && y>=3 && y<=12 && (x*5+y*3+frame*2)%13==0)
+                            rgb = pal.detail
+                        if (x>=3 && x<=12 && y>=3 && y<=12 && (x*7+y*5+frame)%9==0)
+                            rgb = pal.light
+                    } else if (id=='salt_pan_crystals') {
+                        // A restrained crystal glint; the crystal bed stays in place.
+                        if ((x*5+y*7+frame*3)%23==0)
+                            rgb = pal.detail
+                        if ((x*3+y*11+frame*2)%29==0)
+                            rgb = pal.light
+                    } else if (id=='bee_habitat_active') {
+                        // The entrance remains dark; a few pollen-colored motes drift
+                        // across the inner aperture only at the maximum activity state.
+                        if (x>=4 && x<=11 && y>=4 && y<=11 && (x*5+y*7+frame*9)%29==0)
+                            rgb = pal.detail
+                        else if (x>=4 && x<=11 && y>=4 && y<=11 && (x*3+y*11+frame*5)%17==0)
+                            rgb = pal.light
+                    }
+
+                    int pixel=(int)(0xFF000000L | (rgb & 0xFFFFFF))
+                    atlas.setRGB(x,y+frame*16,pixel)
+                    for (int dy=0;dy<4;dy++) for (int dx=0;dx<4;dx++)
+                        sheet.setRGB(frame*64+x*4+dx,row*64+y*4+dy,pixel)
+                }
+            }
+            File out=new File(root,'assets/gugugaga/textures/block/kitchen_motion/'+id+'.png')
+            out.parentFile.mkdirs()
+            if(!ImageIO.write(atlas,'png',out))
+                throw new GradleException('Cannot encode animated texture '+id)
+            new File(out.path+'.mcmeta').setText(JsonOutput.prettyPrint(
+                JsonOutput.toJson([animation:[frametime:2,interpolate:false,frames:[0,1,2,3]]]))+'\n','UTF-8')
+        }
+        File preview=layout.buildDirectory.file('reports/agriculture/agriculture-motion-v311-contact-sheet.png').get().asFile
+        preview.parentFile.mkdirs()
+        if(!ImageIO.write(sheet,'png',preview))
+            throw new GradleException('Cannot save agriculture animation proof sheet')
+        logger.lifecycle("AGRICULTURE_MOTION_V311_OK: ${colors.size()} four-frame textures and one review sheet generated.")
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateKitchenMotionV311')
+}

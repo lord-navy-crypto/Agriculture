@@ -64,6 +64,27 @@ public final class AgricultureCropBlock extends CropBlock {
                 ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID, seedName));
     }
 
+    /**
+     * Only flowering pollination-eligible crops emit a rare floral cue. Once
+     * genuinely pollinated, a distinct very-low-rate marker represents the
+     * saved POLLINATED state. Ambient pollen never sets that state.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (pollinationGroup == PollinationGroup.NONE
+                || state.getValue(AGE) < 4 || random.nextInt(72) != 0) {
+            return;
+        }
+        double x = pos.getX() + 0.32D + random.nextDouble() * 0.36D;
+        double y = pos.getY() + 0.55D + random.nextDouble() * 0.27D;
+        double z = pos.getZ() + 0.32D + random.nextDouble() * 0.36D;
+        if (state.getValue(POLLINATED)) {
+            level.addParticle(ParticleTypes.HAPPY_VILLAGER, x, y, z, 0, 0.005D, 0);
+        } else if (!level.isRainingAt(pos.above())) {
+            level.addParticle(ParticleTypes.FALLING_NECTAR, x, y, z, 0, 0.0D, 0);
+        }
+    }
+
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // Weather, biome and irrigation control vegetative growth, not whether a bee

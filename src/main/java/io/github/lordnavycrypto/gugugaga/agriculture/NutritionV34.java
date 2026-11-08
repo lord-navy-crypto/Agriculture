@@ -67,6 +67,7 @@ public final class NutritionV34 {
         if (!food.has(DataComponents.FOOD)) return;
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
                 .getKey(food.getItem()).toString();
+        if (NutritionProfilesV35.isHydrationOnly(id)) return;
         int[] contribution=NutritionProfilesV35.contribution(id);
         CompoundTag values=record(player);
         // Ingest is an input to the next daily reserve update, NOT an
@@ -84,7 +85,7 @@ public final class NutritionV34 {
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
         NutritionPhysiologyV39.advance(values,
-                Math.floorDiv(player.level().getDayTime(),24000L));
+                Math.floorDiv(player.getServer().overworld().getDayTime(),24000L));
         // Each of the 27 nutrition indicators has an explicit positive and
         // low-reserve potion mapping. Resolve overlaps in the effect matrix.
         NutritionFeedbackV38.apply(player,values,false);
@@ -128,9 +129,10 @@ public final class NutritionV34 {
         player.sendSystemMessage(Component.translatable("message.gugugaga.v35_title",
                 page+1,PAGE_COUNT,Component.translatable(
                     "message.gugugaga.v35_page_"+page)));
+        int[] scores = snapshot(player);
         for(int i=range[0];i<range[1];i++) {
             String nutrient=NutritionProfilesV35.NUTRIENTS[i];
-            int score=clamp(values.getInt(nutrient));
+            int score=clamp(scores[i]);
             String bar="■".repeat(score/10)+"·".repeat(10-score/10);
             player.sendSystemMessage(Component.translatable(
                     "message.gugugaga.v34_nutrition_row",

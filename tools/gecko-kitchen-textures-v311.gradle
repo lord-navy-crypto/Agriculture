@@ -1,0 +1,65 @@
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
+
+/*
+ * Deterministic 64x64 four-material atlases for the GeckoLib kitchen rigs.
+ * Each 16x16 column is one material region. No runtime image generation.
+ */
+def geckoKitchenAssets = layout.buildDirectory.dir('generated/resources/geckoKitchenV311')
+sourceSets.main.resources.srcDir(geckoKitchenAssets)
+
+def geckoPalettes = [
+    kneading_bench: [
+        [0xA87843,0x80542F,0xC39158,0x69452B,0xB7834B,0x956238,0xD0A06A,0x754A2C],
+        [0xE5D9BD,0xC5B99E,0xF4EBD8,0xD5C8AB,0xBFB397,0xEEE3CC,0xDCCFB5,0xAFA48C],
+        [0x858B8B,0xB8BDB9,0x666D70,0xD2D5CE,0x979D9B,0x747B7D,0xC5CAC5,0x596164],
+        [0xD9B77E,0xF0D8A5,0xB99460,0xE5C98F,0xC9A96F,0xF5E2B6,0xA98555,0xEBD09A]
+    ],
+    skillet_station: [
+        [0x98633A,0x704629,0xB47B49,0xC18A55,0x80502E,0xA86F40,0xD09A61,0x694329],
+        [0x42494D,0x626B70,0x30383C,0x858D90,0x50595E,0x747D80,0x252D31,0x9AA0A0],
+        [0xB47A3D,0xD49B52,0x87512E,0xE4B968,0x9B6338,0xC88B48,0x6E452D,0xF0CC83],
+        [0x5A4635,0x806247,0x3D3027,0x98734F,0x6C523D,0xA27C55,0x49382B,0xB18B61]
+    ],
+    bamboo_steamer: [
+        [0xB58A4E,0xD2AD6B,0x8D693B,0xC39A5A,0xA77D43,0xDDBB7B,0x785A34,0xCBA365],
+        [0x80613A,0xA17B49,0x654B2D,0xB18C55,0x916D3E,0x725431,0xBD985D,0x59432B],
+        [0xA8A49A,0xD0C9B8,0x777B79,0xE2DCCB,0x8E918B,0xBDB7A8,0x686E6B,0xF0E8D5],
+        [0xA87843,0x80542F,0xC39158,0x69452B,0xB7834B,0x956238,0xD0A06A,0x754A2C]
+    ]
+]
+
+tasks.register('generateGeckoKitchenTexturesV311') {
+    outputs.dir(geckoKitchenAssets)
+    doLast {
+        File root = geckoKitchenAssets.get().asFile
+        project.delete(root)
+
+        geckoPalettes.each { profile, palettes ->
+            BufferedImage image = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB)
+            for (int y = 0; y < 64; y++) {
+                for (int x = 0; x < 64; x++) {
+                    int tile = x / 16
+                    int lx = x % 16
+                    int ly = y % 16
+                    def palette = palettes[tile]
+                    int pattern = (lx * 7 + ly * 3 + (int)(ly / 3)) % palette.size()
+                    int rgb = palette[pattern] as int
+                    if (tile == 0 && ly % 6 == 0) rgb = palette[(pattern + 2) % palette.size()] as int
+                    if (tile == 1 && lx % 7 == 0) rgb = palette[(pattern + 3) % palette.size()] as int
+                    if (tile == 2 && ly % 4 == 0) rgb = palette[(pattern + 1) % palette.size()] as int
+                    if (tile == 3 && (lx * 5 + ly * 11) % 23 == 0) rgb = palette[(pattern + 4) % palette.size()] as int
+                    image.setRGB(x, y, (int)(0xFF000000L | (rgb & 0xFFFFFF)))
+                }
+            }
+            File texture = new File(root, "assets/gugugaga/textures/entity/${profile}.png")
+            texture.parentFile.mkdirs()
+            if (!ImageIO.write(image, 'png', texture))
+                throw new GradleException("Unable to generate GeckoLib texture for ${profile}")
+        }
+        logger.lifecycle('GECKOLIB_KITCHEN_TEXTURES_V311_OK: three 64x64 four-material atlases generated.')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateGeckoKitchenTexturesV311')
+}

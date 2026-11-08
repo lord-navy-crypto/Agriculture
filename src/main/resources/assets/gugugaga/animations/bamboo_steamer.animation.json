@@ -1,0 +1,94 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.bamboo_steamer.idle": {
+      "loop": true,
+      "animation_length": 2,
+      "bones": {
+        "lid": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "1.0": {
+              "vector": [
+                0,
+                1,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "2.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "animation.bamboo_steamer.work": {
+      "loop": true,
+      "animation_length": 0.8,
+      "bones": {
+        "lid": {
+          "position": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.4": {
+              "vector": [
+                0,
+                1.6,
+                0
+              ],
+              "easing": "easeOutSine"
+            },
+            "0.8": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInSine"
+            }
+          },
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.4": {
+              "vector": [
+                4,
+                0,
+                0
+              ]
+            },
+            "0.8": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

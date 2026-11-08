@@ -5,7 +5,8 @@
     "particle": "minecraft:block/bamboo_planks",
     "wood": "minecraft:block/bamboo_planks",
     "accent": "minecraft:block/stripped_bamboo_block",
-    "metal": "minecraft:block/iron_block"
+    "metal": "minecraft:block/iron_block",
+    "motion": "gugugaga:block/kitchen_motion/bamboo_steamer"
   },
   "elements": [
     {
@@ -120,7 +121,7 @@
           "texture": "#accent"
         },
         "up": {
-          "texture": "#accent"
+          "texture": "#motion"
         },
         "north": {
           "texture": "#accent"

@@ -935,6 +935,70 @@
     "gugugaga:dulse_crop": {
       "chance": 0.3,
       "can_villager_compost": false
+    },
+    "gugugaga:black_pepper_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:black_pepper": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:lemongrass_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:lemongrass": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:wasabi_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:wasabi": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cumin_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cumin": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:cardamom_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:cardamom": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:fenugreek_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:fenugreek": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:sugar_beet_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:sugar_beet": {
+      "chance": 0.65,
+      "can_villager_compost": false
+    },
+    "gugugaga:daikon_seeds": {
+      "chance": 0.3,
+      "can_villager_compost": false
+    },
+    "gugugaga:daikon": {
+      "chance": 0.65,
+      "can_villager_compost": false
     }
   }
 }

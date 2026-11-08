@@ -1,8 +1,8 @@
-# Gugu Gaga Agriculture & Apiaries
+# Backroom Agriculture（后室农业）
 
-A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
+A unified agriculture and liminal-horror survival mod for **Minecraft 1.21.1 / NeoForge 21.1.259+ / Java 21**.
 
-## Current content (v3.9 evidence-informed nutrition release candidate)
+## Current content (v4.0 unified release candidate)
 
 - **108 plantable crops** in total. The original **100 plantable crops** retain their existing seed, produce, eight-stage visuals and pollen-marked reproductive resources; **eight new spice/vegetable crops** are added with independent seed items, eight-stage textures, and harvest recipes.
 - Original 100-crop generator remains untouched. The eight new v3.3 crop lines use a separate art pipeline and climate profile adapter.
@@ -16,13 +16,22 @@ A farming, food, beekeeping, marine-plant, and fungi expansion for **Minecraft 1
 - Four organized Creative Mode tabs: Agriculture, Beekeeping, Cuisine, and Marine & Fungi.
 - English and Chinese item names.
 
+## Backrooms and sustainable survival (v4.0)
+
+- Agriculture and THRESHOLD compile into one NeoForge mod and one distributable JAR named **Backroom Agriculture**. Level 0 through Level 5, agriculture, food, water, salt, nutrition, bees, and kitchen systems share one runtime.
+- The 27-indicator food catalog covers 404 food resource IDs. The v4.1 review reclassifies 24 formerly generic foods and fine-tunes 40 specific food profiles. Hovering an edible item shows the three strongest daily nutrient contributors; hold Shift for the full nonzero list. Hydration and sodium are shown separately from the water/salt catalog, matching the actual instant-use balance system. Uncatalogued third-party foods use an explicitly marked neutral fallback.
+- Nutrition day rollover uses the server Overworld clock, not the current dimension's local day, so crossing Backrooms dimensions does not reset the reserve-update schedule.
+- Level 0/1 geography now prioritizes intact walls and mixed-width openings. Room fusion is intentionally uncommon (1% / 4% candidate adjacency), with rare 7–10-block apertures, short partitions and preserved landmark access.
+- Level 1 greenhouse crops use a stable rule: farmland, adequate block light, and nearby source water. A composter beside the starter planter lets players recycle seeds and crop residues into bone meal, closing the seed → crop → food/nutrition → compost → crop loop.
+- GeckoLib and Lithostitched are required runtime dependencies for animated details and composite world generation. Fusion remains optional.
+
 ## Optional Fusion visual enhancement
 
-The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**.
+The base mod uses standard Minecraft PNG and JSON resources and **does not require Fusion**. The historical `gugugaga:` and `threshold:` registry namespaces are intentionally retained for existing-world compatibility; players install one mod.
 
-**One downloadable Gugu Gaga JAR includes both standard art and the full enhanced Fusion pack.** Its 1,240 stage-model overrides retain original crop/plant model geometry and are kept under the embedded `resourcepacks/fusion/` directory, separate from the default vanilla-compatible assets.
+**One downloadable Backroom Agriculture JAR includes both standard art and the full enhanced Fusion pack.** Its 1,240 stage-model overrides retain original crop/plant model geometry and are kept under the embedded `resourcepacks/fusion/` directory, separate from the default vanilla-compatible assets.
 
-1. Install **only the Gugu Gaga Agriculture JAR** in `mods` for all standard visuals and gameplay.
+1. Install **only the Backroom Agriculture JAR** in `mods` for all standard visuals and gameplay.
 2. **Optional:** install [Fusion (Connected Textures)](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) for NeoForge 1.21.1 in the client's `mods` folder. When Fusion is present, the already-bundled enhanced visuals automatically activate. There is no second Agriculture resource pack to install or enable.
 3. Without Fusion, the advanced pack is never registered, so all original vanilla-compatible models and textures are used.
 
@@ -73,3 +82,6 @@ GitHub Actions additionally checks agricultural resources, crop/seed visual audi
 - [v3.5 comprehensive gameplay nutrition: 27 indicators, 403 foods, N-key graphical panel and saved-data migration](docs/FULL_NUTRITION_V3_5.md)
 - [v3.6 32-day lunar seasons: 4×8 days, habitat-specific calendars, greenhouse overwintering](docs/LUNAR_SEASONS_V3_6.md)
 - [v3.7 fixed nutrition inventory button, survival drinking water, hydration and sodium balance](docs/WATER_AND_SALT_V3_7.md)
+
+- Level 0/1 room entrances now use deterministic variable-width openings on both the legacy room grid and the Voronoi overlay. Interior partitions form jogged subrooms, cross-corridors, side returns and wider industrial loading gaps; most walls meet the ceiling, with a minority of partial-height dividers.
+- Food tooltips now show abstract per-item points alongside the game-day target, sort by target coverage, and label third-party water/salt fallback values explicitly. The legacy chat view shares the same authoritative nutrition snapshot as the GUI.

@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Explicit, shipped food-to-game-nutrient catalog. All numbers are small game
@@ -27,6 +28,12 @@ public final class NutritionProfilesV35 {
         "calcium","iron","magnesium","potassium","zinc","iodine",
         "selenium","phosphorus","sodium"
     };
+    // Drink-only bottles are handled exclusively by WaterSaltV37. They must
+    // never receive the neutral fallback food contribution.
+    private static final Set<String> HYDRATION_ONLY = Set.of(
+            "gugugaga:raw_water_bottle",
+            "gugugaga:boiled_water_bottle",
+            "gugugaga:filtered_water_bottle");
     private static final Map<String, int[]> VALUES=load();
 
     private static Map<String,int[]> load() {
@@ -66,6 +73,28 @@ public final class NutritionProfilesV35 {
                 }
                 result.put(entry.getKey(),values);
             }
+            // Optional per-food gameplay adjustments preserve the old catalog
+            // keys but distinguish crops and prepared meals within a category.
+            // Water and sodium are intentionally excluded: the separate water
+            // balance table is the sole source of those contributions.
+            if (doc.has("overrides")) {
+                for (Map.Entry<String,JsonElement> food
+                        : doc.getAsJsonObject("overrides").entrySet()) {
+                    int[] values = result.get(food.getKey());
+                    if (values == null)
+                        throw new IllegalStateException("Override refers to unknown food: " + food.getKey());
+                    for (Map.Entry<String,JsonElement> field
+                            : food.getValue().getAsJsonObject().entrySet()) {
+                        int nutrient = index(field.getKey());
+                        int points = field.getValue().getAsInt();
+                        if (nutrient < 0 || nutrient == 4 || nutrient == 26
+                                || points < 0 || points > 10)
+                            throw new IllegalStateException("Invalid per-food game nutrition override: "
+                                    + food.getKey() + " / " + field.getKey());
+                        values[nutrient] = points;
+                    }
+                }
+            }
             if(result.size()<400) throw new IllegalStateException("Incomplete food catalog");
             return Map.copyOf(result);
         } catch (Exception e) {
@@ -77,6 +106,7 @@ public final class NutritionProfilesV35 {
         return -1;
     }
     public static int[] contribution(String itemId) {
+        if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];
         int[] values=VALUES.get(itemId);
         if(values==null) {
             // Unknown edible modded foods count towards broad gameplay variety
@@ -87,5 +117,7 @@ public final class NutritionProfilesV35 {
         }
         return Arrays.copyOf(values,values.length);
     }
+    public static boolean hasProfile(String itemId) { return VALUES.containsKey(itemId); }
+    public static boolean isHydrationOnly(String itemId) { return HYDRATION_ONLY.contains(itemId); }
     public static int catalogSize() {return VALUES.size();}
 }

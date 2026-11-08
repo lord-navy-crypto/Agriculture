@@ -36,6 +36,13 @@ def main():
     assert "KitchenV3Content.ITEMS.getEntries()" in tab
     assert "BooleanProperty.create(\"active\")" in animation
     assert "level.scheduleTick(pos, this, 10)" in animation
+    assert "public void animateTick(" in animation
+    assert "state.getValue(ACTIVE)" in animation
+    assert "ParticleTypes.POOF" in animation
+    assert "ParticleTypes.SMOKE" in animation
+    assert "ParticleTypes.FLAME" in animation
+    assert "ParticleTypes.CAMPFIRE_COSY_SMOKE" in animation
+    assert "random.nextFloat()" in animation
     assert "animated.startWork(server, pos)" in processor
     assert "server.sendParticles(ParticleTypes." in processor
     assert "KitchenV3Content.ROLLING_PIN.get()" in processor
@@ -56,8 +63,9 @@ def main():
         id=station["id"]
         for lang in (en,zh):
             assert lang[f"block.gugugaga.{id}"] and lang[f"item.gugugaga.{id}"]
-        assert f'station("{id}", KitchenProcessingBlock.Kind.{station["kind"].upper()})' in v3
-        assert f'station("{id}"' in v3
+        assert f'geckoStation("{id}"' in v3
+        assert "new GeckoKitchenStationBlock" in v3
+        assert f'KitchenProcessingBlock.Kind.{station["kind"].upper()}' in v3
         states=load(RES/f"assets/gugugaga/blockstates/{id}.json")["variants"]
         assert set(states)=={"active=false","active=true"}
         for active in (False,True):

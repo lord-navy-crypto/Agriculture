@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "unit": "abstract 0-8 game points per consumed item; NOT nutrient mass, daily values, calories, or clinical intake guidance",
+  "unit": "abstract per-item game points; individual food overrides and category templates; NOT nutrient mass, daily values, calories, or clinical intake guidance",
   "categories": {
     "macros": "Macros & variety",
     "vitamins": "Vitamins",
@@ -302,7 +302,7 @@
       "honey"
     ],
     "gugugaga:amaranth": [
-      "general"
+      "grain"
     ],
     "gugugaga:apple_cinnamon_porridge": [
       "grain",
@@ -331,13 +331,13 @@
       "fermented"
     ],
     "gugugaga:artichoke": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:arugula": [
-      "general"
+      "leafy"
     ],
     "gugugaga:asparagus": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:azure_bluet_honey_bottle": [
       "honey"
@@ -452,7 +452,7 @@
       "vegetable"
     ],
     "gugugaga:brussels_sprouts": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:buckwheat": [
       "grain"
@@ -504,7 +504,7 @@
       "root"
     ],
     "gugugaga:cauliflower": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:celeriac": [
       "root"
@@ -513,7 +513,7 @@
       "honey"
     ],
     "gugugaga:celery": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:chayote": [
       "vegetable"
@@ -531,7 +531,7 @@
       "legume"
     ],
     "gugugaga:chicory": [
-      "general"
+      "leafy"
     ],
     "gugugaga:chicory_blossom_honey_bottle": [
       "honey"
@@ -550,7 +550,7 @@
       "honey"
     ],
     "gugugaga:chives": [
-      "general"
+      "herb"
     ],
     "gugugaga:chocolate_cream_biscuit": [
       "dairy",
@@ -580,7 +580,8 @@
       "grain"
     ],
     "gugugaga:cocoa_seed_brittle": [
-      "general"
+      "seed",
+      "sweet"
     ],
     "gugugaga:cod_clear_noodle_soup": [
       "seafood",
@@ -631,7 +632,7 @@
       "root"
     ],
     "gugugaga:crop_stir_fry": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:crunchy_carrot_salad": [
       "root",
@@ -679,7 +680,7 @@
       "honey"
     ],
     "gugugaga:dill": [
-      "general"
+      "herb"
     ],
     "gugugaga:dulse": [
       "seaweed"
@@ -710,7 +711,8 @@
       "beverage"
     ],
     "gugugaga:farmers_skillet": [
-      "general"
+      "root",
+      "vegetable"
     ],
     "gugugaga:fava_bean": [
       "legume"
@@ -723,7 +725,8 @@
       "beverage"
     ],
     "gugugaga:fennel": [
-      "general"
+      "vegetable",
+      "herb"
     ],
     "gugugaga:fenugreek": [
       "herb"
@@ -754,7 +757,8 @@
       "vegetable"
     ],
     "gugugaga:garden_lunch_tray": [
-      "general"
+      "grain",
+      "vegetable"
     ],
     "gugugaga:garden_salad": [
       "vegetable"
@@ -775,7 +779,7 @@
       "vegetable"
     ],
     "gugugaga:ginger": [
-      "general"
+      "root"
     ],
     "gugugaga:glow_berry_custard": [
       "berries"
@@ -785,7 +789,7 @@
       "sweet"
     ],
     "gugugaga:golden_hash_browns": [
-      "general"
+      "root"
     ],
     "gugugaga:grain_porridge": [
       "grain"
@@ -879,7 +883,7 @@
       "seafood"
     ],
     "gugugaga:kohlrabi": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:kohlrabi_honey_bottle": [
       "honey"
@@ -888,7 +892,7 @@
       "honey"
     ],
     "gugugaga:leek": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:lemongrass": [
       "fruit",
@@ -1153,7 +1157,7 @@
       "beverage"
     ],
     "gugugaga:purslane": [
-      "general"
+      "leafy"
     ],
     "gugugaga:purslane_blossom_honey_bottle": [
       "honey"
@@ -1288,7 +1292,7 @@
       "vegetable"
     ],
     "gugugaga:shallot": [
-      "general"
+      "vegetable"
     ],
     "gugugaga:shiitake_ferment_noodles": [
       "mushroom",
@@ -1347,7 +1351,7 @@
       "grain"
     ],
     "gugugaga:sorghum": [
-      "general"
+      "grain"
     ],
     "gugugaga:soy_sauce_mushroom_rice": [
       "mushroom",
@@ -1433,7 +1437,7 @@
       "beverage"
     ],
     "gugugaga:teff": [
-      "general"
+      "grain"
     ],
     "gugugaga:toasted_seaweed_rice": [
       "seaweed",
@@ -1476,7 +1480,7 @@
       "grain"
     ],
     "gugugaga:turmeric": [
-      "general"
+      "root"
     ],
     "gugugaga:turnip": [
       "root"
@@ -1667,6 +1671,191 @@
     ],
     "minecraft:tropical_fish": [
       "seafood"
+    ],
+    "threshold:almond_water": [
+      "beverage"
     ]
+  },
+  "overrides": {
+    "gugugaga:amaranth": {
+      "protein": 4,
+      "iron": 4,
+      "magnesium": 4,
+      "fiber": 4
+    },
+    "gugugaga:artichoke": {
+      "fiber": 6,
+      "vitamin_b9": 4,
+      "potassium": 4
+    },
+    "gugugaga:arugula": {
+      "vitamin_k": 6,
+      "vitamin_a": 4,
+      "vitamin_b9": 4
+    },
+    "gugugaga:asparagus": {
+      "vitamin_b9": 5,
+      "vitamin_k": 4,
+      "fiber": 4
+    },
+    "gugugaga:brussels_sprouts": {
+      "vitamin_c": 6,
+      "vitamin_k": 6,
+      "fiber": 4
+    },
+    "gugugaga:cauliflower": {
+      "vitamin_c": 5,
+      "vitamin_b9": 4
+    },
+    "gugugaga:celery": {
+      "potassium": 3,
+      "fiber": 2
+    },
+    "gugugaga:chicory": {
+      "fiber": 5,
+      "vitamin_k": 5
+    },
+    "gugugaga:chives": {
+      "vitamin_k": 5,
+      "vitamin_a": 3
+    },
+    "gugugaga:cocoa_seed_brittle": {
+      "fat": 5,
+      "carbohydrate": 6,
+      "magnesium": 4
+    },
+    "gugugaga:crop_stir_fry": {
+      "fiber": 5,
+      "vitamin_c": 4
+    },
+    "gugugaga:farmers_skillet": {
+      "protein": 3,
+      "carbohydrate": 5,
+      "fiber": 4
+    },
+    "gugugaga:garden_lunch_tray": {
+      "fiber": 5,
+      "carbohydrate": 6,
+      "protein": 3
+    },
+    "gugugaga:ginger": {
+      "carbohydrate": 2,
+      "vitamin_c": 1
+    },
+    "gugugaga:golden_hash_browns": {
+      "carbohydrate": 6,
+      "fat": 3,
+      "potassium": 4
+    },
+    "gugugaga:kohlrabi": {
+      "vitamin_c": 5,
+      "fiber": 4
+    },
+    "gugugaga:leek": {
+      "vitamin_k": 4,
+      "vitamin_b9": 3
+    },
+    "gugugaga:purslane": {
+      "vitamin_a": 4,
+      "vitamin_c": 4,
+      "magnesium": 3
+    },
+    "gugugaga:shallot": {
+      "vitamin_c": 3,
+      "fiber": 3
+    },
+    "gugugaga:sorghum": {
+      "carbohydrate": 6,
+      "protein": 3,
+      "magnesium": 4
+    },
+    "gugugaga:teff": {
+      "carbohydrate": 6,
+      "protein": 4,
+      "iron": 4
+    },
+    "gugugaga:turmeric": {
+      "carbohydrate": 2,
+      "vitamin_c": 1
+    },
+    "gugugaga:dill": {
+      "vitamin_k": 4
+    },
+    "gugugaga:fennel": {
+      "fiber": 4,
+      "vitamin_c": 3
+    },
+    "minecraft:apple": {
+      "fiber": 3,
+      "vitamin_c": 3,
+      "carbohydrate": 3
+    },
+    "minecraft:carrot": {
+      "vitamin_a": 7,
+      "vitamin_c": 2,
+      "fiber": 3
+    },
+    "minecraft:bread": {
+      "carbohydrate": 7,
+      "protein": 2,
+      "fiber": 2
+    },
+    "minecraft:cooked_salmon": {
+      "protein": 7,
+      "vitamin_b12": 6,
+      "vitamin_d": 5,
+      "iodine": 3
+    },
+    "minecraft:baked_potato": {
+      "potassium": 6,
+      "vitamin_b6": 3,
+      "carbohydrate": 5
+    },
+    "minecraft:dried_kelp": {
+      "iodine": 7,
+      "fiber": 2
+    },
+    "minecraft:honey_bottle": {
+      "carbohydrate": 7,
+      "protein": 0
+    },
+    "minecraft:beetroot_soup": {
+      "fiber": 4,
+      "vitamin_b9": 4
+    },
+    "minecraft:melon_slice": {
+      "vitamin_c": 3,
+      "carbohydrate": 2
+    },
+    "minecraft:rotten_flesh": {
+      "protein": 1,
+      "fat": 1
+    },
+    "gugugaga:aged_pepper_beef": {
+      "protein": 8,
+      "vitamin_b12": 6,
+      "zinc": 6
+    },
+    "gugugaga:apple_cinnamon_porridge": {
+      "fiber": 6,
+      "carbohydrate": 7
+    },
+    "gugugaga:smoked_cod_rice": {
+      "protein": 7,
+      "carbohydrate": 7,
+      "iodine": 3
+    },
+    "gugugaga:barley_vegetable_soup": {
+      "fiber": 6,
+      "carbohydrate": 6
+    },
+    "gugugaga:vegetable_stew": {
+      "fiber": 5,
+      "vitamin_c": 4
+    },
+    "threshold:almond_water": {
+      "carbohydrate": 0,
+      "protein": 0
+    }
   }
 }

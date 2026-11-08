@@ -1,0 +1,1033 @@
+package io.github.lordnavycrypto.threshold.entity;
+
+import io.github.lordnavycrypto.threshold.dimension.ThresholdDimensions;
+import io.github.lordnavycrypto.threshold.item.FlashlightItem;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import java.util.UUID;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+/**
+ * Level 0's Watcher is a bounded, locally coordinated liminal encounter.
+ *
+ * Natural Watchers default to PASSIVE: they observe, stalk, search, peek and
+ * withdraw without damaging or capturing players. AGGRESSIVE mode uses normal
+ * navigation and captures only after visible close contact, returning the
+ * player to the original Level 0 entrance.
+ *
+ * It does not have omniscient tracking: a position is recorded only while
+ * the player is actually visible, and nearby Watchers may relay that immutable
+ * last-known snapshot with its original timestamp. Confidence decays with age.
+ * Its four observation styles use different stalking and flanking patterns.
+ * A held flashlight aimed at the entity interrupts the encounter.
+ */
+public final class ThresholdWatcherEntity extends PathfinderMob implements GeoEntity {
+    public enum BehaviorMode {
+        PASSIVE, AGGRESSIVE
+    }
+
+    private enum EncounterState {
+        OBSERVE, OBSERVED, STALK, SEARCH, RUSH, STRIKE, RETREAT, REPOSITION
+    }
+
+    private enum ObservationStyle {
+        PERIPHERAL, FLANKER, MIRROR, LISTENER
+    }
+
+    /**
+     * A truthful observation snapshot. Relays preserve observedAt rather than
+     * refreshing the timestamp, so confidence cannot be renewed by forwarding.
+     */
+    private record ObservationSnapshot(
+            UUID playerId, long observedAt, Vec3 position, Vec3 velocity) {
+        double confidence(long now) {
+            long age = now - observedAt;
+            if (age < 0L || age >= MEMORY_TICKS) return 0.0D;
+            return 1.0D - age / (double) MEMORY_TICKS;
+        }
+    }
+
+    private static final RawAnimation STILL =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.still");
+    private static final RawAnimation HEAD_TRACK =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.head_track");
+    private static final RawAnimation STUTTER =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.stutter");
+    private static final RawAnimation FOLD =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.fold");
+    private static final RawAnimation SHROUD_DRIFT =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.shroud_drift");
+    private static final RawAnimation LUNGE =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.lunge");
+    private static final RawAnimation STRIKE =
+            RawAnimation.begin().thenPlay("animation.threshold_watcher.strike");
+    private static final RawAnimation PEEK =
+            RawAnimation.begin().thenLoop("animation.threshold_watcher.peek");
+    private static final EntityDataAccessor<Boolean> DATA_AGGRESSIVE_MODE =
+            SynchedEntityData.defineId(ThresholdWatcherEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private static final int NATURAL_LIFETIME_TICKS = 1800;
+    private static final int SHOWCASE_LIFETIME_TICKS = 600;
+    private static final int PERCEPTION_INTERVAL_TICKS = 4;
+    private static final int MEMORY_TICKS = 300;
+    private static final int RUSH_COOLDOWN_TICKS = 240;
+    private static final int RUSH_MAX_TICKS = 32;
+    private static final double MAX_PLAYER_DISTANCE = 64.0D;
+    private static final double PEER_RELAY_RADIUS = 48.0D;
+    private static final double DIRECT_LOOK_DOT = 0.86D;
+    private static final double FLASHLIGHT_LOOK_DOT = 0.58D;
+    private static final double STRIKE_RANGE_SQR = 3.5D;
+    private static final double NEAR_MISS_RANGE_SQR = 6.25D;
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final ObservationStyle observationStyle;
+    private EncounterState encounterState = EncounterState.OBSERVE;
+    private ObservationSnapshot observation;
+    private Vec3 retreatDestination;
+    private Vec3 fakeRetreatDestination;
+    private Vec3 searchWaypoint;
+    private int searchWaypointIndex;
+    private int searchPauseTicks;
+    private int stateTicks;
+    private int stareTicks;
+    private int playerNoiseTicks;
+    private int rushCooldown;
+    private int rushTicks;
+    private int flickerTicks;
+    private int nextFlickerTick;
+    private boolean nearMiss;
+    private boolean attackConsumed;
+    private boolean fakeRetreat;
+    private boolean flankerRole;
+    private boolean showcaseMode;
+    private boolean testEncounterMode;
+    private boolean observerTestMode;
+
+    public ThresholdWatcherEntity(EntityType<? extends PathfinderMob> type, Level level) {
+        super(type, level);
+        ObservationStyle[] soloStyles = {
+                ObservationStyle.PERIPHERAL, ObservationStyle.MIRROR, ObservationStyle.LISTENER
+        };
+        this.observationStyle = soloStyles[
+                Math.floorMod(getUUID().hashCode(), soloStyles.length)];
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_AGGRESSIVE_MODE, false);
+    }
+
+    /** A harmless model/animation preview for artists and operators. */
+    public void enableShowcaseMode() {
+        showcaseMode = true;
+        setNoAi(true);
+        setNoGravity(true);
+        setInvulnerable(true);
+        setSilent(true);
+        noPhysics = true;
+    }
+
+    /** Stable, non-damaging operator encounter for passive behavior inspection. */
+    public void enablePassiveTestMode() {
+        enableTestMode(BehaviorMode.PASSIVE);
+    }
+
+    /**
+     * Stable observer-only test entity: it stays visible and stationary,
+     * tracks only players it can actually see, and never retreats or captures.
+     */
+    public void enableObserverTestMode() {
+        enableTestMode(BehaviorMode.PASSIVE);
+        observerTestMode = true;
+        setInvulnerable(true);
+        setInvisible(false);
+        getNavigation().stop();
+    }
+
+    public boolean isObserverTestMode() {
+        return observerTestMode;
+    }
+
+    /** Stable capture-mode operator encounter. */
+    public void enableAggressiveTestMode() {
+        enableTestMode(BehaviorMode.AGGRESSIVE);
+    }
+
+    /** Compatibility alias for the previous active-hunt test command. */
+    public void enableTestEncounterMode() {
+        enableAggressiveTestMode();
+    }
+
+    private void enableTestMode(BehaviorMode mode) {
+        testEncounterMode = true;
+        setPersistenceRequired();
+        setNoAi(false);
+        setNoGravity(false);
+        setInvulnerable(false);
+        setSilent(false);
+        noPhysics = false;
+        setInvisible(false);
+        setBehaviorMode(mode);
+        rushCooldown = 20;
+    }
+
+    /** Switches this Watcher between its non-lethal and capture behaviors. */
+    public void setBehaviorMode(BehaviorMode mode) {
+        if (mode == null) return;
+        entityData.set(DATA_AGGRESSIVE_MODE, mode == BehaviorMode.AGGRESSIVE);
+        if (mode == BehaviorMode.AGGRESSIVE) {
+            observerTestMode = false;
+            setInvulnerable(false);
+        }
+        encounterState = EncounterState.OBSERVE;
+        observation = null;
+        searchWaypoint = null;
+        searchWaypointIndex = 0;
+        searchPauseTicks = 0;
+        stateTicks = 0;
+        stareTicks = 0;
+        attackConsumed = false;
+        fakeRetreat = false;
+        getNavigation().stop();
+        setAggressive(false);
+        setInvisible(false);
+    }
+
+    public BehaviorMode getBehaviorMode() {
+        return entityData.get(DATA_AGGRESSIVE_MODE) ? BehaviorMode.AGGRESSIVE : BehaviorMode.PASSIVE;
+    }
+
+    public String getBehaviorModeName() {
+        return getBehaviorMode().name();
+    }
+
+    public boolean isTestEncounterMode() {
+        return testEncounterMode;
+    }
+
+    /** The second member of a local pair takes the flanking role. */
+    public void setFlankerRole(boolean value) {
+        flankerRole = value;
+    }
+
+    public boolean isRushing() {
+        return encounterState == EncounterState.RUSH
+                || encounterState == EncounterState.STRIKE;
+    }
+
+    public String getObservationStyleName() {
+        return flankerRole ? ObservationStyle.FLANKER.name() : observationStyle.name();
+    }
+
+    public String getEncounterStateName() {
+        return encounterState.name();
+    }
+
+    public double getObservationConfidence() {
+        return observation == null ? 0.0D : observation.confidence(level().getGameTime());
+    }
+
+    public long getObservationAgeTicks() {
+        return observation == null ? -1L : Math.max(0L, level().getGameTime() - observation.observedAt());
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!(level() instanceof ServerLevel server)) return;
+
+        int lifetimeLimit = showcaseMode ? SHOWCASE_LIFETIME_TICKS : NATURAL_LIFETIME_TICKS;
+        if (!testEncounterMode && tickCount > lifetimeLimit) {
+            discard();
+            return;
+        }
+
+        if (rushCooldown > 0 && tickCount % PERCEPTION_INTERVAL_TICKS == 0) {
+            rushCooldown = Math.max(0, rushCooldown - PERCEPTION_INTERVAL_TICKS);
+        }
+        updateFlicker();
+
+        // Perception, peer relays and replanning are bounded to five updates/sec.
+        if (tickCount % PERCEPTION_INTERVAL_TICKS != 0) return;
+
+        // Retreat is self-timed and must continue even if the player leaves range
+        // or keeps the flashlight trained on the entity.
+        if (encounterState == EncounterState.RETREAT) {
+            updateRetreat();
+            return;
+        }
+        if (encounterState == EncounterState.REPOSITION) {
+            updateFakeReposition(server);
+            return;
+        }
+
+        Player player = findNearestValidPlayer(server);
+        relayLocalObservation(server, player);
+
+        if (observerTestMode) {
+            updateObserverTest(player, server);
+            return;
+        }
+
+        if (showcaseMode) {
+            if (player != null) lookAtPlayer(player);
+            return;
+        }
+
+        if (player == null) {
+            if (encounterState == EncounterState.RUSH
+                    || encounterState == EncounterState.STRIKE) {
+                beginRetreat(null);
+            } else {
+                updateLostTarget(server);
+            }
+            return;
+        }
+
+        boolean visible = player.hasLineOfSight(this);
+        if (visible) {
+            observation = new ObservationSnapshot(
+                    player.getUUID(), server.getGameTime(), player.position(), player.getDeltaMovement());
+        } else if (observation == null
+                || !observation.playerId().equals(player.getUUID())
+                || observation.confidence(server.getGameTime()) <= 0.0D) {
+            // A distant or occluded player is not a reason to vanish. Without
+            // a valid sighting, remain visible and inspect the local area.
+            updateUnobservedIdle();
+            return;
+        }
+
+        // A lit, aimed flashlight interrupts even an in-progress rush.
+        if (visible && FlashlightItem.isActive(player) && isInsideFlashlightCone(player)) {
+            beginRetreat(player);
+            return;
+        }
+
+        if (getBehaviorMode() == BehaviorMode.AGGRESSIVE) {
+            updateAggressiveHunt(server, player, visible);
+            return;
+        }
+
+        if (encounterState == EncounterState.RUSH) {
+            updateRush(server, player, visible);
+            return;
+        }
+        if (encounterState == EncounterState.STRIKE) {
+            updateStrike(player);
+            return;
+        }
+
+        boolean directlyObserved = visible && isBeingWatchedBy(player);
+
+        if (directlyObserved) {
+            stareTicks += PERCEPTION_INTERVAL_TICKS;
+            encounterState = EncounterState.OBSERVED;
+            stateTicks = 0;
+            setAggressive(false);
+            getNavigation().stop();
+            lookAtPlayer(player);
+            // A sustained stare makes it fold away; a brief glance only freezes it.
+            if (stareTicks >= 40) beginRetreat(player, true);
+            return;
+        }
+        stareTicks = Math.max(0, stareTicks - PERCEPTION_INTERVAL_TICKS);
+
+        if (!visible) {
+            updateSearch(server);
+            return;
+        }
+
+        if (isPlayerNoisy(player)) {
+            playerNoiseTicks = 80;
+        } else {
+            playerNoiseTicks = Math.max(0, playerNoiseTicks - PERCEPTION_INTERVAL_TICKS);
+        }
+
+        if (encounterState == EncounterState.OBSERVE
+                || encounterState == EncounterState.OBSERVED) {
+            stateTicks += PERCEPTION_INTERVAL_TICKS;
+            lookAtPlayer(player);
+            if (stateTicks < 24) return;
+            encounterState = EncounterState.STALK;
+            stateTicks = 0;
+        }
+
+        updateStalk(server, player);
+    }
+
+    private Player findNearestValidPlayer(ServerLevel server) {
+        Player nearest = null;
+        double nearestDistance = MAX_PLAYER_DISTANCE * MAX_PLAYER_DISTANCE;
+        for (Player candidate : server.players()) {
+            if (!isValidTarget(candidate)) continue;
+            double distance = distanceToSqr(candidate);
+            if (distance < nearestDistance) {
+                nearest = candidate;
+                nearestDistance = distance;
+            }
+        }
+        return nearest;
+    }
+
+    private static boolean isValidTarget(Player player) {
+        return player != null && player.isAlive()
+                && !player.isSpectator() && !player.isCreative();
+    }
+
+    private boolean isBeingWatchedBy(Player player) {
+        if (player == null || !player.hasLineOfSight(this)) return false;
+        Vec3 toWatcher = position().subtract(player.getEyePosition()).normalize();
+        return player.getLookAngle().dot(toWatcher) > DIRECT_LOOK_DOT;
+    }
+
+    private boolean isInsideFlashlightCone(Player player) {
+        Vec3 toWatcher = position().subtract(player.getEyePosition()).normalize();
+        return player.getLookAngle().dot(toWatcher) > FLASHLIGHT_LOOK_DOT;
+    }
+
+    private static boolean isPlayerNoisy(Player player) {
+        return player.isSprinting() || player.isSwimming() || player.isFallFlying()
+                || player.getDeltaMovement().horizontalDistanceSqr() > 0.0225D
+                || (!player.onGround() && Math.abs(player.getDeltaMovement().y) > 0.12D);
+    }
+
+    private void lookAtPlayer(Player player) {
+        getLookControl().setLookAt(player, 18.0F, 18.0F);
+        float targetYaw = (float) (Mth.atan2(
+                player.getZ() - getZ(), player.getX() - getX()) * (180.0D / Math.PI)) - 90.0F;
+        float yaw = Mth.rotLerp(0.16F, getYRot(), targetYaw);
+        setYRot(yaw);
+        setYHeadRot(yaw);
+        setYBodyRot(yaw);
+    }
+
+    private void updateStalk(ServerLevel server, Player player) {
+        lookAtPlayer(player);
+        double distance = distanceToSqr(player);
+        boolean peerAlreadyRushing = isPeerRushing(server, player);
+
+        // A scare is possible only while the player is not looking directly at it.
+        // Noise makes the Watcher more willing to commit, but never grants wall vision.
+        if (!peerAlreadyRushing && rushCooldown == 0 && stareTicks == 0
+                && distance <= 18.0D * 18.0D && distance >= 2.0D * 2.0D) {
+            int chance = playerNoiseTicks > 0 ? 12 : 24;
+            if (server.getRandom().nextInt(chance) == 0) {
+                beginRush(server, player);
+                return;
+            }
+        }
+
+        ObservationStyle style = flankerRole ? ObservationStyle.FLANKER : observationStyle;
+        if (style == ObservationStyle.LISTENER && playerNoiseTicks == 0
+                && distance > 6.0D * 6.0D) {
+            getNavigation().stop();
+            return;
+        }
+
+        Vec3 destination = observationPoint(player, style);
+        double speed = style == ObservationStyle.FLANKER ? 0.92D
+                : style == ObservationStyle.LISTENER ? 0.82D : 0.76D;
+        if (distance > 5.0D * 5.0D
+                && (getNavigation().isDone() || tickCount % 20 == 0)) {
+            getNavigation().moveTo(destination.x, destination.y, destination.z, speed);
+        } else if (distance <= 5.0D * 5.0D) {
+            getNavigation().stop();
+        }
+    }
+
+    /** Pursues only a visible player or the bounded last-known observation. */
+    private void updateAggressiveHunt(ServerLevel server, Player player, boolean visible) {
+        if (!visible) {
+            updateSearch(server);
+            return;
+        }
+
+        lookAtPlayer(player);
+        encounterState = EncounterState.STALK;
+        stateTicks = 0;
+        if (distanceToSqr(player) <= STRIKE_RANGE_SQR) {
+            performStrike(player);
+            return;
+        }
+        if (getNavigation().isDone() || tickCount % 8 == 0) {
+            getNavigation().moveTo(player, 1.18D);
+        }
+    }
+
+    private Vec3 observationPoint(Player player, ObservationStyle style) {
+        Vec3 forward = player.getLookAngle();
+        forward = new Vec3(forward.x, 0.0D, forward.z);
+        if (forward.lengthSqr() < 1.0E-4D) forward = new Vec3(0.0D, 0.0D, 1.0D);
+        forward = forward.normalize();
+        double sideSign = Math.floorMod(getUUID().hashCode(), 2) == 0 ? 1.0D : -1.0D;
+        Vec3 side = new Vec3(-forward.z, 0.0D, forward.x).scale(sideSign);
+
+        return switch (style) {
+            case PERIPHERAL -> player.position().add(side.scale(8.0D)).subtract(forward.scale(2.5D));
+            case FLANKER -> player.position().subtract(forward.scale(7.0D)).add(side.scale(4.5D));
+            case MIRROR -> player.getDeltaMovement().horizontalDistanceSqr() > 0.004D
+                    ? player.position().subtract(forward.scale(5.0D)).add(side.scale(5.0D))
+                    : position();
+            case LISTENER -> playerNoiseTicks > 0
+                    ? player.position().add(side.scale(6.0D)).subtract(forward.scale(1.0D))
+                    : observation != null ? observation.position() : position();
+        };
+    }
+
+    private void beginRush(ServerLevel server, Player player) {
+        encounterState = EncounterState.RUSH;
+        stateTicks = 0;
+        rushTicks = 0;
+        nearMiss = server.getRandom().nextInt(4) == 0;
+        attackConsumed = false;
+        rushCooldown = RUSH_COOLDOWN_TICKS;
+        setAggressive(true);
+        setInvisible(false);
+        // The swoop is the audio tell; the short charge is the visual jump scare.
+        playSound(SoundEvents.PHANTOM_SWOOP, 1.0F, 0.72F);
+
+        Vec3 destination = player.position();
+        if (nearMiss) {
+            Vec3 towardPlayer = player.position().subtract(position());
+            towardPlayer = new Vec3(towardPlayer.x, 0.0D, towardPlayer.z);
+            if (towardPlayer.lengthSqr() < 1.0E-4D) towardPlayer = new Vec3(0.0D, 0.0D, 1.0D);
+            towardPlayer = towardPlayer.normalize();
+            Vec3 side = new Vec3(-towardPlayer.z, 0.0D, towardPlayer.x)
+                    .scale(server.getRandom().nextBoolean() ? 1.35D : -1.35D);
+            destination = player.position().add(side);
+        }
+        getNavigation().moveTo(destination.x, destination.y, destination.z, 1.62D);
+    }
+
+    private void updateRush(ServerLevel server, Player player, boolean visible) {
+        rushTicks += PERCEPTION_INTERVAL_TICKS;
+        setAggressive(true);
+        setInvisible(false);
+
+        if (visible && !nearMiss && !attackConsumed
+                && distanceToSqr(player) <= STRIKE_RANGE_SQR) {
+            performStrike(player);
+            return;
+        }
+        if (visible && nearMiss && distanceToSqr(player) <= NEAR_MISS_RANGE_SQR) {
+            beginRetreat(player, true);
+            return;
+        }
+        if (!visible && (observation == null
+                || observation.confidence(server.getGameTime()) < 0.35D)) {
+            beginRetreat(null);
+            return;
+        }
+        if (rushTicks >= RUSH_MAX_TICKS) {
+            beginRetreat(visible ? player : null);
+            return;
+        }
+
+        if (getNavigation().isDone() || tickCount % 8 == 0) {
+            Vec3 destination = visible ? player.position() : predictedSearchPosition(server.getGameTime());
+            if (nearMiss && visible) {
+                Vec3 towardPlayer = player.position().subtract(position());
+                towardPlayer = new Vec3(towardPlayer.x, 0.0D, towardPlayer.z);
+                if (towardPlayer.lengthSqr() > 1.0E-4D) {
+                    towardPlayer = towardPlayer.normalize();
+                    destination = player.position().add(
+                            new Vec3(-towardPlayer.z, 0.0D, towardPlayer.x)
+                                    .scale(1.35D));
+                }
+            }
+            getNavigation().moveTo(destination.x, destination.y, destination.z, 1.62D);
+        }
+    }
+
+    private void performStrike(Player player) {
+        if (attackConsumed) return;
+        attackConsumed = true;
+        encounterState = EncounterState.STRIKE;
+        stateTicks = 0;
+        setAggressive(true);
+        swing(InteractionHand.MAIN_HAND);
+        playSound(SoundEvents.ENDERMAN_SCREAM, 0.88F, 0.82F);
+
+        // Passive mode may stage a close-range scare, but never damages or
+        // captures the player. Aggressive mode performs a server-side capture.
+        if (getBehaviorMode() == BehaviorMode.PASSIVE) {
+            beginRetreat(player);
+            return;
+        }
+        capturePlayer(player);
+    }
+
+    private void capturePlayer(Player player) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            beginRetreat(player);
+            return;
+        }
+        ServerLevel destination = serverPlayer.getServer().getLevel(ThresholdDimensions.LEVEL_0);
+        if (destination == null) {
+            beginRetreat(player);
+            return;
+        }
+
+        serverPlayer.teleportTo(
+                destination, 4.5D, 65.0D, 4.5D,
+                serverPlayer.getYRot(), serverPlayer.getXRot());
+        serverPlayer.setDeltaMovement(Vec3.ZERO);
+        serverPlayer.fallDistance = 0.0F;
+        serverPlayer.sendSystemMessage(Component.literal(
+                "The Watcher caught you and returned you to the Level 0 entrance."));
+        discard();
+    }
+
+    private void updateStrike(Player player) {
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+        lookAtPlayer(player);
+        if (stateTicks >= 8) beginRetreat(player);
+    }
+
+    private void beginRetreat(Player player) {
+        beginRetreat(player, false);
+    }
+
+    private void beginRetreat(Player player, boolean allowFakeRetreat) {
+        if (encounterState == EncounterState.RETREAT
+                || encounterState == EncounterState.REPOSITION) return;
+        encounterState = EncounterState.RETREAT;
+        stateTicks = 0;
+        fakeRetreat = allowFakeRetreat && !testEncounterMode
+                && level().getRandom().nextInt(4) == 0;
+        setAggressive(false);
+        setInvisible(false);
+
+        Vec3 origin = player != null ? player.position()
+                : observation != null ? observation.position() : position().add(1.0D, 0.0D, 0.0D);
+        Vec3 away = position().subtract(origin);
+        away = new Vec3(away.x, 0.0D, away.z);
+        if (away.lengthSqr() < 1.0E-4D) away = new Vec3(1.0D, 0.0D, 0.0D);
+        away = away.normalize();
+        retreatDestination = position().add(away.scale(10.0D));
+        getNavigation().moveTo(
+                retreatDestination.x, retreatDestination.y, retreatDestination.z, 1.28D);
+    }
+
+    private void updateRetreat() {
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+        if (retreatDestination != null && getNavigation().isDone() && stateTicks < 24) {
+            getNavigation().moveTo(
+                    retreatDestination.x, retreatDestination.y, retreatDestination.z, 1.18D);
+        }
+        if (stateTicks >= 24) setInvisible(true);
+        if (stateTicks >= 40) {
+            if (fakeRetreat && observation != null
+                    && observation.confidence(level().getGameTime()) > 0.25D) {
+                beginFakeReposition();
+            } else if (testEncounterMode) {
+                resetTestEncounterToIdle();
+            } else {
+                discard();
+            }
+        }
+    }
+
+    /** Repositions by ordinary path navigation using only the last sighting. */
+    private void beginFakeReposition() {
+        encounterState = EncounterState.REPOSITION;
+        stateTicks = 0;
+        setInvisible(true);
+        getNavigation().stop();
+
+        Vec3 base = predictedSearchPosition(level().getGameTime());
+        Vec3 away = position().subtract(base);
+        away = new Vec3(away.x, 0.0D, away.z);
+        if (away.lengthSqr() < 1.0E-4D) {
+            away = Math.floorMod(getUUID().hashCode(), 2) == 0
+                    ? new Vec3(1.0D, 0.0D, 0.0D) : new Vec3(0.0D, 0.0D, 1.0D);
+        }
+        away = away.normalize();
+        Vec3 side = new Vec3(-away.z, 0.0D, away.x);
+        double sign = Math.floorMod(getUUID().hashCode(), 2) == 0 ? 1.0D : -1.0D;
+        fakeRetreatDestination = base.add(side.scale(5.5D * sign)).add(away.scale(2.0D));
+        if (!getNavigation().moveTo(
+                fakeRetreatDestination.x, fakeRetreatDestination.y,
+                fakeRetreatDestination.z, 0.96D)) {
+            abortFakeReposition();
+        }
+    }
+
+    private void updateFakeReposition(ServerLevel server) {
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+        if (observation == null || observation.confidence(server.getGameTime()) <= 0.18D) {
+            abortFakeReposition();
+            if (!testEncounterMode) beginRetreat(null);
+            return;
+        }
+        if (fakeRetreatDestination != null
+                && distanceToSqr(fakeRetreatDestination) <= 4.0D) {
+            getNavigation().stop();
+            setInvisible(false);
+            fakeRetreat = false;
+            fakeRetreatDestination = null;
+            encounterState = EncounterState.STALK;
+            stateTicks = 0;
+            stareTicks = 0;
+            rushCooldown = Math.max(rushCooldown, 80);
+            return;
+        }
+        // If a corridor is blocked or the path cannot be completed, reappear
+        // where navigation stopped. Never teleport through geometry or vanish.
+        if (stateTicks >= 60) abortFakeReposition();
+    }
+
+    private void abortFakeReposition() {
+        getNavigation().stop();
+        setInvisible(false);
+        fakeRetreat = false;
+        fakeRetreatDestination = null;
+        encounterState = EncounterState.STALK;
+        stateTicks = 0;
+        searchWaypoint = null;
+        searchPauseTicks = 0;
+    }
+
+    private void resetTestEncounterToIdle() {
+        getNavigation().stop();
+        setInvisible(false);
+        fakeRetreat = false;
+        fakeRetreatDestination = null;
+        encounterState = EncounterState.OBSERVE;
+        observation = null;
+        searchWaypoint = null;
+        searchWaypointIndex = 0;
+        searchPauseTicks = 0;
+        stateTicks = 0;
+        stareTicks = 0;
+    }
+
+    private void updateObserverTest(Player player, ServerLevel server) {
+        setInvisible(false);
+        setAggressive(false);
+        getNavigation().stop();
+        encounterState = EncounterState.OBSERVE;
+        stateTicks = 0;
+        stareTicks = 0;
+        attackConsumed = false;
+        fakeRetreat = false;
+
+        if (player != null && player.hasLineOfSight(this)) {
+            observation = new ObservationSnapshot(
+                    player.getUUID(), server.getGameTime(), player.position(), player.getDeltaMovement());
+            lookAtPlayer(player);
+            return;
+        }
+
+        // No through-wall tracking: clear stale memory and calmly scan the room.
+        observation = null;
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
+    }
+
+    private void updateLostTarget(ServerLevel server) {
+        if (showcaseMode) return;
+        if (observation == null || observation.confidence(server.getGameTime()) <= 0.0D) {
+            updateUnobservedIdle();
+            return;
+        }
+        updateSearch(server);
+    }
+
+    /**
+     * A Watcher without a valid sighting waits visibly and makes a small local
+     * patrol. It never uses the hidden live player position to navigate.
+     */
+    private void updateUnobservedIdle() {
+        if (testEncounterMode) {
+            resetTestEncounterToIdle();
+            return;
+        }
+        setInvisible(false);
+        if (encounterState != EncounterState.OBSERVE) {
+            getNavigation().stop();
+            encounterState = EncounterState.OBSERVE;
+            stateTicks = 0;
+        }
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+
+        if (getNavigation().isDone() && tickCount % 80 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            double distance = 3.0D + level().getRandom().nextDouble() * 4.0D;
+            Vec3 localPatrol = position().add(
+                    Math.cos(angle) * distance, 0.0D, Math.sin(angle) * distance);
+            getNavigation().moveTo(localPatrol.x, localPatrol.y, localPatrol.z, 0.58D);
+        }
+        if (tickCount % 40 == 0) {
+            double angle = level().getRandom().nextDouble() * (Math.PI * 2.0D);
+            getLookControl().setLookAt(
+                    getX() + Math.cos(angle) * 6.0D,
+                    getY() + 1.0D,
+                    getZ() + Math.sin(angle) * 6.0D,
+                    10.0F, 10.0F);
+        }
+    }
+
+    private void updateSearch(ServerLevel server) {
+        if (observation == null) {
+            if (testEncounterMode) resetTestEncounterToIdle();
+            else beginRetreat(null);
+            return;
+        }
+        double confidence = observation.confidence(server.getGameTime());
+        if (confidence <= 0.12D || stateTicks > 200) {
+            if (testEncounterMode) resetTestEncounterToIdle();
+            else beginRetreat(null);
+            return;
+        }
+
+        if (encounterState != EncounterState.SEARCH) {
+            encounterState = EncounterState.SEARCH;
+            stateTicks = 0;
+            searchWaypointIndex = 0;
+            searchWaypoint = null;
+            searchPauseTicks = 0;
+        }
+        stateTicks += PERCEPTION_INTERVAL_TICKS;
+        Vec3 lastKnown = predictedSearchPosition(server.getGameTime());
+        getLookControl().setLookAt(lastKnown.x, lastKnown.y, lastKnown.z, 12.0F, 12.0F);
+
+        if (searchPauseTicks > 0) {
+            searchPauseTicks = Math.max(0, searchPauseTicks - PERCEPTION_INTERVAL_TICKS);
+            getNavigation().stop();
+            return;
+        }
+
+        if (searchWaypoint == null) {
+            if (searchWaypointIndex >= 3) {
+                beginRetreat(null);
+                return;
+            }
+            searchWaypoint = cornerPeekWaypoint(lastKnown, searchWaypointIndex);
+            if (!getNavigation().moveTo(
+                    searchWaypoint.x, searchWaypoint.y, searchWaypoint.z, 0.78D)) {
+                searchWaypoint = null;
+                searchWaypointIndex++;
+                searchPauseTicks = 8;
+            }
+            return;
+        }
+
+        if (distanceToSqr(searchWaypoint) <= 2.25D || getNavigation().isDone()) {
+            getNavigation().stop();
+            searchWaypoint = null;
+            searchWaypointIndex++;
+            searchPauseTicks = 8 + server.getRandom().nextInt(13);
+        }
+    }
+
+    /**
+     * Sweeps both sides of the last sighting and then checks the approach line.
+     * Every waypoint is derived from the immutable snapshot, never a hidden
+     * live player position.
+     */
+    private Vec3 cornerPeekWaypoint(Vec3 lastKnown, int index) {
+        Vec3 forward = observation == null ? Vec3.ZERO : observation.velocity();
+        forward = new Vec3(forward.x, 0.0D, forward.z);
+        if (forward.lengthSqr() < 1.0E-4D) {
+            forward = position().subtract(lastKnown);
+            forward = new Vec3(forward.x, 0.0D, forward.z);
+        }
+        if (forward.lengthSqr() < 1.0E-4D) forward = new Vec3(0.0D, 0.0D, 1.0D);
+        forward = forward.normalize();
+        Vec3 side = new Vec3(-forward.z, 0.0D, forward.x);
+        return switch (index) {
+            case 0 -> lastKnown.add(side.scale(3.0D)).add(forward.scale(1.5D));
+            case 1 -> lastKnown.subtract(side.scale(3.0D)).add(forward.scale(1.5D));
+            default -> lastKnown.subtract(forward.scale(3.5D));
+        };
+    }
+
+    /**
+     * Uses only a short, bounded extrapolation of the last observed velocity.
+     * It is cleared naturally when confidence reaches zero and never reads a
+     * hidden live player position.
+     */
+    private Vec3 predictedSearchPosition(long now) {
+        if (observation == null) return position();
+        long age = Math.max(0L, now - observation.observedAt());
+        double predictionTicks = Math.min(age, 6L);
+        Vec3 velocity = observation.velocity();
+        Vec3 offset = new Vec3(
+                velocity.x * predictionTicks, 0.0D, velocity.z * predictionTicks);
+        if (offset.length() > 2.5D) offset = offset.normalize().scale(2.5D);
+        return observation.position().add(offset);
+    }
+
+    /** Relay a fresh observation only to a nearby peer tracking the same player. */
+    private void relayLocalObservation(ServerLevel server, Player candidate) {
+        if (tickCount % 20 != 0) return;
+        long now = server.getGameTime();
+        for (ThresholdWatcherEntity peer : server.getEntitiesOfClass(
+                ThresholdWatcherEntity.class, getBoundingBox().inflate(PEER_RELAY_RADIUS))) {
+            if (peer == this || peer.observation == null) continue;
+            if (candidate != null && !peer.observation.playerId().equals(candidate.getUUID())) continue;
+            if (observation != null
+                    && !peer.observation.playerId().equals(observation.playerId())) continue;
+            if (peer.observation.confidence(now) < 0.25D) continue;
+            if (observation == null || peer.observation.observedAt() > observation.observedAt()) {
+                // Keep the source timestamp: a relay is not a fresh observation.
+                observation = peer.observation;
+            }
+        }
+    }
+
+    private boolean isPeerRushing(ServerLevel server, Player player) {
+        for (ThresholdWatcherEntity peer : server.getEntitiesOfClass(
+                ThresholdWatcherEntity.class, getBoundingBox().inflate(PEER_RELAY_RADIUS))) {
+            if (peer == this || !peer.isRushing() || peer.observation == null) continue;
+            if (peer.observation.playerId().equals(player.getUUID())) return true;
+        }
+        return false;
+    }
+
+    private void updateFlicker() {
+        if (observerTestMode) {
+            // Never apply the one-tick invisibility flicker to the stationary
+            // model-inspection entity: testers must see every frame.
+            setInvisible(false);
+            flickerTicks = 0;
+            return;
+        }
+        if (encounterState == EncounterState.RUSH
+                || encounterState == EncounterState.STRIKE
+                || encounterState == EncounterState.RETREAT
+                || encounterState == EncounterState.REPOSITION) {
+            if (encounterState != EncounterState.RETREAT
+                    && encounterState != EncounterState.REPOSITION) setInvisible(false);
+            return;
+        }
+        if (nextFlickerTick == 0) {
+            nextFlickerTick = tickCount + 45 + level().getRandom().nextInt(55);
+        }
+        if (flickerTicks > 0) {
+            flickerTicks--;
+            if (flickerTicks == 0) setInvisible(false);
+        } else if (tickCount >= nextFlickerTick) {
+            setInvisible(true);
+            flickerTicks = 1;
+            nextFlickerTick = tickCount + 55 + level().getRandom().nextInt(85);
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (observerTestMode) return false;
+        boolean accepted = super.hurt(source, amount);
+        if (accepted && !level().isClientSide && isAlive()) {
+            Player attacker = source.getEntity() instanceof Player player ? player : null;
+            if (encounterState == EncounterState.REPOSITION) {
+                // A hit exposes the fake retreat. Reappear at the current position
+                // rather than discarding the entity or teleporting through a wall.
+                abortFakeReposition();
+                if (!testEncounterMode) beginRetreat(attacker);
+            } else if (encounterState != EncounterState.RETREAT) {
+                beginRetreat(attacker);
+            }
+        }
+        return accepted;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putString("BehaviorMode", getBehaviorMode().name());
+        tag.putBoolean("TestEncounterMode", testEncounterMode);
+        tag.putBoolean("ObserverTestMode", observerTestMode);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        BehaviorMode savedMode = BehaviorMode.PASSIVE;
+        if (tag.contains("BehaviorMode")) {
+            try {
+                savedMode = BehaviorMode.valueOf(tag.getString("BehaviorMode"));
+            } catch (IllegalArgumentException ignored) {
+                savedMode = BehaviorMode.PASSIVE;
+            }
+        }
+        entityData.set(DATA_AGGRESSIVE_MODE, savedMode == BehaviorMode.AGGRESSIVE);
+        testEncounterMode = tag.getBoolean("TestEncounterMode");
+        observerTestMode = tag.getBoolean("ObserverTestMode");
+        if (observerTestMode) {
+            testEncounterMode = true;
+            setInvulnerable(true);
+            setInvisible(false);
+        }
+        if (testEncounterMode) setPersistenceRequired();
+        setAggressive(false);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENDERMAN_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENDERMAN_DEATH;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "presence", 3, state -> {
+            boolean committed = (getBehaviorMode() == BehaviorMode.AGGRESSIVE
+                    && encounterState != EncounterState.RETREAT
+                    && encounterState != EncounterState.REPOSITION) || isRushing();
+            if (committed) {
+                if (getAttackAnim(0.0F) > 0.12F) return state.setAndContinue(STRIKE);
+                return state.setAndContinue(LUNGE);
+            }
+            if (encounterState == EncounterState.SEARCH && searchPauseTicks > 0) {
+                return state.setAndContinue(PEEK);
+            }
+            if (state.isMoving()) return state.setAndContinue(SHROUD_DRIFT);
+
+            int phase = Math.floorMod(tickCount + getId() * 31, 420);
+            if (phase < 190) return state.setAndContinue(STILL);
+            if (phase < 260) return state.setAndContinue(HEAD_TRACK);
+            if (phase < 278) return state.setAndContinue(STUTTER);
+            if (phase < 320) return state.setAndContinue(FOLD);
+            return state.setAndContinue(SHROUD_DRIFT);
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+}

@@ -1174,5 +1174,17 @@
   "message.gugugaga.v310_effects_active": "Potion feedback: all 27 nutrition indicators have mapped positive and low-reserve effects. Open the effect matrix page for details.",
   "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",
   "feedback.gugugaga.water_salt_tooltip": "%s %s. %s",
-  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority."
+  "feedback.gugugaga.effects_note": "All 27 indicators have positive/negative effect mappings. Up to five buffs and four debuffs are active at once; high sodium also triggers its low-intensity warning. Water/salt penalties take priority.",
+  "tooltip.gugugaga.hydration_only": "Hydration item — no food nutrients; water and salt balance only.",
+  "tooltip.gugugaga.nutrition_profile": "Main nutrient contributions (per item)",
+  "tooltip.gugugaga.nutrition_generic": "Generic fallback profile for uncatalogued food.",
+  "tooltip.gugugaga.nutrient_line": "• %1$s: +%2$d",
+  "tooltip.gugugaga.nutrition_note": "Abstract game values; not real-world nutrition measurements.",
+  "tooltip.gugugaga.nutrition_expand": "Hold Shift for %s more nutrients",
+  "message.gugugaga.partygoer_level0_missing": "The Partygoer pulled you away, but Level 0 is unavailable.",
+  "message.gugugaga.partygoer_capture_success": "You awaken in Level 0. Your inventory has been preserved.",
+  "tooltip.gugugaga.nutrition_balance": "Water balance +%1$s | Salt balance +%2$s (immediate)",
+  "tooltip.gugugaga.nutrition_daily": "Nutrients are applied at the next game-day reserve update.",
+  "tooltip.gugugaga.nutrient_target_line": "• %1$s: +%2$d points (game-day target %3$d)",
+  "tooltip.gugugaga.nutrition_balance_fallback": "Water +%1$s | Salt +%2$s (default fallback; no item profile)"
 }
