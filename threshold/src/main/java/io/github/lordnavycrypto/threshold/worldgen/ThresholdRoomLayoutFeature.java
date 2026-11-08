@@ -323,7 +323,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
 
-                // Keep the starter shelter's composter beside the planter, but
+                // Keep the starter shelter's composter near the planter, but
                 // move it deterministically when the original tile overlaps a route.
                 boolean composterCell = roomX == 0 && roomZ == 0
                         ? isLevel1StarterComposterCell(seed, localX, localZ)
@@ -2870,7 +2870,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 || ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)
                 || isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE,
                         roomX, roomZ, localX, localZ, 2, true)
-                || isLevel1ResourceFootprint(localX, localZ);
+                || isLevel1ResourceFootprint(localX, localZ)
+                || isLevel1CratePosition(seed, roomX, roomZ, localX, localZ);
     }
 
     private static Direction level0FloorFoldStairFacing(
