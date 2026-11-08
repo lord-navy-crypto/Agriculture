@@ -31,6 +31,18 @@ public final class NutritionTooltipV40 {
         if (stack.isEmpty() || !stack.has(DataComponents.FOOD)) return;
 
         String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        List<Component> tooltip = event.getToolTip();
+        if (NutritionProfilesV35.isHydrationOnly(itemId)) {
+            tooltip.add(Component.empty());
+            tooltip.add(Component.translatable("tooltip.gugugaga.hydration_only")
+                    .withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
+                    WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
+                    .withStyle(ChatFormatting.AQUA));
+            tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_note")
+                    .withStyle(ChatFormatting.DARK_GRAY));
+            return;
+        }
         boolean catalogued = NutritionProfilesV35.hasProfile(itemId);
         int[] values = NutritionProfilesV35.contribution(itemId);
         List<Integer> indices = new ArrayList<>();
@@ -47,7 +59,6 @@ public final class NutritionTooltipV40 {
                 values[b] * NutritionPhysiologyV39.dailyTarget(a),
                 values[a] * NutritionPhysiologyV39.dailyTarget(b)));
 
-        List<Component> tooltip = event.getToolTip();
         tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_profile")
                 .withStyle(ChatFormatting.GOLD));
