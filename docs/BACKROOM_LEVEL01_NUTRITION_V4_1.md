@@ -87,3 +87,23 @@ water/salt catalog. That catalog also contains the raw/boiled/filtered drink
 items and the vanilla potion entry. The client tooltip checks profile presence
 before describing a value as a curated item contribution; third-party foods
 that are not mapped receive an explicit fallback label.
+
+
+## v4.3 operational and physical QA
+
+- Water/Salt now use a saved per-player activity accumulator sampled every
+  100 ticks. Ordinary water demand is 60 abstract points per Minecraft day;
+  nonstop sprinting or remaining in the Nether doubles it, and both together
+  triple it. A high salt bar adds an independent 30-point water surcharge.
+  Sodium loses 5 points per game day. These numbers are fictional game balance
+  values, not real nutrition advice.
+- Drinking and salt-bearing meals continue to apply their existing explicit
+  item contributions. New accumulator NBT keys default to zero, leaving old
+  persistent water, salt and reserve values intact.
+- Deterministic Python tests cover each 24,000-tick activity case, 404/408
+  food and fluid mapping and accessible water/salt recovery routes.
+- Real-server diagnostics now inspect already generated Level 0 and Level 1
+  wall/air voxels at y=65 and the two-block clearance above guaranteed paths.
+  This catches physically sealed passages missed by graph-only tests.
+- Ordinary client playthrough, visuals, save-migration testing and player-facing
+  survival balancing remain separate release gates.

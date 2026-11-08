@@ -10,16 +10,17 @@ F=ROOT/"src/main/resources/data/gugugaga/nutrition"
 def day(sprint=False,nether=False,high_salt=False):
     water=100
     sodium=60
-    wp=sp=0
+    wp=sp=drained=0
     for tick in range(100,24001,100):
         # 100 activity points per sample, plus sprint/environment factors.
         wp+=100+(100 if sprint else 0)+(100 if nether else 0)+(50 if high_salt else 0)
+        drained+=wp//400
         water=max(0,water-wp//400)
         wp%=400
         sp+=100
         sodium=max(0,sodium-sp//4800)
         sp%=4800
-    return water,sodium,wp,sp
+    return water,sodium,wp,sp,drained
 
 def main():
     for contract in (
@@ -33,11 +34,11 @@ def main():
         assert contract in SRC,contract
     # Evaluate total demand from an initial full bar. The old 120/day idle
     # drain was mathematically impossible to sustain without constant drinking.
-    assert day()==(40,55,0,0),day()
-    assert day(sprint=True)==(0,55,0,0)
-    assert day(nether=True)==(0,55,0,0)
-    assert day(sprint=True,nether=True)==(0,55,0,0)
-    assert day(high_salt=True)==(10,55,0,0)
+    assert day()==(40,55,0,0,60),day()
+    assert day(sprint=True)==(0,55,0,0,120)
+    assert day(nether=True)==(0,55,0,0,120)
+    assert day(sprint=True,nether=True)==(0,55,0,0,180)
+    assert day(high_salt=True)==(10,55,0,0,90)
     water=json.loads((F/"water_salt_profiles_v3_7.json").read_text("utf8"))["foods"]
     foods=json.loads((F/"food_profiles_v3_5.json").read_text("utf8"))["foods"]
     assert len(foods)==404 and set(foods).issubset(water)
