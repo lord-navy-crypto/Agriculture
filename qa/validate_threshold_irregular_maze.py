@@ -35,6 +35,43 @@ def parent(cell):
         return x,z-(1 if z>0 else -1)
     return None
 
+def assert_connected_spine(seed, spacing, jitter, salt, root_size, target_regions):
+    # The root room is open floor; every other walkable tile must belong to
+    # the deterministic parent-spine network. Search farther than the target
+    # boxes because some parent links leave and re-enter a sampled region.
+    limit = 160
+    walkable = {
+        (x, z)
+        for x in range(limit)
+        for z in range(limit)
+        if spine(seed, x, z, spacing, jitter, salt)
+    }
+    walkable.update((x, z) for x in range(root_size) for z in range(root_size))
+    start = (root_size // 2, root_size // 2)
+    assert start in walkable
+    reached = {start}
+    queue = [start]
+    head = 0
+    while head < len(queue):
+        x, z = queue[head]
+        head += 1
+        for neighbour in ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1)):
+            if neighbour in walkable and neighbour not in reached:
+                reached.add(neighbour)
+                queue.append(neighbour)
+
+    targets = set()
+    for x0, x1, z0, z1 in target_regions:
+        targets.update(
+            (x, z)
+            for x in range(x0, x1)
+            for z in range(z0, z1)
+            if spine(seed, x, z, spacing, jitter, salt)
+        )
+    missing = targets - reached
+    assert not missing, (seed, spacing, len(missing), sorted(missing)[:8])
+
+
 def main():
     source=(ROOT/"threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdIrregularMazeLayout.java").read_text("utf8")
     feature=(ROOT/"threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdRoomLayoutFeature.java").read_text("utf8")
@@ -69,6 +106,10 @@ def main():
     assert "private static boolean isGuaranteedSpine" in source
     assert "if (!spine && !sample.boundary" in source
     assert "public static boolean isGuaranteedCorridor" in source
+    assert "public static boolean isProtectedPassageOrEntry" in source
+    assert "public static boolean isResourceAnchor" in source
+    assert "clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, true)" in feature
+    assert "clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, false)" in feature
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
     assert "int openRate = level0 ? 54 : 46" in source
@@ -238,7 +279,19 @@ def main():
                     checked+=1
             assert checked>=8,(seed,level0,checked)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_7_PASS: nested pockets have clear doorways, connected spine and varied widths")
+    # Rasterize the exact parent-spine mask and run a four-neighbour BFS
+    # from each floor's open entry room. Every corridor tile in the server's
+    # sampled landmark regions must be reachable, across six world seeds.
+    for seed in (0, 1, 42, 2026, -17, -1539075734086757806):
+        assert_connected_spine(
+            seed, 22, 6, 0x4D415A45304C, 32, [(48, 64, 32, 64)]
+        )
+        assert_connected_spine(
+            seed, 28, 7, 0x4D415A45314C, 48,
+            [(48, 80, 16, 32), (0, 16, 64, 96)]
+        )
+
+    print("THRESHOLD_IRREGULAR_MAZE_V4_8_PASS: nested pockets have clear doorways, fully connected parent spine and varied widths")
 
 if __name__=="__main__":
     main()
