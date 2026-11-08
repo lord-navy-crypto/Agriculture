@@ -192,7 +192,7 @@ public final class ThresholdIrregularMazeLayout {
         return x == 0 && z >= 13 && z <= 17;
     }
 
-    private static boolean isProtectedPassageOrEntry(int x, int z, boolean level0) {
+    public static boolean isProtectedPassageOrEntry(int x, int z, boolean level0) {
         // Keep the iconic 31x32 entry interior. The outer east wall may
         // receive one new spine doorway, connecting it to the irregular maze.
         if (level0) return x >= 0 && x < 31 && z >= 0 && z < 32;
@@ -201,7 +201,7 @@ public final class ThresholdIrregularMazeLayout {
                 || (Math.abs(x - 64) <= 1 && Math.abs(z - 23) <= 2);
     }
 
-    private static boolean isResourceAnchor(WorldGenLevel world, BlockPos.MutableBlockPos pos,
+    public static boolean isResourceAnchor(WorldGenLevel world, BlockPos.MutableBlockPos pos,
                                             int x, int z) {
         BlockState floor = world.getBlockState(pos.set(x, 63, z));
         BlockState feature = world.getBlockState(pos.set(x, 64, z));
