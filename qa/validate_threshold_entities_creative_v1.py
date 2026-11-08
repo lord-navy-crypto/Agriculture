@@ -69,6 +69,9 @@ def main():
                   "ALMOND_WATER", "FLASHLIGHT", "BATTERY"):
         assert token in tabs, f"Backrooms entities/supplies tab missing {token}"
     assert "ThresholdCreativeTabs.TABS.register(modBus)" in mod
+    assert "isInsideLevel1StarterShelter(player.blockPosition())" in director
+    assert "isInsideLevel1StarterShelter(pos)" in director
+    assert "pos.distSqr(level.getSharedSpawnPos()) < 24.0D * 24.0D" in director
     assert '"AGGRESSIVE".equals(watcherProbe.getBehaviorModeName())' in runtime
     assert 'new ServerLevel[] {level1, level2, level3, level4, level5}' in runtime
     assert 'naturalProfile(ThresholdDimensions.LEVEL_5' in runtime

@@ -129,8 +129,12 @@ public final class ThresholdEntityDirector {
 
     private static void spawnObservers(ServerLevel level) {
         if (!isNaturalSpawnAllowed(level.dimension(), ThresholdEntities.WATCHER.get())) return;
+        boolean level1 = level.dimension().equals(ThresholdDimensions.LEVEL_1);
         for (Player player : level.players()) {
             if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
+            // Preserve Level 1's authored starter shelter while making the
+            // rest of the level eligible for frequent Distant Watcher encounters.
+            if (level1 && isInsideLevel1StarterShelter(player.blockPosition())) continue;
             int nearbyWatchers = countNearbyWatchers(level, player);
             if (nearbyWatchers >= MAX_LOCAL_WATCHERS) continue;
             // Keep encounters common across every level, while progressively
@@ -144,8 +148,8 @@ public final class ThresholdEntityDirector {
 
             for (int attempt = 0; attempt < 10; attempt++) {
                 double angle = level.getRandom().nextDouble() * (Math.PI * 2.0D);
-                // The second member enters closer to the player so the
-                // local pair can coordinate without expanding the spawn footprint.
+                // Additional members enter closer to the player so the
+                // local group can coordinate without expanding the spawn footprint.
                 int distance = nearbyWatchers == 0
                         ? 17 + level.getRandom().nextInt(11)
                         : 12 + level.getRandom().nextInt(9);
@@ -153,6 +157,8 @@ public final class ThresholdEntityDirector {
                 int z = Mth.floor(player.getZ() + Math.sin(angle) * distance);
                 BlockPos pos = new BlockPos(x, player.blockPosition().getY(), z);
 
+                if (level1 && isInsideLevel1StarterShelter(pos)) continue;
+                if (level1 && pos.distSqr(level.getSharedSpawnPos()) < 24.0D * 24.0D) continue;
                 if (!isSafeStandingSpace(level, pos)) continue;
 
                 // Keep the first appearance outside the player's forward view.
