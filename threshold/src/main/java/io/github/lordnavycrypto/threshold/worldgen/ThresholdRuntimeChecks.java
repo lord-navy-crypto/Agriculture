@@ -100,8 +100,13 @@ public final class ThresholdRuntimeChecks {
         level0.getChunk(3, 2);
         level0.getChunk(3, 3);
         level0.getChunk(5, 1);
-        // Alpha 16 landmark chunks: pillar grove, floor-fold pockets and stair tower.
+        // Alpha 16 landmark chunks: the pillar grove spans four chunks because
+        // its deterministic anchors cover world coordinates 70 through 90.
+        // Load the full 2x2 footprint before inspecting any of its columns.
         level0.getChunk(4, 4);
+        level0.getChunk(5, 4);
+        level0.getChunk(4, 5);
+        level0.getChunk(5, 5);
         level0.getChunk(6, 0);
         level0.getChunk(7, 0);
         level0.getChunk(7, 1);
