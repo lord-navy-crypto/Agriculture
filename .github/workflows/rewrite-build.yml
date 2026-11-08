@@ -93,6 +93,7 @@ jobs:
           python3 qa/validate_nutrition_effects_v3_10.py
           python3 qa/validate_honey_source_contract_v1_0.py
           python3 qa/validate_honey_source_coverage_v1_1.py
+          python3 qa/validate_swaying_garden_compat_v311.py
 
   neoforge:
     runs-on: ubuntu-latest
@@ -118,6 +119,10 @@ jobs:
         run: python3 qa/validate_vanilla_kitchen_v2_9.py build/generated/resources/kitchenAssets
       - name: Validate new kitchen v3 graphics and appliance animations
         run: python3 qa/validate_kitchen_v3_0.py build/generated/resources/kitchenV3Assets
+      - name: Validate visual animation v3.11 and packaged sprite frames
+        run: python3 qa/validate_visual_animation_v311.py build/libs/gugugaga-*.jar
+      - name: Validate GeckoLib 4.9.3 kitchen rigs and packaged animations
+        run: python3 qa/validate_geckolib_kitchen_v311.py build/libs/gugugaga-*.jar
       - name: Verify kitchen v3.1 specialist art and actual workstation models
         run: python3 qa/validate_kitchen_v3_1.py build/generated/resources/kitchenV31Assets
       - name: Validate kitchen v3.2 offhand-tool modes and 47 item images

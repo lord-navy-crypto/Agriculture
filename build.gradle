@@ -57,6 +57,8 @@ apply from: 'tools/marine-fungi-textures.gradle'
 apply from: 'tools/crop-cuisine-textures.gradle'
 apply from: 'tools/kitchen-assets.gradle'
 apply from: 'tools/kitchen-v3-assets.gradle'
+apply from: 'tools/kitchen-motion-v311.gradle'
+apply from: 'tools/gecko-kitchen-textures-v311.gradle'
 apply from: 'tools/kitchen-v31-assets.gradle'
 apply from: 'tools/kitchen-v32-assets.gradle'
 apply from: 'tools/food-ecology-v33-assets.gradle'
@@ -68,6 +70,7 @@ apply from: 'tools/fusion-visuals.gradle'
 // Use -PenableFusionDev=true for the client development run; the companion resource pack
 // requires Fusion on the client's machine but never on the dedicated server.
 repositories {
+    mavenCentral()
     maven {
         name = 'GeckoLib'
         url = uri('https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/')
@@ -85,7 +88,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.9.3'
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation 'maven.modrinth:XaDC71GB:a9fuYUVh'
 }
 

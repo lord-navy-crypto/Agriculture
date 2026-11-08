@@ -9,8 +9,9 @@
     "south": "minecraft:block/moss_block",
     "west": "minecraft:block/moss_block",
     "east": "minecraft:block/moss_block",
-    "hole": "minecraft:block/dark_oak_log_top",
-    "decoration": "minecraft:block/dandelion"
+    "hole": "#motion",
+    "decoration": "minecraft:block/dandelion",
+    "motion": "gugugaga:block/kitchen_motion/bee_habitat_active"
   },
   "elements": [
     {

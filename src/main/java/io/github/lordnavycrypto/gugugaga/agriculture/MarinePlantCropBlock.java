@@ -3,6 +3,7 @@ package io.github.lordnavycrypto.gugugaga.agriculture;
 import com.mojang.serialization.MapCodec;
 import io.github.lordnavycrypto.gugugaga.GuguGagaMod;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -70,6 +71,22 @@ public final class MarinePlantCropBlock extends BushBlock implements SimpleWater
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(Blocks.SAND) || state.is(Blocks.GRAVEL) || state.is(Blocks.CLAY)
                 || state.is(Blocks.MUD) || state.is(Blocks.DIRT);
+    }
+
+    /**
+     * Tiny ambient bubbles provide aquatic visual texture without altering
+     * waterlogging, growth, or adding a periodic block or entity update.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (!state.getValue(WATERLOGGED)
+                || state.getValue(AGE) < 2 || random.nextInt(85) != 0) {
+            return;
+        }
+        double x = pos.getX() + 0.25D + random.nextDouble() * 0.50D;
+        double z = pos.getZ() + 0.25D + random.nextDouble() * 0.50D;
+        level.addParticle(ParticleTypes.BUBBLE, x, pos.getY() + 0.40D, z,
+                0, 0.006D, 0);
     }
 
     @Override

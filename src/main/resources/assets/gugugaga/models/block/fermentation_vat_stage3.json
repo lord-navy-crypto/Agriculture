@@ -3,6 +3,7 @@
   "textures": {
     "side": "minecraft:block/barrel_side",
     "bottom": "minecraft:block/barrel_bottom",
-    "top": "minecraft:block/green_terracotta"
+    "top": "#motion",
+    "motion": "gugugaga:block/kitchen_motion/fermentation_vat_stage3"
   }
 }

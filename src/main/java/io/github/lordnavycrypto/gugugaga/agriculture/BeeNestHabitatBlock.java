@@ -1,6 +1,7 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -114,6 +115,25 @@ public final class BeeNestHabitatBlock extends Block {
             return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+
+    /**
+     * ACTIVITY is an observation score, not a colony population meter.
+     * Purely visual nectar flecks scale with the existing 0..3 state and
+     * require no nearby-entity query on the client.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        int activity = state.getValue(ACTIVITY);
+        if (activity == 0 || (beeSpecies.equals("squash_bee")
+                && level.getDayTime() % 24000L >= 6000L)
+                || random.nextInt(94 - activity * 16) != 0) {
+            return;
+        }
+        double x = pos.getX() + 0.28D + random.nextDouble() * 0.44D;
+        double z = pos.getZ() + 0.28D + random.nextDouble() * 0.44D;
+        double y = pos.getY() + (groundNesting ? 0.35D : 0.76D);
+        level.addParticle(ParticleTypes.FALLING_NECTAR, x, y, z, 0, 0.005D, 0);
     }
 
     @Override

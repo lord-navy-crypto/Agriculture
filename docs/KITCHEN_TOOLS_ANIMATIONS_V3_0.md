@@ -61,3 +61,8 @@ All eighteen dishes require at least one of the new prepared items. Other ingred
 5. Place Bamboo Steamer above a campfire. Offhand Steamer Lid + main-hand Rice → Steamed Rice.
 6. Craft one of the 18 new meals and verify the correct prepared ingredients are required.
 7. Check the old five processing stations, old recipes, honey bottles, crop models and the optional Fusion visual pack in both Fusion/no-Fusion clients.
+
+
+## Visual refinement v3.11 — workstation motion feedback
+
+The three v3 appliances now emit short, station-specific ambient particles while their existing server-synchronized ACTIVE model state is visible: a brief flour puff at the dough bench, light smoke and occasional flame at the skillet, and rising steam at the bamboo steamer. Effects are emitted by the client display-tick hook only while ACTIVE; the existing 10-game-tick duration, one-input/one-output processing, server authority, and no-block-entity design remain unchanged. No persistent or per-tick server animation system is added.

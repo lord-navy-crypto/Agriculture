@@ -1,0 +1,128 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.skillet_station.idle": {
+      "loop": true,
+      "animation_length": 2,
+      "bones": {
+        "spatula": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "1.0": {
+              "vector": [
+                0,
+                0,
+                2
+              ],
+              "easing": "easeInOutSine"
+            },
+            "2.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "animation.skillet_station.work": {
+      "loop": true,
+      "animation_length": 0.6,
+      "bones": {
+        "spatula": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                -12
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.3": {
+              "vector": [
+                0,
+                0,
+                18
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.6": {
+              "vector": [
+                0,
+                0,
+                -12
+              ],
+              "easing": "easeInOutSine"
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                -1
+              ]
+            },
+            "0.3": {
+              "vector": [
+                0,
+                0,
+                1
+              ]
+            },
+            "0.6": {
+              "vector": [
+                0,
+                0,
+                -1
+              ]
+            }
+          }
+        },
+        "food": {
+          "position": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.15": {
+              "vector": [
+                0,
+                0.8,
+                0
+              ],
+              "easing": "easeOutSine"
+            },
+            "0.3": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInSine"
+            },
+            "0.6": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

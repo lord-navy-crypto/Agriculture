@@ -17,3 +17,10 @@ Run after compiling the mod and packaging Fusion:
 
 All base JAR art, gameplay and resource pack contents remain unchanged.
 Actual in-client visual acceptance is still necessary before final release.
+
+
+## Visual refinement v3.11
+
+The Fusion crop, marine-plant and fungal texture atlases retain their documented 2×2 layout and position-based selection. Their four tiles now use deterministic, low-amplitude botanical treatments rather than brightness-only duplication: mirrored silhouettes, restrained channel shifts, and sparse leaf-vein highlight/shadow pixels. Transparent pixels and the original 16×16 alpha silhouette are preserved exactly. The packaged-art QA independently reproduces every output pixel from the base JAR source texture.
+
+This is a client-side visual variation only. It does not alter crop profiles, growth stages, pollination, loot, nutrition, block models, or server behavior.

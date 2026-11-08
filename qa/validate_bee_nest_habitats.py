@@ -23,7 +23,12 @@ for id in names:
     for model_name in (id, f"{id}_active"):
         model = load(f"assets/gugugaga/models/block/{model_name}.json")
         assert model["parent"] == "minecraft:block/block", model_name
-        assert set(model["textures"]) == {"particle","down","up","north","south","west","east","hole","decoration"}, model_name
+        expected_textures = {"particle","down","up","north","south","west","east","hole","decoration"}
+        if model_name.endswith("_active"):
+            expected_textures.add("motion")
+            assert model["textures"]["motion"] == "gugugaga:block/kitchen_motion/bee_habitat_active", model_name
+            assert model["textures"]["hole"] == "#motion", model_name
+        assert set(model["textures"]) == expected_textures, model_name
         assert len(model["elements"]) >= 5, model_name
         for element in model["elements"]:
             assert len(element["from"]) == len(element["to"]) == 3, model_name
