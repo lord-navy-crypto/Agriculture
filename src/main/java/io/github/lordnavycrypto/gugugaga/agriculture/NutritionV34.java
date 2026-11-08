@@ -67,6 +67,7 @@ public final class NutritionV34 {
         if (!food.has(DataComponents.FOOD)) return;
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
                 .getKey(food.getItem()).toString();
+        if (NutritionProfilesV35.isHydrationOnly(id)) return;
         int[] contribution=NutritionProfilesV35.contribution(id);
         CompoundTag values=record(player);
         // Ingest is an input to the next daily reserve update, NOT an
