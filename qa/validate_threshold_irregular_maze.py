@@ -134,7 +134,10 @@ def main():
     assert "carpetOrStep.getBlock() instanceof StairBlock" in feature
     assert "feet.getBlock() instanceof StairBlock" in feature
     assert "isLevel1VentilationStackCell" in feature
-    assert "whole 5x5 planter" in feature
+    assert "either the whole patch exists intact or the room simply has no patch." in feature
+    assert "boolean pocketC = x >= 116 && x <= 122 && z >= 21 && z <= 27;" in runtime
+    assert "level0FloorFoldStairBuilt" in runtime
+    assert "if (!ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)" in feature
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
     assert "int openRate = level0 ? 54 : 46" in source
