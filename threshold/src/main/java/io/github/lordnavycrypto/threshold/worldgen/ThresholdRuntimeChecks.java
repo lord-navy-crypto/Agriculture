@@ -814,20 +814,30 @@ public final class ThresholdRuntimeChecks {
             ServerLevel level, boolean level0, int[][] regions) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         long seed = level.getSeed();
-        int wall=0,open=0,spine=0,clear=0;
+        int feetY = level0 ? 65 : 64;
+        int headY = feetY + 1;
+        int wall=0,open=0,spine=0,clear=0,blockedLogged=0;
+        StringBuilder blockedSpine = new StringBuilder();
         for(int[] box:regions) {
             for(int x=box[0];x<box[1];x++)for(int z=box[2];z<box[3];z++) {
-                BlockState atFeet=level.getBlockState(pos.set(x,65,z));
+                BlockState atFeet=level.getBlockState(pos.set(x,feetY,z));
+                BlockState atHead=level.getBlockState(pos.set(x,headY,z));
                 if(atFeet.isAir())open++;else wall++;
                 if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
                     spine++;
-                    if(atFeet.isAir() && level.getBlockState(pos.set(x,66,z)).isAir())clear++;
+                    if(atFeet.isAir() && atHead.isAir())clear++;
+                    else if(blockedLogged<12) {
+                        blockedSpine.append(" [").append(x).append(',').append(z).append("]=")
+                                .append(atFeet).append('/').append(atHead);
+                        blockedLogged++;
+                    }
                 }
             }
         }
         System.out.println("THRESHOLD_"+(level0?"LEVEL0":"LEVEL1")
                 +"_PHYSICAL_MAZE_PROFILE regions="+regions.length
-                +" wall="+wall+" open="+open+" clearSpine="+clear+"/"+spine);
+                +" feetY="+feetY+" wall="+wall+" open="+open
+                +" clearSpine="+clear+"/"+spine+" blockedSpineSample="+blockedSpine);
         return wall>=8 && open>=80 && spine>=8 && clear*4>=spine*3;
     }
 
