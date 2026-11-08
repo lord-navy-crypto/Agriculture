@@ -808,7 +808,9 @@ public final class ThresholdRuntimeChecks {
      * Confirm that generated walls actually coexist with traversable floor
      * and that the explicit guarantee corridor has two head-clear blocks.
      * This measures the loaded chunk voxels rather than only source formulas.
-     * A small fraction may contain landmark furniture or vertical features.
+     * Every sampled guaranteed-spine tile must be physically clear. The
+     * post-decoration repair pass owns this invariant; a 75% threshold could
+     * hide a blocked doorway or a landmark that overwrote the route.
      */
     private static boolean physicalMazeCrossSection(
             ServerLevel level, boolean level0, int[][] regions) {
@@ -838,7 +840,7 @@ public final class ThresholdRuntimeChecks {
                 +"_PHYSICAL_MAZE_PROFILE regions="+regions.length
                 +" feetY="+feetY+" wall="+wall+" open="+open
                 +" clearSpine="+clear+"/"+spine+" blockedSpineSample="+blockedSpine);
-        return wall>=8 && open>=80 && spine>=8 && clear*4>=spine*3;
+        return wall>=8 && open>=80 && spine>=8 && clear==spine;
     }
 
     private static boolean naturalProfile(
