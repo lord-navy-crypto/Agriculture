@@ -153,7 +153,7 @@ def run():
                     "THRESHOLD_LEVEL1_NESTED_POCKETS_FAIL",
                     "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_FAIL",
                     "THRESHOLD_LEVEL1_PHYSICAL_MAZE_CLEARANCE_FAIL")):
-                    print("FAIL: a required Threshold dimension did not generate", flush=True)
+                    print("FAIL: a required Threshold worldgen or runtime invariant failed", flush=True)
                     print(current[-90000:], flush=True)
                     return 1
                 if any(fatal in current for fatal in (
