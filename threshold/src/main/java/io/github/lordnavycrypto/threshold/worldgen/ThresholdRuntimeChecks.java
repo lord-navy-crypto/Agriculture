@@ -709,7 +709,9 @@ public final class ThresholdRuntimeChecks {
                 && ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, true)
                 && ThresholdIrregularMazeLayout.hasDoorwayWidthVariety(0L, false)
                 && ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, true)
-                && ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, false);
+                && ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, false)
+                && ThresholdIrregularMazeLayout.hasNestedAlcoveVariety(level0.getSeed(), true)
+                && ThresholdIrregularMazeLayout.hasNestedAlcoveVariety(level1.getSeed(), false);
         System.out.println(irregularMazeGeometry
                 ? "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_OK"
                 : "THRESHOLD_LEVEL0_LEVEL1_IRREGULAR_MAZE_FAIL");
@@ -725,6 +727,25 @@ public final class ThresholdRuntimeChecks {
         System.out.println(ThresholdIrregularMazeLayout.hasInteriorPartitionVariety(0L, false)
                 ? "THRESHOLD_LEVEL1_STORAGE_BAY_GRAMMAR_OK"
                 : "THRESHOLD_LEVEL1_STORAGE_BAY_GRAMMAR_FAIL");
+
+        System.out.println(ThresholdIrregularMazeLayout.hasNestedAlcoveVariety(
+                level0.getSeed(), true)
+                ? "THRESHOLD_LEVEL0_NESTED_POCKETS_OK"
+                : "THRESHOLD_LEVEL0_NESTED_POCKETS_FAIL");
+        System.out.println(ThresholdIrregularMazeLayout.hasNestedAlcoveVariety(
+                level1.getSeed(), false)
+                ? "THRESHOLD_LEVEL1_NESTED_POCKETS_OK"
+                : "THRESHOLD_LEVEL1_NESTED_POCKETS_FAIL");
+        // Read actual generated voxel columns, not only layout-source hashes.
+        // These four chunks have already been generated earlier in this audit.
+        boolean physical0 = physicalMazeCrossSection(level0, true, 48, 64, 32, 64);
+        boolean physical1 = physicalMazeCrossSection(level1, false, 48, 80, 16, 32);
+        System.out.println(physical0
+                ? "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_OK"
+                : "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_FAIL");
+        System.out.println(physical1
+                ? "THRESHOLD_LEVEL1_PHYSICAL_MAZE_CLEARANCE_OK"
+                : "THRESHOLD_LEVEL1_PHYSICAL_MAZE_CLEARANCE_FAIL");
 
         boolean spawnReasonPolicy =
                 ThresholdEntityDirector.shouldBlockNaturalSpawn(
@@ -760,6 +781,32 @@ public final class ThresholdRuntimeChecks {
         System.out.println(spawnReasonPolicy
                 ? "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK"
                 : "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_FAIL");
+    }
+
+    /**
+     * Confirm that generated walls actually coexist with traversable floor
+     * and that the explicit guarantee corridor has two head-clear blocks.
+     * This measures the loaded chunk voxels rather than only source formulas.
+     * A small fraction may contain landmark furniture or vertical features.
+     */
+    private static boolean physicalMazeCrossSection(
+            ServerLevel level, boolean level0,
+            int fromX, int toX, int fromZ, int toZ) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        long seed = level.getSeed();
+        int wall=0,open=0,spine=0,clear=0;
+        for(int x=fromX;x<toX;x++)for(int z=fromZ;z<toZ;z++) {
+            BlockState atFeet=level.getBlockState(pos.set(x,65,z));
+            if(atFeet.isAir())open++;else wall++;
+            if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
+                spine++;
+                if(atFeet.isAir() && level.getBlockState(pos.set(x,66,z)).isAir())clear++;
+            }
+        }
+        System.out.println("THRESHOLD_"+(level0?"LEVEL0":"LEVEL1")
+                +"_PHYSICAL_MAZE_PROFILE wall="+wall+" open="+open
+                +" clearSpine="+clear+"/"+spine);
+        return wall>=8 && open>=80 && spine>=8 && clear*4>=spine*3;
     }
 
     private static boolean naturalProfile(
