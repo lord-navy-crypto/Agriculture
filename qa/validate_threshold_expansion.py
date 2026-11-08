@@ -311,6 +311,7 @@ def main() -> int:
         ("int feetY = level0 ? 65 : 64;", "floor-specific physical maze player clearance height"),
         ("pos.set(x, headY, z)", "two-block head clearance above the actual player feet position"),
         ("clear==spine", "every sampled guaranteed corridor tile is physically clear"),
+        ("atFeet.getBlock() instanceof StairBlock", "walkable stair cells are preserved in physical corridor audits"),
         ("THRESHOLD_LEVEL0_WATCHER_ADVANCED_AI_READY_OK", "Level 0 active Watcher runtime readiness probe"),
         ("THRESHOLD_LEVEL1_HOUND_ADVANCED_AI_READY_OK", "Level 1 advanced Hound runtime readiness probe"),
     ):
