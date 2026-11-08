@@ -131,6 +131,10 @@ def main():
     assert "public static boolean isResourceAnchor" in source
     assert "clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, true)" in feature
     assert "clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, false)" in feature
+    assert "carpetOrStep.getBlock() instanceof StairBlock" in feature
+    assert "feet.getBlock() instanceof StairBlock" in feature
+    assert "isLevel1VentilationStackCell" in feature
+    assert "whole 5x5 planter" in feature
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
     assert "int openRate = level0 ? 54 : 46" in source
