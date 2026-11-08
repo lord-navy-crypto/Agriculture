@@ -36,6 +36,27 @@ def parent(cell):
     return None
 
 def assert_connected_spine(seed, spacing, jitter, salt, root_size, target_regions):
+    # This local rasterizer mirrors ThresholdIrregularMazeLayout's exact
+    # finite-width parent-segment predicate without relying on main() locals.
+    def corridor_spine(x, z):
+        bx, bz = x // spacing, z // spacing
+        for gx in range(bx - 1, bx + 2):
+            for gz in range(bz - 1, bz + 2):
+                if gx == 0 and gz == 0:
+                    continue
+                px = gx if gx == 0 else gx - (1 if gx > 0 else -1)
+                pz = gz - (1 if gz > 0 else -1) if gx == 0 else gz
+                ax, az = center(seed, gx, gz, spacing, jitter, salt)
+                cx, cz = center(seed, px, pz, spacing, jitter, salt)
+                vx, vz = cx - ax, cz - az
+                denom = vx * vx + vz * vz
+                if denom < 1:
+                    continue
+                t = max(0.0, min(1.0, ((x - ax) * vx + (z - az) * vz) / denom))
+                if (x - ax - t * vx) ** 2 + (z - az - t * vz) ** 2 <= 5.0:
+                    return True
+        return False
+
     # The root room is open floor; every other walkable tile must belong to
     # the deterministic parent-spine network. Search farther than the target
     # boxes because some parent links leave and re-enter a sampled region.
@@ -44,7 +65,7 @@ def assert_connected_spine(seed, spacing, jitter, salt, root_size, target_region
         (x, z)
         for x in range(limit)
         for z in range(limit)
-        if spine(seed, x, z, spacing, jitter, salt)
+        if corridor_spine(x, z)
     }
     walkable.update((x, z) for x in range(root_size) for z in range(root_size))
     start = (root_size // 2, root_size // 2)
@@ -66,7 +87,7 @@ def assert_connected_spine(seed, spacing, jitter, salt, root_size, target_region
             (x, z)
             for x in range(x0, x1)
             for z in range(z0, z1)
-            if spine(seed, x, z, spacing, jitter, salt)
+            if corridor_spine(x, z)
         )
     missing = targets - reached
     assert not missing, (seed, spacing, len(missing), sorted(missing)[:8])
