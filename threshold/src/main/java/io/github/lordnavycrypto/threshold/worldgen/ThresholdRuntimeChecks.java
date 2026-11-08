@@ -738,8 +738,13 @@ public final class ThresholdRuntimeChecks {
                 : "THRESHOLD_LEVEL1_NESTED_POCKETS_FAIL");
         // Read actual generated voxel columns, not only layout-source hashes.
         // These four chunks have already been generated earlier in this audit.
-        boolean physical0 = physicalMazeCrossSection(level0, true, 48, 64, 32, 64);
-        boolean physical1 = physicalMazeCrossSection(level1, false, 48, 80, 16, 32);
+        boolean physical0 = physicalMazeCrossSection(level0, true,
+                new int[][] {{48, 64, 32, 64}});
+        // The warehouse transition chunk contains very few spine tiles.
+        // Sample a second, distant pair of previously generated Level 1
+        // chunks so the clearance test cannot pass or fail on 3 blocks.
+        boolean physical1 = physicalMazeCrossSection(level1, false,
+                new int[][] {{48, 80, 16, 32}, {0, 16, 64, 96}});
         System.out.println(physical0
                 ? "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_OK"
                 : "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_FAIL");
@@ -790,22 +795,23 @@ public final class ThresholdRuntimeChecks {
      * A small fraction may contain landmark furniture or vertical features.
      */
     private static boolean physicalMazeCrossSection(
-            ServerLevel level, boolean level0,
-            int fromX, int toX, int fromZ, int toZ) {
+            ServerLevel level, boolean level0, int[][] regions) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         long seed = level.getSeed();
         int wall=0,open=0,spine=0,clear=0;
-        for(int x=fromX;x<toX;x++)for(int z=fromZ;z<toZ;z++) {
-            BlockState atFeet=level.getBlockState(pos.set(x,65,z));
-            if(atFeet.isAir())open++;else wall++;
-            if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
-                spine++;
-                if(atFeet.isAir() && level.getBlockState(pos.set(x,66,z)).isAir())clear++;
+        for(int[] box:regions) {
+            for(int x=box[0];x<box[1];x++)for(int z=box[2];z<box[3];z++) {
+                BlockState atFeet=level.getBlockState(pos.set(x,65,z));
+                if(atFeet.isAir())open++;else wall++;
+                if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
+                    spine++;
+                    if(atFeet.isAir() && level.getBlockState(pos.set(x,66,z)).isAir())clear++;
+                }
             }
         }
         System.out.println("THRESHOLD_"+(level0?"LEVEL0":"LEVEL1")
-                +"_PHYSICAL_MAZE_PROFILE wall="+wall+" open="+open
-                +" clearSpine="+clear+"/"+spine);
+                +"_PHYSICAL_MAZE_PROFILE regions="+regions.length
+                +" wall="+wall+" open="+open+" clearSpine="+clear+"/"+spine);
         return wall>=8 && open>=80 && spine>=8 && clear*4>=spine*3;
     }
 
