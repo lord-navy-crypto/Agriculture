@@ -147,7 +147,7 @@ def main() -> int:
     require(layout, "roomX == 2 && roomZ == 3) return 26", "guaranteed Level 1 generator-plant landmark")
     require(lights, "blackoutPocket ? 12 : 2", "blackout ceiling panels recover slowly")
     require(lights, "blackoutPocket ? 8 : 18", "blackout ceiling panels fail more often")
-    require(layout, "level0Architecture(seed, roomX, roomZ) >= 19", "Level 0 landmark-specific vertical clearance")
+    require(layout, "level0Architecture(seed, roomX, roomZ) >= 18", "Level 0 sunken pit and other landmarks protect vertical clearance")
     require(layout, "landmark == 20 || landmark >= 23", "Level 1 landmarks and authored mezzanine reserve overhead clearance")
 
     route_tokens = (
