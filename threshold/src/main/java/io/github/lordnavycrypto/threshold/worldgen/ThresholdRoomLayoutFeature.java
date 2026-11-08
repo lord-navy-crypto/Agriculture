@@ -192,6 +192,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // Exceptionally rare forgotten provisions. Level 0 remains
                 // fundamentally isolated; this isn't a reliable food source.
                 if ((style == 2 || style == 3) && (roomX != 0 || roomZ != 0)
+                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, true)
                         && localX == 6 && localZ == 6
                         && Math.floorMod(mix(seed, roomX, roomZ, 0xCAFE0L), 11) == 0) {
                     // Replace the carpet under the barrel; no floating prop.
@@ -204,6 +205,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         buildLevel0ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
         buildLevel0EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel0VerticalNetwork(world, chunkX, chunkZ, seed, pos);
+        clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, true);
     }
 
     private static void buildLevel1Chunk(WorldGenLevel world, int chunkX, int chunkZ) {
@@ -263,7 +265,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     }
                 }
 
-                if (style == 1 && isLevel1CratePosition(seed, roomX, roomZ, localX, localZ)) {
+                if (style == 1 && isLevel1CratePosition(seed, roomX, roomZ, localX, localZ)
+                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
                     // Starting cache always includes a safe drink and varied
                     // Agriculture nutrition. Other caches keep uncertainty.
                     ResourceKey<LootTable> table = roomX == 0 && roomZ == 0
@@ -278,7 +281,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // harvestable Agriculture crops. The mod is a required
                 // runtime dependency; this lookup avoids compiling it into our JAR.
                 if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
-                        && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18) {
+                        && localX >= 14 && localX <= 18 && localZ >= 14 && localZ <= 18
+                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
                     if (localX == 16 && localZ == 16) {
                         set(world, pos, x, FLOOR_Y, z, Blocks.WATER.defaultBlockState());
                     } else {
@@ -321,7 +325,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
 
                 // A composter beside the maintained planter recycles seeds and crop residues.
                 if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
-                        && localX == 20 && localZ == 16) {
+                        && localX == 20 && localZ == 16
+                        && !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)) {
                     set(world, pos, x, FLOOR_Y, z, Blocks.COMPOSTER.defaultBlockState());
                 }
 
@@ -351,6 +356,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         buildLevel1ArchitecturalDetails(world, chunkX, chunkZ, seed, pos);
         buildLevel1EnvironmentalDressing(world, chunkX, chunkZ, seed, pos);
         buildLevel1VerticalNetwork(world, chunkX, chunkZ, seed, pos);
+        clearGuaranteedSpine(world, chunkX, chunkZ, seed, pos, false);
     }
 
 
@@ -966,7 +972,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // Landmark rooms (12+) retain their authored stairs and pits.
                 if (archetype <= 11 && ThresholdIrregularMazeLayout
                         .isGuaranteedCorridor(seed, x, z, true)) continue;
-                boolean protectedRoute = isReservedRoomPath(
+                boolean protectedRoute = ThresholdIrregularMazeLayout
+                        .isGuaranteedCorridor(seed, x, z, true)
+                        || isReservedRoomPath(
                         seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
                 boolean upperWalkway = hasLevel0UpperDeck(seed, roomX, roomZ)
                         && isLevel0UpperPath(seed, roomX, roomZ, localX, localZ);
@@ -1651,7 +1659,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 // corridors. Elevated authored landmarks remain exempt.
                 if (archetype <= 10 && ThresholdIrregularMazeLayout
                         .isGuaranteedCorridor(seed, x, z, false)) continue;
-                boolean protectedRoute = isReservedRoomPath(
+                boolean protectedRoute = ThresholdIrregularMazeLayout
+                        .isGuaranteedCorridor(seed, x, z, false)
+                        || isReservedRoomPath(
                         seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
                 boolean protectedResource = isLevel1ResourceFootprint(localX, localZ);
                 boolean protectedTile = protectedRoute || protectedResource;
@@ -2135,11 +2145,11 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             boolean stairOpening = localZ == 31
                                     && (localX == 10 || localX == 11)
                                     || localX == 7 && (localZ == 35 || localZ == 36);
-                            if (edge && !stairOpening && !protectedResource) {
+                            if (edge && !stairOpening && !protectedTile) {
                                 set(world, pos, x, 67, z, Blocks.IRON_BARS.defaultBlockState());
                             }
                         }
-                        if (!upperWalkway && !protectedResource && stair) {
+                        if (!upperWalkway && !protectedTile && stair) {
                             int stairY = 64 + localZ - 28;
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
@@ -2147,7 +2157,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && !protectedResource && sideStair) {
+                        if (!upperWalkway && !protectedTile && sideStair) {
                             int stairY = 64 + localX - 4;
                             set(world, pos, x, stairY, z,
                                     Blocks.STONE_BRICK_STAIRS.defaultBlockState()
@@ -2155,7 +2165,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!upperWalkway && !protectedResource && platform
+                        if (!upperWalkway && !protectedTile && platform
                                 && (localX == 7 || localX == 15)
                                 && (localZ == 31 || localZ == 39)) {
                             for (int y = 64; y <= 65; y++) {
@@ -2449,7 +2459,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 int archetype = level0Architecture(seed, roomX, roomZ);
                 if (archetype >= 10) continue;
                 int detail = Math.floorMod((int) mix(seed, x, z, 0xA0E5L), 100);
-                boolean reserved = isReservedRoomPath(
+                boolean reserved = ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, true)
+                        || isReservedRoomPath(
                         seed, LEVEL_0_ROOM_SIZE, roomX, roomZ, localX, localZ, 1, false);
 
                 if (!reserved && localX % 4 == 1 && localZ % 4 == 1 && detail < 9) {
@@ -2493,6 +2504,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 if (archetype >= 15) continue;
                 int detail = Math.floorMod((int) mix(seed, x, z, 0xA1E5L), 100);
                 boolean protectedTile = isLevel1ResourceFootprint(localX, localZ)
+                        || ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)
                         || isReservedRoomPath(
                         seed, LEVEL_1_ROOM_SIZE, roomX, roomZ, localX, localZ, 2, true);
                 boolean upperWalkway = hasLevel1UpperDeck(seed, roomX, roomZ)
@@ -3073,6 +3085,41 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
             container.setLootTable(table);
             container.setLootTableSeed(lootSeed);
             container.setChanged();
+        }
+    }
+
+    /**
+     * Final post-decoration pass for the seed-stable ground-floor route.
+     * It runs after architectural dressing and vertical features so no later
+     * landmark can leave a wall, railing, prop or stair inside a guaranteed
+     * two-block passage. Resource anchors and dimension entrances stay intact.
+     */
+    private static void clearGuaranteedSpine(
+            WorldGenLevel world, int chunkX, int chunkZ, long seed,
+            BlockPos.MutableBlockPos pos, boolean level0) {
+        int minX = chunkX << 4;
+        int minZ = chunkZ << 4;
+        int feetY = level0 ? 65 : 64;
+        int headY = feetY + 1;
+        BlockState floor = level0
+                ? Blocks.GRAY_CONCRETE.defaultBlockState()
+                : Blocks.SMOOTH_STONE.defaultBlockState();
+        for (int dx = 0; dx < 16; dx++) {
+            int x = minX + dx;
+            for (int dz = 0; dz < 16; dz++) {
+                int z = minZ + dz;
+                if (!ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, level0)
+                        || ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, level0)
+                        || ThresholdIrregularMazeLayout.isResourceAnchor(world, pos, x, z)) {
+                    continue;
+                }
+                set(world, pos, x, FLOOR_Y, z, floor);
+                if (level0) {
+                    set(world, pos, x, LEVEL_0_CARPET_Y, z, Blocks.YELLOW_CARPET.defaultBlockState());
+                }
+                set(world, pos, x, feetY, z, Blocks.AIR.defaultBlockState());
+                set(world, pos, x, headY, z, Blocks.AIR.defaultBlockState());
+            }
         }
     }
 
