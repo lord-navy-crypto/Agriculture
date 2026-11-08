@@ -142,6 +142,9 @@ def main():
     assert "level0FloorFoldStairFacing(seed, roomX, roomZ, localX, localZ)" in feature
     assert "isFloorFoldProtectedRoute" in feature
     assert "isLevel1StarterComposterCell(seed, localX, localZ)" in feature
+    assert "isGuaranteedLevel0PillarCell(seed, roomX, roomZ, localX, localZ)" in feature
+    assert "private static boolean isGuaranteedLevel0PillarCell" in feature
+    assert "boolean level0PillarForestBuilt = level0PillarCount >= 1" in runtime
     assert "isLevel1ComposterRouteProtected" in feature
     assert "isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE" in feature
     assert "for (int x = 20; x <= 31; x++)" in runtime
