@@ -16,7 +16,11 @@ def main():
     profiles=(JAVA/"NutritionProfilesV35.java").read_text("utf8")
     tooltip=(JAVA/"NutritionTooltipV40.java").read_text("utf8")
     assert "public static boolean hasProfile(String itemId)" in profiles
+    assert "public static boolean isHydrationOnly(String itemId)" in profiles
+    assert "HYDRATION_ONLY" in profiles
     assert "NutritionProfilesV35.contribution(itemId)" in tooltip
+    assert "NutritionProfilesV35.isHydrationOnly(itemId)" in tooltip
+    assert "tooltip.gugugaga.hydration_only" in tooltip
     assert "ItemTooltipEvent" in tooltip and "DataComponents.FOOD" in tooltip
     assert "tooltip.gugugaga.nutrition_generic" in tooltip
     assert "MAX_PREVIEW_ROWS = 3" in tooltip and "Screen.hasShiftDown()" in tooltip
@@ -36,7 +40,7 @@ def main():
     assert "value = Dist.CLIENT" in tooltip, "nutrition tooltip must remain client-only"
     for locale in ("en_us.json","zh_cn.json"):
         strings=json.loads((LANG/locale).read_text("utf8"))
-        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand","tooltip.gugugaga.nutrition_balance","tooltip.gugugaga.nutrition_balance_fallback","tooltip.gugugaga.nutrient_target_line","tooltip.gugugaga.nutrition_daily"):
+        for key in ("tooltip.gugugaga.nutrition_profile","tooltip.gugugaga.nutrition_generic","tooltip.gugugaga.nutrient_line","tooltip.gugugaga.nutrition_note","tooltip.gugugaga.nutrition_expand","tooltip.gugugaga.nutrition_balance","tooltip.gugugaga.nutrition_balance_fallback","tooltip.gugugaga.nutrient_target_line","tooltip.gugugaga.nutrition_daily","tooltip.gugugaga.hydration_only"):
             assert strings.get(key), (locale,key)
         for nutrient in nutrients:
             assert strings.get("nutrition.gugugaga."+nutrient), (locale,nutrient)
