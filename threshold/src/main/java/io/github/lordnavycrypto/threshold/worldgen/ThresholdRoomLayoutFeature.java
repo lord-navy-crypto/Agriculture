@@ -323,11 +323,13 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                 }
                 set(world, pos, x, LEVEL_1_CEILING_Y, z, ceiling);
 
-                // A composter beside the maintained planter recycles seeds and crop residues.
-                if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ)
-                        && localX == 20 && localZ == 16
-                        && (ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)
-                        || !ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false))) {
+                // Keep the starter shelter's composter beside the planter, but
+                // move it deterministically when the original tile overlaps a route.
+                boolean composterCell = roomX == 0 && roomZ == 0
+                        ? isLevel1StarterComposterCell(seed, localX, localZ)
+                        : localX == 20 && localZ == 16
+                        && !isLevel1ComposterRouteProtected(seed, roomX, roomZ, localX, localZ);
+                if (style == 1 && hasLevel1PlanterPatch(seed, roomX, roomZ) && composterCell) {
                     set(world, pos, x, FLOOR_Y, z, Blocks.COMPOSTER.defaultBlockState());
                 }
 
@@ -2834,6 +2836,43 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
      * guaranteed spine or a reserved room exit. Each pocket searches all four
      * edges, so a corridor crossing one side cannot erase every way down.
      */
+    /**
+     * The starter composter uses a deterministic nearby tile that is not part
+     * of either the physical maze spine or the reserved room-exit route.
+     */
+    private static boolean isLevel1StarterComposterCell(
+            long seed, int localX, int localZ) {
+        int minX = 20;
+        int maxX = 31;
+        int minZ = 10;
+        int maxZ = 30;
+        if (localX < minX || localX > maxX || localZ < minZ || localZ > maxZ) return false;
+        int height = maxZ - minZ + 1;
+        int total = (maxX - minX + 1) * height;
+        int start = Math.floorMod((int) mix(seed, 0, 0, 0xC0A7E57L), total);
+        for (int offset = 0; offset < total; offset++) {
+            int index = (start + offset) % total;
+            int candidateX = minX + index / height;
+            int candidateZ = minZ + index % height;
+            if (!isLevel1ComposterRouteProtected(
+                    seed, 0, 0, candidateX, candidateZ)) {
+                return localX == candidateX && localZ == candidateZ;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isLevel1ComposterRouteProtected(
+            long seed, int roomX, int roomZ, int localX, int localZ) {
+        int x = roomX * LEVEL_1_ROOM_SIZE + localX;
+        int z = roomZ * LEVEL_1_ROOM_SIZE + localZ;
+        return ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)
+                || ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed, x, z, false)
+                || isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE,
+                        roomX, roomZ, localX, localZ, 2, true)
+                || isLevel1ResourceFootprint(localX, localZ);
+    }
+
     private static Direction level0FloorFoldStairFacing(
             long seed, int roomX, int roomZ, int localX, int localZ) {
         Direction facing = findFloorFoldStairFacing(
