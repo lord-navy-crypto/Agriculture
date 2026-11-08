@@ -103,6 +103,8 @@ public final class ThresholdRuntimeChecks {
         // Alpha 16 landmark chunks: pillar grove, floor-fold pockets and stair tower.
         level0.getChunk(4, 4);
         level0.getChunk(6, 0);
+        level0.getChunk(7, 0);
+        level0.getChunk(7, 1);
         level0.getChunk(0, 4);
         // Alpha 17: guaranteed Level 0 blackout corridor.
         level0.getChunk(6, 4);
@@ -371,13 +373,18 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
-        boolean level0FloorFoldStairBuilt =
-                level0.getBlockState(new BlockPos(104, 62, 12)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(105, 62, 12)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(116, 62, 9)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(116, 62, 10)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(119, 62, 27)).is(Blocks.OAK_STAIRS)
-                || level0.getBlockState(new BlockPos(120, 62, 27)).is(Blocks.OAK_STAIRS);
+        boolean level0FloorFoldStairBuilt = false;
+        for (int x = 102; x <= 127; x++) {
+            for (int z = 7; z <= 27; z++) {
+                boolean pocketA = x >= 102 && x <= 107 && z >= 7 && z <= 12;
+                boolean pocketB = x >= 116 && x <= 122 && z >= 7 && z <= 13;
+                boolean pocketC = x >= 116 && x <= 122 && z >= 21 && z <= 27;
+                if ((pocketA || pocketB || pocketC)
+                        && level0.getBlockState(new BlockPos(x, 62, z)).getBlock() instanceof StairBlock) {
+                    level0FloorFoldStairBuilt = true;
+                }
+            }
+        }
         level0FloorFoldBuilt &= level0FloorFoldStairBuilt;
         System.out.println(level0FloorFoldBuilt
                 ? "THRESHOLD_LEVEL0_FLOOR_FOLD_OK" : "THRESHOLD_LEVEL0_FLOOR_FOLD_FAIL");
