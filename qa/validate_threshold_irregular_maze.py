@@ -141,6 +141,10 @@ def main():
     assert "level0.getChunk(7, 0)" in runtime and "level0.getChunk(7, 1)" in runtime
     assert "level0FloorFoldStairFacing(seed, roomX, roomZ, localX, localZ)" in feature
     assert "isFloorFoldProtectedRoute" in feature
+    assert "isLevel1StarterComposterCell(seed, localX, localZ)" in feature
+    assert "isLevel1ComposterRouteProtected" in feature
+    assert "isReservedRoomPath(seed, LEVEL_1_ROOM_SIZE" in feature
+    assert "for (int x = 20; x <= 31; x++)" in runtime
     assert "if (!ThresholdIrregularMazeLayout.isProtectedPassageOrEntry(x, z, false)" in feature
     assert "isMergedEdge(first, second, edge, mergeRate)" in source
     assert "int mergeRate = level0 ? 1 : 4" in source
