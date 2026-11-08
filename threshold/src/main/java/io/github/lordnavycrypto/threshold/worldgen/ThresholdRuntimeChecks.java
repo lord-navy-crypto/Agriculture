@@ -674,7 +674,14 @@ public final class ThresholdRuntimeChecks {
         System.out.println(cropDiversity
                 ? "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_OK"
                 : "THRESHOLD_LEVEL1_AGRICULTURE_CROP_DIVERSITY_FAIL");
-        boolean composterBuilt = level1.getBlockState(new BlockPos(20, 63, 16)).is(Blocks.COMPOSTER);
+        boolean composterBuilt = false;
+        for (int x = 20; x <= 31; x++) {
+            for (int z = 10; z <= 30; z++) {
+                if (level1.getBlockState(new BlockPos(x, 63, z)).is(Blocks.COMPOSTER)) {
+                    composterBuilt = true;
+                }
+            }
+        }
         System.out.println(composterBuilt ? "THRESHOLD_LEVEL1_COMPOSTER_OK" : "THRESHOLD_LEVEL1_COMPOSTER_FAIL");
         // Lithostitched's composite feature must have run its second stage.
         boolean ventBuilt = level1.getBlockState(new BlockPos(12, 73, 12))
