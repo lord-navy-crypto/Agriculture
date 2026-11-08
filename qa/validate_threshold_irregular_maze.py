@@ -101,6 +101,11 @@ def main():
     assert ".isGuaranteedCorridor(seed, x, z, true)" in feature
     assert ".isGuaranteedCorridor(seed, x, z, false)" in feature
     assert "hasLevel0Divider" in feature and "hasLevel1Divider" in feature
+    # Authored sunken conference pit keeps both stairs on every world seed.
+    pit=feature.split("case 18 -> {",1)[1].split("case 19 -> {",1)[0]
+    assert "!protectedRoute && !upperWalkway" not in pit
+    assert "if (pit && !upperWalkway)" in pit
+    assert "if (level0Architecture(seed, roomX, roomZ) >= 18)" in feature
     # Ensure each seed-stable parent edge has a physical two-wide path, not
     # merely a declared logical edge. Sample every quarter block of each link.
     def spine(seed, x, z, spacing, jitter, salt):

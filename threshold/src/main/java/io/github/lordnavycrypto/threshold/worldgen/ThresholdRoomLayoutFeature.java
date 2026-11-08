@@ -1400,6 +1400,8 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                     case 18 -> {
                         // A sunken conference pit is cut below the office floor and
                         // reached by a four-step stair, with a guarded rim and a table.
+                        // This authored landmark owns its pit and stairs: the
+                        // legacy room route mask cannot silently erase either.
                         boolean pit = localX >= 22 && localX <= 28
                                 && localZ >= 21 && localZ <= 28;
                         boolean inner = localX >= 23 && localX <= 27
@@ -1408,7 +1410,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 || localZ == 21 || localZ == 28);
                         boolean stairOpening = (localX == 22 || localX == 28)
                                 && (localZ == 23 || localZ == 24);
-                        if (pit && !protectedRoute && !upperWalkway) {
+                        if (pit && !upperWalkway) {
                             set(world, pos, x, 60, z, Blocks.SMOOTH_STONE.defaultBlockState());
                             for (int y = 61; y <= 64; y++) {
                                 set(world, pos, x, y, z, Blocks.AIR.defaultBlockState());
@@ -1423,7 +1425,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                                 set(world, pos, x, 61, z, Blocks.YELLOW_CARPET.defaultBlockState());
                             }
                         }
-                        if (!protectedRoute && !upperWalkway
+                        if (!upperWalkway
                                 && (localZ == 23 || localZ == 24)
                                 && localX >= 18 && localX <= 21) {
                             int stairY = 63 - (localX - 18);
@@ -1433,7 +1435,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (!protectedRoute && !upperWalkway
+                        if (!upperWalkway
                                 && (localZ == 23 || localZ == 24)
                                 && localX >= 29 && localX <= 31) {
                             int stairY = 60 + localX - 28;
@@ -1443,12 +1445,12 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
                             set(world, pos, x, stairY + 1, z, Blocks.AIR.defaultBlockState());
                             set(world, pos, x, stairY + 2, z, Blocks.AIR.defaultBlockState());
                         }
-                        if (inner && !protectedRoute && !upperWalkway
+                        if (inner && !upperWalkway
                                 && localX == 25 && localZ == 24) {
                             set(world, pos, x, 61, z, Blocks.OAK_SLAB.defaultBlockState());
                             set(world, pos, x, 63, z, Blocks.SEA_LANTERN.defaultBlockState());
                         }
-                        if (inner && !protectedRoute && !upperWalkway
+                        if (inner && !upperWalkway
                                 && (localX == 24 || localX == 26) && localZ == 24) {
                             set(world, pos, x, 61, z,
                                     Blocks.OAK_STAIRS.defaultBlockState()
@@ -2581,9 +2583,9 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
     }
 
     private static boolean hasLevel0UpperDeck(long seed, int roomX, int roomZ) {
-        // Landmark rooms 19-21 own their vertical architecture and keep the
-        // generic gallery from overwriting their stairs, pits or column clearances.
-        if (level0Architecture(seed, roomX, roomZ) >= 19) return false;
+        // Landmark rooms 18-22 own their vertical architecture. An upper
+        // gallery must not erase the guaranteed sub-floor conference-pit stair.
+        if (level0Architecture(seed, roomX, roomZ) >= 18) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 0)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA0D0L), 100) < 38);
