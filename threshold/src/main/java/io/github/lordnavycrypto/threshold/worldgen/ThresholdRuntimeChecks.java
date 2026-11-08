@@ -821,7 +821,7 @@ public final class ThresholdRuntimeChecks {
         for(int[] box:regions) {
             for(int x=box[0];x<box[1];x++)for(int z=box[2];z<box[3];z++) {
                 BlockState atFeet=level.getBlockState(pos.set(x,feetY,z));
-                BlockState atHead=level.getBlockState(pos.set(x,headY,z));
+                BlockState atHead=level.getBlockState(pos.set(x, headY, z));
                 if(atFeet.isAir())open++;else wall++;
                 if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
                     spine++;
