@@ -29,12 +29,12 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * Level 0's Watcher is a bounded, locally coordinated liminal encounter.
+ * Distant Watchers are bounded, locally coordinated encounters throughout Levels 0-5.
  *
- * Natural Watchers default to PASSIVE: they observe, stalk, search, peek and
- * withdraw without damaging or capturing players. AGGRESSIVE mode uses normal
- * navigation and captures only after visible close contact, returning the
- * player to the original Level 0 entrance.
+ * Natural Watchers are AGGRESSIVE only in Level 0, where close contact captures
+ * the player and returns them to the Level 0 entrance. In Levels 1-5 they default
+ * to PASSIVE observation, stalking, searching, peeking and retreating without
+ * damaging or capturing players.
  *
  * It does not have omniscient tracking: a position is recorded only while
  * the player is actually visible, and nearby Watchers may relay that immutable
