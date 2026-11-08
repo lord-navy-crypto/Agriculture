@@ -33,7 +33,7 @@ def main():
     assert "ThresholdDimensions.LEVEL_0" in constructor
     assert "setBehaviorMode(BehaviorMode.AGGRESSIVE)" in constructor
     assert "capturePlayer(player)" in watcher
-    assert "destination, 4.5D, 65.0D, 4.5D" in watcher
+    assert "destination, 4.5D, 65.0D, 4.5D" in " ".join(watcher.split())
     assert ".add(Attributes.MAX_HEALTH, 22.0D)" in attrs
     assert ".add(Attributes.MOVEMENT_SPEED, 0.34D)" in attrs
 
