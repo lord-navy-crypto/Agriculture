@@ -96,6 +96,7 @@ def assert_connected_spine(seed, spacing, jitter, salt, root_size, target_region
 def main():
     source=(ROOT/"threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdIrregularMazeLayout.java").read_text("utf8")
     feature=(ROOT/"threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdRoomLayoutFeature.java").read_text("utf8")
+    runtime=(ROOT/"threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen/ThresholdRuntimeChecks.java").read_text("utf8")
     assert "LEVEL_0_SPACING = 22" in source and "LEVEL_1_SPACING = 28" in source
     assert "refineLevel0(world, chunkX, chunkZ, seed, pos)" in feature
     assert "refineLevel1(world, chunkX, chunkZ, seed, pos)" in feature
