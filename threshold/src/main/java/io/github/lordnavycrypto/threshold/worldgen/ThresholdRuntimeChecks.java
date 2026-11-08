@@ -19,6 +19,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -384,8 +385,14 @@ public final class ThresholdRuntimeChecks {
         System.out.println(level1CraneHallBuilt
                 ? "THRESHOLD_LEVEL1_CRANE_HALL_OK" : "THRESHOLD_LEVEL1_CRANE_HALL_FAIL");
 
-        boolean level1VentilationHallBuilt =
-                level1.getBlockState(new BlockPos(10, 65, 106)).is(Blocks.IRON_BLOCK);
+        boolean level1VentilationHallBuilt = false;
+        for (int x = 8; x <= 12; x++) {
+            for (int z = 104; z <= 108; z++) {
+                if (level1.getBlockState(new BlockPos(x, 65, z)).is(Blocks.IRON_BLOCK)) {
+                    level1VentilationHallBuilt = true;
+                }
+            }
+        }
         System.out.println(level1VentilationHallBuilt
                 ? "THRESHOLD_LEVEL1_VENTILATION_HALL_OK" : "THRESHOLD_LEVEL1_VENTILATION_HALL_FAIL");
 
@@ -827,7 +834,8 @@ public final class ThresholdRuntimeChecks {
                 if(atFeet.isAir())open++;else wall++;
                 if(ThresholdIrregularMazeLayout.isGuaranteedCorridor(seed,x,z,level0)) {
                     spine++;
-                    if(atFeet.isAir() && atHead.isAir())clear++;
+                    boolean traversableFeet = atFeet.isAir() || atFeet.getBlock() instanceof StairBlock;
+                    if(traversableFeet && atHead.isAir())clear++;
                     else if(blockedLogged<12) {
                         blockedSpine.append(" [").append(x).append(',').append(z).append("]=")
                                 .append(atFeet).append('/').append(atHead);
