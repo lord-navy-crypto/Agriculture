@@ -76,8 +76,11 @@ def main():
     assert "hasDoorwayWidthVariety" in source
     assert "hasInteriorPartitionVariety" in source
     assert "hasNestedAlcoveVariety" in source
-    assert "isNestedAlcove(h,lx,lz,true)" in source
-    assert "isNestedAlcove(h,lx,lz,false)" in source
+    assert "nestedAlcoveTile(h,lx,lz,true)" in source
+    assert "nestedAlcoveTile(h,lx,lz,false)" in source
+    assert "if(pocket==2)return false" in source
+    assert "if(vertical && insideDoorGap(dz,sideGap,width))return 2;" in source
+    assert "if(horizontal && insideDoorGap(dx,northGap,width))return 2;" in source
     assert "insideDoorGap(lz, gapZ, width)" in source
     assert "insideDoorGap(lx, gapX, width)" in source
     assert "sideReturn" in source and "rackReturn" in source
@@ -193,7 +196,39 @@ def main():
             assert any((3 if level0 else 4)<=w<=(5 if level0 else 6) for w in widths), (seed,level0,widths)
             assert any(w>=(7 if level0 else 8) for w in widths), (seed,level0,widths)
 
-    print("THRESHOLD_IRREGULAR_MAZE_V4_6_PASS: variable legacy/Voronoi door widths, connected spine and multi-segment room grammar")
+    # Inset rooms expose two perpendicular pairs of doorways. They must
+    # override any coincident dividers, rather than becoming fake entrances.
+    for seed in (0,42,2026,-17):
+        for level0,salt in ((True,0x4D415A45304C),(False,0x4D415A45314C)):
+            checked=0
+            for gx in range(-5,6):
+                for gz in range(-5,6):
+                    h=mix(seed,gx,gz,salt^0x1A7E10)
+                    roll=h%100
+                    if not ((40<=roll<64) if level0 else (36<=roll<69)):
+                        continue
+                    hx=(3 if level0 else 5)+(h>>25)%2
+                    hz=(4 if level0 else 5)+(h>>34)%2
+                    ox=(h>>10)%5-2
+                    oz=(h>>18)%5-2
+                    ng=(h>>43)%5-2
+                    sg=(h>>51)%5-2
+                    width=3 if level0 else 5
+                    def tile(lx,lz):
+                        dx,dz=lx-ox,lz-oz
+                        vertical=abs(dx)==hx and abs(dz)<=hz
+                        horizontal=abs(dz)==hz and abs(dx)<=hx
+                        if not(vertical or horizontal):return 0
+                        if vertical and abs(dz-sg)<=(width-1)//2:return 2
+                        if horizontal and abs(dx-ng)<=(width-1)//2:return 2
+                        return 1
+                    assert all(tile(ox+side*hx,oz+sg)==2 for side in (-1,1))
+                    assert all(tile(ox+ng,oz+side*hz)==2 for side in (-1,1))
+                    assert tile(ox+hx,oz+hz)==1
+                    checked+=1
+            assert checked>=8,(seed,level0,checked)
+
+    print("THRESHOLD_IRREGULAR_MAZE_V4_7_PASS: nested pockets have clear doorways, connected spine and varied widths")
 
 if __name__=="__main__":
     main()
