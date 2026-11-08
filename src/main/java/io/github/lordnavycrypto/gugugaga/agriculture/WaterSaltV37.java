@@ -58,26 +58,50 @@ public final class WaterSaltV37 {
         player.getPersistentData().put(KEY,record);
     }
 
+    /**
+     * Apply one five-second sample. Stored progress is measured in fictional
+     * activity-tick units, not millilitres or a real dietary requirement.
+     * The previous 200-tick drain removed 120 water units even at rest per
+     * 24,000-tick Minecraft day; the balanced baseline is now 60/day.
+     * The accumulator prevents roundoff from changing the result at rest.
+     */
+    private static final int SAMPLE_TICKS=100;
+    private static final int WATER_DRAIN_UNITS=400;
+    private static final int SALT_DECAY_TICKS=4800;
+    private static final String WATER_PROGRESS="v42_water_progress";
+    private static final String SALT_PROGRESS="v42_salt_progress";
+
+    public static int activityUnits(boolean sprinting,boolean nether,boolean highSalt) {
+        return SAMPLE_TICKS
+                +(sprinting?SAMPLE_TICKS:0)
+                +(nether?SAMPLE_TICKS:0)
+                +(highSalt?SAMPLE_TICKS/2:0);
+    }
+
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if(!(event.getEntity() instanceof ServerPlayer player)
                 ||player.isCreative()||player.isSpectator())return;
-        if(player.tickCount%200!=0)return;
+        if(player.tickCount%SAMPLE_TICKS!=0)return;
         CompoundTag record=data(player);
-        int drain=1;
-        if(player.isSprinting())drain++;
-        if(player.level().dimension()==Level.NETHER)drain++;
-        int water=clamp(record.getInt("water")-drain);
         int salt=clamp(record.getInt("salt"));
-        // Sodium and water are independent; high salt intake can increase
-        // water demand. Thresholds are game balancing, not blood sodium.
-        if(salt>85)water=clamp(water-1);
-        if(player.tickCount%1200==0)salt=clamp(salt-1);
+        int priorWaterProgress=Math.max(0,Math.min(WATER_DRAIN_UNITS-1,
+                record.getInt(WATER_PROGRESS)));
+        int progress=priorWaterProgress+activityUnits(player.isSprinting(),
+                player.level().dimension()==Level.NETHER,salt>85);
+        int water=clamp(record.getInt("water")-progress/WATER_DRAIN_UNITS);
+        record.putInt(WATER_PROGRESS,progress%WATER_DRAIN_UNITS);
+        int priorSaltProgress=Math.max(0,Math.min(SALT_DECAY_TICKS-1,
+                record.getInt(SALT_PROGRESS)));
+        int saltProgress=priorSaltProgress+SAMPLE_TICKS;
+        salt=clamp(salt-saltProgress/SALT_DECAY_TICKS);
+        record.putInt(SALT_PROGRESS,saltProgress%SALT_DECAY_TICKS);
         record.putInt("water",water);
         record.putInt("salt",salt);
         player.getPersistentData().put(KEY,record);
-        // Challenging yet recoverable fictional survival: movement/mining
-        // setbacks at severe shortage, not health damage or starvation.
+        // Refresh existing temporary gameplay penalties every ten seconds
+        // rather than every sample to reduce unnecessary effect packets.
+        if(player.tickCount%200!=0)return;
         if(water<=15)player.addEffect(new MobEffectInstance(
                 MobEffects.MOVEMENT_SLOWDOWN,240,0,true,false,true));
         if(water<=8 || salt<=8)player.addEffect(new MobEffectInstance(
