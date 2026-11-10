@@ -8,13 +8,12 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
 /**
- * Opt-in anomaly structures. OFF by default so existing worlds retain their
- * six established maze levels and cannot accidentally spawn giant towers.
- * Enabling this pack is a new-world experiment, never a migration.
+ * Complete six-floor anomaly structure pool. Enabled by default for new
+ * worlds, but remains user-disableable; existing world data is never rewritten.
  */
 public final class ThresholdAnomalyPacks {
-    private static final PackSource OPTIONAL_BUILT_IN =
-            PackSource.create(PackSource.BUILT_IN::decorate, false);
+    private static final PackSource DEFAULT_ENABLED_BUILT_IN =
+            PackSource.create(PackSource.BUILT_IN::decorate, true);
 
     private ThresholdAnomalyPacks() {}
 
@@ -24,8 +23,8 @@ public final class ThresholdAnomalyPacks {
                 ResourceLocation.fromNamespaceAndPath(
                         "gugugaga", "resourcepacks/threshold_anomalies"),
                 PackType.SERVER_DATA,
-                Component.literal("Backroom Agriculture | Impossible Architecture (Experimental)"),
-                OPTIONAL_BUILT_IN,
+                Component.literal("Backroom Agriculture | Impossible Architecture (Experimental, enabled by default)"),
+                DEFAULT_ENABLED_BUILT_IN,
                 false,
                 Pack.Position.TOP
         );
