@@ -10,11 +10,13 @@ one shared cooled-lava kind), 15 GrandEcology kinds, five GroundMicrostructure
 kinds, two CaveWonderNetwork kinds and two VanillaHabitat kinds. The current migration code now represents all 142 original resources:
 97 building templates, four city districts, 17 geological-wonder kinds,
 15 ecology kinds, five ground microstructures, two cave networks and two
-vanilla habitats. The 97 buildings and four city districts use the optional
-six-floor anomaly pack; the other 41 environmental features are integrated
-into the Level 2-5 worldgen sequence with route protection and floor-specific
-palettes. Compilation and live server validation are still required before
-this migration can be called fully verified.
+vanilla habitats. The 97 buildings and four city districts use the built-in six-floor anomaly
+pack, enabled by default for new worlds; the other 41 environmental features
+are integrated into all six floors through the room sequence with route
+protection and floor-aware surface handling. Levels 0 and 1 retain the full
+feature and structure pool at a lower deterministic frequency. Compilation
+and live server validation are still required before this migration can be
+called fully verified.
 Three separately licensed GDMC templates are additional and excluded from
 the 142-original-resource count; they are not copied in this stage.
 
@@ -24,8 +26,9 @@ the 142-original-resource count; they are not copied in this stage.
 当前迁移代码已经覆盖全部 142 种原创资源：
 97 个建筑模板、4 个现代城市街区、17 种地质奇观、15 种生态特征、
 5 种地面微结构、2 种洞穴网络和 2 种原生栖息地。
-97 个建筑和 4 个城市街区通过六层可选异常数据包生成；
-其余 41 种环境特征已接入 Level 2-5 的世界生成序列，并加入路线保护和楼层材质适配。
+97 个建筑和 4 个城市街区通过默认启用的六层异常数据包生成；
+其余 41 种环境特征全部接入 Level 0-5 的世界生成序列，并加入路线保护和地板适配。
+Level 0、1 保留完整内容池，只降低确定性生成频率，不限制任何结构种类。
 但仍需完成编译和真实服务器验收，才能称为完全验证。
 另有 3 个单独授权的 GDMC 模板，不计入这 142 个原创资源，本阶段尚未复制。
 
@@ -52,14 +55,15 @@ service lift integrated into each district:
 
 ## Original and vanilla anomalies / 原创与原版异常结构
 
-The 17 geological forms now run as chunk-local, deterministic floor anomalies
-in Levels 2-5. They reuse the source geometry patterns but use the Backrooms'
-actual floor palettes, stay above Y=64, preserve the reserved room routes, and
-do not carve or replace water. Five ground microstructures, two vanilla habitats, 15 GrandEcology habitats
-and two cave-wonder networks are also adapted as rare, chunk-local features.
-Wetland pools are sealed and supported; cave passages cut only through
-approved wall blocks and preserve reserved routes. Level 0 and Level 1 retain
-their original horror and warehouse identities.
+The 17 geological forms, five ground microstructures, two vanilla habitats,
+15 GrandEcology habitats and two cave-wonder networks are available on all six
+floors as chunk-local deterministic features. They use each floor's real
+surface cell (Level 0 carpet at Y=64; Levels 1-5 air above the Y=63 floor),
+preserve reserved routes, and avoid existing fluids and structures. Level 0
+and Level 1 use one-quarter the normal feature-attempt rate, preserving their
+horror and warehouse identities without removing any anomaly family.
+Wetland pools are sealed and supported; cave passages cut only approved wall
+blocks and preserve reserved routes.
 
 Each of the six Backrooms dimensions has its own shared structure set, so
 houses, city districts and vanilla fragments cannot independently choose the
@@ -89,18 +93,18 @@ cities. They do not replace or override vanilla structure definitions.
 
 ## World safety / 世界安全
 
-- The built-in data pack is optional and OFF by default.
-- It affects all six Backrooms dimensions: Levels 0, 1, 2, 3, 4 and 5.
+- The built-in data pack is selected by default for new worlds and remains user-disableable.
+- It provides the same six structure families on all six Backrooms dimensions: Levels 0, 1, 2, 3, 4 and 5.
+- Levels 0 and 1 use a wider structure candidate spacing (80 chunks rather than 64) so anomalies are less common, not unavailable.
 - Each floor's anomaly families share one structure set, so a region chooses
   one family instead of independently placing overlapping city/building/vanilla
   sets. Each floor has a different placement salt.
 - The maze feature runs before the anomaly structures; the structures use
   \`top_layer_modification\` so the small entrance can intentionally cut through
   the ceiling after the maze has been built.
-- Existing world generation remains unchanged unless the player enables the
-  experimental data pack when creating a new world.
-- Do not enable the pack in an important existing world without a backup.
-  Structures only generate in newly generated chunks.
+- New worlds receive the anomaly pack by default; players may disable it in world data-pack settings.
+- Existing worlds are not rewritten. If the pack is enabled for an existing world, structures affect only newly generated chunks.
+- Back up important worlds before changing their data-pack selection.
 
 ## Water and salt / 水盐系统
 
