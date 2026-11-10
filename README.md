@@ -56,14 +56,14 @@ The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated a
 
 ## Experimental water art and connected RealScale anomalies (v4.5 source branch)
 
-The optional and **default-OFF** [Impossible Architecture preview](docs/BACKROOM_ANOMALY_ARCHITECTURE_V4_4.md)
+The optional and **default-OFF** [Impossible Architecture preview](docs/BACKROOM_ANOMALY_ARCHITECTURE_V4_5.md)
 imports 97 original RealScale buildings and four modern city districts. Each
 city district now has a sparse service-lift shaft from the Level 0/1 maze to
 its Y=82 street deck. The shared rare structure set also reuses vanilla plains
 village centres, ancient-city centres, ruined portals and shipwreck templates.
 Dedicated water item art, distinct water fog tints and an alternate
 sea-salt + boiled-water brine recipe are included; that alternate recipe
-consumes the water bottle.
+returns the reusable empty flask.
 
 ## Build and validation
 
