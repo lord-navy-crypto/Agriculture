@@ -9,6 +9,7 @@ import io.github.lordnavycrypto.threshold.entity.ThresholdHoundEntity;
 import io.github.lordnavycrypto.threshold.entity.ThresholdPartygoerEntity;
 import io.github.lordnavycrypto.threshold.entity.ThresholdPlayerEvents;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -45,6 +46,23 @@ public final class ThresholdRuntimeChecks {
             return;
         }
         System.out.println("THRESHOLD_DIMENSIONS_REGISTRY_READY_OK");
+
+        // The optional anomaly data pack is disabled in ordinary worlds. When
+        // enabled for a new world, all structures and the single placement set
+        // must be present together.
+        var structureRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE);
+        var structureSetRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE_SET);
+        boolean anomalyStructuresReady =
+                structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_architecture"))
+                && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_urban"))
+                && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_village_fragment"))
+                && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_ancient_city_fragment"))
+                && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_ruined_portal"))
+                && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_shipwreck"))
+                && structureSetRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_structures"));
+        System.out.println(anomalyStructuresReady
+                ? "THRESHOLD_ANOMALY_WORLDGEN_REGISTRY_OK"
+                : "THRESHOLD_ANOMALY_WORLDGEN_OPTIONAL_PACK_OFF");
 
         boolean watcherRegistered = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.containsKey(
                 ResourceLocation.fromNamespaceAndPath("threshold", "watcher"))
