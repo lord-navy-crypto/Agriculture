@@ -36,32 +36,13 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         return ThresholdGeoWonderGeometry.surfaceSite(gx,gz,kind.ordinal());
     }
     private boolean allowedLevel(String level) {
-        return switch(kind) {
-            case PLAYA_BASIN -> level.equals("level_2") || level.equals("level_5");
-            case ALLUVIAL_FAN -> level.equals("level_2") || level.equals("level_4");
-            case COLD_DESERT_PAVEMENT -> level.equals("level_2");
-            case HOODOO_AMPHITHEATER -> level.equals("level_3");
-            case TRAVERTINE_STEPS -> level.equals("level_4");
-            case MANGROVE_ESTUARY -> level.equals("level_4");
-            case COOLED_LAVA_FIELD -> level.equals("level_2") || level.equals("level_3");
-            case GLACIAL_MORAINE_RING -> level.equals("level_5");
-            case DELTA_DISTRIBUTARIES -> level.equals("level_4") || level.equals("level_5");
-            case KARST_DOLINE_RIM -> level.equals("level_3");
-        };
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
     private static int roomSizeForLevel(String level) {
-        return level.equals("level_4") ? 48 : 32;
+        return ThresholdAnomalySurface.roomSize(level);
     }
     private boolean naturalFloor(BlockState b) {
-        // The Backrooms are artificial flat dimensions. These are their authored
-        // floor palettes; geological anomalies may overlay them but never walls.
-        return b.is(Blocks.GRAY_CONCRETE) || b.is(Blocks.LIGHT_GRAY_CONCRETE)
-                || b.is(Blocks.WHITE_CONCRETE) || b.is(Blocks.DEEPSLATE_TILES)
-                || b.is(Blocks.POLISHED_DEEPSLATE) || b.is(Blocks.COBBLED_DEEPSLATE)
-                || b.is(Blocks.SMOOTH_BASALT) || b.is(Blocks.SMOOTH_STONE)
-                || b.is(Blocks.DARK_OAK_PLANKS) || b.is(Blocks.SPRUCE_PLANKS)
-                || b.is(Blocks.POLISHED_ANDESITE) || b.is(Blocks.CALCITE)
-                || b.is(Blocks.POLISHED_BLACKSTONE) || b.is(Blocks.GRAVEL);
+        return ThresholdAnomalySurface.isNativeFloor(b);
     }
     private static boolean nearWater(WorldGenLevel w,int x,int y,int z,
                                      int minX,int minZ) {
@@ -122,6 +103,7 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         };
     }
     private boolean paint(WorldGenLevel w,ThresholdGeoWonderGeometry.Site site,int minX,int minZ) {
+        String level = w.getLevel().dimension().location().getPath();
         boolean placed=false;
         for(int x=minX;x<minX+16;x++)for(int z=minZ;z<minZ+16;z++) {
             long dx=(long)x-site.x,dz=(long)z-site.z;
@@ -145,20 +127,15 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
                 double lobe=Math.sin(u*12+site.seed%11)*0.10;
                 if(u*u+(v+lobe)*(v+lobe)>0.80)continue;
             }
-            int y=65; // authored walking surface above the Level 2-5 floor at Y=64
+            int y=ThresholdAnomalySurface.surfaceY(level);
             if(y<=w.getMinBuildHeight()+8||y>=w.getMaxBuildHeight()-9)continue;
             BlockPos p=new BlockPos(x,y,z);
-            BlockPos below=p.below();
-            BlockState base=w.getBlockState(below);
-            if(!naturalFloor(base)||!w.getFluidState(below).isEmpty())continue;
-            String level = w.getLevel().dimension().location().getPath();
+            if(!ThresholdAnomalySurface.isReplaceableSurface(w,p))continue;
             int roomSize = roomSizeForLevel(level);
             int roomX = Math.floorDiv(x, roomSize), roomZ = Math.floorDiv(z, roomSize);
             int localX = Math.floorMod(x, roomSize), localZ = Math.floorMod(z, roomSize);
             if (ThresholdRoomLayoutFeature.isReservedRoomPath(
                     w.getSeed(), roomSize, roomX, roomZ, localX, localZ, 2, true)) continue;
-            if(!w.getBlockState(p).isAir()||!w.getFluidState(p).isEmpty())continue;
-
             int height=heightFor(site,x,z,u,v,point);
             if(height==0)continue;
             boolean clear=true;
@@ -186,7 +163,8 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         for(int sx=-1;sx<=1;sx++)for(int sz=-1;sz<=1;sz++) {
             ThresholdGeoWonderGeometry.Site candidate=site(gx+sx,gz+sz);
             if(candidate==null)continue;
-            if(!ThresholdGeoWonderGeometry.intersects(candidate,minX,minZ))
+            if(!ThresholdAnomalySurface.shouldGenerate(level,candidate.seed,1))continue;
+            if(!ThresholdGeoWonderGeometry.intersects(candidate,minX,minZ)
                 continue;
             placed|=paint(context.level(),candidate,minX,minZ);
         }
