@@ -26,18 +26,12 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
     }
 
     private static boolean floor(BlockState state) {
-        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
-                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
-                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
-                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SMOOTH_STONE)
-                || state.is(Blocks.DARK_OAK_PLANKS) || state.is(Blocks.SPRUCE_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
-                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
+        return ThresholdAnomalySurface.isNativeFloor(state);
     }
 
     private static boolean reserved(WorldGenLevel level, BlockPos pos) {
         String dimension = level.getLevel().dimension().location().getPath();
-        int size = dimension.equals("level_4") ? 48 : 32;
+        int size = ThresholdAnomalySurface.roomSize(dimension);
         int rx = Math.floorDiv(pos.getX(), size), rz = Math.floorDiv(pos.getZ(), size);
         return ThresholdRoomLayoutFeature.isReservedRoomPath(
                 level.getSeed(), size, rx, rz,
@@ -52,9 +46,7 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
         BlockPos[] logs = new BlockPos[length];
         for (int i = 0; i < length; i++) {
             BlockPos p = origin.offset((i - length / 2) * dx, 0, (i - length / 2) * dz);
-            if (!floor(level.getBlockState(p.below())) || reserved(level, p)
-                    || !level.getFluidState(p.below()).isEmpty()
-                    || !level.getBlockState(p).isAir()
+            if (!ThresholdAnomalySurface.isReplaceableSurface(level,p) || reserved(level, p)
                     || !level.getBlockState(p.above()).isAir()) return false;
             logs[i] = p;
         }
@@ -74,24 +66,25 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
      * perimeter; reeds grow on the inner bank. No water column can escape.
      */
     private static boolean riparianReeds(WorldGenLevel level, BlockPos center, RandomSource random) {
-        int minX = center.getX() - 2, minZ = center.getZ() - 2;
         for (int dx = -2; dx <= 2; dx++) {
             for (int dz = -2; dz <= 2; dz++) {
-                BlockPos p = center.offset(dx, 0, dz);
-                if (!floor(level.getBlockState(p.below())) || reserved(level, p)
-                        || !level.getFluidState(p.below()).isEmpty()
-                        || !level.getBlockState(p).isAir()
-                        || !level.getBlockState(p.below(2)).isAir()) return false;
+                BlockPos surface = center.offset(dx, -1, dz);
+                BlockPos reedSpace = center.offset(dx, 0, dz);
+                if (!ThresholdAnomalySurface.isReplaceableSurface(level,surface)
+                        || reserved(level,reedSpace)
+                        || !level.getBlockState(reedSpace).isAir()
+                        || !level.getFluidState(reedSpace).isEmpty()
+                        || !level.getBlockState(reedSpace.above()).isAir()) return false;
             }
         }
-        // The outer ring is a watertight retaining lip. Interior cells become
-        // source water at floor height, not flowing water above the floor.
+        // A sealed 5x5 pool: replace only the supported surface cells and retain
+        // a solid mud foundation beneath every water source.
         for (int dx = -2; dx <= 2; dx++) {
             for (int dz = -2; dz <= 2; dz++) {
-                BlockPos p = center.offset(dx, -1, dz);
+                BlockPos surface = center.offset(dx, -1, dz);
                 boolean edge = Math.abs(dx) == 2 || Math.abs(dz) == 2;
-                level.setBlock(p.below(), Blocks.MUD.defaultBlockState(), 2);
-                level.setBlock(p, edge ? Blocks.MUD.defaultBlockState()
+                level.setBlock(surface.below(), Blocks.MUD.defaultBlockState(), 2);
+                level.setBlock(surface, edge ? Blocks.MUD.defaultBlockState()
                         : Blocks.WATER.defaultBlockState(), 2);
             }
         }
@@ -113,9 +106,7 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
     }
 
     private boolean allowedLevel(String level) {
-        return habitat == Habitat.FALLEN_TIMBER
-                ? level.equals("level_4") || level.equals("level_5")
-                : level.equals("level_4");
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
 
     private static long mix(long value) {
@@ -135,11 +126,12 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
         int minZ = Math.floorDiv(context.origin().getZ(), 16) * 16;
         long site = mix(level.getSeed() ^ ((long) minX * 0x9E3779B97F4A7C15L)
                 ^ ((long) minZ * 0xC2B2AE3D27D4EB4FL) ^ ((long) habitat.ordinal() * 0x165667B19E3779F9L));
-        if (Math.floorMod(site, 23L) != 0L) return false;
+        if (!ThresholdAnomalySurface.shouldGenerate(dimension,site,23)) return false;
         BlockPos origin = new BlockPos(minX + 2 + (int) Math.floorMod(site >>> 8, 12L),
-                65, minZ + 2 + (int) Math.floorMod(site >>> 24, 12L));
+                ThresholdAnomalySurface.surfaceY(dimension),
+                minZ + 2 + (int) Math.floorMod(site >>> 24, 12L));
         return habitat == Habitat.FALLEN_TIMBER
                 ? fallenTimber(level, origin, context.random())
-                : riparianReeds(level, origin, context.random());
+                : riparianReeds(level, origin.above(), context.random());
     }
 }
