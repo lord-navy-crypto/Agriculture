@@ -158,11 +158,14 @@ def main():
     ]
     for index, dimension in enumerate(LEVELS):
         set_id = "anomaly_structures_" + dimension
+        # Keep every structure family available on every floor. Levels 0 and 1
+        # use a wider candidate grid to make anomalies less common, not absent.
+        spacing = 80 if index < 2 else 64
         write(root, "data/threshold/worldgen/structure_set/" + set_id + ".json", {
             "structures": anomaly_families,
             "placement": {
                 "type": "minecraft:random_spread",
-                "spacing": 64,
+                "spacing": spacing,
                 "separation": 24,
                 "salt": 142011 + index * 1009,
                 "spread_type": "linear",
@@ -184,7 +187,7 @@ def main():
 
     print(
         "THRESHOLD_ANOMALY_PACK_OK: 97 original buildings, 4 lift-connected city districts, "
-        "4 vanilla structure families across all six Backrooms dimensions with independent salts"
+        "4 vanilla structure families across all six Backrooms dimensions; Levels 0-1 use lower frequency"
     )
 
 
