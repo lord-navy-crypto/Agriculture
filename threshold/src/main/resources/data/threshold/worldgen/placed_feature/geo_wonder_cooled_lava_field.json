@@ -1,0 +1,12 @@
+{
+  "feature": "threshold:geo_wonder_cooled_lava_field",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}
