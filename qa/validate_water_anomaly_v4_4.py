@@ -84,13 +84,17 @@ def main():
             pack = "resourcepacks/threshold_anomalies/"
             for filename in ("pack.mcmeta", "data/threshold/dimension/level_0.json",
                              "data/threshold/dimension/level_1.json",
-                             "data/threshold/worldgen/structure_set/anomaly_architecture.json",
-                             "data/threshold/worldgen/structure_set/anomaly_urban.json"):
+                             "data/threshold/worldgen/structure_set/anomaly_structures.json",
+                             "data/threshold/worldgen/structure/anomaly_urban.json",
+                             "data/threshold/worldgen/structure/anomaly_village_fragment.json",
+                             "data/threshold/worldgen/structure/anomaly_ancient_city_fragment.json",
+                             "data/threshold/worldgen/structure/anomaly_ruined_portal.json",
+                             "data/threshold/worldgen/structure/anomaly_shipwreck.json"):
                 assert pack + filename in members, pack + filename
             for level in ("level_0", "level_1"):
                 doc = json.loads(z.read(pack + "data/threshold/dimension/" + level + ".json"))
                 assert doc["generator"]["settings"]["structure_overrides"] == [
-                    "threshold:anomaly_architecture", "threshold:anomaly_urban"]
+                    "threshold:anomaly_structures"]
             print("BACKROOM_V44_PACKAGED_ASSETS_OK: 7 sprites, 97 original buildings, 4 city districts")
     print("BACKROOM_V44_STATIC_OK: brine recipe, owned architecture, original water art, opt-in pack")
 
