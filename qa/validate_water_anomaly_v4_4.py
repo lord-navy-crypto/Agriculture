@@ -86,20 +86,23 @@ def main():
                 assert int.from_bytes(blob[16:20], "big") == 16, asset
                 assert int.from_bytes(blob[20:24], "big") == 16, asset
             pack = "resourcepacks/threshold_anomalies/"
-            for filename in ("pack.mcmeta", "data/threshold/dimension/level_0.json",
-                             "data/threshold/dimension/level_1.json",
-                             "data/threshold/worldgen/structure_set/anomaly_structures.json",
-                             "data/threshold/worldgen/structure/anomaly_urban.json",
-                             "data/threshold/worldgen/structure/anomaly_village_fragment.json",
-                             "data/threshold/worldgen/structure/anomaly_ancient_city_fragment.json",
-                             "data/threshold/worldgen/structure/anomaly_ruined_portal.json",
-                             "data/threshold/worldgen/structure/anomaly_shipwreck.json"):
+            for filename in ("pack.mcmeta",
+                              "data/threshold/worldgen/structure/anomaly_urban.json",
+                              "data/threshold/worldgen/structure/anomaly_village_fragment.json",
+                              "data/threshold/worldgen/structure/anomaly_ancient_city_fragment.json",
+                              "data/threshold/worldgen/structure/anomaly_ruined_portal.json",
+                              "data/threshold/worldgen/structure/anomaly_shipwreck.json"):
                 assert pack + filename in members, pack + filename
-            for level in ("level_0", "level_1"):
-                doc = json.loads(z.read(pack + "data/threshold/dimension/" + level + ".json"))
+            for index in range(6):
+                level = f"level_{index}"
+                dimension_path = f"data/threshold/dimension/{level}.json"
+                set_path = f"data/threshold/worldgen/structure_set/anomaly_structures_{level}.json"
+                assert pack + dimension_path in members, pack + dimension_path
+                assert pack + set_path in members, pack + set_path
+                doc = json.loads(z.read(pack + dimension_path))
                 assert doc["generator"]["settings"]["structure_overrides"] == [
-                    "threshold:anomaly_structures"]
-            print("BACKROOM_V44_PACKAGED_ASSETS_OK: 7 sprites, 97 original buildings, 4 city districts")
+                    f"threshold:anomaly_structures_{level}"]
+            print("BACKROOM_V44_PACKAGED_ASSETS_OK: 7 sprites, 97 original buildings, 4 city districts across six floors")
     print("BACKROOM_V44_STATIC_OK: brine recipe, owned architecture, original water art, opt-in pack")
 
 
