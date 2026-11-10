@@ -461,8 +461,8 @@ def main() -> int:
         ("boolean sideStair", "alternate mezzanine access stair", l0_architecture),
         ("Direction.EAST", "side stair direction and pit access", l0_architecture),
         ("localX == 28", "Level 0 pit has an alternate stair opening", l0_architecture),
-        ("localX == 12", "Level 1 sump has an alternate stair opening", l1_architecture),
-        ("localX >= 13 && localX <= 17", "Level 1 sump alternate stair flight", l1_architecture),
+        ("localX == 39", "Level 1 sump has an alternate stair opening", l1_architecture),
+        ("localX >= 40 && localX <= 44", "Level 1 sump alternate stair flight", l1_architecture),
         ("!protectedTile && !upperWalkway", "Level 1 lower room preserves routes and catwalks", l1_architecture),
         ("0xA19A0L", "Level 0 seed-stable pillar variation", l0_architecture),
         ("Blocks.SMOOTH_STONE", "Level 0 recessed floor pockets", l0_architecture),
@@ -487,7 +487,7 @@ def main() -> int:
         (r"localZ >= 12 && localZ <= 16;", "Level 0 upper stair reaches the gallery landing"),
         (r"localZ >= 11 && localZ <= 16", "Level 0 lower stair reaches the annex floor"),
         (r"localZ >= 18 && localZ <= 24;", "Level 1 upper stair reaches the catwalk landing"),
-        (r"localZ >= 21 && localZ <= 26", "Level 1 lower stair reaches the maintenance floor"),
+        (r"localZ >= 23 && localZ <= 27", "Level 1 lower stair reaches the maintenance floor"),
         (r"set\(world, pos, x, 70, z, Blocks\.WHITE_STAINED_GLASS_PANE", "Level 0 railing sits above the carpet"),
         (r"set\(world, pos, x, 72, z, Blocks\.IRON_BARS", "Level 1 railing sits above the catwalk surface"),
     ):
@@ -499,7 +499,7 @@ def main() -> int:
         ("new BlockPos(48, 68, 16)).is(Blocks.OAK_STAIRS)", "Level 0 upper stair landing"),
         ("new BlockPos(55, 58, 11)).is(Blocks.OAK_STAIRS)", "Level 0 lower stair landing"),
         ("new BlockPos(72, 70, 72)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 upper stair landing"),
-        ("new BlockPos(81, 58, 69)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 lower stair landing"),
+        ("new BlockPos(84, 59, 23)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 lower stair landing"),
     ):
         if token not in runtime_checks:
             raise AssertionError(f"THRESHOLD runtime vertical probe missing: {label}")
