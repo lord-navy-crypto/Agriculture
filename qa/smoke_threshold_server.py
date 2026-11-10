@@ -105,6 +105,7 @@ def run():
                 key, value = line.split("=", 1)
                 properties[key.strip()] = value.strip()
     properties["level-name"] = world_name
+    properties["level-seed"] = "6"
     properties_path.write_text(
         "\n".join(f"{key}={value}" for key, value in sorted(properties.items())) + "\n",
         encoding="utf-8")
