@@ -76,7 +76,8 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
                 BlockPos p = center.offset(dx, 0, dz);
                 if (!floor(level.getBlockState(p.below())) || reserved(level, p)
                         || !level.getFluidState(p.below()).isEmpty()
-                        || !level.getBlockState(p).isAir()) return false;
+                        || !level.getBlockState(p).isAir()
+                        || !level.getBlockState(p.below(2)).isAir()) return false;
             }
         }
         // The outer ring is a watertight retaining lip. Interior cells become
@@ -85,6 +86,7 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
             for (int dz = -2; dz <= 2; dz++) {
                 BlockPos p = center.offset(dx, -1, dz);
                 boolean edge = Math.abs(dx) == 2 || Math.abs(dz) == 2;
+                level.setBlock(p.below(), Blocks.MUD.defaultBlockState(), 2);
                 level.setBlock(p, edge ? Blocks.MUD.defaultBlockState()
                         : Blocks.WATER.defaultBlockState(), 2);
             }
@@ -93,7 +95,7 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
         for (int dx = -1; dx <= 1; dx++) {
             for (int dz = -1; dz <= 1; dz++) {
                 if (Math.abs(dx) + Math.abs(dz) != 1) continue;
-                BlockPos bank = center.offset(dx * 2, 0, dz * 2);
+                BlockPos bank = center.offset(dx * 2, -1, dz * 2);
                 BlockPos reed = bank.above();
                 if (level.getBlockState(reed).isAir()
                         && level.getBlockState(bank).is(Blocks.MUD)
