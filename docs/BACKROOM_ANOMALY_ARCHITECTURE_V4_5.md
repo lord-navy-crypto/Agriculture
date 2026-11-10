@@ -28,16 +28,19 @@ service lift integrated into each district:
   is sparse, so the bounding box does not erase the rest of the maze.
 - The original lower maze remains intact outside that narrow access footprint.
 
-四个现代街区都带有维护电梯入口：玩家可在后室迷宫中发现维护室，
+四个现代街区都带有维护电梯入口：玩家可在后室六个楼层的迷宫中发现维护室，
 穿过南北通道进入维护室，再沿梯井上行到 Y=82 的城市街道。
 稀疏 NBT 不会把整个 48×48 的迷宫区域清空；只在入口、短通道和电梯井
 范围内显式放置空气。
 
 ## Original and vanilla anomalies / 原创与原版异常结构
 
-A single shared structure set avoids independent structure sets competing for
-the same region. Candidate spacing is 64 chunks, separation 24 chunks; this is
-a rare random-spread grid, not a guaranteed distance between discoveries.
+Each of the six Backrooms dimensions has its own shared structure set, so
+houses, city districts and vanilla fragments cannot independently choose the
+same region within that floor. The six sets use distinct seed salts to avoid
+repeating the same X/Z candidate grid across dimensions. Candidate spacing is
+64 chunks, separation 24 chunks; this is a rare random-spread grid, not a
+guaranteed distance between discoveries.
 
 | Structure family | Weight | Placement |
 |---|---:|---|
@@ -61,9 +64,10 @@ cities. They do not replace or override vanilla structure definitions.
 ## World safety / 世界安全
 
 - The built-in data pack is optional and OFF by default.
-- It affects Level 0 and Level 1 only.
-- All anomaly families share one structure set, so a region chooses one family
-  instead of independently placing overlapping city/building/vanilla sets.
+- It affects all six Backrooms dimensions: Levels 0, 1, 2, 3, 4 and 5.
+- Each floor's anomaly families share one structure set, so a region chooses
+  one family instead of independently placing overlapping city/building/vanilla
+  sets. Each floor has a different placement salt.
 - The maze feature runs before the anomaly structures; the structures use
   \`top_layer_modification\` so the small entrance can intentionally cut through
   the ceiling after the maze has been built.
