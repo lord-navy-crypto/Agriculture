@@ -167,6 +167,10 @@ REQUIRED.update(
     f"data/threshold/worldgen/configured_feature/{feature_id}.json"
     for feature_id in ADAPTED_ENVIRONMENT_IDS
 )
+REQUIRED.update(
+    f"data/threshold/worldgen/placed_feature/{feature_id}.json"
+    for feature_id in ADAPTED_ENVIRONMENT_IDS
+)
 
 def read_json(z, path):
     return json.loads(z.read(path).decode("utf-8"))
@@ -220,8 +224,11 @@ def main():
         assert sequence["config"]["features"] == expected_children
         wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
         assert wrapper["feature"]=="threshold:room_sequence"
-        for child in ("room_layout", "industrial_vent"):
+        for child in ("room_layout", "industrial_vent", *ADAPTED_ENVIRONMENT_IDS):
             nested=read_json(z, f"data/threshold/worldgen/placed_feature/{child}.json")
+            assert nested["feature"] == f"threshold:{child}", child
+            assert any(p.get("type") == "minecraft:count" for p in nested["placement"]), child
+            assert any(p.get("type") == "minecraft:in_square" for p in nested["placement"]), child
             assert all(p.get("type")!="minecraft:biome" for p in nested["placement"]), (
                 f"Nested Lithostitched feature {child} must not check its biome individually")
         assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
