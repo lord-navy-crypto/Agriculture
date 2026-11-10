@@ -132,41 +132,52 @@ def _rcon(command_list):
 
 def verify_anomaly_city_lift():
     levels = ("level_0", "level_1", "level_2", "level_3", "level_4", "level_5")
-    commands = []
+    objective = "threshold_city_probe"
+    commands = [f"scoreboard objectives add {objective} dummy"]
     probes = []
-    for dimension in levels:
+    # These coordinates are derived from the validated 48x20x48 city NBT.
+    # The template origin is (8, 63, 8); air in the sparse upper shell is
+    # intentionally omitted and therefore must not be asserted as world air.
+    block_probes = (
+        ("if", 32, 63, 32, "minecraft:polished_andesite", "ground anchor"),
+        ("if", 30, 64, 32, "minecraft:ladder", "ladder base"),
+        ("if", 30, 82, 32, "minecraft:ladder", "ladder top"),
+        ("if", 31, 82, 32, "minecraft:polished_andesite", "upper landing west"),
+        ("if", 32, 74, 32, "minecraft:air", "elevator shaft clearance"),
+        ("if", 32, 82, 30, "minecraft:polished_andesite", "upper landing north"),
+        ("unless", 32, 82, 29, "minecraft:air", "upper exit landing is non-air"),
+    )
+    for level_index, dimension in enumerate(levels):
         commands.extend([
             f"execute in threshold:{dimension} run place structure threshold:anomaly_urban 8 63 8",
             # The 48x48 city spans chunks 0-3. Load the full footprint before
-            # checking block states; /data get block only reads block-entity NBT.
+            # checking block states; sparse upper-shell air is not a carve.
             f"execute in threshold:{dimension} run forceload add 0 0 63 63",
-            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run time query daytime",
-            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run time query daytime",
-            f"execute in threshold:{dimension} run forceload remove 0 0 63 63",
         ])
-        probes.append((dimension, len(commands) - 11))
+        level_probes = []
+        for probe_index, (mode, x, y, z, block, label) in enumerate(block_probes):
+            holder = f"city_{level_index}_{probe_index}"
+            commands.append(f"scoreboard players reset {holder} {objective}")
+            commands.append(
+                f"execute in threshold:{dimension} run execute {mode} block "
+                f"{x} {y} {z} {block} run scoreboard players set {holder} {objective} 1"
+            )
+            level_probes.append((len(commands), holder, label))
+            commands.append(f"scoreboard players get {holder} {objective}")
+        commands.append(f"execute in threshold:{dimension} run forceload remove 0 0 63 63")
+        probes.append((dimension, level_probes))
+
     results = _rcon(commands)
-    # RCON does not reliably return /say broadcast text as command output.
-    # /time query is read-only and returns a normal command result only when
-    # the execute-if-block predicate succeeds.
-    expected = tuple((offset, "the time is") for offset in range(2, 10))
-    for dimension, start in probes:
-        placement = results[start].lower()
-        if "failed" in placement or "could not" in placement or "no structure" in placement:
-            raise AssertionError(
-                f"Could not place connected anomaly city in {dimension}: {results[start]}")
-        for offset, token in expected:
-            response = results[start + offset]
-            if token not in response:
+    if "created" not in results[0].lower() and "already exists" not in results[0].lower():
+        raise AssertionError(f"Could not create city probe scoreboard objective: {results[0]!r}")
+    for dimension, level_probes in probes:
+        for result_index, holder, label in level_probes:
+            response = results[result_index]
+            if "has 1" not in response.lower():
                 raise AssertionError(
-                    f"{dimension} city-lift probe {commands[start + offset]!r} "
-                    f"expected successful block predicate (time query result), got {response!r}")
+                    f"{dimension} city-lift {label} probe failed for {holder}: "
+                    f"expected scoreboard value 1, got {response!r}"
+                )
     print("THRESHOLD_ANOMALY_CITY_LIFT_ALL_SIX_RCON_OK", flush=True)
 
 def run():
