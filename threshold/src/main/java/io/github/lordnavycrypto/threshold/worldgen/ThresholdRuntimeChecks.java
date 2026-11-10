@@ -48,10 +48,19 @@ public final class ThresholdRuntimeChecks {
         System.out.println("THRESHOLD_DIMENSIONS_REGISTRY_READY_OK");
 
         // The optional anomaly data pack is disabled in ordinary worlds. When
-        // enabled for a new world, all structures and the single placement set
-        // must be present together.
+        // enabled for a new world, all six structure families and all six
+        // per-dimension placement sets must be present together.
         var structureRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE);
         var structureSetRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE_SET);
+        boolean anomalyStructureSetsReady = true;
+        for (int index = 0; index < 6; index++) {
+            ResourceLocation structureSetId = ResourceLocation.fromNamespaceAndPath(
+                    "threshold", "anomaly_structures_level_" + index);
+            if (!structureSetRegistry.containsKey(structureSetId)) {
+                System.err.println("THRESHOLD_MISSING_ANOMALY_STRUCTURE_SET: " + structureSetId);
+                anomalyStructureSetsReady = false;
+            }
+        }
         boolean anomalyStructuresReady =
                 structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_architecture"))
                 && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_urban"))
@@ -59,7 +68,7 @@ public final class ThresholdRuntimeChecks {
                 && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_ancient_city_fragment"))
                 && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_ruined_portal"))
                 && structureRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_shipwreck"))
-                && structureSetRegistry.containsKey(ResourceLocation.fromNamespaceAndPath("threshold", "anomaly_structures"));
+                && anomalyStructureSetsReady;
         System.out.println(anomalyStructuresReady
                 ? "THRESHOLD_ANOMALY_WORLDGEN_REGISTRY_OK"
                 : "THRESHOLD_ANOMALY_WORLDGEN_OPTIONAL_PACK_OFF");
