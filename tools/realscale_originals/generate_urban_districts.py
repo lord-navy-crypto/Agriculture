@@ -223,6 +223,104 @@ def build_district(name):
     return b
 
 
+def build_connected_district(name):
+    """Move the city above the maze and add a sparse, climbable service lift.
+
+    The template begins at y=63. Only the vestibule, access corridors and
+    vertical shaft place air below y=82. Other air cells are omitted from NBT.
+    """
+    source = build_district(name)
+    source.enrich_architecture()
+    offset = 19
+    connected = Building(
+        name,
+        (WIDTH, source.height + offset, LENGTH),
+        source.description + " Connected to the maze by a sealed service-lift shaft."
+    )
+
+    # City street level is y=82. Leave a 4x4 opening for the elevator exit.
+    for (x, y, z), block in source.blocks.items():
+        if block == ("minecraft:air", ()):
+            continue
+        if y == 0 and 22 <= x <= 25 and 22 <= z <= 25:
+            continue
+        connected.set(x, y + offset, z, block)
+
+    explicit_air = set()
+    def clear(x, y, z):
+        explicit_air.add((x, y, z))
+
+    # 9x9 maintenance vestibule at the maze floor (world y=63).
+    for x in range(20, 29):
+        for z in range(20, 29):
+            connected.set(x, 0, z, "minecraft:polished_andesite")
+    for y in range(1, 11):
+        for x in range(20, 29):
+            for z in range(20, 29):
+                if x in (20, 28) or z in (20, 28):
+                    if x == 24 and z in (20, 28) and y in (1, 2):
+                        continue
+                    connected.set(x, y, z, "minecraft:polished_blackstone_bricks")
+                else:
+                    clear(x, y, z)
+
+    # Double iron doors: one north and one south.
+    for z, facing in ((20, "north"), (28, "south")):
+        connected.set(24, 1, z, "minecraft:iron_door", facing=facing,
+                      half="lower", hinge="left", open="false", powered="false")
+        connected.set(24, 2, z, "minecraft:iron_door", facing=facing,
+                      half="upper", hinge="left", open="false", powered="false")
+
+    # Vestibule roof at y=74; the 4x4 shaft continues through it.
+    for x in range(20, 29):
+        for z in range(20, 29):
+            if not (22 <= x <= 25 and 22 <= z <= 25):
+                connected.set(x, 11, z, "minecraft:deepslate_tiles")
+
+    # Shaft from y=74 to the city street at y=82.
+    for y in range(11, 19):
+        for x in range(22, 26):
+            for z in range(22, 26):
+                clear(x, y, z)
+        for x, z in ((21, 21), (21, 22), (21, 23), (21, 24), (21, 25), (21, 26),
+                     (26, 21), (26, 22), (26, 23), (26, 24), (26, 25), (26, 26),
+                     (22, 21), (23, 21), (25, 21),
+                     (22, 26), (23, 26), (24, 26), (25, 26)):
+            if x == 24 and z == 21 and y >= 17:
+                continue
+            connected.set(x, y, z, "minecraft:deepslate_bricks")
+
+    # Wall-mounted ladder and a short bridge to the city street.
+    for y in range(1, 19):
+        connected.set(22, y, 24, "minecraft:ladder", facing="east", waterlogged="false")
+    for x, z in ((23, 24), (24, 24), (24, 23), (24, 22)):
+        connected.set(x, 19, z, "minecraft:polished_andesite")
+    for x, z in ((21, 22), (21, 25), (26, 22), (26, 25)):
+        connected.set(x, 19, z, "minecraft:iron_bars",
+                      east="false", north="false", south="false",
+                      waterlogged="false", west="false")
+
+    # Two 3-wide corridors cut through maze walls and end open at template edges.
+    for z_values in (range(0, 20), range(29, 48)):
+        for z in z_values:
+            for x in range(23, 26):
+                connected.set(x, 0, z, "minecraft:smooth_stone")
+                for y in range(1, 4):
+                    clear(x, y, z)
+            for y in range(1, 4):
+                connected.set(22, y, z, "minecraft:polished_blackstone_bricks")
+                connected.set(26, y, z, "minecraft:polished_blackstone_bricks")
+            for x in range(22, 27):
+                connected.set(x, 4, z, "minecraft:stone_bricks")
+
+    # Low, restrained lighting: navigable, but not a bright safe room.
+    for x, z in ((21, 21), (27, 21), (21, 27), (27, 27)):
+        connected.set(x, 9, z, "minecraft:lantern", hanging="false")
+    connected.set(24, 6, 24, "minecraft:chain", axis="y", waterlogged="false")
+
+    return connected, explicit_air
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--output",type=Path,required=True)
@@ -234,8 +332,9 @@ def main():
     target=args.output/"data/realscale/structure/urban"
     manifest=[]
     for name in names:
-        building=build_district(name)
-        built=building.write(target/(name+".nbt"))
+        building, explicit_air = build_connected_district(name)
+        built=building.write(target/(name+".nbt"), sparse=True,
+                             explicit_air_positions=explicit_air, enrich=False)
         manifest.append(built)
         print("REALSCALE_URBAN_DISTRICT_TEMPLATE",name,built["size"],
               "non_air",sum(v[0]!="minecraft:air" for v in building.blocks.values()),
