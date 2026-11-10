@@ -3,14 +3,23 @@
 ## Scope / 范围
 
 This is an experimental source branch and draft PR, not a released mod build.
-It ports 97 originally authored RealScale building templates and four original
-modern city districts into Backroom Agriculture. The three separately licensed
-RealScale imports are not copied. A claim that the current source contains
-140+ transferable structures has not been verified.
+The verified original RealScale migration inventory is 142 source-defined
+resources: 97 original NBT architecture templates, four modern city districts,
+17 unique geological-wonder feature kinds (10 GeoWonder + 8 EarthWonder with
+one shared cooled-lava kind), 15 GrandEcology kinds, five GroundMicrostructure
+kinds, two CaveWonderNetwork kinds and two VanillaHabitat kinds. The current
+implementation stage packages the 97 original buildings and four city
+districts; the other 41 environmental/terrain feature kinds remain to be
+adapted to the Backrooms world rather than copied with RealScale-only gates.
+Three separately licensed GDMC templates are additional and excluded from
+the 142-original-resource count; they are not copied in this stage.
 
-这是实验性开发分支，不是正式发布版。当前可核对并移植的是 97 个
-RealScale 原创建筑和 4 个现代城市街区。另有 3 个单独授权的外部素材未复制；
-“140 多个可移植建筑”尚未在当前来源中核实。
+这是实验性开发分支，不是正式发布版。已核对的 RealScale 原创资源总数为 142：
+97 个原创建筑 NBT、4 个现代城市街区、17 种去重后的地质奇观、15 种生态特征、
+5 种地面微结构、2 种洞穴网络和 2 种原生栖息地结构。
+当前阶段已经接入 97 个原创建筑和 4 个现代城市街区；其余 41 种环境与地貌特征
+仍需针对后室世界适配，不能直接复制带有 RealScale 世界限制的原始代码。
+另有 3 个单独授权的 GDMC 模板，不计入这 142 个原创资源，本阶段尚未复制。
 
 ## Connected city districts / 可进入的现代城市
 
@@ -21,7 +30,7 @@ service lift integrated into each district:
 - A 9×9 maintenance vestibule replaces only its own small footprint in the maze.
 - Two 3-wide corridors lead north and south from the vestibule and open at the
   district-template edges, so the lift does not end in a sealed chamber.
-- A 4×4 ladder shaft passes through the original Level 0/1 ceiling.
+- A 4×4 ladder shaft passes through the host Backrooms level's ceiling.
 - A landing and short bridge connect the ladder to the city street.
 - Sparse NBT omits all ordinary air cells. Explicit air is written only inside
   the vestibule, the two short corridors and the shaft. The largest city template is 48×117×48; its lower 19-block access zone
