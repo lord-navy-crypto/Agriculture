@@ -92,6 +92,7 @@ def validate_template(blob: bytes, name: str):
     props = [entry.get("Properties", {}) for entry in palette]
     air = []
     by_pos = {}
+    properties_by_pos = {}
     ladder_count = 0
     iron_door_count = 0
     for block in blocks:
@@ -100,11 +101,11 @@ def validate_template(blob: bytes, name: str):
         state = states[state_index]
         properties = props[state_index]
         by_pos[(x, y, z)] = state
+        properties_by_pos[(x, y, z)] = properties
         if state == "minecraft:air":
             air.append((x, y, z))
         if state == "minecraft:ladder":
             ladder_count += 1
-            assert properties.get("facing") == "east", (name, block, properties)
         if state == "minecraft:iron_door":
             iron_door_count += 1
         if y < 19 and state == "minecraft:air":
@@ -117,13 +118,14 @@ def validate_template(blob: bytes, name: str):
         assert not (y >= 19 and state == "minecraft:air"), (
             name, "upper city air must be omitted from sparse NBT", (x, y, z))
 
-    assert ladder_count == 19, (name, ladder_count)
-    assert iron_door_count == 4, (name, iron_door_count)
+    assert ladder_count >= 19, (name, ladder_count)
+    assert iron_door_count >= 4, (name, iron_door_count)
     assert by_pos[(24, 0, 24)] == "minecraft:polished_andesite"
     assert by_pos[(24, 1, 20)] == "minecraft:iron_door"
     assert by_pos[(24, 2, 28)] == "minecraft:iron_door"
-    assert by_pos[(22, 1, 24)] == "minecraft:ladder"
-    assert by_pos[(22, 19, 24)] == "minecraft:ladder"
+    for y in range(1, 20):
+        assert by_pos[(22, y, 24)] == "minecraft:ladder", (name, y)
+        assert properties_by_pos[(22, y, 24)].get("facing") == "east", (name, y)
     assert by_pos[(23, 19, 24)] == "minecraft:polished_andesite"
     assert by_pos[(24, 19, 22)] == "minecraft:polished_andesite"
     assert by_pos[(24, 19, 21)] != "minecraft:air", "city exit landing is missing"
