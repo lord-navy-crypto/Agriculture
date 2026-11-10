@@ -22,7 +22,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
     public enum Kind { OAK_LOG, SPRUCE_LOG, FOREST_HUMMOCK, UPLAND_SCREE, COASTAL_DRIFTWOOD }
     private final Kind kind;
 
-    public GroundMicrostructureFeature(Kind kind) {
+    public ThresholdGroundMicrostructureFeature(Kind kind) {
         super(NoneFeatureConfiguration.CODEC);
         this.kind = kind;
     }
