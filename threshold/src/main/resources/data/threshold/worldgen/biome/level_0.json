@@ -4,8 +4,8 @@
   "downfall": 0,
   "effects": {
     "fog_color": 11183492,
-    "water_color": 4159204,
-    "water_fog_color": 4159204,
+    "water_color": 9668191,
+    "water_fog_color": 6050880,
     "sky_color": 9864092,
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
