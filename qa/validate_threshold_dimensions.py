@@ -20,6 +20,13 @@ EARTH_WONDER_IDS = [
     "earth_wonder_karst_sinkhole_rim",
 ]
 GEOLOGY_IDS = GEO_WONDER_IDS + EARTH_WONDER_IDS
+MICROSTRUCTURE_IDS = [
+    "ground_microstructure_oak_log", "ground_microstructure_spruce_log",
+    "ground_microstructure_forest_hummock", "ground_microstructure_upland_scree",
+    "ground_microstructure_coastal_driftwood",
+]
+HABITAT_IDS = ["vanilla_habitat_fallen_timber", "vanilla_habitat_riparian_reeds"]
+ADAPTED_ENVIRONMENT_IDS = GEOLOGY_IDS + MICROSTRUCTURE_IDS + HABITAT_IDS
 
 REQUIRED = {
     "META-INF/neoforge.mods.toml",
@@ -140,10 +147,12 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdGeoWonderGeometry.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdGeoWonderRegionFeature.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdEarthWonderFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdGroundMicrostructureFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdVanillaHabitatFeature.class",
 }
 REQUIRED.update(
     f"data/threshold/worldgen/configured_feature/{feature_id}.json"
-    for feature_id in GEOLOGY_IDS
+    for feature_id in ADAPTED_ENVIRONMENT_IDS
 )
 
 def read_json(z, path):
@@ -193,7 +202,7 @@ def main():
         sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
         assert sequence["type"]=="lithostitched:composite"
         expected_children=["threshold:room_layout", "threshold:industrial_vent"] + [
-            f"threshold:{feature_id}" for feature_id in GEOLOGY_IDS
+            f"threshold:{feature_id}" for feature_id in ADAPTED_ENVIRONMENT_IDS
         ]
         assert sequence["config"]["features"] == expected_children
         wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
@@ -203,7 +212,7 @@ def main():
             assert all(p.get("type")!="minecraft:biome" for p in nested["placement"]), (
                 f"Nested Lithostitched feature {child} must not check its biome individually")
         assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
-        for feature_id in GEOLOGY_IDS:
+        for feature_id in ADAPTED_ENVIRONMENT_IDS:
             configured=read_json(z, f"data/threshold/worldgen/configured_feature/{feature_id}.json")
             assert configured == {"type": f"threshold:{feature_id}", "config": {}}, feature_id
         # Packaged entity assets must be complete in the independent JAR.
