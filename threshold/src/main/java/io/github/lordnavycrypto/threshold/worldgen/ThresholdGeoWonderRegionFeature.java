@@ -55,11 +55,13 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
     private boolean naturalFloor(BlockState b) {
         // The Backrooms are artificial flat dimensions. These are their authored
         // floor palettes; geological anomalies may overlay them but never walls.
-        return b.is(Blocks.GRAY_CONCRETE)
-                || b.is(Blocks.DEEPSLATE_TILES)
-                || b.is(Blocks.SMOOTH_STONE)
-                || b.is(Blocks.DARK_OAK_PLANKS)
-                || b.is(Blocks.POLISHED_ANDESITE);
+        return b.is(Blocks.GRAY_CONCRETE) || b.is(Blocks.LIGHT_GRAY_CONCRETE)
+                || b.is(Blocks.WHITE_CONCRETE) || b.is(Blocks.DEEPSLATE_TILES)
+                || b.is(Blocks.POLISHED_DEEPSLATE) || b.is(Blocks.COBBLED_DEEPSLATE)
+                || b.is(Blocks.SMOOTH_BASALT) || b.is(Blocks.SMOOTH_STONE)
+                || b.is(Blocks.DARK_OAK_PLANKS) || b.is(Blocks.SPRUCE_PLANKS)
+                || b.is(Blocks.POLISHED_ANDESITE) || b.is(Blocks.CALCITE)
+                || b.is(Blocks.POLISHED_BLACKSTONE) || b.is(Blocks.GRAVEL);
     }
     private static boolean nearWater(WorldGenLevel w,int x,int y,int z,
                                      int minX,int minZ) {
