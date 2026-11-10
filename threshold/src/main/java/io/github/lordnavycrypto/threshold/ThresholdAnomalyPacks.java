@@ -24,7 +24,7 @@ public final class ThresholdAnomalyPacks {
                         "gugugaga", "resourcepacks/threshold_anomalies"),
                 PackType.SERVER_DATA,
                 Component.literal("Backroom Agriculture | Impossible Architecture (Experimental, enabled by default)"),
-                DEFAULT_ENABLED_BUILT_IN,
+                OPTIONAL_BUILT_IN,
                 false,
                 Pack.Position.TOP
         );
