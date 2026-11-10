@@ -224,8 +224,10 @@ def main():
             with tempfile.TemporaryDirectory() as temp_dir:
                 extracted_root = Path(temp_dir)
                 for path in names:
-                    if path.startswith(pack_root):
+                    if path.startswith(pack_root) and not path.endswith("/"):
                         relative = path[len(pack_root):]
+                        if not relative:
+                            continue
                         target = extracted_root / relative
                         target.parent.mkdir(parents=True, exist_ok=True)
                         target.write_bytes(archive.read(path))
