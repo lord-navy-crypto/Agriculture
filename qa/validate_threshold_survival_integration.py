@@ -26,6 +26,7 @@ NON_FOOD = {
     "gugugaga:barley_seeds",
     "gugugaga:sea_salt",
     "minecraft:glass_bottle",
+    "minecraft:bucket",
     "threshold:flashlight",
     "threshold:battery",
 }
