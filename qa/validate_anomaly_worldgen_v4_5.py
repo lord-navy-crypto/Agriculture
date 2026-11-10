@@ -6,6 +6,7 @@ import gzip
 import json
 import struct
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -217,15 +218,16 @@ def main():
                 "data/threshold/worldgen/structure/anomaly_shipwreck.json",
             ):
                 assert pack_root + path in names, pack_root + path
-            extracted = {}
-            for path in names:
-                if path.startswith(pack_root):
-                    extracted[path[len(pack_root):]] = archive.read(path)
-            # Re-validate the exact JSON resources packaged in the mod JAR.
-            for rel in ("pack.mcmeta",
-                        "data/threshold/worldgen/structure_set/anomaly_structures.json",
-                        "data/threshold/worldgen/structure/anomaly_urban.json"):
-                json.loads(extracted[rel].decode("utf-8"))
+            with tempfile.TemporaryDirectory() as temp_dir:
+                extracted_root = Path(temp_dir)
+                for path in names:
+                    if path.startswith(pack_root):
+                        relative = path[len(pack_root):]
+                        target = extracted_root / relative
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        target.write_bytes(archive.read(path))
+                # Re-validate every exact JSON resource as shipped in the JAR.
+                validate_pack(extracted_root)
             print("BACKROOM_V45_JAR_ANOMALY_RESOURCES_OK")
     print("BACKROOM_V45_ANOMALY_WORLDGEN_OK: connected cities, safe sparse carve, vanilla structure fragments")
 
