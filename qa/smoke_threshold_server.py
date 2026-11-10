@@ -168,7 +168,7 @@ def run():
     # Build and launch one integrated mod; libraries are runtime dependencies.
     subprocess.run(["gradle","--no-daemon","--console=plain","build"],
                    cwd=ROOT,check=True)
-    server_dir=ROOT  # ModDevGradle runServer launches with --gameDir .
+    server_dir=ROOT/"runs/server"  # Root :runServer game directory; the subproject uses a separate run folder.
     server_dir.mkdir(parents=True,exist_ok=True)
 
     # Use a fresh smoke world with the optional anomaly pack explicitly enabled.
@@ -208,7 +208,7 @@ def run():
     LOG.parent.mkdir(parents=True,exist_ok=True)
     with LOG.open("wb") as stream:
         process=subprocess.Popen(
-            ["gradle","--no-daemon","--console=plain","runServer"],
+            ["gradle","--no-daemon","--console=plain",":runServer"],
             cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
         try:
             deadline=time.monotonic()+LIMIT
