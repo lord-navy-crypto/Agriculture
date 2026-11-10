@@ -164,8 +164,7 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
             ThresholdGeoWonderGeometry.Site candidate=site(gx+sx,gz+sz);
             if(candidate==null)continue;
             if(!ThresholdAnomalySurface.shouldGenerate(level,candidate.seed,1))continue;
-            if(!ThresholdGeoWonderGeometry.intersects(candidate,minX,minZ)
-                continue;
+            if(!ThresholdGeoWonderGeometry.intersects(candidate,minX,minZ)) continue;
             placed|=paint(context.level(),candidate,minX,minZ);
         }
         return placed;
