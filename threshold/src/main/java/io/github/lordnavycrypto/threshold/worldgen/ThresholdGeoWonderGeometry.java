@@ -6,7 +6,7 @@ package io.github.lordnavycrypto.threshold.worldgen;
  * negative coordinates and same geometry across all chunk visitation orders.
  */
 public final class ThresholdGeoWonderGeometry {
-    private GeoWonderGeometry() {}
+    private ThresholdGeoWonderGeometry() {}
     public static final int GRID=256;
 
     public static final class Site {
