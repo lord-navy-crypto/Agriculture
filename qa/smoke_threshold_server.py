@@ -132,15 +132,15 @@ def _rcon(command_list):
 
 def verify_anomaly_city_lift():
     commands = [
-        "execute in threshold:level_0 run place structure threshold:anomaly_urban 0 63 0",
-        "execute in threshold:level_0 run data get block 24 63 24",
-        "execute in threshold:level_0 run data get block 22 64 24",
-        "execute in threshold:level_0 run data get block 22 82 24",
-        "execute in threshold:level_0 run data get block 23 82 24",
-        "execute in threshold:level_0 run data get block 24 74 24",
-        "execute in threshold:level_0 run data get block 24 82 21",
-        "execute in threshold:level_0 run data get block 24 64 0",
-        "execute in threshold:level_0 run data get block 24 64 47",
+        "execute in threshold:level_0 run place structure threshold:anomaly_urban 8 63 8",
+        "execute in threshold:level_0 run data get block 32 63 32",
+        "execute in threshold:level_0 run data get block 30 64 32",
+        "execute in threshold:level_0 run data get block 30 82 32",
+        "execute in threshold:level_0 run data get block 31 82 32",
+        "execute in threshold:level_0 run data get block 32 74 32",
+        "execute in threshold:level_0 run data get block 32 82 29",
+        "execute in threshold:level_0 run data get block 32 64 8",
+        "execute in threshold:level_0 run data get block 32 64 55",
     ]
     results = _rcon(commands)
     expected = (
