@@ -291,7 +291,7 @@ def build_connected_district(name):
             connected.set(x, y, z, "minecraft:deepslate_bricks")
 
     # Wall-mounted ladder and a short bridge to the city street.
-    for y in range(1, 19):
+    for y in range(1, 20):
         connected.set(22, y, 24, "minecraft:ladder", facing="east", waterlogged="false")
     for x, z in ((23, 24), (24, 24), (24, 23), (24, 22)):
         connected.set(x, 19, z, "minecraft:polished_andesite")
