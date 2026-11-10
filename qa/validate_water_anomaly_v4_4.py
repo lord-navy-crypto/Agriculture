@@ -70,7 +70,7 @@ def main():
             for asset in assets:
                 assert asset in members, asset
                 blob = z.read(asset)
-                assert blob.startswith(b"\\x89PNG\\r\\n\\x1a\\n"), asset
+                assert blob.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10))), asset
                 assert int.from_bytes(blob[16:20], "big") == 16, asset
                 assert int.from_bytes(blob[20:24], "big") == 16, asset
             pack = "resourcepacks/threshold_anomalies/"
