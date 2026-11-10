@@ -147,7 +147,10 @@ def verify_anomaly_city_templates():
     # sparse lift vestibule, ladder, shaft and street landing.
     block_probes = (
         ("if", 24, 0, 24, "minecraft:polished_andesite", "ground anchor"),
-        ("if", 22, 4, 24, "minecraft:ladder", "ladder base above corridor wall"),
+        ("if", 21, 1, 24, "minecraft:polished_blackstone_bricks", "ladder backing wall base"),
+        ("if", 22, 1, 24, "minecraft:ladder", "ladder base"),
+        ("if", 22, 10, 24, "minecraft:ladder", "ladder middle"),
+        ("if", 21, 19, 24, "minecraft:deepslate_bricks", "ladder backing wall top"),
         ("if", 22, 19, 24, "minecraft:ladder", "ladder top"),
         ("if", 23, 19, 24, "minecraft:polished_andesite", "upper landing west"),
         ("if", 24, 11, 24, "minecraft:air", "elevator shaft clearance"),
