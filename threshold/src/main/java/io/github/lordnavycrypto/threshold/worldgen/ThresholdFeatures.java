@@ -28,6 +28,16 @@ public final class ThresholdFeatures {
             String id = "earth_wonder_" + kind.name().toLowerCase(Locale.ROOT);
             REGISTER.register(id, () -> new ThresholdEarthWonderFeature(kind));
         }
+
+        for (ThresholdGroundMicrostructureFeature.Kind kind : ThresholdGroundMicrostructureFeature.Kind.values()) {
+            String id = "ground_microstructure_" + kind.name().toLowerCase(Locale.ROOT);
+            REGISTER.register(id, () -> new ThresholdGroundMicrostructureFeature(kind));
+        }
+
+        for (ThresholdVanillaHabitatFeature.Habitat habitat : ThresholdVanillaHabitatFeature.Habitat.values()) {
+            String id = "vanilla_habitat_" + habitat.name().toLowerCase(Locale.ROOT);
+            REGISTER.register(id, () -> new ThresholdVanillaHabitatFeature(habitat));
+        }
     }
 
     private ThresholdFeatures() {
