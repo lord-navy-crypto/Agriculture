@@ -27,7 +27,22 @@
       "threshold:ground_microstructure_upland_scree",
       "threshold:ground_microstructure_coastal_driftwood",
       "threshold:vanilla_habitat_fallen_timber",
-      "threshold:vanilla_habitat_riparian_reeds"
+      "threshold:vanilla_habitat_riparian_reeds",
+      "threshold:grand_ecology_temperate_rainforest",
+      "threshold:grand_ecology_savanna_canopy",
+      "threshold:grand_ecology_chaparral_scrub",
+      "threshold:grand_ecology_grassland_mosaic",
+      "threshold:grand_ecology_alpine_tundra",
+      "threshold:grand_ecology_floodplain_bank",
+      "threshold:grand_ecology_tropical_rainforest",
+      "threshold:grand_ecology_temperate_seasonal_forest",
+      "threshold:grand_ecology_boreal_taiga",
+      "threshold:grand_ecology_desert_outcrops",
+      "threshold:grand_ecology_arctic_tundra",
+      "threshold:grand_ecology_freshwater_bed",
+      "threshold:grand_ecology_coastal_seagrass",
+      "threshold:grand_ecology_coral_reef_floor",
+      "threshold:grand_ecology_estuary_shallows"
     ],
     "placement_type": "never_cancel"
   }
