@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Boot the unified Backroom Agriculture mod and verify all six dimensions."""
 from pathlib import Path
-import os, signal, subprocess, sys, time
+import os, signal, shutil, subprocess, sys, time
 
 ROOT=Path(__file__).resolve().parents[1]
 PROJECT=ROOT
@@ -26,6 +26,7 @@ MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY
          "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_OK",
          "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_OK",
          "THRESHOLD_LEVEL1_STARTER_SHELTER_CLEAR_OK",
+         "THRESHOLD_ANOMALY_WORLDGEN_REGISTRY_OK",
          "THRESHOLD_LEVEL0_WORLDGEN_OK","THRESHOLD_LEVEL1_WORLDGEN_OK",
          "THRESHOLD_LEVEL0_VERTICAL_LAYOUT_OK","THRESHOLD_LEVEL1_VERTICAL_LAYOUT_OK",
          "THRESHOLD_LEVEL0_MEZZANINE_OK","THRESHOLD_LEVEL0_NESTED_MAZE_OK",
@@ -80,7 +81,34 @@ def run():
                    cwd=ROOT,check=True)
     server_dir=ROOT/"run/server"
     server_dir.mkdir(parents=True,exist_ok=True)
-    (server_dir/"eula.txt").write_text("eula=true\\n",encoding="utf-8")
+
+    # Use a fresh smoke world with the optional anomaly pack explicitly enabled.
+    # This verifies dynamic registry loading without touching any user world.
+    world_name = "threshold-anomaly-smoke"
+    suffix = 1
+    while (server_dir / world_name / "level.dat").exists():
+        world_name = f"threshold-anomaly-smoke-{suffix}"
+        suffix += 1
+    world_dir = server_dir / world_name
+    pack_source = ROOT / "build/generated/resources/thresholdAnomalyPack/resourcepacks/threshold_anomalies"
+    if not (pack_source / "pack.mcmeta").is_file():
+        raise FileNotFoundError(f"Missing generated anomaly pack: {pack_source}")
+    pack_target = world_dir / "datapacks/threshold_anomalies"
+    pack_target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(pack_source, pack_target, dirs_exist_ok=True)
+
+    properties_path = server_dir / "server.properties"
+    properties = {}
+    if properties_path.is_file():
+        for line in properties_path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line and not line.lstrip().startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                properties[key.strip()] = value.strip()
+    properties["level-name"] = world_name
+    properties_path.write_text(
+        "\n".join(f"{key}={value}" for key, value in sorted(properties.items())) + "\n",
+        encoding="utf-8")
+    (server_dir/"eula.txt").write_text("eula=true\n",encoding="utf-8")
     LOG.parent.mkdir(parents=True,exist_ok=True)
     with LOG.open("wb") as stream:
         process=subprocess.Popen(
@@ -107,6 +135,7 @@ def run():
                     "THRESHOLD_LEVEL1_NESTED_POCKETS_FAIL",
                     "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_FAIL",
                     "THRESHOLD_LEVEL1_PHYSICAL_MAZE_CLEARANCE_FAIL",
+                    "THRESHOLD_ANOMALY_WORLDGEN_OPTIONAL_PACK_OFF",
                     "THRESHOLD_NATURAL_SPAWN_REASON_POLICY_FAIL",
                     "THRESHOLD_LEVEL0_NO_OTHER_CREATURES_FAIL",
                     "THRESHOLD_LEVEL1_STARTER_SHELTER_CLEAR_FAIL",
