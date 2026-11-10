@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.AddPackFindersEvent;
  * worlds, but remains user-disableable; existing world data is never rewritten.
  */
 public final class ThresholdAnomalyPacks {
-    private static final PackSource DEFAULT_ENABLED_BUILT_IN =
+    private static final PackSource OPTIONAL_BUILT_IN =
             PackSource.create(PackSource.BUILT_IN::decorate, true);
 
     private ThresholdAnomalyPacks() {}
