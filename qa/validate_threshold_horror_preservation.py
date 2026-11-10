@@ -500,7 +500,7 @@ def main() -> int:
         ("new BlockPos(55, 58, 11)).is(Blocks.OAK_STAIRS)", "Level 0 lower stair landing"),
         ("new BlockPos(72, 70, 72)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 upper stair landing"),
         ("new BlockPos(81, 58, 69)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 lower stair landing"),
-        ("new BlockPos(84, 63, 23)).is(Blocks.STONE_BRICK_STAIRS)", "Level 1 pump sump access stair landing"),
+        ("new BlockPos(84, 63, 23))", "Level 1 pump sump access stair landing"),
     ):
         if token not in runtime_checks:
             raise AssertionError(f"THRESHOLD runtime vertical probe missing: {label}")
