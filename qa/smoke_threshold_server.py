@@ -195,6 +195,8 @@ def run():
                 properties[key.strip()] = value.strip()
     properties["level-name"] = world_name
     properties["level-seed"] = "6"
+    properties["initial-enabled-packs"] = "vanilla,modded,file/threshold_anomalies"
+    properties["initial-disabled-packs"] = ""
     properties["enable-rcon"] = "true"
     properties["rcon.password"] = "threshold-anomaly-smoke"
     properties["rcon.port"] = "25575"
