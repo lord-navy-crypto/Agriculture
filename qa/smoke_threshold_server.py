@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Boot the unified Backroom Agriculture mod and verify all six dimensions."""
 from pathlib import Path
-import os, signal, shutil, subprocess, sys, time
+import os, signal, shutil, socket, struct, subprocess, sys, time
 
 ROOT=Path(__file__).resolve().parents[1]
 PROJECT=ROOT
@@ -75,6 +75,95 @@ MARKERS=("THRESHOLD_HORROR_RUNTIME_INIT_OK","THRESHOLD_DIMENSIONS_REGISTRY_READY
          "THRESHOLD_LEVEL0_PHYSICAL_MAZE_CLEARANCE_OK",
          "THRESHOLD_LEVEL1_PHYSICAL_MAZE_CLEARANCE_OK")
 
+def _recv_exact(sock, length):
+    chunks = []
+    remaining = length
+    while remaining:
+        chunk = sock.recv(remaining)
+        if not chunk:
+            raise ConnectionError("RCON socket closed")
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    return b"".join(chunks)
+
+
+def _read_rcon_packet(sock):
+    length = struct.unpack("<i", _recv_exact(sock, 4))[0]
+    packet = _recv_exact(sock, length)
+    packet_id, packet_type = struct.unpack("<ii", packet[:8])
+    payload = packet[8:-2].decode("utf-8", errors="replace")
+    return packet_id, packet_type, payload
+
+
+def _send_rcon_packet(sock, packet_id, packet_type, payload):
+    body = struct.pack("<ii", packet_id, packet_type) + payload.encode("utf-8") + b"\x00\x00"
+    sock.sendall(struct.pack("<i", len(body)) + body)
+
+
+def _rcon(command_list):
+    deadline = time.monotonic() + 45
+    last_error = None
+    sock = None
+    while time.monotonic() < deadline:
+        try:
+            sock = socket.create_connection(("127.0.0.1", 25575), timeout=3)
+            break
+        except OSError as error:
+            last_error = error
+            time.sleep(0.5)
+    if sock is None:
+        raise RuntimeError(f"RCON did not become available: {last_error}")
+    results = []
+    with sock:
+        sock.settimeout(15)
+        _send_rcon_packet(sock, 1, 3, "threshold-anomaly-smoke")
+        auth_id, _, auth_text = _read_rcon_packet(sock)
+        if auth_id != 1:
+            raise RuntimeError(f"RCON authentication failed: id={auth_id}, {auth_text}")
+        for packet_id, command in enumerate(command_list, start=2):
+            _send_rcon_packet(sock, packet_id, 2, command)
+            response_id, _, response = _read_rcon_packet(sock)
+            if response_id != packet_id:
+                raise RuntimeError(
+                    f"Unexpected RCON response for {command!r}: id={response_id}, {response!r}")
+            results.append(response)
+    return results
+
+
+def verify_anomaly_city_lift():
+    commands = [
+        "execute in threshold:level_0 run place structure threshold:anomaly_urban 0 63 0",
+        "execute in threshold:level_0 run data get block 24 63 24",
+        "execute in threshold:level_0 run data get block 22 64 24",
+        "execute in threshold:level_0 run data get block 22 82 24",
+        "execute in threshold:level_0 run data get block 23 82 24",
+        "execute in threshold:level_0 run data get block 24 74 24",
+        "execute in threshold:level_0 run data get block 24 82 21",
+        "execute in threshold:level_0 run data get block 24 64 0",
+        "execute in threshold:level_0 run data get block 24 64 47",
+    ]
+    results = _rcon(commands)
+    expected = (
+        (1, "minecraft:polished_andesite"),
+        (2, "minecraft:ladder"),
+        (3, "minecraft:ladder"),
+        (4, "minecraft:polished_andesite"),
+        (5, "minecraft:air"),
+        (6, "minecraft:gray_concrete"),
+        (7, "minecraft:air"),
+        (8, "minecraft:air"),
+    )
+    placement = results[0].lower()
+    if "failed" in placement or "could not" in placement or "no structure" in placement:
+        raise AssertionError(f"Could not place connected anomaly city: {results[0]}")
+    for index, token in expected:
+        response = results[index].lower()
+        if token not in response:
+            raise AssertionError(
+                f"Anomaly city lift probe {commands[index]!r} expected {token}, got {results[index]!r}")
+    print("THRESHOLD_ANOMALY_CITY_LIFT_RCON_OK", flush=True)
+
+
 def run():
     # Build and launch one integrated mod; libraries are runtime dependencies.
     subprocess.run(["gradle","--no-daemon","--console=plain","build"],
@@ -106,6 +195,10 @@ def run():
                 properties[key.strip()] = value.strip()
     properties["level-name"] = world_name
     properties["level-seed"] = "6"
+    properties["enable-rcon"] = "true"
+    properties["rcon.password"] = "threshold-anomaly-smoke"
+    properties["rcon.port"] = "25575"
+    properties["broadcast-rcon-to-ops"] = "false"
     properties_path.write_text(
         "\n".join(f"{key}={value}" for key, value in sorted(properties.items())) + "\n",
         encoding="utf-8")
@@ -121,6 +214,12 @@ def run():
                 time.sleep(2)
                 current=LOG.read_text(encoding="utf-8",errors="replace")
                 if all(m in current for m in MARKERS) and READY in current:
+                    try:
+                        verify_anomaly_city_lift()
+                    except Exception as error:
+                        print(f"FAIL: anomaly city lift RCON acceptance: {error}", flush=True)
+                        print(current[-90000:], flush=True)
+                        return 1
                     print("THRESHOLD_REAL_SERVER_SIX_DIMENSIONS_AND_WORLDGEN_PASS",flush=True)
                     return 0
                 if any(marker in current for marker in (
