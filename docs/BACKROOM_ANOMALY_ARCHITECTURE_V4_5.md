@@ -8,20 +8,22 @@ resources: 97 original NBT architecture templates, four modern city districts,
 17 unique geological-wonder feature kinds (10 GeoWonder + 8 EarthWonder with
 one shared cooled-lava kind), 15 GrandEcology kinds, five GroundMicrostructure
 kinds, two CaveWonderNetwork kinds and two VanillaHabitat kinds. The current
-implementation stage packages the 97 original buildings, four city districts
-and all 17 geological-wonder kinds, adapted to the Level 2-5 artificial floor
-palettes. The remaining 24 environmental feature kinds (15 ecology, five
-ground microstructures, two cave networks and two vanilla habitats) remain to
-be adapted rather than copied with RealScale-only gates.
+implementation stage packages the 97 original buildings, four city districts,
+all 17 geological-wonder kinds, five ground microstructures and two vanilla
+habitats. The 17 geological forms run on Levels 2-5; microstructures and
+habitats are placed in their assigned Level 3-5 zones. The remaining 17
+environmental kinds (15 ecology and two cave networks) remain to be adapted
+rather than copied with RealScale-only gates.
 Three separately licensed GDMC templates are additional and excluded from
 the 142-original-resource count; they are not copied in this stage.
 
 这是实验性开发分支，不是正式发布版。已核对的 RealScale 原创资源总数为 142：
 97 个原创建筑 NBT、4 个现代城市街区、17 种去重后的地质奇观、15 种生态特征、
 5 种地面微结构、2 种洞穴网络和 2 种原生栖息地结构。
-当前阶段已经接入 97 个原创建筑、4 个现代城市街区和全部 17 种地质奇观；
-剩余 24 种环境特征（15 种生态、5 种地面微结构、2 种洞穴网络、2 种原生栖息地）
-仍需针对后室世界适配，不能直接复制带有 RealScale 世界限制的原始代码。
+当前阶段已经接入 97 个原创建筑、4 个现代城市街区、17 种地质奇观、
+5 种地面微结构和 2 种原生栖息地。17 种地质奇观生成于 Level 2-5；
+微结构与栖息地按主题分配到 Level 3-5。剩余 17 种环境特征（15 种生态和
+2 种洞穴网络）仍需针对后室世界适配，不能直接复制带有 RealScale 世界限制的原始代码。
 另有 3 个单独授权的 GDMC 模板，不计入这 142 个原创资源，本阶段尚未复制。
 
 ## Connected city districts / 可进入的现代城市
@@ -50,8 +52,10 @@ service lift integrated into each district:
 The 17 geological forms now run as chunk-local, deterministic floor anomalies
 in Levels 2-5. They reuse the source geometry patterns but use the Backrooms'
 actual floor palettes, stay above Y=64, preserve the reserved room routes, and
-do not carve or replace water. Level 0 and Level 1 retain their original horror
-and warehouse identities.
+do not carve or replace water. Five ground microstructures and two vanilla
+habitats are also adapted as rare, chunk-local features; the riparian habitat
+uses a sealed, supported water pocket. Level 0 and Level 1 retain their
+original horror and warehouse identities.
 
 Each of the six Backrooms dimensions has its own shared structure set, so
 houses, city districts and vanilla fragments cannot independently choose the
