@@ -31,11 +31,13 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
     }
 
     private static boolean nativeFloor(BlockState state) {
-        return state.is(Blocks.GRAY_CONCRETE)
-                || state.is(Blocks.DEEPSLATE_TILES)
-                || state.is(Blocks.SMOOTH_STONE)
-                || state.is(Blocks.DARK_OAK_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE);
+        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
+                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
+                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
+                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SMOOTH_STONE)
+                || state.is(Blocks.DARK_OAK_PLANKS) || state.is(Blocks.SPRUCE_PLANKS)
+                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
+                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
     }
 
     private static int roomSizeForLevel(String level) {
@@ -66,12 +68,19 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
     private boolean compatible(BlockState base) {
         if (!nativeFloor(base)) return false;
         return switch (kind) {
-            case HOODOO_SPIRES, KARST_SINKHOLE_RIM -> base.is(Blocks.DEEPSLATE_TILES);
+            case HOODOO_SPIRES, KARST_SINKHOLE_RIM -> base.is(Blocks.DEEPSLATE_TILES)
+                    || base.is(Blocks.POLISHED_DEEPSLATE);
             case TRAVERTINE_TERRACES, MANGROVE_TIDAL_ROOTS,
-                    DELTA_SEDIMENT -> base.is(Blocks.SMOOTH_STONE);
+                    DELTA_SEDIMENT -> base.is(Blocks.SMOOTH_STONE)
+                    || base.is(Blocks.LIGHT_GRAY_CONCRETE);
             case LAVA_TUBE_LINING, COOLED_LAVA_FIELD -> base.is(Blocks.GRAY_CONCRETE)
-                    || base.is(Blocks.DEEPSLATE_TILES);
-            case GLACIAL_MORAINE -> base.is(Blocks.DARK_OAK_PLANKS);
+                    || base.is(Blocks.DEEPSLATE_TILES) || base.is(Blocks.POLISHED_DEEPSLATE)
+                    || base.is(Blocks.POLISHED_ANDESITE) || base.is(Blocks.SMOOTH_BASALT)
+                    || base.is(Blocks.COBBLED_DEEPSLATE);
+            case GLACIAL_MORAINE -> base.is(Blocks.DARK_OAK_PLANKS)
+                    || base.is(Blocks.CALCITE) || base.is(Blocks.POLISHED_BLACKSTONE)
+                    || base.is(Blocks.SPRUCE_PLANKS) || base.is(Blocks.POLISHED_DEEPSLATE)
+                    || base.is(Blocks.WHITE_CONCRETE);
         };
     }
 
