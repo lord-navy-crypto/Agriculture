@@ -190,7 +190,8 @@ def validate_pack(root: Path):
         set_id = f"anomaly_structures_{level}"
         placement = load_json_from_dir(
             root, f"data/threshold/worldgen/structure_set/{set_id}.json")
-        assert placement["placement"]["spacing"] == 64
+        expected_spacing = 80 if index < 2 else 64
+        assert placement["placement"]["spacing"] == expected_spacing
         assert placement["placement"]["separation"] == 24
         assert placement["placement"]["salt"] == 142011 + index * 1009
         salts.append(placement["placement"]["salt"])
@@ -204,7 +205,35 @@ def validate_pack(root: Path):
     assert tag["values"] == [f"threshold:{level}" for level in LEVELS]
 
 
+def validate_six_floor_feature_access():
+    worldgen = ROOT / "threshold/src/main/java/io/github/lordnavycrypto/threshold/worldgen"
+    surface = (worldgen / "ThresholdAnomalySurface.java").read_text(encoding="utf-8")
+    for level in LEVELS:
+        assert f'"{level}"' in surface, f"missing surface support for {level}"
+    assert "LOW_FREQUENCY_MULTIPLIER = 4" in surface
+    assert "SURFACE_Y = 64" in surface
+    assert '("level_1".equals(dimension) || "level_4".equals(dimension)) ? 48 : 32' in surface
+
+    feature_files = (
+        "ThresholdGeoWonderRegionFeature.java",
+        "ThresholdEarthWonderFeature.java",
+        "ThresholdGrandEcologyFeature.java",
+        "ThresholdGroundMicrostructureFeature.java",
+        "ThresholdCaveWonderNetworkFeature.java",
+        "ThresholdVanillaHabitatFeature.java",
+    )
+    for filename in feature_files:
+        source = (worldgen / filename).read_text(encoding="utf-8")
+        assert "ThresholdAnomalySurface.isBackroomsDimension" in source, filename
+        assert "ThresholdAnomalySurface.shouldGenerate" in source, filename
+
+    pack_source = (ROOT / "threshold/src/main/java/io/github/lordnavycrypto/threshold/ThresholdAnomalyPacks.java").read_text(encoding="utf-8")
+    assert "PackSource.create(PackSource.BUILT_IN::decorate, true)" in pack_source
+    print("BACKROOM_ALL_SIX_FLOORS_FULL_ANOMALY_ACCESS_OK")
+
+
 def main():
+    validate_six_floor_feature_access()
     for name in URBAN:
         path = TEMPLATE_DIR / f"{name}.nbt"
         doc = validate_template(path.read_bytes(), name)
@@ -245,7 +274,7 @@ def main():
                 # Re-validate every exact JSON resource as shipped in the JAR.
                 validate_pack(extracted_root)
             print("BACKROOM_V45_JAR_ANOMALY_RESOURCES_OK")
-    print("BACKROOM_V45_ANOMALY_WORLDGEN_OK: connected cities, safe sparse carve, vanilla structure fragments")
+    print("BACKROOM_V45_ANOMALY_WORLDGEN_OK: all six floors, connected cities, geological/ecological features, vanilla fragments")
 
 
 if __name__ == "__main__":
