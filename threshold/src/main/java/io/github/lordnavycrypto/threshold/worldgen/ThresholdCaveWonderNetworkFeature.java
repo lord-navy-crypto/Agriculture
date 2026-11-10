@@ -42,11 +42,13 @@ public final class ThresholdCaveWonderNetworkFeature extends Feature<NoneFeature
         if (kind == Kind.LAVA_TUBE) {
             return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
                     || state.is(Blocks.DEEPSLATE_BRICKS) || state.is(Blocks.SMOOTH_BASALT)
-                    || state.is(Blocks.POLISHED_ANDESITE);
+                    || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CRACKED_STONE_BRICKS)
+                    || state.is(Blocks.BRICKS);
         }
         return state.is(Blocks.DEEPSLATE_TILES) || state.is(Blocks.DEEPSLATE_BRICKS)
                 || state.is(Blocks.SMOOTH_STONE) || state.is(Blocks.POLISHED_ANDESITE)
-                || state.is(Blocks.GRAY_CONCRETE);
+                || state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.WHITE_CONCRETE)
+                || state.is(Blocks.LIGHT_GRAY_CONCRETE) || state.is(Blocks.BRICKS);
     }
 
     private static boolean reserved(WorldGenLevel world, BlockPos pos, String level) {
