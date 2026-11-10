@@ -63,7 +63,7 @@ def main():
     assert "WaterV37Content.ITEMS.getEntries()" in tabs
     for id in ("empty_water_flask","raw_water_bottle","boiled_water_bottle","filtered_water_bottle"):
         assert f'"{id}"' in wateritems
-        assert read_json(ART/f"models/item/{id}.json")["textures"]["layer0"].startswith("minecraft:item/")
+        assert read_json(ART/f"models/item/{id}.json")["textures"]["layer0"] == f"gugugaga:item/water_v44/{id}"
     assert "getPlayerPOVHitResult" in empty
     assert "ClipContext.Fluid.SOURCE_ONLY" in empty
     assert "BiomeTags.IS_OCEAN" in empty
