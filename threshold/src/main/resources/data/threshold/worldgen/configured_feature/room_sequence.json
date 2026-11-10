@@ -20,7 +20,14 @@
       "threshold:earth_wonder_lava_tube_lining",
       "threshold:earth_wonder_glacial_moraine",
       "threshold:earth_wonder_delta_sediment",
-      "threshold:earth_wonder_karst_sinkhole_rim"
+      "threshold:earth_wonder_karst_sinkhole_rim",
+      "threshold:ground_microstructure_oak_log",
+      "threshold:ground_microstructure_spruce_log",
+      "threshold:ground_microstructure_forest_hummock",
+      "threshold:ground_microstructure_upland_scree",
+      "threshold:ground_microstructure_coastal_driftwood",
+      "threshold:vanilla_habitat_fallen_timber",
+      "threshold:vanilla_habitat_riparian_reeds"
     ],
     "placement_type": "never_cancel"
   }
