@@ -168,7 +168,7 @@ def run():
     # Build and launch one integrated mod; libraries are runtime dependencies.
     subprocess.run(["gradle","--no-daemon","--console=plain","build"],
                    cwd=ROOT,check=True)
-    server_dir=ROOT/"run/server"
+    server_dir=ROOT  # ModDevGradle runServer launches with --gameDir .
     server_dir.mkdir(parents=True,exist_ok=True)
 
     # Use a fresh smoke world with the optional anomaly pack explicitly enabled.
