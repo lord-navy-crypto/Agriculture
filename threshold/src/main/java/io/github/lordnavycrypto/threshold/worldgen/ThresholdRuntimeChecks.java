@@ -47,9 +47,9 @@ public final class ThresholdRuntimeChecks {
         }
         System.out.println("THRESHOLD_DIMENSIONS_REGISTRY_READY_OK");
 
-        // The optional anomaly data pack is disabled in ordinary worlds. When
-        // enabled for a new world, all six structure families and all six
-        // per-dimension placement sets must be present together.
+        // The built-in anomaly pack is selected by default for new worlds.
+        // All six structure families and all six per-dimension placement sets
+        // must be present together; users may still disable the pack manually.
         var structureRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE);
         var structureSetRegistry = server.registryAccess().registryOrThrow(Registries.STRUCTURE_SET);
         boolean anomalyStructureSetsReady = true;
