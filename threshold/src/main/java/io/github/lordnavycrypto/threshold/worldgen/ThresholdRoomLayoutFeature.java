@@ -3030,7 +3030,7 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         return west || east || southWest || southEast;
     }
 
-    private static boolean isReservedRoomPath(
+    public static boolean isReservedRoomPath(
             long seed, int roomSize, int roomX, int roomZ,
             int localX, int localZ, int radius, boolean guaranteeRoomExit) {
         int mid = roomSize / 2;
