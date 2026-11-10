@@ -126,7 +126,7 @@ def main() -> int:
     require(r"Blocks\.SMOOTH_SANDSTONE", layout, "Level 0 arch galleries use a distinct pale stone frame")
     require(r"Blocks\.MOSS_BLOCK", layout, "Level 1 concrete gardens use restrained overgrowth")
     require(r"Blocks\.AZALEA_LEAVES", layout, "Level 1 concrete gardens have layered foliage")
-    require(r"private static boolean isReservedRoomPath\(", layout,
+    require(r"public static boolean isReservedRoomPath\(", layout,
             "architectural overlays reserve a route from each actual doorway to the room hub")
     require(r"doorwayCenterAlongZ", layout,
             "doorway reservation uses the same deterministic edge center as room generation")
