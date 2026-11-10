@@ -25,7 +25,7 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
     }
     private final Kind kind;
 
-    public EarthWonderFeature(Kind kind) {
+    public ThresholdEarthWonderFeature(Kind kind) {
         super(NoneFeatureConfiguration.CODEC);
         this.kind = kind;
     }
@@ -140,7 +140,7 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
             int distance=dx*dx+dz*dz;
             if (distance>radius*radius)continue;
             int x=center.getX()+dx,z=center.getZ()+dz;
-            if (!inChunk(x,z,cx,cz))continue;
+            if (!inChunk(x,z,chunkX,chunkZ))continue;
             int pattern=Math.floorMod(x*31+z*17,11);
             if (pattern==0 || pattern==7)continue;
             BlockPos p=new BlockPos(x,y,z);
