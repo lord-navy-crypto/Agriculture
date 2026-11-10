@@ -1,0 +1,59 @@
+// Ship the user's own RealScale architecture in the same Backrooms JAR.
+// This stage imports only original designs: 5 + 50 + 42 buildings and four
+// authored high-rise/civic/industrial/residential districts. No external
+// schematics, network requests or data-pack overrides are involved.
+def thresholdArchitectureOutput = layout.buildDirectory.dir('generated/resources/thresholdArchitecture')
+def thresholdArchitectureScratch = layout.buildDirectory.dir('generated/threshold-architecture-scratch')
+sourceSets.main.resources.srcDir(thresholdArchitectureOutput)
+
+tasks.register('generateThresholdArchitecture') {
+    inputs.files(fileTree('tools/realscale_originals') {
+        include '*.py', '*.json'
+    })
+    outputs.dir(thresholdArchitectureOutput)
+    doLast {
+        File destination = thresholdArchitectureOutput.get().asFile
+        File scratch = thresholdArchitectureScratch.get().asFile
+        project.delete(destination)
+        project.delete(scratch)
+        destination.mkdirs()
+        scratch.mkdirs()
+        def specs = [
+            [name:'original', script:'generate_original_architecture.py', count:5, group:'architecture'],
+            [name:'batch', script:'generate_architecture_batch.py', count:50, group:'architecture'],
+            [name:'expansion', script:'generate_architecture_expansion.py', count:42, group:'architecture'],
+            [name:'urban', script:'generate_urban_districts.py', count:4, group:'urban']
+        ]
+        Set<String> ids = new HashSet<>()
+        specs.each { spec ->
+            File working = new File(scratch, spec.name.toString())
+            working.mkdirs()
+            providers.exec {
+                commandLine(System.getenv('PYTHON') ?: 'python3',
+                            file('tools/realscale_originals/' + spec.script).absolutePath,
+                            '--output', working.absolutePath)
+            }.result.get()
+            File source = new File(working, 'data/realscale/structure/' + spec.group)
+            def templates = fileTree(source) { include '*.nbt' }.files.sort { it.name }
+            if (templates.size() != spec.count) {
+                throw new GradleException(
+                    "Expected ${spec.count} original ${spec.name} structures, found ${templates.size()}")
+            }
+            File target = new File(destination, 'data/threshold/structure/anomaly/' + spec.group)
+            target.mkdirs()
+            templates.each { File template ->
+                String id = spec.group + '/' + template.name
+                if (!ids.add(id)) throw new GradleException("Duplicate anomaly structure: " + id)
+                project.copy {
+                    from template
+                    into target
+                }
+            }
+        }
+        if (ids.size() != 101) throw new GradleException("Expected 101 original templates")
+        logger.lifecycle('THRESHOLD_REALSCALE_ANOMALY_TEMPLATES_OK: 97 original architecture + 4 modern city districts')
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateThresholdArchitecture')
+}
