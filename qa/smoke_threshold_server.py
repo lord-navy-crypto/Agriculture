@@ -140,14 +140,14 @@ def verify_anomaly_city_lift():
             # The 48x48 city spans chunks 0-3. Load the full footprint before
             # checking block states; /data get block only reads block-entity NBT.
             f"execute in threshold:{dimension} run forceload add 0 0 63 63",
-            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run time query daytime0_OK",
-            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run time query daytime1_OK",
-            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run time query daytime2_OK",
-            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run time query daytime3_OK",
-            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run time query daytime4_OK",
-            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run time query daytime5_OK",
-            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run time query daytime6_OK",
-            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run time query daytime7_OK",
+            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run time query daytime",
+            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run time query daytime",
             f"execute in threshold:{dimension} run forceload remove 0 0 63 63",
         ])
         probes.append((dimension, len(commands) - 11))
