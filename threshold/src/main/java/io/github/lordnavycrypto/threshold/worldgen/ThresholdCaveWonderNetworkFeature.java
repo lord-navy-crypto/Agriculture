@@ -1,5 +1,6 @@
 package io.github.lordnavycrypto.threshold.worldgen;
 
+import io.github.lordnavycrypto.threshold.block.ThresholdEnvironmentBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -33,26 +34,26 @@ public final class ThresholdCaveWonderNetworkFeature extends Feature<NoneFeature
     }
 
     private boolean allowedLevel(String level) {
-        return kind == Kind.LAVA_TUBE
-                ? level.equals("level_2") || level.equals("level_3")
-                : level.equals("level_3") || level.equals("level_4");
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
 
     private boolean acceptable(BlockState state) {
-        if (kind == Kind.LAVA_TUBE) {
-            return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
-                    || state.is(Blocks.DEEPSLATE_BRICKS) || state.is(Blocks.SMOOTH_BASALT)
-                    || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CRACKED_STONE_BRICKS)
-                    || state.is(Blocks.BRICKS);
-        }
-        return state.is(Blocks.DEEPSLATE_TILES) || state.is(Blocks.DEEPSLATE_BRICKS)
-                || state.is(Blocks.SMOOTH_STONE) || state.is(Blocks.POLISHED_ANDESITE)
-                || state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.WHITE_CONCRETE)
-                || state.is(Blocks.LIGHT_GRAY_CONCRETE) || state.is(Blocks.BRICKS);
+        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
+                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
+                || state.is(Blocks.DEEPSLATE_BRICKS) || state.is(Blocks.SMOOTH_BASALT)
+                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CRACKED_STONE_BRICKS)
+                || state.is(Blocks.BRICKS) || state.is(Blocks.RED_TERRACOTTA)
+                || state.is(Blocks.RED_NETHER_BRICKS) || state.is(Blocks.DARK_OAK_PLANKS)
+                || state.is(Blocks.SPRUCE_PLANKS) || state.is(Blocks.POLISHED_BLACKSTONE_BRICKS)
+                || state.is(Blocks.CALCITE)
+                || state.is(ThresholdEnvironmentBlocks.FADED_WALLPAPER.get())
+                || state.is(ThresholdEnvironmentBlocks.STAINED_WALLPAPER.get())
+                || state.is(ThresholdEnvironmentBlocks.WAREHOUSE_WALL.get())
+                || state.is(ThresholdEnvironmentBlocks.TRANSITION_WALL.get());
     }
 
     private static boolean reserved(WorldGenLevel world, BlockPos pos, String level) {
-        int size = level.equals("level_4") ? 48 : 32;
+        int size = ThresholdAnomalySurface.roomSize(level);
         int rx = Math.floorDiv(pos.getX(), size), rz = Math.floorDiv(pos.getZ(), size);
         return ThresholdRoomLayoutFeature.isReservedRoomPath(
                 world.getSeed(), size, rx, rz,
@@ -89,7 +90,7 @@ public final class ThresholdCaveWonderNetworkFeature extends Feature<NoneFeature
                 long salt = kind == Kind.LAVA_TUBE ? 0x9876AFL : 0x72CA51L;
                 long hash = mix(world.getSeed() ^ (long) gx * 0x9E3779B97F4A7C15L
                         ^ (long) gz * 0xC2B2AE3D27D4EB4FL ^ salt);
-                if (Math.floorMod(hash, 31L) != 0L) continue;
+                if (!ThresholdAnomalySurface.shouldGenerate(level,hash,31)) continue;
 
                 int cx = gx * CELL + (int) Math.floorMod(hash >>> 13, 65L) - 32;
                 int cz = gz * CELL + (int) Math.floorMod(hash >>> 25, 65L) - 32;
@@ -106,7 +107,7 @@ public final class ThresholdCaveWonderNetworkFeature extends Feature<NoneFeature
                         double deviation = Math.sin(along * 0.080 + ((hash >>> 8) % 15)) * 1.5;
                         if (Math.abs(side - deviation) > 1.55) continue;
 
-                        int y = 65;
+                        int y = ThresholdAnomalySurface.caveFootY(level);
                         BlockPos foot = new BlockPos(x, y, z);
                         BlockPos head = foot.above();
                         BlockPos roof = foot.above(4);
