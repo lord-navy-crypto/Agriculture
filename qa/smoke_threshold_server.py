@@ -140,22 +140,22 @@ def verify_anomaly_city_lift():
             # The 48x48 city spans chunks 0-3. Load the full footprint before
             # checking block states; /data get block only reads block-entity NBT.
             f"execute in threshold:{dimension} run forceload add 0 0 63 63",
-            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run say THRESHOLD_CITY_LIFT_PROBE_0_OK",
-            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run say THRESHOLD_CITY_LIFT_PROBE_1_OK",
-            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run say THRESHOLD_CITY_LIFT_PROBE_2_OK",
-            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run say THRESHOLD_CITY_LIFT_PROBE_3_OK",
-            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_4_OK",
-            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run say THRESHOLD_CITY_LIFT_PROBE_5_OK",
-            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_6_OK",
-            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_7_OK",
+            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run time query daytime0_OK",
+            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run time query daytime1_OK",
+            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run time query daytime2_OK",
+            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run time query daytime3_OK",
+            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run time query daytime4_OK",
+            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run time query daytime5_OK",
+            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run time query daytime6_OK",
+            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run time query daytime7_OK",
             f"execute in threshold:{dimension} run forceload remove 0 0 63 63",
         ])
         probes.append((dimension, len(commands) - 11))
     results = _rcon(commands)
-    expected = tuple(
-        (offset, f"THRESHOLD_CITY_LIFT_PROBE_{offset - 2}_OK")
-        for offset in range(2, 10)
-    )
+    # RCON does not reliably return /say broadcast text as command output.
+    # /time query is read-only and returns a normal command result only when
+    # the execute-if-block predicate succeeds.
+    expected = tuple((offset, "the time is") for offset in range(2, 10))
     for dimension, start in probes:
         placement = results[start].lower()
         if "failed" in placement or "could not" in placement or "no structure" in placement:
@@ -166,7 +166,7 @@ def verify_anomaly_city_lift():
             if token not in response:
                 raise AssertionError(
                     f"{dimension} city-lift probe {commands[start + offset]!r} "
-                    f"expected success marker {token}, got {response!r}")
+                    f"expected successful block predicate (time query result), got {response!r}")
     print("THRESHOLD_ANOMALY_CITY_LIFT_ALL_SIX_RCON_OK", flush=True)
 
 def run():
