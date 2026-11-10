@@ -43,6 +43,11 @@ public final class ThresholdFeatures {
             String id = "grand_ecology_" + kind.name().toLowerCase(Locale.ROOT);
             REGISTER.register(id, () -> new ThresholdGrandEcologyFeature(kind));
         }
+
+        for (ThresholdCaveWonderNetworkFeature.Kind kind : ThresholdCaveWonderNetworkFeature.Kind.values()) {
+            String id = "cave_wonder_" + kind.name().toLowerCase(Locale.ROOT);
+            REGISTER.register(id, () -> new ThresholdCaveWonderNetworkFeature(kind));
+        }
     }
 
     private ThresholdFeatures() {
