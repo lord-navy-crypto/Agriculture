@@ -59,8 +59,8 @@ tasks.named('processResources').configure {
 }
 
 
-// A non-mandatory SERVER_DATA pack is embedded but NOT selected by default.
-// Only opt-in newly created worlds get the additional upper-layer structures.
+// A non-mandatory SERVER_DATA pack is embedded and selected by default.
+// All six Backrooms floors receive the complete structure pool; users may disable it.
 def thresholdAnomalyPackOutput = layout.buildDirectory.dir('generated/resources/thresholdAnomalyPack')
 sourceSets.main.resources.srcDir(thresholdAnomalyPackOutput)
 
