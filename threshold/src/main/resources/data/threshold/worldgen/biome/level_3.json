@@ -4,8 +4,8 @@
   "downfall": 0,
   "effects": {
     "fog_color": 5658198,
-    "water_color": 4159204,
-    "water_fog_color": 4159204,
+    "water_color": 4750227,
+    "water_fog_color": 2640477,
     "sky_color": 4934475,
     "mood_sound": {
       "sound": "minecraft:block.respawn_anchor.ambient",
