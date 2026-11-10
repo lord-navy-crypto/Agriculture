@@ -54,14 +54,16 @@ The standalone `gugugaga-fusion-visuals-v2.7.zip` remains a separate generated a
 - Effect mapping rationale and limitations: [Nutrition effect matrix v3.10](docs/NUTRITION_EFFECT_MATRIX_V3_10.md). Real nutrient functions are based on NIH/WHO sources; the potion mappings are explicitly fictional.
 
 
-## Experimental water art and RealScale anomaly preview (v4.4 source branch)
+## Experimental water art and connected RealScale anomalies (v4.5 source branch)
 
 The optional and **default-OFF** [Impossible Architecture preview](docs/BACKROOM_ANOMALY_ARCHITECTURE_V4_4.md)
-imports 97 original RealScale buildings and four modern city quarters as testable
-NBT templates. Rare upper-stratum generation in Level 0/1 is opt-in and has
-not completed survival-access or visual QA. Dedicated water item art, distinct
-water fog tints and an alternate sea-salt + boiled-water brine recipe are also
-included; that alternate recipe consumes the water bottle.
+imports 97 original RealScale buildings and four modern city districts. Each
+city district now has a sparse service-lift shaft from the Level 0/1 maze to
+its Y=82 street deck. The shared rare structure set also reuses vanilla plains
+village centres, ancient-city centres, ruined portals and shipwreck templates.
+Dedicated water item art, distinct water fog tints and an alternate
+sea-salt + boiled-water brine recipe are included; that alternate recipe
+consumes the water bottle.
 
 ## Build and validation
 
