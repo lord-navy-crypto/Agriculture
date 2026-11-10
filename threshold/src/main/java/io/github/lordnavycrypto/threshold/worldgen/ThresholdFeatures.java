@@ -38,6 +38,11 @@ public final class ThresholdFeatures {
             String id = "vanilla_habitat_" + habitat.name().toLowerCase(Locale.ROOT);
             REGISTER.register(id, () -> new ThresholdVanillaHabitatFeature(habitat));
         }
+
+        for (ThresholdGrandEcologyFeature.Kind kind : ThresholdGrandEcologyFeature.Kind.values()) {
+            String id = "grand_ecology_" + kind.name().toLowerCase(Locale.ROOT);
+            REGISTER.register(id, () -> new ThresholdGrandEcologyFeature(kind));
+        }
     }
 
     private ThresholdFeatures() {
