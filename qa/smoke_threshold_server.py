@@ -171,20 +171,16 @@ def run():
     server_dir=ROOT/"run"  # ModDevGradle default game directory for the root :runServer task.
     server_dir.mkdir(parents=True,exist_ok=True)
 
-    # Use a fresh smoke world with the optional anomaly pack explicitly enabled.
-    # This verifies dynamic registry loading without touching any user world.
+    # Use a fresh smoke world and explicitly enable the optional built-in pack
+    # shipped inside the mod JAR. Its registered pack ID comes from
+    # ThresholdAnomalyPacks: gugugaga:resourcepacks/threshold_anomalies.
+    # This exercises the same opt-in path users see in the Create World pack UI
+    # and does not touch any existing user world.
     world_name = "threshold-anomaly-smoke"
     suffix = 1
     while (server_dir / world_name / "level.dat").exists():
         world_name = f"threshold-anomaly-smoke-{suffix}"
         suffix += 1
-    world_dir = server_dir / world_name
-    pack_source = ROOT / "build/generated/resources/thresholdAnomalyPack/resourcepacks/threshold_anomalies"
-    if not (pack_source / "pack.mcmeta").is_file():
-        raise FileNotFoundError(f"Missing generated anomaly pack: {pack_source}")
-    pack_target = world_dir / "datapacks/threshold_anomalies"
-    pack_target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(pack_source, pack_target, dirs_exist_ok=True)
 
     properties_path = server_dir / "server.properties"
     properties = {}
@@ -195,7 +191,7 @@ def run():
                 properties[key.strip()] = value.strip()
     properties["level-name"] = world_name
     properties["level-seed"] = "6"
-    properties["initial-enabled-packs"] = "vanilla,modded,file/threshold_anomalies"
+    properties["initial-enabled-packs"] = "vanilla,modded,gugugaga:resourcepacks/threshold_anomalies"
     properties["initial-disabled-packs"] = ""
     properties["enable-rcon"] = "true"
     properties["rcon.password"] = "threshold-anomaly-smoke"
