@@ -291,7 +291,16 @@ def build_connected_district(name):
             connected.set(x, y, z, "minecraft:deepslate_bricks")
 
     # Wall-mounted ladder and a short bridge to the city street.
+    # Ladders facing east require a sturdy support block immediately west
+    # (x=21). The original lower vestibule had no such backing wall, so
+    # neighbour updates removed the unsupported ladder blocks on placement.
+    # Continue the backing wall through the vestibule, shaft and upper landing.
     for y in range(1, 20):
+        support = (
+            "minecraft:polished_blackstone_bricks"
+            if y <= 10 else "minecraft:deepslate_bricks"
+        )
+        connected.set(21, y, 24, support)
         connected.set(22, y, 24, "minecraft:ladder", facing="east", waterlogged="false")
     for x, z in ((23, 24), (24, 24), (24, 23), (24, 22)):
         connected.set(x, 19, z, "minecraft:polished_andesite")
