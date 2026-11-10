@@ -296,7 +296,7 @@ def build_connected_district(name):
     for x, z in ((23, 24), (24, 24), (24, 23), (24, 22)):
         connected.set(x, 19, z, "minecraft:polished_andesite")
     for x, z in ((21, 22), (21, 25), (26, 22), (26, 25)):
-        connected.set(x, 19, z, "minecraft:iron_bars",
+        connected.set(x, 20, z, "minecraft:iron_bars",
                       east="false", north="false", south="false",
                       waterlogged="false", west="false")
 
