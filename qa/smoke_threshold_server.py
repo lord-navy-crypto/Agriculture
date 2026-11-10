@@ -137,31 +137,24 @@ def verify_anomaly_city_lift():
     for dimension in levels:
         commands.extend([
             f"execute in threshold:{dimension} run place structure threshold:anomaly_urban 8 63 8",
-            # The 48x48 city spans chunks 0-3. Explicitly load that footprint
-            # before querying blocks; /place structure does not keep every
-            # touched chunk loaded for subsequent RCON probes.
+            # The 48x48 city spans chunks 0-3. Load the full footprint before
+            # checking block states; /data get block only reads block-entity NBT.
             f"execute in threshold:{dimension} run forceload add 0 0 63 63",
-            f"execute in threshold:{dimension} run data get block 32 63 32",
-            f"execute in threshold:{dimension} run data get block 30 64 32",
-            f"execute in threshold:{dimension} run data get block 30 82 32",
-            f"execute in threshold:{dimension} run data get block 31 82 32",
-            f"execute in threshold:{dimension} run data get block 32 74 32",
-            f"execute in threshold:{dimension} run data get block 32 82 29",
-            f"execute in threshold:{dimension} run data get block 32 64 8",
-            f"execute in threshold:{dimension} run data get block 32 64 55",
+            f"execute in threshold:{dimension} run execute if block 32 63 32 minecraft:polished_andesite run say THRESHOLD_CITY_LIFT_PROBE_0_OK",
+            f"execute in threshold:{dimension} run execute if block 30 64 32 minecraft:ladder run say THRESHOLD_CITY_LIFT_PROBE_1_OK",
+            f"execute in threshold:{dimension} run execute if block 30 82 32 minecraft:ladder run say THRESHOLD_CITY_LIFT_PROBE_2_OK",
+            f"execute in threshold:{dimension} run execute if block 31 82 32 minecraft:polished_andesite run say THRESHOLD_CITY_LIFT_PROBE_3_OK",
+            f"execute in threshold:{dimension} run execute if block 32 74 32 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_4_OK",
+            f"execute in threshold:{dimension} run execute if block 32 82 29 minecraft:gray_concrete run say THRESHOLD_CITY_LIFT_PROBE_5_OK",
+            f"execute in threshold:{dimension} run execute if block 32 64 8 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_6_OK",
+            f"execute in threshold:{dimension} run execute if block 32 64 55 minecraft:air run say THRESHOLD_CITY_LIFT_PROBE_7_OK",
             f"execute in threshold:{dimension} run forceload remove 0 0 63 63",
         ])
         probes.append((dimension, len(commands) - 11))
     results = _rcon(commands)
-    expected = (
-        (2, "minecraft:polished_andesite"),
-        (3, "minecraft:ladder"),
-        (4, "minecraft:ladder"),
-        (5, "minecraft:polished_andesite"),
-        (6, "minecraft:air"),
-        (7, "minecraft:gray_concrete"),
-        (8, "minecraft:air"),
-        (9, "minecraft:air"),
+    expected = tuple(
+        (offset, f"THRESHOLD_CITY_LIFT_PROBE_{offset - 2}_OK")
+        for offset in range(2, 10)
     )
     for dimension, start in probes:
         placement = results[start].lower()
@@ -169,11 +162,11 @@ def verify_anomaly_city_lift():
             raise AssertionError(
                 f"Could not place connected anomaly city in {dimension}: {results[start]}")
         for offset, token in expected:
-            response = results[start + offset].lower()
+            response = results[start + offset]
             if token not in response:
                 raise AssertionError(
                     f"{dimension} city-lift probe {commands[start + offset]!r} "
-                    f"expected {token}, got {results[start + offset]!r}")
+                    f"expected success marker {token}, got {response!r}")
     print("THRESHOLD_ANOMALY_CITY_LIFT_ALL_SIX_RCON_OK", flush=True)
 
 def run():
