@@ -45,6 +45,10 @@ def main():
     assert {x["item"] for x in flask_recipe["ingredients"]} == {
         "gugugaga:boiled_water_bottle", "gugugaga:sea_salt"}
     assert flask_recipe["result"]["id"] == "gugugaga:brine"
+    water_content = (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/agriculture/WaterV37Content.java").read_text("utf-8")
+    assert water_content.count("craftRemainder(EMPTY_WATER_FLASK.get())") == 3
+    drink_content = (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/agriculture/DrinkWaterV37.java").read_text("utf-8")
+    assert "EMPTY_WATER_FLASK.get()" in drink_content
     supply = json.loads((ROOT / "threshold/src/main/resources/data/threshold/loot_table/chests/level_1_supply.json").read_text("utf-8"))
     assert any(x.get("name") == "minecraft:bucket" for p in supply["pools"]
                for x in p.get("entries", []))
