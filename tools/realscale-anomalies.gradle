@@ -57,3 +57,31 @@ tasks.register('generateThresholdArchitecture') {
 tasks.named('processResources').configure {
     dependsOn tasks.named('generateThresholdArchitecture')
 }
+
+
+// A non-mandatory SERVER_DATA pack is embedded but NOT selected by default.
+// Only opt-in newly created worlds get the additional upper-layer structures.
+def thresholdAnomalyPackOutput = layout.buildDirectory.dir('generated/resources/thresholdAnomalyPack')
+sourceSets.main.resources.srcDir(thresholdAnomalyPackOutput)
+
+tasks.register('generateThresholdAnomalyPack') {
+    dependsOn tasks.named('generateThresholdArchitecture')
+    inputs.file(file('tools/generate_anomaly_datapack.py'))
+    inputs.file(file('tools/realscale_originals/urban_district_profiles.json'))
+    inputs.files(file('threshold/src/main/resources/data/threshold/dimension/level_0.json'),
+                 file('threshold/src/main/resources/data/threshold/dimension/level_1.json'))
+    outputs.dir(thresholdAnomalyPackOutput)
+    doLast {
+        File destination = thresholdAnomalyPackOutput.get().asFile
+        project.delete(destination)
+        providers.exec {
+            commandLine(System.getenv('PYTHON') ?: 'python3',
+                        file('tools/generate_anomaly_datapack.py').absolutePath,
+                        '--templates', thresholdArchitectureOutput.get().asFile.absolutePath,
+                        '--output', destination.absolutePath)
+        }.result.get()
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateThresholdAnomalyPack')
+}
