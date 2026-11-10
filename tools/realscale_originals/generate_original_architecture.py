@@ -545,9 +545,27 @@ class Building:
                 self.set(x, y, z1, f"minecraft:{wood}_planks")
                 self.set(x, y, z2, f"minecraft:{wood}_planks")
 
-    def write(self, output: Path):
-        self.enrich_architecture()
-        palette = list(dict.fromkeys(self.blocks.values()))
+    def write(
+        self,
+        output: Path,
+        *,
+        sparse: bool = False,
+        explicit_air_positions: set[tuple[int, int, int]] | None = None,
+        enrich: bool = True,
+    ):
+        if enrich:
+            self.enrich_architecture()
+        explicit_air_positions = explicit_air_positions or set()
+        selected = []
+        for y in range(self.height):
+            for z in range(self.length):
+                for x in range(self.width):
+                    entry = self.blocks[(x, y, z)]
+                    if sparse and entry == AIR and (x, y, z) not in explicit_air_positions:
+                        continue
+                    selected.append((x, y, z, entry))
+
+        palette = list(dict.fromkeys(entry for _, _, _, entry in selected))
         indices = {entry: i for i, entry in enumerate(palette)}
         palette_tags = []
         for name, properties in palette:
@@ -559,14 +577,11 @@ class Building:
             palette_tags.append(compound_payload(fields))
 
         block_tags = []
-        for y in range(self.height):
-            for z in range(self.length):
-                for x in range(self.width):
-                    entry = self.blocks[(x, y, z)]
-                    block_tags.append(compound_payload([
-                        (9, "pos", int_list_payload((x, y, z))),
-                        (3, "state", int_payload(indices[entry])),
-                    ]))
+        for x, y, z, entry in selected:
+            block_tags.append(compound_payload([
+                (9, "pos", int_list_payload((x, y, z))),
+                (3, "state", int_payload(indices[entry])),
+            ]))
 
         root = compound_payload([
             (3, "DataVersion", int_payload(DATA_VERSION)),
@@ -583,6 +598,8 @@ class Building:
             "size": [self.width, self.height, self.length],
             "palette": len(palette),
             "blocks": len(block_tags),
+            "sparse": sparse,
+            "explicit_air": len(explicit_air_positions),
             "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
             "description": self.description,
         }
