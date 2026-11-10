@@ -24,8 +24,8 @@ service lift integrated into each district:
 - A 4×4 ladder shaft passes through the original Level 0/1 ceiling.
 - A landing and short bridge connect the ladder to the city street.
 - Sparse NBT omits all ordinary air cells. Explicit air is written only inside
-  the vestibule, the two short corridors and the shaft. The 48×48×113 bounding
-  box therefore does not erase the rest of the maze.
+  the vestibule, the two short corridors and the shaft. The largest city template is 48×117×48; its lower 19-block access zone
+  is sparse, so the bounding box does not erase the rest of the maze.
 - The original lower maze remains intact outside that narrow access footprint.
 
 四个现代街区都带有维护电梯入口：玩家可在后室迷宫中发现维护室，
