@@ -42,7 +42,9 @@
       "threshold:grand_ecology_freshwater_bed",
       "threshold:grand_ecology_coastal_seagrass",
       "threshold:grand_ecology_coral_reef_floor",
-      "threshold:grand_ecology_estuary_shallows"
+      "threshold:grand_ecology_estuary_shallows",
+      "threshold:cave_wonder_lava_tube",
+      "threshold:cave_wonder_karst_passage"
     ],
     "placement_type": "never_cancel"
   }
