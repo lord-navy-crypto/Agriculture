@@ -6,6 +6,21 @@ import sys
 import zipfile
 from pathlib import Path
 
+GEO_WONDER_IDS = [
+    "geo_wonder_playa_basin", "geo_wonder_alluvial_fan",
+    "geo_wonder_cold_desert_pavement", "geo_wonder_hoodoo_amphitheater",
+    "geo_wonder_travertine_steps", "geo_wonder_mangrove_estuary",
+    "geo_wonder_cooled_lava_field", "geo_wonder_glacial_moraine_ring",
+    "geo_wonder_delta_distributaries", "geo_wonder_karst_doline_rim",
+]
+EARTH_WONDER_IDS = [
+    "earth_wonder_hoodoo_spires", "earth_wonder_travertine_terraces",
+    "earth_wonder_mangrove_tidal_roots", "earth_wonder_lava_tube_lining",
+    "earth_wonder_glacial_moraine", "earth_wonder_delta_sediment",
+    "earth_wonder_karst_sinkhole_rim",
+]
+GEOLOGY_IDS = GEO_WONDER_IDS + EARTH_WONDER_IDS
+
 REQUIRED = {
     "META-INF/neoforge.mods.toml",
     "data/threshold/dimension/level_0.json",
@@ -121,7 +136,15 @@ REQUIRED = {
     "assets/threshold/animations/partygoer.animation.json",
     "assets/threshold/textures/entity/hound.png",
     "data/threshold/loot_table/entities/hound.json",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdFeatures.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdGeoWonderGeometry.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdGeoWonderRegionFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdEarthWonderFeature.class",
 }
+REQUIRED.update(
+    f"data/threshold/worldgen/configured_feature/{feature_id}.json"
+    for feature_id in GEOLOGY_IDS
+)
 
 def read_json(z, path):
     return json.loads(z.read(path).decode("utf-8"))
@@ -169,7 +192,10 @@ def main():
         assert modifier["features"]=="threshold:room_sequence"
         sequence=read_json(z,"data/threshold/worldgen/configured_feature/room_sequence.json")
         assert sequence["type"]=="lithostitched:composite"
-        assert sequence["config"]["features"]==["threshold:room_layout", "threshold:industrial_vent"]
+        expected_children=["threshold:room_layout", "threshold:industrial_vent"] + [
+            f"threshold:{feature_id}" for feature_id in GEOLOGY_IDS
+        ]
+        assert sequence["config"]["features"] == expected_children
         wrapper=read_json(z,"data/threshold/worldgen/placed_feature/room_sequence.json")
         assert wrapper["feature"]=="threshold:room_sequence"
         for child in ("room_layout", "industrial_vent"):
@@ -177,6 +203,9 @@ def main():
             assert all(p.get("type")!="minecraft:biome" for p in nested["placement"]), (
                 f"Nested Lithostitched feature {child} must not check its biome individually")
         assert read_json(z, "data/threshold/worldgen/configured_feature/industrial_vent.json")["type"] == "threshold:industrial_vent"
+        for feature_id in GEOLOGY_IDS:
+            configured=read_json(z, f"data/threshold/worldgen/configured_feature/{feature_id}.json")
+            assert configured == {"type": f"threshold:{feature_id}", "config": {}}, feature_id
         # Packaged entity assets must be complete in the independent JAR.
         for name in ("watcher", "hound"):
             geo=read_json(z,f"assets/threshold/geo/{name}.geo.json")["minecraft:geometry"][0]
