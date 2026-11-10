@@ -210,7 +210,7 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
             case COASTAL_SEAGRASS -> {
                 level.setBlock(origin.offset(0, -1, -1), Blocks.SEAGRASS.defaultBlockState(), 2);
                 level.setBlock(origin.offset(0, -1, 1), Blocks.SEAGRASS.defaultBlockState(), 2);
-                level.setBlock(origin.offset(1, -1, 0), Blocks.TALL_SEAGRASS.defaultBlockState(), 2);
+                level.setBlock(origin.offset(1, -1, 0), Blocks.SEAGRASS.defaultBlockState(), 2);
             }
             case CORAL_REEF_FLOOR -> {
                 level.setBlock(origin.offset(0, -1, 0), Blocks.BRAIN_CORAL_BLOCK.defaultBlockState(), 2);
@@ -240,7 +240,7 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
             case GRASSLAND_MOSAIC -> grassland(level, origin, chunkX, chunkZ, dimension);
             case ALPINE_TUNDRA -> alpine(level, origin, chunkX, chunkZ, dimension);
             case FLOODPLAIN_BANK -> waterPocket(level, origin, chunkX, chunkZ, dimension,
-                    Blocks.MUD.defaultBlockState(), Blocks.MUD.defaultBlockState(), Kind.FRESHWATER_BED);
+                    Blocks.MUD.defaultBlockState(), Blocks.MUD.defaultBlockState(), Kind.ESTUARY_SHALLOWS);
             case TROPICAL_RAINFOREST -> tree(level, origin, chunkX, chunkZ, dimension,
                     Blocks.JUNGLE_LOG.defaultBlockState(), Blocks.JUNGLE_LEAVES.defaultBlockState(), 5,
                     Blocks.MOSS_BLOCK.defaultBlockState());
