@@ -117,12 +117,13 @@ def validate_template(blob: bytes, name: str):
         assert not (y >= 19 and state == "minecraft:air"), (
             name, "upper city air must be omitted from sparse NBT", (x, y, z))
 
-    assert ladder_count == 18, (name, ladder_count)
+    assert ladder_count == 19, (name, ladder_count)
     assert iron_door_count == 4, (name, iron_door_count)
     assert by_pos[(24, 0, 24)] == "minecraft:polished_andesite"
     assert by_pos[(24, 1, 20)] == "minecraft:iron_door"
     assert by_pos[(24, 2, 28)] == "minecraft:iron_door"
     assert by_pos[(22, 1, 24)] == "minecraft:ladder"
+    assert by_pos[(22, 19, 24)] == "minecraft:ladder"
     assert by_pos[(23, 19, 24)] == "minecraft:polished_andesite"
     assert by_pos[(24, 19, 22)] == "minecraft:polished_andesite"
     assert by_pos[(24, 19, 21)] != "minecraft:air", "city exit landing is missing"
