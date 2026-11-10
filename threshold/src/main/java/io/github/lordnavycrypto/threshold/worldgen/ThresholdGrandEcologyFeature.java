@@ -106,7 +106,7 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
         addSoilPatch(plan, origin, soil);
         BlockState trunk = log.setValue(RotatedPillarBlock.AXIS, net.minecraft.core.Direction.Axis.Y);
         for (int y = 0; y < height; y++) plan.put(origin.above(y), trunk);
-        for (int layer = height - 1; layer <= height + 1; layer++) {
+        for (int layer = height - 1; layer <= height; layer++) {
             int radius = layer == height + 1 ? 1 : 2;
             for (int dx = -radius; dx <= radius; dx++) {
                 for (int dz = -radius; dz <= radius; dz++) {
