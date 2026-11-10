@@ -26,9 +26,13 @@ public final class ThresholdVanillaHabitatFeature extends Feature<NoneFeatureCon
     }
 
     private static boolean floor(BlockState state) {
-        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
-                || state.is(Blocks.SMOOTH_STONE) || state.is(Blocks.DARK_OAK_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE);
+        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
+                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
+                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
+                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SMOOTH_STONE)
+                || state.is(Blocks.DARK_OAK_PLANKS) || state.is(Blocks.SPRUCE_PLANKS)
+                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
+                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
     }
 
     private static boolean reserved(WorldGenLevel level, BlockPos pos) {
