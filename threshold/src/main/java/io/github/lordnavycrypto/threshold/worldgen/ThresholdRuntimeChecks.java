@@ -631,7 +631,8 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
-        boolean level1PumpSumpStairBuilt = false;
+        boolean level1PumpSumpStairBuilt = level1.getBlockState(new BlockPos(84, 63, 23))
+                .is(Blocks.STONE_BRICK_STAIRS);
         for (int x = 84; x <= 85; x++) {
             for (int z = 23; z <= 27; z++) {
                 for (int y = 59; y <= 63; y++) {
