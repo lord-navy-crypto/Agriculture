@@ -15,6 +15,7 @@ PACK_ROOT = "resourcepacks/threshold_anomalies/"
 PACK_DIR = ROOT / "build/generated/resources/thresholdAnomalyPack" / PACK_ROOT
 TEMPLATE_DIR = ROOT / "build/generated/resources/thresholdArchitecture/data/threshold/structure/anomaly/urban"
 URBAN = ("commercial_skyscrapers", "civic_centre", "residential_quarter", "industrial_edge")
+LEVELS = tuple(f"level_{index}" for index in range(6))
 
 
 def read_string(data: bytes, pos: int):
@@ -173,13 +174,10 @@ def validate_pack(root: Path):
     ship_ids = {e["element"]["location"] for e in ships["elements"]}
     assert len(ship_ids) == 11 and "minecraft:shipwreck/with_mast" in ship_ids
 
-    sets = [p.name for p in (root / "data/threshold/worldgen/structure_set").glob("*.json")]
-    assert sets == ["anomaly_structures.json"], sets
-    placement = load_json_from_dir(root, "data/threshold/worldgen/structure_set/anomaly_structures.json")
-    assert placement["placement"]["spacing"] == 64
-    assert placement["placement"]["separation"] == 24
-    weights = {x["structure"]: x["weight"] for x in placement["structures"]}
-    assert weights == {
+    expected_set_names = [f"anomaly_structures_{level}.json" for level in LEVELS]
+    sets = sorted(p.name for p in (root / "data/threshold/worldgen/structure_set").glob("*.json"))
+    assert sets == expected_set_names, sets
+    expected_weights = {
         "threshold:anomaly_architecture": 4,
         "threshold:anomaly_urban": 2,
         "threshold:anomaly_village_fragment": 1,
@@ -187,12 +185,23 @@ def validate_pack(root: Path):
         "threshold:anomaly_ruined_portal": 1,
         "threshold:anomaly_shipwreck": 1,
     }
-    for level in ("level_0", "level_1"):
+    salts = []
+    for index, level in enumerate(LEVELS):
+        set_id = f"anomaly_structures_{level}"
+        placement = load_json_from_dir(
+            root, f"data/threshold/worldgen/structure_set/{set_id}.json")
+        assert placement["placement"]["spacing"] == 64
+        assert placement["placement"]["separation"] == 24
+        assert placement["placement"]["salt"] == 142011 + index * 1009
+        salts.append(placement["placement"]["salt"])
+        weights = {x["structure"]: x["weight"] for x in placement["structures"]}
+        assert weights == expected_weights
         dimension = load_json_from_dir(root, f"data/threshold/dimension/{level}.json")
         assert dimension["generator"]["settings"]["structure_overrides"] == [
-            "threshold:anomaly_structures"]
+            f"threshold:{set_id}"]
+    assert len(set(salts)) == len(LEVELS), "Each Backrooms floor needs an independent placement salt"
     tag = load_json_from_dir(root, "data/threshold/tags/worldgen/biome/anomaly_eligible.json")
-    assert tag["values"] == ["threshold:level_0", "threshold:level_1"]
+    assert tag["values"] == [f"threshold:{level}" for level in LEVELS]
 
 
 def main():
@@ -211,9 +220,11 @@ def main():
                 assert path in names, path
                 validate_template(archive.read(path), name)
             pack_root = "resourcepacks/threshold_anomalies/"
+            for level in LEVELS:
+                set_path = f"data/threshold/worldgen/structure_set/anomaly_structures_{level}.json"
+                assert pack_root + set_path in names, pack_root + set_path
             for path in (
                 "pack.mcmeta",
-                "data/threshold/worldgen/structure_set/anomaly_structures.json",
                 "data/threshold/worldgen/structure/anomaly_urban.json",
                 "data/threshold/worldgen/structure/anomaly_village_fragment.json",
                 "data/threshold/worldgen/structure/anomaly_ancient_city_fragment.json",
