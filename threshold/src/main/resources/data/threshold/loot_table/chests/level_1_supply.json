@@ -265,6 +265,20 @@
           "name": "threshold:battery"
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 19
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bucket",
+          "weight": 1
+        }
+      ]
     }
   ]
 }
