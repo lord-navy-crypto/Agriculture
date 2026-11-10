@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "gugugaga:sea_salt"
+    },
+    {
+      "item": "gugugaga:boiled_water_bottle"
+    }
+  ],
+  "result": {
+    "id": "gugugaga:brine",
+    "count": 1
+  }
+}
