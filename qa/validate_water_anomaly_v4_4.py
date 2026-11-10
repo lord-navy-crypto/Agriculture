@@ -41,6 +41,14 @@ def main():
     assert {x["item"] for x in brine["ingredients"]} == {
         "minecraft:water_bucket", "gugugaga:sea_salt"}
     assert brine["result"]["id"] == "gugugaga:brine"
+    flask_recipe = json.loads((ROOT / "src/main/resources/data/gugugaga/recipe/brine_from_boiled_water.json").read_text("utf-8"))
+    assert {x["item"] for x in flask_recipe["ingredients"]} == {
+        "gugugaga:boiled_water_bottle", "gugugaga:sea_salt"}
+    assert flask_recipe["result"]["id"] == "gugugaga:brine"
+    supply = json.loads((ROOT / "threshold/src/main/resources/data/threshold/loot_table/chests/level_1_supply.json").read_text("utf-8"))
+    assert any(x.get("name") == "minecraft:bucket" for p in supply["pools"]
+               for x in p.get("entries", []))
+
     food = (ROOT / "src/main/java/io/github/lordnavycrypto/gugugaga/agriculture/FoodV34Content.java").read_text("utf-8")
     assert 'ingredient("brine")' in food and 'ingredient("sea_salt")' in food
     for script in ("generate_original_architecture.py", "generate_architecture_batch.py",
