@@ -36,7 +36,8 @@ ECOLOGY_IDS = [
     "grand_ecology_coastal_seagrass", "grand_ecology_coral_reef_floor",
     "grand_ecology_estuary_shallows",
 ]
-ADAPTED_ENVIRONMENT_IDS = GEOLOGY_IDS + MICROSTRUCTURE_IDS + HABITAT_IDS + ECOLOGY_IDS
+CAVE_IDS = ["cave_wonder_lava_tube", "cave_wonder_karst_passage"]
+ADAPTED_ENVIRONMENT_IDS = GEOLOGY_IDS + MICROSTRUCTURE_IDS + HABITAT_IDS + ECOLOGY_IDS + CAVE_IDS
 
 REQUIRED = {
     "META-INF/neoforge.mods.toml",
@@ -160,6 +161,7 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdGroundMicrostructureFeature.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdVanillaHabitatFeature.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdGrandEcologyFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdCaveWonderNetworkFeature.class",
 }
 REQUIRED.update(
     f"data/threshold/worldgen/configured_feature/{feature_id}.json"
