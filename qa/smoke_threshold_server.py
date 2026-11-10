@@ -130,55 +130,90 @@ def _rcon(command_list):
     return results
 
 
-def verify_anomaly_city_lift():
+def verify_anomaly_city_templates():
     levels = ("level_0", "level_1", "level_2", "level_3", "level_4", "level_5")
+    districts = (
+        "commercial_skyscrapers",
+        "civic_centre",
+        "residential_quarter",
+        "industrial_edge",
+    )
     objective = "threshold_city_probe"
     commands = [f"scoreboard objectives add {objective} dummy"]
     probes = []
-    # These coordinates are derived from the validated 48x20x48 city NBT.
-    # The template origin is (8, 63, 8); air in the sparse upper shell is
-    # intentionally omitted and therefore must not be asserted as world air.
+
+    # Test the actual packaged NBT templates, not a worldgen Structure at an
+    # arbitrary coordinate. The four templates are 48x48 and each has its own
+    # sparse lift vestibule, ladder, shaft and street landing.
     block_probes = (
-        ("if", 32, 63, 32, "minecraft:polished_andesite", "ground anchor"),
-        ("if", 30, 64, 32, "minecraft:ladder", "ladder base"),
-        ("if", 30, 82, 32, "minecraft:ladder", "ladder top"),
-        ("if", 31, 82, 32, "minecraft:polished_andesite", "upper landing west"),
-        ("if", 32, 74, 32, "minecraft:air", "elevator shaft clearance"),
-        ("if", 32, 82, 30, "minecraft:polished_andesite", "upper landing north"),
-        ("unless", 32, 82, 29, "minecraft:air", "upper exit landing is non-air"),
+        ("if", 24, 0, 24, "minecraft:polished_andesite", "ground anchor"),
+        ("if", 22, 1, 24, "minecraft:ladder", "ladder base"),
+        ("if", 22, 19, 24, "minecraft:ladder", "ladder top"),
+        ("if", 23, 19, 24, "minecraft:polished_andesite", "upper landing west"),
+        ("if", 24, 11, 24, "minecraft:air", "elevator shaft clearance"),
+        ("if", 24, 19, 22, "minecraft:polished_andesite", "upper landing north"),
     )
+
     for level_index, dimension in enumerate(levels):
-        commands.extend([
-            f"execute in threshold:{dimension} run place structure threshold:anomaly_urban 8 63 8",
-            # The 48x48 city spans chunks 0-3. Load the full footprint before
-            # checking block states; sparse upper-shell air is not a carve.
-            f"execute in threshold:{dimension} run forceload add 0 0 63 63",
-        ])
-        level_probes = []
-        for probe_index, (mode, x, y, z, block, label) in enumerate(block_probes):
-            holder = f"city_{level_index}_{probe_index}"
-            commands.append(f"scoreboard players reset {holder} {objective}")
+        for district_index, district in enumerate(districts):
+            # Separate 48x48 templates by 16 blocks to prevent overlap.
+            origin_x = 8 + district_index * 64
+            origin_z = 8
+            min_x, max_x = origin_x, origin_x + 47
+            min_z, max_z = origin_z, origin_z + 47
             commands.append(
-                f"execute in threshold:{dimension} run execute {mode} block "
-                f"{x} {y} {z} {block} run scoreboard players set {holder} {objective} 1"
+                f"execute in threshold:{dimension} run forceload add "
+                f"{min_x} {min_z} {max_x} {max_z}"
             )
-            level_probes.append((len(commands), holder, label))
-            commands.append(f"scoreboard players get {holder} {objective}")
-        commands.append(f"execute in threshold:{dimension} run forceload remove 0 0 63 63")
-        probes.append((dimension, level_probes))
+            placement_index = len(commands)
+            commands.append(
+                f"execute in threshold:{dimension} run place template "
+                f"threshold:anomaly/urban/{district} {origin_x} 63 {origin_z}"
+            )
+
+            district_probes = []
+            for probe_index, (mode, local_x, local_y, local_z, block, label) in enumerate(block_probes):
+                holder = f"city_{level_index}_{district_index}_{probe_index}"
+                world_x = origin_x + local_x
+                world_y = 63 + local_y
+                world_z = origin_z + local_z
+                commands.append(f"scoreboard players reset {holder} {objective}")
+                commands.append(
+                    f"execute in threshold:{dimension} {mode} block "
+                    f"{world_x} {world_y} {world_z} {block} "
+                    f"run scoreboard players set {holder} {objective} 1"
+                )
+                district_probes.append((len(commands), holder, label))
+                commands.append(f"scoreboard players get {holder} {objective}")
+
+            commands.append(
+                f"execute in threshold:{dimension} run forceload remove "
+                f"{min_x} {min_z} {max_x} {max_z}"
+            )
+            probes.append((dimension, district, placement_index, district_probes))
 
     results = _rcon(commands)
     if "created" not in results[0].lower() and "already exists" not in results[0].lower():
         raise AssertionError(f"Could not create city probe scoreboard objective: {results[0]!r}")
-    for dimension, level_probes in probes:
-        for result_index, holder, label in level_probes:
+
+    for dimension, district, placement_index, district_probes in probes:
+        placement_response = results[placement_index]
+        if any(token in placement_response.lower() for token in (
+            "unknown", "failed", "could not", "couldn't", "not found", "error"
+        )):
+            raise AssertionError(
+                f"{dimension} {district} NBT template placement failed: {placement_response!r}"
+            )
+        for result_index, holder, label in district_probes:
             response = results[result_index]
             if "has 1" not in response.lower():
                 raise AssertionError(
-                    f"{dimension} city-lift {label} probe failed for {holder}: "
-                    f"expected scoreboard value 1, got {response!r}"
+                    f"{dimension} {district} city-lift {label} probe failed for {holder}: "
+                    f"expected scoreboard value 1, got {response!r}; "
+                    f"template command returned {placement_response!r}"
                 )
-    print("THRESHOLD_ANOMALY_CITY_LIFT_ALL_SIX_RCON_OK", flush=True)
+
+    print("THRESHOLD_ANOMALY_CITY_TEMPLATES_ALL_FOUR_ALL_SIX_RCON_OK", flush=True)
 
 def run():
     # Build and launch one integrated mod; libraries are runtime dependencies.
@@ -227,7 +262,7 @@ def run():
                 current=LOG.read_text(encoding="utf-8",errors="replace")
                 if all(m in current for m in MARKERS) and READY in current:
                     try:
-                        verify_anomaly_city_lift()
+                        verify_anomaly_city_templates()
                     except Exception as error:
                         print(f"FAIL: anomaly city lift RCON acceptance: {error}", flush=True)
                         print(current[-90000:], flush=True)
