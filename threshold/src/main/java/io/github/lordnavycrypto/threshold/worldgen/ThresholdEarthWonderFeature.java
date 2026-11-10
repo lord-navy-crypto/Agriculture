@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * existing density, hydrology and biome layers; do not mistake these accents
  * for large-scale basin, glacier, delta or lava-tube simulations.
  *
- * Only enabled by RealScale biome modifiers, overworld-only, chunk-local,
- * deterministic, and never carves solid natural ground or overwrites water.
+ * Enabled by the Backrooms room sequence on all six dimensions. Placement is
+ * chunk-local and deterministic; it never carves floors or overwrites water.
  */
 public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfiguration> {
     public enum Kind {
@@ -31,17 +31,11 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
     }
 
     private static boolean nativeFloor(BlockState state) {
-        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
-                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
-                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
-                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SMOOTH_STONE)
-                || state.is(Blocks.DARK_OAK_PLANKS) || state.is(Blocks.SPRUCE_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
-                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
+        return ThresholdAnomalySurface.isNativeFloor(state);
     }
 
     private static int roomSizeForLevel(String level) {
-        return level.equals("level_4") ? 48 : 32;
+        return ThresholdAnomalySurface.roomSize(level);
     }
 
     private static boolean reservedRoute(WorldGenLevel world, BlockPos pos, String level) {
@@ -55,33 +49,11 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
     }
 
     private boolean allowedLevel(String level) {
-        return switch (kind) {
-            case HOODOO_SPIRES, KARST_SINKHOLE_RIM -> level.equals("level_3");
-            case TRAVERTINE_TERRACES, MANGROVE_TIDAL_ROOTS,
-                    DELTA_SEDIMENT -> level.equals("level_4");
-            case LAVA_TUBE_LINING, COOLED_LAVA_FIELD ->
-                    level.equals("level_2") || level.equals("level_3");
-            case GLACIAL_MORAINE -> level.equals("level_5");
-        };
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
 
     private boolean compatible(BlockState base) {
-        if (!nativeFloor(base)) return false;
-        return switch (kind) {
-            case HOODOO_SPIRES, KARST_SINKHOLE_RIM -> base.is(Blocks.DEEPSLATE_TILES)
-                    || base.is(Blocks.POLISHED_DEEPSLATE);
-            case TRAVERTINE_TERRACES, MANGROVE_TIDAL_ROOTS,
-                    DELTA_SEDIMENT -> base.is(Blocks.SMOOTH_STONE)
-                    || base.is(Blocks.LIGHT_GRAY_CONCRETE);
-            case LAVA_TUBE_LINING, COOLED_LAVA_FIELD -> base.is(Blocks.GRAY_CONCRETE)
-                    || base.is(Blocks.DEEPSLATE_TILES) || base.is(Blocks.POLISHED_DEEPSLATE)
-                    || base.is(Blocks.POLISHED_ANDESITE) || base.is(Blocks.SMOOTH_BASALT)
-                    || base.is(Blocks.COBBLED_DEEPSLATE);
-            case GLACIAL_MORAINE -> base.is(Blocks.DARK_OAK_PLANKS)
-                    || base.is(Blocks.CALCITE) || base.is(Blocks.POLISHED_BLACKSTONE)
-                    || base.is(Blocks.SPRUCE_PLANKS) || base.is(Blocks.POLISHED_DEEPSLATE)
-                    || base.is(Blocks.WHITE_CONCRETE);
-        };
+        return nativeFloor(base);
     }
 
     private static long mix(long value) {
@@ -122,10 +94,10 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
         int minZ=Math.floorDiv(context.origin().getZ(),16)*16;
         long site=mix(world.getSeed() ^ ((long)minX*0x9E3779B97F4A7C15L)
                 ^ ((long)minZ*0xC2B2AE3D27D4EB4FL) ^ ((long)kind.ordinal()*0x165667B19E3779F9L));
-        if (Math.floorMod(site, 29L) != 0L) return false;
+        if (!ThresholdAnomalySurface.shouldGenerate(level, site, 29)) return false;
         int cx=minX+2+(int)Math.floorMod(site>>>9,12L);
         int cz=minZ+2+(int)Math.floorMod(site>>>25,12L);
-        int y=65;
+        int y=ThresholdAnomalySurface.surfaceY(level);
         BlockPos center=new BlockPos(cx,y,cz);
         int chunkX=Math.floorDiv(center.getX(),16),chunkZ=Math.floorDiv(center.getZ(),16);
 
@@ -135,7 +107,7 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
             return world.setBlock(center,Blocks.SMOOTH_BASALT.defaultBlockState(),2);
         }
 
-        BlockState floor=world.getBlockState(center.below());
+        BlockState floor=ThresholdAnomalySurface.supportingBlock(world,center);
         if (!centerIsReady(world,center) || !compatible(floor) || reservedRoute(world,center,level))
             return false;
         int radius=switch(kind) {
@@ -204,12 +176,6 @@ public final class ThresholdEarthWonderFeature extends Feature<NoneFeatureConfig
         return placed;
     }
     private static boolean centerIsReady(WorldGenLevel world,BlockPos p) {
-        BlockPos under=p.below();
-        BlockState floor=world.getBlockState(under);
-        return world.getBlockState(p).isAir()
-                && world.getFluidState(p).isEmpty()
-                && world.getFluidState(under).isEmpty()
-                && nativeFloor(floor)
-                && floor.isCollisionShapeFullBlock(world,under);
+        return ThresholdAnomalySurface.isReplaceableSurface(world,p);
     }
 }
