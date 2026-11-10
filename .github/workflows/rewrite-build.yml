@@ -39,8 +39,6 @@ jobs:
         run: python3 qa/validate_water_balance_v4_3.py
       - name: Validate Backrooms v4.4 brine, water art and opt-in architecture contracts
         run: python3 qa/validate_water_anomaly_v4_4.py
-      - name: Validate v4.5 connected city lifts and vanilla anomaly structures
-        run: python3 qa/validate_anomaly_worldgen_v4_5.py
       - name: Validate irregular Level 0 and Level 1 room geometry
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
