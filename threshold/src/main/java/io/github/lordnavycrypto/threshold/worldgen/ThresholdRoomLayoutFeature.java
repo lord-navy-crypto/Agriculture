@@ -2701,7 +2701,10 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         // The authored loading-office mezzanine (20) also has its own stair and deck.
         // A generic upper catwalk can mask its stairway and make the landmark unreachable.
         int landmark = level1Architecture(seed, roomX, roomZ);
-        if (landmark == 20 || landmark >= 23) return false;
+        // The authored loading-office mezzanine (20), pump sump (21), and
+        // other tall landmark sectors own their vertical circulation. A generic
+        // catwalk here can cover the sump floor and suppress its access stairs.
+        if (landmark == 20 || landmark == 21 || landmark >= 23) return false;
         return !(roomX == 0 && roomZ == 0)
                 && ((roomX == 1 && roomZ == 1)
                 || Math.floorMod((int) mix(seed, roomX, roomZ, 0xA1D0L), 100) < 44);
