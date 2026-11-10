@@ -29,6 +29,7 @@ public final class ThresholdMod {
         ThresholdEntities.ENTITY_TYPES.register(modBus);
         ThresholdCreativeTabs.TABS.register(modBus);
         modBus.addListener(ThresholdEntityAttributes::registerAttributes);
+        modBus.addListener(ThresholdAnomalyPacks::register);
         NeoForge.EVENT_BUS.register(ThresholdCommands.class);
         NeoForge.EVENT_BUS.register(ThresholdRuntimeChecks.class);
         NeoForge.EVENT_BUS.register(ThresholdEntityDirector.class);
