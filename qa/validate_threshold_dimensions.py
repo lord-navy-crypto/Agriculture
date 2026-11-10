@@ -26,7 +26,17 @@ MICROSTRUCTURE_IDS = [
     "ground_microstructure_coastal_driftwood",
 ]
 HABITAT_IDS = ["vanilla_habitat_fallen_timber", "vanilla_habitat_riparian_reeds"]
-ADAPTED_ENVIRONMENT_IDS = GEOLOGY_IDS + MICROSTRUCTURE_IDS + HABITAT_IDS
+ECOLOGY_IDS = [
+    "grand_ecology_temperate_rainforest", "grand_ecology_savanna_canopy",
+    "grand_ecology_chaparral_scrub", "grand_ecology_grassland_mosaic",
+    "grand_ecology_alpine_tundra", "grand_ecology_floodplain_bank",
+    "grand_ecology_tropical_rainforest", "grand_ecology_temperate_seasonal_forest",
+    "grand_ecology_boreal_taiga", "grand_ecology_desert_outcrops",
+    "grand_ecology_arctic_tundra", "grand_ecology_freshwater_bed",
+    "grand_ecology_coastal_seagrass", "grand_ecology_coral_reef_floor",
+    "grand_ecology_estuary_shallows",
+]
+ADAPTED_ENVIRONMENT_IDS = GEOLOGY_IDS + MICROSTRUCTURE_IDS + HABITAT_IDS + ECOLOGY_IDS
 
 REQUIRED = {
     "META-INF/neoforge.mods.toml",
@@ -149,6 +159,7 @@ REQUIRED = {
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdEarthWonderFeature.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdGroundMicrostructureFeature.class",
     "io/github/lordnavycrypto/threshold/worldgen/ThresholdVanillaHabitatFeature.class",
+    "io/github/lordnavycrypto/threshold/worldgen/ThresholdGrandEcologyFeature.class",
 }
 REQUIRED.update(
     f"data/threshold/worldgen/configured_feature/{feature_id}.json"
