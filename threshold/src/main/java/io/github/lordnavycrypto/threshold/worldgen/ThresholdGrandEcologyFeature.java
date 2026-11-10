@@ -44,15 +44,11 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
     }
 
     private boolean allowedLevel(String level) {
-        return switch (kind) {
-            case FRESHWATER_BED, COASTAL_SEAGRASS, CORAL_REEF_FLOOR, ESTUARY_SHALLOWS ->
-                    level.equals("level_5");
-            default -> level.equals("level_4");
-        };
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
 
     private static int roomSize(String level) {
-        return level.equals("level_4") ? 48 : 32;
+        return ThresholdAnomalySurface.roomSize(level);
     }
 
     private static boolean reserved(WorldGenLevel level, BlockPos pos, String dimension) {
@@ -64,13 +60,7 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
     }
 
     private static boolean floor(BlockState state) {
-        return state.is(Blocks.SMOOTH_STONE) || state.is(Blocks.DARK_OAK_PLANKS)
-                || state.is(Blocks.DEEPSLATE_TILES) || state.is(Blocks.GRAY_CONCRETE)
-                || state.is(Blocks.LIGHT_GRAY_CONCRETE) || state.is(Blocks.WHITE_CONCRETE)
-                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
-                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SPRUCE_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
-                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
+        return ThresholdAnomalySurface.isNativeFloor(state);
     }
 
     private static BlockState leaves(BlockState state) {
@@ -86,8 +76,11 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
             if (reserved(level, p, dimension) || !level.getFluidState(p).isEmpty())
                 return false;
             BlockState existing = level.getBlockState(p);
-            if (p.getY() == 64) {
-                if (!floor(existing)) return false;
+            int groundY = ThresholdAnomalySurface.surfaceY(dimension) - 1;
+            if (p.getY() == groundY) {
+                if (!ThresholdAnomalySurface.isNativeGroundBlock(level,p)) return false;
+            } else if (p.getY() == ThresholdAnomalySurface.surfaceY(dimension)) {
+                if (!ThresholdAnomalySurface.isReplaceableSurface(level,p)) return false;
             } else if (!existing.isAir()) {
                 return false;
             }
@@ -188,13 +181,15 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
                                        int chunkX, int chunkZ, String dimension,
                                        BlockState ring, BlockState foundation,
                                        Kind kind) {
+        // Water occupies the common Y=64 surface cell on every floor. Level 0
+        // replaces carpet; Levels 1-5 place into air above the existing floor.
         for (int dx = -2; dx <= 2; dx++) {
             for (int dz = -2; dz <= 2; dz++) {
                 BlockPos surface = origin.offset(dx, -1, dz);
                 BlockPos air = origin.offset(dx, 0, dz);
-                if (!floor(level.getBlockState(surface)) || !level.getBlockState(air).isAir()
-                        || !level.getBlockState(surface.below()).isAir()
-                        || !level.getFluidState(surface).isEmpty()
+                if (!ThresholdAnomalySurface.isReplaceableSurface(level,surface)
+                        || !level.getBlockState(air).isAir()
+                        || !level.getFluidState(air).isEmpty()
                         || reserved(level, air, dimension)) return false;
             }
         }
@@ -243,7 +238,7 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
             case CHAPARRAL_SCRUB -> shrubs(level, origin, chunkX, chunkZ, dimension);
             case GRASSLAND_MOSAIC -> grassland(level, origin, chunkX, chunkZ, dimension);
             case ALPINE_TUNDRA -> alpine(level, origin, chunkX, chunkZ, dimension);
-            case FLOODPLAIN_BANK -> waterPocket(level, origin, chunkX, chunkZ, dimension,
+            case FLOODPLAIN_BANK -> waterPocket(level, origin.above(), chunkX, chunkZ, dimension,
                     Blocks.MUD.defaultBlockState(), Blocks.MUD.defaultBlockState(), Kind.ESTUARY_SHALLOWS);
             case TROPICAL_RAINFOREST -> tree(level, origin, chunkX, chunkZ, dimension,
                     Blocks.JUNGLE_LOG.defaultBlockState(), Blocks.JUNGLE_LEAVES.defaultBlockState(), 5,
@@ -256,13 +251,13 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
                     Blocks.PODZOL.defaultBlockState());
             case DESERT_OUTCROPS -> desert(level, origin, chunkX, chunkZ, dimension);
             case ARCTIC_TUNDRA -> arctic(level, origin, chunkX, chunkZ, dimension);
-            case FRESHWATER_BED -> waterPocket(level, origin, chunkX, chunkZ, dimension,
+            case FRESHWATER_BED -> waterPocket(level, origin.above(), chunkX, chunkZ, dimension,
                     Blocks.CLAY.defaultBlockState(), Blocks.MUD.defaultBlockState(), kind);
-            case COASTAL_SEAGRASS -> waterPocket(level, origin, chunkX, chunkZ, dimension,
+            case COASTAL_SEAGRASS -> waterPocket(level, origin.above(), chunkX, chunkZ, dimension,
                     Blocks.SAND.defaultBlockState(), Blocks.SANDSTONE.defaultBlockState(), kind);
-            case CORAL_REEF_FLOOR -> waterPocket(level, origin, chunkX, chunkZ, dimension,
+            case CORAL_REEF_FLOOR -> waterPocket(level, origin.above(), chunkX, chunkZ, dimension,
                     Blocks.CLAY.defaultBlockState(), Blocks.STONE.defaultBlockState(), kind);
-            case ESTUARY_SHALLOWS -> waterPocket(level, origin, chunkX, chunkZ, dimension,
+            case ESTUARY_SHALLOWS -> waterPocket(level, origin.above(), chunkX, chunkZ, dimension,
                     Blocks.MUD.defaultBlockState(), Blocks.MUD.defaultBlockState(), kind);
         };
     }
@@ -276,9 +271,10 @@ public final class ThresholdGrandEcologyFeature extends Feature<NoneFeatureConfi
         int minZ = Math.floorDiv(context.origin().getZ(), 16) * 16;
         long site = mix(level.getSeed() ^ ((long) minX * 0x9E3779B97F4A7C15L)
                 ^ ((long) minZ * 0xC2B2AE3D27D4EB4FL) ^ ((long) kind.ordinal() * 0x165667B19E3779F9L));
-        if (Math.floorMod(site, 67L) != 0L) return false;
+        if (!ThresholdAnomalySurface.shouldGenerate(dimension, site, 67)) return false;
         BlockPos origin = new BlockPos(minX + 3 + (int) Math.floorMod(site >>> 8, 10L),
-                65, minZ + 3 + (int) Math.floorMod(site >>> 24, 10L));
+                ThresholdAnomalySurface.surfaceY(dimension),
+                minZ + 3 + (int) Math.floorMod(site >>> 24, 10L));
         return generate(level, origin, Math.floorDiv(origin.getX(), 16),
                 Math.floorDiv(origin.getZ(), 16), dimension);
     }
