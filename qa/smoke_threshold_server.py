@@ -173,7 +173,7 @@ def run():
 
     # Use a fresh smoke world and explicitly enable the optional built-in pack
     # shipped inside the mod JAR. Its registered pack ID comes from
-    # ThresholdAnomalyPacks: gugugaga:resourcepacks/threshold_anomalies.
+    # ThresholdAnomalyPacks: mod/gugugaga:resourcepacks/threshold_anomalies.
     # This exercises the same opt-in path users see in the Create World pack UI
     # and does not touch any existing user world.
     world_name = "threshold-anomaly-smoke"
@@ -191,7 +191,7 @@ def run():
                 properties[key.strip()] = value.strip()
     properties["level-name"] = world_name
     properties["level-seed"] = "6"
-    properties["initial-enabled-packs"] = "vanilla,modded,gugugaga:resourcepacks/threshold_anomalies"
+    properties["initial-enabled-packs"] = "vanilla,mod/gugugaga:resourcepacks/threshold_anomalies"
     properties["initial-disabled-packs"] = ""
     properties["enable-rcon"] = "true"
     properties["rcon.password"] = "threshold-anomaly-smoke"
