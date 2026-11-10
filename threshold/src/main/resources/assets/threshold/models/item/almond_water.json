@@ -1,1 +1,6 @@
-{"parent":"minecraft:item/generated","textures":{"layer0":"minecraft:item/potion"}}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "threshold:item/water_v44/almond_water"
+  }
+}
