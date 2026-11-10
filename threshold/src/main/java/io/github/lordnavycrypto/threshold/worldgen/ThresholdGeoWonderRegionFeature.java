@@ -31,9 +31,9 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         super(NoneFeatureConfiguration.CODEC);
         this.kind=kind;
     }
-    private static long mix(long n) {return GeoWonderGeometry.mix(n);}
-    private GeoWonderGeometry.Site site(int gx,int gz) {
-        return GeoWonderGeometry.surfaceSite(gx,gz,kind.ordinal());
+    private static long mix(long n) {return ThresholdGeoWonderGeometry.mix(n);}
+    private ThresholdGeoWonderGeometry.Site site(int gx,int gz) {
+        return ThresholdGeoWonderGeometry.surfaceSite(gx,gz,kind.ordinal());
     }
     private boolean allowedLevel(String level) {
         return switch(kind) {
@@ -73,7 +73,7 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         }
         return false;
     }
-    private int heightFor(GeoWonderGeometry.Site s,int x,int z,double u,double v,long point) {
+    private int heightFor(ThresholdGeoWonderGeometry.Site s,int x,int z,double u,double v,long point) {
         double r=Math.hypot(u,v);
         switch(kind) {
             case HOODOO_AMPHITHEATER -> {
@@ -119,11 +119,11 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
                     .defaultBlockState();
         };
     }
-    private boolean paint(WorldGenLevel w,GeoWonderGeometry.Site site,int minX,int minZ) {
+    private boolean paint(WorldGenLevel w,ThresholdGeoWonderGeometry.Site site,int minX,int minZ) {
         boolean placed=false;
         for(int x=minX;x<minX+16;x++)for(int z=minZ;z<minZ+16;z++) {
             long dx=(long)x-site.x,dz=(long)z-site.z;
-            if(!GeoWonderGeometry.contains(site,x,z))continue;
+            if(!ThresholdGeoWonderGeometry.contains(site,x,z))continue;
             long point=mix(site.seed ^ ((long)x*0x27d4eb2dL)
                     ^ ((long)z*0x165667b1L));
             if(Math.floorMod(point,7L)==0)continue;
@@ -178,13 +178,13 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
         if (!allowedLevel(level)) return false;
         int minX=Math.floorDiv(context.origin().getX(),16)*16;
         int minZ=Math.floorDiv(context.origin().getZ(),16)*16;
-        int gx=GeoWonderGeometry.gridAtChunk(minX);
-        int gz=GeoWonderGeometry.gridAtChunk(minZ);
+        int gx=ThresholdGeoWonderGeometry.gridAtChunk(minX);
+        int gz=ThresholdGeoWonderGeometry.gridAtChunk(minZ);
         boolean placed=false;
         for(int sx=-1;sx<=1;sx++)for(int sz=-1;sz<=1;sz++) {
-            GeoWonderGeometry.Site candidate=site(gx+sx,gz+sz);
+            ThresholdGeoWonderGeometry.Site candidate=site(gx+sx,gz+sz);
             if(candidate==null)continue;
-            if(!GeoWonderGeometry.intersects(candidate,minX,minZ))
+            if(!ThresholdGeoWonderGeometry.intersects(candidate,minX,minZ))
                 continue;
             placed|=paint(context.level(),candidate,minX,minZ);
         }
