@@ -624,16 +624,16 @@ public final class ThresholdRuntimeChecks {
                 ? "THRESHOLD_LEVEL1_MEZZANINE_OK" : "THRESHOLD_LEVEL1_MEZZANINE_FAIL");
 
         boolean level1PumpSumpBuilt = false;
-        for (int x = 55; x <= 60; x++) {
-            for (int z = 17; z <= 22; z++) {
+        for (int x = 82; x <= 87; x++) {
+            for (int z = 28; z <= 33; z++) {
                 if (level1.getBlockState(new BlockPos(x, 58, z)).is(Blocks.SMOOTH_STONE)) {
                     level1PumpSumpBuilt = true;
                 }
             }
         }
         boolean level1PumpSumpStairBuilt = false;
-        for (int x = 57; x <= 58; x++) {
-            for (int z = 12; z <= 16; z++) {
+        for (int x = 84; x <= 85; x++) {
+            for (int z = 23; z <= 27; z++) {
                 for (int y = 59; y <= 63; y++) {
                     if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
                         level1PumpSumpStairBuilt = true;
@@ -641,8 +641,8 @@ public final class ThresholdRuntimeChecks {
                 }
             }
         }
-        for (int x = 61; x <= 65; x++) {
-            for (int z = 20; z <= 21; z++) {
+        for (int x = 88; x <= 92; x++) {
+            for (int z = 30; z <= 31; z++) {
                 for (int y = 59; y <= 63; y++) {
                     if (level1.getBlockState(new BlockPos(x, y, z)).is(Blocks.STONE_BRICK_STAIRS)) {
                         level1PumpSumpStairBuilt = true;
