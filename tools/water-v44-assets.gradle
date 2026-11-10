@@ -1,0 +1,21 @@
+// Built-in original water, field sampling, and Almond Water sprites.
+// Generation uses Python's standard library only; no optional resource pack.
+def waterArtV44Output = layout.buildDirectory.dir('generated/resources/waterArtV44')
+sourceSets.main.resources.srcDir(waterArtV44Output)
+
+tasks.register('generateWaterArtV44') {
+    inputs.file(file('tools/generate_water_art_v44.py'))
+    outputs.dir(waterArtV44Output)
+    doLast {
+        def output = waterArtV44Output.get().asFile
+        project.delete(output)
+        providers.exec {
+            commandLine(System.getenv('PYTHON') ?: 'python3',
+                        file('tools/generate_water_art_v44.py').absolutePath,
+                        '--output', output.absolutePath)
+        }.result.get()
+    }
+}
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateWaterArtV44')
+}

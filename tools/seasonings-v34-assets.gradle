@@ -39,7 +39,21 @@ tasks.register('generateSeasoningsV34Assets') {
             int highlight=0xF1E6CF,ink=0x3B332D
             String id=item.id.toString()
             int signature=id.hashCode()
-            if(item.type == 'tool') {
+            if(id == 'brine') {
+                // A liquid brine jar must not look like a pile of dry spice.
+                rect.call(image,5,1,10,2,ink)
+                rect.call(image,6,2,9,3,0xC8D8CE)
+                rect.call(image,4,4,11,4,ink)
+                rect.call(image,3,5,12,12,ink)
+                rect.call(image,4,5,11,12,0xBFD9D7)
+                rect.call(image,4,8,11,12,0x8DC7CA)
+                rect.call(image,5,9,10,11,0x4D9CA9)
+                rect.call(image,4,13,11,13,ink)
+                rect.call(image,5,14,10,14,0x607480)
+                rect.call(image,5,6,5,7,highlight)
+                dot.call(image,8,10,0xF8F2DF)
+                dot.call(image,9,11,0xF8F2DF)
+            } else if(item.type == 'tool') {
                 rect.call(image,7,4,8,14,ink)
                 rect.call(image,8,5,9,13,base)
                 rect.call(image,5,2,10,5,dark)

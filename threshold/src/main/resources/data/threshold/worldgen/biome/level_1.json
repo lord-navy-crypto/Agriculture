@@ -4,8 +4,8 @@
   "downfall": 0,
   "effects": {
     "fog_color": 7368816,
-    "water_color": 4159204,
-    "water_fog_color": 4159204,
+    "water_color": 6913157,
+    "water_fog_color": 4082512,
     "sky_color": 7842047,
     "mood_sound": {
       "sound": "minecraft:block.vault.ambient",

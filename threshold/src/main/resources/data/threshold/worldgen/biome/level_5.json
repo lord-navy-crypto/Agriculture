@@ -4,8 +4,8 @@
   "downfall": 0,
   "effects": {
     "fog_color": 4473924,
-    "water_color": 4159204,
-    "water_fog_color": 3158064,
+    "water_color": 10128758,
+    "water_fog_color": 5655611,
     "sky_color": 5263440,
     "mood_sound": {
       "sound": "minecraft:block.note_block.harp",

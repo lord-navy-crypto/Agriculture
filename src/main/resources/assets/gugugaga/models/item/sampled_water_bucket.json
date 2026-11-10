@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/water_bucket"
+    "layer0": "gugugaga:item/water_v44/sampled_water_bucket"
   }
 }

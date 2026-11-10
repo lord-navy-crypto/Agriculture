@@ -37,6 +37,8 @@ jobs:
         run: python3 qa/validate_nutrition_v4_1.py
       - name: Validate v4.3 closed-loop water and salt gameplay balance
         run: python3 qa/validate_water_balance_v4_3.py
+      - name: Validate Backrooms v4.4 brine, water art and opt-in architecture contracts
+        run: python3 qa/validate_water_anomaly_v4_4.py
       - name: Validate irregular Level 0 and Level 1 room geometry
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
@@ -137,6 +139,10 @@ jobs:
           gradle --version
       - name: Compile and package Backroom Agriculture
         run: gradle --no-daemon --stacktrace build
+      - name: Verify v4.4 generated water textures and RealScale anomaly resources in JAR
+        run: python3 qa/validate_water_anomaly_v4_4.py build/libs/gugugaga-4.0.0-alpha.1.jar
+      - name: Verify v4.5 connected city lifts and vanilla structures in JAR
+        run: python3 qa/validate_anomaly_worldgen_v4_5.py build/libs/gugugaga-4.0.0-alpha.1.jar
       - name: Validate all six Backrooms dimensions in the unified JAR
         run: python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-4.0.0-alpha.1.jar
       - name: Validate crop item icon polish and review sheets

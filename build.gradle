@@ -63,6 +63,8 @@ apply from: 'tools/kitchen-v31-assets.gradle'
 apply from: 'tools/kitchen-v32-assets.gradle'
 apply from: 'tools/food-ecology-v33-assets.gradle'
 apply from: 'tools/seasonings-v34-assets.gradle'
+apply from: 'tools/water-v44-assets.gradle'
+apply from: 'tools/realscale-anomalies.gradle'
 apply from: 'tools/fusion-visuals.gradle'
 
 

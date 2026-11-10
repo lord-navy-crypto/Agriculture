@@ -4,8 +4,8 @@
   "downfall": 0,
   "effects": {
     "fog_color": 11119017,
-    "water_color": 4159204,
-    "water_fog_color": 4159204,
+    "water_color": 8559016,
+    "water_fog_color": 6323593,
     "sky_color": 10526880,
     "mood_sound": {
       "sound": "minecraft:block.beacon.ambient",

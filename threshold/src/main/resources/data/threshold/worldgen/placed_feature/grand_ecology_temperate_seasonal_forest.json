@@ -1,0 +1,12 @@
+{
+  "feature": "threshold:grand_ecology_temperate_seasonal_forest",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
+}

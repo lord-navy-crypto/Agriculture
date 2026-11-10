@@ -15,14 +15,17 @@ public final class WaterV37Content {
             ITEMS.register("empty_water_flask", () -> new EmptyWaterFlaskV37(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<Item> RAW_WATER_BOTTLE =
             ITEMS.register("raw_water_bottle", () -> new DrinkWaterV37(new Item.Properties()
-                    .stacksTo(16).food(new FoodProperties.Builder().nutrition(0)
+                    .stacksTo(16).craftRemainder(EMPTY_WATER_FLASK.get())
+                    .food(new FoodProperties.Builder().nutrition(0)
                             .saturationModifier(0).alwaysEdible().build())));
     public static final DeferredItem<Item> BOILED_WATER_BOTTLE =
             ITEMS.register("boiled_water_bottle", () -> new DrinkWaterV37(new Item.Properties()
-                    .stacksTo(16).food(new FoodProperties.Builder().nutrition(0)
+                    .stacksTo(16).craftRemainder(EMPTY_WATER_FLASK.get())
+                    .food(new FoodProperties.Builder().nutrition(0)
                             .saturationModifier(0).alwaysEdible().build())));
     public static final DeferredItem<Item> FILTERED_WATER_BOTTLE =
             ITEMS.register("filtered_water_bottle", () -> new DrinkWaterV37(new Item.Properties()
-                    .stacksTo(16).food(new FoodProperties.Builder().nutrition(0)
+                    .stacksTo(16).craftRemainder(EMPTY_WATER_FLASK.get())
+                    .food(new FoodProperties.Builder().nutrition(0)
                             .saturationModifier(0).alwaysEdible().build())));
 }
