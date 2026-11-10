@@ -89,8 +89,8 @@ cities. They do not replace or override vanilla structure definitions.
 
 \`\`\`sh
 python3 qa/validate_water_anomaly_v4_4.py
-python3 qa/validate_anomaly_worldgen_v4_5.py
 gradle --no-daemon --stacktrace build
+python3 qa/validate_anomaly_worldgen_v4_5.py
 python3 qa/validate_water_anomaly_v4_4.py build/libs/gugugaga-4.0.0-alpha.1.jar
 python3 qa/validate_anomaly_worldgen_v4_5.py build/libs/gugugaga-4.0.0-alpha.1.jar
 \`\`\`
