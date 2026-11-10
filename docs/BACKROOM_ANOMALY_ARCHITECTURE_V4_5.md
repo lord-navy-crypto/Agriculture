@@ -69,8 +69,9 @@ Each of the six Backrooms dimensions has its own shared structure set, so
 houses, city districts and vanilla fragments cannot independently choose the
 same region within that floor. The six sets use distinct seed salts to avoid
 repeating the same X/Z candidate grid across dimensions. Candidate spacing is
-64 chunks, separation 24 chunks; this is a rare random-spread grid, not a
-guaranteed distance between discoveries.
+64 chunks on Levels 2-5 and 80 chunks on Levels 0-1, separation 24
+chunks; this is a rare random-spread grid, not a guaranteed distance between
+discoveries.
 
 | Structure family | Weight | Placement |
 |---|---:|---|
@@ -129,10 +130,10 @@ python3 qa/validate_water_anomaly_v4_4.py build/libs/gugugaga-4.0.0-alpha.1.jar
 python3 qa/validate_anomaly_worldgen_v4_5.py build/libs/gugugaga-4.0.0-alpha.1.jar
 \`\`\`
 
-The CI server smoke test creates a fresh disposable world with the optional
-anomaly data pack enabled and verifies that all anomaly structure registries
-load alongside the six Backrooms dimensions. Static NBT checks verify the
-lift ladder, doors, exit landing and strict lower-level air-carve boundary.
+The CI server smoke test creates a fresh disposable world and verifies
+that the default-enabled anomaly data pack loads all structure registries
+alongside the six Backrooms dimensions. Static NBT checks verify the lift
+ladder, doors, exit landing and strict lower-level air-carve boundary.
 
 These checks do not replace visual client testing, exploration of several
 random seeds, structure overlap inspection or a full survival playthrough.
