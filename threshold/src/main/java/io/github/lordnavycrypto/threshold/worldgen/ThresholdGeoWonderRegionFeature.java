@@ -27,7 +27,7 @@ public final class ThresholdGeoWonderRegionFeature extends Feature<NoneFeatureCo
     private static final int GRID = ThresholdGeoWonderGeometry.GRID;
     private final Kind kind;
 
-    public GeoWonderRegionFeature(Kind kind) {
+    public ThresholdGeoWonderRegionFeature(Kind kind) {
         super(NoneFeatureConfiguration.CODEC);
         this.kind=kind;
     }
