@@ -28,15 +28,11 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
     }
 
     private boolean allowedLevel(String level) {
-        return switch (kind) {
-            case OAK_LOG, SPRUCE_LOG, FOREST_HUMMOCK -> level.equals("level_4");
-            case UPLAND_SCREE -> level.equals("level_3");
-            case COASTAL_DRIFTWOOD -> level.equals("level_5");
-        };
+        return ThresholdAnomalySurface.isBackroomsDimension(level);
     }
 
     private static int roomSizeForLevel(String level) {
-        return level.equals("level_4") ? 48 : 32;
+        return ThresholdAnomalySurface.roomSize(level);
     }
 
     private static boolean reservedRoute(WorldGenLevel level, BlockPos pos) {
@@ -50,13 +46,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
     }
 
     private static boolean backroomsFloor(BlockState state) {
-        return state.is(Blocks.GRAY_CONCRETE) || state.is(Blocks.LIGHT_GRAY_CONCRETE)
-                || state.is(Blocks.WHITE_CONCRETE) || state.is(Blocks.DEEPSLATE_TILES)
-                || state.is(Blocks.POLISHED_DEEPSLATE) || state.is(Blocks.COBBLED_DEEPSLATE)
-                || state.is(Blocks.SMOOTH_BASALT) || state.is(Blocks.SMOOTH_STONE)
-                || state.is(Blocks.DARK_OAK_PLANKS) || state.is(Blocks.SPRUCE_PLANKS)
-                || state.is(Blocks.POLISHED_ANDESITE) || state.is(Blocks.CALCITE)
-                || state.is(Blocks.POLISHED_BLACKSTONE) || state.is(Blocks.GRAVEL);
+        return ThresholdAnomalySurface.isNativeFloor(state);
     }
 
     private static long mix(long value) {
@@ -76,9 +66,10 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
         int minZ = Math.floorDiv(context.origin().getZ(), 16) * 16;
         long site = mix(level.getSeed() ^ ((long) minX * 0x9E3779B97F4A7C15L)
                 ^ ((long) minZ * 0xC2B2AE3D27D4EB4FL) ^ ((long) kind.ordinal() * 0x165667B19E3779F9L));
-        if (Math.floorMod(site, 19L) != 0L) return false;
+        if (!ThresholdAnomalySurface.shouldGenerate(dimension, site, 19)) return false;
         BlockPos origin = new BlockPos(minX + 2 + (int) Math.floorMod(site >>> 8, 12L),
-                65, minZ + 2 + (int) Math.floorMod(site >>> 24, 12L));
+                ThresholdAnomalySurface.surfaceY(dimension),
+                minZ + 2 + (int) Math.floorMod(site >>> 24, 12L));
         RandomSource random = context.random();
         return switch (kind) {
             case OAK_LOG -> fallenLog(level, origin, random, Blocks.OAK_LOG.defaultBlockState());
@@ -89,22 +80,16 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
         };
     }
 
-    private static boolean solidDrySupport(WorldGenLevel level, BlockPos ground) {
-        BlockState state = level.getBlockState(ground);
-        return state.isCollisionShapeFullBlock(level, ground)
-                && level.getFluidState(ground).isEmpty()
-                && backroomsFloor(state)
-                && !reservedRoute(level, ground.above());
+    private static boolean solidDrySupport(WorldGenLevel level, BlockPos surface) {
+        return ThresholdAnomalySurface.isReplaceableSurface(level,surface)
+                && !reservedRoute(level,surface);
     }
 
     private static boolean emptyDrySpace(WorldGenLevel level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
-        // Replace only air or common undergrowth. Never overwrite flowers, roots,
-        // water, leaf canopy, logs, structures, or block entities.
-        boolean free = state.isAir();
-        return free && level.getFluidState(pos).isEmpty()
+        // Level 0 carpet is the only non-air surface cell eligible for replacement.
+        return ThresholdAnomalySurface.isReplaceableSurface(level,pos)
                 && level.getBlockState(pos.above()).isAir()
-                && !reservedRoute(level, pos);
+                && !reservedRoute(level,pos);
     }
 
     /**
@@ -123,14 +108,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
         for (int i = 0; i < length; i++) {
             BlockPos p = origin.offset(alongX ? i - offset : 0, 0,
                     alongX ? 0 : i - offset);
-            BlockPos ground = p.below();
-            BlockState s = level.getBlockState(ground);
-            if (!backroomsFloor(s)
-                    || !s.isCollisionShapeFullBlock(level, ground)
-                    || !level.getFluidState(ground).isEmpty()
-                    || reservedRoute(level, p)
-                    || !level.getBlockState(p).isAir()
-                    || !level.getFluidState(p).isEmpty()
+            if (!solidDrySupport(level,p) || reservedRoute(level,p)
                     || !level.getBlockState(p.above()).isAir()) return false;
         }
         for (int i = 0; i < length; i++) {
@@ -151,7 +129,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
                 alongX ? Direction.Axis.X : Direction.Axis.Z);
         for (int i = 0; i < length; ++i) {
             BlockPos p = origin.offset(alongX ? i-left : 0, 0, alongX ? 0 : i-left);
-            if (!solidDrySupport(level, p.below()) || !emptyDrySpace(level, p))
+            if (!solidDrySupport(level, p) || !emptyDrySpace(level, p))
                 return false;
         }
         for (int i = 0; i < length; ++i) {
@@ -171,9 +149,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
             default -> origin.west();
         };
         for (BlockPos p : new BlockPos[]{origin, adjacent}) {
-            BlockState under = level.getBlockState(p.below());
-            if (!backroomsFloor(under) || !solidDrySupport(level, p.below())
-                    || !emptyDrySpace(level, p)) return false;
+            if (!solidDrySupport(level,p) || !emptyDrySpace(level,p)) return false;
         }
         level.setBlock(origin, Blocks.ROOTED_DIRT.defaultBlockState(), 2);
         level.setBlock(adjacent, Blocks.MOSS_BLOCK.defaultBlockState(), 2);
@@ -185,7 +161,7 @@ public final class ThresholdGroundMicrostructureFeature extends Feature<NoneFeat
         BlockPos b = origin.offset(random.nextBoolean() ? 1 : -1, 0, 0);
         BlockPos c = origin.offset(0, 0, random.nextBoolean() ? 1 : -1);
         for (BlockPos p : new BlockPos[]{origin, b, c}) {
-            if (!solidDrySupport(level, p.below()) || !emptyDrySpace(level, p))
+            if (!solidDrySupport(level, p) || !emptyDrySpace(level, p))
                 return false;
         }
         level.setBlock(origin, Blocks.COBBLESTONE.defaultBlockState(), 2);
