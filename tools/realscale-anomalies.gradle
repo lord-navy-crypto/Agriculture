@@ -68,8 +68,9 @@ tasks.register('generateThresholdAnomalyPack') {
     dependsOn tasks.named('generateThresholdArchitecture')
     inputs.file(file('tools/generate_anomaly_datapack.py'))
     inputs.file(file('tools/realscale_originals/urban_district_profiles.json'))
-    inputs.files(file('threshold/src/main/resources/data/threshold/dimension/level_0.json'),
-                 file('threshold/src/main/resources/data/threshold/dimension/level_1.json'))
+    inputs.files((0..5).collect { level ->
+        file("threshold/src/main/resources/data/threshold/dimension/level_${level}.json")
+    })
     outputs.dir(thresholdAnomalyPackOutput)
     doLast {
         File destination = thresholdAnomalyPackOutput.get().asFile
