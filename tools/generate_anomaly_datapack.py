@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+LEVELS = tuple(f"level_{index}" for index in range(6))
 
 
 def write(root: Path, path: str, doc):
@@ -144,29 +145,33 @@ def main():
     for name, definition in structures.items():
         write(root, "data/threshold/worldgen/structure/" + name + ".json", definition)
 
-    # One shared placement set prevents city/house/vanilla structures from
-    # independently selecting the same region and overlapping one another.
-    write(root, "data/threshold/worldgen/structure_set/anomaly_structures.json", {
-        "structures": [
-            {"structure": "threshold:anomaly_architecture", "weight": 4},
-            {"structure": "threshold:anomaly_urban", "weight": 2},
-            {"structure": "threshold:anomaly_village_fragment", "weight": 1},
-            {"structure": "threshold:anomaly_ancient_city_fragment", "weight": 1},
-            {"structure": "threshold:anomaly_ruined_portal", "weight": 1},
-            {"structure": "threshold:anomaly_shipwreck", "weight": 1},
-        ],
-        "placement": {
-            "type": "minecraft:random_spread",
-            "spacing": 64,
-            "separation": 24,
-            "salt": 142011,
-            "spread_type": "linear",
-        },
-    })
+    # Each Backrooms dimension gets its own salted placement set. This keeps
+    # the complete anomaly library available on all six floors without making
+    # the same seed choose identical X/Z candidates in every dimension.
+    anomaly_families = [
+        {"structure": "threshold:anomaly_architecture", "weight": 4},
+        {"structure": "threshold:anomaly_urban", "weight": 2},
+        {"structure": "threshold:anomaly_village_fragment", "weight": 1},
+        {"structure": "threshold:anomaly_ancient_city_fragment", "weight": 1},
+        {"structure": "threshold:anomaly_ruined_portal", "weight": 1},
+        {"structure": "threshold:anomaly_shipwreck", "weight": 1},
+    ]
+    for index, dimension in enumerate(LEVELS):
+        set_id = "anomaly_structures_" + dimension
+        write(root, "data/threshold/worldgen/structure_set/" + set_id + ".json", {
+            "structures": anomaly_families,
+            "placement": {
+                "type": "minecraft:random_spread",
+                "spacing": 64,
+                "separation": 24,
+                "salt": 142011 + index * 1009,
+                "spread_type": "linear",
+            },
+        })
 
     write(root, "data/threshold/tags/worldgen/biome/anomaly_eligible.json",
-          {"replace": False, "values": ["threshold:level_0", "threshold:level_1"]})
-    for dimension in ("level_0", "level_1"):
+          {"replace": False, "values": [f"threshold:{dimension}" for dimension in LEVELS]})
+    for dimension in LEVELS:
         source = ROOT / "threshold/src/main/resources/data/threshold/dimension" / (dimension + ".json")
         existing = json.loads(source.read_text(encoding="utf-8"))
         if existing["generator"]["type"] != "minecraft:flat":
@@ -174,12 +179,12 @@ def main():
         if existing["generator"]["settings"]["structure_overrides"] != []:
             raise SystemExit("Default generation has changed; audit before overriding")
         existing["generator"]["settings"]["structure_overrides"] = [
-            "threshold:anomaly_structures"]
+            "threshold:anomaly_structures_" + dimension]
         write(root, "data/threshold/dimension/" + dimension + ".json", existing)
 
     print(
         "THRESHOLD_ANOMALY_PACK_OK: 97 original buildings, 4 lift-connected city districts, "
-        "4 vanilla structure families, one collision-controlled rare placement set"
+        "4 vanilla structure families across all six Backrooms dimensions with independent salts"
     )
 
 
