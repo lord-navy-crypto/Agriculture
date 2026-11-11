@@ -45,6 +45,8 @@ jobs:
         run: python3 qa/validate_water_anomaly_v4_4.py
       - name: Validate Level 2-5 structural mass and original transit layouts
         run: python3 qa/validate_threshold_level2_5_mass_v48.py
+      - name: Validate Level 2-5 theme layouts and route buffers
+        run: python3 qa/validate_threshold_level2_5_theme_v49.py
       - name: Validate irregular Level 0 and Level 1 room geometry
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
