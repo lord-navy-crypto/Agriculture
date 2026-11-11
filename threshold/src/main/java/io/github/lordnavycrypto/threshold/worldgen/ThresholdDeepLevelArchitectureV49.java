@@ -79,6 +79,15 @@ public final class ThresholdDeepLevelArchitectureV49 {
                 && (lz % 4 == 0)) {
             air(world, pos, x, 68, z, Blocks.IRON_BARS.defaultBlockState());
         }
+        // Service catwalk spans the central cross at Y=68, leaving four
+        // blocks of clearance below; the low stair is outside that cross.
+        if (!entry && variant == 1 && (lx == 9 || lx == 10)
+                && lz >= 7 && lz <= size - 8) {
+            int deckY = lz <= 11 ? 64 + (lz - 7) : 68;
+            air(world, pos, x, deckY, z, lz <= 11
+                    ? Blocks.STONE_BRICKS.defaultBlockState()
+                    : Blocks.IRON_BLOCK.defaultBlockState());
+        }
         if (!alcove) return;
 
         // Rows of columns physically connect floor to a suspended pipe arch,
@@ -104,12 +113,6 @@ public final class ThresholdDeepLevelArchitectureV49 {
             case 1 -> {
                 // Two-sided service catwalk. Staggered steps connect Y=64
                 // to an overhead bridge at Y=68, with Y=69..70 clear.
-                if ((lx == 9 || lx == 10) && lz >= 7 && lz <= size - 8) {
-                    int deckY = lz <= 11 ? 64 + (lz - 7) : 68;
-                    air(world, pos, x, deckY, z, lz <= 11
-                            ? Blocks.STONE_BRICKS.defaultBlockState()
-                            : Blocks.IRON_BLOCK.defaultBlockState());
-                }
                 if ((lx == 9 || lx == 10) && (lz == 12 || lz == size - 9)) {
                     for (int y = 64; y <= 67; y++)
                         air(world, pos, x, y, z, Blocks.IRON_BARS.defaultBlockState());
@@ -286,6 +289,14 @@ public final class ThresholdDeepLevelArchitectureV49 {
                         : y == 68 ? Blocks.GOLD_BLOCK.defaultBlockState()
                         : Blocks.DARK_OAK_LOG.defaultBlockState());
         }
+        // The Beverly balcony is deliberately continuous across the center
+        // of the room, but only at Y=68, above all ground-level door routes.
+        // The approach steps occupy the safe side wall zone.
+        if (beverly && (lx == 5 || lx == 6)
+                && lz >= 6 && lz <= size - 7) {
+            int landing = lz <= 10 ? 64 + lz - 6 : 68;
+            air(world, pos, x, landing, z, Blocks.DARK_OAK_PLANKS.defaultBlockState());
+        }
         if (!alcove) return;
         if (entry) return; // Original Main Hall elevator and exits stay clear.
 
@@ -304,10 +315,6 @@ public final class ThresholdDeepLevelArchitectureV49 {
             // A partial two-wide raised ballroom balcony (Y=68), approached
             // by five short steps from the existing Y=63 floor. Its platform
             // stays outside the central chandelier and travel cross.
-            if ((lx == 5 || lx == 6) && lz >= 6 && lz <= size - 7) {
-                int landing = lz <= 10 ? 64 + lz - 6 : 68;
-                air(world, pos, x, landing, z, Blocks.DARK_OAK_PLANKS.defaultBlockState());
-            }
             if (lx == 7 && (lz == 11 || lz == size - 8)) {
                 for (int y = 64; y <= 67; y++)
                     air(world, pos, x, y, z, Blocks.DARK_OAK_LOG.defaultBlockState());

@@ -33,6 +33,8 @@ def main():
     assert "Math.abs(lx - size / 2) <= 4" in THEMES
     assert "if (entry) return" in THEMES
     assert "int landing = lz <= 10 ? 64 + lz - 6 : 68" in THEMES
+    assert "Service catwalk spans the central cross at Y=68" in THEMES
+    assert "The Beverly balcony is deliberately continuous across the center" in THEMES
     assert "FOUNDATION_BOTTOM = 58" in MASS and "ROOF_TOP = 75" in MASS
     assert "net.minecraft.world.level.block.Blocks" in THEMES
     assert "world.setBlock(pos, state, 2)" in THEMES
