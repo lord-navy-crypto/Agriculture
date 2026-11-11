@@ -25,6 +25,9 @@ def main():
     assert cat["foods"]["gugugaga:eggplant"] == ["vegetable"]
     assert cat["foods"]["gugugaga:eggplant_curry"] == ["vegetable"]
     assert cat["overrides"]["gugugaga:eggplant_curry"]["fat"] == 2
+    assert cat["foods"]["gugugaga:black_pepper"] == ["spice"]
+    assert cat["foods"]["gugugaga:tomato_sauce"] == ["vegetable", "herb"]
+    assert cat["foods"]["gugugaga:onion_vegetable_pie"] == ["grain", "vegetable"]
 
     def contribution(item):
         groups=cat["foods"][item]
@@ -69,6 +72,9 @@ def main():
     assert "Math.floorDiv(player.getServer().overworld().getGameTime(),24000L)" in nutrition
     assert "int[] gained=NutritionPhysiologyV39.consume(values,contribution);" in nutrition
     assert "player.displayClientMessage" in nutrition
+    assert "NutritionPhysiologyV39.dailyIntakeSnapshot(record(player))" in nutrition
+    assert "v47_last_eaten_food" in nutrition
+    assert "v47_last_meal_gain_" in nutrition
 
     for lang in ("en_us","zh_cn"):
         text=json.loads((LOCALES / (lang+".json")).read_text("utf-8"))

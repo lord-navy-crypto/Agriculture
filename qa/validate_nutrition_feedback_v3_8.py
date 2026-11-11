@@ -29,13 +29,13 @@ def main():
     assert "NutritionFeedbackV38.snapshot" in nutrition
     assert '"gugugaga_nutrition_v35"' in nutrition
     assert "PlayerEvent.Clone" in nutrition
-    assert "int page=5" in screen and "PAGES.length" in screen
+    assert "int page=8" in screen and "PAGES.length" in screen
     assert "page==6?NutritionFeedbackV38.GROUP_COUNT" in screen
     assert "feedback.gugugaga.nutrient_tooltip" in screen
     assert "feedback.gugugaga.role." in screen
     assert "graphics.renderTooltip" in screen
-    assert 'registrar("3").playToServer' in req
-    assert 'registrar("3").playToClient' in net
+    assert 'registrar("4").playToServer' in req
+    assert 'registrar("4").playToClient' in net
     assert "payload.feedback()" in net
     assert "SNAPSHOT_SIZE" in net
     assert "NUTRIENT_DAYS_OFFSET" in net
