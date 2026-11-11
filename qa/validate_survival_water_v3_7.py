@@ -22,7 +22,7 @@ def main():
     assert profiles["schema_version"]==1
     assert "NOT" not in profiles["units"] or "not" in profiles["units"].lower()
     assert set(prior["foods"]).issubset(profiles["foods"])
-    assert len(profiles["foods"])==408
+    assert len(profiles["foods"])==407
     for name,contrib in profiles["foods"].items():
         assert 0<=contrib["water"]<=40 and 0<=contrib["sodium"]<=15,name
     assert profiles["foods"]["gugugaga:boiled_water_bottle"]["water"]>profiles["foods"]["minecraft:honey_bottle"]["water"]
@@ -136,7 +136,7 @@ def main():
                      "NutritionInventoryButtonV37")
             for cls in classes:
                 assert f"io/github/lordnavycrypto/gugugaga/agriculture/{cls}.class" in arc.namelist()
-    print("WATER_SALT_V37_OK: 408 item scores, two persistent survival meters, "
+    print("WATER_SALT_V37_OK: 407 real item scores, two persistent survival meters, "
           "server drink and sprint logic, furnace/campfire boiling, "
           "fixed inventory nutrition button and GUI/network integration")
 
