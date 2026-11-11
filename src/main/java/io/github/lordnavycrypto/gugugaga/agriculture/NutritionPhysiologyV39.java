@@ -42,13 +42,13 @@ public final class NutritionPhysiologyV39 {
         3,4,5,6,0,16,3,4,5,5,6,6,8,32,4,18,18,14,
         20,12,6,5,8,20,18,20,0
     };
-    // v4.11: faster, differentiated recovery. Every completed meal awards
-    // reserve immediately, but only up to this per-nutrient daily limit.
-    // Slow 4-6, medium 7-9, fast 10-12. Deficit loss and persistence
-    // windows remain independent, preserving B1/B12 game kinetics.
+    // v4.13: clear 6/9/12 recovery tiers. Every completed meal awards
+    // reserve immediately, capped per nutrient and per game day.
+    // Daily intake targets, depletion losses and persistence windows remain
+    // unchanged, preserving the distinct B1/B12 reserve kinetics.
     private static final int[] REPLENISH={
-        12,8,7,9,0,5,12,11,11,11,11,11,7,4,12,5,5,6,
-        5,7,9,9,8,5,5,5,0
+        12,9,9,9,0,6,12,12,12,12,12,12,9,6,12,6,6,9,
+        6,9,9,9,9,6,6,6,0
     };
 
     public static boolean linked(int i) {
