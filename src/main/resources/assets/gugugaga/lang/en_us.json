@@ -1170,6 +1170,7 @@
   "feedback.gugugaga.role.phosphorus": "Supports ATP, cell structure and bone mineral",
   "feedback.gugugaga.role.sodium": "Uses the separate sodium and hydration balance system",
   "feedback.gugugaga.nutrient_tooltip": "%s %s — %s. %s. Low days: %s; game window: %s. %s",
+  "feedback.gugugaga.daily_recovery_limit": "Today's intake: %s / %s game points; reserve recovery cap: +%s per game day.",
   "message.gugugaga.v35_page_7": "Potion effect matrix",
   "message.gugugaga.v310_effects_active": "Potion feedback: all 27 nutrition indicators have mapped positive and low-reserve effects. Open the effect matrix page for details.",
   "feedback.gugugaga.effect_pair": "Positive: %s | Low-reserve: %s",

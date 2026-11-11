@@ -272,6 +272,12 @@ public final class NutritionScreenClientV35 extends Screen {
                                     Component.translatable("feedback.gugugaga.role."+id),
                                     Component.translatable("feedback.gugugaga.stage_"+(state+2)),
                                     days,NutritionPhysiologyV39.requiredDays(nutrientIndex),pair);
+                            hover=hover.copy().append(Component.literal("\n"))
+                                    .append(Component.translatable(
+                                            "feedback.gugugaga.daily_recovery_limit",
+                                            today[nutrientIndex],
+                                            NutritionPhysiologyV39.dailyTarget(nutrientIndex),
+                                            NutritionPhysiologyV39.dailyRecoveryLimit(nutrientIndex)));
                         }
                     } else if(page==5 && row<2){
                         int effectIndex=row==0?NutritionPhysiologyV39.WATER_INDEX:NutritionPhysiologyV39.SODIUM_INDEX;
