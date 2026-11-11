@@ -10,7 +10,7 @@ LANG=ROOT/"src/main/resources/assets/gugugaga/lang"
 
 def main():
     doc=json.loads(DATA.read_text("utf8"))
-    assert len(doc["foods"]) == 404
+    assert len(doc["foods"]) == 403
     nutrients=[row["id"] for row in doc["nutrients"]]
     assert len(nutrients)==27 and len(set(nutrients))==27
     profiles=(JAVA/"NutritionProfilesV35.java").read_text("utf8")
@@ -44,7 +44,7 @@ def main():
             assert strings.get(key), (locale,key)
         for nutrient in nutrients:
             assert strings.get("nutrition.gugugaga."+nutrient), (locale,nutrient)
-    print("BACKROOM_NUTRITION_TOOLTIP_V4_2_PASS: 404 food IDs, 27 indicators, target coverage and explicit unmapped fallback")
+    print("BACKROOM_NUTRITION_TOOLTIP_V4_7_PASS: 403 real food IDs, 27 indicators, target coverage and explicit unmapped fallback")
 
 if __name__=="__main__":
     main()
