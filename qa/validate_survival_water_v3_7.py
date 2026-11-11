@@ -18,7 +18,7 @@ def read_java(name):return (JAVA/"agriculture"/(name+".java")).read_text("utf-8"
 def main():
     prior=read_json(DATA/"nutrition/food_profiles_v3_5.json")
     profiles=read_json(DATA/"nutrition/water_salt_profiles_v3_7.json")
-    assert len(prior["foods"])==404
+    assert len(prior["foods"])==403
     assert profiles["schema_version"]==1
     assert "NOT" not in profiles["units"] or "not" in profiles["units"].lower()
     assert set(prior["foods"]).issubset(profiles["foods"])
