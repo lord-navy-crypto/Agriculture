@@ -51,6 +51,8 @@ jobs:
         run: python3 qa/validate_threshold_level2_5_theme_v49.py
       - name: Validate Level 2-5 unique landmark rooms and upper-deck paths
         run: python3 qa/validate_threshold_level2_5_landmarks_v412.py
+      - name: Validate Level 2-5 spatial depth, irregular subrooms and supported mezzanines
+        run: python3 qa/validate_threshold_level2_5_depth_v413.py
       - name: Validate irregular Level 0 and Level 1 room geometry
         run: python3 qa/validate_threshold_irregular_maze.py
       - name: Validate smarter Backrooms entities and scoped Partygoer respawn
