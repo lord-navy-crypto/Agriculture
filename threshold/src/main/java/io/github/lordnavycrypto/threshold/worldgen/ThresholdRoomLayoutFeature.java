@@ -92,18 +92,34 @@ public final class ThresholdRoomLayoutFeature extends Feature<NoneFeatureConfigu
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_2)) {
             buildLevel2Chunk(world, chunkX, chunkZ);
+            ThresholdDeepLevelMassV48.build(world, chunkX, chunkZ, 2);
+            ThresholdDeepLevelArchitectureV49.build(world, chunkX, chunkZ, 2);
+            ThresholdDeepLevelDiscoveriesV412.build(world, chunkX, chunkZ, 2);
+            ThresholdDeepLevelDepthV413.build(world, chunkX, chunkZ, 2);
             return true;
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_3)) {
             buildLevel3Chunk(world, chunkX, chunkZ);
+            ThresholdDeepLevelMassV48.build(world, chunkX, chunkZ, 3);
+            ThresholdDeepLevelArchitectureV49.build(world, chunkX, chunkZ, 3);
+            ThresholdDeepLevelDiscoveriesV412.build(world, chunkX, chunkZ, 3);
+            ThresholdDeepLevelDepthV413.build(world, chunkX, chunkZ, 3);
             return true;
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_4)) {
             buildLevel4Chunk(world, chunkX, chunkZ);
+            ThresholdDeepLevelMassV48.build(world, chunkX, chunkZ, 4);
+            ThresholdDeepLevelArchitectureV49.build(world, chunkX, chunkZ, 4);
+            ThresholdDeepLevelDiscoveriesV412.build(world, chunkX, chunkZ, 4);
+            ThresholdDeepLevelDepthV413.build(world, chunkX, chunkZ, 4);
             return true;
         }
         if (serverLevel.dimension().equals(ThresholdDimensions.LEVEL_5)) {
             buildLevel5Chunk(world, chunkX, chunkZ);
+            ThresholdDeepLevelMassV48.build(world, chunkX, chunkZ, 5);
+            ThresholdDeepLevelArchitectureV49.build(world, chunkX, chunkZ, 5);
+            ThresholdDeepLevelDiscoveriesV412.build(world, chunkX, chunkZ, 5);
+            ThresholdDeepLevelDepthV413.build(world, chunkX, chunkZ, 5);
             return true;
         }
         return false;
