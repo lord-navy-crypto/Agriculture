@@ -40,9 +40,9 @@ def main():
     assert "world.setBlock(pos, state, 2)" in THEMES
     # New themes must not replace existing base layer or ceiling with overlays.
     assert not re.search(r"\bair\(world,\s*pos,\s*x,\s*(?:63|71),", THEMES)
-    assert all(keyword in THEMES for keyword in
+    assert all(keyword.lower() in THEMES.lower() for keyword in
         ("steel arches", "transformer", "cubicle", "ballroom balcony",
-         "Boiler", "catwalk", "ceiling grid") if keyword.lower() in THEMES.lower())
+         "boiler", "catwalk", "ceiling grid"))
     print("THRESHOLD_LEVEL2_5_THEME_V49_PASS: four distinct room grammars, central passage buffers, entry protection")
 
 if __name__ == "__main__":
