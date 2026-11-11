@@ -42,10 +42,13 @@ public final class NutritionPhysiologyV39 {
         3,4,5,6,0,16,3,4,5,5,6,6,8,32,4,18,18,14,
         20,12,6,5,8,20,18,20,0
     };
-    // Recovery is slower for systems with longer reserve depletion.
+    // v4.11: faster, differentiated recovery. Every completed meal awards
+    // reserve immediately, but only up to this per-nutrient daily limit.
+    // Slow 4-6, medium 7-9, fast 10-12. Deficit loss and persistence
+    // windows remain independent, preserving B1/B12 game kinetics.
     private static final int[] REPLENISH={
-        5,4,4,4,0,2,5,5,5,5,5,5,3,2,5,2,2,3,
-        2,3,4,4,4,2,2,2,0
+        12,8,7,9,0,5,12,11,11,11,11,11,7,4,12,5,5,6,
+        5,7,9,9,8,5,5,5,0
     };
 
     public static boolean linked(int i) {
@@ -58,6 +61,11 @@ public final class NutritionPhysiologyV39 {
     public static int dailyTarget(int i) {
         if (i < 0 || i >= COUNT) throw new IndexOutOfBoundsException("nutrient index " + i);
         return TARGET[i];
+    }
+    /** Display-only daily reserve recovery cap (not a medical dose). */
+    public static int dailyRecoveryLimit(int i) {
+        if (i < 0 || i >= COUNT) throw new IndexOutOfBoundsException("nutrient index " + i);
+        return REPLENISH[i];
     }
     private static String key(int i) {return NutritionProfilesV35.NUTRIENTS[i];}
     private static int clamp(int value) {return Math.max(0,Math.min(100,value));}
