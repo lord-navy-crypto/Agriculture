@@ -67,7 +67,7 @@ def main():
     for token in ('doc.has("overrides")', 'result.get(food.getKey())',
                   'nutrient == 4 || nutrient == 26', 'values[nutrient] = points'):
         assert token in parser, token
-    assert "getServer().overworld().getDayTime()" in nutrition
+    assert "getServer().overworld().getGameTime()" in nutrition
     assert "NutritionPhysiologyV39.consume(values,contribution)" in nutrition
     assert "WaterSaltProfilesV37.water(name)" in water
     assert "WaterSaltProfilesV37.sodium(name)" in water

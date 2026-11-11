@@ -690,11 +690,9 @@
       "grain"
     ],
     "gugugaga:eggplant": [
-      "egg",
       "vegetable"
     ],
     "gugugaga:eggplant_curry": [
-      "egg",
       "vegetable"
     ],
     "gugugaga:endive": [
@@ -1682,6 +1680,10 @@
       "iron": 4,
       "magnesium": 4,
       "fiber": 4
+    },
+    "gugugaga:eggplant_curry": {
+      "fat": 2,
+      "vitamin_e": 1
     },
     "gugugaga:artichoke": {
       "fiber": 6,
