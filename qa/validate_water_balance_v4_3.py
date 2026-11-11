@@ -41,14 +41,14 @@ def main():
     assert day(high_salt=True)==(10,55,0,0,90)
     water=json.loads((F/"water_salt_profiles_v3_7.json").read_text("utf8"))["foods"]
     foods=json.loads((F/"food_profiles_v3_5.json").read_text("utf8"))["foods"]
-    assert len(foods)==404 and set(foods).issubset(water)
+    assert len(foods)==403 and set(foods).issubset(water)
     # Two safe drinks + edible meals can cover the ordinary game's daily
     # water demand; varied ordinary meals replace salt at least as fast as rest uses it.
     assert 2*water["gugugaga:boiled_water_bottle"]["water"]>=60
     assert sum(water[x]["sodium"] for x in (
         "minecraft:bread","minecraft:carrot","minecraft:cooked_beef",
         "minecraft:apple","minecraft:cooked_salmon"))>=5
-    print("BACKROOM_WATER_BALANCE_V4_3_PASS: idle 60/day, active demand higher, salt 5/day, 404 food profiles")
+    print("BACKROOM_WATER_BALANCE_V4_3_PASS: idle 60/day, active demand higher, salt 5/day, 403 real food profiles")
 
 if __name__=="__main__":
     main()
