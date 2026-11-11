@@ -1188,5 +1188,17 @@
   "message.gugugaga.nutrition_gained": "营养储备增加：",
   "message.gugugaga.nutrition_no_gain": "本次未增加营养储备（当日增益达到上限，或食物没有对应的储备指标）。",
   "tooltip.gugugaga.nutrient_target_line": "• %1$s：+%2$d 点（游戏日目标 %3$d 点）",
-  "tooltip.gugugaga.nutrition_balance_fallback": "补水 +%1$s｜盐分 +%2$s（默认值；该物品没有独立配置）"
+  "tooltip.gugugaga.nutrition_balance_fallback": "补水 +%1$s｜盐分 +%2$s（默认值；该物品没有独立配置）",
+  "message.gugugaga.v35_page_8": "进食反馈",
+  "message.gugugaga.nutrition_gained_food": "吃下 %s：",
+  "message.gugugaga.nutrition_no_gain_food": "吃下 %s：储备未增加（当日增益达到上限或已满）。",
+  "feedback.gugugaga.quick.last_food": "上次吃了：%s",
+  "feedback.gugugaga.quick.none": "暂无记录",
+  "feedback.gugugaga.quick.no_more": "暂无其他营养增益",
+  "feedback.gugugaga.quick.gain": "%s  +%s",
+  "feedback.gugugaga.quick.daily": "今日达标：%s / %s 项",
+  "feedback.gugugaga.quick.water": "水分：%s / 100",
+  "feedback.gugugaga.quick.sodium": "盐分：%s / 100",
+  "feedback.gugugaga.quick.hint": "左右切换查看全部27项",
+  "feedback.gugugaga.quick.footer": "吃完立即加分，每个游戏日结算储备。"
 }

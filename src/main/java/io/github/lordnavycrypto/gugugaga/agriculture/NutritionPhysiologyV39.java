@@ -143,6 +143,16 @@ public final class NutritionPhysiologyV39 {
         }
     }
 
+    /** Server-authoritative daily intake ledger for the N-key overview. */
+    public static int[] dailyIntakeSnapshot(CompoundTag data) {
+        int[] intake=new int[COUNT];
+        for(int i=0;i<COUNT;i++) {
+            if(linked(i))continue;
+            intake[i]=Math.max(0,Math.min(MAX_DAILY,data.getInt(DAILY+i)));
+        }
+        return intake;
+    }
+
     /** -2 sustained shortage, -1 watch, 0 maintained. No "superhuman" 1. */
     public static int stage(CompoundTag data,int i) {
         if(linked(i))return 0;

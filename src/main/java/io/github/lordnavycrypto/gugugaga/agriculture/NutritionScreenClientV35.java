@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.gugugaga.agriculture;
 
 import java.util.Arrays;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -17,31 +19,48 @@ import org.lwjgl.glfw.GLFW;
  * The values are fictional 0..100 game scores, never clinical nutrition data.
  */
 public final class NutritionScreenClientV35 extends Screen {
-    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27}};
+    private static final int[][] PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27},{0,0}};
     private static final int ROW_HEIGHT=23;
     private final int[] values;
     private final int water;
     private final int salt;
     private final int[] feedback;
-    private int page=5;
+    private final int[] today;
+    private final int[] recent;
+    private final String lastFood;
+    private final int[] topGains={-1,-1,-1};
+    private int page=8;
     private int scroll=0;
     private Button scrollUp;
     private Button scrollDown;
 
-    private NutritionScreenClientV35(int[] snapshot,int water,int salt,int[] feedback) {
+    private NutritionScreenClientV35(int[] snapshot,int water,int salt,int[] feedback,
+                                     int[] today,int[] recent,String lastFood) {
         super(Component.translatable("message.gugugaga.v35_gui_title"));
         this.values=Arrays.copyOf(snapshot,27);
         this.water=clamp(water);
         this.salt=clamp(salt);
         this.feedback=Arrays.copyOf(feedback,NutritionFeedbackV38.SNAPSHOT_SIZE);
+        this.today=Arrays.copyOf(today,27);
+        this.recent=Arrays.copyOf(recent,27);
+        this.lastFood=lastFood;
+        Integer[] ranking=new Integer[27];
+        for(int i=0;i<27;i++)ranking[i]=i;
+        Arrays.sort(ranking,(a,b)->Integer.compare(this.recent[b],this.recent[a]));
+        for(int i=0;i<topGains.length;i++)
+            if(this.recent[ranking[i]]>0)topGains[i]=ranking[i];
     }
     private static int clamp(int value) {return Math.max(0,Math.min(100,value));}
 
-    public static void open(int[] scores,int water,int salt,int[] feedback) {
+    public static void open(int[] scores,int water,int salt,int[] feedback,
+                            int[] today,int[] recent,String lastFood) {
         if(scores==null || scores.length!=27 || feedback==null
-                || feedback.length!=NutritionFeedbackV38.SNAPSHOT_SIZE)return;
+                || feedback.length!=NutritionFeedbackV38.SNAPSHOT_SIZE
+                || today==null || today.length!=27
+                || recent==null || recent.length!=27
+                || lastFood==null)return;
         Minecraft.getInstance().setScreen(new NutritionScreenClientV35(
-                scores,water,salt,feedback));
+                scores,water,salt,feedback,today,recent,lastFood));
     }
 
     private int panelWidth() {return Math.max(120,Math.min(440,width-12));}
@@ -54,7 +73,7 @@ public final class NutritionScreenClientV35 extends Screen {
         return Math.max(1,(contentBottom()-contentTop()-3)/ROW_HEIGHT);
     }
     private int rowCount() {
-        return page==7?27:page==6?NutritionFeedbackV38.GROUP_COUNT:page==5?3:PAGES[page][1]-PAGES[page][0];
+        return page==8?8:page==7?27:page==6?NutritionFeedbackV38.GROUP_COUNT:page==5?3:PAGES[page][1]-PAGES[page][0];
     }
     private int maxScroll() {return Math.max(0,rowCount()-visibleRows());}
     private void setScroll(int target) {
@@ -93,6 +112,34 @@ public final class NutritionScreenClientV35 extends Screen {
         addRenderableWidget(Button.builder(Component.literal(">"),
                 b -> setPage(page+1)).bounds(pos,y+h-25,side,19).build());
         setScroll(scroll);
+    }
+
+    /** Short, readable summary; detailed reserves stay on original pages. */
+    private Component quickRow(int row) {
+        if(row==0) {
+            Component food=lastFood.isBlank()
+                    ?Component.translatable("feedback.gugugaga.quick.none")
+                    :BuiltInRegistries.ITEM.get(ResourceLocation.parse(lastFood)).getDescription();
+            return Component.translatable("feedback.gugugaga.quick.last_food",food);
+        }
+        if(row>=1 && row<=3) {
+            int index=topGains[row-1];
+            if(index<0)return Component.translatable("feedback.gugugaga.quick.no_more");
+            return Component.translatable("feedback.gugugaga.quick.gain",
+                    Component.translatable("nutrition.gugugaga."
+                            +NutritionProfilesV35.NUTRIENTS[index]),recent[index]);
+        }
+        if(row==4) {
+            int reached=0;
+            for(int i=0;i<27;i++) {
+                if(NutritionPhysiologyV39.linked(i))continue;
+                if(today[i]>=NutritionPhysiologyV39.dailyTarget(i))reached++;
+            }
+            return Component.translatable("feedback.gugugaga.quick.daily",reached,25);
+        }
+        if(row==5)return Component.translatable("feedback.gugugaga.quick.water",water);
+        if(row==6)return Component.translatable("feedback.gugugaga.quick.sodium",salt);
+        return Component.translatable("feedback.gugugaga.quick.hint");
     }
 
     private Component rowLabel(int row) {
@@ -153,6 +200,15 @@ public final class NutritionScreenClientV35 extends Screen {
             boolean statusRow=page==5 && row==2;
             graphics.fill(x+9,line-2,x+w-9,line+ROW_HEIGHT-3,
                     (row%2==0)?0xFF334640:0xFF2A3A35);
+            if(page==8) {
+                Component summary=quickRow(row);
+                int color=row>=1 && row<=3 && topGains[row-1]>=0
+                        ?0xFFABE7B2:row==4?0xFFFFDC9D:0xFFFFFFFF;
+                graphics.drawString(font,fitted(summary,w-32),x+16,line+5,color,false);
+                if(mouseX>=x+9 && mouseX<x+w-9 && mouseY>=line
+                        && mouseY<line+ROW_HEIGHT)hover=summary;
+                continue;
+            }
             Component label=rowLabel(row);
             int labelX=x+16;
             if(statusRow) {
@@ -227,7 +283,8 @@ public final class NutritionScreenClientV35 extends Screen {
                 }
             }
         }
-        Component note=Component.translatable(page==7
+        Component note=Component.translatable(page==8
+                ?"feedback.gugugaga.quick.footer":page==7
                 ?"feedback.gugugaga.effects_note":page==6
                 ?"feedback.gugugaga.note":"message.gugugaga.v35_gui_note");
         centered(graphics,note,x+w/2,y+h-39,w-20,0xFFE2E6D7);
