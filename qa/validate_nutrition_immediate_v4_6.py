@@ -10,9 +10,9 @@ CATALOG = ROOT / "src/main/resources/data/gugugaga/nutrition/food_profiles_v3_5.
 LOCALES = ROOT / "src/main/resources/assets/gugugaga/lang"
 
 def array(text, name):
-    match = re.search(r"private static final int\\[\\] " + name + r"=\\{(.*?)\\};", text, re.S)
+    match = re.search(r"private static final int\[\] " + name + r"=\{(.*?)\};", text, re.S)
     assert match, name
-    return [int(v) for v in re.findall(r"-?\\d+", match.group(1))]
+    return [int(v) for v in re.findall(r"-?\d+", match.group(1))]
 
 def main():
     phys = (SRC / "NutritionPhysiologyV39.java").read_text("utf-8")
