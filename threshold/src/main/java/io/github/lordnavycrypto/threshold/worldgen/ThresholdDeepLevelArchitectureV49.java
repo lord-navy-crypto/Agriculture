@@ -1,6 +1,8 @@
 package io.github.lordnavycrypto.threshold.worldgen;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,8 +40,7 @@ public final class ThresholdDeepLevelArchitectureV49 {
                 int z = originZ + dz;
                 int roomZ = Math.floorDiv(z, size);
                 int lz = Math.floorMod(z, size);
-                int variant = Math.floorMod(
-                        mix(seed, roomX, roomZ, 0x49A11L + level * 29L), 4);
+                int variant = themeVariant(seed, roomX, roomZ, level);
                 boolean entry = roomX == 0 && roomZ == 0;
                 boolean inside = lx >= 5 && lx <= size - 6
                         && lz >= 5 && lz <= size - 6;
@@ -85,9 +86,14 @@ public final class ThresholdDeepLevelArchitectureV49 {
                 && lz >= 7 && lz <= size - 8) {
             int deckY = lz <= 11 ? 64 + (lz - 7) : 68;
             air(world, pos, x, deckY, z, lz <= 11
-                    ? Blocks.STONE_BRICKS.defaultBlockState()
+                    ? Blocks.STONE_BRICK_STAIRS.defaultBlockState()
+                            .setValue(StairBlock.FACING, Direction.SOUTH)
                     : Blocks.IRON_BLOCK.defaultBlockState());
         }
+        // Guard both raised catwalk edges; ground passage remains open.
+        if (!entry && variant == 1 && (lx == 8 || lx == 11)
+                && lz >= 12 && lz <= size - 8)
+            air(world, pos, x, 69, z, Blocks.IRON_BARS.defaultBlockState());
         if (!alcove) return;
 
         // Rows of columns physically connect floor to a suspended pipe arch,
@@ -295,8 +301,14 @@ public final class ThresholdDeepLevelArchitectureV49 {
         if (beverly && (lx == 5 || lx == 6)
                 && lz >= 6 && lz <= size - 7) {
             int landing = lz <= 10 ? 64 + lz - 6 : 68;
-            air(world, pos, x, landing, z, Blocks.DARK_OAK_PLANKS.defaultBlockState());
+            air(world, pos, x, landing, z, lz <= 10
+                    ? Blocks.SPRUCE_STAIRS.defaultBlockState()
+                            .setValue(StairBlock.FACING, Direction.SOUTH)
+                    : Blocks.DARK_OAK_PLANKS.defaultBlockState());
         }
+        // Raised balcony guardrail stays above the ground-level walkways.
+        if (beverly && lx == 7 && lz >= 12 && lz <= size - 8)
+            air(world, pos, x, 69, z, Blocks.DARK_OAK_FENCE.defaultBlockState());
         if (!alcove) return;
         if (entry) return; // Original Main Hall elevator and exits stay clear.
 
@@ -359,6 +371,27 @@ public final class ThresholdDeepLevelArchitectureV49 {
                 }
             }
         }
+    }
+
+    /**
+     * Guarantee theme discoveries in the near-entry room ring while
+     * retaining seed-deterministic variation elsewhere. Hotel's fixed
+     * Beverly and Boiler sectors stay assigned by the original generator.
+     */
+    private static int themeVariant(long seed, int roomX, int roomZ, int level) {
+        if (roomX == 0 && roomZ == 0) return 0;
+        if (level == 5) {
+            if (roomX == 2 && roomZ == 0) return 0;
+            if (roomX == 0 && roomZ == 2) return 1;
+            if (roomX == 2 && roomZ == 1) return 2;
+            if (roomX == 1 && roomZ == 1) return 3;
+        } else {
+            if (roomX == 1 && roomZ == 0) return 0;
+            if (roomX == 0 && roomZ == 1) return 1;
+            if (roomX == 1 && roomZ == 1) return 2;
+            if (roomX == 2 && roomZ == 0) return 3;
+        }
+        return Math.floorMod(mix(seed, roomX, roomZ, 0x49A11L + level * 29L), 4);
     }
 
     /** Stable room selection with no chunk-order or client randomness. */

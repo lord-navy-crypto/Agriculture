@@ -35,6 +35,20 @@ def main():
     assert "int landing = lz <= 10 ? 64 + lz - 6 : 68" in THEMES
     assert "Service catwalk spans the central cross at Y=68" in THEMES
     assert "The Beverly balcony is deliberately continuous across the center" in THEMES
+    # New raised paths must use true stair blocks and guardrails rather
+    # than full-block jumps, and should always have nearby sample variants.
+    assert "Blocks.STONE_BRICK_STAIRS.defaultBlockState()" in THEMES
+    assert "Blocks.SPRUCE_STAIRS.defaultBlockState()" in THEMES
+    assert THEMES.count(".setValue(StairBlock.FACING, Direction.SOUTH)") == 2
+    assert "Blocks.DARK_OAK_FENCE.defaultBlockState()" in THEMES
+    assert "Guard both raised catwalk edges" in THEMES
+    assert "int variant = themeVariant(seed, roomX, roomZ, level);" in THEMES
+    for x, z, variant in ((1,0,0), (0,1,1), (1,1,2), (2,0,3),
+                          (2,0,0), (0,2,1), (2,1,2), (1,1,3)):
+        assert f"if (roomX == {x} && roomZ == {z}) return {variant};" in THEMES
+    assert "if (level == 5)" in THEMES
+    assert "lz <= 11 ? 64 + (lz - 7) : 68" in THEMES
+    assert "lz <= 10 ? 64 + lz - 6 : 68" in THEMES
     assert "FOUNDATION_BOTTOM = 58" in MASS and "ROOF_TOP = 75" in MASS
     assert "net.minecraft.world.level.block.Blocks" in THEMES
     assert "world.setBlock(pos, state, 2)" in THEMES
