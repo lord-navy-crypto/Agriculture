@@ -18,13 +18,13 @@ def main():
     assert doc["schema_version"] == 1
     foods, profiles, overrides = doc["foods"], doc["profiles"], doc["overrides"]
     nutrients = [x["id"] for x in doc["nutrients"]]
-    assert len(foods) == 404 and len(nutrients) == 27
+    assert len(foods) == 403 and len(nutrients) == 27
     assert len(overrides) >= 40
     assert sum(groups == ["general"] for groups in foods.values()) <= 5
     assert all(id in foods for id in overrides)
     water_doc = json.loads(WATER_CATALOG.read_text("utf-8"))
     water_foods = water_doc["foods"]
-    # Every one of the 404 foods has an explicit water/salt profile. The only
+    # Every registered edible food in the 403-item curated catalog has an explicit
     # additional entries are drinks that are not part of the nutrient catalog.
     assert set(foods).issubset(water_foods)
     hydration_only = {
@@ -67,7 +67,7 @@ def main():
     for token in ('doc.has("overrides")', 'result.get(food.getKey())',
                   'nutrient == 4 || nutrient == 26', 'values[nutrient] = points'):
         assert token in parser, token
-    assert "getServer().overworld().getDayTime()" in nutrition
+    assert "getServer().overworld().getGameTime()" in nutrition
     assert "NutritionPhysiologyV39.consume(values,contribution)" in nutrition
     assert "WaterSaltProfilesV37.water(name)" in water
     assert "WaterSaltProfilesV37.sodium(name)" in water
@@ -87,7 +87,7 @@ def main():
         assert lang.get("tooltip.gugugaga.nutrition_balance"), locale
         assert lang.get("tooltip.gugugaga.hydration_only"), locale
         assert lang.get("tooltip.gugugaga.nutrition_daily"), locale
-    print("BACKROOM_NUTRITION_V4_2_PASS: 404 foods, 40 curated overrides, complete water/salt coverage, common clock")
+    print("BACKROOM_NUTRITION_V4_7_PASS: 403 real food IDs, curated overrides, complete water/salt coverage, common clock")
 
 if __name__ == "__main__":
     main()

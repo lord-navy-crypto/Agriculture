@@ -83,7 +83,7 @@ def main():
     assert "data.putLong(LAST_DAY,worldDay)" in phys
     assert "worldDay<=last" in phys and "return;" in phys
     assert "event.registrar" not in phys
-    assert 'registrar("3").playToClient' in wire
+    assert 'registrar("4").playToClient' in wire
     assert "NUTRIENT_DAYS_OFFSET" in wire
     assert "NUTRIENT_STATES_OFFSET" in wire
     assert "feedback.gugugaga.nutrient_tooltip" in screen

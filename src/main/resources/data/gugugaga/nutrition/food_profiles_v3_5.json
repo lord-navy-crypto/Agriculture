@@ -280,6 +280,10 @@
       "carbohydrate": 1,
       "protein": 1,
       "hydration": 1
+    },
+    "spice": {
+      "fiber": 1,
+      "magnesium": 1
     }
   },
   "foods": {
@@ -420,7 +424,7 @@
       "legume"
     ],
     "gugugaga:black_pepper": [
-      "vegetable"
+      "spice"
     ],
     "gugugaga:blackberry": [
       "berries"
@@ -690,11 +694,9 @@
       "grain"
     ],
     "gugugaga:eggplant": [
-      "egg",
       "vegetable"
     ],
     "gugugaga:eggplant_curry": [
-      "egg",
       "vegetable"
     ],
     "gugugaga:endive": [
@@ -839,10 +841,12 @@
       "seafood"
     ],
     "gugugaga:honey_berry_toast": [
+      "grain",
       "berries",
-      "sweet"
+      "honey"
     ],
     "gugugaga:honey_mustard_dressing": [
+      "herb",
       "sweet"
     ],
     "gugugaga:honey_salmon_plate": [
@@ -895,12 +899,11 @@
       "vegetable"
     ],
     "gugugaga:lemongrass": [
-      "fruit",
       "herb"
     ],
     "gugugaga:lemongrass_sardine_soup": [
       "seafood",
-      "fruit",
+      "seaweed",
       "herb",
       "beverage"
     ],
@@ -920,8 +923,9 @@
       "mushroom"
     ],
     "gugugaga:lion_mane_steak": [
-      "meat",
-      "beverage"
+      "mushroom",
+      "grain",
+      "root"
     ],
     "gugugaga:melon": [
       "fruit"
@@ -985,7 +989,7 @@
     ],
     "gugugaga:mushroom_sauce": [
       "mushroom",
-      "fermented"
+      "grain"
     ],
     "gugugaga:mustard_greens": [
       "leafy"
@@ -1030,8 +1034,8 @@
       "vegetable"
     ],
     "gugugaga:onion_vegetable_pie": [
-      "vegetable",
-      "sweet"
+      "grain",
+      "vegetable"
     ],
     "gugugaga:orange_tulip_honey_bottle": [
       "honey"
@@ -1058,7 +1062,8 @@
     "gugugaga:peanut_sauce": [
       "legume",
       "seed",
-      "fermented"
+      "vegetable",
+      "sweet"
     ],
     "gugugaga:pepper_crab_plate": [
       "seafood",
@@ -1203,9 +1208,8 @@
       "vegetable"
     ],
     "gugugaga:rice_vinegar_salad": [
-      "grain",
-      "vegetable",
-      "fermented"
+      "leafy",
+      "root"
     ],
     "gugugaga:roasted_chickpeas": [
       "legume"
@@ -1334,7 +1338,8 @@
     ],
     "gugugaga:smoked_cod_pie": [
       "seafood",
-      "sweet"
+      "grain",
+      "root"
     ],
     "gugugaga:smoked_cod_rice": [
       "seafood",
@@ -1387,6 +1392,7 @@
       "berries"
     ],
     "gugugaga:stuffed_pepper": [
+      "grain",
       "vegetable"
     ],
     "gugugaga:sugar_beet": [
@@ -1463,7 +1469,7 @@
     ],
     "gugugaga:tomato_sauce": [
       "vegetable",
-      "fermented"
+      "herb"
     ],
     "gugugaga:tomato_vegetable_soup": [
       "vegetable",
@@ -1657,9 +1663,6 @@
     "minecraft:salmon": [
       "seafood"
     ],
-    "minecraft:slice_of_cake": [
-      "sweet"
-    ],
     "minecraft:spider_eye": [
       "general"
     ],
@@ -1682,6 +1685,10 @@
       "iron": 4,
       "magnesium": 4,
       "fiber": 4
+    },
+    "gugugaga:eggplant_curry": {
+      "fat": 2,
+      "vitamin_e": 1
     },
     "gugugaga:artichoke": {
       "fiber": 6,
@@ -1856,6 +1863,160 @@
     "threshold:almond_water": {
       "carbohydrate": 0,
       "protein": 0
+    },
+    "gugugaga:tomato": {
+      "vitamin_c": 4,
+      "potassium": 4,
+      "fiber": 2,
+      "vitamin_a": 2,
+      "vitamin_k": 1
+    },
+    "gugugaga:cucumber": {
+      "vitamin_c": 1,
+      "vitamin_a": 0,
+      "vitamin_b9": 1,
+      "vitamin_k": 2,
+      "fiber": 2,
+      "potassium": 2
+    },
+    "gugugaga:broccoli": {
+      "vitamin_c": 6,
+      "vitamin_k": 6,
+      "vitamin_b9": 4,
+      "fiber": 4,
+      "vitamin_a": 2,
+      "potassium": 3
+    },
+    "gugugaga:eggplant": {
+      "vitamin_a": 0,
+      "vitamin_c": 2,
+      "vitamin_k": 1,
+      "fiber": 3,
+      "potassium": 3,
+      "vitamin_b9": 2
+    },
+    "gugugaga:lettuce": {
+      "vitamin_c": 2,
+      "vitamin_k": 5,
+      "fiber": 2,
+      "vitamin_b9": 4,
+      "calcium": 2
+    },
+    "gugugaga:cabbage": {
+      "vitamin_c": 5,
+      "vitamin_k": 4,
+      "vitamin_b9": 3,
+      "fiber": 3
+    },
+    "gugugaga:spinach": {
+      "vitamin_c": 2,
+      "vitamin_k": 6,
+      "iron": 4,
+      "vitamin_b9": 5,
+      "magnesium": 3
+    },
+    "gugugaga:kale": {
+      "vitamin_c": 5,
+      "vitamin_k": 7,
+      "calcium": 4,
+      "vitamin_a": 4,
+      "fiber": 4
+    },
+    "gugugaga:water_spinach": {
+      "vitamin_a": 4,
+      "vitamin_c": 3,
+      "vitamin_k": 4,
+      "iron": 3
+    },
+    "gugugaga:watercress": {
+      "vitamin_c": 5,
+      "vitamin_k": 6,
+      "calcium": 3,
+      "vitamin_a": 4
+    },
+    "gugugaga:pea": {
+      "protein": 5,
+      "fiber": 5,
+      "vitamin_b1": 4,
+      "vitamin_b9": 4
+    },
+    "gugugaga:bell_pepper": {
+      "vitamin_c": 7,
+      "vitamin_a": 4,
+      "fiber": 2,
+      "vitamin_k": 2
+    },
+    "gugugaga:chili_pepper": {
+      "vitamin_c": 5,
+      "vitamin_a": 3,
+      "fiber": 2
+    },
+    "gugugaga:napa_cabbage": {
+      "vitamin_c": 4,
+      "vitamin_k": 4,
+      "vitamin_b9": 4,
+      "calcium": 3
+    },
+    "gugugaga:bok_choy": {
+      "vitamin_k": 5,
+      "vitamin_a": 4,
+      "vitamin_c": 4,
+      "calcium": 4
+    },
+    "gugugaga:zucchini": {
+      "vitamin_c": 3,
+      "potassium": 3,
+      "vitamin_a": 1,
+      "fiber": 2
+    },
+    "gugugaga:sweet_potato": {
+      "vitamin_a": 7,
+      "carbohydrate": 5,
+      "potassium": 3,
+      "fiber": 3
+    },
+    "gugugaga:onion": {
+      "vitamin_c": 2,
+      "fiber": 2,
+      "vitamin_a": 0,
+      "vitamin_k": 0,
+      "vitamin_b9": 1
+    },
+    "gugugaga:garlic": {
+      "vitamin_b6": 3,
+      "vitamin_c": 1,
+      "vitamin_a": 0,
+      "vitamin_k": 0,
+      "fiber": 1
+    },
+    "gugugaga:radish": {
+      "vitamin_c": 3,
+      "fiber": 2,
+      "potassium": 2
+    },
+    "gugugaga:turnip": {
+      "vitamin_c": 3,
+      "fiber": 3,
+      "vitamin_b6": 1,
+      "potassium": 3
+    },
+    "gugugaga:corn": {
+      "carbohydrate": 6,
+      "vitamin_b1": 3,
+      "fiber": 3,
+      "protein": 2
+    },
+    "gugugaga:rice": {
+      "carbohydrate": 6,
+      "protein": 2,
+      "vitamin_b1": 1,
+      "fiber": 1
+    },
+    "gugugaga:soybean": {
+      "protein": 7,
+      "fat": 3,
+      "fiber": 5,
+      "iron": 4
     }
   }
 }

@@ -35,6 +35,10 @@ jobs:
         run: python3 qa/validate_nutrition_tooltips_v4_0.py
       - name: Validate v4.1 per-food overrides, safe limits and cross-dimensional nutrition clock
         run: python3 qa/validate_nutrition_v4_1.py
+      - name: Validate immediate nutrition feedback, no double credit, and vegetable profiles
+        run: python3 qa/validate_nutrition_immediate_v4_6.py
+      - name: Validate v4.7 nutrition GUI snapshots and all food profiles
+        run: python3 qa/validate_nutrition_gui_and_profiles_v4_7.py
       - name: Validate v4.3 closed-loop water and salt gameplay balance
         run: python3 qa/validate_water_balance_v4_3.py
       - name: Validate Backrooms v4.4 brine, water art and opt-in architecture contracts

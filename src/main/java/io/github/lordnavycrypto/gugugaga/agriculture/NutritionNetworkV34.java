@@ -25,7 +25,7 @@ public final class NutritionNetworkV34 {
     }
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("3").playToServer(Request.TYPE, Request.STREAM_CODEC,
+        event.registrar("4").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
                     if (context.player() instanceof ServerPlayer player) {
                         // The graphical panel supersedes the legacy five-page chat dump.
@@ -33,7 +33,10 @@ public final class NutritionNetworkV34 {
                         PacketDistributor.sendToPlayer(player,
                                 new NutritionNetworkV35.State(NutritionV34.snapshot(player),
                                         WaterSaltV37.water(player),WaterSaltV37.salt(player),
-                                        NutritionV34.feedbackSnapshot(player)));
+                                        NutritionV34.feedbackSnapshot(player),
+                                        NutritionV34.dailyIntakeSnapshot(player),
+                                        NutritionV34.lastMealSnapshot(player),
+                                        NutritionV34.lastFoodSnapshot(player)));
                     }
                 });
     }

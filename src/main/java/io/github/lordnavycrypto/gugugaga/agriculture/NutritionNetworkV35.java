@@ -17,7 +17,8 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 public final class NutritionNetworkV35 {
     private NutritionNetworkV35() {}
 
-    public record State(int[] scores,int water,int salt,int[] feedback) implements CustomPacketPayload {
+    public record State(int[] scores,int water,int salt,int[] feedback,
+                        int[] today,int[] recent,String lastFood) implements CustomPacketPayload {
         public static final Type<State> TYPE=new Type<>(
                 ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
                         "nutrition_state"));
@@ -39,6 +40,12 @@ public final class NutritionNetworkV35 {
                                     buf.writeVarInt(Math.max(0,Math.min(2,value+2)));
                                 else buf.writeVarInt(Math.max(0,Math.min(60,value)));
                             }
+                            if(data.today()==null || data.recent()==null
+                                    || data.today().length!=27 || data.recent().length!=27)
+                                throw new IllegalArgumentException("Invalid nutrition meal feedback");
+                            for(int n:data.today())buf.writeVarInt(Math.max(0,Math.min(48,n)));
+                            for(int n:data.recent())buf.writeVarInt(Math.max(0,Math.min(10,n)));
+                            buf.writeUtf(data.lastFood()==null?"":data.lastFood(),128);
                         },
                         (FriendlyByteBuf buf) -> {
                             int[] values=new int[27];
@@ -55,14 +62,20 @@ public final class NutritionNetworkV35 {
                                     feedback[i]=Math.max(-2,Math.min(0,value-2));
                                 else feedback[i]=Math.max(0,Math.min(60,value));
                             }
-                            return new State(values,water,salt,feedback);
+                            int[] today=new int[27], recent=new int[27];
+                            for(int i=0;i<27;i++)today[i]=Math.max(0,Math.min(48,buf.readVarInt()));
+                            for(int i=0;i<27;i++)recent[i]=Math.max(0,Math.min(10,buf.readVarInt()));
+                            String lastFood=buf.readUtf(128);
+                            return new State(values,water,salt,feedback,today,recent,lastFood);
                         }
                 );
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("3").playToClient(State.TYPE,State.STREAM_CODEC,
-                (payload,context) -> NutritionScreenClientV35.open(payload.scores(),payload.water(),payload.salt(),payload.feedback()));
+        event.registrar("4").playToClient(State.TYPE,State.STREAM_CODEC,
+                (payload,context) -> NutritionScreenClientV35.open(
+                        payload.scores(),payload.water(),payload.salt(),payload.feedback(),
+                        payload.today(),payload.recent(),payload.lastFood()));
     }
 }

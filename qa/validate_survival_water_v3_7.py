@@ -18,11 +18,11 @@ def read_java(name):return (JAVA/"agriculture"/(name+".java")).read_text("utf-8"
 def main():
     prior=read_json(DATA/"nutrition/food_profiles_v3_5.json")
     profiles=read_json(DATA/"nutrition/water_salt_profiles_v3_7.json")
-    assert len(prior["foods"])==404
+    assert len(prior["foods"])==403
     assert profiles["schema_version"]==1
     assert "NOT" not in profiles["units"] or "not" in profiles["units"].lower()
     assert set(prior["foods"]).issubset(profiles["foods"])
-    assert len(profiles["foods"])==408
+    assert len(profiles["foods"])==407
     for name,contrib in profiles["foods"].items():
         assert 0<=contrib["water"]<=40 and 0<=contrib["sodium"]<=15,name
     assert profiles["foods"]["gugugaga:boiled_water_bottle"]["water"]>profiles["foods"]["minecraft:honey_bottle"]["water"]
@@ -117,7 +117,7 @@ def main():
             maxscroll=max(0,rows-visible)
             assert maxscroll+visible>=rows
     assert "value+\" / 100\"" in screen
-    assert 'int page=5' in screen and "PAGES.length" in screen
+    assert 'int page=8' in screen and "PAGES.length" in screen
     for lang in ("en_us","zh_cn"):
         keys=read_json(ART/f"lang/{lang}.json")
         for k in ("button.gugugaga.nutrition","hud.gugugaga.nutrition_hint",
@@ -136,7 +136,7 @@ def main():
                      "NutritionInventoryButtonV37")
             for cls in classes:
                 assert f"io/github/lordnavycrypto/gugugaga/agriculture/{cls}.class" in arc.namelist()
-    print("WATER_SALT_V37_OK: 408 item scores, two persistent survival meters, "
+    print("WATER_SALT_V37_OK: 407 real item scores, two persistent survival meters, "
           "server drink and sprint logic, furnace/campfire boiling, "
           "fixed inventory nutrition button and GUI/network integration")
 

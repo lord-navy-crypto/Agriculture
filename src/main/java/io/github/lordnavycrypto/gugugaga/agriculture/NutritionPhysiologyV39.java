@@ -67,16 +67,40 @@ public final class NutritionPhysiologyV39 {
         return linked(i)?0:clampDays(data.getInt(LOW_DAYS+i));
     }
 
-    /** Food is accumulated; not instantly converted into a healthy organ.
-     * Only server-side completed eating events may call this method. */
-    public static void consume(CompoundTag data,int[] points) {
+    /**
+     * Immediately award visible gameplay reserve gains on a completed meal.
+     * Each channel has a small per-game-day recovery cap, keeping food variety
+     * meaningful. The daily ledger also controls next day's depletion, but
+     * MUST NOT award the same food a second time at rollover.
+     *
+     * Hydration and sodium remain exclusively owned by WaterSaltV37.
+     * Returns actual applied gains, after daily limits and reserve clamping,
+     * for user-facing action-bar feedback.
+     */
+    public static int[] consume(CompoundTag data,int[] points) {
+        if(points==null || points.length!=COUNT)
+            throw new IllegalArgumentException("Expected 27 nutrition channels");
+        int[] gained=new int[COUNT];
         for(int i=0;i<COUNT;i++) {
             if(linked(i))continue;
             int add=Math.max(0,Math.min(10,points[i]));
             if(add==0)continue;
-            int old=Math.max(0,Math.min(MAX_DAILY,data.getInt(DAILY+i)));
-            data.putInt(DAILY+i,Math.min(MAX_DAILY,old+add));
+            int previous=Math.max(0,Math.min(MAX_DAILY,data.getInt(DAILY+i)));
+            int updated=Math.min(MAX_DAILY,previous+add);
+            data.putInt(DAILY+i,updated);
+
+            // Credit is proportional to the daily target, capped at the
+            // existing REPLENISH limit even if many identical foods are eaten.
+            int before=Math.min(REPLENISH[i],
+                    (previous*REPLENISH[i]+TARGET[i]-1)/TARGET[i]);
+            int after=Math.min(REPLENISH[i],
+                    (updated*REPLENISH[i]+TARGET[i]-1)/TARGET[i]);
+            int current=stored(data,i);
+            int next=clamp(current+Math.max(0,after-before));
+            gained[i]=next-current;
+            data.putInt(key(i),next);
         }
+        return gained;
     }
 
     /** Bounded catch-up: if the chunk/server was idle for a long period,
@@ -101,9 +125,9 @@ public final class NutritionPhysiologyV39 {
             int current=stored(data,i);
             int next;
             if(consumed>=TARGET[i]) {
-                // No immediate max score; reserves refill across days.
-                next=clamp(current+Math.min(REPLENISH[i],
-                        1+consumed/TARGET[i]));
+                // Food already credited the reserve on eating. Reaching the
+                // daily target prevents depletion, but never adds it twice.
+                next=current;
             } else {
                 // Proportional shortage: missing all inputs drains fastest.
                 int loss=Math.max(1, DAILY_LOSS[i]*(TARGET[i]-consumed)/TARGET[i]);
@@ -117,6 +141,16 @@ public final class NutritionPhysiologyV39 {
             data.putInt(LOW_DAYS+i,prior);
             data.remove(DAILY+i);
         }
+    }
+
+    /** Server-authoritative daily intake ledger for the N-key overview. */
+    public static int[] dailyIntakeSnapshot(CompoundTag data) {
+        int[] intake=new int[COUNT];
+        for(int i=0;i<COUNT;i++) {
+            if(linked(i))continue;
+            intake[i]=Math.max(0,Math.min(MAX_DAILY,data.getInt(DAILY+i)));
+        }
+        return intake;
     }
 
     /** -2 sustained shortage, -1 watch, 0 maintained. No "superhuman" 1. */

@@ -70,12 +70,41 @@ public final class NutritionV34 {
         if (NutritionProfilesV35.isHydrationOnly(id)) return;
         int[] contribution=NutritionProfilesV35.contribution(id);
         CompoundTag values=record(player);
-        // Ingest is an input to the next daily reserve update, NOT an
-        // instantaneous tissue replenishment or clinical blood level.
-        NutritionPhysiologyV39.consume(values,contribution);
+        // Update the displayed game reserve immediately, while using the
+        // per-day ledger for maintenance and bounded depletion at rollover.
+        int[] gained=NutritionPhysiologyV39.consume(values,contribution);
         // All eaten foods are counted once, only on the server. Inventory
         // possession, use-start and aborted eating never award nutrition.
+        values.putString("v47_last_eaten_food",id);
+        for(int i=0;i<gained.length;i++)
+            values.putInt("v47_last_meal_gain_"+i,gained[i]);
         player.getPersistentData().put(ROOT,values);
+
+        // Three largest actual increases, instead of three arbitrary metrics
+        // from the catalog's index order.
+        int[] best={-1,-1,-1};
+        for(int i=0;i<gained.length;i++) {
+            if(gained[i]<=0)continue;
+            for(int slot=0;slot<best.length;slot++) {
+                if(best[slot]<0 || gained[i]>gained[best[slot]]) {
+                    for(int shift=best.length-1;shift>slot;shift--)
+                        best[shift]=best[shift-1];
+                    best[slot]=i;
+                    break;
+                }
+            }
+        }
+        net.minecraft.network.chat.MutableComponent summary=Component.translatable(
+                "message.gugugaga.nutrition_gained_food",food.getHoverName());
+        for(int slot=0;slot<best.length && best[slot]>=0;slot++) {
+            int index=best[slot];
+            summary.append(Component.literal(slot==0?" ": ", "));
+            summary.append(Component.translatable(
+                    "nutrition.gugugaga."+NutritionProfilesV35.NUTRIENTS[index]));
+            summary.append(Component.literal(" +"+gained[index]));
+        }
+        player.displayClientMessage(best[0]>=0?summary:Component.translatable(
+                "message.gugugaga.nutrition_no_gain_food",food.getHoverName()),true);
     }
 
     @SubscribeEvent
@@ -84,8 +113,10 @@ public final class NutritionV34 {
         if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
+        // Monotonic Overworld game time advances even when daylight cycling is
+        // disabled; /time set cannot freeze or fabricate nutrition rollovers.
         NutritionPhysiologyV39.advance(values,
-                Math.floorDiv(player.getServer().overworld().getDayTime(),24000L));
+                Math.floorDiv(player.getServer().overworld().getGameTime(),24000L));
         // Each of the 27 nutrition indicators has an explicit positive and
         // low-reserve potion mapping. Resolve overlaps in the effect matrix.
         NutritionFeedbackV38.apply(player,values,false);
@@ -115,6 +146,21 @@ public final class NutritionV34 {
         result[NutritionPhysiologyV39.WATER_INDEX]=WaterSaltV37.water(player);
         result[NutritionPhysiologyV39.SODIUM_INDEX]=WaterSaltV37.salt(player);
         return result;
+    }
+
+    /** Last completed food and actual gain, persisted with the nutrition save. */
+    public static String lastFoodSnapshot(ServerPlayer player) {
+        return record(player).getString("v47_last_eaten_food");
+    }
+    public static int[] lastMealSnapshot(ServerPlayer player) {
+        CompoundTag values=record(player);
+        int[] result=new int[NutritionProfilesV35.NUTRIENTS.length];
+        for(int i=0;i<result.length;i++)
+            result[i]=Math.max(0,Math.min(10,values.getInt("v47_last_meal_gain_"+i)));
+        return result;
+    }
+    public static int[] dailyIntakeSnapshot(ServerPlayer player) {
+        return NutritionPhysiologyV39.dailyIntakeSnapshot(record(player));
     }
 
     /** Server-owned group scores, status flags and streaks for the feedback page. */

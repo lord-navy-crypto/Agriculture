@@ -32,7 +32,7 @@ def main():
     assert "variedMeals" not in nutrition and "highlyVaried" not in nutrition
     assert "player.addEffect" not in nutrition, "legacy aggregate bonuses must be removed"
     assert "message.gugugaga.v310_effects_active" in nutrition
-    assert "PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27}}" in screen
+    assert "PAGES={{0,5},{5,12},{12,18},{18,23},{23,27},{0,0},{0,0},{0,27},{0,0}}" in screen
     assert "page==7?27" in screen and "page==7?row" in screen
     assert "water<=8?-2:water<=15?-1:water>=65?1:0" in screen
     assert "salt<=8?-2:salt>85?-1:salt>=35 && salt<=75?1:0" in screen

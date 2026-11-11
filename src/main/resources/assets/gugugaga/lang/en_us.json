@@ -1184,7 +1184,21 @@
   "message.gugugaga.partygoer_level0_missing": "The Partygoer pulled you away, but Level 0 is unavailable.",
   "message.gugugaga.partygoer_capture_success": "You awaken in Level 0. Your inventory has been preserved.",
   "tooltip.gugugaga.nutrition_balance": "Water balance +%1$s | Salt balance +%2$s (immediate)",
-  "tooltip.gugugaga.nutrition_daily": "Nutrients are applied at the next game-day reserve update.",
+  "tooltip.gugugaga.nutrition_daily": "Game reserves gain immediately after eating; daily maintenance is processed using Overworld game time.",
+  "message.gugugaga.nutrition_gained": "Nutrition reserves gained:",
+  "message.gugugaga.nutrition_no_gain": "No additional reserve gain (daily limit reached or this food has no tracked reserves).",
   "tooltip.gugugaga.nutrient_target_line": "• %1$s: +%2$d points (game-day target %3$d)",
-  "tooltip.gugugaga.nutrition_balance_fallback": "Water +%1$s | Salt +%2$s (default fallback; no item profile)"
+  "tooltip.gugugaga.nutrition_balance_fallback": "Water +%1$s | Salt +%2$s (default fallback; no item profile)",
+  "message.gugugaga.v35_page_8": "Food feedback",
+  "message.gugugaga.nutrition_gained_food": "Ate %s:",
+  "message.gugugaga.nutrition_no_gain_food": "Ate %s: no additional reserve gain (daily limit or full reserve).",
+  "feedback.gugugaga.quick.last_food": "Last eaten: %s",
+  "feedback.gugugaga.quick.none": "None yet",
+  "feedback.gugugaga.quick.no_more": "No more reserve gains",
+  "feedback.gugugaga.quick.gain": "%s  +%s",
+  "feedback.gugugaga.quick.daily": "Today's targets met: %s / %s",
+  "feedback.gugugaga.quick.water": "Water: %s / 100",
+  "feedback.gugugaga.quick.sodium": "Salt: %s / 100",
+  "feedback.gugugaga.quick.hint": "Use arrows for all 27 reserves",
+  "feedback.gugugaga.quick.footer": "Food boosts show immediately; reserves change each game day."
 }
