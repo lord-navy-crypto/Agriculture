@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate 404-food category integrity and player-readable meal feedback."""
+"""Validate 403-real-food category integrity and player-readable meal feedback."""
 import json
 from pathlib import Path
 
@@ -13,7 +13,7 @@ def main():
     foods=data["foods"]
     overrides=data.get("overrides",{})
     nutrients=[n["id"] for n in data["nutrients"]]
-    assert len(foods)==404 and len(nutrients)==27 and len(set(nutrients))==27
+    assert len(foods)==403 and len(nutrients)==27 and len(set(nutrients))==27
     assert len(overrides)>=60
     for food,groups in foods.items():
         assert groups and len(groups)==len(set(groups)),food
@@ -37,6 +37,15 @@ def main():
     assert foods["gugugaga:tomato_sauce"]==["vegetable","herb"]
     assert foods["gugugaga:onion_vegetable_pie"]==["grain","vegetable"]
     assert foods["gugugaga:stuffed_pepper"]==["grain","vegetable"]
+    assert "minecraft:slice_of_cake" not in foods
+    assert foods["gugugaga:lion_mane_steak"] == ["mushroom","grain","root"]
+    assert foods["gugugaga:lemongrass"] == ["herb"]
+    assert foods["gugugaga:lemongrass_sardine_soup"] == ["seafood","seaweed","herb","beverage"]
+    assert foods["gugugaga:mushroom_sauce"] == ["mushroom","grain"]
+    assert foods["gugugaga:peanut_sauce"] == ["legume","seed","vegetable","sweet"]
+    assert foods["gugugaga:smoked_cod_pie"] == ["seafood","grain","root"]
+    assert foods["gugugaga:honey_berry_toast"] == ["grain","berries","honey"]
+    assert foods["gugugaga:rice_vinegar_salad"] == ["leafy","root"]
     assert overrides["gugugaga:cucumber"]["vitamin_c"] < overrides["gugugaga:bell_pepper"]["vitamin_c"]
     assert overrides["gugugaga:eggplant"]["vitamin_a"] == 0
     assert overrides["gugugaga:spinach"]["vitamin_k"] > overrides["gugugaga:lettuce"]["vitamin_k"]
@@ -72,7 +81,7 @@ def main():
                      "feedback.gugugaga.quick.daily",
                      "feedback.gugugaga.quick.gain"):
             assert name in text and text[name],(lang,name)
-    print("NUTRITION_GUI_AND_PROFILES_V47_PASS: 404 foods, categorized overrides, immediate top-3 gains, 9-page server-backed bilingual UI")
+    print("NUTRITION_GUI_AND_PROFILES_V47_PASS: 403 real foods, categorized overrides, immediate top-3 gains, 9-page server-backed bilingual UI")
 
 if __name__=="__main__":
     main()

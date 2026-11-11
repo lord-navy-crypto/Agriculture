@@ -18,8 +18,11 @@ Press **N** to open the nutrition screen. It now defaults to **Food Feedback / �
 The original eight detailed pages remain available. Snapshot values come from server-owned NBT and are sent in the revised v4 network payload. Reopening N requests fresh data.
 
 ## Food profile fixes / 数据修复
-- All 404 food assignments and templates are checked for valid IDs, category references, nonnegative 0–10 scores and override validity.
+- All 403 real food assignments and templates are checked for valid IDs, category references, nonnegative 0–10 scores and override validity.
 - Added/expanded item-specific game balance for 24 selected raw crops to reduce identical scores between unrelated vegetables. No clinical nutrient accuracy is claimed.
+- Removed nonexistent vanilla item ID `minecraft:slice_of_cake`; it is not a Minecraft 1.21.1 food item.
+- Fixed mushroom steak improperly receiving meat nutrients and lemongrass improperly receiving fruit nutrients.
+- Reclassified smoked cod pie, mushroom sauce, peanut sauce, honey berry toast, rice vinegar salad, and lemongrass sardine soup against their actual recipe ingredients.
 - Fixed black pepper being treated like a full serving of vegetables.
 - Fixed onion vegetable pie and stuffed pepper recipe categories to include grain ingredients.
 - Removed false fermented-food category from non-fermented tomato sauce.

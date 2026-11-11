@@ -841,10 +841,12 @@
       "seafood"
     ],
     "gugugaga:honey_berry_toast": [
+      "grain",
       "berries",
-      "sweet"
+      "honey"
     ],
     "gugugaga:honey_mustard_dressing": [
+      "herb",
       "sweet"
     ],
     "gugugaga:honey_salmon_plate": [
@@ -897,12 +899,11 @@
       "vegetable"
     ],
     "gugugaga:lemongrass": [
-      "fruit",
       "herb"
     ],
     "gugugaga:lemongrass_sardine_soup": [
       "seafood",
-      "fruit",
+      "seaweed",
       "herb",
       "beverage"
     ],
@@ -922,8 +923,9 @@
       "mushroom"
     ],
     "gugugaga:lion_mane_steak": [
-      "meat",
-      "beverage"
+      "mushroom",
+      "grain",
+      "root"
     ],
     "gugugaga:melon": [
       "fruit"
@@ -987,7 +989,7 @@
     ],
     "gugugaga:mushroom_sauce": [
       "mushroom",
-      "fermented"
+      "grain"
     ],
     "gugugaga:mustard_greens": [
       "leafy"
@@ -1060,7 +1062,8 @@
     "gugugaga:peanut_sauce": [
       "legume",
       "seed",
-      "fermented"
+      "vegetable",
+      "sweet"
     ],
     "gugugaga:pepper_crab_plate": [
       "seafood",
@@ -1205,9 +1208,8 @@
       "vegetable"
     ],
     "gugugaga:rice_vinegar_salad": [
-      "grain",
-      "vegetable",
-      "fermented"
+      "leafy",
+      "root"
     ],
     "gugugaga:roasted_chickpeas": [
       "legume"
@@ -1336,7 +1338,8 @@
     ],
     "gugugaga:smoked_cod_pie": [
       "seafood",
-      "sweet"
+      "grain",
+      "root"
     ],
     "gugugaga:smoked_cod_rice": [
       "seafood",
@@ -1659,9 +1662,6 @@
     ],
     "minecraft:salmon": [
       "seafood"
-    ],
-    "minecraft:slice_of_cake": [
-      "sweet"
     ],
     "minecraft:spider_eye": [
       "general"

@@ -117,7 +117,7 @@ def main():
             maxscroll=max(0,rows-visible)
             assert maxscroll+visible>=rows
     assert "value+\" / 100\"" in screen
-    assert 'int page=5' in screen and "PAGES.length" in screen
+    assert 'int page=8' in screen and "PAGES.length" in screen
     for lang in ("en_us","zh_cn"):
         keys=read_json(ART/f"lang/{lang}.json")
         for k in ("button.gugugaga.nutrition","hud.gugugaga.nutrition_hint",
