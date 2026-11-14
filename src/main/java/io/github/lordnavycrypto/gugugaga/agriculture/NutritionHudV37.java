@@ -15,7 +15,8 @@ public final class NutritionHudV37 {
     @SubscribeEvent
     public static void render(RenderGuiEvent.Post event) {
         Minecraft minecraft=Minecraft.getInstance();
-        if(minecraft.player==null ||minecraft.options.hideGui ||minecraft.screen!=null)return;
+        if(!NutritionModeV414.clientEnabled()
+                ||minecraft.player==null ||minecraft.options.hideGui ||minecraft.screen!=null)return;
         var graphics=event.getGuiGraphics();
         int x=graphics.guiWidth()-112;
         graphics.fill(x,8,x+104,23,0xA72A3530);
