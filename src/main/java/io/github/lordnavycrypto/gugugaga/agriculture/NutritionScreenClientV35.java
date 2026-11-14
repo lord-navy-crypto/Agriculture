@@ -33,6 +33,7 @@ public final class NutritionScreenClientV35 extends Screen {
     private int scroll=0;
     private Button scrollUp;
     private Button scrollDown;
+    private Button nutritionToggle;
 
     private NutritionScreenClientV35(int[] snapshot,int water,int salt,int[] feedback,
                                      int[] today,int[] recent,String lastFood) {
@@ -67,7 +68,7 @@ public final class NutritionScreenClientV35 extends Screen {
     private int panelHeight() {return Math.max(105,Math.min(305,height-12));}
     private int panelX() {return (width-panelWidth())/2;}
     private int panelY() {return (height-panelHeight())/2;}
-    private int contentTop() {return panelY()+47;}
+    private int contentTop() {return panelY()+68;}
     private int contentBottom() {return panelY()+panelHeight()-45;}
     private int visibleRows() {
         return Math.max(1,(contentBottom()-contentTop()-3)/ROW_HEIGHT);
@@ -88,6 +89,22 @@ public final class NutritionScreenClientV35 extends Screen {
         page=Math.floorMod(newPage,PAGES.length);
         setScroll(0);
     }
+    private Component nutritionModeLabel() {
+        Component state = Component.translatable(NutritionModeV414.clientEnabled()
+                ? "button.gugugaga.nutrition_mode_on"
+                : "button.gugugaga.nutrition_mode_off");
+        if (!NutritionModeV414.clientCanToggle())
+            return Component.translatable("button.gugugaga.nutrition_mode_locked", state);
+        if (NutritionModeV414.clientTogglePending())
+            return Component.translatable("button.gugugaga.nutrition_mode_pending");
+        return state;
+    }
+    private void syncNutritionModeButton() {
+        if (nutritionToggle == null) return;
+        nutritionToggle.setMessage(nutritionModeLabel());
+        nutritionToggle.active = NutritionModeV414.clientCanToggle()
+                && !NutritionModeV414.clientTogglePending();
+    }
 
     @Override
     protected void init() {
@@ -96,6 +113,12 @@ public final class NutritionScreenClientV35 extends Screen {
         int side=compact?28:40, scrollW=compact?24:30, doneW=compact?54:80;
         int gap=compact?6:9;
         int total=2*side+2*scrollW+doneW+4*gap;
+        int toggleWidth=Math.min(160,w-18);
+        nutritionToggle=addRenderableWidget(Button.builder(nutritionModeLabel(),
+                b -> {
+                    NutritionModeV414.requestClientToggle();
+                    syncNutritionModeButton();
+                }).bounds(x+(w-toggleWidth)/2,y+43,toggleWidth,18).build());
         int pos=x+(w-total)/2;
         addRenderableWidget(Button.builder(Component.literal("<"),
                 b -> setPage(page-1)).bounds(pos,y+h-25,side,19).build());
@@ -289,12 +312,14 @@ public final class NutritionScreenClientV35 extends Screen {
                 }
             }
         }
-        Component note=Component.translatable(page==8
-                ?"feedback.gugugaga.quick.footer":page==7
+        Component note=Component.translatable(!NutritionModeV414.clientEnabled()
+                ? "message.gugugaga.nutrition_mode_paused"
+                : page==8 ? "feedback.gugugaga.quick.footer":page==7
                 ?"feedback.gugugaga.effects_note":page==6
                 ?"feedback.gugugaga.note":"message.gugugaga.v35_gui_note");
         centered(graphics,note,x+w/2,y+h-39,w-20,0xFFE2E6D7);
         syncScrollButtons();
+        syncNutritionModeButton();
         super.render(graphics,mouseX,mouseY,partialTick);
         if(hover!=null)graphics.renderTooltip(font,hover,mouseX,mouseY);
     }
