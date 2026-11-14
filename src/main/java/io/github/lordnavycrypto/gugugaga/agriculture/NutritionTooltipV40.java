@@ -27,6 +27,7 @@ public final class NutritionTooltipV40 {
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
+        if (!NutritionModeV414.clientEnabled()) return;
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty() || !stack.has(DataComponents.FOOD)) return;
 
