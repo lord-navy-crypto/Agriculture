@@ -1,0 +1,149 @@
+{
+  "minecraft": {
+    "version": "1.21.1",
+    "modLoaders": [
+      {
+        "id": "neoforge-21.1.259",
+        "primary": true
+      }
+    ]
+  },
+  "manifestType": "minecraftModpack",
+  "manifestVersion": 1,
+  "name": "The Beautiful Unknown - Nightfall",
+  "version": "0.2.0-alpha-nightfall",
+  "author": "lord-navy-crypto",
+  "files": [
+    {
+      "projectID": 238222,
+      "fileID": 7391682,
+      "required": true
+    },
+    {
+      "projectID": 245755,
+      "fileID": 8837388,
+      "required": true
+    },
+    {
+      "projectID": 252848,
+      "fileID": 7892954,
+      "required": true
+    },
+    {
+      "projectID": 319596,
+      "fileID": 5446174,
+      "required": true
+    },
+    {
+      "projectID": 324717,
+      "fileID": 8591319,
+      "required": true
+    },
+    {
+      "projectID": 348521,
+      "fileID": 5729127,
+      "required": true
+    },
+    {
+      "projectID": 368293,
+      "fileID": 8688394,
+      "required": true
+    },
+    {
+      "projectID": 388172,
+      "fileID": 8893490,
+      "required": true
+    },
+    {
+      "projectID": 429235,
+      "fileID": 7524151,
+      "required": true
+    },
+    {
+      "projectID": 602059,
+      "fileID": 9097325,
+      "required": true
+    },
+    {
+      "projectID": 626761,
+      "fileID": 7112985,
+      "required": true
+    },
+    {
+      "projectID": 627986,
+      "fileID": 9280587,
+      "required": true
+    },
+    {
+      "projectID": 667299,
+      "fileID": 7305639,
+      "required": true
+    },
+    {
+      "projectID": 790626,
+      "fileID": 9309399,
+      "required": true
+    },
+    {
+      "projectID": 854949,
+      "fileID": 8822088,
+      "required": true
+    },
+    {
+      "projectID": 936015,
+      "fileID": 9170709,
+      "required": true
+    },
+    {
+      "projectID": 1015100,
+      "fileID": 8702150,
+      "required": true
+    },
+    {
+      "projectID": 1015112,
+      "fileID": 5954804,
+      "required": true
+    },
+    {
+      "projectID": 1015118,
+      "fileID": 6606621,
+      "required": true
+    },
+    {
+      "projectID": 1033010,
+      "fileID": 7909611,
+      "required": true
+    },
+    {
+      "projectID": 1502980,
+      "fileID": 7975686,
+      "required": false
+    },
+    {
+      "projectID": 1642074,
+      "fileID": 9408240,
+      "required": true
+    },
+    {
+      "projectID": 1681256,
+      "fileID": 8805311,
+      "required": true
+    },
+    {
+      "projectID": 1725406,
+      "fileID": 9053738,
+      "required": true
+    },
+    {
+      "projectID": 1725693,
+      "fileID": 9074561,
+      "required": true
+    },
+    {
+      "projectID": 1731290,
+      "fileID": 9285310,
+      "required": true
+    }
+  ],
+  "overrides": "overrides"
+}

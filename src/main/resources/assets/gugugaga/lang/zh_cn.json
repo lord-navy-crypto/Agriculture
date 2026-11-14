@@ -1201,5 +1201,11 @@
   "feedback.gugugaga.quick.water": "水分：%s / 100",
   "feedback.gugugaga.quick.sodium": "盐分：%s / 100",
   "feedback.gugugaga.quick.hint": "左右切换查看全部27项",
-  "feedback.gugugaga.quick.footer": "吃完立即加分，每个游戏日结算储备。"
+  "feedback.gugugaga.quick.footer": "吃完立即加分，每个游戏日结算储备。",
+  "nutrition.gugugaga.mode_on_short": "营养：开",
+  "nutrition.gugugaga.mode_off_short": "营养：关",
+  "nutrition.gugugaga.mode_status": "营养模式：%s",
+  "nutrition.gugugaga.mode_enabled": "已开启",
+  "nutrition.gugugaga.mode_paused": "已暂停",
+  "nutrition.gugugaga.mode_paused_note": "营养储备已暂停；饮水与盐分系统仍独立运行。"
 }

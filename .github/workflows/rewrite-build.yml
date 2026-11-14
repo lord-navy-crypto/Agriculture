@@ -41,6 +41,8 @@ jobs:
         run: python3 qa/validate_nutrition_gui_and_profiles_v4_7.py
       - name: Validate v4.13 6-12 balanced nutrition recovery, cap mathematics and bilingual UI
         run: python3 qa/validate_nutrition_balance_v4_13.py
+      - name: Validate v4.14 optional nutrition mode toggle and pause semantics
+        run: python3 qa/validate_nutrition_mode_toggle_v4_14.py
       - name: Validate v4.3 closed-loop water and salt gameplay balance
         run: python3 qa/validate_water_balance_v4_3.py
       - name: Validate Backrooms v4.4 brine, water art and opt-in architecture contracts

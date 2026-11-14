@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.14.0-alpha.1 — Optional Nutrition Mode / 可选营养模式
+
+- Add a persistent, server-authoritative Nutrition Mode switch to the N-key dashboard.
+- Nutrition Mode defaults to ON for existing worlds and is copied when a player respawns.
+- When OFF, the 25 nutrient reserves, food-to-nutrient intake, daily depletion, and nutrient feedback effects are paused; saved reserves are preserved.
+- The pause clock is synchronized and the daily intake ledger is cleared, preventing catch-up depletion when the mode is re-enabled.
+- Hydration and sodium remain on the independent WaterSaltV37 survival system.
+- Add bilingual labels, a visible paused status, protocol version 5, and a dedicated QA contract.
+
+- 在 N 键营养面板加入服务器权威、可保存的营养模式开关。
+- 现有世界默认开启；玩家重生时保留开关状态。
+- 关闭后暂停 25 项营养储备、食物营养计入、每日消耗及营养反馈效果，原有储备不会被清空。
+- 暂停期间同步游戏日并清除每日摄入账本，重新开启时不会补算关闭期间的消耗。
+- 饮水和钠盐仍由独立的 WaterSaltV37 生存系统管理。
+- 增加中英文界面、暂停状态提示、网络协议版本 5 和专项自动验收。
+
+
 ## v4.0.0-alpha.1 — Backroom Agriculture unified release
 
 - Merge Agriculture and THRESHOLD into one installed NeoForge mod and one JAR; retain the historical registry namespaces for existing-world compatibility.

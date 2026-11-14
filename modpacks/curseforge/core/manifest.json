@@ -1,0 +1,64 @@
+{
+  "minecraft": {
+    "version": "1.21.1",
+    "modLoaders": [
+      {
+        "id": "neoforge-21.1.259",
+        "primary": true
+      }
+    ]
+  },
+  "manifestType": "minecraftModpack",
+  "manifestVersion": 1,
+  "name": "The Beautiful Unknown - Core",
+  "version": "0.2.0-alpha",
+  "author": "lord-navy-crypto",
+  "files": [
+    {
+      "projectID": 238222,
+      "fileID": 7391682,
+      "required": true
+    },
+    {
+      "projectID": 324717,
+      "fileID": 8591319,
+      "required": true
+    },
+    {
+      "projectID": 348521,
+      "fileID": 5729127,
+      "required": true
+    },
+    {
+      "projectID": 388172,
+      "fileID": 8893490,
+      "required": true
+    },
+    {
+      "projectID": 429235,
+      "fileID": 7524151,
+      "required": true
+    },
+    {
+      "projectID": 667299,
+      "fileID": 7305639,
+      "required": true
+    },
+    {
+      "projectID": 790626,
+      "fileID": 9309399,
+      "required": true
+    },
+    {
+      "projectID": 854949,
+      "fileID": 8822088,
+      "required": true
+    },
+    {
+      "projectID": 936015,
+      "fileID": 9170709,
+      "required": true
+    }
+  ],
+  "overrides": "overrides"
+}

@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Read-only, server-authored nutrition dashboard. Always render at the
@@ -28,6 +29,7 @@ public final class NutritionScreenClientV35 extends Screen {
     private final int[] today;
     private final int[] recent;
     private final String lastFood;
+    private final boolean nutritionEnabled;
     private final int[] topGains={-1,-1,-1};
     private int page=8;
     private int scroll=0;
@@ -35,7 +37,8 @@ public final class NutritionScreenClientV35 extends Screen {
     private Button scrollDown;
 
     private NutritionScreenClientV35(int[] snapshot,int water,int salt,int[] feedback,
-                                     int[] today,int[] recent,String lastFood) {
+                                     int[] today,int[] recent,String lastFood,
+                                     boolean nutritionEnabled) {
         super(Component.translatable("message.gugugaga.v35_gui_title"));
         this.values=Arrays.copyOf(snapshot,27);
         this.water=clamp(water);
@@ -44,6 +47,7 @@ public final class NutritionScreenClientV35 extends Screen {
         this.today=Arrays.copyOf(today,27);
         this.recent=Arrays.copyOf(recent,27);
         this.lastFood=lastFood;
+        this.nutritionEnabled=nutritionEnabled;
         Integer[] ranking=new Integer[27];
         for(int i=0;i<27;i++)ranking[i]=i;
         Arrays.sort(ranking,(a,b)->Integer.compare(this.recent[b],this.recent[a]));
@@ -53,14 +57,15 @@ public final class NutritionScreenClientV35 extends Screen {
     private static int clamp(int value) {return Math.max(0,Math.min(100,value));}
 
     public static void open(int[] scores,int water,int salt,int[] feedback,
-                            int[] today,int[] recent,String lastFood) {
+                            int[] today,int[] recent,String lastFood,
+                            boolean nutritionEnabled) {
         if(scores==null || scores.length!=27 || feedback==null
                 || feedback.length!=NutritionFeedbackV38.SNAPSHOT_SIZE
                 || today==null || today.length!=27
                 || recent==null || recent.length!=27
                 || lastFood==null)return;
         Minecraft.getInstance().setScreen(new NutritionScreenClientV35(
-                scores,water,salt,feedback,today,recent,lastFood));
+                scores,water,salt,feedback,today,recent,lastFood,nutritionEnabled));
     }
 
     private int panelWidth() {return Math.max(120,Math.min(440,width-12));}
@@ -97,6 +102,11 @@ public final class NutritionScreenClientV35 extends Screen {
         int gap=compact?6:9;
         int total=2*side+2*scrollW+doneW+4*gap;
         int pos=x+(w-total)/2;
+        int modeWidth=compact?42:64;
+        addRenderableWidget(Button.builder(Component.translatable(nutritionEnabled
+                        ?"nutrition.gugugaga.mode_on_short":"nutrition.gugugaga.mode_off_short"),
+                b -> PacketDistributor.sendToServer(new NutritionNetworkV35.ToggleRequest()))
+                .bounds(x+w-modeWidth-8,y+6,modeWidth,18).build());
         addRenderableWidget(Button.builder(Component.literal("<"),
                 b -> setPage(page-1)).bounds(pos,y+h-25,side,19).build());
         pos+=side+gap;
@@ -139,7 +149,9 @@ public final class NutritionScreenClientV35 extends Screen {
         }
         if(row==5)return Component.translatable("feedback.gugugaga.quick.water",water);
         if(row==6)return Component.translatable("feedback.gugugaga.quick.sodium",salt);
-        return Component.translatable("feedback.gugugaga.quick.hint");
+        return Component.translatable("nutrition.gugugaga.mode_status",
+                Component.translatable(nutritionEnabled
+                        ?"nutrition.gugugaga.mode_enabled":"nutrition.gugugaga.mode_paused"));
     }
 
     private Component rowLabel(int row) {
@@ -183,7 +195,8 @@ public final class NutritionScreenClientV35 extends Screen {
         int x=panelX(),y=panelY(),w=panelWidth(),h=panelHeight();
         graphics.fill(x,y,x+w,y+h,0xF5273531);
         graphics.fill(x,y,x+w,y+2,0xFF97C9A3);
-        centered(graphics,title,x+w/2,y+8,w-20,0xFFFFFFFF);
+        int modeWidth=w<280?42:64;
+        centered(graphics,title,x+(w-modeWidth-8)/2,y+8,w-modeWidth-20,0xFFFFFFFF);
         Component category=Component.translatable("message.gugugaga.v35_page_"+page);
         Component heading=Component.literal((page+1)+" / "+PAGES.length+"  ").append(category);
         centered(graphics,heading,x+w/2,y+27,w-28,0xFFFFFFD2);
@@ -289,7 +302,8 @@ public final class NutritionScreenClientV35 extends Screen {
                 }
             }
         }
-        Component note=Component.translatable(page==8
+        Component note=Component.translatable(page==8 && !nutritionEnabled
+                ?"nutrition.gugugaga.mode_paused_note":page==8
                 ?"feedback.gugugaga.quick.footer":page==7
                 ?"feedback.gugugaga.effects_note":page==6
                 ?"feedback.gugugaga.note":"message.gugugaga.v35_gui_note");
