@@ -11,7 +11,7 @@
   "manifestType": "minecraftModpack",
   "manifestVersion": 1,
   "name": "The Beautiful Unknown - Nightfall",
-  "version": "0.1.0-alpha-nightfall",
+  "version": "0.1.1-alpha-nightfall",
   "author": "lord-navy-crypto",
   "files": [
     {
@@ -20,13 +20,8 @@
       "required": true
     },
     {
-      "projectID": 254284,
-      "fileID": 9099001,
-      "required": true
-    },
-    {
-      "projectID": 257814,
-      "fileID": 9474088,
+      "projectID": 319596,
+      "fileID": 5446174,
       "required": true
     },
     {
@@ -70,8 +65,43 @@
       "required": true
     },
     {
-      "projectID": 1316039,
-      "fileID": 8859771,
+      "projectID": 936015,
+      "fileID": 9170709,
+      "required": true
+    },
+    {
+      "projectID": 1033010,
+      "fileID": 7909611,
+      "required": true
+    },
+    {
+      "projectID": 1502980,
+      "fileID": 7975686,
+      "required": false
+    },
+    {
+      "projectID": 1642074,
+      "fileID": 9408240,
+      "required": true
+    },
+    {
+      "projectID": 1681256,
+      "fileID": 8805311,
+      "required": true
+    },
+    {
+      "projectID": 1725406,
+      "fileID": 9053738,
+      "required": true
+    },
+    {
+      "projectID": 1725693,
+      "fileID": 9074561,
+      "required": true
+    },
+    {
+      "projectID": 1731290,
+      "fileID": 9285310,
       "required": true
     }
   ],

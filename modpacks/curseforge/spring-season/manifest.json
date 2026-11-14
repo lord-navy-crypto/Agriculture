@@ -11,7 +11,7 @@
   "manifestType": "minecraftModpack",
   "manifestVersion": 1,
   "name": "The Beautiful Unknown - Spring Season",
-  "version": "0.1.0-alpha-spring",
+  "version": "0.1.1-alpha-spring",
   "author": "lord-navy-crypto",
   "files": [
     {
@@ -57,6 +57,11 @@
     {
       "projectID": 854949,
       "fileID": 8822088,
+      "required": true
+    },
+    {
+      "projectID": 936015,
+      "fileID": 9170709,
       "required": true
     },
     {
