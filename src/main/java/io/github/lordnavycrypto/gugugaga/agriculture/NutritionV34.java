@@ -23,6 +23,8 @@ public final class NutritionV34 {
     private NutritionV34() {}
     private static final String ROOT="gugugaga_nutrition_v35";
     private static final String LEGACY="gugugaga_nutrition_v34";
+    /** Per-player preference. Missing key preserves the historical enabled default. */
+    private static final String MODE_ENABLED="gugugaga_nutrition_mode_enabled";
     private static final int BASE=45;
     private static final int MAX=100;
     private static final int PAGE_COUNT=5;
@@ -55,6 +57,23 @@ public final class NutritionV34 {
     private static void copy(CompoundTag old,CompoundTag dest,String from,String to) {
         if(old.contains(from)) dest.putInt(to,clamp(old.getInt(from)));
     }
+    /** Nutrition mode is server-authoritative and enabled by default for existing worlds. */
+    public static boolean nutritionModeEnabled(ServerPlayer player) {
+        CompoundTag data=player.getPersistentData();
+        return !data.contains(MODE_ENABLED) || data.getBoolean(MODE_ENABLED);
+    }
+
+    /** Toggle the 25 nutrient reserves without changing the independent water/salt system. */
+    public static boolean toggleNutritionMode(ServerPlayer player) {
+        boolean enabled=!nutritionModeEnabled(player);
+        player.getPersistentData().putBoolean(MODE_ENABLED,enabled);
+        CompoundTag values=record(player);
+        long worldDay=Math.floorDiv(player.getServer().overworld().getGameTime(),24000L);
+        NutritionPhysiologyV39.pause(values,worldDay);
+        player.getPersistentData().put(ROOT,values);
+        return enabled;
+    }
+
     private static int clamp(int value) {return Math.max(0,Math.min(MAX,value));}
     private static void add(CompoundTag record,String key,int amount) {
         record.putInt(key,clamp(record.getInt(key)+amount));
@@ -63,6 +82,7 @@ public final class NutritionV34 {
     @SubscribeEvent
     public static void onEat(LivingEntityUseItemEvent.Finish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if(!nutritionModeEnabled(player)) return;
         ItemStack food=event.getItem();
         if (!food.has(DataComponents.FOOD)) return;
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
@@ -112,11 +132,18 @@ public final class NutritionV34 {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if(player.tickCount%200!=0)return;
         CompoundTag values=record(player);
+        long worldDay=Math.floorDiv(player.getServer().overworld().getGameTime(),24000L);
+        if(!nutritionModeEnabled(player)) {
+            // Freeze nutrient reserves and clear stale daily intake while paused;
+            // re-enabling never applies an offline catch-up penalty.
+            NutritionPhysiologyV39.pause(values,worldDay);
+            player.getPersistentData().put(ROOT,values);
+            return;
+        }
         if(player.isCreative()||player.isSpectator())return;
         // Monotonic Overworld game time advances even when daylight cycling is
         // disabled; /time set cannot freeze or fabricate nutrition rollovers.
-        NutritionPhysiologyV39.advance(values,
-                Math.floorDiv(player.getServer().overworld().getGameTime(),24000L));
+        NutritionPhysiologyV39.advance(values,worldDay);
         // Each of the 27 nutrition indicators has an explicit positive and
         // low-reserve potion mapping. Resolve overlaps in the effect matrix.
         NutritionFeedbackV38.apply(player,values,false);
@@ -130,6 +157,9 @@ public final class NutritionV34 {
             if(old.contains(key)) event.getEntity().getPersistentData().put(
                     key,old.getCompound(key).copy());
         }
+        if(old.contains(MODE_ENABLED))
+            event.getEntity().getPersistentData().putBoolean(MODE_ENABLED,
+                    old.getBoolean(MODE_ENABLED));
     }
 
     /**
