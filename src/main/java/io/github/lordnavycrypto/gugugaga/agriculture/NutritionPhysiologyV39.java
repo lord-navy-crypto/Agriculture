@@ -151,6 +151,16 @@ public final class NutritionPhysiologyV39 {
         }
     }
 
+    /**
+     * Pause the nutrient subsystem without erasing reserves or shortfall history.
+     * Advancing the clock and clearing the daily ledger prevents a delayed
+     * depletion/catch-up when the player re-enables nutrition mode.
+     */
+    public static void pause(CompoundTag data,long worldDay) {
+        data.putLong(LAST_DAY,worldDay);
+        for(int i=0;i<COUNT;i++)if(!linked(i))data.remove(DAILY+i);
+    }
+
     /** Server-authoritative daily intake ledger for the N-key overview. */
     public static int[] dailyIntakeSnapshot(CompoundTag data) {
         int[] intake=new int[COUNT];
