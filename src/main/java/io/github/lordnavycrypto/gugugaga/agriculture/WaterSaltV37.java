@@ -42,7 +42,8 @@ public final class WaterSaltV37 {
 
     @SubscribeEvent
     public static void onDrinkOrEat(LivingEntityUseItemEvent.Finish event) {
-        if (!(event.getEntity() instanceof ServerPlayer player))return;
+        if (!(event.getEntity() instanceof ServerPlayer player)
+                || !NutritionModeV414.enabled(player))return;
         ItemStack stack=event.getItem();
         String name=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         if (!stack.has(DataComponents.FOOD) && !stack.is(Items.POTION)
@@ -81,6 +82,7 @@ public final class WaterSaltV37 {
     @SubscribeEvent
     public static void onTick(PlayerTickEvent.Post event) {
         if(!(event.getEntity() instanceof ServerPlayer player)
+                || !NutritionModeV414.enabled(player)
                 ||player.isCreative()||player.isSpectator())return;
         if(player.tickCount%SAMPLE_TICKS!=0)return;
         CompoundTag record=data(player);
