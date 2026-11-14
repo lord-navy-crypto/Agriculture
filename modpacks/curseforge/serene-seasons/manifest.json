@@ -11,19 +11,9 @@
   "manifestType": "minecraftModpack",
   "manifestVersion": 1,
   "name": "The Beautiful Unknown - Serene Seasons",
-  "version": "0.1.1-alpha-serene",
+  "version": "0.2.0-alpha-serene",
   "author": "lord-navy-crypto",
   "files": [
-    {
-      "projectID": 60089,
-      "fileID": 5637846,
-      "required": false
-    },
-    {
-      "projectID": 231484,
-      "fileID": 7966112,
-      "required": true
-    },
     {
       "projectID": 238222,
       "fileID": 7391682,
@@ -31,22 +21,12 @@
     },
     {
       "projectID": 245755,
-      "fileID": 8969751,
+      "fileID": 8837388,
       "required": true
     },
     {
-      "projectID": 256717,
-      "fileID": 5623731,
-      "required": true
-    },
-    {
-      "projectID": 274259,
-      "fileID": 8512888,
-      "required": true
-    },
-    {
-      "projectID": 276951,
-      "fileID": 7515858,
+      "projectID": 252848,
+      "fileID": 7892954,
       "required": true
     },
     {
@@ -65,14 +45,14 @@
       "required": true
     },
     {
-      "projectID": 388172,
-      "fileID": 8893490,
+      "projectID": 368293,
+      "fileID": 8688394,
       "required": true
     },
     {
-      "projectID": 401648,
-      "fileID": 5873258,
-      "required": false
+      "projectID": 388172,
+      "fileID": 8893490,
+      "required": true
     },
     {
       "projectID": 429235,
@@ -80,34 +60,24 @@
       "required": true
     },
     {
-      "projectID": 448233,
-      "fileID": 8924414,
-      "required": false
-    },
-    {
-      "projectID": 531761,
-      "fileID": 9406246,
+      "projectID": 602059,
+      "fileID": 9097325,
       "required": true
     },
     {
-      "projectID": 548115,
-      "fileID": 5665477,
+      "projectID": 626761,
+      "fileID": 7112985,
       "required": true
     },
     {
-      "projectID": 659110,
-      "fileID": 9252522,
+      "projectID": 627986,
+      "fileID": 9280587,
       "required": true
     },
     {
       "projectID": 667299,
       "fileID": 7305639,
       "required": true
-    },
-    {
-      "projectID": 686911,
-      "fileID": 5608731,
-      "required": false
     },
     {
       "projectID": 790626,
@@ -120,11 +90,6 @@
       "required": true
     },
     {
-      "projectID": 908741,
-      "fileID": 6118392,
-      "required": false
-    },
-    {
       "projectID": 936015,
       "fileID": 9170709,
       "required": true
@@ -132,6 +97,21 @@
     {
       "projectID": 955399,
       "fileID": 8109792,
+      "required": true
+    },
+    {
+      "projectID": 1015100,
+      "fileID": 8702150,
+      "required": true
+    },
+    {
+      "projectID": 1015112,
+      "fileID": 5954804,
+      "required": true
+    },
+    {
+      "projectID": 1015118,
+      "fileID": 6606621,
       "required": true
     }
   ],
