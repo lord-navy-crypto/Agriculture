@@ -5,9 +5,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Server-to-client snapshot: 27 nutrient scores, independent hydration/salt,
@@ -18,7 +20,8 @@ public final class NutritionNetworkV35 {
     private NutritionNetworkV35() {}
 
     public record State(int[] scores,int water,int salt,int[] feedback,
-                        int[] today,int[] recent,String lastFood) implements CustomPacketPayload {
+                        int[] today,int[] recent,String lastFood,
+                        boolean nutritionEnabled) implements CustomPacketPayload {
         public static final Type<State> TYPE=new Type<>(
                 ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
                         "nutrition_state"));
@@ -46,6 +49,7 @@ public final class NutritionNetworkV35 {
                             for(int n:data.today())buf.writeVarInt(Math.max(0,Math.min(48,n)));
                             for(int n:data.recent())buf.writeVarInt(Math.max(0,Math.min(10,n)));
                             buf.writeUtf(data.lastFood()==null?"":data.lastFood(),128);
+                            buf.writeBoolean(data.nutritionEnabled());
                         },
                         (FriendlyByteBuf buf) -> {
                             int[] values=new int[27];
@@ -66,16 +70,45 @@ public final class NutritionNetworkV35 {
                             for(int i=0;i<27;i++)today[i]=Math.max(0,Math.min(48,buf.readVarInt()));
                             for(int i=0;i<27;i++)recent[i]=Math.max(0,Math.min(10,buf.readVarInt()));
                             String lastFood=buf.readUtf(128);
-                            return new State(values,water,salt,feedback,today,recent,lastFood);
+                            boolean nutritionEnabled=buf.readBoolean();
+                            return new State(values,water,salt,feedback,today,recent,lastFood,nutritionEnabled);
                         }
                 );
         @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
     }
+    public record ToggleRequest() implements CustomPacketPayload {
+        public static final Type<ToggleRequest> TYPE=new Type<>(
+                ResourceLocation.fromNamespaceAndPath(GuguGagaMod.MOD_ID,
+                        "nutrition_toggle_request"));
+        public static final StreamCodec<FriendlyByteBuf,ToggleRequest> STREAM_CODEC=
+                StreamCodec.unit(new ToggleRequest());
+        @Override public Type<? extends CustomPacketPayload> type(){return TYPE;}
+    }
+
+    public static void sendState(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player,new State(
+                NutritionV34.snapshot(player),WaterSaltV37.water(player),
+                WaterSaltV37.salt(player),NutritionV34.feedbackSnapshot(player),
+                NutritionV34.dailyIntakeSnapshot(player),NutritionV34.lastMealSnapshot(player),
+                NutritionV34.lastFoodSnapshot(player),NutritionV34.nutritionModeEnabled(player)));
+    }
+
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
-        event.registrar("4").playToClient(State.TYPE,State.STREAM_CODEC,
+        var registrar=event.registrar("5");
+        registrar.playToClient(State.TYPE,State.STREAM_CODEC,
                 (payload,context) -> NutritionScreenClientV35.open(
                         payload.scores(),payload.water(),payload.salt(),payload.feedback(),
-                        payload.today(),payload.recent(),payload.lastFood()));
+                        payload.today(),payload.recent(),payload.lastFood(),
+                        payload.nutritionEnabled()));
+        registrar.playToServer(ToggleRequest.TYPE,ToggleRequest.STREAM_CODEC,
+                (payload,context) -> {
+                    if(context.player() instanceof ServerPlayer player) {
+                        context.enqueueWork(() -> {
+                            NutritionV34.toggleNutritionMode(player);
+                            sendState(player);
+                        });
+                    }
+                });
     }
 }
