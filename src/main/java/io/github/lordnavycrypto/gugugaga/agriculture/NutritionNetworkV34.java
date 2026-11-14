@@ -28,6 +28,7 @@ public final class NutritionNetworkV34 {
         event.registrar("4").playToServer(Request.TYPE, Request.STREAM_CODEC,
                 (payload,context) -> {
                     if (context.player() instanceof ServerPlayer player) {
+                        if (!NutritionModeV414.enabled(player)) return;
                         // The graphical panel supersedes the legacy five-page chat dump.
                         // Do not mix chat paragraphs with every GUI refresh.
                         PacketDistributor.sendToPlayer(player,
