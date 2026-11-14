@@ -111,6 +111,12 @@ public final class NutritionPhysiologyV39 {
         return gained;
     }
 
+    /** Stop the day clock without draining reserves while nutrition is OFF. */
+    public static void pause(CompoundTag data,long worldDay) {
+        data.putLong(LAST_DAY,worldDay);
+        for(int i=0;i<COUNT;i++) if(!linked(i)) data.remove(DAILY+i);
+    }
+
     /** Bounded catch-up: if the chunk/server was idle for a long period,
      * never pretend the character spent that whole offline interval hungry.
      * Likewise /time set cannot instantly manufacture nutritional disease. */
