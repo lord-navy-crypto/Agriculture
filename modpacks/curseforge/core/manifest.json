@@ -15,8 +15,38 @@
   "author": "lord-navy-crypto",
   "files": [
     {
+      "projectID": 60089,
+      "fileID": 5637846,
+      "required": false
+    },
+    {
+      "projectID": 231484,
+      "fileID": 7966112,
+      "required": true
+    },
+    {
       "projectID": 238222,
       "fileID": 7391682,
+      "required": true
+    },
+    {
+      "projectID": 245755,
+      "fileID": 8969751,
+      "required": true
+    },
+    {
+      "projectID": 256717,
+      "fileID": 5623731,
+      "required": true
+    },
+    {
+      "projectID": 274259,
+      "fileID": 8512888,
+      "required": true
+    },
+    {
+      "projectID": 276951,
+      "fileID": 7515858,
       "required": true
     },
     {
@@ -35,8 +65,28 @@
       "required": true
     },
     {
+      "projectID": 401648,
+      "fileID": 5873258,
+      "required": false
+    },
+    {
       "projectID": 429235,
       "fileID": 7524151,
+      "required": true
+    },
+    {
+      "projectID": 448233,
+      "fileID": 8924414,
+      "required": false
+    },
+    {
+      "projectID": 531761,
+      "fileID": 9406246,
+      "required": true
+    },
+    {
+      "projectID": 548115,
+      "fileID": 5665477,
       "required": true
     },
     {
@@ -50,6 +100,11 @@
       "required": true
     },
     {
+      "projectID": 686911,
+      "fileID": 5608731,
+      "required": false
+    },
+    {
       "projectID": 790626,
       "fileID": 9309399,
       "required": true
@@ -58,6 +113,11 @@
       "projectID": 854949,
       "fileID": 8822088,
       "required": true
+    },
+    {
+      "projectID": 908741,
+      "fileID": 6118392,
+      "required": false
     },
     {
       "projectID": 936015,
