@@ -15,8 +15,7 @@ public final class NutritionKeyTickV34 {
     @SubscribeEvent
     public static void onTick(ClientTickEvent.Post event) {
         while (NutritionKeyV34.SHOW.consumeClick()) {
-            if (NutritionModeV414.clientEnabled()
-                    && Minecraft.getInstance().player!=null
+            if (Minecraft.getInstance().player!=null
                     && Minecraft.getInstance().screen==null) {
                 PacketDistributor.sendToServer(new NutritionNetworkV34.Request());
             }
