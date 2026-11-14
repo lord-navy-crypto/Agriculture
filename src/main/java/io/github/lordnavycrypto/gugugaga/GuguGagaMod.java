@@ -17,6 +17,7 @@ import io.github.lordnavycrypto.gugugaga.agriculture.FoodV34Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.WaterV37Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.WaterV38Content;
 import io.github.lordnavycrypto.gugugaga.agriculture.FoodEcologyFishing;
+import io.github.lordnavycrypto.gugugaga.agriculture.NutritionModeV414;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -28,6 +29,7 @@ public final class GuguGagaMod {
     public static final String MOD_ID = "gugugaga";
 
     public GuguGagaMod(IEventBus modBus, ModContainer container) {
+        NutritionModeV414.bootstrap();
         AgricultureContent.BLOCKS.register(modBus);
         AgricultureContent.ITEMS.register(modBus);
         AgricultureCuisineContent.ITEMS.register(modBus);

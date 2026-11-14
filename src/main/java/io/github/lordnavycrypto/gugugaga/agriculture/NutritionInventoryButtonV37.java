@@ -16,7 +16,8 @@ public final class NutritionInventoryButtonV37 {
     private NutritionInventoryButtonV37(){}
     @SubscribeEvent
     public static void onInventoryInit(ScreenEvent.Init.Post event) {
-        if(!(event.getScreen() instanceof InventoryScreen screen))return;
+        if(!NutritionModeV414.clientEnabled()
+                || !(event.getScreen() instanceof InventoryScreen screen))return;
         // Keep the launcher inside the visible GUI, even at high GUI scale.
         int x=Math.max(4,Math.min(screen.width-76,screen.width/2+91));
         int y=Math.max(4,Math.min(screen.height-24,screen.height/2-82));

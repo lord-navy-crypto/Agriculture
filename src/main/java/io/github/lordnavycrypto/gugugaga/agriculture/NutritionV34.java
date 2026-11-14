@@ -62,7 +62,8 @@ public final class NutritionV34 {
 
     @SubscribeEvent
     public static void onEat(LivingEntityUseItemEvent.Finish event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (!(event.getEntity() instanceof ServerPlayer player)
+                || !NutritionModeV414.enabled(player)) return;
         ItemStack food=event.getItem();
         if (!food.has(DataComponents.FOOD)) return;
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
@@ -111,6 +112,11 @@ public final class NutritionV34 {
     public static void onTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if(player.tickCount%200!=0)return;
+        if (!NutritionModeV414.enabled(player)) {
+            NutritionPhysiologyV39.pause(record(player),
+                    Math.floorDiv(player.getServer().overworld().getGameTime(),24000L));
+            return;
+        }
         CompoundTag values=record(player);
         if(player.isCreative()||player.isSpectator())return;
         // Monotonic Overworld game time advances even when daylight cycling is
@@ -169,6 +175,7 @@ public final class NutritionV34 {
     }
 
     public static void show(ServerPlayer player) {
+        if (!NutritionModeV414.enabled(player)) return;
         CompoundTag values=record(player);
         int page=Math.floorMod(values.getInt("page"),PAGE_COUNT);
         int[] range=PAGES[page];

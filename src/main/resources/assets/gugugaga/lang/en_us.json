@@ -1201,5 +1201,10 @@
   "feedback.gugugaga.quick.water": "Water: %s / 100",
   "feedback.gugugaga.quick.sodium": "Salt: %s / 100",
   "feedback.gugugaga.quick.hint": "Use arrows for all 27 reserves",
-  "feedback.gugugaga.quick.footer": "Food boosts show immediately; reserves change each game day."
+  "feedback.gugugaga.quick.footer": "Food boosts show immediately; reserves change each game day.",
+  "button.gugugaga.nutrition_mode_on": "Nutrition Mode: ON",
+  "button.gugugaga.nutrition_mode_off": "Nutrition Mode: OFF",
+  "button.gugugaga.nutrition_mode_locked": "%s (server controlled)",
+  "button.gugugaga.nutrition_mode_pending": "Saving Nutrition Mode...",
+  "message.gugugaga.nutrition_mode_paused": "Nutrition tracking is paused. Your saved values are preserved."
 }

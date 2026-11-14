@@ -70,6 +70,7 @@ public final class NutritionEffectsV310 {
     public static String negativeKey(int index){return PAIRS[index].negativeKey();}
 
     public static void apply(ServerPlayer player,CompoundTag data){
+        if (!NutritionModeV414.enabled(player)) return;
         int water=WaterSaltV37.water(player);
         int sodium=WaterSaltV37.salt(player);
         // Water/salt penalties have first priority. Do not pile nutrition
