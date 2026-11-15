@@ -42,7 +42,8 @@ def run():
                         return 1
                     report = json.loads(reports[-1].read_text(encoding="utf-8"))
                     assert report.get("schema") == "backroom-agriculture-food-compat-v4.15"
-                    assert report.get("edible_items", 0) >= 403
+                    assert report.get("edible_items", 0) >= 350
+                    assert report.get("exact_catalog_profiles") == 403
                     assert report.get("edible_items") == len(report.get("items", []))
                     assert report.get("coverage_percent", -1) >= 0
                     print("NUTRITION_FOOD_SCANNER_REAL_SERVER_REPORT_PASS "
