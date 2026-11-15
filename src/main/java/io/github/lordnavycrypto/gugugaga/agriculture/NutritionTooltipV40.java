@@ -44,8 +44,8 @@ public final class NutritionTooltipV40 {
                     .withStyle(ChatFormatting.DARK_GRAY));
             return;
         }
-        boolean catalogued = NutritionProfilesV35.hasProfile(itemId);
-        int[] values = NutritionProfilesV35.contribution(itemId);
+        boolean catalogued = NutritionProfilesV35.hasResolvedProfile(stack);
+        int[] values = NutritionProfilesV35.contribution(stack);
         List<Integer> indices = new ArrayList<>();
         for (int i = 0; i < values.length; i++) {
             // Never display water/sodium from a nutrient profile: those
