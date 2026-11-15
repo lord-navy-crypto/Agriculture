@@ -177,12 +177,12 @@ public final class NutritionFoodCompatibilityV415 {
         if (contains(path, "mushroom", "fungus", "truffle")) out.add("mushroom");
         if (contains(path, "seaweed", "kelp", "nori", "algae")) out.add("seaweed");
         if (contains(path, "bean", "lentil", "chickpea", "green_pea", "split_pea", "peas", "pea_", "soy", "tofu")) out.add("legume");
-        if (contains(path, "nut", "almond", "walnut", "peanut", "seed")) out.add("seed");
+        if (contains(path, "almond", "walnut", "peanut", "hazelnut", "cashew", "pistachio", "pecan", "seed")) out.add("seed");
         if (contains(path, "leaf", "lettuce", "spinach", "kale", "cabbage", "bok_choy")) out.add("leafy");
         if (contains(path, "carrot", "potato", "beet", "turnip", "radish", "taro", "yam", "root")) out.add("root");
         if (contains(path, "vegetable", "veggie", "salad", "tomato", "onion", "pepper", "cucumber", "broccoli", "corn", "pumpkin")) out.add("vegetable");
         if (contains(path, "berry", "berries", "strawberry", "blueberry", "raspberry", "cranberry")) out.add("berries");
-        if (contains(path, "fruit", "apple", "orange", "lemon", "lime", "grape", "peach", "pear", "mango", "melon", "banana")) out.add("fruit");
+        if (contains(path, "fruit", "apple", "orange", "lemon", "lime", "grape", "peach", "pear", "mango", "melon", "banana", "coconut")) out.add("fruit");
         if (contains(path, "bread", "toast", "noodle", "pasta", "rice", "oat", "wheat", "flour", "porridge", "sandwich", "bun")) out.add("grain");
         if (contains(path, "honey")) out.add("honey");
         if (contains(path, "herb", "basil", "mint", "cilantro", "parsley", "thyme", "rosemary")) out.add("herb");
