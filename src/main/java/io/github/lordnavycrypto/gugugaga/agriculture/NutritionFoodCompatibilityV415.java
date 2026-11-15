@@ -176,7 +176,7 @@ public final class NutritionFoodCompatibilityV415 {
         if (contains(path, "milk", "cheese", "cream", "yogurt", "butter")) out.add("dairy");
         if (contains(path, "mushroom", "fungus", "truffle")) out.add("mushroom");
         if (contains(path, "seaweed", "kelp", "nori", "algae")) out.add("seaweed");
-        if (contains(path, "bean", "lentil", "chickpea", "pea", "soy", "tofu")) out.add("legume");
+        if (contains(path, "bean", "lentil", "chickpea", "green_pea", "split_pea", "peas", "pea_", "soy", "tofu")) out.add("legume");
         if (contains(path, "nut", "almond", "walnut", "peanut", "seed")) out.add("seed");
         if (contains(path, "leaf", "lettuce", "spinach", "kale", "cabbage", "bok_choy")) out.add("leafy");
         if (contains(path, "carrot", "potato", "beet", "turnip", "radish", "taro", "yam", "root")) out.add("root");
