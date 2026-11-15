@@ -15,6 +15,8 @@ WATER=(SRC/"WaterSaltV37.java").read_text(encoding="utf-8")
 WATER_PROFILES=(SRC/"WaterSaltProfilesV37.java").read_text(encoding="utf-8")
 MODE=(SRC/"NutritionModeV414.java").read_text(encoding="utf-8")
 NETWORK=(SRC/"NutritionModeNetworkV414.java").read_text(encoding="utf-8")
+SCANNER=(SRC/"NutritionFoodScannerV415.java").read_text(encoding="utf-8")
+SYNC=(SRC/"NutritionFoodSyncV415.java").read_text(encoding="utf-8")
 
 def main():
     catalog=json.loads(DB.read_text(encoding="utf-8"))
@@ -66,6 +68,26 @@ def main():
     assert "player.hasPermissions(2)" in MODE
     assert "playToServer(Toggle.TYPE" in NETWORK
     assert "NutritionModeV414.setFromClient(player, payload.enabled())" in NETWORK
+
+    # Registry-wide server scan and bounded multi-pass recipe derivation.
+    for token in ("BuiltInRegistries.ITEM.forEach", "getRecipes()",
+                  "getResultItem(server.registryAccess())", "recipe.getIngredients()",
+                  "ingredient.getItems()", "output.getCount()",
+                  "PASSES = 8", "LIMIT_INGREDIENTS", "LIMIT_ALTERNATIVES",
+                  "NutritionProfilesV35.hasProfile(entry.output())",
+                  "known * 3 < total * 2", "sums[i] / recipe.outputCount()",
+                  "ingredient_alternatives", "recognized_slots",
+                  "nutrition_food_compat_report.json", "neutral_unclassified",
+                  "coverage_percent", "OnDatapackSyncEvent",
+                  "ServerStartedEvent", "ServerStoppedEvent"):
+        assert token in SCANNER, token
+    assert "NutritionFoodScannerV415.onServer(itemId)" in PROFILES
+    assert "NutritionFoodScannerV415.onClient(itemId)" in PROFILES
+    assert "NutritionFoodScannerV415.serverSnapshot()" in SYNC
+    assert "PacketDistributor.sendToPlayer(player, new Chunk" in SYNC
+    assert "NutritionFoodScannerV415.setClientSnapshot(CLIENT_PENDING)" in SYNC
+    assert "readUnsignedByte()" in SYNC
+    assert "if (packet.part() == 0)" in SYNC
 
     for locale in ("en_us","zh_cn"):
         lang=json.loads((ROOT/f"src/main/resources/assets/gugugaga/lang/{locale}.json").read_text(encoding="utf-8"))
