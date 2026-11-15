@@ -18,16 +18,16 @@ def main():
     assert "public static boolean hasProfile(String itemId)" in profiles
     assert "public static boolean isHydrationOnly(String itemId)" in profiles
     assert "HYDRATION_ONLY" in profiles
-    assert "NutritionProfilesV35.contribution(itemId)" in tooltip
+    assert "NutritionProfilesV35.contribution(stack)" in tooltip
     assert "NutritionProfilesV35.isHydrationOnly(itemId)" in tooltip
     assert "tooltip.gugugaga.hydration_only" in tooltip
     assert "ItemTooltipEvent" in tooltip and "DataComponents.FOOD" in tooltip
     assert "tooltip.gugugaga.nutrition_generic" in tooltip
     assert "MAX_PREVIEW_ROWS = 3" in tooltip and "Screen.hasShiftDown()" in tooltip
     assert "NutritionPhysiologyV39.linked(i)" in tooltip
-    assert "WaterSaltProfilesV37.water(itemId)" in tooltip
-    assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
-    assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip
+    assert "WaterSaltProfilesV37.water(stack)" in tooltip
+    assert "WaterSaltProfilesV37.sodium(stack)" in tooltip
+    assert "WaterSaltProfilesV37.hasResolvedProfile(stack)" in tooltip
     assert "nutrient_target_line" in tooltip
     assert "dailyTarget(i)" in tooltip
     assert "nutrition_balance_fallback" in tooltip

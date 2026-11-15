@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.ItemStack;
 
 /** Stable per-item water and sodium game points. Never claimed as ml or mg. */
 public final class WaterSaltProfilesV37 {
@@ -44,5 +46,23 @@ public final class WaterSaltProfilesV37 {
     public static int sodium(String id) {
         Contribution c=FOODS.get(id);
         return c==null?1:c.sodium();
+    }
+    /** Exact catalog first; third-party foods use the shared compatibility resolver. */
+    public static int water(ItemStack stack) {
+        if (stack==null || stack.isEmpty()) return 1;
+        String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        Contribution c=FOODS.get(id);
+        return c==null?NutritionFoodCompatibilityV415.inferredWater(stack):c.water();
+    }
+    public static int sodium(ItemStack stack) {
+        if (stack==null || stack.isEmpty()) return 1;
+        String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        Contribution c=FOODS.get(id);
+        return c==null?NutritionFoodCompatibilityV415.inferredSodium(stack):c.sodium();
+    }
+    public static boolean hasResolvedProfile(ItemStack stack) {
+        if (stack==null || stack.isEmpty()) return false;
+        String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        return FOODS.containsKey(id) || NutritionFoodCompatibilityV415.hasWaterSaltInference(stack);
     }
 }

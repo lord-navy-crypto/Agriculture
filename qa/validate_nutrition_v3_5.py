@@ -74,7 +74,7 @@ def main():
     assert "VALUES.get(itemId)" in java
     assert "return Arrays.copyOf(values,values.length)" in java
     assert "new IllegalStateException" in java
-    assert "NutritionProfilesV35.contribution(id)" in logic
+    assert "NutritionProfilesV35.contribution(food)" in logic
     assert "LivingEntityUseItemEvent.Finish" in logic
     assert "DataComponents.FOOD" in logic
     assert "getKey(food.getItem()).toString()" in logic

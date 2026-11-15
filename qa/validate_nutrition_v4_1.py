@@ -69,10 +69,10 @@ def main():
         assert token in parser, token
     assert "getServer().overworld().getGameTime()" in nutrition
     assert "NutritionPhysiologyV39.consume(values,contribution)" in nutrition
-    assert "WaterSaltProfilesV37.water(name)" in water
-    assert "WaterSaltProfilesV37.sodium(name)" in water
+    assert "WaterSaltProfilesV37.water(stack)" in water
+    assert "WaterSaltProfilesV37.sodium(stack)" in water
     assert "public static boolean hasProfile(String id)" in water_profiles
-    assert "WaterSaltProfilesV37.hasProfile(itemId)" in tooltip_source
+    assert "WaterSaltProfilesV37.hasResolvedProfile(stack)" in tooltip_source
     assert "HYDRATION_ONLY" in parser
     assert "isHydrationOnly(String itemId)" in parser
     assert "if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];" in parser
@@ -80,8 +80,8 @@ def main():
     assert "NutritionProfilesV35.isHydrationOnly(itemId)" in tooltip
     assert "tooltip.gugugaga.hydration_only" in tooltip
     assert "NutritionPhysiologyV39.linked(i)" in tooltip
-    assert "WaterSaltProfilesV37.water(itemId)" in tooltip
-    assert "WaterSaltProfilesV37.sodium(itemId)" in tooltip
+    assert "WaterSaltProfilesV37.water(stack)" in tooltip
+    assert "WaterSaltProfilesV37.sodium(stack)" in tooltip
     for locale in ("en_us.json", "zh_cn.json"):
         lang = json.loads((LANG / locale).read_text("utf-8"))
         assert lang.get("tooltip.gugugaga.nutrition_balance"), locale

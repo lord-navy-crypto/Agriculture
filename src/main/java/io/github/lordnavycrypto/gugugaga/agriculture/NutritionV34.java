@@ -69,7 +69,7 @@ public final class NutritionV34 {
         String id=net.minecraft.core.registries.BuiltInRegistries.ITEM
                 .getKey(food.getItem()).toString();
         if (NutritionProfilesV35.isHydrationOnly(id)) return;
-        int[] contribution=NutritionProfilesV35.contribution(id);
+        int[] contribution=NutritionProfilesV35.contribution(food);
         CompoundTag values=record(player);
         // Update the displayed game reserve immediately, while using the
         // per-day ledger for maintenance and bounded depletion at rollover.
