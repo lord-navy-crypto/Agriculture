@@ -203,9 +203,12 @@ public final class NutritionFoodScannerV415 {
             JsonObject detail = new JsonObject();
             detail.add("alternatives", options);
             detail.addProperty("recognized_alternatives", recognizedAlternatives);
+            detail.addProperty("ingredient_quantity", 1);
+            detail.addProperty("quantity_per_output", 1.0 / recipe.outputCount());
             detail.addProperty("total_alternatives", slot.alternatives().size());
             ingredientDetails.add(detail);
-            if (recognizedAlternatives == 0) continue;
+            // Large unresolved tag alternatives are not reliable enough to infer.
+            if (recognizedAlternatives * 2 < slot.alternatives().size()) continue;
             known++;
             for (int i = 0; i < 27; i++)
                 sums[i] += choices[i] / recognizedAlternatives;
