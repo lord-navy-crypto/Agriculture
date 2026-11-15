@@ -11,11 +11,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Explicit, shipped food-to-game-nutrient catalog. All numbers are small game
  * contribution points (not milligrams, calories, RDAs or medical advice).
- * Missing third-party mod foods use a neutral fallback without false claims.
+ * Exact Agriculture profiles always take precedence over third-party inference.
  */
 public final class NutritionProfilesV35 {
     private NutritionProfilesV35() {}
@@ -28,29 +30,63 @@ public final class NutritionProfilesV35 {
         "calcium","iron","magnesium","potassium","zinc","iodine",
         "selenium","phosphorus","sodium"
     };
-    // Drink-only bottles are handled exclusively by WaterSaltV37. They must
-    // never receive the neutral fallback food contribution.
     private static final Set<String> HYDRATION_ONLY = Set.of(
             "gugugaga:raw_water_bottle",
             "gugugaga:boiled_water_bottle",
             "gugugaga:filtered_water_bottle");
     private static final Map<String, int[]> VALUES=load();
+    private static final Map<String, int[]> CATEGORY_VALUES=loadCategoryValues();
 
-    private static Map<String,int[]> load() {
+    private static JsonObject readCatalog() throws Exception {
         try (InputStream source=NutritionProfilesV35.class.getClassLoader()
                 .getResourceAsStream(RESOURCE)) {
             if(source==null) throw new IllegalStateException("Missing nutrition catalog: "+RESOURCE);
-            JsonObject doc=JsonParser.parseReader(
+            return JsonParser.parseReader(
                     new InputStreamReader(source,StandardCharsets.UTF_8)).getAsJsonObject();
-            if(doc.get("schema_version").getAsInt()!=1)
-                throw new IllegalStateException("Unsupported nutrition catalog schema");
-            JsonArray data=doc.getAsJsonArray("nutrients");
-            if(data.size()!=NUTRIENTS.length)
-                throw new IllegalStateException("Nutrition metric count changed unexpectedly");
-            for (int i=0;i<NUTRIENTS.length;i++)
-                if(!NUTRIENTS[i].equals(data.get(i).getAsJsonObject().get("id").getAsString()))
-                    throw new IllegalStateException("Nutrition profile metric order differs: "+i);
-            Map<String,int[]> templates=new HashMap<>();
+        }
+    }
+
+    private static void validateHeader(JsonObject doc) {
+        if(doc.get("schema_version").getAsInt()!=1)
+            throw new IllegalStateException("Unsupported nutrition catalog schema");
+        JsonArray data=doc.getAsJsonArray("nutrients");
+        if(data.size()!=NUTRIENTS.length)
+            throw new IllegalStateException("Nutrition metric count changed unexpectedly");
+        for (int i=0;i<NUTRIENTS.length;i++)
+            if(!NUTRIENTS[i].equals(data.get(i).getAsJsonObject().get("id").getAsString()))
+                throw new IllegalStateException("Nutrition profile metric order differs: "+i);
+    }
+
+    private static Map<String,int[]> loadCategoryValues() {
+        try {
+            JsonObject doc=readCatalog();
+            validateHeader(doc);
+            Map<String,int[]> result=new HashMap<>();
+            for (Map.Entry<String,JsonElement> entry:doc.getAsJsonObject("profiles").entrySet()) {
+                int[] profile=new int[NUTRIENTS.length];
+                for (Map.Entry<String,JsonElement> field:entry.getValue().getAsJsonObject().entrySet()) {
+                    int n=index(field.getKey());
+                    int points=field.getValue().getAsInt();
+                    if(n<0 || points<0 || points>8)
+                        throw new IllegalStateException("Invalid category game nutrient "+field.getKey());
+                    profile[n]=points;
+                }
+                result.put(entry.getKey(),profile);
+            }
+            return Map.copyOf(result);
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not load nutrition category profiles",e);
+        }
+    }
+
+    private static Map<String,int[]> load() {
+        try {
+            JsonObject doc=readCatalog();
+            validateHeader(doc);
+            Map<String,int[]> templates=CATEGORY_VALUES_PLACEHOLDER();
+            // Parse the category templates locally during static initialization;
+            // this avoids depending on field initialization order.
+            templates.clear();
             for (Map.Entry<String,JsonElement> entry: doc.getAsJsonObject("profiles").entrySet()) {
                 int[] profile=new int[NUTRIENTS.length];
                 for (Map.Entry<String,JsonElement> field:entry.getValue().getAsJsonObject().entrySet()) {
@@ -73,10 +109,6 @@ public final class NutritionProfilesV35 {
                 }
                 result.put(entry.getKey(),values);
             }
-            // Optional per-food gameplay adjustments preserve the old catalog
-            // keys but distinguish crops and prepared meals within a category.
-            // Water and sodium are intentionally excluded: the separate water
-            // balance table is the sole source of those contributions.
             if (doc.has("overrides")) {
                 for (Map.Entry<String,JsonElement> food
                         : doc.getAsJsonObject("overrides").entrySet()) {
@@ -101,23 +133,52 @@ public final class NutritionProfilesV35 {
             throw new IllegalStateException("Could not load shipped food nutrient catalog",e);
         }
     }
+
+    // Returns a mutable map only for the local parser above.
+    private static Map<String,int[]> CATEGORY_VALUES_PLACEHOLDER() {
+        return new HashMap<>();
+    }
+
     public static int index(String id) {
         for(int i=0;i<NUTRIENTS.length;i++) if(NUTRIENTS[i].equals(id))return i;
         return -1;
     }
+
+    /** Exact ID lookup retained for existing callers and the neutral fallback. */
     public static int[] contribution(String itemId) {
         if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];
         int[] values=VALUES.get(itemId);
         if(values==null) {
-            // Unknown edible modded foods count towards broad gameplay variety
-            // without making an unsupported micronutrient claim.
             int[] neutral=new int[NUTRIENTS.length];
-            neutral[0]=1;neutral[4]=1;
+            neutral[0]=1;
+            neutral[4]=1;
             return neutral;
         }
         return Arrays.copyOf(values,values.length);
     }
+
+    /** Exact profile first, then cross-mod tags/name inference, then neutral. */
+    public static int[] contribution(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return new int[NUTRIENTS.length];
+        String itemId=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];
+        int[] exact=VALUES.get(itemId);
+        if (exact!=null) return Arrays.copyOf(exact,exact.length);
+        int[] inferred=NutritionFoodCompatibilityV415.infer(stack);
+        return inferred==null ? contribution(itemId) : inferred;
+    }
+
+    public static int[] categoryContribution(String category) {
+        int[] values=CATEGORY_VALUES.get(category);
+        return values==null ? new int[NUTRIENTS.length] : Arrays.copyOf(values,values.length);
+    }
+
     public static boolean hasProfile(String itemId) { return VALUES.containsKey(itemId); }
+    public static boolean hasResolvedProfile(ItemStack stack) {
+        if (stack==null || stack.isEmpty()) return false;
+        String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+        return VALUES.containsKey(id) || NutritionFoodCompatibilityV415.hasInferredProfile(stack);
+    }
     public static boolean isHydrationOnly(String itemId) { return HYDRATION_ONLY.contains(itemId); }
     public static int catalogSize() {return VALUES.size();}
 }
