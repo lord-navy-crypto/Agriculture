@@ -156,6 +156,9 @@ public final class NutritionProfilesV35 {
         if (HYDRATION_ONLY.contains(itemId)) return new int[NUTRIENTS.length];
         int[] exact=VALUES.get(itemId);
         if (exact!=null) return Arrays.copyOf(exact,exact.length);
+        int[] recipe=NutritionFoodScannerV415.onServer(itemId);
+        if (recipe==null) recipe=NutritionFoodScannerV415.onClient(itemId);
+        if (recipe!=null) return recipe;
         int[] inferred=NutritionFoodCompatibilityV415.infer(stack);
         return inferred==null ? contribution(itemId) : inferred;
     }
@@ -169,7 +172,10 @@ public final class NutritionProfilesV35 {
     public static boolean hasResolvedProfile(ItemStack stack) {
         if (stack==null || stack.isEmpty()) return false;
         String id=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-        return VALUES.containsKey(id) || NutritionFoodCompatibilityV415.hasInferredProfile(stack);
+        return VALUES.containsKey(id)
+                || NutritionFoodScannerV415.onServer(id)!=null
+                || NutritionFoodScannerV415.onClient(id)!=null
+                || NutritionFoodCompatibilityV415.hasInferredProfile(stack);
     }
     public static boolean isHydrationOnly(String itemId) { return HYDRATION_ONLY.contains(itemId); }
     public static int catalogSize() {return VALUES.size();}
