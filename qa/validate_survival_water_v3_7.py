@@ -44,8 +44,8 @@ def main():
     tabs=(JAVA/"GuguGagaCreativeTabs.java").read_text("utf-8")
     assert "getResourceAsStream(name)" in loader
     assert "new IllegalStateException" in loader
-    assert "WaterSaltProfilesV37.water(name)" in survival
-    assert "WaterSaltProfilesV37.sodium(name)" in survival
+    assert "WaterSaltProfilesV37.water(stack)" in survival
+    assert "WaterSaltProfilesV37.sodium(stack)" in survival
     assert "getPersistentData()" in survival
     assert "PlayerEvent.Clone" in survival
     assert "LivingEntityUseItemEvent.Finish" in survival
