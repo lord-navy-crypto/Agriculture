@@ -48,8 +48,8 @@ public final class WaterSaltV37 {
         String name=BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
         if (!stack.has(DataComponents.FOOD) && !stack.is(Items.POTION)
                 && !stack.is(Items.HONEY_BOTTLE)) return;
-        int water=WaterSaltProfilesV37.water(name);
-        int sodium=WaterSaltProfilesV37.sodium(name);
+        int water=WaterSaltProfilesV37.water(stack);
+        int sodium=WaterSaltProfilesV37.sodium(stack);
         if(name.equals("gugugaga:raw_water_bottle") && player.getRandom().nextInt(5)==0) {
             player.addEffect(new MobEffectInstance(MobEffects.CONFUSION,100,0));
         }
