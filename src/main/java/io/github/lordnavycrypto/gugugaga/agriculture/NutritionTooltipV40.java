@@ -38,7 +38,7 @@ public final class NutritionTooltipV40 {
             tooltip.add(Component.translatable("tooltip.gugugaga.hydration_only")
                     .withStyle(ChatFormatting.AQUA));
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
-                    WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
+                    WaterSaltProfilesV37.water(stack), WaterSaltProfilesV37.sodium(stack))
                     .withStyle(ChatFormatting.AQUA));
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_note")
                     .withStyle(ChatFormatting.DARK_GRAY));
@@ -81,7 +81,7 @@ public final class NutritionTooltipV40 {
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_expand",
                     indices.size() - rows).withStyle(ChatFormatting.YELLOW));
         }
-        if (WaterSaltProfilesV37.hasProfile(itemId)) {
+        if (WaterSaltProfilesV37.hasResolvedProfile(stack)) {
             tooltip.add(Component.translatable("tooltip.gugugaga.nutrition_balance",
                     WaterSaltProfilesV37.water(itemId), WaterSaltProfilesV37.sodium(itemId))
                     .withStyle(ChatFormatting.AQUA));
