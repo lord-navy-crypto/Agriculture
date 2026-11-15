@@ -117,6 +117,7 @@ public final class NutritionFoodScannerV415 {
 
     public static synchronized void rebuild(MinecraftServer server) {
         if (server == null) return;
+        System.out.println("[Backroom Agriculture] Starting server nutrition food registry and recipe scan");
         List<InputRecipe> recipes = new ArrayList<>();
         int inspectedRecipes = 0;
         // RecipeManager is accessed only on the logical server after tags
@@ -128,13 +129,20 @@ public final class NutritionFoodScannerV415 {
             try { output = recipe.getResultItem(server.registryAccess()); }
             catch (RuntimeException incompatibleRecipe) { continue; }
             if (output.isEmpty() || !output.has(DataComponents.FOOD)) continue;
-            List<Ingredient> ingredients = recipe.getIngredients();
+            List<Ingredient> ingredients;
+            try { ingredients = recipe.getIngredients(); }
+            catch (RuntimeException incompatibleRecipe) { continue; }
             if (ingredients.isEmpty() || ingredients.size() > LIMIT_INGREDIENTS) continue;
             List<InputSlot> slots = new ArrayList<>();
             boolean invalid = false;
             for (Ingredient ingredient : ingredients) {
                 if (ingredient.isEmpty()) continue;
-                ItemStack[] alternatives = ingredient.getItems();
+                ItemStack[] alternatives;
+                try { alternatives = ingredient.getItems(); }
+                catch (RuntimeException incompatibleIngredient) {
+                    invalid = true;
+                    break;
+                }
                 if (alternatives.length == 0 || alternatives.length > LIMIT_ALTERNATIVES) {
                     invalid = true;
                     break;
