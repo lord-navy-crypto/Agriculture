@@ -160,9 +160,9 @@ jobs:
       - name: Verify v4.4 generated water textures and RealScale anomaly resources in JAR
         run: python3 qa/validate_water_anomaly_v4_4.py build/libs/gugugaga-*.jar
       - name: Verify v4.5 connected city lifts and vanilla structures in JAR
-        run: python3 qa/validate_anomaly_worldgen_v4_5.py build/libs/gugugaga-4.0.0-alpha.1.jar
+        run: python3 qa/validate_anomaly_worldgen_v4_5.py build/libs/gugugaga-*.jar
       - name: Validate all six Backrooms dimensions in the unified JAR
-        run: python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-4.0.0-alpha.1.jar
+        run: python3 qa/validate_threshold_dimensions.py build/libs/gugugaga-*.jar
       - name: Validate crop item icon polish and review sheets
         run: python3 qa/validate_crop_item_visual_audit.py build/reports/agriculture
       - name: Validate kitchen icon generator and four-station recipes
