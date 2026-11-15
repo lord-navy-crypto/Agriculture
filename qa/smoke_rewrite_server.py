@@ -2,6 +2,7 @@
 """Run a disposable real NeoForge server and verify agriculture and marine/fungal initialization."""
 from pathlib import Path
 import os
+import json
 import re
 import signal
 import subprocess
@@ -35,6 +36,19 @@ def run():
                 time.sleep(2)
                 current = LOG.read_text(encoding="utf-8", errors="replace")
                 if INIT in current and MARINE_INIT in current and CUISINE_INIT in current and READY.search(current):
+                    reports = sorted((ROOT / "run").glob("**/nutrition_food_compat_report.json"))
+                    if not reports:
+                        print("FAIL: no nutrition food compatibility report created", flush=True)
+                        return 1
+                    report = json.loads(reports[-1].read_text(encoding="utf-8"))
+                    assert report.get("schema") == "backroom-agriculture-food-compat-v4.15"
+                    assert report.get("edible_items", 0) >= 403
+                    assert report.get("edible_items") == len(report.get("items", []))
+                    assert report.get("coverage_percent", -1) >= 0
+                    print("NUTRITION_FOOD_SCANNER_REAL_SERVER_REPORT_PASS "
+                          f"edibles={report['edible_items']} "
+                          f"recipes={report['supported_edible_recipes']} "
+                          f"derived={report['recipe_derived_profiles']}", flush=True)
                     print("GUGUGAGA_AGRICULTURE_MARINE_CUISINE_REAL_SERVER_BOOT_PASS", flush=True)
                     return 0
                 if process.poll() is not None:
