@@ -32,13 +32,23 @@ def run():
             start_new_session=True)
         try:
             deadline = time.monotonic() + LIMIT
+            ready_at = None
             while time.monotonic() < deadline:
                 time.sleep(2)
                 current = LOG.read_text(encoding="utf-8", errors="replace")
                 if INIT in current and MARINE_INIT in current and CUISINE_INIT in current and READY.search(current):
-                    reports = sorted((ROOT / "run").glob("**/nutrition_food_compat_report.json"))
+                    if ready_at is None:
+                        ready_at = time.monotonic()
+                    reports = sorted(
+                        list((ROOT / "run").glob("**/nutrition_food_compat_report.json")) +
+                        list((ROOT / "runs/server").glob("**/nutrition_food_compat_report.json")))
                     if not reports:
-                        print("FAIL: no nutrition food compatibility report created", flush=True)
+                        # Minecraft logs Done before all lifecycle callbacks complete.
+                        # Allow a bounded post-startup window for recipe scanning and disk IO.
+                        if time.monotonic() - ready_at < 75:
+                            continue
+                        print("FAIL: nutrition food report still missing after server start", flush=True)
+                        print(current[-10000:], flush=True)
                         return 1
                     report = json.loads(reports[-1].read_text(encoding="utf-8"))
                     assert report.get("schema") == "backroom-agriculture-food-compat-v4.15"
