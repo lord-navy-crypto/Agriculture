@@ -77,10 +77,10 @@ def main() -> None:
 
     nutrition_runtime = (AGRI / "NutritionV34.java").read_text(encoding="utf-8")
     water_runtime = (AGRI / "WaterSaltV37.java").read_text(encoding="utf-8")
-    assert "NutritionProfilesV35.contribution(id)" in nutrition_runtime
+    assert "NutritionProfilesV35.contribution(food)" in nutrition_runtime
     assert "NutritionPhysiologyV39.consume(values,contribution)" in nutrition_runtime
-    assert "WaterSaltProfilesV37.water(name)" in water_runtime
-    assert "WaterSaltProfilesV37.sodium(name)" in water_runtime
+    assert "WaterSaltProfilesV37.water(stack)" in water_runtime
+    assert "WaterSaltProfilesV37.sodium(stack)" in water_runtime
     assert "ThresholdDimensions" not in nutrition_runtime + water_runtime, (
         "Agriculture nutrition/hydration must remain dimension-agnostic and work in Threshold")
 
