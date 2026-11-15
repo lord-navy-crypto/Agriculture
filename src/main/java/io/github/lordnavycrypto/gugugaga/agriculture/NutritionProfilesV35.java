@@ -83,10 +83,7 @@ public final class NutritionProfilesV35 {
         try {
             JsonObject doc=readCatalog();
             validateHeader(doc);
-            Map<String,int[]> templates=CATEGORY_VALUES_PLACEHOLDER();
-            // Parse the category templates locally during static initialization;
-            // this avoids depending on field initialization order.
-            templates.clear();
+            Map<String,int[]> templates=new HashMap<>();
             for (Map.Entry<String,JsonElement> entry: doc.getAsJsonObject("profiles").entrySet()) {
                 int[] profile=new int[NUTRIENTS.length];
                 for (Map.Entry<String,JsonElement> field:entry.getValue().getAsJsonObject().entrySet()) {
@@ -132,11 +129,6 @@ public final class NutritionProfilesV35 {
         } catch (Exception e) {
             throw new IllegalStateException("Could not load shipped food nutrient catalog",e);
         }
-    }
-
-    // Returns a mutable map only for the local parser above.
-    private static Map<String,int[]> CATEGORY_VALUES_PLACEHOLDER() {
-        return new HashMap<>();
     }
 
     public static int index(String id) {
