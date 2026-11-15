@@ -11,6 +11,8 @@ PROFILES=(SRC/"NutritionProfilesV35.java").read_text(encoding="utf-8")
 COMPAT=(SRC/"NutritionFoodCompatibilityV415.java").read_text(encoding="utf-8")
 EAT=(SRC/"NutritionV34.java").read_text(encoding="utf-8")
 TOOLTIP=(SRC/"NutritionTooltipV40.java").read_text(encoding="utf-8")
+WATER=(SRC/"WaterSaltV37.java").read_text(encoding="utf-8")
+WATER_PROFILES=(SRC/"WaterSaltProfilesV37.java").read_text(encoding="utf-8")
 MODE=(SRC/"NutritionModeV414.java").read_text(encoding="utf-8")
 NETWORK=(SRC/"NutritionModeNetworkV414.java").read_text(encoding="utf-8")
 
@@ -48,6 +50,12 @@ def main():
     assert "NutritionProfilesV35.contribution(food)" in EAT
     assert "NutritionProfilesV35.contribution(stack)" in TOOLTIP
     assert "NutritionProfilesV35.hasResolvedProfile(stack)" in TOOLTIP
+    assert "WaterSaltProfilesV37.water(stack)" in WATER
+    assert "WaterSaltProfilesV37.sodium(stack)" in WATER
+    assert "WaterSaltProfilesV37.water(stack)" in TOOLTIP
+    assert "WaterSaltProfilesV37.sodium(stack)" in TOOLTIP
+    assert "NutritionFoodCompatibilityV415.inferredWater(stack)" in WATER_PROFILES
+    assert "NutritionFoodCompatibilityV415.inferredSodium(stack)" in WATER_PROFILES
     assert "!NutritionModeV414.enabled(player)" in EAT
     assert "!NutritionModeV414.clientEnabled()" in TOOLTIP
 
