@@ -13,6 +13,8 @@ def main():
         names=set(z.namelist())
         required=(
             "io/github/lordnavycrypto/gugugaga/agriculture/NutritionFoodCompatibilityV415.class",
+            "io/github/lordnavycrypto/gugugaga/agriculture/NutritionFoodScannerV415.class",
+            "io/github/lordnavycrypto/gugugaga/agriculture/NutritionFoodSyncV415.class",
             "io/github/lordnavycrypto/gugugaga/agriculture/NutritionProfilesV35.class",
             "io/github/lordnavycrypto/gugugaga/agriculture/NutritionModeV414.class",
             "io/github/lordnavycrypto/gugugaga/agriculture/NutritionModeNetworkV414.class",
@@ -27,7 +29,7 @@ def main():
         mode=z.read("io/github/lordnavycrypto/gugugaga/agriculture/NutritionModeV414.class")
         resolver=z.read("io/github/lordnavycrypto/gugugaga/agriculture/NutritionFoodCompatibilityV415.class")
         assert len(mode)>1000 and len(resolver)>1000
-    print(f"NUTRITION_UNIVERSAL_FOOD_JAR_V415_PASS: {jar.name}; mode, network, resolver, 27-channel catalog and bilingual resources packaged")
+    print(f"NUTRITION_UNIVERSAL_FOOD_JAR_V415_PASS: {jar.name}; mode, network, resolver, recipe scanner, client sync, 27-channel catalog and bilingual resources packaged")
 
 if __name__=="__main__":
     main()
