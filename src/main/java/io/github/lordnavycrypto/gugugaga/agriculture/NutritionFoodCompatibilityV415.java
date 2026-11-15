@@ -129,6 +129,44 @@ public final class NutritionFoodCompatibilityV415 {
         return !categories.isEmpty();
     }
 
+    /** Separate water/sodium fallback for the independent WaterSaltV37 model. */
+    public static int inferredWater(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return 1;
+        if (matchesAny(stack, "c", "foods/beverages", "foods/soups", "foods/juices")
+                || matchesAny(stack, "forge", "beverages", "soups", "drinks")) return 4;
+        if (matchesAny(stack, "c", "foods/fruits", "foods/berries", "foods/vegetables")
+                || matchesAny(stack, "forge", "fruits", "berries", "vegetables")) return 2;
+        String path = net.minecraft.core.registries.BuiltInRegistries.ITEM
+                .getKey(stack.getItem()).getPath().toLowerCase(java.util.Locale.ROOT);
+        if (contains(path, "juice", "tea", "coffee", "drink", "soup", "stew", "broth", "smoothie", "milkshake")) return 4;
+        if (contains(path, "fruit", "berry", "berries", "melon", "cucumber", "lettuce", "tomato", "salad")) return 2;
+        return 1;
+    }
+
+    public static int inferredSodium(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return 1;
+        if (matchesAny(stack, "c", "foods/salted", "foods/pickled")
+                || matchesAny(stack, "forge", "salted", "pickled")) return 3;
+        String path = net.minecraft.core.registries.BuiltInRegistries.ITEM
+                .getKey(stack.getItem()).getPath().toLowerCase(java.util.Locale.ROOT);
+        if (contains(path, "salted", "pickle", "brine", "soy_sauce", "bacon", "ham", "cured")) return 3;
+        if (contains(path, "cheese", "sausage", "jerky", "smoked")) return 2;
+        return 1;
+    }
+
+    public static boolean hasWaterSaltInference(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) return false;
+        if (inferredWater(stack) != 1 || inferredSodium(stack) != 1) return true;
+        return hasInferredProfile(stack);
+    }
+
+    private static boolean matchesAny(ItemStack stack, String namespace, String... paths) {
+        for (String path : paths) {
+            if (stack.is(tag(namespace, path))) return true;
+        }
+        return false;
+    }
+
     private static void inferFromPath(String path, Set<String> out) {
         // Name hints are intentionally broad and low-confidence. Exact profiles
         // and declared tags always win, and only abstract category points result.
