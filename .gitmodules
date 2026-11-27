@@ -1,0 +1,3 @@
+[submodule "third_party/SPB-Revamped-Upstream"]
+	path = third_party/SPB-Revamped-Upstream
+	url = https://github.com/SpacePotatoee/MinecraftFoundFootage.git
